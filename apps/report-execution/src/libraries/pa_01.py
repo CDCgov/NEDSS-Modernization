@@ -30,6 +30,8 @@ def execute(
     """PA01 HIV and STD: Case Management Report.
 
     Conversion notes:
+    * Report is too large for a single file, additional files found in
+      directory `./support/pa_01/`
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * The variant (STD or HIV) is determined by `library_params['report_variant']`
       which is defined in the Report_Library db table.
@@ -59,28 +61,24 @@ def execute(
 
         return ReportResult(content_type='table', content=content)
 
-    # query result tables
-    filtered_cases = trx.query(filtered_cases_query(subset_query))
+    # get list of workers (nb. None treated as "ALL WORKERS")
     case_interview_rows = trx.query(
         case_interview_rows_query(subset_query, report_variant)
     )
-    timed_interviews = trx.query(timed_interviews_query(subset_query, report_variant))
-    partner_notification = trx.query(partner_notification_query(subset_query))
-    testing_index = trx.query(testing_index_query(subset_query))
-    period_partners = trx.query(period_partners_query(subset_query))
-
-    pa01_tables = Pa01Tables(
-        filtered_cases,
-        case_interview_rows,
-        timed_interviews,
-        partner_notification,
-        testing_index,
-        period_partners,
-    )
-
-    # nb. None treated as "ALL WORKERS"
     workers: list[Pa01Worker | None] = [None]
     workers.extend(_get_workers(case_interview_rows))
+
+    # query result tables
+    pa01_tables = Pa01Tables(
+        filtered_cases=trx.query(filtered_cases_query(subset_query)),
+        case_interview_rows=case_interview_rows,
+        timed_interviews=trx.query(
+            timed_interviews_query(subset_query, report_variant)
+        ),
+        partner_notification=trx.query(partner_notification_query(subset_query)),
+        testing_index=trx.query(testing_index_query(subset_query)),
+        period_partners=trx.query(period_partners_query(subset_query)),
+    )
 
     # build output CSV data for each worker
     output_rows: list[Pa01Row] = []

@@ -189,6 +189,7 @@ def build_partners_and_clusters_initiated_output(
         tables.period_partners, cases_ixd, worker
     )
 
+    # output CSV data
     rows: list[Pa01Row] = [
         (
             _worker_for_csv(worker),
