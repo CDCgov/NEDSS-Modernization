@@ -1,15 +1,20 @@
 from dataclasses import dataclass
 
 from src.db_transaction import Transaction
+from src.libraries.support.pa_01.queries import (
+    case_interview_rows_query,
+    filtered_cases_query,
+    partner_notification_query,
+    period_partners_query,
+    testing_index_query,
+    timed_interviews_query,
+)
 from src.models import ReportResult, Table
 
 """
     Go backs:
     - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
       by workers
-    - loosen up and/or simplify report_title regex
-    - do we need 'data_type' when analyzing the report_title?  I don't think we do bc
-      it's a distinction for filtration at the UI level.
 """
 
 # Constants
@@ -113,14 +118,14 @@ def execute(
         return ReportResult(content_type='table', content=content)
 
     # query result tables
-    filtered_cases = trx.query(_filtered_cases_query(subset_query))
+    filtered_cases = trx.query(filtered_cases_query(subset_query))
     case_interview_rows = trx.query(
-        _case_interview_rows_query(subset_query, report_variant)
+        case_interview_rows_query(subset_query, report_variant)
     )
-    timed_interviews = trx.query(_timed_interviews_query(subset_query, report_variant))
-    partner_notification = trx.query(_partner_notification_query(subset_query))
-    testing_index = trx.query(_testing_index_query(subset_query))
-    period_partners = trx.query(_period_partners_query(subset_query))
+    timed_interviews = trx.query(timed_interviews_query(subset_query, report_variant))
+    partner_notification = trx.query(partner_notification_query(subset_query))
+    testing_index = trx.query(testing_index_query(subset_query))
+    period_partners = trx.query(period_partners_query(subset_query))
 
     pa01_tables = Pa01Tables(
         filtered_cases,
@@ -146,282 +151,6 @@ def execute(
     )
 
     return ReportResult(content_type='table', content=content)
-
-
-def _filtered_cases_query(subset_query: str) -> str:
-    # equivalent of STD_HIV_DATAMART1 in SAS
-    return f"""
-      WITH base AS
-      (
-        {subset_query}
-      )
-      SELECT b.*
-      FROM base b
-        INNER JOIN RDB.dbo.INVESTIGATION i
-                ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-               AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-               AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL;
-    """
-
-
-def _case_interview_rows_query(subset_query: str, report_variant: str) -> str:
-    # equivalent of pa1_new in SAS
-    return f"""
-      WITH base AS
-      (
-        {subset_query}
-      ),
-      filtered_cases AS
-      (
-        -- STD_HIV_DATAMART1 in SAS
-        SELECT b.*
-        FROM base b
-          INNER JOIN RDB.dbo.INVESTIGATION i
-                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-      )
-      SELECT DISTINCT
-             fc.INV_LOCAL_ID,
-             di.IX_TYPE,
-             i.INV_CASE_STATUS,
-             i.RECORD_STATUS_CD,
-             fc.CC_CLOSED_DT,
-             fc.ADI_900_STATUS_CD,
-             fc.HIV_POST_TEST_900_COUNSELING,
-             fc.HIV_900_RESULT,
-             fc.ADI_900_STATUS,
-             fc.HIV_900_TEST_IND,
-             fc.SOURCE_SPREAD,
-             fc.FL_FUP_INIT_ASSGN_DT,
-             i.CURR_PROCESS_STATE,
-             fc.CA_PATIENT_INTV_STATUS,
-             fc.INVESTIGATOR_INTERVIEW_KEY,
-             fc.INVESTIGATOR_INTERVIEW_QC,
-             DATEDIFF(
-               DAY,
-               CAST(fc.{PA1_NEW_DATE_COL[report_variant]} AS DATE),
-               CAST(di.IX_DATE AS DATE)
-             ) AS Days,
-             dp.PROVIDER_QUICK_CODE
-      FROM filtered_cases fc
-        LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
-               ON fic.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
-        LEFT JOIN RDB.dbo.D_INTERVIEW di
-               ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-              AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-        LEFT JOIN RDB.dbo.D_PROVIDER dp
-               ON dp.PROVIDER_KEY = fc.INVESTIGATOR_INTERVIEW_KEY
-        LEFT JOIN RDB.dbo.INVESTIGATION i
-               ON i.INVESTIGATION_KEY = fc.INVESTIGATION_KEY;
-    """
-
-
-def _timed_interviews_query(subset_query: str, report_variant: str) -> str:
-    # equivalent of pa1_dte in SAS
-    return f"""
-      WITH base AS
-      (
-        {subset_query}
-      ),
-      filtered_base AS
-      (
-        -- STD_HIV_DATAMART1 in PA01_HIV.sas
-        SELECT b.*
-        FROM base b
-          INNER JOIN RDB.dbo.INVESTIGATION i
-                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-      )
-      SELECT DISTINCT fb.INV_LOCAL_ID,
-             di.IX_TYPE,
-             i.INV_CASE_STATUS,
-             i.RECORD_STATUS_CD,
-             fb.CC_CLOSED_DT,
-             fb.ADI_900_STATUS_CD,
-             fb.HIV_POST_TEST_900_COUNSELING,
-             fb.HIV_900_RESULT,
-             fb.ADI_900_STATUS,
-             fb.HIV_900_TEST_IND,
-             fb.SOURCE_SPREAD,
-             fb.FL_FUP_INIT_ASSGN_DT,
-             i.CURR_PROCESS_STATE,
-             fb.CA_PATIENT_INTV_STATUS,
-             fb.INVESTIGATOR_INTERVIEW_KEY,
-             fb.INVESTIGATOR_INTERVIEW_QC,
-             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[report_variant]},di.IX_DATE) AS Days,
-             dp.PROVIDER_QUICK_CODE
-      FROM filtered_base fb
-        INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
-                ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.D_INTERVIEW di
-                ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-               AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-        INNER JOIN RDB.dbo.D_PROVIDER dp
-                ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-        INNER JOIN RDB.dbo.INVESTIGATION i
-                ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-      WHERE CAST(di.IX_DATE AS DATE) >=
-                CAST(fb.CA_INIT_INTVWR_ASSGN_DT AS DATE);
-    """
-
-
-def _partner_notification_query(subset_query: str) -> str:
-    return f"""
-      WITH base AS
-      (
-        {subset_query}
-      ),
-      filtered_base AS
-      (
-        SELECT b.*
-        FROM base b
-          JOIN RDB.dbo.INVESTIGATION i
-            ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-           AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-           AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-      )
-      SELECT dp.PROVIDER_QUICK_CODE,
-             fb.INVESTIGATOR_INTERVIEW_KEY,
-             COUNT(DISTINCT fb.INV_LOCAL_ID) AS partner_notification_count
-      FROM filtered_base fb
-             JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
-               ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-             JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
-               ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
-             JOIN RDB.dbo.D_CONTACT_RECORD dcr
-               ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
-              AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
-        LEFT JOIN RDB.dbo.D_PROVIDER dp
-               ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-      WHERE dcr.CTT_REFERRAL_BASIS IN (
-        'P1 - Partner, Sex',
-        'P2 - Partner, Needle-Sharing',
-        'P3 - Partner, Both'
-      )
-      AND contact_dm.FL_FUP_DISPOSITION IN (
-        '2 - Prev. Neg, New Pos',
-        '3 - Prev. Neg, Still Neg',
-        '5 - No Prev Test, New Pos',
-        '6 - No Prev Test, New Neg'
-      )
-      GROUP BY dp.PROVIDER_QUICK_CODE,
-               fb.INVESTIGATOR_INTERVIEW_KEY;
-    """
-
-
-def _testing_index_query(subset_query: str) -> str:
-    return f"""
-      WITH base AS
-      (
-        {subset_query}
-      ),
-      filtered_base AS
-      (
-        -- STD_HIV_DATAMART1 in PA01_HIV.sas
-        SELECT b.*
-        FROM base b
-          INNER JOIN RDB.dbo.INVESTIGATION i
-                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-      )
-      SELECT dp.PROVIDER_QUICK_CODE,
-             fb.INVESTIGATOR_INTERVIEW_KEY,
-             COUNT(DISTINCT dcr.LOCAL_ID) AS testing_index_count
-      FROM filtered_base fb
-        INNER JOIN RDB.dbo.INVESTIGATION i
-                ON i.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
-                ON fcrc.SUBJECT_INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
-                ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
-                ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
-               AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
-         LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
-                ON fic.INVESTIGATION_KEY = fb.INVESTIGATION_KEY
-         LEFT JOIN RDB.dbo.D_INTERVIEW di
-                ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-               AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-         LEFT JOIN RDB.dbo.D_PROVIDER dp
-                ON dp.PROVIDER_KEY = fb.INVESTIGATOR_INTERVIEW_KEY
-      WHERE dcr.CTT_REFERRAL_BASIS IN (
-         'P1 - Partner, Sex',
-         'P2 - Partner, Needle-Sharing',
-         'P3 - Partner, Both'
-      )
-      AND contact_dm.FL_FUP_DISPOSITION IN (
-         '2 - Prev. Neg, New Pos',
-         '3 - Prev. Neg, Still Neg',
-         '5 - No Prev Test, New Pos',
-         '6 - No Prev Test, New Neg'
-      )
-      GROUP BY dp.PROVIDER_QUICK_CODE,
-               fb.INVESTIGATOR_INTERVIEW_KEY;
-    """
-
-
-def _period_partners_query(subset_query: str) -> str:
-    return f"""
-      WITH base AS
-      (
-          {subset_query}
-      ),
-      filtered_cases AS
-      (
-          -- STD_HIV_DATAMART1 in SAS
-          SELECT b.*
-          FROM base b
-            INNER JOIN RDB.dbo.INVESTIGATION i
-                    ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-                   AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-                   AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
-      )
-      SELECT DISTINCT
-             fcrc.CONTACT_INVESTIGATION_KEY,
-             TRY_CONVERT(int, fc.STD_PRTNRS_PRD_TRNSGNDR_TTL)
-                AS STD_PRTNRS_TRNSGNDR_TTL,
-             contact_dm.FL_FUP_DISPOSITION,
-             fc.INV_LOCAL_ID AS STD_INV_LOCAL_ID,
-             TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_FML_TTL) AS SOC_PRTNRS_FML_TTL,
-             TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_MALE_TTL) AS SOC_PRTNRS_MALE_TTL,
-             COALESCE(TRY_CONVERT(int, fc.STD_PRTNRS_PRD_TRNSGNDR_TTL), 0)
-             + COALESCE(TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_FML_TTL), 0)
-             + COALESCE(TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_MALE_TTL), 0) AS count_Q,
-             di.IX_TYPE,
-             dp.PROVIDER_QUICK_CODE,
-             dcr.LOCAL_ID AS INV_LOCAL_ID,
-             fc.CA_PATIENT_INTV_STATUS,
-             fc.INVESTIGATOR_INTERVIEW_KEY,
-             fc.INVESTIGATOR_INTERVIEW_QC
-      FROM filtered_cases fc
-        INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
-                ON fic.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.D_INTERVIEW di
-                ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
-               AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-        INNER JOIN RDB.dbo.D_PROVIDER dp
-                ON dp.PROVIDER_KEY = fc.INVESTIGATOR_INTERVIEW_KEY
-        INNER JOIN RDB.dbo.INVESTIGATION i
-                ON i.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
-                ON fcrc.SUBJECT_INVESTIGATION_KEY = fc.INVESTIGATION_KEY
-               AND fcrc.CONTACT_INTERVIEW_KEY = di.D_INTERVIEW_KEY
-               AND fcrc.CONTACT_INTERVIEW_KEY <> 1
-        INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
-                ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
-        INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
-                ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
-               AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
-      WHERE dcr.CTT_REFERRAL_BASIS IN (
-          'P1 - Partner, Sex',
-          'P2 - Partner, Needle-Sharing',
-          'P3 - Partner, Both'
-      )
-      AND fc.CA_PATIENT_INTV_STATUS = 'I - Interviewed';
-    """
 
 
 def _build_output_for_worker(
@@ -902,24 +631,6 @@ def _calc_total_period_partners(
     count = sum(row['count_Q'] for row in rows)
 
     return count, _index_for_csv(count, cases_ixd, 1)
-
-
-def _get_report_title_parts(report_title: str) -> dict:
-    """Get the needed parts from the report title to differentiate between types.
-
-    - STD/HIV
-    - Interview Assign Date/Closed Date
-    """
-    match: re.Match | None = re.match(
-        r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
-    )
-
-    if not match:
-        raise ValueError('Report Title analysis regex did not match input string')
-
-    groups = match.groups()
-
-    return {'data_type': groups[0], 'disease_type': groups[1]}
 
 
 def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
