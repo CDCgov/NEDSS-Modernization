@@ -71,7 +71,7 @@ public class FilterValueMapper {
     return filterValues;
   }
 
-  //////////////////////////////////////////////////////////////////////////
+  // Private Methods //////////////////////////////////////////
 
   private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
     FilterValue clause =
