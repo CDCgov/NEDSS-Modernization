@@ -3,16 +3,19 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
+import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,29 +25,55 @@ public class ReportFilterBuilder {
   private final FilterCodeRepository filterCodeRepository;
   private final IdGeneratorService idGenerator;
 
+  private final FilterValueMapper filterValueMapper;
+
   public ReportFilterBuilder(
       final Clock clock,
       DataSourceColumnRepository dataSourceColumnRepository,
       FilterCodeRepository filterCodeRepository,
-      IdGeneratorService idGenerator) {
+      IdGeneratorService idGenerator,
+      FilterValueMapper filterValueMapper) {
     this.clock = clock;
     this.dataSourceColumnRepository = dataSourceColumnRepository;
     this.filterCodeRepository = filterCodeRepository;
     this.idGenerator = idGenerator;
+    this.filterValueMapper = filterValueMapper;
   }
 
   public ReportFilter duplicate(ReportFilter filter) {
-    return ReportFilter.builder()
-        .id(generateReportFilterId())
-        .report(filter.getReport())
-        .filterCode(filter.getFilterCode())
-        .dataSourceColumn(filter.getDataSourceColumn())
-        .filterValues()
-        .filterValidation()
-        .statusCd(filter.getStatusCd())
-        .maxValueCnt(filter.getMaxValueCnt())
-        .minValueCnt(filter.getMinValueCnt())
-        .build();
+    ReportFilter newFilter =
+        ReportFilter.builder()
+            .id(generateId())
+            .report(filter.getReport())
+            .filterCode(filter.getFilterCode())
+            .dataSourceColumn(filter.getDataSourceColumn())
+            .statusCd(filter.getStatusCd())
+            .maxValueCnt(filter.getMaxValueCnt())
+            .minValueCnt(filter.getMinValueCnt())
+            .build();
+
+    ReportFilterValidation validation = filter.getFilterValidation();
+    if (validation != null) {
+      ReportFilterValidation newValidation =
+          ReportFilterValidation.builder()
+              .id(generateId())
+              .reportFilter(newFilter)
+              .reportFilterInd(validation.getReportFilterInd())
+              .statusCd(validation.getStatusCd())
+              .statusTime(validation.getStatusTime())
+              .build();
+
+      newFilter.setFilterValidation(newValidation);
+    }
+
+    List<FilterValue> filterValues = filter.getFilterValues();
+    if (filter.getFilterValues() != null) {
+      List<FilterValue> newFilterValues =
+          filterValues.stream().map(filterValueMapper::duplicate).toList();
+      newFilter.setFilterValues(newFilterValues);
+    }
+
+    return newFilter;
   }
 
   public ReportFilter build(UpsertFilterRequest filterRequest, Report report) {
@@ -74,7 +103,7 @@ public class ReportFilterBuilder {
               .report(report)
               .filterCode(filterCode)
               .statusCd(Status.ACTIVE_CODE)
-              .id(generateReportFilterId())
+              .id(generateId())
               .build();
     } else {
       filter =
@@ -126,7 +155,7 @@ public class ReportFilterBuilder {
     LocalDateTime now = LocalDateTime.now(this.clock);
     ReportFilterValidation validation =
         ReportFilterValidation.builder()
-            .id(generateReportFilterId())
+            .id(generateId())
             .reportFilter(filter)
             .reportFilterInd('Y')
             .statusCd(Status.ACTIVE_CODE)
@@ -135,7 +164,7 @@ public class ReportFilterBuilder {
     filter.setFilterValidation(validation);
   }
 
-  private Long generateReportFilterId() {
+  private Long generateId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }

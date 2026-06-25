@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -185,7 +184,7 @@ public class ReportService {
   }
 
   @Transactional
-  public Report saveAs(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
+  public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
     Report report =
         reportRepository
             .findById(reportId)
@@ -347,15 +346,22 @@ public class ReportService {
             .filter(this::isBasicFilter)
             .collect(Collectors.toMap(ReportFilter::getId, Function.identity()));
 
-    //  If no basic filter requests are provided, delete all filter values for all existing basic filters
+    //  If no basic filter requests are provided, delete all filter values for all existing basic
+    // filters
     if (basicFilterReqs == null || basicFilterReqs.isEmpty()) {
       basicFiltersById.values().forEach(basicFilter -> basicFilter.setFilterValues(null));
-    } else if (basicFilterReqs.stream().anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
-        throw new IllegalArgumentException("BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
+    } else if (basicFilterReqs.stream()
+        .anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
+      throw new IllegalArgumentException(
+          "BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
     } else {
-      Map<Long, BasicFilterRequest> basicFilterReqsById = basicFilterReqs.stream().collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
+      Map<Long, BasicFilterRequest> basicFilterReqsById =
+          basicFilterReqs.stream()
+              .collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
-      basicFiltersById.values().forEach(
+      basicFiltersById
+          .values()
+          .forEach(
               basicFilter -> {
                 BasicFilterRequest matchingReq = basicFilterReqsById.get(basicFilter.getId());
                 //  If a basic filter request isn't present for a given basic filter,
@@ -368,7 +374,7 @@ public class ReportService {
                   basicFilter.getFilterValues().clear();
 
                   List<FilterValue> basicFilterValues =
-                          filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
+                      filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
                   basicFilter.getFilterValues().addAll(basicFilterValues);
                 }
               });
