@@ -59,7 +59,8 @@ public class ReportController {
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
     Report existingReport = reportRepository.findById(reportId).orElse(null);
-
+    //  We might consider investigating into creating a custom pre-authorizer for this sort of
+    //  authorization check, should we ever need ownership permissions beyond this endpoint
     if (existingReport != null && !existingReport.getOwnerUid().equals(user.getId())) {
       throw new ForbiddenException("User does not have permission to save this report");
     }
