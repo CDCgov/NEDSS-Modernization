@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,11 @@ public class ReportExceptionHandler {
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getBindingResult().getAllErrors().toString()),
         HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(ForbiddenException.class)
+  public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
+    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage()), HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(NotFoundException.class)

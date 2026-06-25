@@ -12,7 +12,6 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
-import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.SortDirection;
@@ -163,17 +162,11 @@ public class ReportService {
    * changing the actual report mechanics themselves.
    */
   @Transactional
-  public Report saveReport(ReportExecutionRequest request, NbsUserDetails user, ReportId reportId) {
+  public Report saveReport(ReportExecutionRequest request, ReportId reportId) {
     Report report =
         reportRepository
             .findById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
-
-    //  TODO: Figure out how to bake this into a custom pre-authorizer, as time allows  NOSONAR
-    //  TODO: It will require first fetching the report before anything   NOSONAR
-    if (!report.getOwnerUid().equals(user.getId())) {
-      throw new ForbiddenException("You do not have permission to save this report");
-    }
 
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());

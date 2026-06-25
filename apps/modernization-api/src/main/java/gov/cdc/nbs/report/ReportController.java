@@ -3,7 +3,9 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.repository.ReportRepository;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,11 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
 
   private final ReportService reportService;
+  private final ReportRepository reportRepository;
 
-  public ReportController(ReportService reportService) {
+  public ReportController(ReportService reportService, ReportRepository reportRepository) {
     this.reportService = reportService;
+    this.reportRepository = reportRepository;
   }
 
   @PostMapping("/configuration")
@@ -52,7 +56,18 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody ReportExecutionRequest request) {
-    Report report = reportService.saveReport(request, user, new ReportId(reportUid, dataSourceUid));
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    Report existingReport = reportRepository.findById(reportId).orElse(null);
+
+    //  Only the report's owner should have permission to overwrite it
+    //  We might consider investigating into creating a custom pre-authorizer for this sort of
+    //  authorization check, should we ever need ownership permissions beyond this endpoint
+    if (existingReport != null && !existingReport.getOwnerUid().equals(user.getId())) {
+      throw new ForbiddenException("User does not have permission to save this report");
+    }
+
+    Report report = reportService.saveReport(request, reportId);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
