@@ -12,7 +12,6 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
-import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.SortDirection;
@@ -49,7 +48,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -163,17 +161,11 @@ public class ReportService {
    * changing the actual report mechanics themselves.
    */
   @Transactional
-  public Report saveReport(ReportExecutionRequest request, NbsUserDetails user, ReportId reportId) {
+  public Report saveReport(ReportExecutionRequest request, ReportId reportId) {
     Report report =
         reportRepository
             .findById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
-
-    //  TODO: Figure out how to bake this into a custom pre-authorizer, as time allows  NOSONAR
-    //  TODO: It will require first fetching the report before anything   NOSONAR
-    if (!report.getOwnerUid().equals(user.getId())) {
-      throw new ForbiddenException("You do not have permission to save this report");
-    }
 
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());
@@ -325,15 +317,22 @@ public class ReportService {
             .filter(this::isBasicFilter)
             .collect(Collectors.toMap(ReportFilter::getId, Function.identity()));
 
-    //  If no basic filter requests are provided, delete all filter values for all existing basic filters
+    //  If no basic filter requests are provided, delete all filter values for all existing basic
+    // filters
     if (basicFilterReqs == null || basicFilterReqs.isEmpty()) {
       basicFiltersById.values().forEach(basicFilter -> basicFilter.setFilterValues(null));
-    } else if (basicFilterReqs.stream().anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
-        throw new IllegalArgumentException("BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
+    } else if (basicFilterReqs.stream()
+        .anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
+      throw new IllegalArgumentException(
+          "BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
     } else {
-      Map<Long, BasicFilterRequest> basicFilterReqsById = basicFilterReqs.stream().collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
+      Map<Long, BasicFilterRequest> basicFilterReqsById =
+          basicFilterReqs.stream()
+              .collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
-      basicFiltersById.values().forEach(
+      basicFiltersById
+          .values()
+          .forEach(
               basicFilter -> {
                 BasicFilterRequest matchingReq = basicFilterReqsById.get(basicFilter.getId());
                 //  If a basic filter request isn't present for a given basic filter,
@@ -346,7 +345,7 @@ public class ReportService {
                   basicFilter.getFilterValues().clear();
 
                   List<FilterValue> basicFilterValues =
-                          filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
+                      filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
                   basicFilter.getFilterValues().addAll(basicFilterValues);
                 }
               });
