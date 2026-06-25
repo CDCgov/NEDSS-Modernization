@@ -1,0 +1,200 @@
+config:
+  seed: 19
+  nbs:
+    fk_tables:
+      - "[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]"
+
+tables:
+  - table_name: "[RDB].[dbo].[INVESTIGATION]"
+    row_count: 500
+    columns:
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: INV_CASE_STATUS
+        data: random.choice(["Confirmed", "Probable", "Suspect", "Unknown"])
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(["ACTIVE", "INACTIVE"])
+      - column_name: INV_LOCAL_ID
+        data: |
+          id_num = fake.unique.random_int(10000, 99999)
+          return f"CAS100{id_num}GA01"
+        is_primary_key: true
+      - column_name: CASE_UID
+        data: row_id + 10000000
+
+  - table_name: "[RDB].[dbo].[D_PROVIDER]"
+    row_count: 5
+    columns:
+      - column_name: PROVIDER_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: PROVIDER_FIRST_NAME
+        data: fake.first_name()
+      - column_name: PROVIDER_LAST_NAME
+        data: fake.last_name()
+      - column_name: PROVIDER_NAME_SUFFIX
+        data: random.choice(["Jr.", "Sr.", "II", "III", "MD", "PhD"])
+      - column_name: PROVIDER_QUICK_CODE
+        data: |
+          if row_id == 1:
+            return "gfreeman"
+          elif row_id == 2:
+            return "avance"
+          elif row_id == 3:
+            return "adevraj"
+          elif row_id == 4:
+            return "dbowman"
+          else:
+            return "fpoole"
+        is_primary_key: true
+
+  - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
+    row_count: 1000
+    columns:
+      # pretty sure program_jurisdiction_oid is needed for priv reasons?
+      - column_name: PROGRAM_JURISDICTION_OID
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+
+      - column_name: INV_LOCAL_ID
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "INV_LOCAL_ID")
+      - column_name: CC_CLOSED_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+      - column_name: ADI_900_STATUS_CD
+        data: random.choice(["01", "02", "03", "04", "09"])
+      - column_name: HIV_POST_TEST_900_COUNSELING
+        data: random.choice(["Yes", "No"])
+      - column_name: HIV_900_RESULT
+        data: random.choice(["11-Negative", "12-Prelim Positive", "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute"])
+      - column_name: ADI_900_STATUS
+        data: random.choice(["1 - Negative", "2 - Newly Diagnosed", "3 - Prior Positive - Not Previously Known", "4 - Prior Positive - New STD or Pregnancy", "9 - Unknown"])
+      - column_name: HIV_900_TEST_IND
+        data: random.choice(["Yes", "No"])
+      - column_name: SOURCE_SPREAD
+        data: random.choice(["1 - Spread", "2 - Source"])
+      - column_name: FL_FUP_INIT_ASSGN_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+      - column_name: CA_PATIENT_INTV_STATUS
+        data: r"I - Interviewed"
+      - column_name: INVESTIGATOR_INTERVIEW_KEY
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "PROVIDER_KEY")
+      - column_name: INVESTIGATOR_INTERVIEW_QC
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "PROVIDER_QUICK_CODE")
+      - column_name: CA_INTERVIEWER_ASSIGN_DT
+        data: date(2024, 1, 1)
+      - column_name: CA_INIT_INTVWR_ASSGN_DT
+        data: date(2024, 1, 1)
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+      - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
+        data: fake.random_digit()
+      - column_name: SOC_PRTNRS_PRD_FML_TTL
+        data: fake.random_digit()
+      - column_name: SOC_PRTNRS_PRD_MALE_TTL
+        data: fake.random_digit()
+      - column_name: FL_FUP_DISPOSITION
+        data: |
+          return random.choice([
+            "2 - Prev. Neg, New Pos",
+            "3 - Prev. Neg, Still Neg",
+            "4 - Prev. Neg, No Test",
+            "5 - No Prev Test, New Pos",
+            "6 - No Prev Test, New Neg",
+            "7 - No Prev Test, No Test",
+            "A - Preventative Treatment",
+            "B - Refused Preventative Treatment",
+            "C - Infected, Brought to Treatment",
+            "D - Infected, Not Treated",
+            "F - Not Infected",
+            "G - Insufficient Info to Begin Investigation",
+            "H - Unable to Locate",
+            "J - Located, Not Examined and/or Interviewed",
+            "K - Sent Out Of Jurisdiction",
+            "L - Other",
+            "V - Domestic Violence Risk",
+            "X - Patient Deceased",
+            "Z - Previous Preventative Treatment",
+            "E - Previously Treated for This Infection",
+            "1 - Prev. Pos"
+          ])
+      - column_name: FL_FUP_DISPO_DT
+        data: date(2024, 1, min(row_id, 28))
+      - column_name: FL_FUP_INVESTIGATOR_ASSGN_DT
+        data: date(2024, 1, 1)
+      - column_name: INIT_FUP_INITIAL_FOLL_UP
+        data: random.choice(["OOJ", "Field Follow-up", "Record Search Closure"])
+
+
+  - table_name: "[RDB].[dbo].[D_INTERVIEW]"
+    row_count: 500
+    columns:
+      - column_name: D_INTERVIEW_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: RECORD_STATUS_CD
+        data: r"ACTIVE"
+      - column_name: IX_TYPE
+        data: random.choice(["Initial/Original", "Re-Interview"])
+      - column_name: IX_DATE
+        data: date(2024, 1, min(row_id, 14))
+
+  - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
+    row_count: 500
+    columns:
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+      - column_name: D_INTERVIEW_KEY
+        data: row_id
+
+  - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
+    row_count: 50
+    columns:
+      - column_name: D_CONTACT_RECORD_KEY
+        data: row_id
+        is_primary_key: true
+      - column_name: LOCAL_ID
+        data: |
+          return f"CTRPA03{row_id:03d}"
+      - column_name: RECORD_STATUS_CD
+        data: random.choice(["ACTIVE", "INACTIVE"])
+      - column_name: RECORD_STATUS_TIME
+        data: |
+          return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
+      - column_name: CTT_REFERRAL_BASIS
+        data: random.choice(["P1 - Partner, Sex", "S1 - Social Contact 1", "A1 - Associate 1", "P2 - Partner, Needle-Sharing"])
+      - column_name: CTT_PROCESSING_DECISION
+        data: random.choice(["Field Follow-up", "Secondary Referral", "Record Search Closure"])
+      - column_name: ADD_TIME
+        data: |
+          return datetime(2024, 1, min(row_id, 28), 9, 0, 0)
+      - column_name: LAST_CHG_TIME
+        data: |
+          return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
+
+  - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
+    row_count: 40
+    columns:
+      - column_name: D_CONTACT_RECORD_KEY
+        data: row_id
+      - column_name: SUBJECT_INVESTIGATION_KEY
+        data: row_id
+      - column_name: CONTACT_INVESTIGATION_KEY
+        data: row_id + 100
+      - column_name: THIRD_PARTY_ENTITY_KEY
+        data: 1
+      - column_name: CONTACT_KEY
+        data: |
+          return 1000 + row_id
+      - column_name: SUBJECT_KEY
+        data: |
+          return 2000 + (1 if row_id in (1, 2, 3) else 2)
+      - column_name: THIRD_PARTY_INVESTIGATION_KEY
+        data: 1
+      - column_name: CONTACT_INTERVIEW_KEY
+        data: row_id
+      - column_name: DISPOSITIONED_BY_KEY
+        data: 1
+      - column_name: CONTACT_EXPOSURE_SITE_KEY
+        data: 1
+      - column_name: CONTACT_INVESTIGATOR_KEY
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "PROVIDER_KEY")
