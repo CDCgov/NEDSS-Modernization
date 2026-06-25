@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import gov.cdc.nbs.entity.odse.NbsConfiguration;
 import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
-import gov.cdc.nbs.repository.NbsConfigurationRepository;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;

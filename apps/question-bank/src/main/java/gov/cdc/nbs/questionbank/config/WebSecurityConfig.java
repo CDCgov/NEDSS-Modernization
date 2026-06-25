@@ -13,8 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
-@EnableJpaRepositories({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.repository"})
-@EntityScan({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.entity"})
+@EnableJpaRepositories({"gov.cdc.nbs.questionbank"})
+@EntityScan({"gov.cdc.nbs.questionbank"})
 class WebSecurityConfig {
 
   @Bean

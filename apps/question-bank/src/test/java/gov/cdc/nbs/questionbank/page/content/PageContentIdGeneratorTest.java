@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.entity.odse.NbsConfiguration;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
+import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
 import gov.cdc.nbs.questionbank.page.exception.PageContentIdGenerationException;
-import gov.cdc.nbs.repository.NbsConfigurationRepository;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -3,11 +3,11 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.entity.odse.NbsConfiguration;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
@@ -23,6 +23,7 @@ import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
@@ -31,7 +32,6 @@ import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionReq
 import gov.cdc.nbs.questionbank.question.request.create.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
-import gov.cdc.nbs.repository.NbsConfigurationRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

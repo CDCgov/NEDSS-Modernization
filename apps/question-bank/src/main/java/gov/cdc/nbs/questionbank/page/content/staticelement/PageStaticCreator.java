@@ -8,7 +8,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.staticelement.exceptions.AddStaticElementException;
 import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
-import gov.cdc.nbs.repository.NbsConfigurationRepository;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import org.springframework.stereotype.Component;

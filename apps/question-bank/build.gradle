@@ -96,7 +96,6 @@ dependencies {
     implementation project(':authentication')
     implementation project(':accumulation')
     implementation project(':audit')
-    implementation(project(':database-entities'))
     implementation project(':id-generator')
     implementation(project(':web'))
     implementation(project(':classic-interaction'))
