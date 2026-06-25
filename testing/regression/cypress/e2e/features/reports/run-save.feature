@@ -19,6 +19,7 @@ Feature: Save report after report run
         And I select value "Fulton LocalUser" in the "Owner" field
         And I click the "Submit" button
         And I click on the "Logout" link
+        And I clear cookies
         And I am logged in as "fulton" username
         And I navigate to list reports
 
@@ -37,4 +38,5 @@ Feature: Save report after report run
         When I click the "Save" button
         And I should see a modal labelled "Overwrite saved report?"
         And I click the "Save" button
-        And I am redirected to "/nbs/ManageReports.do"
+        Then I am redirected to "/nbs/ManageReports.do"
+        And I clear cookies

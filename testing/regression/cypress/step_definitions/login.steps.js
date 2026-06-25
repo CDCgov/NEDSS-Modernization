@@ -7,10 +7,14 @@ Given("I am logged in as secure user", () => {
 });
 
 Given("I am logged in as {string} username", (username) => {
-  cy.clearCookies()
   loginPage.navigateToHomepage();
   loginPage.loginAsUserName(username);
 });
+
+Given("I clear cookies", () => {
+  // need to clear cookies after different user login
+  cy.clearCookies()
+})
 
 Given("I am logged in as secure user and stay on classic", () => {
   loginPage.navigateToHomepage();
