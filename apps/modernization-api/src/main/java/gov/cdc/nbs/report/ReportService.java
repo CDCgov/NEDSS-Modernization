@@ -183,9 +183,9 @@ public class ReportService {
   @Transactional
   public Report saveAs(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
     Report report =
-            reportRepository
-                    .findById(reportId)
-                    .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+        reportRepository
+            .findById(reportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     Report duplicate = reportMapper.duplicate(report);
 

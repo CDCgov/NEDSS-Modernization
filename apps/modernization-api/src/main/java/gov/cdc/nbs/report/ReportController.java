@@ -63,7 +63,8 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody SaveAsReportRequest request) {
-    Report report = reportService.saveAsReport(request, user, new ReportId(reportUid, dataSourceUid));
+    Report report =
+        reportService.saveAsReport(request, user, new ReportId(reportUid, dataSourceUid));
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 

@@ -35,16 +35,16 @@ public class ReportFilterBuilder {
 
   public ReportFilter duplicate(ReportFilter filter) {
     return ReportFilter.builder()
-            .id(generateReportFilterId())
-            .report(filter.getReport())
-            .filterCode(filter.getFilterCode())
-            .dataSourceColumn(filter.getDataSourceColumn())
-            .filterValues()
-            .filterValidation()
-            .statusCd(filter.getStatusCd())
-            .maxValueCnt(filter.getMaxValueCnt())
-            .minValueCnt(filter.getMinValueCnt())
-            .build();
+        .id(generateReportFilterId())
+        .report(filter.getReport())
+        .filterCode(filter.getFilterCode())
+        .dataSourceColumn(filter.getDataSourceColumn())
+        .filterValues()
+        .filterValidation()
+        .statusCd(filter.getStatusCd())
+        .maxValueCnt(filter.getMaxValueCnt())
+        .minValueCnt(filter.getMinValueCnt())
+        .build();
   }
 
   public ReportFilter build(UpsertFilterRequest filterRequest, Report report) {

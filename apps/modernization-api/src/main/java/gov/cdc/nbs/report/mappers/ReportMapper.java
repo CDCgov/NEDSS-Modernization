@@ -3,16 +3,20 @@ package gov.cdc.nbs.report.mappers;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.report.DisplayColumnBuilder;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.ReportFilterBuilder;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,20 +25,27 @@ public class ReportMapper {
   private final IdGeneratorService idGenerator;
   private final ReportSortColumnMapper reportSortColumnMapper;
   private final ReportFilterBuilder reportFilterBuilder;
+  private final DisplayColumnBuilder displayColumnBuilder;
 
-  public ReportMapper(final Clock clock, IdGeneratorService idGenerator, ReportSortColumnMapper reportSortColumnMapper, ReportFilterBuilder reportFilterBuilder) {
+  public ReportMapper(
+      final Clock clock,
+      IdGeneratorService idGenerator,
+      ReportSortColumnMapper reportSortColumnMapper,
+      ReportFilterBuilder reportFilterBuilder,
+      DisplayColumnBuilder displayColumnBuilder) {
     this.clock = clock;
     this.idGenerator = idGenerator;
     this.reportSortColumnMapper = reportSortColumnMapper;
     this.reportFilterBuilder = reportFilterBuilder;
+    this.displayColumnBuilder = displayColumnBuilder;
   }
 
   public Report duplicate(Report report) {
-    Report newReport = Report.builder()
+    Report newReport =
+        Report.builder()
             .id(new ReportId(generateReportId(), report.getDataSource().getId()))
             .dataSource(report.getDataSource())
-                    .reportLibrary(report.getReportLibrary())
-            .displayColumns()
+            .reportLibrary(report.getReportLibrary())
             .descTxt(report.getDescTxt())
             .effectiveTime(report.getEffectiveTime())
             .filterMode(report.getFilterMode())
@@ -55,11 +66,27 @@ public class ReportMapper {
             .build();
 
     if (report.getReportSortColumns() != null) {
-      newReport.setReportSortColumns(report.getReportSortColumns().stream().map(reportSortColumnMapper::duplicate).toList());
+      List<ReportSortColumn> newSortColumns =
+          report.getReportSortColumns().stream().map(reportSortColumnMapper::duplicate).toList();
+
+      newSortColumns.forEach(newSortColumn -> newSortColumn.setReport(newReport));
+      newReport.setReportSortColumns(newSortColumns);
     }
 
     if (report.getReportFilters() != null) {
-      newReport.setReportFilters(report.getReportFilters().stream().map(reportFilterBuilder::duplicate).toList());
+      List<ReportFilter> newFilters =
+          report.getReportFilters().stream().map(reportFilterBuilder::duplicate).toList();
+
+      newFilters.forEach(newFilter -> newFilter.setReport(newReport));
+      newReport.setReportFilters(newFilters);
+    }
+
+    if (report.getDisplayColumns() != null) {
+      List<DisplayColumn> newDisplayColumns =
+          report.getDisplayColumns().stream().map(displayColumnBuilder::duplicate).toList();
+
+      newDisplayColumns.forEach(newDisplayColumn -> newDisplayColumn.setReport(newReport));
+      newReport.setDisplayColumns(newDisplayColumns);
     }
 
     return newReport;

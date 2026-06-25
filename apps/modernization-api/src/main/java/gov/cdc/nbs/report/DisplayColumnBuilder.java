@@ -32,6 +32,17 @@ public class DisplayColumnBuilder {
         .build();
   }
 
+  public DisplayColumn duplicate(DisplayColumn column) {
+    return DisplayColumn.builder()
+        .id(generateColumnId())
+        .dataSourceColumn(column.getDataSourceColumn())
+        .report(column.getReport())
+        .sequenceNumber(column.getSequenceNumber())
+        .statusCd(column.getStatusCd())
+        .statusTime(column.getStatusTime())
+        .build();
+  }
+
   private Long generateColumnId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
