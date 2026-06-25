@@ -29,11 +29,16 @@ When('I click the {string} button', (name) => {
 });
 
 Then('I should see a modal labelled {string}', (name) => {
-    // some modals have a close button in header that needs to be removed
-    const escapedName = name.replace(/<[^>]*>/g, "");
-    const cleanedName = new RegExp(`^${escapedName}`);
+    const modalHeadingTextMatcher = (elementText, element) => {
+        // remove button and svg tags from modal heading tag
+        const copiedElement = element.cloneNode(true);
+        copiedElement.querySelectorAll('button, svg').forEach(node => node.remove());
+        const cleanText = copiedElement.textContent.trim();
+        return cleanText.includes(name);
+    };
+
     // some modals are 0x0, so not exactly "visible", but it's there
-    cy.findByRole('dialog', { name: cleanedName }).should('have.class', 'is-visible');
+    cy.findByRole('dialog', { name: modalHeadingTextMatcher }).should('have.class', 'is-visible');
 });
 
 Then('I should see a {string} labelled {string}', (role, name) => {
