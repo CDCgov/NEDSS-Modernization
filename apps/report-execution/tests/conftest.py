@@ -143,7 +143,7 @@ def setup_containers(request):
 
 
 # Seeds global settings once setup_containers finishes booting
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='session')
 def seed_global_nbs_configuration(setup_containers):
     """Globally initializes and seeds the NBS_configuration table for all
         integration tests.
