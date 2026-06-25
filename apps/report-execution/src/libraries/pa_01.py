@@ -1,6 +1,10 @@
-from dataclasses import dataclass
-
 from src.db_transaction import Transaction
+from src.libraries.support.pa_01.models import (
+    CSV_COLUMNS,
+    Pa01Row,
+    Pa01Tables,
+    Pa01Worker,
+)
 from src.libraries.support.pa_01.queries import (
     case_interview_rows_query,
     filtered_cases_query,
@@ -11,71 +15,11 @@ from src.libraries.support.pa_01.queries import (
 )
 from src.models import ReportResult, Table
 
-"""
-    Go backs:
-    - once all stats for ALL WORKERS are done, need to re-tool to calculate grouped
-      by workers
-"""
-
 # Constants
 ALL = 'ALL'
 CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
-
-# CSV row data shape
-Pa01Row = tuple[
-    str,  # Worker
-    str,  # Category 1
-    str,  # Category 2
-    str | None,  # Category 3
-    int | None,  # Count
-    str | None,  # Percentage
-    str | None,  # Index
-]
-
-# CSV columns
-CSV_COLUMNS = [
-    'Worker',
-    'Category 1',
-    'Category 2',
-    'Category 3',
-    'Count',
-    'Percentage',
-    'Index',
-]
-
-# The date field differs in SAS for HIV vs. STD
-PA1_NEW_DATE_COL = {
-    'HIV': 'CA_INTERVIEWER_ASSIGN_DT',
-    'STD': 'CA_INIT_INTVWR_ASSGN_DT',
-}
-
-# The date field for "days" differs in SAS for HIV vs. STD
-PA1_DTE_DATE_COL = {
-    'HIV': 'CA_INIT_INTVWR_ASSGN_DT',
-    'STD': 'CA_INTERVIEWER_ASSIGN_DT',
-}
-
-
-@dataclass(frozen=True)
-class Pa01Tables:
-    """Query result Tables for the report."""
-
-    filtered_cases: Table
-    case_interview_rows: Table
-    timed_interviews: Table
-    partner_notification: Table
-    testing_index: Table
-    period_partners: Table
-
-
-@dataclass(frozen=True)
-class Pa01Worker:
-    """Individual worker within the context of this report."""
-
-    investigator_interview_key: int
-    provider_quick_code: str
 
 
 def execute(
@@ -93,7 +37,7 @@ def execute(
       which is defined in the Report_Library db table.
     * For the data point "HIV Tested", the SAS PDF output does not include
       percentages for individual workers, only "ALL WORKERS".  This report
-      includes percentages for every worker.
+      includes percentages for individual workers.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
