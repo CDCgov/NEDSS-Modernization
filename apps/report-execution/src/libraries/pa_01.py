@@ -16,6 +16,7 @@ from src.models import ReportResult, Table
 ALL = 'ALL'
 CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
+PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 
 # CSV row data shape
 Pa01Row = tuple[
@@ -61,6 +62,7 @@ class Pa01Tables:
     timed_interviews: Table
     partner_notification: Table
     testing_index: Table
+    period_partners: Table
 
 
 @dataclass(frozen=True)
@@ -118,6 +120,7 @@ def execute(
     timed_interviews = trx.query(_timed_interviews_query(subset_query, report_variant))
     partner_notification = trx.query(_partner_notification_query(subset_query))
     testing_index = trx.query(_testing_index_query(subset_query))
+    period_partners = trx.query(_period_partners_query(subset_query))
 
     pa01_tables = Pa01Tables(
         filtered_cases,
@@ -125,6 +128,7 @@ def execute(
         timed_interviews,
         partner_notification,
         testing_index,
+        period_partners,
     )
 
     # nb. None treated as "ALL WORKERS"
@@ -359,6 +363,67 @@ def _testing_index_query(subset_query: str) -> str:
     """
 
 
+def _period_partners_query(subset_query: str) -> str:
+    return f"""
+      WITH base AS
+      (
+          {subset_query}
+      ),
+      filtered_cases AS
+      (
+          -- STD_HIV_DATAMART1 in SAS
+          SELECT b.*
+          FROM base b
+            INNER JOIN RDB.dbo.INVESTIGATION i
+                    ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                   AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                   AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT
+             fcrc.CONTACT_INVESTIGATION_KEY,
+             TRY_CONVERT(int, fc.STD_PRTNRS_PRD_TRNSGNDR_TTL)
+                AS STD_PRTNRS_TRNSGNDR_TTL,
+             contact_dm.FL_FUP_DISPOSITION,
+             fc.INV_LOCAL_ID AS STD_INV_LOCAL_ID,
+             TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_FML_TTL) AS SOC_PRTNRS_FML_TTL,
+             TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_MALE_TTL) AS SOC_PRTNRS_MALE_TTL,
+             COALESCE(TRY_CONVERT(int, fc.STD_PRTNRS_PRD_TRNSGNDR_TTL), 0)
+             + COALESCE(TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_FML_TTL), 0)
+             + COALESCE(TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_MALE_TTL), 0) AS count_Q,
+             di.IX_TYPE,
+             dp.PROVIDER_QUICK_CODE,
+             dcr.LOCAL_ID AS INV_LOCAL_ID,
+             fc.CA_PATIENT_INTV_STATUS,
+             fc.INVESTIGATOR_INTERVIEW_KEY,
+             fc.INVESTIGATOR_INTERVIEW_QC
+      FROM filtered_cases fc
+        INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
+                ON fic.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_INTERVIEW di
+                ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
+               AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.D_PROVIDER dp
+                ON dp.PROVIDER_KEY = fc.INVESTIGATOR_INTERVIEW_KEY
+        INNER JOIN RDB.dbo.INVESTIGATION i
+                ON i.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
+                ON fcrc.SUBJECT_INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+               AND fcrc.CONTACT_INTERVIEW_KEY = di.D_INTERVIEW_KEY
+               AND fcrc.CONTACT_INTERVIEW_KEY <> 1
+        INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
+                ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
+                ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+               AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+      WHERE dcr.CTT_REFERRAL_BASIS IN (
+          'P1 - Partner, Sex',
+          'P2 - Partner, Needle-Sharing',
+          'P3 - Partner, Both'
+      )
+      AND fc.CA_PATIENT_INTV_STATUS = 'I - Interviewed';
+    """
+
+
 def _build_output_for_worker(
     tables: Pa01Tables, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
@@ -555,7 +620,24 @@ def _build_partners_and_clusters_initiated_output(
     """Perform all needed calculations for the "Partners and Clusters Initiated"
     section for a given worker, output data for the final CSV.
     """
-    rows: list[Pa01Row] = []
+    cases_assigned = _calc_cases_assigned(tables.case_interview_rows, worker)
+    cases_ixd, _ = _calc_cases_ixd(tables.case_interview_rows, cases_assigned, worker)
+    total_period_partners, total_period_partners_index = _calc_total_period_partners(
+        tables.period_partners, cases_ixd, worker
+    )
+
+    rows: list[Pa01Row] = [
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Total Period Partners',
+            None,
+            total_period_partners,
+            None,
+            total_period_partners_index,
+        ),
+    ]
+
     return rows
 
 
@@ -806,6 +888,40 @@ def _calc_testing_index(
     return _index_for_csv(count, cases_ixd)
 
 
+def _calc_total_period_partners(
+    period_partners: Table, cases_ixd: int, worker: Pa01Worker | None = None
+) -> tuple[int, str]:
+    """Calculate 'Total Period Partners' count and index.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = period_partners.data_as_dicts()
+
+    if worker is not None:
+        rows = _filter_rows_for_worker(rows, worker)
+
+    count = sum(row['count_Q'] for row in rows)
+
+    return count, _index_for_csv(count, cases_ixd, 1)
+
+
+def _get_report_title_parts(report_title: str) -> dict:
+    """Get the needed parts from the report title to differentiate between types.
+
+    - STD/HIV
+    - Interview Assign Date/Closed Date
+    """
+    match: re.Match | None = re.match(
+        r'^PA01 Case Management Report \((.+)\) - (STD|HIV)$', report_title
+    )
+
+    if not match:
+        raise ValueError('Report Title analysis regex did not match input string')
+
+    groups = match.groups()
+
+    return {'data_type': groups[0], 'disease_type': groups[1]}
+
+
 def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
     """Get all unique workers within the report's data.  A worker is defined as the
     combination of 'investigator_interview_key' and 'provider_quick_code'.
@@ -826,14 +942,14 @@ def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
     )
 
 
-def _percent_for_csv(numerator: int, denominator: int) -> str:
+def _percent_for_csv(numerator: int, denominator: int, precision: int = 1) -> str:
     """Format a percent that matches the PDF format for output in the CSV."""
-    return f'{round((numerator / denominator) * 100, 1) if denominator else 0}%'
+    return f'{round((numerator / denominator) * 100, precision) if denominator else 0}%'
 
 
-def _index_for_csv(numerator: int, denominator: int) -> str:
+def _index_for_csv(numerator: int, denominator: int, precision: int = 2) -> str:
     """Format an index that matches the PDF format for output in the CSV."""
-    return f'{round(numerator / denominator, 2) if denominator else 0:0.2f}'
+    return f'{round(numerator / denominator, precision) if denominator else 0}'
 
 
 def _worker_for_csv(worker: Pa01Worker | None = None) -> str:
