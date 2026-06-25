@@ -11,7 +11,7 @@ public final class ReportConstants {
 
   public enum AdvancedFilterValueType {
     OPERATOR,
-    CLAUSE,
+    CLAUSE
   }
 
   public static final String BASIC_FILTER_VALUE_TYPE = "code";
