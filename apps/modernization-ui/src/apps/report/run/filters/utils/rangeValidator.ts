@@ -1,5 +1,7 @@
 import { getYear, isValid, parse } from 'date-fns';
 
+const formats = ['MM/dd/yyyy', 'MM/yyyy', 'yyyy'];
+
 export const validateDateRange = (value, field) => {
     if (rangeValuesMissing(value)) return getRangeValErrorMsg(field, false);
 
@@ -59,7 +61,6 @@ const isNumberFormat = (val) => {
 };
 
 export const isDateFormat = (val: string): boolean => {
-    const formats = ['MM/dd/yyyy', 'MM/yyyy', 'yyyy'];
     const allowedLengths = formats.map((f) => f.length);
     if (!allowedLengths.includes(val.length)) {
         return false;
