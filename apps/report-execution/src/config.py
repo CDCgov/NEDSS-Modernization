@@ -11,7 +11,7 @@ def retrieve_config_value(trx: Transaction, config_key: str) -> str:
 
     if not mapped_config_value:
         raise ValueError(
-            f"No qualified mapping found in NBS_Configuration for "
+            f'No qualified mapping found in NBS_Configuration for '
             f"config key: '{config_key}'"
         )
 

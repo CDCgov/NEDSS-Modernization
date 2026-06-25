@@ -40,7 +40,7 @@ class TestConfigurationFinder(unittest.TestCase):
 
         self.assertEqual(
             str(context.exception),
-            "No qualified mapping found in NBS_Configuration for "
+            'No qualified mapping found in NBS_Configuration for '
             + "config key: 'missing_alias'",
         )
 
