@@ -9,14 +9,14 @@ describe('rangeValidator', () => {
         });
 
         it('should return an error msg for missing date range', () => {
-            const actual0 = validateDateRange(['', ''], FIELD_NAME);
-            expect(actual0).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
-
-            const actual1 = validateDateRange(['', '2026'], FIELD_NAME);
-            expect(actual1).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
-
-            const actual2 = validateDateRange(['12/2025', ''], FIELD_NAME);
-            expect(actual2).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
+            [
+                ['', ''],
+                ['', '2026'],
+                ['12/2025', ''],
+            ].forEach((range) => {
+                const actual = validateDateRange(range, FIELD_NAME);
+                expect(actual).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
+            });
         });
 
         it('should return an error msg for an invalid date range', () => {
@@ -40,25 +40,25 @@ describe('rangeValidator', () => {
 
     describe('validateNumericRange', () => {
         it('should not return an error msg for a valid numeric', () => {
-            const actual0 = validateNumericRange(['90210', '100000'], FIELD_NAME);
-            expect(actual0).toBeUndefined();
-
-            const actual1 = validateNumericRange([-1, 1.0], FIELD_NAME);
-            expect(actual1).toBeUndefined();
-
-            const actual2 = validateNumericRange([0.9887, 0.125], FIELD_NAME);
-            expect(actual2).toBeUndefined();
+            [
+                ['90210', '100000'],
+                [-1, 1.0],
+                [0.125, '0.9887'],
+            ].forEach((range) => {
+                const actual = validateNumericRange(range, FIELD_NAME);
+                expect(actual).toBeUndefined();
+            });
         });
 
         it('should return an error msg for missing numeric range', () => {
-            const actual0 = validateNumericRange(['', ''], FIELD_NAME);
-            expect(actual0).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
-
-            const actual1 = validateNumericRange(['', '1'], FIELD_NAME);
-            expect(actual1).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
-
-            const actual2 = validateNumericRange(['2', ''], FIELD_NAME);
-            expect(actual2).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
+            [
+                ['', ''],
+                ['', '1'],
+                ['2', ''],
+            ].forEach((range) => {
+                const actual = validateNumericRange(range, FIELD_NAME);
+                expect(actual).toEqual(`Enter From and To values for ${FIELD_NAME}.`);
+            });
         });
 
         it('should return an error msg for an invalid numeric range', () => {
@@ -70,8 +70,13 @@ describe('rangeValidator', () => {
         });
 
         it('should return an error msg when the from number is greater than the to number', () => {
-            const actual0 = validateNumericRange([15, 6], FIELD_NAME);
-            expect(actual0).toEqual(`From value must be before To value for ${FIELD_NAME}.`);
+            [
+                [15, 6],
+                ['0.9887', '0.125'],
+            ].forEach((range, index) => {
+                const actual = validateNumericRange(range, FIELD_NAME);
+                expect(actual).toEqual(`From value must be before To value for ${FIELD_NAME}.`);
+            });
         });
     });
 });

@@ -24,13 +24,13 @@ export const validateDateRange = (value, field) => {
 export const validateNumericRange = (value, field) => {
     if (rangeValuesMissing(value)) return getRangeValErrorMsg(field, false);
 
-    const fromNum = parseInt(value[0]); // can't be undefined because of above checks
-    const toNum = parseInt(value[1]); // can't be undefined because of above checks
+    const fromNum = parseFloat(value[0]); // can't be undefined because of above checks
+    const toNum = parseFloat(value[1]); // can't be undefined because of above checks
     for (const { number, val, str } of [
         { number: fromNum, val: value[0], str: 'From' },
         { number: toNum, val: value[1], str: 'To' },
     ]) {
-        if (number.toString() === 'NaN' || !isNumberFormat(val)) {
+        if (Number.isNaN(number) || !isNumberFormat(val)) {
             return `${str} value of "${val}" is not a valid number for ${field}.`;
         }
     }
