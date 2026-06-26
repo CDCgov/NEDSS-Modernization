@@ -38,6 +38,9 @@ def execute(
     * For the data point "HIV Tested", the SAS PDF output does not include
       percentages for individual workers, only "ALL WORKERS".  This report
       includes percentages for individual workers.
+    * For the data point "Contact Index" the floating point precision in the CSV output
+      matches that of the SAS output.  However, SAS can values like "0.0" as "0", so
+      in some cases the CSV will have a decimal place where the SAS version does not.
     """
     if not isinstance(library_params, dict):
         raise ValueError(

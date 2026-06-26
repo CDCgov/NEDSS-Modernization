@@ -191,6 +191,13 @@ def build_partners_and_clusters_initiated_output(
     total_partners_initiated = _calc_total_partners_initiated(
         tables.period_partners, worker
     )
+    total_partners_initiated_oi = _calc_total_partners_initiated_oi(
+        tables.period_partners, worker
+    )
+    total_partners_initiated_ri = _calc_total_partners_initiated_ri(
+        tables.period_partners, worker
+    )
+    contact_index = _calc_contact_index(tables.period_partners, cases_ixd, worker)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -211,6 +218,33 @@ def build_partners_and_clusters_initiated_output(
             total_partners_initiated,
             None,
             None,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Total Partners Initiated',
+            'From OI',
+            total_partners_initiated_oi,
+            None,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Total Partners Initiated',
+            'From RI',
+            total_partners_initiated_ri,
+            None,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Contact Index',
+            None,
+            None,
+            None,
+            contact_index,
         ),
     ]
 
@@ -436,6 +470,42 @@ def _calc_total_partners_initiated(
     rows = _rows_for_worker(period_partners, worker)
 
     return _count_distinct_case_ids(rows)
+
+
+def _calc_total_partners_initiated_oi(
+    period_partners: Table, worker: Pa01Worker | None = None
+) -> int:
+    """Calculate 'Total Partners Initiated From OI' count.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = _rows_for_worker(period_partners, worker)
+    count = _count_distinct_case_ids(
+        rows, lambda row: row['IX_TYPE'] == 'Initial/Original'
+    )
+
+    return count
+
+
+def _calc_total_partners_initiated_ri(
+    period_partners: Table, worker: Pa01Worker | None = None
+) -> int:
+    """Calculate 'Total Partners Initiated From RI' count.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = _rows_for_worker(period_partners, worker)
+    count = _count_distinct_case_ids(rows, lambda row: row['IX_TYPE'] == 'Re-Interview')
+
+    return count
+
+
+def _calc_contact_index(
+    period_partners: Table, cases_ixd: int, worker: Pa01Worker | None = None
+) -> str:
+    rows = _rows_for_worker(period_partners, worker)
+    count = _count_distinct_case_ids(rows)
+    
+    precision = 2 if worker is None else 1
+    return _index_for_csv(count, cases_ixd, precision)
 
 
 # helpers
