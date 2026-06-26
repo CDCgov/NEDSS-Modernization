@@ -78,6 +78,9 @@ dependencies {
         implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.55') {
             because('CVE-2026-43515')
         }
+        implementation('tools.jackson.core:jackson-core:3.1.1') {
+            because('GHSA-2m67-wjpj-xhg9')
+        }
     }
 
 }
