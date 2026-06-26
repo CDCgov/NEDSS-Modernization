@@ -201,6 +201,7 @@ def build_partners_and_clusters_initiated_output(
     cases_with_no_partners, cases_with_no_partners_percentage = (
         _calc_cases_with_no_partners(tables.cases_with_no_partners, cases_ixd, worker)
     )
+    total_clusters_initiated = _calc_total_clusters_initiated(tables.clusters_initiated, worker)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -256,6 +257,15 @@ def build_partners_and_clusters_initiated_output(
             None,
             cases_with_no_partners,
             cases_with_no_partners_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Total Clusters Initiated',
+            None,
+            total_clusters_initiated,
+            None,
             None,
         ),
     ]
@@ -533,6 +543,15 @@ def _calc_cases_with_no_partners(
     count = _count_distinct_case_ids(rows)
 
     return count, _percent_for_csv(count, cases_ixd)
+
+
+def _calc_total_clusters_initiated(
+    clusters_initiated: Table, worker: Pa01Worker | None = None
+) -> int:
+    """Calculate 'Total Clusters Initiated' count. Calculates for all workers if passed
+    in worker is None."""
+    rows = _rows_for_worker(clusters_initiated, worker)
+    return _count_distinct_case_ids(rows)
 
 
 # helpers

@@ -38,6 +38,7 @@ class Pa01Tables:
     testing_index: Table
     period_partners: Table
     cases_with_no_partners: Table
+    clusters_initiated: Table
 
 
 @dataclass(frozen=True)

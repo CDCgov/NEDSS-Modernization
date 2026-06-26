@@ -413,3 +413,56 @@ def cases_with_no_partners_query(subset_query: str) -> str:
           FROM pp
       );
     """
+
+
+def clusters_initiated_query(subset_query: str) -> str:
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT a.INVESTIGATION_KEY,
+             PROVIDER_QUICK_CODE,
+             a.inv_local_id AS STD_INV_LOCAL_ID,
+             f.FL_FUP_DISPOSITION,
+             e.LOCAL_ID AS INV_LOCAL_ID,
+             a.FL_FUP_DISPO_DT,
+             a.FL_FUP_INIT_ASSGN_DT,
+             a.INVESTIGATOR_INTERVIEW_KEY,
+             a.INVESTIGATOR_INTERVIEW_QC
+      FROM filtered_cases a
+        INNER JOIN RDB.dbo.F_INTERVIEW_CASE b
+                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE d
+                ON a.INVESTIGATION_KEY = d.SUBJECT_INVESTIGATION_KEY
+               AND c.d_interview_key = d.CONTACT_INTERVIEW_KEY
+               AND d.CONTACT_INTERVIEW_KEY <> 1
+        INNER JOIN RDB.dbo.D_CONTACT_RECORD e
+                ON e.D_CONTACT_RECORD_KEY = d.D_CONTACT_RECORD_KEY
+               AND e.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+        INNER JOIN RDB.dbo.STD_HIV_DATAMART f
+                ON d.CONTACT_INVESTIGATION_KEY = f.Investigation_key
+               AND e.CTT_REFERRAL_BASIS IN (
+                 'A1 - Associate 1',
+                 'A2 - Associate 2',
+                 'A3 - Associate 3',
+                 'S1 - Social Contact 1',
+                 'S2 - Social Contact 2',
+                 'S3 - Social Contact 3'
+               );
+    """
