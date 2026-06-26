@@ -50,6 +50,10 @@ def execute(
         raise ValueError(
             f"Parameter 'library_params' missing key 'report_variant': {library_params}"
         )
+    elif report_variant not in ['HIV', 'STD']:
+        raise ValueError(
+            f'Report variant can only be "STD" or "HIV" and was: {report_variant}'
+        )
 
     # short circuit if there's no data from subset_query
     data_check = trx.query(subset_query)
