@@ -37,6 +37,7 @@ class Pa01Tables:
     partner_notification: Table
     testing_index: Table
     period_partners: Table
+    cases_with_no_partners: Table
 
 
 @dataclass(frozen=True)

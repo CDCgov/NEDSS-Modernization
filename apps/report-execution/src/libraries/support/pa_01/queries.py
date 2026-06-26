@@ -315,3 +315,101 @@ def period_partners_query(subset_query: str) -> str:
       )
       AND fc.CA_PATIENT_INTV_STATUS = 'I - Interviewed';
     """
+
+
+def cases_with_no_partners_query(subset_query: str) -> str:
+    """Return interviewed cases with no initiated partner records.
+
+    This is the SQL equivalent of SAS `part2`, used for Cases With No Partners.
+    """
+    return f"""
+      WITH base AS
+      (
+          {subset_query}
+      ),
+      filtered_cases AS
+      (
+          -- STD_HIV_DATAMART1 in SAS
+          SELECT b.*
+          FROM base b
+            INNER JOIN RDB.dbo.INVESTIGATION i
+                    ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                   AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                   AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      ),
+      pp AS
+      (
+          SELECT DISTINCT
+                 fcrc.CONTACT_INVESTIGATION_KEY,
+                 TRY_CONVERT(int, fc.STD_PRTNRS_PRD_TRNSGNDR_TTL)
+                    AS STD_PRTNRS_TRNSGNDR_TTL,
+                 contact_dm.FL_FUP_DISPOSITION,
+                 fc.INV_LOCAL_ID AS STD_INV_LOCAL_ID,
+                 TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_FML_TTL) AS SOC_PRTNRS_FML_TTL,
+                 TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_MALE_TTL) AS SOC_PRTNRS_MALE_TTL,
+                 COALESCE(TRY_CONVERT(int, fc.STD_PRTNRS_PRD_TRNSGNDR_TTL), 0)
+                 + COALESCE(TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_FML_TTL), 0)
+                 + COALESCE(TRY_CONVERT(int, fc.SOC_PRTNRS_PRD_MALE_TTL), 0) AS count_Q,
+                 di.IX_TYPE,
+                 dp.PROVIDER_QUICK_CODE,
+                 dcr.LOCAL_ID AS INV_LOCAL_ID,
+                 fc.CA_PATIENT_INTV_STATUS,
+                 fc.INVESTIGATOR_INTERVIEW_KEY,
+                 fc.INVESTIGATOR_INTERVIEW_QC
+          FROM filtered_cases fc
+            INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
+                    ON fic.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+            INNER JOIN RDB.dbo.D_INTERVIEW di
+                    ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
+                   AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+            INNER JOIN RDB.dbo.D_PROVIDER dp
+                    ON dp.PROVIDER_KEY = fc.INVESTIGATOR_INTERVIEW_KEY
+            INNER JOIN RDB.dbo.INVESTIGATION i
+                    ON i.INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+            INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
+                    ON fcrc.SUBJECT_INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+                   AND fcrc.CONTACT_INTERVIEW_KEY = di.D_INTERVIEW_KEY
+                   AND fcrc.CONTACT_INTERVIEW_KEY <> 1
+            INNER JOIN RDB.dbo.STD_HIV_DATAMART contact_dm
+                    ON contact_dm.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
+            INNER JOIN RDB.dbo.D_CONTACT_RECORD dcr
+                    ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+                   AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+          WHERE dcr.CTT_REFERRAL_BASIS IN (
+              'P1 - Partner, Sex',
+              'P2 - Partner, Needle-Sharing',
+              'P3 - Partner, Both'
+          )
+          AND fc.CA_PATIENT_INTV_STATUS = 'I - Interviewed'
+      )
+      SELECT DISTINCT
+             fc.INV_LOCAL_ID,
+             fc.INVESTIGATION_KEY,
+             dp.PROVIDER_QUICK_CODE,
+             dcr.CTT_REFERRAL_BASIS,
+             dcr.CTT_PROCESSING_DECISION,
+             fc.INVESTIGATOR_INTERVIEW_KEY,
+             fc.INVESTIGATOR_INTERVIEW_QC,
+             fcrc.CONTACT_INVESTIGATION_KEY
+      FROM filtered_cases fc
+        INNER JOIN RDB.dbo.D_PROVIDER dp
+                ON dp.PROVIDER_KEY = fc.INVESTIGATOR_INTERVIEW_KEY
+        LEFT JOIN RDB.dbo.F_CONTACT_RECORD_CASE fcrc
+               ON fcrc.SUBJECT_INVESTIGATION_KEY = fc.INVESTIGATION_KEY
+        LEFT JOIN RDB.dbo.D_CONTACT_RECORD dcr
+               ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+              AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+      WHERE (
+        dcr.CTT_REFERRAL_BASIS NOT IN (
+            'P1 - Partner, Sex',
+            'P2 - Partner, Needle-Sharing',
+            'P3 - Partner, Both'
+        )
+        OR dcr.CTT_REFERRAL_BASIS IS NULL
+      )
+      AND fc.CA_PATIENT_INTV_STATUS = 'I - Interviewed'
+      AND fc.INV_LOCAL_ID NOT IN (
+          SELECT DISTINCT STD_INV_LOCAL_ID
+          FROM pp
+      );
+    """

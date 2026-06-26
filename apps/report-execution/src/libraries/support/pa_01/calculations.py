@@ -198,6 +198,9 @@ def build_partners_and_clusters_initiated_output(
         tables.period_partners, worker
     )
     contact_index = _calc_contact_index(tables.period_partners, cases_ixd, worker)
+    cases_with_no_partners, cases_with_no_partners_percentage = (
+        _calc_cases_with_no_partners(tables.cases_with_no_partners, cases_ixd, worker)
+    )
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -245,6 +248,15 @@ def build_partners_and_clusters_initiated_output(
             None,
             None,
             contact_index,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Cases W/No Partners',
+            None,
+            cases_with_no_partners,
+            cases_with_no_partners_percentage,
+            None,
         ),
     ]
 
@@ -501,11 +513,26 @@ def _calc_total_partners_initiated_ri(
 def _calc_contact_index(
     period_partners: Table, cases_ixd: int, worker: Pa01Worker | None = None
 ) -> str:
+    """Calculate 'Contact Index'.  Calculates for all workers if passed in worker is
+    None.
+    """
     rows = _rows_for_worker(period_partners, worker)
     count = _count_distinct_case_ids(rows)
 
     precision = 2 if worker is None else 1
     return _index_for_csv(count, cases_ixd, precision)
+
+
+def _calc_cases_with_no_partners(
+    cases_with_no_partners: Table, cases_ixd: int, worker: Pa01Worker | None = None
+) -> tuple[int, str]:
+    """Calculate 'Cases W/No Partners' count and percentage.  Calculates for all workers
+    if passed in worker is None.
+    """
+    rows = _rows_for_worker(cases_with_no_partners, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, cases_ixd)
 
 
 # helpers

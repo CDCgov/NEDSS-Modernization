@@ -11,6 +11,7 @@ from src.libraries.support.pa_01.models import (
 )
 from src.libraries.support.pa_01.queries import (
     case_interview_rows_query,
+    cases_with_no_partners_query,
     filtered_cases_query,
     partner_notification_query,
     period_partners_query,
@@ -85,6 +86,7 @@ def execute(
         partner_notification=trx.query(partner_notification_query(subset_query)),
         testing_index=trx.query(testing_index_query(subset_query)),
         period_partners=trx.query(period_partners_query(subset_query)),
+        cases_with_no_partners=trx.query(cases_with_no_partners_query(subset_query)),
     )
 
     # build output CSV data for each worker
