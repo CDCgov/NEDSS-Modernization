@@ -40,9 +40,9 @@ def execute(
     * For the data point "HIV Tested", the SAS PDF output does not include
       percentages for individual workers, only "ALL WORKERS".  This report
       includes percentages for individual workers.
-    * For the data point "Contact Index" the floating point precision in the CSV output
-      matches that of the SAS output.  However, SAS can values like "0.0" as "0", so
-      in some cases the CSV will have a decimal place where the SAS version does not.
+    * There are some rounding peculiarities between SAS and Python, so for instance
+      a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
+      SAS it will be 0.08.  In such cases the Python value will be used as is.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -88,7 +88,7 @@ def execute(
         testing_index=trx.query(testing_index_query(subset_query)),
         period_partners=trx.query(period_partners_query(subset_query)),
         cases_with_no_partners=trx.query(cases_with_no_partners_query(subset_query)),
-        clusters_initiated=trx.query(clusters_initiated_query(subset_query))
+        clusters_initiated=trx.query(clusters_initiated_query(subset_query)),
     )
 
     # build output CSV data for each worker

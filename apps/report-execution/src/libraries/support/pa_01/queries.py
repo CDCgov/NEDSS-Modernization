@@ -416,6 +416,11 @@ def cases_with_no_partners_query(subset_query: str) -> str:
 
 
 def clusters_initiated_query(subset_query: str) -> str:
+    """Return initiated cluster rows.
+
+    This is the SQL equivalent of SAS `cluster`, used for Total Clusters Initiated and
+    related cluster calculations.
+    """
     return f"""
       WITH base AS
       (
