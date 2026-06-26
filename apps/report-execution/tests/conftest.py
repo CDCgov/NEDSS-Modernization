@@ -42,12 +42,14 @@ class MockTransaction:
         self._cursor = cursor
 
     def query(self, query, parameters=()):
-        if "NBS_configuration" in query:
+        if 'NBS_configuration' in query:
             return Table(
                 columns=['config_value'],
-                data=[('100000',)]  # Returns 1 row, satisfying the len(data) == 1 check
+                data=[
+                    ('100000',)
+                ],  # Returns 1 row, satisfying the len(data) == 1 check
             )
-        
+
         return Table(
             columns=['id', 'name'],
             data=[

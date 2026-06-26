@@ -45,9 +45,8 @@ def is_valid_library(library):
 
 
 def check_valid_result(
-        report_result: typing.Any,
-        report_spec: models.ReportSpec,
-        trx: db_transaction):
+    report_result: typing.Any, report_spec: models.ReportSpec, trx: db_transaction
+):
     """Check if the returned result is valid."""
     if report_result is None:
         raise errors.InvalidResultError(report_spec.library_name, 'No result returned')

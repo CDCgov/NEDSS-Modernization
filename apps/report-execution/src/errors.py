@@ -78,19 +78,28 @@ class ToDoError(BaseReportExecutionError):
             logging.error(orig_exc)
         super().__init__(todo_message, 502)
 
+
 class InvalidConfigurationError(BaseReportExecutionError):
     """The requested configuration key is missing or unmapped in the database."""
 
     def __init__(self, config_key: str):
-        super().__init__('No qualified mapping found in NBS_Configuration '
-                         + f'for config_key: {config_key}', 422)
+        super().__init__(
+            'No qualified mapping found in NBS_Configuration '
+            + f'for config_key: {config_key}',
+            422,
+        )
+
 
 class IntConfigurationConversionError(BaseReportExecutionError):
     """The configuration text payload cannot be evaluated as a valid integer."""
 
     def __init__(self, config_key: str):
-        super().__init__('Unable to convert NBS configuration value to number '
-                         + f'for config_key: {config_key}', 422)
+        super().__init__(
+            'Unable to convert NBS configuration value to number '
+            + f'for config_key: {config_key}',
+            422,
+        )
+
 
 class ConfigurationIntegrityError(BaseReportExecutionError):
     """A query constraint was broken due to duplicate keys or bad data layouts."""

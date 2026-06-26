@@ -1,4 +1,3 @@
-
 from src.db_transaction import Transaction
 
 from . import errors
@@ -31,7 +30,7 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
     if val is None:
         raise errors.ConfigurationIntegrityError(
             f'Config key {config_key} exists in NBS_Configuration, but both '
-            + "config_value and default_value are null"
+            + 'config_value and default_value are null'
         )
 
     return str(val).strip()

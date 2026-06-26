@@ -149,8 +149,10 @@ class TestIntegrationExecuteReport:
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
         with db_transaction(conn_string) as trx:
-            trx.execute("DELETE FROM NBS_ODSE..NBS_configuration WHERE "
-                        + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'")
+            trx.execute(
+                'DELETE FROM NBS_ODSE..NBS_configuration WHERE '
+                + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+            )
 
         try:
             report_spec = ReportSpec.model_validate(
@@ -166,8 +168,10 @@ class TestIntegrationExecuteReport:
             with pytest.raises(InvalidConfigurationError) as exc_info:
                 execute_report(report_spec)
 
-            assert ("No qualified mapping found in NBS_Configuration"
-                    in exc_info.value.message)
+            assert (
+                'No qualified mapping found in NBS_Configuration'
+                in exc_info.value.message
+            )
         finally:
             with db_transaction(conn_string) as trx:
                 trx.execute("""
@@ -205,8 +209,10 @@ class TestIntegrationExecuteReport:
             with pytest.raises(IntConfigurationConversionError) as exc_info:
                 execute_report(report_spec)
 
-            assert ("Unable to convert NBS configuration value to number"
-                    in exc_info.value.message)
+            assert (
+                'Unable to convert NBS configuration value to number'
+                in exc_info.value.message
+            )
         finally:
             with db_transaction(conn_string) as trx:
                 trx.execute(
