@@ -40,12 +40,12 @@ export const validateNumericRange = (value, field) => {
 
 export const getRangeValErrorMsg = (field: string, isInvalidVal: boolean) => {
     const invalidTypeMsg = isInvalidVal ? 'valid ' : '';
-    return `Enter ${invalidTypeMsg}from and to values for ${field}.`;
+    return `Enter ${invalidTypeMsg}From and To values for ${field}.`;
 };
 
 export const getBeforeErrorMsg = (field: string, isDate: boolean) => {
     const typeMsg = isDate ? 'date' : 'value';
-    return `From ${typeMsg} must be before to ${typeMsg} for ${field}.`;
+    return `From ${typeMsg} must be before To ${typeMsg} for ${field}.`;
 };
 
 export const rangeValuesMissing = (value) => {

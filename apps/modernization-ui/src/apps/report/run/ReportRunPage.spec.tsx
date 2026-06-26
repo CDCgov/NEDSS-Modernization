@@ -2601,7 +2601,7 @@ describe('report run page', () => {
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Enter from and to values for Date of Birth.')).toBeVisible();
+            expect(await findByText('Enter From and To values for Date of Birth.')).toBeVisible();
 
             // The date entry will likely need to change once we switch to NBS components
             const dtContainer = getByTestId('date-range-editor');
@@ -2609,33 +2609,33 @@ describe('report run page', () => {
             const dtInputTo = await within(dtContainer).findByLabelText('To');
             await user.type(dtInputFrom, '10/18/2022{tab}');
 
-            expect(await findByText('Enter from and to values for Date of Birth.')).toBeVisible();
+            expect(await findByText('Enter From and To values for Date of Birth.')).toBeVisible();
 
             await user.type(dtInputTo, '10/17/2022{tab}');
 
-            expect(await findByText('From date must be before to date for Date of Birth.')).toBeVisible();
+            expect(await findByText('From date must be before To date for Date of Birth.')).toBeVisible();
             await user.clear(dtInputTo);
             await user.type(dtInputTo, '10/20/2022{tab}');
 
-            expect(queryByText('From date must be before to date for Date of Birth.')).toBeNull();
+            expect(queryByText('From date must be before To date for Date of Birth.')).toBeNull();
 
             // numbers between
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Enter from and to values for Days Old.')).toBeVisible();
+            expect(await findByText('Enter From and To values for Days Old.')).toBeVisible();
 
             const numContainer = getByTestId('number-range-editor');
             const numInputFrom = await within(numContainer).findByLabelText('From');
             const numInputTo = await within(numContainer).findByLabelText('To');
             await user.type(numInputFrom, '10');
 
-            expect(await findByText('Enter from and to values for Days Old.')).toBeVisible();
+            expect(await findByText('Enter From and To values for Days Old.')).toBeVisible();
 
             await user.type(numInputTo, '0');
 
-            expect(await findByText('From value must be before to value for Days Old.')).toBeVisible();
+            expect(await findByText('From value must be before To value for Days Old.')).toBeVisible();
 
             await user.clear(numInputTo);
             await user.type(numInputTo, '20');

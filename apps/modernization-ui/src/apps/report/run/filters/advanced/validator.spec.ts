@@ -89,7 +89,7 @@ describe('validateRule', () => {
         );
 
         expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter valid from and to values for Investigation ID.');
+        expect(mockResult['rule-1']['reasons']).toContain('Enter valid From and To values for Investigation ID.');
     });
 
     it('should be invalid when the between value is empty', () => {
@@ -119,9 +119,9 @@ describe('validateRule', () => {
         );
 
         expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter from and to values for Investigation ID.');
+        expect(mockResult['rule-1']['reasons']).toContain('Enter From and To values for Investigation ID.');
         expect(mockResult['rule-2']['valid']).toBe(false);
-        expect(mockResult['rule-2']['reasons']).toContain('Enter from and to values for Investigation ID.');
+        expect(mockResult['rule-2']['reasons']).toContain('Enter From and To values for Investigation ID.');
     });
 
     it('should be invalid when the between value is invalid', () => {
@@ -194,5 +194,37 @@ describe('validateRule', () => {
         expect(mockResult['rule-1']['reasons']).toContain('Enter a value for Investigation ID.');
         expect(mockResult['rule-2']['valid']).toBe(false);
         expect(mockResult['rule-2']['reasons']).toContain('Enter a value for Diagnosis Date.');
+    });
+
+    it('should be invalid for empty Rule Groups', () => {
+        validateRule(
+            {
+                id: 'ruleGroup-1',
+                rules: [
+                    {
+                        id: 'ruleGroup-2',
+                        rules: [
+                            {
+                                id: 'ruleGroup-3',
+                                rules: [],
+                                combinator: 'and',
+                                not: false,
+                            },
+                        ],
+                        combinator: 'or',
+                        not: false,
+                    },
+                ],
+                combinator: 'and',
+                not: false,
+            } as RuleGroupType,
+            mockResult
+        );
+
+        ['ruleGroup-1', 'ruleGroup-2', 'ruleGroup-3'].forEach((groupId) => {
+            const group = mockResult[groupId];
+            expect(group['valid']).toBe(false);
+            expect(group['reasons']).toContain('Remove or add rules to the empty rule group.');
+        });
     });
 });

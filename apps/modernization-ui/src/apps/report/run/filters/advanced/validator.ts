@@ -4,7 +4,7 @@ import { BINARY_OPERATORS } from './operators.ts';
 
 export type ValidationResultMap = Record<string, ValidationResult>;
 
-export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
+export const validateRule = (rule: RuleGroupTypeAny | RuleType, result: ValidationResultMap) => {
     const setInvalid = (id: string, reason: string) => {
         result[id]['valid'] = false;
         result[id]['reasons'] = [reason];
@@ -56,16 +56,30 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result:
             if (typeof value === 'string') {
                 if ((value as string).trim() === '') {
                     setInvalid(id, getMissingValErrorMsg(label, false));
+                    return;
                 }
 
                 if (type === 'DATETIME') {
-                    if (!isDateFormat(value)) setInvalid(id, getMissingValErrorMsg(label, false));
+                    if (!isDateFormat(value)) setInvalid(id, getInvalidDateErrorMsg(label, value));
                 }
             }
         }
     } else if (isRuleGroupType(rule)) {
+        // catch when rule group is empty or contain only another rule group
+        const isInvalidRuleGroup =
+            rule.rules.length === 0 || (rule.rules.length === 1 && isRuleGroupType(rule.rules[0]));
+
+        if (isInvalidRuleGroup) {
+            result[rule.id] = {};
+            setInvalid(rule.id, 'Remove or add rules to the empty rule group.');
+        }
+
         rule.rules.forEach((r) => validateRule(r, result));
     }
+};
+
+const getInvalidDateErrorMsg = (field: string, value: string) => {
+    return `Date of "${value}" is not a valid mm/dd/yyyy formatted date for ${field}.`;
 };
 
 const getMissingValErrorMsg = (field: string, isOperator: boolean) => {

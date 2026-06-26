@@ -44,7 +44,7 @@ describe('DateRangeFilter', () => {
 
         it('fails when partially empty', () => {
             const validator = dateRangeValidator(MOCK_FILTER, MOCK_LABEL);
-            const errStr = 'Enter from and to values for Full Name.';
+            const errStr = 'Enter From and To values for Full Name.';
 
             expect(validator(['01/01/2024', ''])).toEqual(errStr);
             expect(validator([undefined, '01/01/2024'])).toEqual(errStr);
@@ -72,7 +72,7 @@ describe('DateRangeFilter', () => {
         it('fails out of order dates', () => {
             const validator = dateRangeValidator(MOCK_FILTER, MOCK_LABEL);
 
-            expect(validator(['01/01/2025', '01/01/2024'])).toEqual('From date must be before to date for Full Name.');
+            expect(validator(['01/01/2025', '01/01/2024'])).toEqual('From date must be before To date for Full Name.');
         });
     });
 });
