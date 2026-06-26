@@ -127,6 +127,30 @@
   - null
   - null
 - !!python/tuple
+  - ALL
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From OI
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From RI
+  - 4
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Partners & Clusters Initiated
+  - Contact Index
+  - null
+  - null
+  - null
+  - '0.03'
+- !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -254,6 +278,30 @@
   - 1
   - null
   - null
+- !!python/tuple
+  - adevraj
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From OI
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From RI
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Partners & Clusters Initiated
+  - Contact Index
+  - null
+  - null
+  - null
+  - '0.0'
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
@@ -383,6 +431,30 @@
   - null
   - null
 - !!python/tuple
+  - avance
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From OI
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From RI
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Partners & Clusters Initiated
+  - Contact Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -510,6 +582,30 @@
   - 2
   - null
   - null
+- !!python/tuple
+  - dbowman
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From OI
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - dbowman
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From RI
+  - 2
+  - null
+  - null
+- !!python/tuple
+  - dbowman
+  - Partners & Clusters Initiated
+  - Contact Index
+  - null
+  - null
+  - null
+  - '0.0'
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
@@ -639,6 +735,30 @@
   - null
   - null
 - !!python/tuple
+  - fpoole
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From OI
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From RI
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Partners & Clusters Initiated
+  - Contact Index
+  - null
+  - null
+  - null
+  - '0.0'
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -766,3 +886,27 @@
   - 1
   - null
   - null
+- !!python/tuple
+  - gfreeman
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From OI
+  - 1
+  - null
+  - null
+- !!python/tuple
+  - gfreeman
+  - Partners & Clusters Initiated
+  - Total Partners Initiated
+  - From RI
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - gfreeman
+  - Partners & Clusters Initiated
+  - Contact Index
+  - null
+  - null
+  - null
+  - '0.0'
