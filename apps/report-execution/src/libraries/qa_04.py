@@ -1,4 +1,4 @@
-from src.config import retrieve_config_value
+from src.config import get_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -19,7 +19,7 @@ def execute(
     * Matches original report format
     """
     # Dynamically look up the correct name for the rdb database
-    rdb = retrieve_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'rdb')
     full_query = f"""
     WITH subset AS ({subset_query})
     SELECT DISTINCT
@@ -39,11 +39,11 @@ def execute(
         END AS ERROR_TXT,
         SUBSTRING(a.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS PATIENTID
     FROM subset a
-    INNER JOIN {rdb}.dbo.investigation e
+    INNER JOIN {nbs_rdb}.dbo.investigation e
         ON a.INVESTIGATION_KEY = e.INVESTIGATION_KEY
-    LEFT JOIN {rdb}.dbo.LAB_TEST_RESULT b
+    LEFT JOIN {nbs_rdb}.dbo.LAB_TEST_RESULT b
         ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-    LEFT JOIN {rdb}.dbo.TREATMENT_EVENT c
+    LEFT JOIN {nbs_rdb}.dbo.TREATMENT_EVENT c
         ON a.INVESTIGATION_KEY = c.INVESTIGATION_KEY
     WHERE a.INV_LOCAL_ID IS NOT NULL
         AND e.INV_CASE_STATUS IN ('Probable', 'Confirmed')

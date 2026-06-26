@@ -41,7 +41,13 @@ class MockTransaction:
     def __init__(self, cursor=None):
         self._cursor = cursor
 
-    def query(self, query):
+    def query(self, query, parameters=()):
+        if "NBS_configuration" in query:
+            return Table(
+                columns=['config_value'],
+                data=[('100000',)]  # Returns 1 row, satisfying the len(data) == 1 check
+            )
+        
         return Table(
             columns=['id', 'name'],
             data=[
@@ -155,9 +161,11 @@ def seed_global_nbs_configuration(setup_containers):
     with db_transaction(conn_string) as trx:
         # Baseline mappings required across the testing landscape
         baseline_configs = [
-            ('rdb', 'RDB', 'RDB'),
-            ('nbs_ods', 'NBS_ODSE', 'NBS_ODSE'),
-            ('nbs_srte', 'NBS_SRTE', 'NBS_SRTE'),
+            ('NBS_RDB', 'RDB', 'RDB'),
+            ('NBS_ODSE', 'NBS_ODSE', 'NBS_ODSE'),
+            ('NBS_SRTE', 'NBS_SRTE', 'NBS_SRTE'),
+            ('REPORT_MAX_ROW_LIMIT_EXPORT', '100000', '100000'),
+            ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000'),
         ]
 
         for key, val, default in baseline_configs:

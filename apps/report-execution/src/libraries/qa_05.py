@@ -1,4 +1,4 @@
-from src.config import retrieve_config_value
+from src.config import get_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -15,8 +15,8 @@ def execute(
     * Matched "export format"
     """
     # Dynamically look up the correct DB names
-    rdb = retrieve_config_value(trx, 'rdb')
-    nbs_srte = retrieve_config_value(trx, 'nbs_srte')
+    nbs_rdb = get_config_value(trx, 'rdb')
+    nbs_srte = get_config_value(trx, 'nbs_srte')
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),
@@ -34,11 +34,11 @@ def execute(
                 count(*) as OOJ_REFF,
                 em.ADD_USER_ID
             FROM v_event_metric em
-            INNER JOIN {rdb}.dbo.STD_HIV_DATAMART hiv 
+            INNER JOIN {nbs_rdb}.dbo.STD_HIV_DATAMART hiv 
                 on em.LOCAL_ID = hiv.INV_LOCAL_ID
-            INNER JOIN {rdb}.dbo.F_STD_PAGE_CASE std 
+            INNER JOIN {nbs_rdb}.dbo.F_STD_PAGE_CASE std 
                 on hiv.INVESTIGATION_KEY = std.INVESTIGATION_KEY
-            INNER JOIN {rdb}.dbo.D_INV_ADMINISTRATIVE adm 
+            INNER JOIN {nbs_rdb}.dbo.D_INV_ADMINISTRATIVE adm 
                 on std.D_INV_ADMINISTRATIVE_KEY = adm.D_INV_ADMINISTRATIVE_KEY
             WHERE 
                 em.EVENT_TYPE in ('PHCInvForm')
@@ -101,7 +101,7 @@ def execute(
             RESULT.REACTOR,
             RESULT.PART_CLUS
         FROM RESULT
-        LEFT JOIN {rdb}.dbo.USER_PROFILE usr 
+        LEFT JOIN {nbs_rdb}.dbo.USER_PROFILE usr 
             on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
         ORDER BY user_qc
         """

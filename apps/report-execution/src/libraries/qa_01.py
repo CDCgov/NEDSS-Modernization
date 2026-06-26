@@ -1,4 +1,4 @@
-from src.config import retrieve_config_value
+from src.config import get_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -15,7 +15,7 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "13" instead of the count of the columns
     """
-    rdb = retrieve_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'rdb')
 
     sql_query = f"""
     WITH Shd_Filtered AS (
@@ -47,11 +47,11 @@ def execute(
         '13' AS [i], -- the sas library included a column with the count of the columns
         shd.patient_age_reported AS [age]
     FROM Shd_Filtered shd
-        LEFT JOIN {rdb}.dbo.investigation i 
+        LEFT JOIN {nbs_rdb}.dbo.investigation i 
             ON shd.investigation_key = i.investigation_key
-        LEFT JOIN {rdb}.dbo.event_metric em 
+        LEFT JOIN {nbs_rdb}.dbo.event_metric em 
             ON i.case_uid = em.event_uid
-        LEFT JOIN {rdb}.dbo.user_profile up 
+        LEFT JOIN {nbs_rdb}.dbo.user_profile up 
             ON em.add_user_id = up.nedss_entry_id
     ORDER BY [PATIENT_NAME], [DIAGNOSIS_CD], [INVESTIGATION_KEY];
     """

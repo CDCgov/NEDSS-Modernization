@@ -1,4 +1,4 @@
-from src.config import retrieve_config_value
+from src.config import get_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -28,7 +28,7 @@ def execute(
     INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
     in the final output). SAS does not have a tiebreaker value.
     """
-    rdb = retrieve_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'rdb')
     if not isinstance(library_params, dict):
         raise ValueError(f"""
             library_params must be a dictionary containing 'days_value' \
@@ -52,16 +52,16 @@ def execute(
             i.REFERRAL_BASIS,
             e.ADD_USER_ID,
             up.PROVIDER_QUICK_CODE
-        FROM {rdb}.dbo.INVESTIGATION i
-        INNER JOIN {rdb}.dbo.EVENT_METRIC e ON i.CASE_UID = e.EVENT_UID
-        INNER JOIN {rdb}.dbo.USER_PROFILE up ON e.ADD_USER_ID = up.NEDSS_ENTRY_ID
+        FROM {nbs_rdb}.dbo.INVESTIGATION i
+        INNER JOIN {nbs_rdb}.dbo.EVENT_METRIC e ON i.CASE_UID = e.EVENT_UID
+        INNER JOIN {nbs_rdb}.dbo.USER_PROFILE up ON e.ADD_USER_ID = up.NEDSS_ENTRY_ID
     ),
     lab_max AS (
         SELECT
             b.INVESTIGATION_KEY,
             MAX(d.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
-        FROM {rdb}.dbo.LAB_TEST_RESULT b
-        INNER JOIN {rdb}.dbo.LAB_TEST d ON b.LAB_TEST_KEY = d.LAB_TEST_KEY
+        FROM {nbs_rdb}.dbo.LAB_TEST_RESULT b
+        INNER JOIN {nbs_rdb}.dbo.LAB_TEST d ON b.LAB_TEST_KEY = d.LAB_TEST_KEY
         GROUP BY b.INVESTIGATION_KEY
     ),
     derived AS (
@@ -81,9 +81,9 @@ def execute(
         FROM subset s
         INNER JOIN inv ON s.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
         LEFT JOIN lab_max lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
-        LEFT JOIN {rdb}.dbo.MORBIDITY_REPORT_EVENT mre
+        LEFT JOIN {nbs_rdb}.dbo.MORBIDITY_REPORT_EVENT mre
         ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
-        LEFT JOIN {rdb}.dbo.MORBIDITY_REPORT mr ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
+        LEFT JOIN {nbs_rdb}.dbo.MORBIDITY_REPORT mr ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
         WHERE s.INV_LOCAL_ID IS NOT NULL
           AND s.DIAGNOSIS IS NOT NULL
           AND inv.INV_CASE_STATUS IN ('Probable', 'Confirmed')

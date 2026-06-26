@@ -1,4 +1,4 @@
-from src.config import retrieve_config_value
+from src.config import get_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -14,7 +14,7 @@ def execute(
     Conversion notes:
     * Matched export format
     """
-    rdb = retrieve_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'rdb')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT DISTINCT
@@ -41,13 +41,13 @@ def execute(
        CAST(SUBSTRING(PATIENT_LOCAL_ID, 4, 8) AS INT) - 10000000 AS PATIENTID
     FROM shd
     INNER JOIN 
-        {rdb}.[dbo].[INVESTIGATION] i 
+        [{nbs_rdb}].[dbo].[INVESTIGATION] i 
             ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
     LEFT OUTER JOIN 
-        {rdb}.[dbo].[D_PROVIDER] dp 
+        [{nbs_rdb}].[dbo].[D_PROVIDER] dp 
             ON shd.PHYSICIAN_KEY = dp.PROVIDER_KEY
     LEFT OUTER JOIN 
-        {rdb}.[dbo].[D_ORGANIZATION] o 
+        [{nbs_rdb}].[dbo].[D_ORGANIZATION] o 
             ON shd.ORDERING_FACILITY_KEY = o.ORGANIZATION_KEY
     WHERE
         shd.INV_LOCAL_ID IS NOT NULL
