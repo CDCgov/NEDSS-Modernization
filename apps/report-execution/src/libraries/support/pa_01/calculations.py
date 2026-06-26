@@ -503,7 +503,7 @@ def _calc_contact_index(
 ) -> str:
     rows = _rows_for_worker(period_partners, worker)
     count = _count_distinct_case_ids(rows)
-    
+
     precision = 2 if worker is None else 1
     return _index_for_csv(count, cases_ixd, precision)
 
