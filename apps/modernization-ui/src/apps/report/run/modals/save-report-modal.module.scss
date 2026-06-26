@@ -1,0 +1,23 @@
+.layout {
+    :global {
+        .usa-modal__content {
+            .usa-modal__main {
+                width: 55rem;
+                max-width: 100%;
+            }
+
+            .usa-modal__heading {
+                button {
+                    top: unset !important;
+                    margin-right: 1rem;
+                }
+            }
+
+            .usa-modal__footer {
+                div {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+}
