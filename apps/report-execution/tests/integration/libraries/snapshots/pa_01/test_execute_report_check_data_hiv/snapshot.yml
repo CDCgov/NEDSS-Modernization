@@ -151,6 +151,14 @@
   - null
   - '0.03'
 - !!python/tuple
+  - ALL
+  - Partners & Clusters Initiated
+  - Cases W/No Partners
+  - null
+  - 180
+  - 97.3%
+  - null
+- !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -302,6 +310,14 @@
   - null
   - null
   - '0.0'
+- !!python/tuple
+  - adevraj
+  - Partners & Clusters Initiated
+  - Cases W/No Partners
+  - null
+  - 32
+  - 94.1%
+  - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
@@ -455,6 +471,14 @@
   - null
   - '0.0'
 - !!python/tuple
+  - avance
+  - Partners & Clusters Initiated
+  - Cases W/No Partners
+  - null
+  - 48
+  - 98.0%
+  - null
+- !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -606,6 +630,14 @@
   - null
   - null
   - '0.0'
+- !!python/tuple
+  - dbowman
+  - Partners & Clusters Initiated
+  - Cases W/No Partners
+  - null
+  - 46
+  - 95.8%
+  - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
@@ -759,6 +791,14 @@
   - null
   - '0.0'
 - !!python/tuple
+  - fpoole
+  - Partners & Clusters Initiated
+  - Cases W/No Partners
+  - null
+  - 40
+  - 97.6%
+  - null
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -910,3 +950,11 @@
   - null
   - null
   - '0.0'
+- !!python/tuple
+  - gfreeman
+  - Partners & Clusters Initiated
+  - Cases W/No Partners
+  - null
+  - 38
+  - 95.0%
+  - null
