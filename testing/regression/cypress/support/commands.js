@@ -25,9 +25,10 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands'
 
-Cypress.Commands.add('selectDropdownByLabel', (labelText, value) => {
+Cypress.Commands.add('selectDropdownByLabel', (selectIndex, labelText, value) => {
     // Get the ID string instead of holding a live element reference
-    cy.findByLabelText(labelText)
+    cy.findAllByLabelText(labelText)
+      .eq(selectIndex)
         .invoke('attr', 'id')
         .then((id) => {
             const escapedId = CSS.escape(id);
