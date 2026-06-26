@@ -46,7 +46,8 @@ def execute(
           SELECT ltr.INVESTIGATION_KEY,
                  MAX(lt.SPECIMEN_COLLECTION_DT) AS SPECIMEN_COLLECTION_DT
           FROM {nbs_rdb}.[dbo].[LAB_TEST_RESULT] ltr
-            INNER JOIN {nbs_rdb}.[dbo].[lab_test] lt ON ltr.lab_test_key = lt.lab_test_key
+            INNER JOIN {nbs_rdb}.[dbo].[lab_test] lt 
+            ON ltr.lab_test_key = lt.lab_test_key
           GROUP BY ltr.INVESTIGATION_KEY
         ),
 

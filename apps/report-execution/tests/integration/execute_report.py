@@ -78,7 +78,8 @@ class TestIntegrationExecuteReport:
 
         with db_transaction(conn_string) as trx:
             trx.execute(
-                "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+                "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE "
+                + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
             )
 
         try:
@@ -102,7 +103,8 @@ class TestIntegrationExecuteReport:
         finally:
             with db_transaction(conn_string) as trx:
                 trx.execute(
-                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' "
+                    + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
                 )
 
     def test_execute_report_too_big_export(self):
@@ -111,7 +113,8 @@ class TestIntegrationExecuteReport:
 
         with db_transaction(conn_string) as trx:
             trx.execute(
-                "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
+                "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE "
+                + "config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
             )
 
         try:
@@ -135,15 +138,19 @@ class TestIntegrationExecuteReport:
         finally:
             with db_transaction(conn_string) as trx:
                 trx.execute(
-                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '100000' WHERE config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
+                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '100000' "
+                    + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
                 )
 
     def test_execute_report_should_raise_invalid_config_error_when_limit_missing(self):
-        """Should cleanly present an InvalidConfigurationError if a row configuration vanishes."""
+        """Should cleanly present an InvalidConfigurationError if a row
+        configuration vanishes.
+        """
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
         with db_transaction(conn_string) as trx:
-            trx.execute("DELETE FROM NBS_ODSE..NBS_configuration WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'")
+            trx.execute("DELETE FROM NBS_ODSE..NBS_configuration WHERE "
+                        + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'")
 
         try:
             report_spec = ReportSpec.model_validate(
@@ -159,23 +166,29 @@ class TestIntegrationExecuteReport:
             with pytest.raises(InvalidConfigurationError) as exc_info:
                 execute_report(report_spec)
 
-            assert "No qualified mapping found in NBS_Configuration" in exc_info.value.message
+            assert ("No qualified mapping found in NBS_Configuration"
+                    in exc_info.value.message)
         finally:
             with db_transaction(conn_string) as trx:
                 trx.execute("""
-                            INSERT INTO NBS_ODSE..NBS_configuration (
-                                config_key, config_value, default_value, version_ctrl_nbr,
-                                add_user_id, add_time, last_chg_user_id, last_chg_time, status_cd, status_time
-                            ) VALUES ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000', 1, 1, GETDATE(), 1, GETDATE(), 'A', GETDATE())
-                            """)
+                    INSERT INTO NBS_ODSE..NBS_configuration (
+                        config_key, config_value, default_value, version_ctrl_nbr,
+                        add_user_id, add_time, last_chg_user_id, last_chg_time, 
+                        status_cd, status_time
+                    ) VALUES ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000', 1, 1,
+                              GETDATE(), 1, GETDATE(), 'A', GETDATE())
+                    """)
 
     def test_execute_report_should_raise_conversion_error_on_corrupt_limit_type(self):
-        """Should cleanly present an IntConfigurationConversionError if value payload becomes non-numeric."""
+        """Should cleanly present an IntConfigurationConversionError if value
+        payload becomes non-numeric.
+        """
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
         with db_transaction(conn_string) as trx:
             trx.execute(
-                "UPDATE NBS_ODSE..NBS_configuration SET config_value = 'NOT_A_NUMBER' WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+                "UPDATE NBS_ODSE..NBS_configuration SET config_value = 'NOT_A_NUMBER' "
+                + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
             )
 
         try:
@@ -192,11 +205,13 @@ class TestIntegrationExecuteReport:
             with pytest.raises(IntConfigurationConversionError) as exc_info:
                 execute_report(report_spec)
 
-            assert "Unable to convert NBS configuration value to number" in exc_info.value.message
+            assert ("Unable to convert NBS configuration value to number"
+                    in exc_info.value.message)
         finally:
             with db_transaction(conn_string) as trx:
                 trx.execute(
-                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' "
+                    + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
                 )
 
     @pytest.mark.parametrize(

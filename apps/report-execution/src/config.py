@@ -1,7 +1,7 @@
-import logging
+
+from src.db_transaction import Transaction
 
 from . import errors
-from src.db_transaction import Transaction
 
 
 def get_config_value(trx: Transaction, config_key: str) -> str:
@@ -21,15 +21,17 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
 
     # Handle Duplicate Keys
     if len(table.data) > 1:
-        raise errors.ConfigurationIntegrityError(f'Multiple rows found in NBS_Configuration for config key: {config_key}')
+        raise errors.ConfigurationIntegrityError(
+            f'Multiple rows found in NBS_Configuration for config key: {config_key}'
+        )
 
     val = table.data[0][0]
 
     # Handle Completely Null Payload
     if val is None:
         raise errors.ConfigurationIntegrityError(
-            f'Config key {config_key} exists in NBS_Configuration, but both config_value and '
-            f'default_value are null'
+            f'Config key {config_key} exists in NBS_Configuration, but both '
+            + "config_value and default_value are null"
         )
 
     return str(val).strip()

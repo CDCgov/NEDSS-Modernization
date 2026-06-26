@@ -44,7 +44,10 @@ def is_valid_library(library):
     return True
 
 
-def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec, trx: db_transaction):
+def check_valid_result(
+        report_result: typing.Any,
+        report_spec: models.ReportSpec,
+        trx: db_transaction):
     """Check if the returned result is valid."""
     if report_result is None:
         raise errors.InvalidResultError(report_spec.library_name, 'No result returned')
@@ -67,7 +70,7 @@ def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec
     try:
         row_limit_int = int(row_limit)
     except ValueError:
-        raise errors.IntConfigurationConversionError(config_key)
+        raise errors.IntConfigurationConversionError(config_key) from None
 
     num_rows = len(result.content.data)
     if num_rows > row_limit_int:
