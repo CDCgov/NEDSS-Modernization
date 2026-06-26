@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { SaveReportModal } from './SaveReportModal.tsx';
 import { axe } from 'jest-axe';
 
@@ -8,7 +8,6 @@ const modalRef = { current: null };
 describe('SaveReportModal', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(<SaveReportModal onSave={mockSave} saveReportModalRef={modalRef} />);
-        screen.debug();
         expect(await axe(container)).toHaveNoViolations();
     });
 });
