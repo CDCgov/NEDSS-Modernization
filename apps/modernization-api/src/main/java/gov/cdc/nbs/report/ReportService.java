@@ -1,8 +1,6 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
-import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
@@ -13,27 +11,13 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.ReportConstants.SortDirection;
-import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
-import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.FilterValueMapper;
-import gov.cdc.nbs.report.mappers.ReportColumnMapper;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.mappers.ReportSortColumnMapper;
 import gov.cdc.nbs.report.models.AdminReportRequest;
-import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
-import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
-import gov.cdc.nbs.report.models.Library;
-import gov.cdc.nbs.report.models.LibraryExecutionResult;
-import gov.cdc.nbs.report.models.ReportColumn;
-import gov.cdc.nbs.report.models.ReportConfiguration;
-import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportExecutionResult;
-import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
@@ -41,26 +25,16 @@ import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.NotImplementedException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestClientResponseException;
 
 @Service
 public class ReportService {
-
-  private final Clock clock;
 
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
@@ -71,28 +45,22 @@ public class ReportService {
   private final ReportSortColumnMapper reportSortColumnMapper;
   private final FilterValueMapper filterValueMapper;
   private final DisplayColumnBuilder displayColumnBuilder;
+  private final ReportFetcher reportFetcher;
 
-  private final RestClient reportExecutionClient;
-  private final DataSourceNameUtils dataSourceNameUtils;
-  private final WhereClauseService whereClauseService;
   private final ReportFilterBuilder reportFilterBuilder;
 
   public ReportService(
-      final Clock clock,
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportSectionRepository reportSectionRepository,
       final ReportFilterRepository reportFilterRepository,
-      RestClient reportExecutionClient,
-      final DataSourceNameConfiguration dataSourceNameConfig,
-      WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper,
       ReportSortColumnMapper reportSortColumnMapper,
       FilterValueMapper filterValueMapper,
-      DisplayColumnBuilder displayColumnBuilder) {
-    this.clock = clock;
+      DisplayColumnBuilder displayColumnBuilder,
+      ReportFetcher reportFetcher) {
 
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
@@ -103,10 +71,8 @@ public class ReportService {
     this.reportSortColumnMapper = reportSortColumnMapper;
     this.filterValueMapper = filterValueMapper;
     this.displayColumnBuilder = displayColumnBuilder;
+    this.reportFetcher = reportFetcher;
 
-    this.reportExecutionClient = reportExecutionClient;
-    this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
-    this.whereClauseService = whereClauseService;
     this.reportFilterBuilder = reportFilterBuilder;
   }
 
@@ -121,7 +87,8 @@ public class ReportService {
     Report existingReport =
         reportRepository
             .findById(existingReportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
+            .orElseThrow(
+                () -> new NotFoundException(reportFetcher.getReportNotFoundText(existingReportId)));
 
     return upsertReport(request, user, existingReport);
   }
@@ -131,7 +98,8 @@ public class ReportService {
     Report existingReport =
         reportRepository
             .findById(existingReportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
+            .orElseThrow(
+                () -> new NotFoundException(reportFetcher.getReportNotFoundText(existingReportId)));
 
     reportRepository.delete(existingReport);
   }
@@ -166,7 +134,8 @@ public class ReportService {
     Report report =
         reportRepository
             .findById(reportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+            .orElseThrow(
+                () -> new NotFoundException(reportFetcher.getReportNotFoundText(reportId)));
 
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());
@@ -181,7 +150,8 @@ public class ReportService {
     Report report =
         reportRepository
             .findById(reportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+            .orElseThrow(
+                () -> new NotFoundException(reportFetcher.getReportNotFoundText(reportId)));
 
     Report duplicate = reportMapper.duplicate(report);
 
@@ -197,146 +167,10 @@ public class ReportService {
     return saveReport(request.executionRequest(), reportId);
   }
 
-  public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-
-    return reportRepository
-        .findById(id)
-        .map(
-            report -> {
-              List<BasicFilterConfiguration> basicFilters =
-                  report.getReportFilters().stream()
-                      .filter(this::isBasicFilter)
-                      .map(BasicFilterConfigurationMapper::fromReportFilter)
-                      .toList();
-
-              List<DataSourceColumn> dataSourceColumns =
-                  report.getDataSource().getDataSourceColumns();
-              if (dataSourceColumns == null) {
-                throw new IllegalArgumentException("Invalid data source");
-              }
-
-              AdvancedFilterConfiguration advancedFilter =
-                  report.getReportFilters().stream()
-                      .filter(this::isAdvancedFilter)
-                      .map(
-                          f ->
-                              AdvancedFilterConfigurationMapper.fromReportFilter(
-                                  f, dataSourceColumns))
-                      .findFirst()
-                      .orElse(null);
-
-              List<ReportColumn> reportColumns =
-                  dataSourceColumns.stream().map(ReportColumnMapper::fromDataSourceColumn).toList();
-
-              List<Long> defaultColumnUids =
-                  report.getDisplayColumns().stream()
-                      .sorted(Comparator.comparing(DisplayColumn::getSequenceNumber))
-                      .map(DisplayColumn::getDataSourceColumnId)
-                      .toList();
-
-              ReportSortColumn reportSortColumn =
-                  report.getReportSortColumns().stream().findFirst().orElse(null);
-              SortSpec defaultSort = null;
-              if (reportSortColumn != null) {
-                defaultSort =
-                    new SortSpec(
-                        reportSortColumn.getDataSourceColumnUid(),
-                        "ASC".equalsIgnoreCase(reportSortColumn.getReportSortOrderCode())
-                            ? SortDirection.ASC
-                            : SortDirection.DESC);
-              }
-
-              return new ReportConfiguration(
-                  new ReportDataSource(report.getDataSource()),
-                  new Library(report.getReportLibrary()),
-                  report.getReportTitle(),
-                  report.getDescTxt(),
-                  report.getOwnerUid(),
-                  ReportConstants.dbCharToReportGroup(report.getShared()),
-                  report.getSectionCd(),
-                  basicFilters,
-                  advancedFilter,
-                  reportColumns,
-                  defaultColumnUids,
-                  defaultSort);
-            })
-        .orElseThrow(() -> new NotFoundException(getReportNotFoundText(id)));
-  }
-
-  @Transactional(readOnly = true)
-  public String getReportRunner(Long reportUid, Long dataSourceUid) {
-    ReportId reportId = new ReportId(reportUid, dataSourceUid);
-
-    Report report =
-        reportRepository
-            .findById(reportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
-
-    ReportLibrary reportLibrary = report.getReportLibrary();
-    if (reportLibrary == null) {
-      throw new UnprocessableEntityException(
-          String.format("No report library exists for report %s", reportId));
-    }
-
-    return reportLibrary.getRunner();
-  }
-
-  public ReportExecutionResult executeReport(ReportExecutionRequest request) {
-    Long reportUid = request.reportUid();
-    Long dataSourceUid = request.dataSourceUid();
-    ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
-
-    if (!reportConfigResponse.isPython()) {
-      throw new NotImplementedException(
-          String.format("Report not implemented for %s", reportConfigResponse.library().runner()),
-          String.valueOf(HttpStatus.NOT_IMPLEMENTED));
-    }
-
-    if (request.columnUids() != null && request.columnUids().isEmpty()) {
-      throw new UnprocessableEntityException(
-          "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
-    }
-
-    ReportSpecBuilder specBuilder =
-        new ReportSpecBuilder(
-            request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
-    ReportSpec reportSpec = specBuilder.build();
-
-    LibraryExecutionResult result =
-        reportExecutionClient
-            .post()
-            .uri("/report/execute")
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(reportSpec)
-            .retrieve()
-            .onStatus(
-                status -> status.value() >= 400,
-                (req, resp) -> {
-                  throw new RestClientResponseException(
-                      "Error response from the report-execution service",
-                      resp.getStatusCode(),
-                      resp.getStatusText(),
-                      resp.getHeaders(),
-                      resp.getBody().readAllBytes(),
-                      null);
-                })
-            .toEntity(LibraryExecutionResult.class)
-            .getBody();
-
-    if (result == null) {
-      throw new IllegalStateException(
-          "No error response and no body parsed from report execution service");
-    }
-
-    return new ReportExecutionResult(
-        result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
-  }
-
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
     Map<Long, ReportFilter> basicFiltersById =
         report.getReportFilters().stream()
-            .filter(this::isBasicFilter)
+            .filter(reportFetcher::isBasicFilter)
             .collect(Collectors.toMap(ReportFilter::getId, Function.identity()));
 
     //  If no basic filter requests are provided, delete all filter values for all existing basic
@@ -378,7 +212,10 @@ public class ReportService {
 
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
     ReportFilter advancedFilter =
-        report.getReportFilters().stream().filter(this::isAdvancedFilter).findFirst().orElse(null);
+        report.getReportFilters().stream()
+            .filter(reportFetcher::isAdvancedFilter)
+            .findFirst()
+            .orElse(null);
 
     if (advancedFilter == null && advFilterReq != null) {
       throw new IllegalArgumentException(
@@ -449,20 +286,6 @@ public class ReportService {
 
     ReportSortColumn sortColumn = reportSortColumnMapper.fromSortSpec(report, sort);
     report.getReportSortColumns().add(sortColumn);
-  }
-
-  private boolean isAdvancedFilter(ReportFilter filter) {
-    return filter.getFilterCode().getFilterType().equals(ReportConstants.ADV_FILTER_TYPE);
-  }
-
-  private boolean isBasicFilter(ReportFilter filter) {
-    return filter.getFilterCode().getFilterType().startsWith(ReportConstants.BASIC_FILTER_PREFIX);
-  }
-
-  private String getReportNotFoundText(ReportId reportId) {
-    return String.format(
-        "Report not found for Report UID: %d and Data Source UID: %d",
-        reportId.getReportUid(), reportId.getDataSourceUid());
   }
 
   private record ReportMetadata(DataSource dataSource, ReportLibrary reportLibrary) {}
