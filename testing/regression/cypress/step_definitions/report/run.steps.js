@@ -39,7 +39,7 @@ When('I enter {string} to the To date', (date) => {
 });
 
 When('I select {string} from the {string} dropdown menu', (value, label) => {
-    cy.selectDropdownByLabel(label, value);
+    cy.selectDropdownByLabel(0, label, value);
 });
 
 When('I select the column {string}', (columnName) => {
