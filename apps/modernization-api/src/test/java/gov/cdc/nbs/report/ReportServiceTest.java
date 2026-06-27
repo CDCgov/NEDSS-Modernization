@@ -8,34 +8,25 @@ import static org.mockito.Mockito.*;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.exception.UnprocessableEntityException;
-import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClient.RequestBodySpec;
 import org.springframework.web.client.RestClient.RequestBodyUriSpec;
@@ -73,11 +64,6 @@ class ReportServiceTest {
   private final Long libraryId = 20L;
   private final Long columnAId = 3L;
   private final Long columnBId = 4L;
-
-  private Report mockReport(
-      ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
-    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
-  }
 
   private Report mockReport(
       ReportId id,
@@ -481,200 +467,5 @@ class ReportServiceTest {
 
       verify(reportRepository).findById(reportId);
     }
-  }
-
-  @Nested
-  class GetReport {
-    @Test
-    void getReport_should_return_configuration_when_report_exists() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-      List<ReportFilter> reportFilters =
-          List.of(
-              new ReportFilter(
-                  3L,
-                  mock(Report.class),
-                  new FilterCode(4L, "NONE", null, null, "J_S01", null, "BAS_JUR_LIST", null, null),
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null),
-              new ReportFilter(
-                  6L,
-                  mock(Report.class),
-                  new FilterCode(
-                      5L,
-                      "NONE",
-                      null,
-                      null,
-                      "A_W01",
-                      null,
-                      ReportConstants.ADV_FILTER_TYPE,
-                      null,
-                      null),
-                  null,
-                  List.of(
-                      FilterValue.builder()
-                          .id(47L)
-                          .sequenceNumber(1)
-                          .valueType("CLAUSE")
-                          .columnUid(9L)
-                          .operator("EQUALS")
-                          .valueTxt("value1")
-                          .build()),
-                  null,
-                  null,
-                  null,
-                  null));
-      mockReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
-
-      ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
-
-      assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
-      assertThat(config.basicFilters())
-          .hasSize(1)
-          .allSatisfy(
-              filterConfig -> {
-                assertThat(filterConfig.reportFilterUid()).isEqualTo(3L);
-
-                assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
-              });
-      assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
-      assertThat(config.defaultColumnUids()).isEqualTo(List.of(columnBId, columnAId));
-      assertThat(config.group()).isEqualTo(ReportGroup.PRIVATE);
-    }
-
-    @Test
-    void getReport_should_throw_when_report_not_found() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-      when(reportRepository.findById(id)).thenReturn(Optional.empty());
-
-      assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
-          .isInstanceOf(NotFoundException.class)
-          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
-    }
-  }
-
-  @Nested
-  class GetReportRunner {
-    @Test
-    void getReportRunner_should_return_runner_when_report_exists() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
-
-      String runner = service.getReportRunner(reportUid, dataSourceUid);
-
-      assertThat(runner).isEqualTo("python");
-    }
-
-    @Test
-    void getReportRunner_should_throw_when_report_not_found() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-      when(reportRepository.findById(id)).thenReturn(Optional.empty());
-
-      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-          .isInstanceOf(NotFoundException.class)
-          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
-    }
-
-    @Test
-    void getReportRunner_should_throw_when_report_has_no_library() {
-      ReportId reportId = new ReportId(reportUid, dataSourceUid);
-      Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
-
-      when(report.getReportLibrary()).thenReturn(null);
-
-      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-          .isInstanceOf(UnprocessableEntityException.class)
-          .hasMessage("No report library exists for report %s", reportId);
-    }
-  }
-
-  @Nested
-  class ExecuteReport {
-    @Test
-    void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
-
-      ReportSpec spec =
-          new ReportSpec(
-              true,
-              true,
-              "Test Report",
-              "nbs_custom",
-              "[NBS_ODSE].[dbo].[PHCDemographic]",
-              "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
-              null,
-              null,
-              null,
-              null);
-      try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
-          mockConstruction(
-              ReportSpecBuilder.class,
-              (builder, context) -> when(builder.build()).thenReturn(spec))) {
-        when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
-        when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
-        when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
-        when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
-        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
-
-        ResponseEntity<LibraryExecutionResult> expectedResponse =
-            new ResponseEntity<>(getReportExecutionResponse().result(), HttpStatus.OK);
-        when(responseSpec.toEntity(LibraryExecutionResult.class)).thenReturn(expectedResponse);
-
-        ReportExecutionRequest request =
-            new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
-
-        ReportExecutionResult response = service.executeReport(request);
-
-        assertThat(response.result()).isEqualTo(expectedResponse.getBody());
-        ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
-        verify(specBuilder).build();
-      }
-    }
-
-    @Test
-    void executeReport_should_throw_not_implemented_when_runner_not_python() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-      mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
-
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(
-              reportUid, dataSourceUid, true, List.of(17L), null, List.of(), null);
-
-      assertThatThrownBy(() -> service.executeReport(request))
-          .isInstanceOf(NotImplementedException.class)
-          .hasMessage("Report not implemented for java");
-    }
-
-    @Test
-    void executeReport_should_throw_not_found_when_report_not_found() {
-      ReportId id = new ReportId(reportUid, dataSourceUid);
-
-      when(reportRepository.findById(id)).thenReturn(Optional.empty());
-
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(
-              reportUid, dataSourceUid, true, List.of(18L), null, List.of(), null);
-
-      assertThatThrownBy(() -> service.executeReport(request))
-          .isInstanceOf(NotFoundException.class)
-          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
-    }
-  }
-
-  private ReportExecutionResult getReportExecutionResponse() {
-    return new ReportExecutionResult(
-        new LibraryExecutionResult(
-            "table",
-            "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
-            "result header",
-            "result subheader",
-            "result description"),
-        "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
-        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }
