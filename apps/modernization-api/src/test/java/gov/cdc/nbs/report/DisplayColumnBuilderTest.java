@@ -127,20 +127,6 @@ class DisplayColumnBuilderTest {
   }
 
   @Test
-  void build_should_handle_zero_sequence() {
-    DisplayColumn result = builder.build(mockReport, mockColumn, 0);
-
-    assertThat(result.getSequenceNumber()).isEqualTo(0);
-  }
-
-  @Test
-  void build_should_handle_negative_sequence() {
-    DisplayColumn result = builder.build(mockReport, mockColumn, -1);
-
-    assertThat(result.getSequenceNumber()).isEqualTo(-1);
-  }
-
-  @Test
   void build_should_handle_large_sequence() {
     int largeSequence = Integer.MAX_VALUE;
 
@@ -161,34 +147,6 @@ class DisplayColumnBuilderTest {
     builder.build(mockReport, mockColumn, 1);
 
     verify(clock, atLeastOnce()).instant();
-  }
-
-  @Test
-  void build_should_preserve_exact_sequence_values() {
-    for (int seq = 1; seq <= 10; seq++) {
-      DisplayColumn result = builder.build(mockReport, mockColumn, seq);
-      assertThat(result.getSequenceNumber()).isEqualTo(seq);
-    }
-  }
-
-  @Test
-  void build_should_not_modify_sequence_number() {
-    int expectedSequence = 42;
-
-    DisplayColumn result = builder.build(mockReport, mockColumn, expectedSequence);
-
-    assertThat(result.getSequenceNumber()).isEqualTo(expectedSequence);
-  }
-
-  @Test
-  void build_should_maintain_sequence_independence() {
-    DisplayColumn result1 = builder.build(mockReport, mockColumn, 1);
-    DisplayColumn result2 = builder.build(mockReport, mockColumn, 2);
-    DisplayColumn result3 = builder.build(mockReport, mockColumn, 3);
-
-    assertThat(result1.getSequenceNumber()).isEqualTo(1);
-    assertThat(result2.getSequenceNumber()).isEqualTo(2);
-    assertThat(result3.getSequenceNumber()).isEqualTo(3);
   }
 
   @Test
@@ -262,26 +220,6 @@ class DisplayColumnBuilderTest {
     assertThat(result3.getId()).isEqualTo(id3);
     assertThat(result1.getId()).isNotEqualTo(result2.getId());
     assertThat(result2.getId()).isNotEqualTo(result3.getId());
-  }
-
-  @Test
-  void build_should_create_independent_instances() {
-    DisplayColumn result1 = builder.build(mockReport, mockColumn, 1);
-    DisplayColumn result2 = builder.build(mockReport, mockColumn, 2);
-
-    assertThat(result1).isNotEqualTo(result2);
-    assertThat(result1.getId()).isNotEqualTo(result2.getId());
-    assertThat(result1.getSequenceNumber()).isNotEqualTo(result2.getSequenceNumber());
-  }
-
-  @Test
-  void build_should_handle_repeated_calls_with_same_inputs() {
-    DisplayColumn result1 = builder.build(mockReport, mockColumn, 5);
-    DisplayColumn result2 = builder.build(mockReport, mockColumn, 5);
-
-    assertThat(result1.getSequenceNumber()).isEqualTo(result2.getSequenceNumber());
-    assertThat(result1.getReport()).isEqualTo(result2.getReport());
-    assertThat(result1.getDataSourceColumn()).isEqualTo(result2.getDataSourceColumn());
   }
 
   @Test

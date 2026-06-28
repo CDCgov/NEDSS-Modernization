@@ -721,6 +721,8 @@ class ReportServiceTest {
       verify(savedReport).getDisplayColumns();
       verify(displayColumnBuilder, times(3))
           .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -732,6 +734,8 @@ class ReportServiceTest {
       Report result = service.saveReport(request, reportId);
 
       verify(savedReport).setDisplayColumns(null);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -744,6 +748,8 @@ class ReportServiceTest {
       Report result = service.saveReport(request, reportId);
 
       verify(savedReport).setDisplayColumns(null);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -783,6 +789,8 @@ class ReportServiceTest {
       verify(reportSortColumnMapper).fromSortSpec(savedReport, sortSpec);
       verify(savedReport.getReportSortColumns()).clear();
       verify(savedReport.getReportSortColumns()).add(sortColumn);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -795,6 +803,8 @@ class ReportServiceTest {
       Report result = service.saveReport(request, reportId);
 
       verify(savedReport).setReportSortColumns(null);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -824,6 +834,8 @@ class ReportServiceTest {
 
       verify(filterValueMapper).fromBasicFilterRequest(basicFilter, basicFilterRequest);
       verify(reportFilterRepository).saveAll(any());
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -871,6 +883,8 @@ class ReportServiceTest {
       Report result = service.saveReport(request, reportId);
 
       verify(basicFilter).setFilterValues(null);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -892,6 +906,8 @@ class ReportServiceTest {
 
       verify(basicFilter1).setFilterValues(null);
       verify(basicFilter2).setFilterValues(null);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -926,6 +942,8 @@ class ReportServiceTest {
 
       verify(filterValueMapper).fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest);
       verify(reportFilterRepository).save(advancedFilter);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -997,6 +1015,8 @@ class ReportServiceTest {
 
       verify(advancedFilter).setFilterValues(null);
       verify(reportFilterRepository).save(advancedFilter);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -1099,18 +1119,6 @@ class ReportServiceTest {
     }
 
     @Test
-    void saveReport_is_transactional() {
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(
-              reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
-
-      service.saveReport(request, reportId);
-
-      verify(reportRepository).findById(reportId);
-      verify(reportRepository).save(savedReport);
-    }
-
-    @Test
     void saveReport_should_handle_only_display_columns() {
       List<Long> displayColumnIds = List.of(3L, 4L);
       ReportExecutionRequest request =
@@ -1136,6 +1144,8 @@ class ReportServiceTest {
       Report result = service.saveReport(request, reportId);
 
       verify(displayColumnBuilder, times(2)).build(any(), any(), any());
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -1152,6 +1162,8 @@ class ReportServiceTest {
       Report result = service.saveReport(request, reportId);
 
       verify(reportSortColumnMapper).fromSortSpec(savedReport, sortSpec);
+
+      verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
     }
   }
