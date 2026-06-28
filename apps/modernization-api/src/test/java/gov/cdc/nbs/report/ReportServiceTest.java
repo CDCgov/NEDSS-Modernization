@@ -1007,7 +1007,7 @@ class ReportServiceTest {
       FilterCode filterCode = mock(FilterCode.class);
 
       when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
-      when(advancedFilter.getId()).thenReturn(advancedFilterUid);
+      Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(savedReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
@@ -1110,7 +1110,8 @@ class ReportServiceTest {
 
       Report result = service.saveReport(request, reportId);
 
-      verify(displayColumnBuilder).build(any(), any(), any());
+      verify(displayColumnBuilder)
+          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
       verify(reportSortColumnMapper).fromSortSpec(any(), any());
       verify(filterValueMapper).fromBasicFilterRequest(any(), any());
       verify(filterValueMapper).fromAdvancedFilterRequest(any(), any());
@@ -1143,7 +1144,8 @@ class ReportServiceTest {
 
       Report result = service.saveReport(request, reportId);
 
-      verify(displayColumnBuilder, times(2)).build(any(), any(), any());
+      verify(displayColumnBuilder, times(2))
+          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
 
       verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
