@@ -126,7 +126,8 @@ class ReportExecutionRouteLocatorConfiguration {
                                     .forEach(
                                         (name, cookies) ->
                                             cookies.forEach(
-                                                cookie -> newCookies.add(name, cookie.getValue()))));
+                                                cookie ->
+                                                    newCookies.add(name, cookie.getValue()))));
 
                 if (!bearerToken.isEmpty()) {
                   // Relay the gateway's own OAuth2 access token, mirroring what
@@ -158,10 +159,10 @@ class ReportExecutionRouteLocatorConfiguration {
   }
 
   /**
-   * Resolve the current request's OAuth2 access token, if the `oidc` profile is active and the
-   * user is authenticated via OAuth2 login. Returns an empty {@code Mono} (not an error) when
-   * OIDC isn't configured, the user isn't an OAuth2 principal, or no authorized client can be
-   * resolved - callers should fall back to cookie-based auth in that case.
+   * Resolve the current request's OAuth2 access token, if the `oidc` profile is active and the user
+   * is authenticated via OAuth2 login. Returns an empty {@code Mono} (not an error) when OIDC isn't
+   * configured, the user isn't an OAuth2 principal, or no authorized client can be resolved -
+   * callers should fall back to cookie-based auth in that case.
    */
   private Mono<String> resolveBearerToken(
       final ServerWebExchange exchange,
