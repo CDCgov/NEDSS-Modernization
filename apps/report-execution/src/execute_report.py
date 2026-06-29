@@ -5,7 +5,7 @@ from pydantic import ValidationError
 
 from . import errors, models, utils
 from .config import get_config_value
-from .db_transaction import db_transaction, Transaction
+from .db_transaction import Transaction, db_transaction
 
 
 def execute_report(report_spec: models.ReportSpec):

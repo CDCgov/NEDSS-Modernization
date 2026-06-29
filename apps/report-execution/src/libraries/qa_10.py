@@ -15,7 +15,7 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "14" instead of the count of the columns
     """
-    nbs_rdb = get_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'nbs_rdb')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT

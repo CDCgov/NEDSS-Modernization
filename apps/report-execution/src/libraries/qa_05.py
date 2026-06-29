@@ -15,7 +15,7 @@ def execute(
     * Matched "export format"
     """
     # Dynamically look up the correct DB names
-    nbs_rdb = get_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'nbs_rdb')
     nbs_srte = get_config_value(trx, 'nbs_srte')
     content = trx.query(
         f"""

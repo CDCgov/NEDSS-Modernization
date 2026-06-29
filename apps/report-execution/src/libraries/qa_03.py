@@ -14,7 +14,7 @@ def execute(
     Conversion notes:
     * Matched export format
     """
-    nbs_rdb = get_config_value(trx, 'rdb')
+    nbs_rdb = get_config_value(trx, 'nbs_rdb')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT DISTINCT
