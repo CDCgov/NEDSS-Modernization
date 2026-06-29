@@ -64,7 +64,7 @@ public class FilterValueMapper {
         filterValues.add(clause);
 
         if (i < root.rules().size() - 1) {
-          FilterValue operator = buildOperatorFilterValue(advancedFilter, r);
+          FilterValue operator = buildOperatorFilterValue(advancedFilter, root.combinator());
           filterValues.add(operator);
         }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
@@ -101,13 +101,13 @@ public class FilterValueMapper {
   }
 
   private FilterValue buildOperatorFilterValue(
-      ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
+      ReportFilter advancedFilter, ReportConstants.QueryCombinators combinator) {
     FilterValue operator =
         FilterValue.builder()
             .id(generateFilterValueId())
             .reportFilter(advancedFilter)
             .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
-            .operator(rule.operator())
+            .operator(combinator.toString())
             .sequenceNumber(sequenceNumber)
             .build();
 

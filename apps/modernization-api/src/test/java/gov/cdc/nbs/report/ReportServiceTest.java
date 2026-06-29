@@ -8,7 +8,11 @@ import static org.mockito.Mockito.*;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.exception.UnprocessableEntityException;
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
+import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.mappers.ReportMapper;
+import gov.cdc.nbs.report.mappers.ReportSortColumnMapper;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
 import java.time.Clock;
@@ -43,7 +47,11 @@ class ReportServiceTest {
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private ReportSectionRepository reportSectionRepository;
+  @Mock private ReportFilterRepository reportFilterRepository;
   @Mock private ReportMapper reportMapper;
+  @Mock private ReportSortColumnMapper reportSortColumnMapper;
+  @Mock private FilterValueMapper filterValueMapper;
+  @Mock private DisplayColumnBuilder displayColumnBuilder;
 
   @Mock private RestClient reportExecutionClient;
   @Mock private ReportLibrary reportLibrary;

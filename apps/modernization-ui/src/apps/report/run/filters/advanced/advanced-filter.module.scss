@@ -1,0 +1,90 @@
+@use 'styles/borders';
+@use 'styles/buttons';
+@use 'styles/colors';
+
+.layout {
+    :global {
+        .alert-banner__right {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .queryBuilder {
+            padding: 1rem;
+        }
+
+        .trash-icon {
+            @include borders.bordered();
+        }
+
+        .queryBuilder-dragHandle {
+            margin-bottom: 0.25rem;
+        }
+
+        .ruleGroup-header {
+            padding-right: 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: end;
+
+            &:not(:first-of-type) {
+                margin-top: 0.5rem;
+            }
+
+            button {
+                margin: 0 0.5rem;
+            }
+
+            .trash-icon {
+                margin-bottom: 0.25rem;
+            }
+        }
+
+        .ruleGroup {
+            padding: 1rem 0;
+            border: 1px dashed colors.$base-light;
+            margin-top: 0.75rem;
+
+            &:first-of-type {
+                border: none;
+                padding: 0;
+            }
+
+            &:not(:first-of-type) {
+                margin-left: 0;
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        .rule {
+            display: grid;
+            align-items: end;
+            grid-template-columns: max-content minmax(20ch, 3fr) minmax(max-content, 1fr) 5fr max-content;
+            grid-template-areas: 'drag field operator value delete';
+            margin: 0.75rem 0;
+
+            .queryBuilder-dragHandle {
+                grid-area: drag;
+            }
+
+            .rule-fields {
+                grid-area: field;
+            }
+
+            .rule-operators {
+                grid-area: operator;
+            }
+
+            .queryBuilder-value {
+                grid-area: value;
+            }
+
+            .trash-icon {
+                grid-area: delete;
+            }
+        }
+    }
+}
