@@ -2,8 +2,6 @@
 
 from dataclasses import dataclass
 
-from src.models import Table
-
 # CSV columns
 CSV_COLUMNS = [
     'Worker',
@@ -25,20 +23,6 @@ Pa01Row = tuple[
     str | None,  # Percentage
     str | None,  # Index
 ]
-
-
-@dataclass(frozen=True)
-class Pa01Tables:
-    """Query result Tables for the report."""
-
-    filtered_cases: Table
-    case_interview_rows: Table
-    timed_interviews: Table
-    partner_notification: Table
-    testing_index: Table
-    period_partners: Table
-    cases_with_no_partners: Table
-    clusters_initiated: Table
 
 
 @dataclass(frozen=True)

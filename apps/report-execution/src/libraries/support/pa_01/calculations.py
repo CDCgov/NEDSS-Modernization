@@ -1,4 +1,4 @@
-from src.libraries.support.pa_01.models import Pa01Row, Pa01Tables, Pa01Worker
+from src.libraries.support.pa_01.models import Pa01Row, Pa01Worker
 from src.models import Table
 
 # Constants
@@ -8,41 +8,62 @@ CASES_IXD = "Cases IX'D"
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 
 
-def build_case_assignments_and_outcomes_output(
-    tables: Pa01Tables, worker: Pa01Worker | None = None
+def build_output_for_worker(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for a given worker, output data for
+    the final CSV.
+
+    Args:
+        tables: Query results within a Pa01Tables instance
+        worker: The worker the data is being calculated for (None means "ALL")
+
+    Returns:
+        List of calculated data for a given worker, meant for the final CSV of PA01
+    """
+    rows: list[Pa01Row] = []
+
+    rows.extend(_build_case_assignments_and_outcomes_output(tables, worker))
+    rows.extend(_build_partners_and_clusters_initiated_output(tables, worker))
+
+    return rows
+
+
+def _build_case_assignments_and_outcomes_output(
+    tables: dict, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for the "Case Assignments and Outcomes" section
     for a given worker, output data for the final CSV.
     """
-    cases_assigned = _calc_cases_assigned(tables.case_interview_rows, worker)
+    cases_assigned = _calc_cases_assigned(tables['case_interview_rows'], worker)
     cases_closed, cases_closed_percent = _calc_cases_closed(
-        tables.case_interview_rows, cases_assigned, worker
+        tables['case_interview_rows'], cases_assigned, worker
     )
     cases_ixd, cases_ixd_percent = _calc_cases_ixd(
-        tables.case_interview_rows, cases_assigned, worker
+        tables['case_interview_rows'], cases_assigned, worker
     )
     cases_ixd_buckets = _calc_interview_day_buckets(
-        tables.timed_interviews, cases_ixd, worker
+        tables['timed_interviews'], cases_ixd, worker
     )
     cases_reinterviewed, cases_reinterviewed_percent = _calc_cases_reinterviewed(
-        tables.case_interview_rows, cases_ixd, worker
+        tables['case_interview_rows'], cases_ixd, worker
     )
     hiv_previous_positive, hiv_previous_positive_percent = _calc_hiv_previous_positive(
-        tables.case_interview_rows, cases_assigned, worker
+        tables['case_interview_rows'], cases_assigned, worker
     )
     hiv_tested, hiv_tested_percent = _calc_hiv_tested(
-        tables.case_interview_rows, cases_assigned, worker
+        tables['case_interview_rows'], cases_assigned, worker
     )
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-        tables.case_interview_rows, hiv_tested, worker
+        tables['case_interview_rows'], hiv_tested, worker
     )
     hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-        tables.case_interview_rows, hiv_tested, worker
+        tables['case_interview_rows'], hiv_tested, worker
     )
     partner_notification_index = _calc_partner_notification_index(
-        tables.partner_notification, cases_ixd, worker
+        tables['partner_notification'], cases_ixd, worker
     )
-    testing_index = _calc_testing_index(tables.testing_index, cases_ixd, worker)
+    testing_index = _calc_testing_index(tables['testing_index'], cases_ixd, worker)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -177,34 +198,41 @@ def build_case_assignments_and_outcomes_output(
     return rows
 
 
-def build_partners_and_clusters_initiated_output(
-    tables: Pa01Tables, worker: Pa01Worker | None = None
+def _build_partners_and_clusters_initiated_output(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for the "Partners and Clusters Initiated"
     section for a given worker, output data for the final CSV.
     """
-    cases_assigned = _calc_cases_assigned(tables.case_interview_rows, worker)
-    cases_ixd, _ = _calc_cases_ixd(tables.case_interview_rows, cases_assigned, worker)
+    cases_assigned = _calc_cases_assigned(tables['case_interview_rows'], worker)
+    cases_ixd, _ = _calc_cases_ixd(
+        tables['case_interview_rows'], cases_assigned, worker
+    )
     total_period_partners, total_period_partners_index = _calc_total_period_partners(
-        tables.period_partners, cases_ixd, worker
+        tables['period_partners'], cases_ixd, worker
     )
     total_partners_initiated = _calc_total_partners_initiated(
-        tables.period_partners, worker
+        tables['period_partners'], worker
     )
     total_partners_initiated_oi = _calc_total_partners_initiated_oi(
-        tables.period_partners, worker
+        tables['period_partners'], worker
     )
     total_partners_initiated_ri = _calc_total_partners_initiated_ri(
-        tables.period_partners, worker
+        tables['period_partners'], worker
     )
-    contact_index = _calc_contact_index(tables.period_partners, cases_ixd, worker)
+    contact_index = _calc_contact_index(tables['period_partners'], cases_ixd, worker)
     cases_with_no_partners, cases_with_no_partners_percentage = (
-        _calc_cases_with_no_partners(tables.cases_with_no_partners, cases_ixd, worker)
+        _calc_cases_with_no_partners(
+            tables['cases_with_no_partners'], cases_ixd, worker
+        )
     )
     total_clusters_initiated = _calc_total_clusters_initiated(
-        tables.clusters_initiated, worker
+        tables['clusters_initiated'], worker
     )
-    cluster_index = _calc_cluster_index(tables.clusters_initiated, cases_ixd, worker)
+    cluster_index = _calc_cluster_index(tables['clusters_initiated'], cases_ixd, worker)
+    cases_with_no_clusters = _calc_cases_with_no_clusters(
+        tables['cases_with_no_clusters'], worker
+    )
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -279,6 +307,15 @@ def build_partners_and_clusters_initiated_output(
             None,
             None,
             cluster_index,
+        ),
+        (
+            _worker_for_csv(worker),
+            PARTNERS_AND_CLUSTERS_INITIATED,
+            'Total Clusters Initiated',
+            'Cases /W No Clusters',
+            cases_with_no_clusters,
+            None,
+            None,
         ),
     ]
 
@@ -577,6 +614,14 @@ def _calc_cluster_index(
     count = _count_distinct_case_ids(rows)
 
     return _index_for_csv(count, cases_ixd)
+
+
+def _calc_cases_with_no_clusters(
+    cases_with_no_clusters: Table, worker: Pa01Worker | None = None
+) -> int:
+    rows = _rows_for_worker(cases_with_no_clusters, worker)
+
+    return _count_distinct_case_ids(rows)
 
 
 # helpers

@@ -1,16 +1,13 @@
 from src.db_transaction import Transaction
-from src.libraries.support.pa_01.calculations import (
-    build_case_assignments_and_outcomes_output,
-    build_partners_and_clusters_initiated_output,
-)
+from src.libraries.support.pa_01.calculations import build_output_for_worker
 from src.libraries.support.pa_01.models import (
     CSV_COLUMNS,
     Pa01Row,
-    Pa01Tables,
     Pa01Worker,
 )
 from src.libraries.support.pa_01.queries import (
     case_interview_rows_query,
+    cases_with_no_clusters_query,
     cases_with_no_partners_query,
     clusters_initiated_query,
     filtered_cases_query,
@@ -70,31 +67,34 @@ def execute(
 
         return ReportResult(content_type='table', content=content)
 
-    # get list of workers (nb. None treated as "ALL WORKERS")
-    case_interview_rows = trx.query(
+    # run queries
+    tables: dict[str, Table] = {}
+    tables['filtered_cases'] = trx.query(filtered_cases_query(subset_query))
+    tables['case_interview_rows'] = trx.query(
         case_interview_rows_query(subset_query, report_variant)
     )
-    workers: list[Pa01Worker | None] = [None]
-    workers.extend(_get_workers(case_interview_rows))
-
-    # query result tables
-    pa01_tables = Pa01Tables(
-        filtered_cases=trx.query(filtered_cases_query(subset_query)),
-        case_interview_rows=case_interview_rows,
-        timed_interviews=trx.query(
-            timed_interviews_query(subset_query, report_variant)
-        ),
-        partner_notification=trx.query(partner_notification_query(subset_query)),
-        testing_index=trx.query(testing_index_query(subset_query)),
-        period_partners=trx.query(period_partners_query(subset_query)),
-        cases_with_no_partners=trx.query(cases_with_no_partners_query(subset_query)),
-        clusters_initiated=trx.query(clusters_initiated_query(subset_query)),
+    tables['timed_interviews'] = trx.query(
+        timed_interviews_query(subset_query, report_variant)
     )
+    tables['partner_notification'] = trx.query(partner_notification_query(subset_query))
+    tables['testing_index'] = trx.query(testing_index_query(subset_query))
+    tables['period_partners'] = trx.query(period_partners_query(subset_query))
+    tables['cases_with_no_partners'] = trx.query(
+        cases_with_no_partners_query(subset_query)
+    )
+    tables['clusters_initiated'] = trx.query(clusters_initiated_query(subset_query))
+    tables['cases_with_no_clusters'] = trx.query(
+        cases_with_no_clusters_query(subset_query)
+    )
+
+    # get list of workers (nb. None treated as "ALL WORKERS")
+    workers: list[Pa01Worker | None] = [None]
+    workers.extend(_get_workers(tables['case_interview_rows']))
 
     # build output CSV data for each worker
     output_rows: list[Pa01Row] = []
     for worker in workers:
-        output_rows.extend(_build_output_for_worker(pa01_tables, worker))
+        output_rows.extend(build_output_for_worker(tables, worker))
 
     content = Table(
         columns=CSV_COLUMNS,
@@ -102,27 +102,6 @@ def execute(
     )
 
     return ReportResult(content_type='table', content=content)
-
-
-def _build_output_for_worker(
-    tables: Pa01Tables, worker: Pa01Worker | None = None
-) -> list[Pa01Row]:
-    """Perform all needed calculations for a given worker, output data for
-    the final CSV.
-
-    Args:
-        tables: Query results within a Pa01Tables instance
-        worker: The worker the data is being calculated for (None means "ALL")
-
-    Returns:
-        List of calculated data for a given worker, meant for the final CSV of PA01
-    """
-    rows: list[Pa01Row] = []
-
-    rows.extend(build_case_assignments_and_outcomes_output(tables, worker))
-    rows.extend(build_partners_and_clusters_initiated_output(tables, worker))
-
-    return rows
 
 
 def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
