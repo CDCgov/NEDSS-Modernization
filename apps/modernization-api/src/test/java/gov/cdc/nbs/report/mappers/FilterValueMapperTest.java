@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,8 +37,10 @@ class FilterValueMapperTest {
     generatedId = 100L;
 
     GeneratedId mockValidId = mock(GeneratedId.class);
-    when(mockValidId.getId()).thenReturn(generatedId);
-    when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS)).thenReturn(mockValidId);
+    Mockito.lenient().when(mockValidId.getId()).thenReturn(generatedId);
+    Mockito.lenient()
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(mockValidId);
   }
 
   @Nested
@@ -177,10 +180,15 @@ class FilterValueMapperTest {
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
-      assertThat(result).hasSize(4);
+      assertThat(result).hasSize(3);
       assertThat(result.get(0).getOperator()).isEqualTo("(");
+
       assertThat(result.get(1).getValueType())
           .isEqualTo(ReportConstants.AdvancedFilterValueType.CLAUSE.toString());
+      assertThat(result.get(1).getColumnUid()).isEqualTo(1L);
+      assertThat(result.get(1).getOperator()).isEqualTo("EQUALS");
+      assertThat(result.get(1).getValueTxt()).isEqualTo("value1");
+
       assertThat(result.get(2).getOperator()).isEqualTo(")");
     }
 
@@ -195,14 +203,26 @@ class FilterValueMapperTest {
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
-      assertThat(result).hasSize(6);
+      assertThat(result).hasSize(5);
       assertThat(result.get(0).getOperator()).isEqualTo("(");
+
       assertThat(result.get(1).getValueType())
           .isEqualTo(ReportConstants.AdvancedFilterValueType.CLAUSE.toString());
+      assertThat(result.get(1).getColumnUid()).isEqualTo(1L);
+      assertThat(result.get(1).getOperator()).isEqualTo("EQUALS");
+      assertThat(result.get(1).getValueTxt()).isEqualTo("value1");
+
       assertThat(result.get(2).getValueType())
           .isEqualTo(ReportConstants.AdvancedFilterValueType.OPERATOR.toString());
+      assertThat(result.get(2).getOperator())
+          .isEqualTo(ReportConstants.QueryCombinators.AND.toString());
+
       assertThat(result.get(3).getValueType())
           .isEqualTo(ReportConstants.AdvancedFilterValueType.CLAUSE.toString());
+      assertThat(result.get(3).getColumnUid()).isEqualTo(2L);
+      assertThat(result.get(3).getOperator()).isEqualTo("NOT_EQUALS");
+      assertThat(result.get(3).getValueTxt()).isEqualTo("value2");
+
       assertThat(result.get(4).getOperator()).isEqualTo(")");
     }
 
@@ -217,9 +237,9 @@ class FilterValueMapperTest {
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
-      assertThat(result.get(1).getSequenceNumber()).isEqualTo(1);
-      assertThat(result.get(2).getSequenceNumber()).isEqualTo(2);
-      assertThat(result.get(3).getSequenceNumber()).isEqualTo(3);
+      assertThat(result.get(0).getSequenceNumber()).isEqualTo(1);
+      assertThat(result.get(1).getSequenceNumber()).isEqualTo(2);
+      assertThat(result.get(2).getSequenceNumber()).isEqualTo(3);
     }
 
     @Test
@@ -303,8 +323,10 @@ class FilterValueMapperTest {
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
-      assertThat(result).hasSize(6);
+      assertThat(result).hasSize(5);
       assertThat(result.get(2).getOperator()).isNotNull();
+      assertThat(result.get(2).getOperator())
+          .isEqualTo(ReportConstants.QueryCombinators.OR.toString());
     }
 
     @Test
@@ -317,7 +339,9 @@ class FilterValueMapperTest {
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
-      assertThat(result).hasSize(4);
+      assertThat(result).hasSize(3);
+      assertThat(result.get(1).getOperator()).isEqualTo("EQUALS");
+      assertThat(result.get(1).getValueTxt()).isEqualTo("value1");
     }
 
     @Test

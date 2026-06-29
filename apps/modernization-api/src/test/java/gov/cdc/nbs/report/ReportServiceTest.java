@@ -718,7 +718,7 @@ class ReportServiceTest {
 
       Report result = service.saveReport(request, reportId);
 
-      verify(savedReport).getDisplayColumns();
+      verify(savedReport, times(2)).getDisplayColumns();
       verify(displayColumnBuilder, times(3))
           .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
 
@@ -781,14 +781,18 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), sortSpec, List.of(), null);
 
       ReportSortColumn sortColumn = mock(ReportSortColumn.class);
+      List<ReportSortColumn> sortColumns =
+          spy(new ArrayList<>(Collections.singletonList(sortColumn)));
+
       when(reportSortColumnMapper.fromSortSpec(savedReport, sortSpec)).thenReturn(sortColumn);
-      when(savedReport.getReportSortColumns()).thenReturn(new ArrayList<>());
+      when(savedReport.getReportSortColumns()).thenReturn(sortColumns);
 
       Report result = service.saveReport(request, reportId);
 
       verify(reportSortColumnMapper).fromSortSpec(savedReport, sortSpec);
-      verify(savedReport.getReportSortColumns()).clear();
-      verify(savedReport.getReportSortColumns()).add(sortColumn);
+      verify(savedReport, times(2)).getReportSortColumns();
+      verify(sortColumns).clear();
+      verify(sortColumns).add(sortColumn);
 
       verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
@@ -894,7 +898,9 @@ class ReportServiceTest {
           new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(), null, null, null);
 
       ReportFilter basicFilter1 = mock(ReportFilter.class);
+      when(basicFilter1.getId()).thenReturn(10L);
       ReportFilter basicFilter2 = mock(ReportFilter.class);
+      when(basicFilter2.getId()).thenReturn(20L);
       FilterCode filterCode = mock(FilterCode.class);
 
       when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");

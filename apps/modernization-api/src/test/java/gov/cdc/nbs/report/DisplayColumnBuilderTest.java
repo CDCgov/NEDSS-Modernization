@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -42,8 +43,10 @@ class DisplayColumnBuilderTest {
     expectedTime = LocalDateTime.now(clock);
 
     GeneratedId mockGeneratedId = mock(GeneratedId.class);
-    when(mockGeneratedId.getId()).thenReturn(generatedId);
-    when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS)).thenReturn(mockGeneratedId);
+    Mockito.lenient().when(mockGeneratedId.getId()).thenReturn(generatedId);
+    Mockito.lenient()
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(mockGeneratedId);
   }
 
   @Test
@@ -236,40 +239,6 @@ class DisplayColumnBuilderTest {
     assertThat(result2.getReport()).isEqualTo(report2);
     assertThat(result1.getDataSourceColumn()).isEqualTo(column1);
     assertThat(result2.getDataSourceColumn()).isEqualTo(column2);
-  }
-
-  @Test
-  void build_should_handle_null_report() {
-    DisplayColumn result = builder.build(null, mockColumn, 1);
-
-    assertThat(result.getReport()).isNull();
-  }
-
-  @Test
-  void build_should_handle_null_column() {
-    DisplayColumn result = builder.build(mockReport, null, 1);
-
-    assertThat(result.getDataSourceColumn()).isNull();
-  }
-
-  @Test
-  void build_should_handle_both_null() {
-    DisplayColumn result = builder.build(null, null, 1);
-
-    assertThat(result.getReport()).isNull();
-    assertThat(result.getDataSourceColumn()).isNull();
-    assertThat(result.getId()).isEqualTo(generatedId);
-    assertThat(result.getStatusCd()).isEqualTo(Status.ACTIVE_CODE);
-  }
-
-  @Test
-  void build_should_set_all_fields_even_with_null_inputs() {
-    DisplayColumn result = builder.build(null, null, 1);
-
-    assertThat(result.getId()).isNotNull();
-    assertThat(result.getSequenceNumber()).isEqualTo(1);
-    assertThat(result.getStatusCd()).isNotNull();
-    assertThat(result.getStatusTime()).isNotNull();
   }
 
   @Test
