@@ -7,7 +7,7 @@ from src.models import ReportSpec
 faker_schema = 'phc_demographic.yaml'
 
 
-@pytest.mark.usefixtures("setup_containers_with_seed_data", 'fake_db_table')
+@pytest.mark.usefixtures('setup_containers_with_seed_data', 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsSr11Library:
     """Integration tests for the nbs_sr_11 library."""
