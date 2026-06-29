@@ -696,7 +696,6 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, displayColumnIds, null, List.of(), null);
 
-      DataSource dataSource = mock(DataSource.class);
       DataSourceColumn column1 = mock(DataSourceColumn.class);
       DataSourceColumn column2 = mock(DataSourceColumn.class);
       DataSourceColumn column3 = mock(DataSourceColumn.class);
@@ -760,7 +759,6 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, displayColumnIds, null, List.of(), null);
 
-      DataSource dataSource = mock(DataSource.class);
       DataSourceColumn column1 = mock(DataSourceColumn.class);
 
       when(column1.getId()).thenReturn(3L);
@@ -1076,7 +1074,6 @@ class ReportServiceTest {
               List.of(basicFilterRequest),
               advancedFilterRequest);
 
-      DataSource dataSource = mock(DataSource.class);
       DataSourceColumn column1 = mock(DataSourceColumn.class);
 
       when(column1.getId()).thenReturn(3L);
@@ -1132,7 +1129,6 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, displayColumnIds, null, null, null);
 
-      DataSource dataSource = mock(DataSource.class);
       DataSourceColumn column1 = mock(DataSourceColumn.class);
       DataSourceColumn column2 = mock(DataSourceColumn.class);
 
