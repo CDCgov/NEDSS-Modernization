@@ -4,7 +4,7 @@ import json
 import pytest
 
 
-@pytest.mark.usefixtures('setup_containers')
+@pytest.mark.usefixtures("setup_containers_with_seed_data")
 @pytest.mark.integration
 class TestCustomLibrary:
     """Integration tests for custom library execution."""

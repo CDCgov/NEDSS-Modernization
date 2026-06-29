@@ -7,7 +7,7 @@ from src.models import ReportSpec
 faker_schema = 'std_hiv_datamart.yaml'
 
 
-@pytest.mark.usefixtures('seed_global_nbs_configuration', 'fake_db_table')
+@pytest.mark.usefixtures("setup_containers_with_seed_data", 'fake_db_table')
 @pytest.mark.integration
 class TestIntegrationNbsQa01Library:
     """Integration tests for the qa_01 library."""
