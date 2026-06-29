@@ -60,7 +60,7 @@ class ReportExecutionRouteLocatorConfiguration {
       final ModernizationService modService) {
     LOGGER.log(
         System.Logger.Level.INFO,
-        "Registering report execution gateway route using modernization service: %s"
+        "Registering report execution gateway route using modernization service:  %s"
             .formatted(modService.uri()));
     return builder
         .routes()
