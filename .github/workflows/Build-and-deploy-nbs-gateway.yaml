@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - tdb/re-debug
     paths:
       - "apps/nbs-gateway/**"
       - "gradle/libs.versions.toml"
@@ -18,7 +17,7 @@ jobs:
     with:
       microservice_name: nbs7-nbs-gateway
       dockerfile_relative_path: -f ./apps/nbs-gateway/Dockerfile .
-      environment_classifier: TDB_DEBUG
+      environment_classifier: SNAPSHOT
       java_version: "17"
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
