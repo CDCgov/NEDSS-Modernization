@@ -7,9 +7,9 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.models.SortSpec;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class ReportSortColumnMapper {
   private final Clock clock;
   private final IdGeneratorService idGenerator;
