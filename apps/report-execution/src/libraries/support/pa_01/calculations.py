@@ -5,6 +5,7 @@ from src.models import Table
 ALL = 'ALL'
 CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
+DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS = 'Dispositions - New Partners & Clusters'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 
 
@@ -25,6 +26,7 @@ def build_output_for_worker(
 
     rows.extend(_build_case_assignments_and_outcomes_output(tables, worker))
     rows.extend(_build_partners_and_clusters_initiated_output(tables, worker))
+    rows.extend(_build_dispositions_new_partners_and_clusters_output(tables, worker))
 
     return rows
 
@@ -324,6 +326,37 @@ def _build_partners_and_clusters_initiated_output(
     return rows
 
 
+def _build_dispositions_new_partners_and_clusters_output(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Dispositions - New Partners & Clusters"
+    section for a given worker, output data for the final CSV.
+    """
+    total_partners_initiated = _calc_total_partners_initiated(
+        tables['period_partners'], worker
+    )
+    new_partners_notified, new_partners_notified_percentage = (
+        _calc_new_partners_notified(
+            tables['notified_partners'], total_partners_initiated, worker
+        )
+    )
+
+    rows: list[Pa01Row] = [
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Notified',
+            None,
+            new_partners_notified,
+            new_partners_notified_percentage,
+            None,
+        ),
+    ]
+
+    return rows
+
+
+# actual calculations
 def _calc_cases_assigned(
     case_interview_rows: Table, worker: Pa01Worker | None = None
 ) -> int:
@@ -628,6 +661,20 @@ def _calc_cases_with_no_clusters(
     count = _count_distinct_case_ids(rows)
 
     return count, _percent_for_csv(count, cases_ixd)
+
+
+def _calc_new_partners_notified(
+    new_partners_notified: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate 'New Partners Notified' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(new_partners_notified, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
 
 
 # helpers
