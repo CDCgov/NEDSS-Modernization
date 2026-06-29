@@ -15,7 +15,7 @@ def build_output_for_worker(
     the final CSV.
 
     Args:
-        tables: Query results within a Pa01Tables instance
+        tables: Query results within a dict
         worker: The worker the data is being calculated for (None means "ALL")
 
     Returns:
@@ -230,8 +230,10 @@ def _build_partners_and_clusters_initiated_output(
         tables['clusters_initiated'], worker
     )
     cluster_index = _calc_cluster_index(tables['clusters_initiated'], cases_ixd, worker)
-    cases_with_no_clusters = _calc_cases_with_no_clusters(
-        tables['cases_with_no_clusters'], worker
+    cases_with_no_clusters, cases_with_no_clusters_percentage = (
+        _calc_cases_with_no_clusters(
+            tables['cases_with_no_clusters'], cases_ixd, worker
+        )
     )
 
     # output CSV data
@@ -314,7 +316,7 @@ def _build_partners_and_clusters_initiated_output(
             'Total Clusters Initiated',
             'Cases /W No Clusters',
             cases_with_no_clusters,
-            None,
+            cases_with_no_clusters_percentage,
             None,
         ),
     ]
@@ -617,11 +619,15 @@ def _calc_cluster_index(
 
 
 def _calc_cases_with_no_clusters(
-    cases_with_no_clusters: Table, worker: Pa01Worker | None = None
-) -> int:
+    cases_with_no_clusters: Table, cases_ixd: int, worker: Pa01Worker | None = None
+) -> tuple[int, str]:
+    """Calculate 'Cases /W No Clusters' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
     rows = _rows_for_worker(cases_with_no_clusters, worker)
+    count = _count_distinct_case_ids(rows)
 
-    return _count_distinct_case_ids(rows)
+    return count, _percent_for_csv(count, cases_ixd)
 
 
 # helpers

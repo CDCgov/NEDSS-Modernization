@@ -545,14 +545,19 @@ def cases_with_no_clusters_query(subset_query: str) -> str:
         LEFT OUTER JOIN RDB.dbo.d_contact_record f
                      ON e.D_contact_record_key = f.d_contact_record_key
                     AND f.RECORD_STATUS_CD <> 'LOG_DEL'
-      WHERE f.CTT_REFERRAL_BASIS NOT IN (
+      WHERE (
+          f.CTT_REFERRAL_BASIS NOT IN (
               'A1 - Associate 1',
               'A2 - Associate 2',
               'A3 - Associate 3',
               'S1 - Social Contact 1',
               'S2 - Social Contact 2',
               'S3 - Social Contact 3'
-            )
-      AND   a.CA_PATIENT_INTV_STATUS IN ('I - Interviewed')
-      AND   a.inv_local_id NOT IN (SELECT DISTINCT STD_INV_LOCAL_ID FROM clusters);
+          )
+          OR f.CTT_REFERRAL_BASIS IS NULL
+      )
+      AND a.CA_PATIENT_INTV_STATUS IN ('I - Interviewed')
+      AND NOT EXISTS (
+        SELECT 1 FROM clusters c WHERE c.STD_INV_LOCAL_ID = a.INV_LOCAL_ID
+      );
     """

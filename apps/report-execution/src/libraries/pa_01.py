@@ -40,6 +40,11 @@ def execute(
     * There are some rounding peculiarities between SAS and Python, so for instance
       a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
       SAS it will be 0.08.  In such cases the Python value will be used as is.
+    * There is a bug in PA01_HIV.sas in which the "CASES /W NO CLUSTERS" shows up as
+      0 for "ALL WORKERS" even if there is data present.  This is because the SAS
+      template for this calculation for "ALL WORKERS" uses a slightly different string:
+      "CASES W/NO CLUSTERS" (note the difference in "/W" vs. "W/").  The Python library
+      will give the proper answer, so in that way it differs from the SAS source.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
