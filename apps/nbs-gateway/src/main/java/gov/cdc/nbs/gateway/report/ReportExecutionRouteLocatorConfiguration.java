@@ -124,6 +124,14 @@ class ReportExecutionRouteLocatorConfiguration {
           "Report execution runner lookup: reportUid=%s dataSourceUid=%s uri=%s"
               .formatted(params.get("reportUid"), params.get("dataSourceUid"), path));
 
+      LOGGER.log(
+          System.Logger.Level.INFO,
+          "Report execution runner lookup cookies forwarded: reportUid=%s dataSourceUid=%s cookieNames=%s"
+              .formatted(
+                  params.get("reportUid"),
+                  params.get("dataSourceUid"),
+                  exchange.getRequest().getCookies().keySet()));
+
       return WebClient.create()
           .get()
           .uri(path)
@@ -143,6 +151,15 @@ class ReportExecutionRouteLocatorConfiguration {
                 // If the api response has any set-cookie's, pass them on to overall response
                 // so they are set in the browser. This is important for auth.
                 exchange.getResponse().getCookies().addAll(response.cookies());
+
+                LOGGER.log(
+                    System.Logger.Level.INFO,
+                    "Report execution runner lookup raw response: reportUid=%s dataSourceUid=%s status=%s setCookieNames=%s"
+                        .formatted(
+                            params.get("reportUid"),
+                            params.get("dataSourceUid"),
+                            response.statusCode(),
+                            response.cookies().keySet()));
 
                 return response
                     .bodyToMono(String.class)
@@ -168,8 +185,13 @@ class ReportExecutionRouteLocatorConfiguration {
               err ->
                   LOGGER.log(
                       System.Logger.Level.ERROR,
-                      "Error querying modernization-api for report metadata: %s"
-                          .formatted(err.getMessage())));
+                      "Error querying modernization-api for report metadata: reportUid=%s dataSourceUid=%s errorType=%s message=%s"
+                          .formatted(
+                              params.get("reportUid"),
+                              params.get("dataSourceUid"),
+                              err.getClass().getName(),
+                              err.getMessage()),
+                      err));
     };
   }
 

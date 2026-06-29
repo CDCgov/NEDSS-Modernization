@@ -12,6 +12,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 class NBSSessionAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+  private static final System.Logger LOGGER =
+      System.getLogger(NBSSessionAuthenticationEntryPoint.class.getName());
+
   @Override
   public void commence(
       final HttpServletRequest request,
@@ -24,9 +27,24 @@ class NBSSessionAuthenticationEntryPoint implements AuthenticationEntryPoint {
     // and we should instead return the 403
     if (authException instanceof InsufficientAuthenticationException
         && !MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.ACCEPT))) {
+      LOGGER.log(
+          System.Logger.Level.INFO,
+          "Auth entry point: path=%s accept=%s exception=%s -> redirecting to /nbs/timeout"
+              .formatted(
+                  request.getRequestURI(),
+                  request.getHeader(HttpHeaders.ACCEPT),
+                  authException.getMessage()));
       response.setStatus(HttpStatus.FOUND.value());
       response.setHeader(HttpHeaders.LOCATION, "/nbs/timeout");
     } else {
+      LOGGER.log(
+          System.Logger.Level.WARNING,
+          "Auth entry point: path=%s accept=%s exceptionType=%s exception=%s -> returning 403"
+              .formatted(
+                  request.getRequestURI(),
+                  request.getHeader(HttpHeaders.ACCEPT),
+                  authException.getClass().getSimpleName(),
+                  authException.getMessage()));
       response.sendError(403, "Access Denied");
     }
   }
