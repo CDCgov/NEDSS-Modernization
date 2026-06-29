@@ -34,7 +34,8 @@ public class NBSTokenValidator {
         DecodedJWT decoded = verifier.verify(token.get());
         return new TokenValidation(TokenStatus.VALID, decoded.getSubject());
       } catch (TokenExpiredException ex) {
-        LOGGER.log(System.Logger.Level.INFO, "NBS token expired: %s".formatted(ex.getMessage()));
+        LOGGER.log(
+            System.Logger.Level.WARNING, "NBS token expired: %s".formatted(ex.getMessage()));
         return new TokenValidation(TokenStatus.EXPIRED);
       } catch (JWTVerificationException ex) {
         // Reason matters: a signature mismatch (e.g. SignatureVerificationException) usually
@@ -48,6 +49,9 @@ public class NBSTokenValidator {
         return new TokenValidation(TokenStatus.INVALID);
       }
     } else {
+      LOGGER.log(
+          System.Logger.Level.WARNING,
+          "NBS token unset: no Authorization header or nbs_token cookie present");
       return new TokenValidation(TokenStatus.UNSET);
     }
   }
