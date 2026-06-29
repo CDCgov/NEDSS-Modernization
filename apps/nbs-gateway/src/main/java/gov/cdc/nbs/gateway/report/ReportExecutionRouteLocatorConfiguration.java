@@ -58,6 +58,10 @@ class ReportExecutionRouteLocatorConfiguration {
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
       final ModernizationService modService) {
+    LOGGER.log(
+        System.Logger.Level.INFO,
+        "Registering report execution gateway route using modernization service: %s"
+            .formatted(modService.uri()));
     return builder
         .routes()
         .route(
@@ -80,20 +84,45 @@ class ReportExecutionRouteLocatorConfiguration {
   /** Check the /nbs/nfc post matches the object and operation for running a report */
   @SuppressWarnings({"unchecked", "rawtypes"})
   private Predicate<LinkedMultiValueMap> bodyPredicate() {
-    return body ->
-        REPORT_OBJECT_TYPE.equals(body.getFirst("ObjectType"))
-            && REPORT_OPERATION_TYPE.equals(body.getFirst("OperationType"));
+    return body -> {
+      if (body == null) {
+        LOGGER.log(System.Logger.Level.INFO, "Report execution route body check: body is null");
+        return false;
+      }
+
+      boolean matched =
+          REPORT_OBJECT_TYPE.equals(body.getFirst("ObjectType"))
+              && REPORT_OPERATION_TYPE.equals(body.getFirst("OperationType"));
+
+      LOGGER.log(
+          System.Logger.Level.INFO,
+          "Report execution route body check: ObjectType=%s OperationType=%s ReportUID=%s DataSourceUID=%s matched=%s"
+              .formatted(
+                  body.getFirst("ObjectType"),
+                  body.getFirst("OperationType"),
+                  body.getFirst("ReportUID"),
+                  body.getFirst("DataSourceUID"),
+                  matched));
+
+      return matched;
+    };
   }
 
   /** Query the mod API to determine if this report should be run via NBS 7 or NBS 6 */
   private AsyncPredicate<ServerWebExchange> isModPredicate(final ModernizationService modService) {
     return exchange -> {
+      HashMap<String, String> params = getParamsFromBody(exchange);
       String path =
           UriComponentsBuilder.fromPath("/nbs/api/report/runner/{reportUid}/{dataSourceUid}")
               .uri(modService.uri())
               .build()
-              .expand(getParamsFromBody(exchange))
+              .expand(params)
               .toUriString();
+
+      LOGGER.log(
+          System.Logger.Level.INFO,
+          "Report execution runner lookup: reportUid=%s dataSourceUid=%s uri=%s"
+              .formatted(params.get("reportUid"), params.get("dataSourceUid"), path));
 
       return WebClient.create()
           .get()
@@ -117,7 +146,23 @@ class ReportExecutionRouteLocatorConfiguration {
 
                 return response
                     .bodyToMono(String.class)
-                    .flatMap(runner -> Mono.just(REPORT_MOD_RUNNER.equals(runner)));
+                    .defaultIfEmpty("")
+                    .map(
+                        runner -> {
+                          boolean matched = REPORT_MOD_RUNNER.equals(runner);
+
+                          LOGGER.log(
+                              System.Logger.Level.INFO,
+                              "Report execution runner lookup response: reportUid=%s dataSourceUid=%s status=%s runner=%s matched=%s"
+                                  .formatted(
+                                      params.get("reportUid"),
+                                      params.get("dataSourceUid"),
+                                      response.statusCode(),
+                                      runner,
+                                      matched));
+
+                          return matched;
+                        });
               })
           .doOnError(
               err ->
@@ -150,6 +195,12 @@ class ReportExecutionRouteLocatorConfiguration {
 
     ServerHttpResponse response = exchange.getResponse();
     response.getHeaders().set(HttpHeaders.LOCATION, location);
+
+    LOGGER.log(
+        System.Logger.Level.INFO,
+        "Redirecting report execution request: reportUid=%s dataSourceUid=%s location=%s"
+            .formatted(params.get("reportUid"), params.get("dataSourceUid"), location));
+
     return response.setComplete();
   }
 
