@@ -63,10 +63,6 @@ class ReportExecutionRouteLocatorConfiguration {
       @Qualifier("defaults") final List<GatewayFilter> defaults,
       final ModernizationService modService,
       final ObjectProvider<ReactiveOAuth2AuthorizedClientManager> authorizedClientManagerProvider) {
-    LOGGER.log(
-        System.Logger.Level.INFO,
-        "Registering report execution gateway route using modernization service:  %s"
-            .formatted(modService.uri()));
     // Only present when the `oidc` profile is active and OAuth2 client/login is configured.
     // Null in environments running the legacy nbs_token/JSESSIONID auth path (e.g. local
     // docker-compose), in which case the cookie copy below is what carries auth.
@@ -94,28 +90,9 @@ class ReportExecutionRouteLocatorConfiguration {
   /** Check the /nbs/nfc post matches the object and operation for running a report */
   @SuppressWarnings({"unchecked", "rawtypes"})
   private Predicate<LinkedMultiValueMap> bodyPredicate() {
-    return body -> {
-      if (body == null) {
-        LOGGER.log(System.Logger.Level.INFO, "Report execution route body check: body is null");
-        return false;
-      }
-
-      boolean matched =
-          REPORT_OBJECT_TYPE.equals(body.getFirst("ObjectType"))
-              && REPORT_OPERATION_TYPE.equals(body.getFirst("OperationType"));
-
-      LOGGER.log(
-          System.Logger.Level.INFO,
-          "Report execution route body check: ObjectType=%s OperationType=%s ReportUID=%s DataSourceUID=%s matched=%s"
-              .formatted(
-                  body.getFirst("ObjectType"),
-                  body.getFirst("OperationType"),
-                  body.getFirst("ReportUID"),
-                  body.getFirst("DataSourceUID"),
-                  matched));
-
-      return matched;
-    };
+    return body ->
+        REPORT_OBJECT_TYPE.equals(body.getFirst("ObjectType"))
+            && REPORT_OPERATION_TYPE.equals(body.getFirst("OperationType"));
   }
 
   /** Query the mod API to determine if this report should be run via NBS 7 or NBS 6 */
@@ -123,39 +100,17 @@ class ReportExecutionRouteLocatorConfiguration {
       final ModernizationService modService,
       final ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
     return exchange -> {
-      HashMap<String, String> params = getParamsFromBody(exchange);
       String path =
           UriComponentsBuilder.fromPath("/nbs/api/report/runner/{reportUid}/{dataSourceUid}")
               .uri(modService.uri())
               .build()
-              .expand(params)
+              .expand(getParamsFromBody(exchange))
               .toUriString();
-
-      LOGGER.log(
-          System.Logger.Level.INFO,
-          "Report execution runner lookup: reportUid=%s dataSourceUid=%s uri=%s"
-              .formatted(params.get("reportUid"), params.get("dataSourceUid"), path));
-
-      LOGGER.log(
-          System.Logger.Level.INFO,
-          "Report execution runner lookup cookies forwarded: reportUid=%s dataSourceUid=%s cookieNames=%s"
-              .formatted(
-                  params.get("reportUid"),
-                  params.get("dataSourceUid"),
-                  exchange.getRequest().getCookies().keySet()));
 
       return resolveBearerToken(exchange, authorizedClientManager)
           .defaultIfEmpty("")
           .flatMap(
               bearerToken -> {
-                LOGGER.log(
-                    System.Logger.Level.INFO,
-                    "Report execution runner lookup token relay: reportUid=%s dataSourceUid=%s bearerTokenPresent=%s"
-                        .formatted(
-                            params.get("reportUid"),
-                            params.get("dataSourceUid"),
-                            !bearerToken.isEmpty()));
-
                 WebClient.RequestHeadersSpec<?> request =
                     WebClient.create()
                         .get()
@@ -188,46 +143,16 @@ class ReportExecutionRouteLocatorConfiguration {
                           // response so they are set in the browser. This is important for auth.
                           exchange.getResponse().getCookies().addAll(response.cookies());
 
-                          LOGGER.log(
-                              System.Logger.Level.INFO,
-                              "Report execution runner lookup raw response: reportUid=%s dataSourceUid=%s status=%s setCookieNames=%s"
-                                  .formatted(
-                                      params.get("reportUid"),
-                                      params.get("dataSourceUid"),
-                                      response.statusCode(),
-                                      response.cookies().keySet()));
-
                           return response
                               .bodyToMono(String.class)
-                              .defaultIfEmpty("")
-                              .map(
-                                  runner -> {
-                                    boolean matched = REPORT_MOD_RUNNER.equals(runner);
-
-                                    LOGGER.log(
-                                        System.Logger.Level.INFO,
-                                        "Report execution runner lookup response: reportUid=%s dataSourceUid=%s status=%s runner=%s matched=%s"
-                                            .formatted(
-                                                params.get("reportUid"),
-                                                params.get("dataSourceUid"),
-                                                response.statusCode(),
-                                                runner,
-                                                matched));
-
-                                    return matched;
-                                  });
+                              .flatMap(runner -> Mono.just(REPORT_MOD_RUNNER.equals(runner)));
                         })
                     .doOnError(
                         err ->
                             LOGGER.log(
                                 System.Logger.Level.ERROR,
-                                "Error querying modernization-api for report metadata: reportUid=%s dataSourceUid=%s errorType=%s message=%s"
-                                    .formatted(
-                                        params.get("reportUid"),
-                                        params.get("dataSourceUid"),
-                                        err.getClass().getName(),
-                                        err.getMessage()),
-                                err));
+                                "Error querying modernization-api for report metadata: %s"
+                                    .formatted(err.getMessage())));
               });
     };
   }
@@ -292,12 +217,6 @@ class ReportExecutionRouteLocatorConfiguration {
 
     ServerHttpResponse response = exchange.getResponse();
     response.getHeaders().set(HttpHeaders.LOCATION, location);
-
-    LOGGER.log(
-        System.Logger.Level.INFO,
-        "Redirecting report execution request: reportUid=%s dataSourceUid=%s location=%s"
-            .formatted(params.get("reportUid"), params.get("dataSourceUid"), location));
-
     return response.setComplete();
   }
 

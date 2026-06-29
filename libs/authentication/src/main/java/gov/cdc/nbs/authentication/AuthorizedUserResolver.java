@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthorizedUserResolver {
 
-  private static final System.Logger LOGGER =
-      System.getLogger(AuthorizedUserResolver.class.getName());
-
   private static final String QUERY =
       """
       select
@@ -40,33 +37,12 @@ public class AuthorizedUserResolver {
 
   public Optional<String> resolve(final String identifier) {
 
-    Optional<String> result =
-        template
-            .query(
-                QUERY,
-                statement -> statement.setString(SESSION_PARAMETER, identifier),
-                (rs, row) -> rs.getString(USER_NAME_COLUMN))
-            .stream()
-            .findFirst();
-
-    // Diagnostic logging: only the tail of the session id is logged, never the resolved user.
-    String safeIdentifier =
-        identifier == null
-            ? "null"
-            : "..." + identifier.substring(Math.max(0, identifier.length() - 6));
-    LOGGER.log(
-        System.Logger.Level.WARNING,
-        "AuthorizedUserResolver lookup: sessionIdTail=%s found=%s datasourceUrl=%s"
-            .formatted(safeIdentifier, result.isPresent(), dataSourceUrl()));
-
-    return result;
-  }
-
-  private String dataSourceUrl() {
-    try (var connection = template.getDataSource().getConnection()) {
-      return connection.getMetaData().getURL();
-    } catch (Exception ex) {
-      return "unavailable: " + ex.getMessage();
-    }
+    return template
+        .query(
+            QUERY,
+            statement -> statement.setString(SESSION_PARAMETER, identifier),
+            (rs, row) -> rs.getString(USER_NAME_COLUMN))
+        .stream()
+        .findFirst();
   }
 }

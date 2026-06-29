@@ -15,9 +15,6 @@ public class NBSTokenValidator {
   private static final String AUTHORIZATION = "Authorization";
   private static final String BEARER = "Bearer ";
 
-  private static final System.Logger LOGGER =
-      System.getLogger(NBSTokenValidator.class.getName());
-
   private final JWTVerifier verifier;
 
   public NBSTokenValidator(final JWTVerifier verifier) {
@@ -34,24 +31,11 @@ public class NBSTokenValidator {
         DecodedJWT decoded = verifier.verify(token.get());
         return new TokenValidation(TokenStatus.VALID, decoded.getSubject());
       } catch (TokenExpiredException ex) {
-        LOGGER.log(
-            System.Logger.Level.WARNING, "NBS token expired: %s".formatted(ex.getMessage()));
         return new TokenValidation(TokenStatus.EXPIRED);
       } catch (JWTVerificationException ex) {
-        // Reason matters: a signature mismatch (e.g. SignatureVerificationException) usually
-        // means the token was signed with a different `nbs.security.tokenSecret` than this
-        // instance is configured with - check that the secret is identical across all
-        // gateway/modernization-api replicas/environments.
-        LOGGER.log(
-            System.Logger.Level.WARNING,
-            "NBS token invalid: type=%s message=%s"
-                .formatted(ex.getClass().getSimpleName(), ex.getMessage()));
         return new TokenValidation(TokenStatus.INVALID);
       }
     } else {
-      LOGGER.log(
-          System.Logger.Level.WARNING,
-          "NBS token unset: no Authorization header or nbs_token cookie present");
       return new TokenValidation(TokenStatus.UNSET);
     }
   }
