@@ -210,6 +210,7 @@ class FilterValueMapperTest {
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
+      assertThat(result).hasSize(3);
       assertThat(result).allSatisfy(fv -> assertThat(fv.getId()).isEqualTo(generatedId));
     }
 
