@@ -164,7 +164,7 @@ def setup_containers_with_seed_data(setup_containers):
         # Baseline mappings required across the testing landscape
         baseline_configs = [
             ('NBS_RDB', 'RDB', 'RDB'),
-            ('NBS_ODSE', 'NBS_ODSE', 'NBS_ODSE'),
+            ('NBS_ODS', 'NBS_ODSE', 'NBS_ODSE'),
             ('NBS_SRTE', 'NBS_SRTE', 'NBS_SRTE'),
             ('REPORT_MAX_ROW_LIMIT_EXPORT', '100000', '100000'),
             ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000'),
