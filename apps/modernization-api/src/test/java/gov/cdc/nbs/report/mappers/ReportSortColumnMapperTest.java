@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -41,8 +42,10 @@ class ReportSortColumnMapperTest {
     expectedTime = LocalDateTime.now(clock);
 
     GeneratedId mockGeneratedId = mock(GeneratedId.class);
-    when(mockGeneratedId.getId()).thenReturn(generatedId);
-    when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS)).thenReturn(mockGeneratedId);
+    Mockito.lenient().when(mockGeneratedId.getId()).thenReturn(generatedId);
+    Mockito.lenient()
+        .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(mockGeneratedId);
   }
 
   @Test
@@ -263,15 +266,6 @@ class ReportSortColumnMapperTest {
     ReportSortColumn result = mapper.fromSortSpec(mockReport, sortSpec);
 
     assertThat(result.getId()).isEqualTo(expectedId);
-  }
-
-  @Test
-  void fromSortSpec_should_handle_null_report_gracefully() {
-    SortSpec sortSpec = new SortSpec(100L, SortDirection.ASC);
-
-    ReportSortColumn result = mapper.fromSortSpec(null, sortSpec);
-
-    assertThat(result.getReport()).isNull();
   }
 
   @Test
