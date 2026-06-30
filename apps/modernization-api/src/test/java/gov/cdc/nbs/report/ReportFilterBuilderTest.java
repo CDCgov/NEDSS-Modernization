@@ -6,18 +6,23 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
+import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -40,6 +45,7 @@ class ReportFilterBuilderTest {
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private IdGeneratorService idGenerator;
+  @Mock private FilterValueMapper filterValueMapper;
 
   @InjectMocks private ReportFilterBuilder builder;
 
@@ -274,5 +280,277 @@ class ReportFilterBuilderTest {
         Arguments.of(19L),
         Arguments.of(20L),
         Arguments.of(21L));
+  }
+
+  @Test
+  void duplicate_should_generate_new_id() {
+    ReportFilter originalFilter = buildReportFilter();
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getId()).isEqualTo(500L);
+    assertThat(duplicatedFilter.getId()).isNotEqualTo(originalFilter.getId());
+  }
+
+  @Test
+  void duplicate_should_preserve_report_reference() {
+    Report mockReport = mock(Report.class);
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setReport(mockReport);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getReport()).isEqualTo(mockReport);
+  }
+
+  @Test
+  void duplicate_should_preserve_filter_code() {
+    FilterCode filterCode = mock(FilterCode.class);
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setFilterCode(filterCode);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterCode()).isEqualTo(filterCode);
+  }
+
+  @Test
+  void duplicate_should_preserve_data_source_column() {
+    DataSourceColumn dataSourceColumn = mock(DataSourceColumn.class);
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setDataSourceColumn(dataSourceColumn);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getDataSourceColumn()).isEqualTo(dataSourceColumn);
+  }
+
+  @Test
+  void duplicate_should_preserve_status_code() {
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setStatusCd('I');
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getStatusCd()).isEqualTo('I');
+  }
+
+  @Test
+  void duplicate_should_preserve_min_value_count() {
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setMinValueCnt(2);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getMinValueCnt()).isEqualTo(2);
+  }
+
+  @Test
+  void duplicate_should_preserve_max_value_count() {
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setMaxValueCnt(10);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getMaxValueCnt()).isEqualTo(10);
+  }
+
+  @Test
+  void duplicate_should_duplicate_filter_validation_when_present() {
+    ReportFilter originalFilter = buildReportFilter();
+    ReportFilterValidation validation = mock(ReportFilterValidation.class);
+    when(validation.getReportFilterInd()).thenReturn('Y');
+    when(validation.getStatusCd()).thenReturn('A');
+    when(validation.getStatusTime()).thenReturn(LocalDateTime.now(clock));
+    originalFilter.setFilterValidation(validation);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L))
+        .thenReturn(new IdGeneratorService.GeneratedId(501L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterValidation()).isNotNull();
+    assertThat(duplicatedFilter.getFilterValidation().getReportFilterInd()).isEqualTo('Y');
+    assertThat(duplicatedFilter.getFilterValidation().getStatusCd()).isEqualTo('A');
+    assertThat(duplicatedFilter.getFilterValidation().getReportFilter())
+        .isEqualTo(duplicatedFilter);
+  }
+
+  @Test
+  void duplicate_should_generate_new_validation_id() {
+    ReportFilter originalFilter = buildReportFilter();
+    ReportFilterValidation validation = mock(ReportFilterValidation.class);
+    when(validation.getReportFilterInd()).thenReturn('Y');
+    when(validation.getStatusCd()).thenReturn('A');
+    when(validation.getStatusTime()).thenReturn(LocalDateTime.now(clock));
+    originalFilter.setFilterValidation(validation);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L))
+        .thenReturn(new IdGeneratorService.GeneratedId(501L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterValidation().getId()).isEqualTo(501L);
+  }
+
+  @Test
+  void duplicate_should_handle_null_filter_validation() {
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setFilterValidation(null);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterValidation()).isNull();
+  }
+
+  @Test
+  void duplicate_should_duplicate_filter_values() {
+    ReportFilter originalFilter = buildReportFilter();
+    FilterValue filterValue = mock(FilterValue.class);
+    filterValue.setId(1L);
+    filterValue.setValueTxt("test_value");
+    originalFilter.setFilterValues(Collections.singletonList(filterValue));
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    FilterValue duplicatedFilterValue = mock(FilterValue.class);
+    duplicatedFilterValue.setId(2L);
+    duplicatedFilterValue.setValueTxt("test_value");
+
+    Mockito.when(filterValueMapper.duplicate(filterValue)).thenReturn(duplicatedFilterValue);
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterValues()).hasSize(1);
+    assertThat(duplicatedFilter.getFilterValues().getFirst()).isEqualTo(duplicatedFilterValue);
+  }
+
+  @Test
+  void duplicate_should_handle_null_filter_values() {
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setFilterValues(null);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterValues()).isNull();
+  }
+
+  @Test
+  void duplicate_should_handle_empty_filter_values() {
+    ReportFilter originalFilter = buildReportFilter();
+    originalFilter.setFilterValues(Collections.emptyList());
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L));
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter.getFilterValues()).isEmpty();
+  }
+
+  @Test
+  void duplicate_should_preserve_all_fields_when_fully_populated() {
+    Report mockReport = mock(Report.class);
+    FilterCode filterCode = mock(FilterCode.class);
+    DataSourceColumn dataSourceColumn = mock(DataSourceColumn.class);
+    ReportFilterValidation validation = mock(ReportFilterValidation.class);
+    when(validation.getReportFilterInd()).thenReturn('Y');
+    when(validation.getStatusCd()).thenReturn(Status.ACTIVE_CODE);
+    when(validation.getStatusTime()).thenReturn(LocalDateTime.now(clock));
+
+    ReportFilter originalFilter =
+        ReportFilter.builder()
+            .id(100L)
+            .report(mockReport)
+            .filterCode(filterCode)
+            .dataSourceColumn(dataSourceColumn)
+            .statusCd(Status.ACTIVE_CODE)
+            .minValueCnt(1)
+            .maxValueCnt(5)
+            .filterValidation(validation)
+            .build();
+
+    FilterValue filterValue = mock(FilterValue.class);
+    filterValue.setId(1L);
+    originalFilter.setFilterValues(Collections.singletonList(filterValue));
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L))
+        .thenReturn(new IdGeneratorService.GeneratedId(501L));
+
+    FilterValue duplicatedFilterValue = mock(FilterValue.class);
+    duplicatedFilterValue.setId(2L);
+    Mockito.when(filterValueMapper.duplicate(filterValue)).thenReturn(duplicatedFilterValue);
+
+    ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
+
+    assertThat(duplicatedFilter).isNotNull();
+    assertThat(duplicatedFilter.getId()).isEqualTo(500L);
+    assertThat(duplicatedFilter.getReport()).isEqualTo(mockReport);
+    assertThat(duplicatedFilter.getFilterCode()).isEqualTo(filterCode);
+    assertThat(duplicatedFilter.getDataSourceColumn()).isEqualTo(dataSourceColumn);
+    assertThat(duplicatedFilter.getStatusCd()).isEqualTo('A');
+    assertThat(duplicatedFilter.getMinValueCnt()).isEqualTo(1);
+    assertThat(duplicatedFilter.getMaxValueCnt()).isEqualTo(5);
+    assertThat(duplicatedFilter.getFilterValidation()).isNotNull();
+    assertThat(duplicatedFilter.getFilterValidation().getId()).isEqualTo(501L);
+    assertThat(duplicatedFilter.getFilterValues()).hasSize(1);
+  }
+
+  @Test
+  void duplicate_should_call_id_generator_multiple_times_when_validation_exists() {
+    ReportFilter originalFilter = buildReportFilter();
+    ReportFilterValidation validation = mock(ReportFilterValidation.class);
+    when(validation.getReportFilterInd()).thenReturn('Y');
+    when(validation.getStatusCd()).thenReturn('A');
+    when(validation.getStatusTime()).thenReturn(LocalDateTime.now(clock));
+    originalFilter.setFilterValidation(validation);
+
+    Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+        .thenReturn(new IdGeneratorService.GeneratedId(500L))
+        .thenReturn(new IdGeneratorService.GeneratedId(501L));
+
+    builder.duplicate(originalFilter);
+
+    Mockito.verify(idGenerator, Mockito.times(2)).getNextValidId(IdGeneratorService.EntityType.NBS);
+  }
+
+  private ReportFilter buildReportFilter() {
+    return ReportFilter.builder()
+        .id(100L)
+        .report(mock(Report.class))
+        .filterCode(mock(FilterCode.class))
+        .statusCd('A')
+        .build();
   }
 }

@@ -96,4 +96,171 @@ class ReportSortColumnMapperTest {
 
     verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
   }
+
+  @Test
+  void duplicate_should_generate_new_unique_id() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setReportSortSequenceNum(1);
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+    originalColumn.setReport(mockReport);
+
+    long newId = 999L;
+    GeneratedId newGeneratedId = mock(GeneratedId.class);
+    when(newGeneratedId.getId()).thenReturn(newId);
+    when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS)).thenReturn(newGeneratedId);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getId()).isEqualTo(newId);
+    assertThat(duplicatedColumn.getId()).isNotEqualTo(originalColumn.getId());
+  }
+
+  @Test
+  void duplicate_should_preserve_sort_order_code() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("DESC");
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getReportSortOrderCode()).isEqualTo("DESC");
+  }
+
+  @Test
+  void duplicate_should_preserve_sort_sequence_number() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setReportSortSequenceNum(5);
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getReportSortSequenceNum()).isEqualTo(5);
+  }
+
+  @Test
+  void duplicate_should_preserve_data_source_column_uid() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setDataSourceColumnUid(500L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getDataSourceColumnUid()).isEqualTo(500L);
+  }
+
+  @Test
+  void duplicate_should_preserve_status_code() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('I');
+    originalColumn.setStatusTime(expectedTime);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getStatusCd()).isEqualTo('I');
+  }
+
+  @Test
+  void duplicate_should_preserve_status_time() {
+    LocalDateTime customTime = LocalDateTime.now(clock).minusDays(5);
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(customTime);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getStatusTime()).isEqualTo(customTime);
+  }
+
+  @Test
+  void duplicate_should_preserve_report_reference() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+    originalColumn.setReport(mockReport);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getReport()).isEqualTo(mockReport);
+  }
+
+  @Test
+  void duplicate_should_preserve_all_fields_when_fully_populated() {
+    LocalDateTime customTime = LocalDateTime.now(clock).minusDays(10);
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("DESC");
+    originalColumn.setReportSortSequenceNum(3);
+    originalColumn.setDataSourceColumnUid(750L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(customTime);
+    originalColumn.setReport(mockReport);
+
+    long newId = 456L;
+    GeneratedId newGeneratedId = mock(GeneratedId.class);
+    when(newGeneratedId.getId()).thenReturn(newId);
+    when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS)).thenReturn(newGeneratedId);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn).isNotNull();
+    assertThat(duplicatedColumn.getId()).isEqualTo(newId);
+    assertThat(duplicatedColumn.getReportSortOrderCode()).isEqualTo("DESC");
+    assertThat(duplicatedColumn.getReportSortSequenceNum()).isEqualTo(3);
+    assertThat(duplicatedColumn.getDataSourceColumnUid()).isEqualTo(750L);
+    assertThat(duplicatedColumn.getStatusCd()).isEqualTo('A');
+    assertThat(duplicatedColumn.getStatusTime()).isEqualTo(customTime);
+    assertThat(duplicatedColumn.getReport()).isEqualTo(mockReport);
+  }
+
+  @Test
+  void duplicate_should_call_id_generator_exactly_once() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+
+    mapper.duplicate(originalColumn);
+
+    verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
+  }
+
+  @Test
+  void duplicate_should_handle_null_sequence_number() {
+    ReportSortColumn originalColumn = mock(ReportSortColumn.class);
+    originalColumn.setId(123L);
+    originalColumn.setReportSortOrderCode("ASC");
+    originalColumn.setReportSortSequenceNum(null);
+    originalColumn.setDataSourceColumnUid(100L);
+    originalColumn.setStatusCd('A');
+    originalColumn.setStatusTime(expectedTime);
+
+    ReportSortColumn duplicatedColumn = mapper.duplicate(originalColumn);
+
+    assertThat(duplicatedColumn.getReportSortSequenceNum()).isNull();
+  }
 }
