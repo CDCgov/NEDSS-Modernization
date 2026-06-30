@@ -676,7 +676,6 @@ class ReportServiceTest {
   class SaveReport {
     private final Long reportUid = 1L;
     private final Long dataSourceUid = 2L;
-    private final ReportId reportId = new ReportId(reportUid, dataSourceUid);
     private Report existingReport;
     private Report savedReport;
 

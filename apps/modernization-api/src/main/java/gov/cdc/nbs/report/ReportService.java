@@ -407,9 +407,7 @@ public class ReportService {
                                   new NotFoundException(
                                       "No matching column found for ID " + columnId));
 
-                  DisplayColumn col =
-                      displayColumnBuilder.build(report, matchingColumn, seq.getAndIncrement());
-                  return col;
+                  return displayColumnBuilder.build(report, matchingColumn, seq.getAndIncrement());
                 })
             .toList();
 
