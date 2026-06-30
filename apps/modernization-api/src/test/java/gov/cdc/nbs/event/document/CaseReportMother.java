@@ -64,7 +64,7 @@ public class CaseReportMother {
           1003,
           :programArea,
           :jurisdiction,
-          :oid
+          :oid,
           :addedOn
       );
 
