@@ -29,10 +29,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestClient.RequestBodySpec;
-import org.springframework.web.client.RestClient.RequestBodyUriSpec;
-import org.springframework.web.client.RestClient.ResponseSpec;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
@@ -50,54 +46,16 @@ class ReportServiceTest {
   @Mock private ReportSortColumnMapper reportSortColumnMapper;
   @Mock private FilterValueMapper filterValueMapper;
   @Mock private DisplayColumnBuilder displayColumnBuilder;
+  @Mock private ReportFetcher reportFetcher;
 
-  @Mock private RestClient reportExecutionClient;
-  @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
-  @Mock private ReportSortColumn reportSortColumn;
   @Mock private ReportFilterBuilder reportFilterBuilder;
-
-  @Mock private RequestBodyUriSpec requestBodyUriSpec;
-  @Mock private RequestBodySpec requestBodySpec;
-  @Mock private ResponseSpec responseSpec;
-  @Mock private DisplayColumn columnA;
-  @Mock private DisplayColumn columnB;
 
   @InjectMocks private ReportService service;
 
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
-  private final Long columnAId = 3L;
-  private final Long columnBId = 4L;
-
-  private Report mockReport(
-      ReportId id,
-      String runner,
-      String dataSourceName,
-      List<ReportFilter> reportFilters,
-      String sortDir) {
-    Report report = mock(Report.class);
-
-    Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
-    Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
-    Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
-    Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
-    Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
-    Mockito.lenient().when(report.getShared()).thenReturn('P');
-    Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
-    Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
-    Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
-    Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
-    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
-    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
-    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
-    Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
-    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
-    Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
-
-    return report;
-  }
 
   @Nested
   class CreateReport {
@@ -972,6 +930,95 @@ class ReportServiceTest {
 
       verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
+    }
+  }
+
+  @Nested
+  class SaveAsReport {
+    private final Long reportUid = 1L;
+    private final Long dataSourceUid = 2L;
+    private final ReportId existingReportId = new ReportId(reportUid, dataSourceUid);
+    private Report existingReport;
+    private Report newReport;
+
+    private NbsUserDetails mockUser;
+
+    @BeforeEach
+    void setup() {
+      existingReport = mock(Report.class);
+      when(existingReport.getId()).thenReturn(existingReportId);
+      newReport = mock(Report.class);
+
+      mockUser = mock(NbsUserDetails.class);
+
+      Mockito.lenient()
+          .when(reportRepository.findById(existingReportId))
+          .thenReturn(Optional.of(existingReport));
+      Mockito.lenient().when(reportRepository.save(existingReport)).thenReturn(newReport);
+    }
+
+    @Test
+    void saveAsReport_should_duplicate_original_report_and_override_select_fields() {
+      ReportExecutionRequest reportExecutionRequest =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "Custom Title",
+              "Custom",
+              ReportConstants.ReportGroup.PUBLIC,
+              reportExecutionRequest,
+              "some description text");
+
+      Report result = service.saveAsReport(request, mockUser, existingReportId);
+
+      verify(reportMapper).duplicate(existingReport);
+
+      assertThat(result.getReportTitle()).isEqualTo(request.reportTitle());
+      assertThat(result.getSectionCd()).isEqualTo(request.sectionCode());
+      assertThat(result.getShared())
+          .isEqualTo(ReportConstants.reportGroupToDbChar(request.group()));
+      assertThat(result.getDescTxt()).isEqualTo(request.description());
+    }
+
+    @Test
+    void saveAsReport_should_set_owner_uid_to_user_making_request() {
+      ReportExecutionRequest reportExecutionRequest =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "Custom Title",
+              "Custom",
+              ReportConstants.ReportGroup.PUBLIC,
+              reportExecutionRequest,
+              "some description text");
+
+      Report result = service.saveAsReport(request, mockUser, existingReportId);
+
+      assertThat(result.getOwnerUid()).isEqualTo(mockUser.getId());
+    }
+
+    @Test
+    void saveAsReport_should_set_custom_fields_on_new_report() {}
+
+    @Test
+    void saveAsReport_should_invoke_saveReport_with_new_report_id() {
+      ReportExecutionRequest reportExecutionRequest =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "Custom Title",
+              "Custom",
+              ReportConstants.ReportGroup.PUBLIC,
+              reportExecutionRequest,
+              "some description text");
+
+      Report finalReport = mock(Report.class);
+      when(service.saveReport(reportExecutionRequest, newReport.getId())).thenReturn(finalReport);
+
+      Report result = service.saveAsReport(request, mockUser, existingReportId);
+
+      verify(service).saveReport(reportExecutionRequest, newReport.getId());
+      assertThat(result).isEqualTo(finalReport);
     }
   }
 }

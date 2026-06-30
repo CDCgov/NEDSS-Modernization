@@ -164,7 +164,9 @@ public class ReportService {
       duplicate.setDescTxt(request.description());
     }
 
-    return saveReport(request.executionRequest(), reportId);
+    reportRepository.save(duplicate);
+
+    return saveReport(request.executionRequest(), duplicate.getId());
   }
 
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
