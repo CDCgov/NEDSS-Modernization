@@ -27,7 +27,6 @@ import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -248,7 +247,6 @@ public class ReportService {
 
     report.getDisplayColumns().clear();
 
-    AtomicInteger seq = new AtomicInteger(1);
     List<DisplayColumn> newDisplayColumns =
         displayColumnIds.stream()
             .map(
@@ -262,12 +260,14 @@ public class ReportService {
                                   new NotFoundException(
                                       "No matching column found for ID " + columnId));
 
-                  DisplayColumn col = displayColumnBuilder.build(report, matchingColumn, seq.get());
-
-                  seq.getAndIncrement();
-                  return col;
+                  return displayColumnBuilder.build(report, matchingColumn);
                 })
             .toList();
+
+    for (int i = 0; i < newDisplayColumns.size(); i++) {
+      DisplayColumn newDisplayColumn = newDisplayColumns.get(i);
+      newDisplayColumn.setSequenceNumber(i + 1);
+    }
 
     report.getDisplayColumns().addAll(newDisplayColumns);
   }

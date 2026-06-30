@@ -8,7 +8,6 @@ import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
 import gov.cdc.nbs.id.IdGeneratorService;
-import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.models.UpsertFilterRequest;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
 import gov.cdc.nbs.repository.DataSourceColumnRepository;
@@ -25,51 +24,40 @@ public class ReportFilterBuilder {
   private final FilterCodeRepository filterCodeRepository;
   private final IdGeneratorService idGenerator;
 
-  private final FilterValueMapper filterValueMapper;
-
   public ReportFilterBuilder(
       final Clock clock,
       DataSourceColumnRepository dataSourceColumnRepository,
       FilterCodeRepository filterCodeRepository,
-      IdGeneratorService idGenerator,
-      FilterValueMapper filterValueMapper) {
+      IdGeneratorService idGenerator) {
     this.clock = clock;
     this.dataSourceColumnRepository = dataSourceColumnRepository;
     this.filterCodeRepository = filterCodeRepository;
     this.idGenerator = idGenerator;
-    this.filterValueMapper = filterValueMapper;
   }
 
-  public ReportFilter duplicate(ReportFilter filter) {
+  public ReportFilter duplicate(ReportFilter originalFilter) {
     ReportFilter newFilter =
-        ReportFilter.builder()
-            .id(generateId())
-            .report(filter.getReport())
-            .filterCode(filter.getFilterCode())
-            .dataSourceColumn(filter.getDataSourceColumn())
-            .statusCd(filter.getStatusCd())
-            .maxValueCnt(filter.getMaxValueCnt())
-            .minValueCnt(filter.getMinValueCnt())
-            .build();
+        originalFilter.toBuilder().id(generateId()).statusCd(Status.ACTIVE_CODE).build();
 
-    ReportFilterValidation validation = filter.getFilterValidation();
-    if (validation != null) {
+    ReportFilterValidation originalValidation = originalFilter.getFilterValidation();
+    if (originalValidation != null) {
       ReportFilterValidation newValidation =
-          ReportFilterValidation.builder()
+          originalValidation.toBuilder()
               .id(generateId())
               .reportFilter(newFilter)
-              .reportFilterInd(validation.getReportFilterInd())
-              .statusCd(validation.getStatusCd())
-              .statusTime(validation.getStatusTime())
+              .statusCd(Status.ACTIVE_CODE)
+              .statusTime(LocalDateTime.now(clock))
               .build();
 
       newFilter.setFilterValidation(newValidation);
     }
 
-    List<FilterValue> filterValues = filter.getFilterValues();
-    if (filter.getFilterValues() != null) {
+    List<FilterValue> originalFilterValues = originalFilter.getFilterValues();
+    if (originalFilter.getFilterValues() != null) {
       List<FilterValue> newFilterValues =
-          filterValues.stream().map(filterValueMapper::duplicate).toList();
+          originalFilterValues.stream()
+              .map(f -> f.toBuilder().id(generateId()).reportFilter(newFilter).build())
+              .toList();
       newFilter.setFilterValues(newFilterValues);
     }
 

@@ -474,15 +474,14 @@ class ReportServiceTest {
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
       DisplayColumn displayColumn3 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(savedReport, column1, 1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(savedReport, column2, 2)).thenReturn(displayColumn2);
-      when(displayColumnBuilder.build(savedReport, column3, 3)).thenReturn(displayColumn3);
+      when(displayColumnBuilder.build(savedReport, column1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(savedReport, column2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(savedReport, column3)).thenReturn(displayColumn3);
 
       Report result = service.saveReport(request, reportId);
 
       verify(savedReport, times(2)).getDisplayColumns();
-      verify(displayColumnBuilder, times(3))
-          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
+      verify(displayColumnBuilder, times(3)).build(any(Report.class), any(DataSourceColumn.class));
 
       verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
@@ -861,7 +860,7 @@ class ReportServiceTest {
       when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter, advancedFilter));
 
       DisplayColumn displayColumn = mock(DisplayColumn.class);
-      when(displayColumnBuilder.build(savedReport, column1, 1)).thenReturn(displayColumn);
+      when(displayColumnBuilder.build(savedReport, column1)).thenReturn(displayColumn);
 
       ReportSortColumn sortColumn = mock(ReportSortColumn.class);
       when(reportSortColumnMapper.fromSortSpec(savedReport, sortSpec)).thenReturn(sortColumn);
@@ -875,8 +874,7 @@ class ReportServiceTest {
 
       Report result = service.saveReport(request, reportId);
 
-      verify(displayColumnBuilder)
-          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
+      verify(displayColumnBuilder).build(any(Report.class), any(DataSourceColumn.class));
       verify(reportSortColumnMapper).fromSortSpec(any(), any());
       verify(filterValueMapper).fromBasicFilterRequest(any(), any());
       verify(filterValueMapper).fromAdvancedFilterRequest(any(), any());
@@ -903,13 +901,12 @@ class ReportServiceTest {
       DisplayColumn displayColumn1 = mock(DisplayColumn.class);
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(savedReport, column1, 1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(savedReport, column2, 2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(savedReport, column1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(savedReport, column2)).thenReturn(displayColumn2);
 
       Report result = service.saveReport(request, reportId);
 
-      verify(displayColumnBuilder, times(2))
-          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
+      verify(displayColumnBuilder, times(2)).build(any(Report.class), any(DataSourceColumn.class));
 
       verify(reportRepository).save(savedReport);
       assertThat(result).isEqualTo(savedReport);
