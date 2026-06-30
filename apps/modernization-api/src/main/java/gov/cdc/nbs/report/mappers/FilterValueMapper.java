@@ -21,18 +21,6 @@ public class FilterValueMapper {
     this.idGenerator = idGenerator;
   }
 
-  public FilterValue duplicate(FilterValue filterValue) {
-    return FilterValue.builder()
-        .id(generateFilterValueId())
-        .reportFilter(filterValue.getReportFilter())
-        .sequenceNumber(filterValue.getSequenceNumber())
-        .valueType(filterValue.getValueType())
-        .columnUid(filterValue.getColumnUid())
-        .operator(filterValue.getOperator())
-        .valueTxt(filterValue.getValueTxt())
-        .build();
-  }
-
   public List<FilterValue> fromBasicFilterRequest(
       ReportFilter basicFilter, BasicFilterRequest request) {
     return request.values().stream()

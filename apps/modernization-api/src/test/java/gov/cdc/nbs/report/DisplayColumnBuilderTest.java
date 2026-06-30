@@ -50,8 +50,6 @@ class DisplayColumnBuilderTest {
         .thenReturn(mockGeneratedId);
   }
 
-  @Nested
-  class Build {
     @Test
     void build_should_create_display_column_with_correct_properties() {
       int sequence = 1;
@@ -285,54 +283,4 @@ class DisplayColumnBuilderTest {
       assertThat(result.getStatusCd()).isNotNull();
       assertThat(result.getStatusTime()).isNotNull();
     }
-  }
-
-  @Nested
-  class Duplicate {
-    long nextColumnId = 456L;
-
-    @BeforeEach
-    void setUp() {
-      GeneratedId newGeneratedId = mock(GeneratedId.class);
-      when(newGeneratedId.getId()).thenReturn(nextColumnId);
-      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
-          .thenReturn(newGeneratedId);
-    }
-
-    @Test
-    void duplicate_should_preserve_all_fields() {
-      DisplayColumn originalColumn = buildTestDisplayColumn();
-
-      DisplayColumn duplicatedColumn = builder.duplicate(originalColumn);
-
-      assertThat(duplicatedColumn).isNotNull();
-      assertThat(duplicatedColumn.getDataSourceColumn()).isEqualTo(mockColumn);
-      assertThat(duplicatedColumn.getReport()).isEqualTo(mockReport);
-      assertThat(duplicatedColumn.getSequenceNumber())
-          .isEqualTo(originalColumn.getSequenceNumber());
-      assertThat(duplicatedColumn.getStatusCd()).isEqualTo(originalColumn.getStatusCd());
-      assertThat(duplicatedColumn.getStatusTime()).isEqualTo(originalColumn.getStatusTime());
-    }
-
-    @Test
-    void duplicate_should_have_different_id_than_original() {
-      DisplayColumn original = buildTestDisplayColumn();
-
-      DisplayColumn duplicate = builder.duplicate(original);
-
-      assertThat(duplicate.getId()).isNotEqualTo(original.getId());
-      assertThat(duplicate.getId()).isEqualTo(nextColumnId);
-    }
-  }
-
-  private DisplayColumn buildTestDisplayColumn() {
-    return DisplayColumn.builder()
-        .id(87403L)
-        .dataSourceColumn(mockColumn)
-        .report(mockReport)
-        .sequenceNumber(7)
-        .statusCd(Status.ACTIVE_CODE)
-        .statusTime(LocalDateTime.now(clock))
-        .build();
-  }
 }

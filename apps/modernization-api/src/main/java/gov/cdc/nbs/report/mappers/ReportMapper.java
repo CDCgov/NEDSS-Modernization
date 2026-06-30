@@ -23,67 +23,39 @@ import org.springframework.stereotype.Service;
 public class ReportMapper {
   private final Clock clock;
   private final IdGeneratorService idGenerator;
-  private final ReportSortColumnMapper reportSortColumnMapper;
-  private final ReportFilterBuilder reportFilterBuilder;
-  private final DisplayColumnBuilder displayColumnBuilder;
 
   public ReportMapper(
       final Clock clock,
-      IdGeneratorService idGenerator,
-      ReportSortColumnMapper reportSortColumnMapper,
-      ReportFilterBuilder reportFilterBuilder,
-      DisplayColumnBuilder displayColumnBuilder) {
+      IdGeneratorService idGenerator) {
     this.clock = clock;
     this.idGenerator = idGenerator;
-    this.reportSortColumnMapper = reportSortColumnMapper;
-    this.reportFilterBuilder = reportFilterBuilder;
-    this.displayColumnBuilder = displayColumnBuilder;
   }
 
-  public Report duplicate(Report report) {
+  public Report duplicate(Report existingReport) {
     Report newReport =
-        Report.builder()
-            .id(new ReportId(generateReportId(), report.getDataSource().getId()))
-            .dataSource(report.getDataSource())
-            .reportLibrary(report.getReportLibrary())
-            .descTxt(report.getDescTxt())
-            .effectiveTime(report.getEffectiveTime())
-            .filterMode(report.getFilterMode())
-            .isModifiableIndicator(report.getIsModifiableIndicator())
-            .location(report.getLocation())
-            .ownerUid(report.getOwnerUid())
-            .orgAccessPermission(report.getOrgAccessPermission())
-            .progAreaAccessPermission(report.getProgAreaAccessPermission())
-            .reportTitle(report.getReportTitle())
-            .reportTypeCode(report.getReportTypeCode())
-            .shared(report.getShared())
-            .category(report.getCategory())
-            .sectionCd(report.getSectionCd())
-            .addReasonCd(report.getSectionCd())
-            .addTime(report.getAddTime())
-            .addUserUid(report.getAddUserUid())
-            .status(report.getStatus())
+        existingReport.toBuilder()
+                .id(new ReportId(generateId(), existingReport.getDataSource().getId()))
             .build();
 
-    if (report.getReportSortColumns() != null) {
+    if (existingReport.getReportSortColumns() != null) {
       List<ReportSortColumn> newSortColumns =
-          report.getReportSortColumns().stream().map(reportSortColumnMapper::duplicate).toList();
+          existingReport.getReportSortColumns().stream().map(c -> c.toBuilder().id(generateId()).build()).toList();
 
       newSortColumns.forEach(newSortColumn -> newSortColumn.setReport(newReport));
       newReport.setReportSortColumns(newSortColumns);
     }
 
-    if (report.getReportFilters() != null) {
+    if (existingReport.getReportFilters() != null) {
       List<ReportFilter> newFilters =
-          report.getReportFilters().stream().map(reportFilterBuilder::duplicate).toList();
+          existingReport.getReportFilters().stream().map(f -> f.toBuilder().id(generateId()).build()).toList();
 
       newFilters.forEach(newFilter -> newFilter.setReport(newReport));
       newReport.setReportFilters(newFilters);
     }
 
-    if (report.getDisplayColumns() != null) {
+    if (existingReport.getDisplayColumns() != null) {
       List<DisplayColumn> newDisplayColumns =
-          report.getDisplayColumns().stream().map(displayColumnBuilder::duplicate).toList();
+          existingReport.getDisplayColumns().stream().map(c -> c.toBuilder().id(generateId()).build()).toList();
 
       newDisplayColumns.forEach(newDisplayColumn -> newDisplayColumn.setReport(newReport));
       newReport.setDisplayColumns(newDisplayColumns);
@@ -104,7 +76,7 @@ public class ReportMapper {
     if (report == null) {
       report =
           Report.builder()
-              .id(new ReportId(generateReportId(), dataSource.getId()))
+              .id(new ReportId(generateId(), dataSource.getId()))
               .addTime(now)
               .addUserUid((user.getId()))
               .dataSource(dataSource)
@@ -133,7 +105,7 @@ public class ReportMapper {
     return report;
   }
 
-  private Long generateReportId() {
+  private Long generateId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }

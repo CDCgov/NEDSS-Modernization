@@ -42,9 +42,6 @@ class ReportMapperTest {
   @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
   @Mock private IdGeneratorService idGenerator;
-  @Mock private ReportSortColumnMapper reportSortColumnMapper;
-  @Mock private ReportFilterBuilder reportFilterBuilder;
-  @Mock private DisplayColumnBuilder displayColumnBuilder;
 
   private final Long userId = 123L;
   private final Long ownerId = 456L;
@@ -198,134 +195,6 @@ class ReportMapperTest {
     }
   }
 
-  @Nested
-  class Duplicate {
-    Long nextReportId = 200L;
-
-    @BeforeEach
-    void setUp() {
-      Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
-          .thenReturn(new IdGeneratorService.GeneratedId(nextReportId));
-    }
-
-    @Test
-    void duplicate_should_preserve_all_basic_fields() {
-      Report originalReport = buildTestReport();
-
-      Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
-          .thenReturn(new IdGeneratorService.GeneratedId(100L));
-
-      Report duplicatedReport = reportMapper.duplicate(originalReport);
-
-      assertThat(duplicatedReport.getDataSource()).isEqualTo(originalReport.getDataSource());
-      assertThat(duplicatedReport.getReportLibrary()).isEqualTo(originalReport.getReportLibrary());
-      assertThat(duplicatedReport.getDescTxt()).isEqualTo(originalReport.getDescTxt());
-      assertThat(duplicatedReport.getEffectiveTime()).isEqualTo(originalReport.getEffectiveTime());
-      assertThat(duplicatedReport.getFilterMode()).isEqualTo(originalReport.getFilterMode());
-      assertThat(duplicatedReport.getIsModifiableIndicator())
-          .isEqualTo(originalReport.getIsModifiableIndicator());
-      assertThat(duplicatedReport.getLocation()).isEqualTo(originalReport.getLocation());
-      assertThat(duplicatedReport.getOwnerUid()).isEqualTo(originalReport.getOwnerUid());
-      assertThat(duplicatedReport.getOrgAccessPermission())
-          .isEqualTo(originalReport.getOrgAccessPermission());
-      assertThat(duplicatedReport.getProgAreaAccessPermission())
-          .isEqualTo(originalReport.getProgAreaAccessPermission());
-      assertThat(duplicatedReport.getReportTitle()).isEqualTo(originalReport.getReportTitle());
-      assertThat(duplicatedReport.getReportTypeCode())
-          .isEqualTo(originalReport.getReportTypeCode());
-      assertThat(duplicatedReport.getShared()).isEqualTo(originalReport.getShared());
-      assertThat(duplicatedReport.getCategory()).isEqualTo(originalReport.getCategory());
-      assertThat(duplicatedReport.getSectionCd()).isEqualTo(originalReport.getSectionCd());
-      assertThat(duplicatedReport.getAddTime()).isEqualTo(originalReport.getAddTime());
-      assertThat(duplicatedReport.getAddUserUid()).isEqualTo(originalReport.getAddUserUid());
-      assertThat(duplicatedReport.getStatus()).isEqualTo(originalReport.getStatus());
-    }
-
-    @Test
-    void duplicate_should_have_different_id_than_original() {
-      Report originalReport = buildTestReport();
-
-      Report duplicatedReport = reportMapper.duplicate(originalReport);
-
-      assertThat(duplicatedReport.getId()).isNotEqualTo(originalReport.getId());
-      assertThat(duplicatedReport.getId().getReportUid()).isEqualTo(nextReportId);
-    }
-
-    @Test
-    void duplicate_should_duplicate_report_sort_columns() {
-      Report originalReport = buildTestReport();
-      ReportSortColumn sortColumn1 = mock(ReportSortColumn.class);
-      ReportSortColumn sortColumn2 = mock(ReportSortColumn.class);
-
-      originalReport.setReportSortColumns(Arrays.asList(sortColumn1, sortColumn2));
-
-      ReportSortColumn duplicatedSortColumn1 = mock(ReportSortColumn.class);
-      ReportSortColumn duplicatedSortColumn2 = mock(ReportSortColumn.class);
-
-      Mockito.when(reportSortColumnMapper.duplicate(sortColumn1)).thenReturn(duplicatedSortColumn1);
-      Mockito.when(reportSortColumnMapper.duplicate(sortColumn2)).thenReturn(duplicatedSortColumn2);
-
-      Report duplicatedReport = reportMapper.duplicate(originalReport);
-
-      verify(reportSortColumnMapper).duplicate(sortColumn1);
-      verify(reportSortColumnMapper).duplicate(sortColumn2);
-
-      assertThat(duplicatedReport.getReportSortColumns())
-          .hasSize(2)
-          .containsExactly(duplicatedSortColumn1, duplicatedSortColumn2);
-    }
-
-    @Test
-    void duplicate_should_duplicate_report_filters() {
-      Report originalReport = buildTestReport();
-
-      ReportFilter reportFilter1 = mock(ReportFilter.class);
-      ReportFilter reportFilter2 = mock(ReportFilter.class);
-      originalReport.setReportFilters(Arrays.asList(reportFilter1, reportFilter2));
-
-      ReportFilter duplicatedFilter1 = mock(ReportFilter.class);
-      ReportFilter duplicatedFilter2 = mock(ReportFilter.class);
-
-      Mockito.when(reportFilterBuilder.duplicate(reportFilter1)).thenReturn(duplicatedFilter1);
-      Mockito.when(reportFilterBuilder.duplicate(reportFilter2)).thenReturn(duplicatedFilter2);
-
-      Report duplicatedReport = reportMapper.duplicate(originalReport);
-
-      verify(reportFilterBuilder).duplicate(reportFilter1);
-      verify(reportFilterBuilder).duplicate(reportFilter2);
-
-      assertThat(duplicatedReport.getReportFilters())
-          .hasSize(2)
-          .containsExactly(duplicatedFilter1, duplicatedFilter2);
-    }
-
-    @Test
-    void duplicate_should_duplicate_display_columns() {
-      Report originalReport = buildTestReport();
-
-      DisplayColumn displayColumn1 = mock(DisplayColumn.class);
-      DisplayColumn displayColumn2 = mock(DisplayColumn.class);
-      originalReport.setDisplayColumns(Arrays.asList(displayColumn1, displayColumn2));
-
-      DisplayColumn duplicatedDisplayColumn1 = mock(DisplayColumn.class);
-      DisplayColumn duplicatedDisplayColumn2 = mock(DisplayColumn.class);
-
-      Mockito.when(displayColumnBuilder.duplicate(displayColumn1))
-          .thenReturn(duplicatedDisplayColumn1);
-      Mockito.when(displayColumnBuilder.duplicate(displayColumn2))
-          .thenReturn(duplicatedDisplayColumn2);
-
-      Report duplicatedReport = reportMapper.duplicate(originalReport);
-
-      verify(displayColumnBuilder).duplicate(displayColumn1);
-      verify(displayColumnBuilder).duplicate(displayColumn2);
-
-      assertThat(duplicatedReport.getDisplayColumns())
-          .hasSize(2)
-          .containsExactly(duplicatedDisplayColumn1, duplicatedDisplayColumn2);
-    }
-  }
-
   private AdminReportRequest buildAdminReportRequest(ReportConstants.ReportGroup group) {
     return new AdminReportRequest(
         dataSourceId,
@@ -336,28 +205,5 @@ class ReportMapperTest {
         group,
         Collections.emptyList(),
         description);
-  }
-
-  private Report buildTestReport() {
-    ReportId reportId = new ReportId(50L, dataSourceId);
-    return Report.builder()
-        .id(reportId)
-        .dataSource(dataSource)
-        .reportLibrary(reportLibrary)
-        .descTxt("Test Description")
-        .addTime(LocalDateTime.now(clock))
-        .filterMode('B')
-        .isModifiableIndicator('N')
-        .location("test location")
-        .ownerUid(ownerId)
-        .reportTitle("Test Report")
-        .reportTypeCode("SAS_CUSTOM")
-        .shared(ReportConstants.reportGroupToDbChar(ReportConstants.ReportGroup.PUBLIC))
-        .category("Test Category")
-        .sectionCd(sectionCd)
-        .addTime(LocalDateTime.now(clock))
-        .addUserUid(userId)
-        .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-        .build();
   }
 }

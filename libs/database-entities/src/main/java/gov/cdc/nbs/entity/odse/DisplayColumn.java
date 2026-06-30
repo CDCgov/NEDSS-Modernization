@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity
