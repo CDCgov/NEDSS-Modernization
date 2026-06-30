@@ -18,7 +18,7 @@ import { ReportExecuteForm } from './ReportRunPage';
 import { FieldErrors, useFormState } from 'react-hook-form';
 import { ValidationErrorBanner, ValidationErrorSection } from './ValidationError';
 
-export const BASIC_SECTIONS = [
+const BASIC_SECTIONS = [
     {
         title: 'Time',
         id: 'basic-time',

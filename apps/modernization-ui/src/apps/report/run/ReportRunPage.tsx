@@ -118,7 +118,6 @@ const ReportRunPage = () => {
         ) => {
             setWasExported(isExport);
             setStatus('submitting');
-            // setValidationError(null);
             setError(null);
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
             const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
