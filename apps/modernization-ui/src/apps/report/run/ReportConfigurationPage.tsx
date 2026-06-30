@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
 import { ReportLayout } from '../layout/ReportLayout';
@@ -14,29 +14,7 @@ import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
-
-const BASIC_SECTIONS = [
-    {
-        title: 'Time',
-        id: 'basic-time',
-        filterTypes: ['BAS_TIM_RANGE', 'BAS_TIM_RANGE_LIST', 'BAS_MM_YYYY_RANGE', 'BAS_TIM_RANGE_CUSTOM', 'BAS_DAYS'],
-    },
-    {
-        title: 'Condition',
-        id: 'basic-condition',
-        filterTypes: ['BAS_CON_LIST', 'BAS_CVG_LIST'],
-    },
-    {
-        title: 'Geographic area',
-        id: 'basic-geography',
-        filterTypes: ['BAS_JUR_LIST'],
-    },
-    {
-        title: 'Other filters',
-        id: 'basic-other',
-        filterTypes: ['BAS_TXT', 'BAS_STD_HIV_WRKR'],
-    },
-];
+import { BASIC_SECTIONS } from '../constants';
 
 const SECTIONS = [
     ...BASIC_SECTIONS.map(({ title, id, filterTypes }) => ({
@@ -63,11 +41,16 @@ const SECTIONS = [
                 id={id}
                 title={title}
                 collapsible={true}
-                subtext="Add rules and rule groups to narrow or broaden your results.
-                Use AND to require all connected rules or groups to match, or OR to require
-                only one to match. Your advanced filter combines with your basic filters
-                using AND logic. The WHERE clause preview shows your advanced filter as you build it."
-                contentWidth="widescreen"
+                subtext={
+                    <span>
+                        Add <strong>rules</strong> and <strong>rule groups</strong> to narrow or broaden your results.
+                        Use <strong>AND</strong> to require all connected rules or groups to match, or{' '}
+                        <strong>OR</strong> to require only one to match. Your advanced filter combines with your basic
+                        filters using <strong>AND</strong> logic. The <strong>WHERE</strong> clause preview shows your
+                        advanced filter as you build it.
+                    </span>
+                }
+                contentMaxWidth="widescreen"
             >
                 <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
             </Card>
@@ -100,9 +83,11 @@ const SECTIONS = [
 const ReportConfigurationPage = ({
     config,
     handleSubmit,
+    error,
 }: {
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
+    error?: ReactNode;
 }) => {
     const sectionData = SECTIONS.filter(({ hasData }) => hasData(config));
 
@@ -124,6 +109,7 @@ const ReportConfigurationPage = ({
                 <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
             </aside>
             <form className={layoutStyles.columnContent}>
+                {error}
                 <CurrentStateProvider
                     stateFilter={config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE))}
                 >

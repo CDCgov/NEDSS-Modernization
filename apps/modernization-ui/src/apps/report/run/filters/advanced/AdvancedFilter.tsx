@@ -12,7 +12,6 @@ import QueryBuilder, {
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
 import {
@@ -32,6 +31,8 @@ import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { Heading } from '../../../../../components/heading';
+import { ReactNode } from 'react';
+import { AlertMessage } from 'design-system/message/index.ts';
 
 // ============= Constants ============= /
 
@@ -198,6 +199,17 @@ const validator: QueryValidator = (q) => {
     return result;
 };
 
+const formatAdvancedFilterErrors = (message: string): ReactNode =>
+    message
+        .split('.')
+        .map((str) => str.trim())
+        .filter(Boolean)
+        .map((msg, index) => (
+            <li key={`adv-filter-error-${index}`} className={'margin-bottom-1'}>
+                {msg}.
+            </li>
+        ));
+
 // ============= Drag And Drop ============= /
 
 const pragmaticDndAdapter = createPragmaticDndAdapter({
@@ -233,20 +245,10 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     return (
         <div className={styles.layout}>
             {error?.message && (
-                <AlertBanner type="error">
-                    <Heading level={2}>Fix the following errors:</Heading>
-                    <ul className={'margin-bottom-0'}>
-                        {error.message
-                            .split('.')
-                            .map((str) => str.trim())
-                            .filter(Boolean)
-                            .map((msg, index) => (
-                                <li key={`adv-filter-error-${index}`} className={'margin-bottom-1'}>
-                                    {msg}.
-                                </li>
-                            ))}
-                    </ul>
-                </AlertBanner>
+                <AlertMessage type="error">
+                    <Heading level={3}>Fix the following errors:</Heading>
+                    <ul className="margin-bottom-0">{formatAdvancedFilterErrors(error.message)}</ul>
+                </AlertMessage>
             )}
             <KeyboardDnDProvider>
                 <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
@@ -298,4 +300,4 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
     );
 };
 
-export { AdvancedFilter, queryToAdvancedFilterRequest };
+export { AdvancedFilter, queryToAdvancedFilterRequest, formatAdvancedFilterErrors };
