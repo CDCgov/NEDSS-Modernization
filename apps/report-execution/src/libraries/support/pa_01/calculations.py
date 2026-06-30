@@ -2,10 +2,10 @@ from src.libraries.support.pa_01.models import Pa01Row, Pa01Worker
 from src.models import Table
 
 # Constants
-ALL = 'ALL'
 CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
 DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS = 'Dispositions - New Partners & Clusters'
+NEW_PARTNERS_NOTIFIED = 'New Partners Notified'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 
 
@@ -340,10 +340,7 @@ def _build_dispositions_new_partners_and_clusters_output(
             tables['notified_partners'], total_partners_initiated, worker
         )
     )
-    prev_neg_new_pos, prev_neg_new_pos_percentage = _calc_prev_neg_new_pos(
-        tables['notified_partners'], new_partners_notified, worker
-    )
-    prev_neg_still_neg, prev_neg_still_neg_percentage = _calc_prev_neg_still_neg (
+    new_partners_notified_buckets = _calc_new_partners_notified_buckets(
         tables['notified_partners'], new_partners_notified, worker
     )
 
@@ -351,7 +348,7 @@ def _build_dispositions_new_partners_and_clusters_output(
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
-            'New Partners Notified',
+            NEW_PARTNERS_NOTIFIED,
             None,
             new_partners_notified,
             new_partners_notified_percentage,
@@ -360,19 +357,55 @@ def _build_dispositions_new_partners_and_clusters_output(
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
-            'New Partners Notified',
+            NEW_PARTNERS_NOTIFIED,
             'Prev. Neg, New Pos',
-            prev_neg_new_pos,
-            prev_neg_new_pos_percentage,
+            new_partners_notified_buckets['2 - Prev. Neg, New Pos'][0],
+            new_partners_notified_buckets['2 - Prev. Neg, New Pos'][1],
             None,
         ),
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
-            'New Partners Notified',
+            NEW_PARTNERS_NOTIFIED,
             'Prev. Neg, Still Neg',
-            prev_neg_still_neg,
-            prev_neg_still_neg_percentage,
+            new_partners_notified_buckets['3 - Prev. Neg, Still Neg'][0],
+            new_partners_notified_buckets['3 - Prev. Neg, Still Neg'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'Prev. Neg, No Test',
+            new_partners_notified_buckets['4 - Prev. Neg, No Test'][0],
+            new_partners_notified_buckets['4 - Prev. Neg, No Test'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'No Prev. Test, New Pos',
+            new_partners_notified_buckets['5 - No Prev Test, New Pos'][0],
+            new_partners_notified_buckets['5 - No Prev Test, New Pos'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'No Prev. Test, New Neg',
+            new_partners_notified_buckets['6 - No Prev Test, New Neg'][0],
+            new_partners_notified_buckets['6 - No Prev Test, New Neg'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'No Prev. Test, No Test',
+            new_partners_notified_buckets['7 - No Prev Test, No Test'][0],
+            new_partners_notified_buckets['7 - No Prev Test, No Test'][1],
             None,
         ),
     ]
@@ -688,49 +721,46 @@ def _calc_cases_with_no_clusters(
 
 
 def _calc_new_partners_notified(
-    new_partners_notified: Table,
+    notified_partners: Table,
     total_partners_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
     """Calculate 'New Partners Notified' count and percentage.  Calculates for all
     workers if passed in worker is None.
     """
-    rows = _rows_for_worker(new_partners_notified, worker)
+    rows = _rows_for_worker(notified_partners, worker)
     count = _count_distinct_case_ids(rows)
 
     return count, _percent_for_csv(count, total_partners_initiated)
 
 
-def _calc_prev_neg_new_pos(
-    new_partners_notified: Table,
-    new_partners_notified_count: int,
+def _calc_new_partners_notified_buckets(
+    notified_partners: Table,
+    new_partners_notified: int,
     worker: Pa01Worker | None = None,
-) -> tuple[int, str]:
-    """Calculate 'Prev. Neg, new Pos' count and percentage.  Calculates for all
-    workers if passed in worker is None.
+) -> dict[str, tuple[int, str]]:
+    """Calculate the count and percentage for all of the sub sections of 'New Partners
+    Notified'.  Calculates for all workers if passed in worker is None.
     """
-    rows = _rows_for_worker(new_partners_notified, worker)
-    count = _count_distinct_case_ids(
-        rows, lambda row: row['FL_FUP_DISPOSITION'] == '2 - Prev. Neg, New Pos'
-    )
+    rows = _rows_for_worker(notified_partners, worker)
+    fl_fup_dispositions = [
+        '2 - Prev. Neg, New Pos',
+        '3 - Prev. Neg, Still Neg',
+        '4 - Prev. Neg, No Test',
+        '5 - No Prev Test, New Pos',
+        '6 - No Prev Test, New Neg',
+        '7 - No Prev Test, No Test',
+    ]
 
-    return count, _percent_for_csv(count, new_partners_notified_count)
+    result = {}
+    for dispo in fl_fup_dispositions:
+        count = _count_distinct_case_ids(
+            rows,
+            lambda row, disposition=dispo: row['FL_FUP_DISPOSITION'] == disposition,
+        )
+        result[dispo] = (count, _percent_for_csv(count, new_partners_notified))
 
-
-def _calc_prev_neg_still_neg(
-    new_partners_notified: Table,
-    new_partners_notified_count: int,
-    worker: Pa01Worker | None = None,
-) -> tuple[int, str]:
-    """Calculate 'Prev. Neg, Still Neg' count and percentage.  Calculates for all
-    workers if passed in worker is None.
-    """
-    rows = _rows_for_worker(new_partners_notified, worker)
-    count = _count_distinct_case_ids(
-        rows, lambda row: row['FL_FUP_DISPOSITION'] == '3 - Prev. Neg, Still Neg'
-    )
-
-    return count, _percent_for_csv(count, new_partners_notified_count)
+    return result
 
 
 # helpers
@@ -776,4 +806,4 @@ def _worker_for_csv(worker: Pa01Worker | None = None) -> str:
     """Return the str value for the worker column for output in the CSV.  If worker
     is None then ALL is returned.
     """
-    return ALL if worker is None else worker.provider_quick_code
+    return 'ALL' if worker is None else worker.provider_quick_code

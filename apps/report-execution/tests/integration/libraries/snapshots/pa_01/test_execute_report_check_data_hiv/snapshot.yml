@@ -207,6 +207,38 @@
   - 0.0%
   - null
 - !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - Prev. Neg, No Test
+  - 25
+  - 36.2%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Neg
+  - 24
+  - 34.8%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, No Test
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -411,6 +443,38 @@
   - Dispositions - New Partners & Clusters
   - New Partners Notified
   - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - Prev. Neg, No Test
+  - 4
+  - 25.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Neg
+  - 3
+  - 18.8%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, No Test
   - 0
   - 0.0%
   - null
@@ -623,6 +687,38 @@
   - 0.0%
   - null
 - !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - Prev. Neg, No Test
+  - 4
+  - 33.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Neg
+  - 5
+  - 41.7%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, No Test
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -827,6 +923,38 @@
   - Dispositions - New Partners & Clusters
   - New Partners Notified
   - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - Prev. Neg, No Test
+  - 7
+  - 43.8%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Neg
+  - 8
+  - 50.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, No Test
   - 0
   - 0.0%
   - null
@@ -1039,6 +1167,38 @@
   - 0.0%
   - null
 - !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - Prev. Neg, No Test
+  - 6
+  - 35.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Neg
+  - 6
+  - 35.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, No Test
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -1243,6 +1403,38 @@
   - Dispositions - New Partners & Clusters
   - New Partners Notified
   - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - Prev. Neg, No Test
+  - 4
+  - 28.6%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, New Neg
+  - 3
+  - 21.4%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Notified
+  - No Prev. Test, No Test
   - 0
   - 0.0%
   - null
