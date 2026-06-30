@@ -161,11 +161,11 @@ public class ReportService {
    * changing the actual report mechanics themselves.
    */
   @Transactional
-  public Report saveReport(ReportExecutionRequest request, ReportId reportId) {
-    Report report =
-        reportRepository
-            .findById(reportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+  public Report saveReport(ReportExecutionRequest request, Report report) {
+    if (report == null) {
+      ReportId reportId = new ReportId(request.reportUid(), request.dataSourceUid());
+      throw new NotFoundException(getReportNotFoundText(reportId));
+    }
 
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());
@@ -437,7 +437,7 @@ public class ReportService {
     return filter.getFilterCode().getFilterType().startsWith(ReportConstants.BASIC_FILTER_PREFIX);
   }
 
-  private String getReportNotFoundText(ReportId reportId) {
+  protected String getReportNotFoundText(ReportId reportId) {
     return String.format(
         "Report not found for Report UID: %d and Data Source UID: %d",
         reportId.getReportUid(), reportId.getDataSourceUid());

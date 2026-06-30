@@ -4,6 +4,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.ForbiddenException;
+import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
 import jakarta.validation.Valid;
@@ -59,15 +60,18 @@ public class ReportController {
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
     Report existingReport = reportRepository.findById(reportId).orElse(null);
+    if (existingReport == null) {
+      throw new NotFoundException(reportService.getReportNotFoundText(reportId));
+    }
 
     //  Only the report's owner should have permission to overwrite it
     //  We might consider investigating into creating a custom pre-authorizer for this sort of
     //  authorization check, should we ever need ownership permissions beyond this endpoint
-    if (existingReport != null && !existingReport.getOwnerUid().equals(user.getId())) {
+    if (!existingReport.getOwnerUid().equals(user.getId())) {
       throw new ForbiddenException("User does not have permission to save this report");
     }
 
-    Report report = reportService.saveReport(request, reportId);
+    Report report = reportService.saveReport(request, existingReport);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
