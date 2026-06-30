@@ -46,6 +46,9 @@ import org.springframework.http.ResponseEntity;
 class ReportControllerTest {
 
   @Mock private ReportService service;
+  @Mock private ReportFetcher reportFetcher;
+  @Mock private ReportExecutionClient reportExecutionClient;
+
   @InjectMocks private ReportController controller;
 
   @Nested
@@ -263,7 +266,7 @@ class ReportControllerTest {
               columns,
               null,
               null);
-      when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+      when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
       ResponseEntity<ReportConfiguration> response =
           controller.getReportConfiguration(reportUid, dataSourceUid);
@@ -278,7 +281,7 @@ class ReportControllerTest {
       long dataSourceUid = 2L;
       String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-      when(service.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
+      when(reportFetcher.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
           .isInstanceOf(NotFoundException.class)
@@ -293,7 +296,7 @@ class ReportControllerTest {
       Long reportUid = 1L;
       Long dataSourceUid = 2L;
 
-      when(service.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
+      when(reportFetcher.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
 
       ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
 
@@ -308,7 +311,7 @@ class ReportControllerTest {
 
       String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-      when(service.getReportRunner(reportUid, dataSourceUid))
+      when(reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
@@ -325,7 +328,7 @@ class ReportControllerTest {
 
       String errorMsg = "No report library exists for report " + reportId;
 
-      when(service.getReportRunner(reportUid, dataSourceUid))
+      when(reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .thenThrow(new UnprocessableEntityException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
@@ -360,7 +363,7 @@ class ReportControllerTest {
               List.of(basicFilter),
               advancedFilter);
 
-      when(service.executeReport(request)).thenReturn(getReportExecutionResponse());
+      when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
 
       ResponseEntity<ReportExecutionResult> response = controller.exportReport(request);
       assertEquals(getReportExecutionResponse(), response.getBody());
@@ -383,7 +386,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
+      when(reportExecutionClient.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(NotFoundException.class)
@@ -406,7 +409,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
+      when(reportExecutionClient.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(NotImplementedException.class)
@@ -429,7 +432,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
+      when(reportExecutionClient.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(RuntimeException.class)
@@ -481,7 +484,7 @@ class ReportControllerTest {
               List.of(),
               advancedFilter);
 
-      when(service.executeReport(request)).thenReturn(getReportExecutionResponse());
+      when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
 
       ResponseEntity<ReportExecutionResult> response = controller.runReport(request);
       assertEquals(getReportExecutionResponse(), response.getBody());
