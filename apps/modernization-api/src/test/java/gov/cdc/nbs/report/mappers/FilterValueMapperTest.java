@@ -260,12 +260,12 @@ class FilterValueMapperTest {
 
   @Nested
   class Duplicate {
-    long nextReportId = 200L;
+    long nextFilterValueId = 200L;
 
     @BeforeEach
     void setUp() {
       GeneratedId newGeneratedId = mock(GeneratedId.class);
-      when(newGeneratedId.getId()).thenReturn(nextReportId);
+      when(newGeneratedId.getId()).thenReturn(nextFilterValueId);
       when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(newGeneratedId);
     }
@@ -277,7 +277,7 @@ class FilterValueMapperTest {
       FilterValue duplicatedValue = mapper.duplicate(originalValue);
 
       assertThat(duplicatedValue).isNotNull();
-      assertThat(duplicatedValue.getId()).isEqualTo(nextReportId);
+      assertThat(duplicatedValue.getId()).isEqualTo(nextFilterValueId);
       assertThat(duplicatedValue.getReportFilter()).isEqualTo(mockReportFilter);
       assertThat(duplicatedValue.getSequenceNumber()).isEqualTo(originalValue.getSequenceNumber());
       assertThat(duplicatedValue.getValueType()).isEqualTo(originalValue.getValueType());
@@ -293,7 +293,7 @@ class FilterValueMapperTest {
       FilterValue duplicatedValue = mapper.duplicate(originalValue);
 
       assertThat(duplicatedValue.getId()).isNotEqualTo(originalValue.getId());
-      assertThat(duplicatedValue.getId()).isEqualTo(nextReportId);
+      assertThat(duplicatedValue.getId()).isEqualTo(nextFilterValueId);
     }
   }
 
