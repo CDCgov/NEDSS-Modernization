@@ -52,7 +52,7 @@ public class FilterValueMapper {
         filterValues.add(clause);
 
         if (i < root.rules().size() - 1) {
-          FilterValue operator = buildOperatorFilterValue(advancedFilter, root.combinator());
+          FilterValue operator = buildOperatorFilterValue(advancedFilter, root.combinator().toString());
           filterValues.add(operator);
         }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
@@ -70,6 +70,14 @@ public class FilterValueMapper {
   }
 
   // Private Methods //////////////////////////////////////////
+
+  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter) {
+    return buildOperatorFilterValue(advancedFilter, "(");
+  }
+
+  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter) {
+    return buildOperatorFilterValue(advancedFilter, ")");
+  }
 
   private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
     FilterValue clause =
@@ -89,42 +97,19 @@ public class FilterValueMapper {
   }
 
   private FilterValue buildOperatorFilterValue(
-      ReportFilter advancedFilter, ReportConstants.QueryCombinators combinator) {
-    FilterValue operator =
+      ReportFilter advancedFilter, String operator) {
+    FilterValue operatorVal =
         FilterValue.builder()
             .id(generateFilterValueId())
             .reportFilter(advancedFilter)
             .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
-            .operator(combinator.toString())
+            .operator(operator)
             .sequenceNumber(sequenceNumber)
             .build();
 
     sequenceNumber++;
 
-    return operator;
-  }
-
-  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter) {
-    return buildParenFilterValue(advancedFilter, "(");
-  }
-
-  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter) {
-    return buildParenFilterValue(advancedFilter, ")");
-  }
-
-  private FilterValue buildParenFilterValue(ReportFilter advancedFilter, String paren) {
-    FilterValue parenValue =
-        FilterValue.builder()
-            .id(generateFilterValueId())
-            .reportFilter(advancedFilter)
-            .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
-            .operator(paren)
-            .sequenceNumber(sequenceNumber)
-            .build();
-
-    sequenceNumber++;
-
-    return parenValue;
+    return operatorVal;
   }
 
   private Long generateFilterValueId() {
