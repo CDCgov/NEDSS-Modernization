@@ -340,6 +340,11 @@ def _build_dispositions_new_partners_and_clusters_output(
             tables['notified_partners'], total_partners_initiated, worker
         )
     )
+    prev_neg_new_pos, prev_neg_new_pos_percentage = (
+        _calc_prev_neg_new_post(
+            tables['notified_partners'], new_partners_notified, worker
+        )
+    )
 
     rows: list[Pa01Row] = [
         (
@@ -349,6 +354,15 @@ def _build_dispositions_new_partners_and_clusters_output(
             None,
             new_partners_notified,
             new_partners_notified_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Notified',
+            'Prev. Neg, New Pos',
+            prev_neg_new_pos,
+            prev_neg_new_pos_percentage,
             None,
         ),
     ]
@@ -675,6 +689,22 @@ def _calc_new_partners_notified(
     count = _count_distinct_case_ids(rows)
 
     return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_prev_neg_new_post(
+    new_partners_notified: Table,
+    new_partners_notified_count: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate 'Prev. Neg, new Pos' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(new_partners_notified, worker)
+    count = _count_distinct_case_ids(
+        rows, lambda row: row['FL_FUP_DISPOSITION'] == '2 - Prev. Neg, New Pos'
+    )
+
+    return count, _percent_for_csv(count, new_partners_notified_count)
 
 
 # helpers

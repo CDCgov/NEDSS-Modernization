@@ -12,7 +12,10 @@ tables:
         data: row_id
         is_primary_key: true
       - column_name: INV_CASE_STATUS
-        data: random.choice(["Confirmed", "Probable", "Suspect", "Unknown"])
+        data: |
+          if row_id <= 350:
+            return random.choice(["Confirmed", "Probable"])
+          return random.choice(["Confirmed", "Probable", "Suspect", "Unknown"])
       - column_name: RECORD_STATUS_CD
         data: random.choice(["ACTIVE", "INACTIVE"])
       - column_name: INV_LOCAL_ID
@@ -87,13 +90,57 @@ tables:
       - column_name: INVESTIGATION_KEY
         data: row_id
       - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
-        data: fake.random_digit()
+        data: |
+          if row_id <= 300:
+            return 1 if row_id % 4 == 0 else 0
+          return fake.random_digit()
       - column_name: SOC_PRTNRS_PRD_FML_TTL
-        data: fake.random_digit()
+        data: |
+          if row_id <= 300:
+            return 0
+          return fake.random_digit()
       - column_name: SOC_PRTNRS_PRD_MALE_TTL
-        data: fake.random_digit()
+        data: |
+          if row_id <= 300:
+            return 0
+          return fake.random_digit()
       - column_name: FL_FUP_DISPOSITION
         data: |
+          notified_dispositions = [
+            "2 - Prev. Neg, New Pos",
+            "3 - Prev. Neg, Still Neg",
+            "4 - Prev. Neg, No Test",
+            "5 - No Prev Test, New Pos",
+            "6 - No Prev Test, New Neg",
+            "7 - No Prev Test, No Test"
+          ]
+          not_notified_dispositions = [
+            "G - Insufficient Info to Begin Investigation",
+            "H - Unable to Locate",
+            "J - Located, Not Examined and/or Interviewed",
+            "K - Sent Out Of Jurisdiction",
+            "L - Other",
+            "V - Domestic Violence Risk",
+            "X - Patient Deceased"
+          ]
+          cluster_not_notified_dispositions = not_notified_dispositions + [
+            "Z - Previous Preventative Treatment"
+          ]
+          if 101 <= row_id <= 400:
+            contact_row_id = row_id - 100
+            bucket = contact_row_id % 4
+            if bucket == 0:
+              return notified_dispositions[contact_row_id % len(notified_dispositions)]
+            if bucket == 1:
+              return not_notified_dispositions[
+                contact_row_id % len(not_notified_dispositions)
+              ]
+            if bucket == 2:
+              return notified_dispositions[contact_row_id % len(notified_dispositions)]
+            return cluster_not_notified_dispositions[
+              contact_row_id % len(cluster_not_notified_dispositions)
+            ]
+
           return random.choice([
             "2 - Prev. Neg, New Pos",
             "3 - Prev. Neg, Still Neg",
@@ -147,7 +194,7 @@ tables:
         data: row_id
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
-    row_count: 50
+    row_count: 300
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id
@@ -156,12 +203,28 @@ tables:
         data: |
           return f"CTRPA03{row_id:03d}"
       - column_name: RECORD_STATUS_CD
-        data: random.choice(["ACTIVE", "INACTIVE"])
+        data: r"ACTIVE"
       - column_name: RECORD_STATUS_TIME
         data: |
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
       - column_name: CTT_REFERRAL_BASIS
-        data: random.choice(["P1 - Partner, Sex", "S1 - Social Contact 1", "A1 - Associate 1", "P2 - Partner, Needle-Sharing"])
+        data: |
+          partner_bases = [
+            "P1 - Partner, Sex",
+            "P2 - Partner, Needle-Sharing",
+            "P3 - Partner, Both"
+          ]
+          cluster_bases = [
+            "A1 - Associate 1",
+            "A2 - Associate 2",
+            "A3 - Associate 3",
+            "S1 - Social Contact 1",
+            "S2 - Social Contact 2",
+            "S3 - Social Contact 3"
+          ]
+          if row_id % 4 in (0, 1):
+            return partner_bases[row_id % len(partner_bases)]
+          return cluster_bases[row_id % len(cluster_bases)]
       - column_name: CTT_PROCESSING_DECISION
         data: random.choice(["Field Follow-up", "Secondary Referral", "Record Search Closure"])
       - column_name: ADD_TIME
@@ -172,7 +235,7 @@ tables:
           return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
 
   - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
-    row_count: 40
+    row_count: 300
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id

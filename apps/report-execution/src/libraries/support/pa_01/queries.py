@@ -611,16 +611,16 @@ def notified_partners_query(subset_query: str) -> str:
         INNER JOIN RDB.dbo.D_provider
                 ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
                AND e.CTT_REFERRAL_BASIS IN (
-                 'P1 - Partner, Sex',
-                 'P2 - Partner, Needle-Sharing',
-                 'P3 - Partner, Both'
-               )
+                     'P1 - Partner, Sex',
+                     'P2 - Partner, Needle-Sharing',
+                     'P3 - Partner, Both'
+                   )
                AND f.FL_FUP_DISPOSITION IN (
-                 '2 - Prev. Neg, New Pos',
-                 '3 - Prev. Neg, Still Neg',
-                 '4 - Prev. Neg, No Test',
-                 '5 - No Prev Test, New Pos',
-                 '6 - No Prev Test, New Neg',
-                 '7 - No Prev Test, No Test'
-               )
+                     '2 - Prev. Neg, New Pos',
+                     '3 - Prev. Neg, Still Neg',
+                     '4 - Prev. Neg, No Test',
+                     '5 - No Prev Test, New Pos',
+                     '6 - No Prev Test, New Neg',
+                     '7 - No Prev Test, No Test'
+                   )
     """
