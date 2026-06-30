@@ -624,3 +624,66 @@ def notified_partners_query(subset_query: str) -> str:
                      '7 - No Prev Test, No Test'
                    )
     """
+
+
+def not_notified_partners_query(subset_query: str) -> str:
+    """Return non-notified partner rows used for partner disposition counts.
+
+    This is the SQL equivalent of SAS `pn`, which is used to calculate
+    New Partners Not Notified and its HIV partner disposition breakdowns.
+    """
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT c.IX_TYPE,
+             a.INVESTIGATION_KEY,
+             PROVIDER_QUICK_CODE,
+             h.FL_FUP_DISPOSITION,
+             g.CTT_REFERRAL_BASIS,
+             h.INV_LOCAL_ID,
+             a.INVESTIGATOR_INTERVIEW_KEY
+      FROM filtered_cases a
+        INNER JOIN RDB.dbo.F_INTERVIEW_CASE b
+                ON b.INVESTIGATION_KEY = a.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.D_provider d
+                ON d.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+        INNER JOIN RDB.dbo.investigation e
+                ON e.investigation_key = a.investigation_KEY
+        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE f
+                ON a.investigation_key = f.SUBJECT_investigation_key
+        INNER JOIN RDB.dbo.STD_HIV_DATAMART h 
+                ON f.CONTACT_INVESTIGATION_KEY = h.Investigation_key
+        INNER JOIN RDB.dbo.d_contact_record g
+                ON f.d_contact_record_key = g.d_contact_record_key
+               AND g.RECORD_STATUS_CD <> 'LOG_DEL'
+      WHERE g.CTT_REFERRAL_BASIS IN (
+              'P1 - Partner, Sex',
+              'P2 - Partner, Needle-Sharing',
+              'P3 - Partner, Both'
+            )
+      AND   a.CA_PATIENT_INTV_STATUS IN ('I - Interviewed')
+      AND   h.FL_FUP_DISPOSITION IN (
+              'G - Insufficient Info to Begin Investigation',
+              'H - Unable to Locate',
+              'J - Located, Not Examined and/or Interviewed',
+              'K - Sent Out Of Jurisdiction',
+              'L - Other',
+              'V - Domestic Violence Risk',
+              'X - Patient Deceased'
+            )
+    """

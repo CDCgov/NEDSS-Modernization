@@ -6,6 +6,7 @@ CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
 DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS = 'Dispositions - New Partners & Clusters'
 NEW_PARTNERS_NOTIFIED = 'New Partners Notified'
+NEW_PARTNERS_NOT_NOTIFIED = 'New Partners Not Notified'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 
 
@@ -343,6 +344,11 @@ def _build_dispositions_new_partners_and_clusters_output(
     new_partners_notified_buckets = _calc_new_partners_notified_buckets(
         tables['notified_partners'], new_partners_notified, worker
     )
+    new_partners_not_notified, new_partners_not_notified_percentage = (
+        _calc_new_partners_not_notified(
+            tables['not_notified_partners'], total_partners_initiated, worker
+        )
+    )
 
     rows: list[Pa01Row] = [
         (
@@ -406,6 +412,15 @@ def _build_dispositions_new_partners_and_clusters_output(
             'No Prev. Test, No Test',
             new_partners_notified_buckets['7 - No Prev Test, No Test'][0],
             new_partners_notified_buckets['7 - No Prev Test, No Test'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            None,
+            new_partners_not_notified,
+            new_partners_not_notified_percentage,
             None,
         ),
     ]
@@ -761,6 +776,20 @@ def _calc_new_partners_notified_buckets(
         result[dispo] = (count, _percent_for_csv(count, new_partners_notified))
 
     return result
+
+
+def _calc_new_partners_not_notified(
+    not_notified_partners: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate 'New Partners Not Notified' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(not_notified_partners, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
 
 
 # helpers

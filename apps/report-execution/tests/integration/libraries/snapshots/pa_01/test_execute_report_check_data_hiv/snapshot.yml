@@ -239,6 +239,14 @@
   - 0.0%
   - null
 - !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - null
+  - 71
+  - 47.7%
+  - null
+- !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -477,6 +485,14 @@
   - No Prev. Test, No Test
   - 0
   - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - null
+  - 12
+  - 42.9%
   - null
 - !!python/tuple
   - avance
@@ -719,6 +735,14 @@
   - 0.0%
   - null
 - !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - null
+  - 15
+  - 55.6%
+  - null
+- !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -957,6 +981,14 @@
   - No Prev. Test, No Test
   - 0
   - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - null
+  - 12
+  - 42.9%
   - null
 - !!python/tuple
   - fpoole
@@ -1199,6 +1231,14 @@
   - 0.0%
   - null
 - !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - null
+  - 21
+  - 55.3%
+  - null
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -1437,4 +1477,12 @@
   - No Prev. Test, No Test
   - 0
   - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - null
+  - 15
+  - 53.6%
   - null
