@@ -9,6 +9,7 @@ import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,16 +24,29 @@ public class FilterValueMapper {
 
   public List<FilterValue> fromBasicFilterRequest(
       ReportFilter basicFilter, BasicFilterRequest request) {
-    return request.values().stream()
-        .map(
-            value ->
-                FilterValue.builder()
-                    .id(generateFilterValueId())
-                    .reportFilter(basicFilter)
-                    .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
-                    .valueTxt(value)
-                    .build())
-        .toList();
+    List<FilterValue> basicFilterValues =
+        request.values().stream()
+            .map(
+                value ->
+                    FilterValue.builder()
+                        .id(generateFilterValueId())
+                        .reportFilter(basicFilter)
+                        .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+                        .valueTxt(value)
+                        .build())
+            .collect(Collectors.toCollection(ArrayList::new));
+
+    if (request.includeNulls()) {
+      basicFilterValues.add(
+          FilterValue.builder()
+              .id(generateFilterValueId())
+              .reportFilter(basicFilter)
+              .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
+              .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+              .build());
+    }
+
+    return basicFilterValues;
   }
 
   public List<FilterValue> fromAdvancedFilterRequest(
@@ -52,7 +66,8 @@ public class FilterValueMapper {
         filterValues.add(clause);
 
         if (i < root.rules().size() - 1) {
-          FilterValue operator = buildOperatorFilterValue(advancedFilter, root.combinator().toString());
+          FilterValue operator =
+              buildOperatorFilterValue(advancedFilter, root.combinator().toString());
           filterValues.add(operator);
         }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
@@ -96,8 +111,7 @@ public class FilterValueMapper {
     return clause;
   }
 
-  private FilterValue buildOperatorFilterValue(
-      ReportFilter advancedFilter, String operator) {
+  private FilterValue buildOperatorFilterValue(ReportFilter advancedFilter, String operator) {
     FilterValue operatorVal =
         FilterValue.builder()
             .id(generateFilterValueId())

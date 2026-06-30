@@ -677,16 +677,15 @@ class ReportServiceTest {
     private final Long reportUid = 1L;
     private final Long dataSourceUid = 2L;
     private final ReportId reportId = new ReportId(reportUid, dataSourceUid);
+    private Report existingReport;
     private Report savedReport;
 
     @BeforeEach
     void setup() {
+      existingReport = mock(Report.class);
       savedReport = mock(Report.class);
 
-      Mockito.lenient()
-          .when(reportRepository.findById(reportId))
-          .thenReturn(Optional.of(savedReport));
-      Mockito.lenient().when(reportRepository.save(any(Report.class))).thenReturn(savedReport);
+      Mockito.lenient().when(reportRepository.save(existingReport)).thenReturn(savedReport);
     }
 
     @Test
@@ -704,24 +703,24 @@ class ReportServiceTest {
       when(column2.getId()).thenReturn(4L);
       when(column3.getId()).thenReturn(5L);
       when(dataSource.getDataSourceColumns()).thenReturn(List.of(column1, column2, column3));
-      when(savedReport.getDataSource()).thenReturn(dataSource);
-      when(savedReport.getDisplayColumns()).thenReturn(new ArrayList<>());
+      when(existingReport.getDataSource()).thenReturn(dataSource);
+      when(existingReport.getDisplayColumns()).thenReturn(new ArrayList<>());
 
       DisplayColumn displayColumn1 = mock(DisplayColumn.class);
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
       DisplayColumn displayColumn3 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(savedReport, column1, 1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(savedReport, column2, 2)).thenReturn(displayColumn2);
-      when(displayColumnBuilder.build(savedReport, column3, 3)).thenReturn(displayColumn3);
+      when(displayColumnBuilder.build(existingReport, column1, 1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(existingReport, column2, 2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(existingReport, column3, 3)).thenReturn(displayColumn3);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(savedReport, times(2)).getDisplayColumns();
+      verify(existingReport, times(2)).getDisplayColumns();
       verify(displayColumnBuilder, times(3))
           .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -730,11 +729,11 @@ class ReportServiceTest {
       ReportExecutionRequest request =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(savedReport).setDisplayColumns(null);
+      verify(existingReport).setDisplayColumns(null);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -744,11 +743,11 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, new ArrayList<>(), null, List.of(), null);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(savedReport).setDisplayColumns(null);
+      verify(existingReport).setDisplayColumns(null);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -763,10 +762,10 @@ class ReportServiceTest {
 
       when(column1.getId()).thenReturn(3L);
       when(dataSource.getDataSourceColumns()).thenReturn(List.of(column1));
-      when(savedReport.getDataSource()).thenReturn(dataSource);
-      when(savedReport.getDisplayColumns()).thenReturn(new ArrayList<>());
+      when(existingReport.getDataSource()).thenReturn(dataSource);
+      when(existingReport.getDisplayColumns()).thenReturn(new ArrayList<>());
 
-      assertThatThrownBy(() -> service.saveReport(request, reportId))
+      assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining("No matching column found for ID 999");
     }
@@ -782,17 +781,17 @@ class ReportServiceTest {
       List<ReportSortColumn> sortColumns =
           spy(new ArrayList<>(Collections.singletonList(sortColumn)));
 
-      when(reportSortColumnMapper.fromSortSpec(savedReport, sortSpec)).thenReturn(sortColumn);
-      when(savedReport.getReportSortColumns()).thenReturn(sortColumns);
+      when(reportSortColumnMapper.fromSortSpec(existingReport, sortSpec)).thenReturn(sortColumn);
+      when(existingReport.getReportSortColumns()).thenReturn(sortColumns);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(reportSortColumnMapper).fromSortSpec(savedReport, sortSpec);
-      verify(savedReport, times(2)).getReportSortColumns();
+      verify(reportSortColumnMapper).fromSortSpec(existingReport, sortSpec);
+      verify(existingReport, times(2)).getReportSortColumns();
       verify(sortColumns).clear();
       verify(sortColumns).add(sortColumn);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -802,11 +801,11 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(savedReport).setReportSortColumns(null);
+      verify(existingReport).setReportSortColumns(null);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -826,18 +825,18 @@ class ReportServiceTest {
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       List<FilterValue> filterValues = List.of(mock(FilterValue.class));
       when(filterValueMapper.fromBasicFilterRequest(basicFilter, basicFilterRequest))
           .thenReturn(filterValues);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(filterValueMapper).fromBasicFilterRequest(basicFilter, basicFilterRequest);
       verify(reportFilterRepository).saveAll(any());
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -857,9 +856,9 @@ class ReportServiceTest {
       when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(filterCode);
-      when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
-      assertThatThrownBy(() -> service.saveReport(request, reportId))
+      assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining(
               "BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
@@ -880,13 +879,13 @@ class ReportServiceTest {
       when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(filterCode);
-      when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(basicFilter).setFilterValues(null);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -904,14 +903,14 @@ class ReportServiceTest {
       when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter1.getFilterCode()).thenReturn(filterCode);
       when(basicFilter2.getFilterCode()).thenReturn(filterCode);
-      when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter1, basicFilter2));
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter1, basicFilter2));
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(basicFilter1).setFilterValues(null);
       verify(basicFilter2).setFilterValues(null);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -936,18 +935,18 @@ class ReportServiceTest {
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      when(savedReport.getReportFilters()).thenReturn(List.of(advancedFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       List<FilterValue> filterValues = List.of(mock(FilterValue.class));
       when(filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest))
           .thenReturn(filterValues);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(filterValueMapper).fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest);
       verify(reportFilterRepository).save(advancedFilter);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -963,9 +962,9 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(), advancedFilterRequest);
 
-      when(savedReport.getReportFilters()).thenReturn(List.of());
+      when(existingReport.getReportFilters()).thenReturn(List.of());
 
-      assertThatThrownBy(() -> service.saveReport(request, reportId))
+      assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining(
               "AdvancedFilterRequest included for report without an advanced filter");
@@ -992,9 +991,9 @@ class ReportServiceTest {
       when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
-      when(savedReport.getReportFilters()).thenReturn(List.of(advancedFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
-      assertThatThrownBy(() -> service.saveReport(request, reportId))
+      assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining(
               "AdvancedFilterRequest.reportFilterUid does not match existing advanced filter ID");
@@ -1013,26 +1012,24 @@ class ReportServiceTest {
       when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
       Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
-      when(savedReport.getReportFilters()).thenReturn(List.of(advancedFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(advancedFilter).setFilterValues(null);
       verify(reportFilterRepository).save(advancedFilter);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
     @Test
-    void saveReport_should_throw_when_report_not_found() {
-      when(reportRepository.findById(reportId)).thenReturn(Optional.empty());
-
+    void saveReport_should_throw_when_report_not_provided() {
       ReportExecutionRequest request =
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
-      assertThatThrownBy(() -> service.saveReport(request, reportId))
+      assertThatThrownBy(() -> service.saveReport(request, null))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining("Report not found for Report UID: 1 and Data Source UID: 2");
     }
@@ -1043,9 +1040,9 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -1078,9 +1075,9 @@ class ReportServiceTest {
 
       when(column1.getId()).thenReturn(3L);
       when(dataSource.getDataSourceColumns()).thenReturn(List.of(column1));
-      when(savedReport.getDataSource()).thenReturn(dataSource);
-      when(savedReport.getDisplayColumns()).thenReturn(new ArrayList<>());
-      when(savedReport.getReportSortColumns()).thenReturn(new ArrayList<>());
+      when(existingReport.getDataSource()).thenReturn(dataSource);
+      when(existingReport.getDisplayColumns()).thenReturn(new ArrayList<>());
+      when(existingReport.getReportSortColumns()).thenReturn(new ArrayList<>());
 
       ReportFilter basicFilter = mock(ReportFilter.class);
       ReportFilter advancedFilter = mock(ReportFilter.class);
@@ -1096,13 +1093,13 @@ class ReportServiceTest {
       when(advancedFilter.getFilterCode()).thenReturn(advancedFilterCode);
       when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter, advancedFilter));
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter, advancedFilter));
 
       DisplayColumn displayColumn = mock(DisplayColumn.class);
-      when(displayColumnBuilder.build(savedReport, column1, 1)).thenReturn(displayColumn);
+      when(displayColumnBuilder.build(existingReport, column1, 1)).thenReturn(displayColumn);
 
       ReportSortColumn sortColumn = mock(ReportSortColumn.class);
-      when(reportSortColumnMapper.fromSortSpec(savedReport, sortSpec)).thenReturn(sortColumn);
+      when(reportSortColumnMapper.fromSortSpec(existingReport, sortSpec)).thenReturn(sortColumn);
 
       List<FilterValue> basicFilterValues = List.of(mock(FilterValue.class));
       List<FilterValue> advancedFilterValues = List.of(mock(FilterValue.class));
@@ -1111,14 +1108,15 @@ class ReportServiceTest {
       when(filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest))
           .thenReturn(advancedFilterValues);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(displayColumnBuilder)
           .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
       verify(reportSortColumnMapper).fromSortSpec(any(), any());
       verify(filterValueMapper).fromBasicFilterRequest(any(), any());
       verify(filterValueMapper).fromAdvancedFilterRequest(any(), any());
-      verify(reportRepository).save(savedReport);
+
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -1135,21 +1133,21 @@ class ReportServiceTest {
       when(column1.getId()).thenReturn(3L);
       when(column2.getId()).thenReturn(4L);
       when(dataSource.getDataSourceColumns()).thenReturn(List.of(column1, column2));
-      when(savedReport.getDataSource()).thenReturn(dataSource);
-      when(savedReport.getDisplayColumns()).thenReturn(new ArrayList<>());
+      when(existingReport.getDataSource()).thenReturn(dataSource);
+      when(existingReport.getDisplayColumns()).thenReturn(new ArrayList<>());
 
       DisplayColumn displayColumn1 = mock(DisplayColumn.class);
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(savedReport, column1, 1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(savedReport, column2, 2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(existingReport, column1, 1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(existingReport, column2, 2)).thenReturn(displayColumn2);
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
       verify(displayColumnBuilder, times(2))
           .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
 
@@ -1160,14 +1158,14 @@ class ReportServiceTest {
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, sortSpec, null, null);
 
       ReportSortColumn sortColumn = mock(ReportSortColumn.class);
-      when(reportSortColumnMapper.fromSortSpec(savedReport, sortSpec)).thenReturn(sortColumn);
-      when(savedReport.getReportSortColumns()).thenReturn(new ArrayList<>());
+      when(reportSortColumnMapper.fromSortSpec(existingReport, sortSpec)).thenReturn(sortColumn);
+      when(existingReport.getReportSortColumns()).thenReturn(new ArrayList<>());
 
-      Report result = service.saveReport(request, reportId);
+      Report result = service.saveReport(request, existingReport);
 
-      verify(reportSortColumnMapper).fromSortSpec(savedReport, sortSpec);
+      verify(reportSortColumnMapper).fromSortSpec(existingReport, sortSpec);
 
-      verify(reportRepository).save(savedReport);
+      verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
     }
   }

@@ -16,6 +16,8 @@ public final class ReportConstants {
 
   public static final String BASIC_FILTER_VALUE_TYPE = "code";
 
+  public static final String BASIC_FILTER_ALLOW_NULLS_OP = "ALLOW_NULLS";
+
   public static final String BASIC_FILTER_PREFIX = "BAS_";
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
   public static final String BAS_DAYS = "BAS_DAYS";
