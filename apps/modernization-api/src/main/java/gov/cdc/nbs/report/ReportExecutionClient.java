@@ -21,7 +21,7 @@ import org.springframework.web.client.RestClientResponseException;
 public class ReportExecutionClient {
   private final Clock clock;
 
-  private final RestClient reportExecutionClient;
+  private final RestClient restClient;
   private final DataSourceNameUtils dataSourceNameUtils;
   private final WhereClauseService whereClauseService;
   private final ReportFetcher reportFetcher;
@@ -29,11 +29,11 @@ public class ReportExecutionClient {
   public ReportExecutionClient(
       final Clock clock,
       final DataSourceNameConfiguration dataSourceNameConfig,
-      RestClient reportExecutionClient,
+      RestClient restClient,
       WhereClauseService whereClauseService,
       ReportFetcher reportFetcher) {
     this.clock = clock;
-    this.reportExecutionClient = reportExecutionClient;
+    this.restClient = restClient;
     this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
     this.whereClauseService = whereClauseService;
     this.reportFetcher = reportFetcher;
@@ -44,24 +44,10 @@ public class ReportExecutionClient {
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = reportFetcher.getReport(reportUid, dataSourceUid);
 
-    if (!reportConfigResponse.isPython()) {
-      throw new NotImplementedException(
-          String.format("Report not implemented for %s", reportConfigResponse.library().runner()),
-          String.valueOf(HttpStatus.NOT_IMPLEMENTED));
-    }
-
-    if (request.columnUids() != null && request.columnUids().isEmpty()) {
-      throw new UnprocessableEntityException(
-          "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
-    }
-
-    ReportSpecBuilder specBuilder =
-        new ReportSpecBuilder(
-            request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
-    ReportSpec reportSpec = specBuilder.build();
+    ReportSpec reportSpec = buildReportSpec(request, reportConfigResponse);
 
     LibraryExecutionResult result =
-        reportExecutionClient
+        restClient
             .post()
             .uri("/report/execute")
             .contentType(MediaType.APPLICATION_JSON)
@@ -88,5 +74,24 @@ public class ReportExecutionClient {
 
     return new ReportExecutionResult(
         result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
+  }
+
+  private ReportSpec buildReportSpec(
+      ReportExecutionRequest request, ReportConfiguration reportConfigResponse) {
+    if (!reportConfigResponse.isPython()) {
+      throw new NotImplementedException(
+          String.format("Report not implemented for %s", reportConfigResponse.library().runner()),
+          String.valueOf(HttpStatus.NOT_IMPLEMENTED));
+    }
+
+    if (request.columnUids() != null && request.columnUids().isEmpty()) {
+      throw new UnprocessableEntityException(
+          "Column UIDs cannot be empty - if omitting reportColumns, use `null`");
+    }
+
+    ReportSpecBuilder specBuilder =
+        new ReportSpecBuilder(
+            request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
+    return specBuilder.build();
   }
 }
