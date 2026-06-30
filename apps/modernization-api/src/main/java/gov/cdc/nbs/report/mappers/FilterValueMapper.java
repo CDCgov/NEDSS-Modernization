@@ -49,59 +49,58 @@ public class FilterValueMapper {
 
   public List<FilterValue> fromAdvancedFilterRequest(
       ReportFilter advancedFilter, AdvancedFilterRequest request) {
-    int sequenceNumber = 1;
-    return mapRuleGroupToFilterValues(advancedFilter, request.value(), sequenceNumber);
+    List<FilterValue> filterValues = mapRuleGroupToFilterValues(advancedFilter, request.value());
+
+    for (int i = 0; i < filterValues.size(); i++) {
+      FilterValue filterValue = filterValues.get(i);
+      filterValue.setSequenceNumber(i + 1);
+    }
+
+    return filterValues;
   }
 
   // Private Methods //////////////////////////////////////////
 
   private List<FilterValue> mapRuleGroupToFilterValues(
-      ReportFilter advancedFilter, AdvancedQuery.RuleGroup ruleGroup, int sequenceNumber) {
+      ReportFilter advancedFilter, AdvancedQuery.RuleGroup ruleGroup) {
     List<FilterValue> filterValues = new ArrayList<>();
 
-    FilterValue openParen = buildOpenParenFilterValue(advancedFilter, sequenceNumber);
+    FilterValue openParen = buildOpenParenFilterValue(advancedFilter);
     filterValues.add(openParen);
-    sequenceNumber++;
 
     for (int i = 0; i < ruleGroup.rules().size(); i++) {
       AdvancedQuery rule = ruleGroup.rules().get(i);
 
       if (rule instanceof AdvancedQuery.Rule r) {
-        FilterValue clause = buildClauseFilterValue(advancedFilter, r, sequenceNumber);
+        FilterValue clause = buildClauseFilterValue(advancedFilter, r);
         filterValues.add(clause);
-        sequenceNumber++;
 
         if (i < ruleGroup.rules().size() - 1) {
           FilterValue operator =
-              buildOperatorFilterValue(
-                  advancedFilter, ruleGroup.combinator().toString(), sequenceNumber);
+              buildOperatorFilterValue(advancedFilter, ruleGroup.combinator().toString());
           filterValues.add(operator);
-          sequenceNumber++;
         }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
-        List<FilterValue> ruleGroupValues =
-            mapRuleGroupToFilterValues(advancedFilter, r, sequenceNumber);
+        List<FilterValue> ruleGroupValues = mapRuleGroupToFilterValues(advancedFilter, r);
         filterValues.addAll(ruleGroupValues);
-        sequenceNumber += ruleGroupValues.size();
       }
     }
 
-    FilterValue closeParen = buildCloseParenFilterValue(advancedFilter, sequenceNumber);
+    FilterValue closeParen = buildCloseParenFilterValue(advancedFilter);
     filterValues.add(closeParen);
 
     return filterValues;
   }
 
-  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter, int sequenceNumber) {
-    return buildOperatorFilterValue(advancedFilter, "(", sequenceNumber);
+  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter) {
+    return buildOperatorFilterValue(advancedFilter, "(");
   }
 
-  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter, int sequenceNumber) {
-    return buildOperatorFilterValue(advancedFilter, ")", sequenceNumber);
+  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter) {
+    return buildOperatorFilterValue(advancedFilter, ")");
   }
 
-  private FilterValue buildClauseFilterValue(
-      ReportFilter advancedFilter, AdvancedQuery.Rule rule, int sequenceNumber) {
+  private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
     return FilterValue.builder()
         .id(generateFilterValueId())
         .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
@@ -109,18 +108,15 @@ public class FilterValueMapper {
         .columnUid(rule.columnId())
         .operator(rule.operator())
         .valueTxt(rule.value())
-        .sequenceNumber(sequenceNumber)
         .build();
   }
 
-  private FilterValue buildOperatorFilterValue(
-      ReportFilter advancedFilter, String operator, int sequenceNumber) {
+  private FilterValue buildOperatorFilterValue(ReportFilter advancedFilter, String operator) {
     return FilterValue.builder()
         .id(generateFilterValueId())
         .reportFilter(advancedFilter)
         .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
         .operator(operator)
-        .sequenceNumber(sequenceNumber)
         .build();
   }
 
