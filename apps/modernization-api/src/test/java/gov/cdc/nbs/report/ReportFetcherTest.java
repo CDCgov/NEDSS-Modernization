@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.FilterValue;
@@ -18,24 +20,23 @@ import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.repository.ReportRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ReportFetcherTest {
 
   @Mock private ReportRepository reportRepository;
 
-  @Mock private ReportLibrary reportLibrary;
-  @Mock private DataSource dataSource;
-  @Mock private ReportSortColumn reportSortColumn;
-
-  @Mock private DisplayColumn columnA;
-  @Mock private DisplayColumn columnB;
+  private ReportLibrary reportLibrary;
 
   @InjectMocks private ReportFetcher reportFetcher;
 
@@ -43,39 +44,6 @@ class ReportFetcherTest {
   private final Long dataSourceUid = 2L;
   private final Long columnAId = 3L;
   private final Long columnBId = 4L;
-
-  private Report mockReport(
-      ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
-    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
-  }
-
-  private Report mockReport(
-      ReportId id,
-      String runner,
-      String dataSourceName,
-      List<ReportFilter> reportFilters,
-      String sortDir) {
-    Report report = mock(Report.class);
-
-    Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
-    Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
-    Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
-    Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
-    Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
-    Mockito.lenient().when(report.getShared()).thenReturn('P');
-    Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
-    Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
-    Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
-    Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
-    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
-    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
-    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
-    Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
-    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
-    Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
-
-    return report;
-  }
 
   @Nested
   class GetReport {
@@ -121,7 +89,8 @@ class ReportFetcherTest {
                   null,
                   null,
                   null));
-      mockReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
+      Report report = buildTestReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
+      Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
       ReportConfiguration config = reportFetcher.getReport(reportUid, dataSourceUid);
 
@@ -155,7 +124,8 @@ class ReportFetcherTest {
     @Test
     void getReportRunner_should_return_runner_when_report_exists() {
       ReportId id = new ReportId(reportUid, dataSourceUid);
-      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
+      Report report = buildTestReport(id, "python", "nbs_ods.PHCDemographic", List.of());
+      Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
       String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
 
@@ -175,13 +145,85 @@ class ReportFetcherTest {
     @Test
     void getReportRunner_should_throw_when_report_has_no_library() {
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
-      Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
+      Report report = buildTestReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
 
-      when(report.getReportLibrary()).thenReturn(null);
+      report.setReportLibrary(null);
+
+      Mockito.lenient().when(reportRepository.findById(reportId)).thenReturn(Optional.of(report));
 
       assertThatThrownBy(() -> reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .isInstanceOf(UnprocessableEntityException.class)
           .hasMessage("No report library exists for report %s", reportId);
     }
+  }
+
+  private Report buildTestReport(
+      ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
+    Report report = Report.builder().id(id).build();
+
+    ReportLibrary reportLibrary = new ReportLibrary();
+    reportLibrary.setLibraryName("nbs_custom");
+    reportLibrary.setRunner(runner);
+    reportLibrary.setIsBuiltinInd('Y');
+    reportLibrary.setColumnSelectInd('Y');
+
+    DataSource dataSource =
+        DataSource.builder()
+            .id(dataSourceUid)
+            .statusCd(Status.ACTIVE_CODE)
+            .dataSourceName(dataSourceName)
+            .build();
+
+    ReportSortColumn reportSortColumn =
+        ReportSortColumn.builder()
+            .report(report)
+            .reportSortOrderCode("ASC")
+            .dataSourceColumnUid(columnAId)
+            .build();
+
+    DataSourceColumn dataSourceColA =
+        DataSourceColumn.builder()
+            .id(columnAId)
+            .dataSource(dataSource)
+            .columnName("Column A")
+            .columnTitle("Column A Title")
+            .statusCd(Status.ACTIVE_CODE)
+            .build();
+    DisplayColumn columnA =
+        DisplayColumn.builder()
+            .report(report)
+            .dataSourceColumn(dataSourceColA)
+            .dataSourceColumnId(dataSourceColA.getId())
+            .sequenceNumber(2)
+            .statusCd(Status.ACTIVE_CODE)
+            .build();
+
+    DataSourceColumn dataSourceColB =
+        DataSourceColumn.builder()
+            .id(columnBId)
+            .dataSource(dataSource)
+            .columnName("Column B")
+            .columnTitle("Column B Title")
+            .statusCd(Status.ACTIVE_CODE)
+            .build();
+    DisplayColumn columnB =
+        DisplayColumn.builder()
+            .report(report)
+            .dataSourceColumn(dataSourceColB)
+            .dataSourceColumnId(dataSourceColB.getId())
+            .sequenceNumber(1)
+            .statusCd(Status.ACTIVE_CODE)
+            .build();
+
+    dataSource.setDataSourceColumns(new ArrayList<>(List.of(dataSourceColA, dataSourceColB)));
+
+    report.setReportLibrary(reportLibrary);
+    report.setDataSource(dataSource);
+    report.setReportSortColumns(new ArrayList<>(List.of(reportSortColumn)));
+    report.setDisplayColumns(new ArrayList<>(List.of(columnA, columnB)));
+    report.setReportFilters(reportFilters);
+    report.setShared('P');
+
+    return report;
   }
 }

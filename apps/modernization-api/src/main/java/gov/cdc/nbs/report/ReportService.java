@@ -46,7 +46,6 @@ public class ReportService {
   private final ReportSortColumnMapper reportSortColumnMapper;
   private final FilterValueMapper filterValueMapper;
   private final DisplayColumnBuilder displayColumnBuilder;
-  private final ReportFetcher reportFetcher;
 
   private final ReportFilterBuilder reportFilterBuilder;
 
@@ -72,7 +71,6 @@ public class ReportService {
     this.reportSortColumnMapper = reportSortColumnMapper;
     this.filterValueMapper = filterValueMapper;
     this.displayColumnBuilder = displayColumnBuilder;
-    this.reportFetcher = reportFetcher;
 
     this.reportFilterBuilder = reportFilterBuilder;
   }

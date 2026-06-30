@@ -22,10 +22,10 @@ import gov.cdc.nbs.report.utils.FilterUtils;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.Comparator;
 import java.util.List;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Component
 public class ReportFetcher {
 
   private final ReportRepository reportRepository;
