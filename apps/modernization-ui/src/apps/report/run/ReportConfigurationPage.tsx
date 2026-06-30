@@ -14,10 +14,32 @@ import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
-import { BASIC_SECTIONS } from '../constants';
 import { ReportExecuteForm } from './ReportRunPage';
 import { FieldErrors, useFormState } from 'react-hook-form';
 import { ValidationErrorBanner, ValidationErrorSection } from './ValidationError';
+
+export const BASIC_SECTIONS = [
+    {
+        title: 'Time',
+        id: 'basic-time',
+        filterTypes: ['BAS_TIM_RANGE', 'BAS_TIM_RANGE_LIST', 'BAS_MM_YYYY_RANGE', 'BAS_TIM_RANGE_CUSTOM', 'BAS_DAYS'],
+    },
+    {
+        title: 'Condition',
+        id: 'basic-condition',
+        filterTypes: ['BAS_CON_LIST', 'BAS_CVG_LIST'],
+    },
+    {
+        title: 'Geographic area',
+        id: 'basic-geography',
+        filterTypes: ['BAS_JUR_LIST'],
+    },
+    {
+        title: 'Other filters',
+        id: 'basic-other',
+        filterTypes: ['BAS_TXT', 'BAS_STD_HIV_WRKR'],
+    },
+];
 
 const SECTIONS = [
     ...BASIC_SECTIONS.map(({ title, id, filterTypes }) => ({
