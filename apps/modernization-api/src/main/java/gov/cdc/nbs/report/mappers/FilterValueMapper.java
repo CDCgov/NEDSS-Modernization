@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 public class FilterValueMapper {
   private final IdGeneratorService idGenerator;
 
-  private int sequenceNumber = 1;
-
   public FilterValueMapper(IdGeneratorService idGenerator) {
     this.idGenerator = idGenerator;
   }
@@ -51,79 +49,79 @@ public class FilterValueMapper {
 
   public List<FilterValue> fromAdvancedFilterRequest(
       ReportFilter advancedFilter, AdvancedFilterRequest request) {
+    int sequenceNumber = 1;
+    return mapRuleGroupToFilterValues(advancedFilter, request.value(), sequenceNumber);
+  }
+
+  // Private Methods //////////////////////////////////////////
+
+  private List<FilterValue> mapRuleGroupToFilterValues(
+      ReportFilter advancedFilter, AdvancedQuery.RuleGroup ruleGroup, int sequenceNumber) {
     List<FilterValue> filterValues = new ArrayList<>();
 
-    AdvancedQuery.RuleGroup root = request.value();
-
-    FilterValue openParen = buildOpenParenFilterValue(advancedFilter);
+    FilterValue openParen = buildOpenParenFilterValue(advancedFilter, sequenceNumber);
     filterValues.add(openParen);
+    sequenceNumber++;
 
-    for (int i = 0; i < root.rules().size(); i++) {
-      AdvancedQuery rule = root.rules().get(i);
+    for (int i = 0; i < ruleGroup.rules().size(); i++) {
+      AdvancedQuery rule = ruleGroup.rules().get(i);
 
       if (rule instanceof AdvancedQuery.Rule r) {
-        FilterValue clause = buildClauseFilterValue(advancedFilter, r);
+        FilterValue clause = buildClauseFilterValue(advancedFilter, r, sequenceNumber);
         filterValues.add(clause);
+        sequenceNumber++;
 
-        if (i < root.rules().size() - 1) {
+        if (i < ruleGroup.rules().size() - 1) {
           FilterValue operator =
-              buildOperatorFilterValue(advancedFilter, root.combinator().toString());
+              buildOperatorFilterValue(
+                  advancedFilter, ruleGroup.combinator().toString(), sequenceNumber);
           filterValues.add(operator);
+          sequenceNumber++;
         }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
         List<FilterValue> ruleGroupValues =
-            fromAdvancedFilterRequest(
-                advancedFilter, new AdvancedFilterRequest(request.reportFilterUid(), r));
+            mapRuleGroupToFilterValues(advancedFilter, r, sequenceNumber);
         filterValues.addAll(ruleGroupValues);
+        sequenceNumber += ruleGroupValues.size();
       }
     }
 
-    FilterValue closeParen = buildCloseParenFilterValue(advancedFilter);
+    FilterValue closeParen = buildCloseParenFilterValue(advancedFilter, sequenceNumber);
     filterValues.add(closeParen);
 
     return filterValues;
   }
 
-  // Private Methods //////////////////////////////////////////
-
-  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter) {
-    return buildOperatorFilterValue(advancedFilter, "(");
+  private FilterValue buildOpenParenFilterValue(ReportFilter advancedFilter, int sequenceNumber) {
+    return buildOperatorFilterValue(advancedFilter, "(", sequenceNumber);
   }
 
-  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter) {
-    return buildOperatorFilterValue(advancedFilter, ")");
+  private FilterValue buildCloseParenFilterValue(ReportFilter advancedFilter, int sequenceNumber) {
+    return buildOperatorFilterValue(advancedFilter, ")", sequenceNumber);
   }
 
-  private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
-    FilterValue clause =
-        FilterValue.builder()
-            .id(generateFilterValueId())
-            .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
-            .reportFilter(advancedFilter)
-            .columnUid(rule.columnId())
-            .operator(rule.operator())
-            .valueTxt(rule.value())
-            .sequenceNumber(sequenceNumber)
-            .build();
-
-    sequenceNumber++;
-
-    return clause;
+  private FilterValue buildClauseFilterValue(
+      ReportFilter advancedFilter, AdvancedQuery.Rule rule, int sequenceNumber) {
+    return FilterValue.builder()
+        .id(generateFilterValueId())
+        .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
+        .reportFilter(advancedFilter)
+        .columnUid(rule.columnId())
+        .operator(rule.operator())
+        .valueTxt(rule.value())
+        .sequenceNumber(sequenceNumber)
+        .build();
   }
 
-  private FilterValue buildOperatorFilterValue(ReportFilter advancedFilter, String operator) {
-    FilterValue operatorVal =
-        FilterValue.builder()
-            .id(generateFilterValueId())
-            .reportFilter(advancedFilter)
-            .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
-            .operator(operator)
-            .sequenceNumber(sequenceNumber)
-            .build();
-
-    sequenceNumber++;
-
-    return operatorVal;
+  private FilterValue buildOperatorFilterValue(
+      ReportFilter advancedFilter, String operator, int sequenceNumber) {
+    return FilterValue.builder()
+        .id(generateFilterValueId())
+        .reportFilter(advancedFilter)
+        .valueType(ReportConstants.AdvancedFilterValueType.OPERATOR.toString())
+        .operator(operator)
+        .sequenceNumber(sequenceNumber)
+        .build();
   }
 
   private Long generateFilterValueId() {
