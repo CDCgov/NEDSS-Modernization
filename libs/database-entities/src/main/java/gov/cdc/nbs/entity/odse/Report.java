@@ -53,7 +53,7 @@ public class Report {
 
   // should be 1:1 in practice, but the DB implies there could be
   // more and NBS 6 fetches all then takes the first
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.REMOVE)
   private List<ReportSortColumn> reportSortColumns;
 
   @Column(name = "desc_txt", length = 300)
