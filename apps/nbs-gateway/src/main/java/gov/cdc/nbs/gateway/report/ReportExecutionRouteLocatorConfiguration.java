@@ -72,6 +72,7 @@ class ReportExecutionRouteLocatorConfiguration {
                     .readBody(LinkedMultiValueMap.class, bodyPredicate())
                     .and()
                     .asyncPredicate(isModPredicate(modService))
+                    .filters(filter -> filter.filters(defaults))
                     .filters(filter -> filter.filter(this::redirectToMod))
                     .uri("no://op"))
         .build();
