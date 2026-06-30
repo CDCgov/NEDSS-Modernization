@@ -959,7 +959,9 @@ class ReportServiceTest {
           .when(reportRepository.findById(newReport.getId()))
           .thenReturn(Optional.of(newReport));
 
-      Mockito.lenient().when(reportMapper.duplicate(existingReport)).thenReturn(newReport);
+      Mockito.lenient()
+          .when(reportMapper.duplicate(existingReport, mockUser))
+          .thenReturn(newReport);
       Mockito.lenient().when(reportRepository.save(newReport)).thenReturn(newReport);
     }
 
@@ -977,7 +979,7 @@ class ReportServiceTest {
 
       Report result = service.saveAsReport(request, mockUser, existingReportId);
 
-      verify(reportMapper).duplicate(existingReport);
+      verify(reportMapper).duplicate(existingReport, mockUser);
 
       assertThat(result.getReportTitle()).isEqualTo(request.reportTitle());
       assertThat(result.getSectionCd()).isEqualTo(request.sectionCode());

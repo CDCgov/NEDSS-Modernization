@@ -146,7 +146,7 @@ public class ReportService {
             .findById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
-    Report duplicate = reportMapper.duplicate(report);
+    Report duplicate = reportMapper.duplicate(report, user);
 
     duplicate.setReportTitle(request.reportTitle());
     duplicate.setSectionCd(request.sectionCode());

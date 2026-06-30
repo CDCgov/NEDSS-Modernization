@@ -483,7 +483,7 @@ class ReportFilterBuilderTest {
 
   private ReportFilter buildReportFilter() {
     return ReportFilter.builder()
-        .id(100L)
+        .id(random.nextLong(1000))
         .report(mock(Report.class))
         .filterCode(mock(FilterCode.class))
         .dataSourceColumn(mock(DataSourceColumn.class))

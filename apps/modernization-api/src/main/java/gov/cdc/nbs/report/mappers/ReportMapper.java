@@ -11,6 +11,7 @@ import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
+import gov.cdc.nbs.report.ReportFilterBuilder;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -21,45 +22,63 @@ import org.springframework.stereotype.Service;
 public class ReportMapper {
   private final Clock clock;
   private final IdGeneratorService idGenerator;
+  private final ReportFilterBuilder reportFilterBuilder;
 
-  public ReportMapper(final Clock clock, IdGeneratorService idGenerator) {
+  public ReportMapper(
+      final Clock clock, IdGeneratorService idGenerator, ReportFilterBuilder reportFilterBuilder) {
     this.clock = clock;
     this.idGenerator = idGenerator;
+    this.reportFilterBuilder = reportFilterBuilder;
   }
 
-  public Report duplicate(Report existingReport) {
+  public Report duplicate(Report existingReport, NbsUserDetails user) {
     Report newReport =
         existingReport.toBuilder()
             .id(new ReportId(generateId(), existingReport.getDataSource().getId()))
+            .addTime(LocalDateTime.now(clock))
+            .addUserUid(user.getId())
+            .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
             .build();
-
-    if (existingReport.getReportSortColumns() != null) {
-      List<ReportSortColumn> newSortColumns =
-          existingReport.getReportSortColumns().stream()
-              .map(c -> c.toBuilder().id(generateId()).build())
-              .toList();
-
-      newSortColumns.forEach(newSortColumn -> newSortColumn.setReport(newReport));
-      newReport.setReportSortColumns(newSortColumns);
-    }
 
     if (existingReport.getReportFilters() != null) {
       List<ReportFilter> newFilters =
           existingReport.getReportFilters().stream()
-              .map(f -> f.toBuilder().id(generateId()).build())
+              .map(reportFilterBuilder::duplicate)
+              .map(f -> f.toBuilder().report(newReport).build())
               .toList();
 
-      newFilters.forEach(newFilter -> newFilter.setReport(newReport));
       newReport.setReportFilters(newFilters);
+    }
+
+    if (existingReport.getReportSortColumns() != null) {
+      List<ReportSortColumn> newSortColumns =
+          existingReport.getReportSortColumns().stream()
+              .map(
+                  c ->
+                      c.toBuilder()
+                          .id(generateId())
+                          .report(newReport)
+                          .statusCd(Status.ACTIVE_CODE)
+                          .statusTime(LocalDateTime.now(clock))
+                          .build())
+              .toList();
+
+      newReport.setReportSortColumns(newSortColumns);
     }
 
     if (existingReport.getDisplayColumns() != null) {
       List<DisplayColumn> newDisplayColumns =
           existingReport.getDisplayColumns().stream()
-              .map(c -> c.toBuilder().id(generateId()).build())
+              .map(
+                  c ->
+                      c.toBuilder()
+                          .id(generateId())
+                          .report(newReport)
+                          .statusCd(Status.ACTIVE_CODE)
+                          .statusTime(LocalDateTime.now(clock))
+                          .build())
               .toList();
 
-      newDisplayColumns.forEach(newDisplayColumn -> newDisplayColumn.setReport(newReport));
       newReport.setDisplayColumns(newDisplayColumns);
     }
 
