@@ -8,26 +8,18 @@ import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.cdc.nbs.entity.odse.DataSource;
-import gov.cdc.nbs.entity.odse.DisplayColumn;
-import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
-import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.entity.odse.ReportLibrary;
-import gov.cdc.nbs.entity.odse.ReportSortColumn;
-import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.models.Library;
 import gov.cdc.nbs.report.models.LibraryExecutionResult;
+import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
-import gov.cdc.nbs.repository.ReportRepository;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,66 +36,25 @@ import org.springframework.web.client.RestClient;
 
 @ExtendWith(MockitoExtension.class)
 class ReportExecutionClientTest {
-
   @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(1000000), ZoneId.systemDefault());
 
-  @Mock private ReportRepository reportRepository;
-
   @Mock private RestClient client;
-  @Mock private ReportLibrary reportLibrary;
-  @Mock private DataSource dataSource;
-  @Mock private ReportSortColumn reportSortColumn;
+  @Mock private ReportFetcher reportFetcher;
 
   @Mock private RestClient.RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RestClient.RequestBodySpec requestBodySpec;
   @Mock private RestClient.ResponseSpec responseSpec;
-  @Mock private DisplayColumn columnA;
-  @Mock private DisplayColumn columnB;
 
   @InjectMocks private ReportExecutionClient reportExecutionClient;
 
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
-  private final Long columnAId = 3L;
-  private final Long columnBId = 4L;
-
-  private Report mockReport(
-      ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
-    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
-  }
-
-  private Report mockReport(
-      ReportId id,
-      String runner,
-      String dataSourceName,
-      List<ReportFilter> reportFilters,
-      String sortDir) {
-    Report report = mock(Report.class);
-
-    Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
-    Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
-    Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
-    Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
-    Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
-    Mockito.lenient().when(report.getShared()).thenReturn('P');
-    Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
-    Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
-    Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
-    Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
-    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
-    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
-    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
-    Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
-    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
-    Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
-
-    return report;
-  }
 
   @Test
   void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
+    ReportConfiguration reportConfig = mockReportConfiguration(true);
+
+    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ReportSpec spec =
         new ReportSpec(
@@ -145,8 +96,11 @@ class ReportExecutionClientTest {
 
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-    mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
+    ReportConfiguration reportConfig = mockReportConfiguration(false);
+
+    Mockito.lenient()
+        .when(reportFetcher.getReport(reportUid, dataSourceUid))
+        .thenReturn(reportConfig);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -155,21 +109,6 @@ class ReportExecutionClientTest {
     assertThatThrownBy(() -> reportExecutionClient.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
         .hasMessage("Report not implemented for java");
-  }
-
-  @Test
-  void executeReport_should_throw_not_found_when_report_not_found() {
-    ReportId id = new ReportId(reportUid, dataSourceUid);
-
-    when(reportRepository.findById(id)).thenReturn(Optional.empty());
-
-    ReportExecutionRequest request =
-        new ReportExecutionRequest(
-            reportUid, dataSourceUid, true, List.of(18L), null, List.of(), null);
-
-    assertThatThrownBy(() -> reportExecutionClient.executeReport(request))
-        .isInstanceOf(NotFoundException.class)
-        .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
   }
 
   private ReportExecutionResult getReportExecutionResponse() {
@@ -182,5 +121,18 @@ class ReportExecutionClientTest {
             "result description"),
         "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
         LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
+  }
+
+  private ReportConfiguration mockReportConfiguration(boolean isPython) {
+    ReportConfiguration reportConfig = mock(ReportConfiguration.class);
+    Library library = mock(Library.class);
+
+    Mockito.lenient().when(library.isBuiltin()).thenReturn(true);
+    Mockito.lenient().when(library.runner()).thenReturn(isPython ? "python" : "java");
+
+    Mockito.lenient().when(reportConfig.isPython()).thenReturn(isPython);
+    Mockito.lenient().when(reportConfig.library()).thenReturn(library);
+
+    return reportConfig;
   }
 }
