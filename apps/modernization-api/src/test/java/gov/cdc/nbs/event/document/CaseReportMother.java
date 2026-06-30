@@ -46,7 +46,8 @@ public class CaseReportMother {
           nbs_document_metadata_uid,
           prog_area_cd,
           jurisdiction_cd,
-          program_jurisdiction_oid
+          program_jurisdiction_oid,
+          received_time
       ) values (
           :identifier,
           :local,
@@ -64,6 +65,7 @@ public class CaseReportMother {
           :programArea,
           :jurisdiction,
           :oid
+          :addedOn
       );
 
       insert into Participation(
