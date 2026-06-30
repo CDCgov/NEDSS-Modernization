@@ -72,12 +72,10 @@ class ReportExecutionRouteLocatorConfiguration {
                     .readBody(LinkedMultiValueMap.class, bodyPredicate())
                     .and()
                     .asyncPredicate(isModPredicate(modService))
-                    .filters(filter -> filter.filters(defaults))
-                    .filters(filter -> filter.filter(this::redirectToMod))
+                    .filters(filter -> filter.filters(defaults).filter(this::redirectToMod))
                     .uri("no://op"))
         .build();
   }
-  
 
   /** Check the /nbs/nfc post matches the object and operation for running a report */
   @SuppressWarnings({"unchecked", "rawtypes"})
