@@ -13,7 +13,7 @@ export const validateRule = (rule: QbQuery, result: ValidationResultMap) => {
     };
     if (isQbRuleType(rule)) {
         const { id, field, operator, value, type } = rule;
-        const label = rule.label! // this will be there, but need to convince ts
+        const label = rule.label!; // this will be there, but need to convince ts
 
         if (!id) {
             // no key for the map, shouldn't happen in practice

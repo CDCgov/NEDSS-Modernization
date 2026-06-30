@@ -7,7 +7,7 @@ import { BasicFilter } from './filters/basic/BasicFilter';
 import { Card } from 'design-system/card';
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
-import { AdvancedFilter } from './filters/advanced/AdvancedFilter';
+import { AdvancedFilter, parseAdvancedFilterErrors } from './filters/advanced/AdvancedFilter';
 import { ColumnSelector } from './columns/ColumnSelector';
 
 import layoutStyles from '../layout/layout.module.scss';
@@ -15,6 +15,9 @@ import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
 import { BASIC_SECTIONS } from '../constants';
+import { ReportExecuteForm } from './ReportRunPage';
+import { FieldErrors, useFormState } from 'react-hook-form';
+import { ValidationErrorBanner, ValidationErrorSection } from './ValidationError';
 
 const SECTIONS = [
     ...BASIC_SECTIONS.map(({ title, id, filterTypes }) => ({
@@ -31,6 +34,25 @@ const SECTIONS = [
                     ))}
             </Card>
         ),
+        hasError: (errors: FieldErrors<ReportExecuteForm>, config: ReportConfiguration): boolean =>
+            Object.entries(errors.basicFilter ?? {}).some(([k, _e]) =>
+                filterTypes.includes(
+                    config.basicFilters.find((f) => f.reportFilterUid === parseInt(k.slice(3)))?.filterType.type ?? ''
+                )
+            ),
+        getValidationMessages: (
+            errors: FieldErrors<ReportExecuteForm>,
+            config: ReportConfiguration
+        ): string[] | undefined =>
+            Object.entries(errors.basicFilter ?? {})
+                .filter(([k, _e]) =>
+                    filterTypes.includes(
+                        config.basicFilters.find((f) => f.reportFilterUid === parseInt(k.slice(3)))?.filterType.type ??
+                            ''
+                    )
+                )
+                .map(([_k, e]) => e?.value?.message)
+                .filter((v) => typeof v === 'string'),
     })),
     {
         title: 'Advanced filter',
@@ -55,6 +77,9 @@ const SECTIONS = [
                 <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
             </Card>
         ),
+        hasError: (errors: FieldErrors<ReportExecuteForm>): boolean => !!errors?.advancedFilter?.message,
+        getValidationMessages: (errors: FieldErrors<ReportExecuteForm>): string[] | undefined =>
+            errors?.advancedFilter?.message ? parseAdvancedFilterErrors(errors.advancedFilter.message) : undefined,
     },
     {
         title: 'Column selection',
@@ -77,19 +102,24 @@ const SECTIONS = [
                 />
             </Card>
         ),
+        hasError: (errors: FieldErrors<ReportExecuteForm>): boolean => !!errors?.columns?.message,
+        getValidationMessages: (errors: FieldErrors<ReportExecuteForm>): string[] | undefined =>
+            errors?.columns?.message ? [errors.columns.message] : undefined,
     },
 ];
 
 const ReportConfigurationPage = ({
     config,
     handleSubmit,
-    error,
 }: {
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
     error?: ReactNode;
 }) => {
+    const { errors } = useFormState<ReportExecuteForm>();
+
     const sectionData = SECTIONS.filter(({ hasData }) => hasData(config));
+    const sectionErrors = SECTIONS.filter(({ hasError }) => hasError(errors, config));
 
     return (
         <ReportLayout
@@ -109,7 +139,17 @@ const ReportConfigurationPage = ({
                 <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
             </aside>
             <form className={layoutStyles.columnContent}>
-                {error}
+                {!!sectionErrors.length && (
+                    <ValidationErrorBanner level={2}>
+                        {sectionErrors.map(({ id, title, getValidationMessages }) => (
+                            <ValidationErrorSection id={id} key={id} title={title}>
+                                {getValidationMessages(errors, config)!.map((message, i) => (
+                                    <li key={`validation-message-${i}`}>{message}</li>
+                                ))}
+                            </ValidationErrorSection>
+                        ))}
+                    </ValidationErrorBanner>
+                )}
                 <CurrentStateProvider
                     stateFilter={config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE))}
                 >

@@ -203,12 +203,14 @@ const validator: QueryValidator = (q) => {
     return result;
 };
 
-const formatAdvancedFilterErrors = (message: string): ReactNode =>
+const parseAdvancedFilterErrors = (message: string): string[] =>
     message
         .split('\n')
         .map((str) => str.trim())
-        .filter(Boolean)
-        .map((msg, index) => <li key={`adv-filter-error-${index}`}>{msg}</li>);
+        .filter(Boolean);
+
+const formatAdvancedFilterErrors = (message: string): ReactNode =>
+    parseAdvancedFilterErrors(message).map((msg, index) => <li key={`adv-filter-error-${index}`}>{msg}</li>);
 
 // ============= Drag And Drop ============= /
 
@@ -299,4 +301,4 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
     );
 };
 
-export { AdvancedFilter, queryToAdvancedFilterRequest, formatAdvancedFilterErrors };
+export { AdvancedFilter, queryToAdvancedFilterRequest, parseAdvancedFilterErrors };

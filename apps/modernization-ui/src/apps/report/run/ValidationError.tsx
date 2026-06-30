@@ -9,7 +9,7 @@ const ValidationErrorBanner = ({ level, children }: { level: HeadingLevel; child
     </AlertMessage>
 );
 
-const ValidationErrorChunk = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => (
+const ValidationErrorSection = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => (
     <div key={id} className="usa-prose">
         <p>
             For <a href={`#${id}`}>{title}</a>,
@@ -18,4 +18,4 @@ const ValidationErrorChunk = ({ id, title, children }: { id: string; title: stri
     </div>
 );
 
-export { ValidationErrorBanner, ValidationErrorChunk };
+export { ValidationErrorBanner, ValidationErrorSection };
