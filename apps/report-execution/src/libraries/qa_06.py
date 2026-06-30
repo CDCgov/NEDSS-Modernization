@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -23,7 +23,7 @@ def execute(
       actual sorting beyond that will differ between SAS and SQL Server.
     """
     # Dynamically look up the correct DB names
-    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     query = f"""
         WITH STD_HIV_DATAMART AS ({subset_query}),
 

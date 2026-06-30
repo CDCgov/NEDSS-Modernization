@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -15,8 +15,8 @@ def execute(
     * Matched "export format"
     """
     # Dynamically look up the correct DB names
-    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
-    nbs_srt = get_config_value(trx, 'REPORT_DB_NBS_SRT')
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+    nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),

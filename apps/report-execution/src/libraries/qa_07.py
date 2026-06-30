@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -28,7 +28,7 @@ def execute(
     INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
     in the final output). SAS does not have a tiebreaker value.
     """
-    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     if not isinstance(library_params, dict):
         raise ValueError(f"""
             library_params must be a dictionary containing 'days_value' \

@@ -1,26 +1,34 @@
-from src.db_transaction import Transaction
+from typing import TYPE_CHECKING  # <-- Add this import
 
 from . import errors
+
+# This block is evaluated as True ONLY by IDEs and type checkers,
+# completely skipping execution at application runtime.
+if TYPE_CHECKING:
+    from src.db_transaction import Transaction
 
 # Module-level cache dictionary
 _CONFIG_CACHE: dict[str, str] = {}
 
 
+# FIX: Use quotes around "Transaction" to make it a string forward reference
 def get_config_value(trx: Transaction, config_key: str) -> str:
     """Retrieves a configuration value from NBS_configuration, with a cache for
-    subsequent lookups.
+    subsequent lookups. Automatically handles case-insensitivity.
     """
+    normalized_key = config_key.upper()
+
     # check the cache
-    if config_key in _CONFIG_CACHE:
-        return _CONFIG_CACHE[config_key]
+    if normalized_key in _CONFIG_CACHE:
+        return _CONFIG_CACHE[normalized_key]
 
     query = """
-            SELECT COALESCE(config_value, default_value)
+            SELECT config_value
             FROM NBS_ODSE..NBS_configuration
             WHERE config_key = ? \
             """
 
-    table = trx.query(query, (config_key.upper(),))
+    table = trx.query(query, (normalized_key,))
 
     if not table.data:
         raise errors.InvalidConfigurationError(config_key)
@@ -40,11 +48,46 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
             + 'config_value and default_value are null'
         )
 
-    # Populate the cache with the pulled value
+    # Populate the cache with the normalized key
     resolved_value = str(val).strip()
-    _CONFIG_CACHE[config_key] = resolved_value
+    _CONFIG_CACHE[normalized_key] = resolved_value
 
     return resolved_value
+
+
+# FIX: Use quotes around "Transaction" here as well
+def prime_report_configurations(trx: Transaction) -> None:
+    """Fetches and caches config keys needed by the report execution."""
+    config_keys = [
+        'REPORT_DB_NBS_RDB',
+        'REPORT_DB_NBS_ODS',
+        'REPORT_DB_NBS_SRT',
+        'REPORT_DB_NBS_MSGOUT',
+        'REPORT_MAX_ROW_LIMIT_RUN',
+        'REPORT_MAX_ROW_LIMIT_EXPORT',
+        'REPORT_EXPORT_DATE_FORMAT',
+        'REPORT_EXPORT_DATETIME_FORMAT',
+    ]
+    for key in config_keys:
+        get_config_value(trx, key)
+
+
+def get_cached_config_value(config_key: str) -> str:
+    """Retrieves a configuration value from the cache.
+
+    Raises:
+        InvalidConfigurationError: If the key was never primed, indicating
+        a system lifecycle or development defect.
+    """
+    normalized_key = config_key.upper()
+
+    if normalized_key not in _CONFIG_CACHE:
+        raise errors.InvalidConfigurationError(
+            f"Configuration key '{config_key}' was accessed but was never primed. "
+            f'Please ensure it is registered in prime_report_configurations().'
+        )
+
+    return _CONFIG_CACHE[normalized_key]
 
 
 def clear_config_cache():

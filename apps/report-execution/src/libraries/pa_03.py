@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 
@@ -129,7 +129,7 @@ def execute(
         for that particular field.
     """
     valid_referral_bases_sql = _sql_string_list(VALID_REFERRAL_BASES)
-    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
 
     cases_query = f"""
     WITH shd AS (

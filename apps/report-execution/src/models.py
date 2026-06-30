@@ -4,7 +4,7 @@ from typing import Annotated, Any, Literal
 import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
 
-from src.utils import get_str_env_or_default
+from src.config import get_cached_config_value
 
 
 class ReportSpec(BaseModel):
@@ -61,10 +61,8 @@ def serialize_table(table: Table) -> str:
      - date: mm/dd/yyyy
     """
     # strftime constants for Python date and datetime when outputting to CSV
-    csv_date_strftime = get_str_env_or_default('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y')
-    csv_datetime_strftime = get_str_env_or_default(
-        'REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S'
-    )
+    csv_date_strftime = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
+    csv_datetime_strftime = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
 
     # properly format a given value if it's a date or datetime
     def convert_dates(val: Any) -> Any:

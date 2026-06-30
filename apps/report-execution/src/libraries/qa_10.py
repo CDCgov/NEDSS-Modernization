@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -15,7 +15,7 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "14" instead of the count of the columns
     """
-    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT

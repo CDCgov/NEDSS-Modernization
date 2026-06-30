@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -20,7 +20,7 @@ def execute(
       associated with label for 13
     """
     # Dynamically look up the correct name for the SRTE database
-    nbs_srt = get_config_value(trx, 'REPORT_DB_NBS_SRT')
+    nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
 
     sql_query = f"""
     SELECT 

@@ -1,4 +1,4 @@
-from src.config import get_config_value
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -19,7 +19,7 @@ def execute(
     * Matches original report format
     """
     # Dynamically look up the correct name for the rdb database
-    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     full_query = f"""
     WITH subset AS ({subset_query})
     SELECT DISTINCT
