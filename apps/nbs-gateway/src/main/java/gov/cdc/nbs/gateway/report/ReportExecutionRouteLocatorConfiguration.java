@@ -77,6 +77,7 @@ class ReportExecutionRouteLocatorConfiguration {
                     .uri("no://op"))
         .build();
   }
+  
 
   /** Check the /nbs/nfc post matches the object and operation for running a report */
   @SuppressWarnings({"unchecked", "rawtypes"})
