@@ -3,9 +3,17 @@ from src.models import Table
 
 # Constants
 ALL = 'ALL'
+CA_PATIENT_INTV_STATUS = 'CA_PATIENT_INTV_STATUS'
 CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
+DAYS = 'Days'
+INV_LOCAL_ID = 'INV_LOCAL_ID'
+INVESTIGATOR_INTERVIEW_KEY = 'INVESTIGATOR_INTERVIEW_KEY'
+IX_TYPE = 'IX_TYPE'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
+PROVIDER_QUICK_CODE = 'PROVIDER_QUICK_CODE'
+TOTAL_CLUSTERS_INITIATED = 'Total Clusters Initiated'
+TOTAL_PARTNERS_INITIATED = 'Total Partners Initiated'
 
 
 def build_output_for_worker(
@@ -250,7 +258,7 @@ def _build_partners_and_clusters_initiated_output(
         (
             _worker_for_csv(worker),
             PARTNERS_AND_CLUSTERS_INITIATED,
-            'Total Partners Initiated',
+            TOTAL_PARTNERS_INITIATED,
             None,
             total_partners_initiated,
             None,
@@ -259,7 +267,7 @@ def _build_partners_and_clusters_initiated_output(
         (
             _worker_for_csv(worker),
             PARTNERS_AND_CLUSTERS_INITIATED,
-            'Total Partners Initiated',
+            TOTAL_PARTNERS_INITIATED,
             'From OI',
             total_partners_initiated_oi,
             None,
@@ -268,7 +276,7 @@ def _build_partners_and_clusters_initiated_output(
         (
             _worker_for_csv(worker),
             PARTNERS_AND_CLUSTERS_INITIATED,
-            'Total Partners Initiated',
+            TOTAL_PARTNERS_INITIATED,
             'From RI',
             total_partners_initiated_ri,
             None,
@@ -295,7 +303,7 @@ def _build_partners_and_clusters_initiated_output(
         (
             _worker_for_csv(worker),
             PARTNERS_AND_CLUSTERS_INITIATED,
-            'Total Clusters Initiated',
+            TOTAL_CLUSTERS_INITIATED,
             None,
             total_clusters_initiated,
             None,
@@ -304,7 +312,7 @@ def _build_partners_and_clusters_initiated_output(
         (
             _worker_for_csv(worker),
             PARTNERS_AND_CLUSTERS_INITIATED,
-            'Total Clusters Initiated',
+            TOTAL_CLUSTERS_INITIATED,
             'Cluster Index',
             None,
             None,
@@ -313,7 +321,7 @@ def _build_partners_and_clusters_initiated_output(
         (
             _worker_for_csv(worker),
             PARTNERS_AND_CLUSTERS_INITIATED,
-            'Total Clusters Initiated',
+            TOTAL_CLUSTERS_INITIATED,
             'Cases /W No Clusters',
             cases_with_no_clusters,
             cases_with_no_clusters_percentage,
@@ -355,7 +363,7 @@ def _calc_cases_ixd(
     """
     rows = _rows_for_worker(case_interview_rows, worker)
     count = _count_distinct_case_ids(
-        rows, lambda row: row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+        rows, lambda row: row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
     )
 
     return count, _percent_for_csv(count, cases_assigned)
@@ -371,14 +379,14 @@ def _calc_interview_day_buckets(
     rows = [
         row
         for row in rows
-        if row['IX_TYPE'] == 'Initial/Original'
-        and row['Days'] is not None
-        and row['Days'] <= 14
+        if row[IX_TYPE] == 'Initial/Original'
+        and row[DAYS] is not None
+        and row[DAYS] <= 14
     ]
 
     results = dict()
     for threshold in (3, 5, 7, 14):
-        count = sum(1 for d in rows if d['Days'] <= threshold)
+        count = sum(1 for d in rows if d[DAYS] <= threshold)
         results[threshold] = (count, _percent_for_csv(count, cases_ixd))
 
     return results
@@ -394,8 +402,8 @@ def _calc_cases_reinterviewed(
     count = _count_distinct_case_ids(
         rows,
         lambda row: (
-            row['IX_TYPE'] == 'Re-Interview'
-            and row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+            row[IX_TYPE] == 'Re-Interview'
+            and row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
         ),
     )
 
@@ -412,7 +420,7 @@ def _calc_hiv_previous_positive(
     count = _count_distinct_case_ids(
         rows,
         lambda row: (
-            row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+            row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
             and row['ADI_900_STATUS_CD'] in ('03', '04', '05')
         ),
     )
@@ -432,15 +440,15 @@ def _calc_hiv_tested(
     groups: dict[tuple, set] = {}
     for row in rows:
         if (
-            row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+            row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
             and row['HIV_900_TEST_IND'] == 'Yes'
         ):
             worker_key = (
-                row['INVESTIGATOR_INTERVIEW_KEY'],
-                row['PROVIDER_QUICK_CODE'],
+                row[INVESTIGATOR_INTERVIEW_KEY],
+                row[PROVIDER_QUICK_CODE],
             )
 
-            groups.setdefault(worker_key, set()).add(row['INV_LOCAL_ID'])
+            groups.setdefault(worker_key, set()).add(row[INV_LOCAL_ID])
 
     count = sum(len(case_ids) for case_ids in groups.values())
 
@@ -483,15 +491,15 @@ def _calc_hiv_posttest_counsel(
     groups: dict[tuple, set] = {}
     for row in rows:
         if (
-            row['CA_PATIENT_INTV_STATUS'] == 'I - Interviewed'
+            row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
             and row['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
         ):
             worker_key = (
-                row['PROVIDER_QUICK_CODE'],
-                row['INVESTIGATOR_INTERVIEW_KEY'],
+                row[PROVIDER_QUICK_CODE],
+                row[INVESTIGATOR_INTERVIEW_KEY],
             )
 
-            groups.setdefault(worker_key, set()).add(row['INV_LOCAL_ID'])
+            groups.setdefault(worker_key, set()).add(row[INV_LOCAL_ID])
 
     count = sum(len(case_ids) for case_ids in groups.values())
 
@@ -553,7 +561,7 @@ def _calc_total_partners_initiated_oi(
     """
     rows = _rows_for_worker(period_partners, worker)
     count = _count_distinct_case_ids(
-        rows, lambda row: row['IX_TYPE'] == 'Initial/Original'
+        rows, lambda row: row[IX_TYPE] == 'Initial/Original'
     )
 
     return count
@@ -566,7 +574,7 @@ def _calc_total_partners_initiated_ri(
     if passed in worker is None.
     """
     rows = _rows_for_worker(period_partners, worker)
-    count = _count_distinct_case_ids(rows, lambda row: row['IX_TYPE'] == 'Re-Interview')
+    count = _count_distinct_case_ids(rows, lambda row: row[IX_TYPE] == 'Re-Interview')
 
     return count
 
@@ -580,6 +588,7 @@ def _calc_contact_index(
     rows = _rows_for_worker(period_partners, worker)
     count = _count_distinct_case_ids(rows)
 
+    # nb. this is to align with the precision found in the SAS report
     precision = 2 if worker is None else 1
     return _index_for_csv(count, cases_ixd, precision)
 
@@ -647,8 +656,8 @@ def _filter_rows_for_worker(rows: list[dict], worker: Pa01Worker) -> list[dict]:
     return [
         row
         for row in rows
-        if row['INVESTIGATOR_INTERVIEW_KEY'] == worker.investigator_interview_key
-        and row['PROVIDER_QUICK_CODE'] == worker.provider_quick_code
+        if row[INVESTIGATOR_INTERVIEW_KEY] == worker.investigator_interview_key
+        and row[PROVIDER_QUICK_CODE] == worker.provider_quick_code
     ]
 
 
@@ -656,7 +665,7 @@ def _count_distinct_case_ids(rows: list[dict], predicate=lambda row: True) -> in
     """Count distinct case ids in the given rows, applying the given predicate to each.
     If no predicate is given then the rows will not be filtered.
     """
-    return len({row['INV_LOCAL_ID'] for row in rows if predicate(row)})
+    return len({row[INV_LOCAL_ID] for row in rows if predicate(row)})
 
 
 def _percent_for_csv(numerator: int, denominator: int, precision: int = 1) -> str:
