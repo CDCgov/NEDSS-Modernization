@@ -15,15 +15,15 @@ def execute(
     * Matched "export format"
     """
     # Dynamically look up the correct DB names
-    nbs_rdb = get_config_value(trx, 'nbs_rdb')
-    nbs_srte = get_config_value(trx, 'nbs_srte')
+    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
+    nbs_srt = get_config_value(trx, 'REPORT_DB_NBS_SRT')
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),
         
         PROG_AREA as (
             SELECT DISTINCT PROG_AREA_CD
-            FROM {nbs_srte}.dbo.condition_code
+            FROM {nbs_srt}.dbo.condition_code
             WHERE 
                 condition_cd in ('10560', '900')
                 OR nnd_entity_identifier = 'STD_Case_Map_v1.0'

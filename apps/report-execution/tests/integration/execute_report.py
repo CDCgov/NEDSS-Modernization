@@ -8,6 +8,7 @@ import pytest
 from pydantic import ValidationError
 
 from src import utils
+from src.config import clear_config_cache
 from src.db_transaction import db_transaction
 from src.errors import (
     IntConfigurationConversionError,
@@ -19,10 +20,15 @@ from src.execute_report import execute_report
 from src.models import ReportSpec
 
 
-@pytest.mark.usefixtures('setup_containers_with_seed_data')
+@pytest.mark.usefixtures('setup_containers')
 @pytest.mark.integration
 class TestIntegrationExecuteReport:
     """Integration tests for generic report execution."""
+
+    @pytest.fixture(autouse=True)
+    def clear_cache_between_tests(self):
+        """Automatically wipes the configuration cache before each test executes."""
+        clear_config_cache()
 
     def test_execute_report_valid(self):
         report_spec = ReportSpec.model_validate(

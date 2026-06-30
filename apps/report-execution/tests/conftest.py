@@ -149,23 +149,20 @@ def setup_containers(request):
 
     request.addfinalizer(teardown)
 
-
-# Seeds global settings once setup_containers finishes booting
-@pytest.fixture(scope='session')
-def setup_containers_with_seed_data(setup_containers):
-    """Globally initializes and seeds the NBS_configuration table for all
-        integration tests.
-
-    Runs exactly ONCE per test session using the active connection string boundaries.
-    """
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+    _seed_baseline_configuration(conn_string)
+
+
+def _seed_baseline_configuration(conn_string: str):
+    """Initializes and seeds the NBS_configuration table for all integration tests."""
+    logging.info('Seeding global configuration keys inside active containers...')
 
     with db_transaction(conn_string) as trx:
-        # Baseline mappings required across the testing landscape
         baseline_configs = [
-            ('NBS_RDB', 'RDB', 'RDB'),
-            ('NBS_ODS', 'NBS_ODSE', 'NBS_ODSE'),
-            ('NBS_SRTE', 'NBS_SRTE', 'NBS_SRTE'),
+            ('REPORT_DB_NBS_RDB', 'RDB', 'RDB'),
+            ('REPORT_DB_NBS_ODS', 'NBS_ODSE', 'NBS_ODSE'),
+            ('REPORT_DB_NBS_SRT', 'NBS_SRTE', 'NBS_SRTE'),
+            ('REPORT_DB_NBS_MSGOUT', 'NBS_MSGOUTE', 'NBS_MSGOUTE'),
             ('REPORT_MAX_ROW_LIMIT_EXPORT', '100000', '100000'),
             ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000'),
         ]
@@ -176,13 +173,13 @@ def setup_containers_with_seed_data(setup_containers):
             )
             trx.execute(
                 """
-                        INSERT INTO NBS_ODSE..NBS_configuration (
-                            config_key, config_value, default_value,
-                            version_ctrl_nbr, add_user_id, add_time,
-                            last_chg_user_id, last_chg_time, status_cd, status_time
-                        )
-                        VALUES (?, ?, ?, 1, 1, GETDATE(), 1, GETDATE(), 'A', GETDATE())
-                        """,
+                INSERT INTO NBS_ODSE..NBS_configuration (
+                    config_key, config_value, default_value,
+                    version_ctrl_nbr, add_user_id, add_time,
+                    last_chg_user_id, last_chg_time, status_cd, status_time
+                )
+                VALUES (?, ?, ?, 1, 1, GETDATE(), 1, GETDATE(), 'A', GETDATE())
+                """,
                 (key, val, default),
             )
 

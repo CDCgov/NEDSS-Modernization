@@ -20,7 +20,7 @@ def execute(
       associated with label for 13
     """
     # Dynamically look up the correct name for the SRTE database
-    nbs_srte = get_config_value(trx, 'nbs_srte')
+    nbs_srt = get_config_value(trx, 'REPORT_DB_NBS_SRT')
 
     sql_query = f"""
     SELECT 
@@ -28,7 +28,7 @@ def execute(
         phc_code_short_desc as "Condition",
         cvg.code_short_desc_txt as "Case Status"
     FROM ({subset_query}) phc
-    LEFT JOIN {nbs_srte}.dbo.code_value_general cvg 
+    LEFT JOIN {nbs_srt}.dbo.code_value_general cvg 
         ON phc.case_class_cd = cvg.code 
         AND cvg.code_set_nm = 'PHC_CLASS'
     WHERE cvg.code_short_desc_txt IS NOT NULL

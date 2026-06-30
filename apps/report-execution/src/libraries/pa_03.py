@@ -129,7 +129,7 @@ def execute(
         for that particular field.
     """
     valid_referral_bases_sql = _sql_string_list(VALID_REFERRAL_BASES)
-    nbs_rdb = get_config_value(trx, 'nbs_rdb')
+    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
 
     cases_query = f"""
     WITH shd AS (

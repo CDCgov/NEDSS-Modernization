@@ -1,6 +1,5 @@
-import logging
-
 from src.db_transaction import Transaction
+
 from . import errors
 
 # Module-level cache dictionary
@@ -21,7 +20,7 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
             WHERE config_key = ? \
             """
 
-    table = trx.query(query, (config_key,))
+    table = trx.query(query, (config_key.upper(),))
 
     if not table.data:
         raise errors.InvalidConfigurationError(config_key)
@@ -49,7 +48,5 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
 
 
 def clear_config_cache():
-    """
-    Helper utility to clear the cache during testing
-    """
+    """Helper utility to clear the cache during testing."""
     _CONFIG_CACHE.clear()

@@ -28,7 +28,7 @@ def execute(
     INVESTIGATION_KEY (the last is used only as a tie‑breaker and does not appear
     in the final output). SAS does not have a tiebreaker value.
     """
-    nbs_rdb = get_config_value(trx, 'nbs_rdb')
+    nbs_rdb = get_config_value(trx, 'REPORT_DB_NBS_RDB')
     if not isinstance(library_params, dict):
         raise ValueError(f"""
             library_params must be a dictionary containing 'days_value' \
