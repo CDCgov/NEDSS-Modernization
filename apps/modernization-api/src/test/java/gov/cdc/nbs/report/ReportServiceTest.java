@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
@@ -15,6 +16,7 @@ import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.*;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -937,24 +939,32 @@ class ReportServiceTest {
   class SaveAsReport {
     private final Long reportUid = 1L;
     private final Long dataSourceUid = 2L;
+
     private final ReportId existingReportId = new ReportId(reportUid, dataSourceUid);
     private Report existingReport;
+
     private Report newReport;
 
     private NbsUserDetails mockUser;
 
     @BeforeEach
     void setup() {
-      existingReport = mock(Report.class);
-      when(existingReport.getId()).thenReturn(existingReportId);
-      newReport = mock(Report.class);
-
       mockUser = mock(NbsUserDetails.class);
 
+      existingReport = mock(Report.class);
+      newReport = buildTestReport();
+
+      Mockito.lenient().when(existingReport.getId()).thenReturn(existingReportId);
       Mockito.lenient()
           .when(reportRepository.findById(existingReportId))
           .thenReturn(Optional.of(existingReport));
-      Mockito.lenient().when(reportRepository.save(existingReport)).thenReturn(newReport);
+
+      Mockito.lenient()
+          .when(reportRepository.findById(newReport.getId()))
+          .thenReturn(Optional.of(newReport));
+
+      Mockito.lenient().when(reportMapper.duplicate(existingReport)).thenReturn(newReport);
+      Mockito.lenient().when(reportRepository.save(newReport)).thenReturn(newReport);
     }
 
     @Test
@@ -998,9 +1008,6 @@ class ReportServiceTest {
     }
 
     @Test
-    void saveAsReport_should_set_custom_fields_on_new_report() {}
-
-    @Test
     void saveAsReport_should_invoke_saveReport_with_new_report_id() {
       ReportExecutionRequest reportExecutionRequest =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
@@ -1017,8 +1024,30 @@ class ReportServiceTest {
 
       Report result = service.saveAsReport(request, mockUser, existingReportId);
 
-      verify(service).saveReport(reportExecutionRequest, newReport.getId());
       assertThat(result).isEqualTo(finalReport);
     }
+  }
+
+  private Report buildTestReport() {
+    ReportId reportId = new ReportId(50L, dataSourceUid);
+    return Report.builder()
+        .id(reportId)
+        .dataSource(dataSource)
+        .reportFilters(Collections.emptyList())
+        .descTxt("Test Description")
+        .addTime(LocalDateTime.now(clock))
+        .filterMode('B')
+        .isModifiableIndicator('N')
+        .location("test location")
+        .ownerUid(84930L)
+        .reportTitle("Test Report")
+        .reportTypeCode("SAS_CUSTOM")
+        .shared(ReportConstants.reportGroupToDbChar(ReportConstants.ReportGroup.PUBLIC))
+        .category("Test Category")
+        .sectionCd("section")
+        .addTime(LocalDateTime.now(clock))
+        .addUserUid(849032L)
+        .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+        .build();
   }
 }

@@ -20,6 +20,7 @@ import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.report.models.SortSpec;
+import gov.cdc.nbs.report.utils.FilterUtils;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
@@ -87,8 +88,7 @@ public class ReportService {
     Report existingReport =
         reportRepository
             .findById(existingReportId)
-            .orElseThrow(
-                () -> new NotFoundException(reportFetcher.getReportNotFoundText(existingReportId)));
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
 
     return upsertReport(request, user, existingReport);
   }
@@ -98,8 +98,7 @@ public class ReportService {
     Report existingReport =
         reportRepository
             .findById(existingReportId)
-            .orElseThrow(
-                () -> new NotFoundException(reportFetcher.getReportNotFoundText(existingReportId)));
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(existingReportId)));
 
     reportRepository.delete(existingReport);
   }
@@ -134,8 +133,7 @@ public class ReportService {
     Report report =
         reportRepository
             .findById(reportId)
-            .orElseThrow(
-                () -> new NotFoundException(reportFetcher.getReportNotFoundText(reportId)));
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());
@@ -150,8 +148,7 @@ public class ReportService {
     Report report =
         reportRepository
             .findById(reportId)
-            .orElseThrow(
-                () -> new NotFoundException(reportFetcher.getReportNotFoundText(reportId)));
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     Report duplicate = reportMapper.duplicate(report);
 
@@ -172,7 +169,7 @@ public class ReportService {
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
     Map<Long, ReportFilter> basicFiltersById =
         report.getReportFilters().stream()
-            .filter(reportFetcher::isBasicFilter)
+            .filter(FilterUtils::isBasicFilter)
             .collect(Collectors.toMap(ReportFilter::getId, Function.identity()));
 
     //  If no basic filter requests are provided, delete all filter values for all existing basic
@@ -215,7 +212,7 @@ public class ReportService {
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
     ReportFilter advancedFilter =
         report.getReportFilters().stream()
-            .filter(reportFetcher::isAdvancedFilter)
+            .filter(FilterUtils::isAdvancedFilter)
             .findFirst()
             .orElse(null);
 
@@ -315,5 +312,11 @@ public class ReportService {
     }
 
     return new ReportMetadata(dataSource, reportLibrary);
+  }
+
+  public String getReportNotFoundText(ReportId reportId) {
+    return String.format(
+        "Report not found for Report UID: %d and Data Source UID: %d",
+        reportId.getReportUid(), reportId.getDataSourceUid());
   }
 }

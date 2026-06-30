@@ -3,7 +3,6 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
@@ -19,6 +18,7 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.SortSpec;
+import gov.cdc.nbs.report.utils.FilterUtils;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ReportFetcher {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(this::isBasicFilter)
+                      .filter(FilterUtils::isBasicFilter)
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
@@ -55,7 +55,7 @@ public class ReportFetcher {
 
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
-                      .filter(this::isAdvancedFilter)
+                      .filter(FilterUtils::isAdvancedFilter)
                       .map(
                           f ->
                               AdvancedFilterConfigurationMapper.fromReportFilter(
@@ -119,15 +119,7 @@ public class ReportFetcher {
     return reportLibrary.getRunner();
   }
 
-  public boolean isAdvancedFilter(ReportFilter filter) {
-    return filter.getFilterCode().getFilterType().equals(ReportConstants.ADV_FILTER_TYPE);
-  }
-
-  public boolean isBasicFilter(ReportFilter filter) {
-    return filter.getFilterCode().getFilterType().startsWith(ReportConstants.BASIC_FILTER_PREFIX);
-  }
-
-  public String getReportNotFoundText(ReportId reportId) {
+  private String getReportNotFoundText(ReportId reportId) {
     return String.format(
         "Report not found for Report UID: %d and Data Source UID: %d",
         reportId.getReportUid(), reportId.getDataSourceUid());
