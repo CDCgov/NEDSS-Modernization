@@ -1,28 +1,20 @@
 package gov.cdc.nbs.report.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.DataSource;
-import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
-import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
-import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.id.IdGeneratorService;
-import gov.cdc.nbs.report.DisplayColumnBuilder;
 import gov.cdc.nbs.report.ReportConstants;
-import gov.cdc.nbs.report.ReportFilterBuilder;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
