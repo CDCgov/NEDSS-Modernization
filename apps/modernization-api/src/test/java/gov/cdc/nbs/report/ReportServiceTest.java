@@ -585,7 +585,7 @@ class ReportServiceTest {
       ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
@@ -617,7 +617,7 @@ class ReportServiceTest {
       ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter));
@@ -640,7 +640,7 @@ class ReportServiceTest {
       ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter));
@@ -664,7 +664,7 @@ class ReportServiceTest {
       when(basicFilter2.getId()).thenReturn(20L);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter1.getFilterCode()).thenReturn(filterCode);
       when(basicFilter2.getFilterCode()).thenReturn(filterCode);
       when(savedReport.getReportFilters()).thenReturn(List.of(basicFilter1, basicFilter2));
@@ -695,7 +695,7 @@ class ReportServiceTest {
       ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
@@ -752,7 +752,7 @@ class ReportServiceTest {
       ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(savedReport.getReportFilters()).thenReturn(List.of(advancedFilter));
@@ -773,7 +773,7 @@ class ReportServiceTest {
       ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
       Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(savedReport.getReportFilters()).thenReturn(List.of(advancedFilter));
@@ -850,9 +850,8 @@ class ReportServiceTest {
       FilterCode basicFilterCode = mock(FilterCode.class);
       FilterCode advancedFilterCode = mock(FilterCode.class);
 
-      when(basicFilterCode.getFilterType())
-          .thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
-      when(advancedFilterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(basicFilterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+      when(advancedFilterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       when(basicFilter.getFilterCode()).thenReturn(basicFilterCode);

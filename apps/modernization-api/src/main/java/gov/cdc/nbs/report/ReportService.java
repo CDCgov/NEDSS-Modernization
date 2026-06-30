@@ -20,7 +20,6 @@ import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.report.models.SortSpec;
-import gov.cdc.nbs.report.utils.FilterUtils;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
@@ -167,7 +166,7 @@ public class ReportService {
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
     Map<Long, ReportFilter> basicFiltersById =
         report.getReportFilters().stream()
-            .filter(FilterUtils::isBasicFilter)
+            .filter(ReportFilter::isBasicFilter)
             .collect(Collectors.toMap(ReportFilter::getId, Function.identity()));
 
     //  If no basic filter requests are provided, delete all filter values for all existing basic
@@ -210,7 +209,7 @@ public class ReportService {
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
     ReportFilter advancedFilter =
         report.getReportFilters().stream()
-            .filter(FilterUtils::isAdvancedFilter)
+            .filter(ReportFilter::isAdvancedFilter)
             .findFirst()
             .orElse(null);
 

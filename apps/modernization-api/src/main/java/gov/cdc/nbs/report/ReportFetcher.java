@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
@@ -18,7 +19,6 @@ import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.SortSpec;
-import gov.cdc.nbs.report.utils.FilterUtils;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ReportFetcher {
             report -> {
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
-                      .filter(FilterUtils::isBasicFilter)
+                      .filter(ReportFilter::isBasicFilter)
                       .map(BasicFilterConfigurationMapper::fromReportFilter)
                       .toList();
 
@@ -55,7 +55,7 @@ public class ReportFetcher {
 
               AdvancedFilterConfiguration advancedFilter =
                   report.getReportFilters().stream()
-                      .filter(FilterUtils::isAdvancedFilter)
+                      .filter(ReportFilter::isAdvancedFilter)
                       .map(
                           f ->
                               AdvancedFilterConfigurationMapper.fromReportFilter(
