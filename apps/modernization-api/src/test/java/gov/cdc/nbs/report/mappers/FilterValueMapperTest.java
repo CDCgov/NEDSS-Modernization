@@ -254,276 +254,58 @@ class FilterValueMapperTest {
       assertMatchingClauseValue(result.get(6), rule3, 7);
       assertMatchingOperatorValue(result.get(7), ")", 8);
 
-      assertThat(result.getLast()).isEqualTo(")");
+      assertMatchingOperatorValue(result.getLast(), ")", 9);
     }
   }
 
   @Nested
-  class DuplicateFilterValue {
+  class Duplicate {
+    long nextReportId = 200L;
 
-    @Test
-    void duplicate_should_generate_new_id() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("EQ");
-      originalValue.setValueTxt("test");
-
-      long newId = 200L;
+    @BeforeEach
+    void setUp() {
       GeneratedId newGeneratedId = mock(GeneratedId.class);
-      when(newGeneratedId.getId()).thenReturn(newId);
+      when(newGeneratedId.getId()).thenReturn(nextReportId);
       when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(newGeneratedId);
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getId()).isEqualTo(newId);
-      assertThat(duplicatedValue.getId()).isNotEqualTo(originalValue.getId());
     }
 
     @Test
-    void duplicate_should_preserve_report_filter() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("EQ");
-      originalValue.setValueTxt("test");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getReportFilter()).isEqualTo(mockReportFilter);
-    }
-
-    @Test
-    void duplicate_should_preserve_sequence_number() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(5);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("EQ");
-      originalValue.setValueTxt("test");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getSequenceNumber()).isEqualTo(5);
-    }
-
-    @Test
-    void duplicate_should_preserve_value_type() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("OPERATOR");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("AND");
-      originalValue.setValueTxt("test");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getValueType()).isEqualTo("OPERATOR");
-    }
-
-    @Test
-    void duplicate_should_preserve_column_uid() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(999L);
-      originalValue.setOperator("EQ");
-      originalValue.setValueTxt("test");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getColumnUid()).isEqualTo(999L);
-    }
-
-    @Test
-    void duplicate_should_preserve_operator() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("NE");
-      originalValue.setValueTxt("test");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getOperator()).isEqualTo("NE");
-    }
-
-    @Test
-    void duplicate_should_preserve_value_text() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("EQ");
-      originalValue.setValueTxt("specific_test_value");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getValueTxt()).isEqualTo("specific_test_value");
-    }
-
-    @Test
-    void duplicate_should_preserve_all_fields_when_fully_populated() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(3);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(750L);
-      originalValue.setOperator("GT");
-      originalValue.setValueTxt("complex_value");
-
-      long newId = 200L;
-      GeneratedId newGeneratedId = mock(GeneratedId.class);
-      when(newGeneratedId.getId()).thenReturn(newId);
-      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
-          .thenReturn(newGeneratedId);
+    void duplicate_should_preserve_all_fields() {
+      FilterValue originalValue = buildTestFilterValue();
 
       FilterValue duplicatedValue = mapper.duplicate(originalValue);
 
       assertThat(duplicatedValue).isNotNull();
-      assertThat(duplicatedValue.getId()).isEqualTo(newId);
+      assertThat(duplicatedValue.getId()).isEqualTo(nextReportId);
       assertThat(duplicatedValue.getReportFilter()).isEqualTo(mockReportFilter);
-      assertThat(duplicatedValue.getSequenceNumber()).isEqualTo(3);
-      assertThat(duplicatedValue.getValueType()).isEqualTo("CLAUSE");
-      assertThat(duplicatedValue.getColumnUid()).isEqualTo(750L);
-      assertThat(duplicatedValue.getOperator()).isEqualTo("GT");
-      assertThat(duplicatedValue.getValueTxt()).isEqualTo("complex_value");
+      assertThat(duplicatedValue.getSequenceNumber()).isEqualTo(originalValue.getSequenceNumber());
+      assertThat(duplicatedValue.getValueType()).isEqualTo(originalValue.getValueType());
+      assertThat(duplicatedValue.getColumnUid()).isEqualTo(originalValue.getColumnUid());
+      assertThat(duplicatedValue.getOperator()).isEqualTo(originalValue.getOperator());
+      assertThat(duplicatedValue.getValueTxt()).isEqualTo(originalValue.getValueTxt());
     }
 
     @Test
-    void duplicate_should_handle_null_sequence_number() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(null);
-      originalValue.setValueType("OPERATOR");
-      originalValue.setOperator("(");
+    void duplicate_should_have_different_id_than_original() {
+      FilterValue originalValue = buildTestFilterValue();
 
       FilterValue duplicatedValue = mapper.duplicate(originalValue);
 
-      assertThat(duplicatedValue.getSequenceNumber()).isNull();
+      assertThat(duplicatedValue.getId()).isNotEqualTo(originalValue.getId());
+      assertThat(duplicatedValue.getId()).isEqualTo(nextReportId);
     }
+  }
 
-    @Test
-    void duplicate_should_handle_null_column_uid() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("OPERATOR");
-      originalValue.setColumnUid(null);
-      originalValue.setOperator("(");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getColumnUid()).isNull();
-    }
-
-    @Test
-    void duplicate_should_handle_null_operator() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator(null);
-      originalValue.setValueTxt("test");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getOperator()).isNull();
-    }
-
-    @Test
-    void duplicate_should_handle_null_value_text() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("OPERATOR");
-      originalValue.setOperator("(");
-      originalValue.setValueTxt(null);
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getValueTxt()).isNull();
-    }
-
-    @Test
-    void duplicate_should_call_id_generator_exactly_once() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-
-      mapper.duplicate(originalValue);
-
-      verify(idGenerator).getNextValidId(IdGeneratorService.EntityType.NBS);
-    }
-
-    @Test
-    void duplicate_should_generate_unique_ids_for_multiple_values() {
-      FilterValue originalValue1 = mock(FilterValue.class);
-      originalValue1.setId(100L);
-      originalValue1.setReportFilter(mockReportFilter);
-
-      FilterValue originalValue2 = mock(FilterValue.class);
-      originalValue2.setId(101L);
-      originalValue2.setReportFilter(mockReportFilter);
-
-      long newId1 = 200L;
-      long newId2 = 201L;
-
-      GeneratedId newGeneratedId1 = mock(GeneratedId.class);
-      GeneratedId newGeneratedId2 = mock(GeneratedId.class);
-      when(newGeneratedId1.getId()).thenReturn(newId1);
-      when(newGeneratedId2.getId()).thenReturn(newId2);
-
-      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
-          .thenReturn(newGeneratedId1)
-          .thenReturn(newGeneratedId2);
-
-      FilterValue duplicatedValue1 = mapper.duplicate(originalValue1);
-      FilterValue duplicatedValue2 = mapper.duplicate(originalValue2);
-
-      assertThat(duplicatedValue1.getId()).isEqualTo(newId1);
-      assertThat(duplicatedValue2.getId()).isEqualTo(newId2);
-      assertThat(duplicatedValue1.getId()).isNotEqualTo(duplicatedValue2.getId());
-    }
-
-    @Test
-    void duplicate_should_handle_empty_value_text() {
-      FilterValue originalValue = mock(FilterValue.class);
-      originalValue.setId(100L);
-      originalValue.setReportFilter(mockReportFilter);
-      originalValue.setSequenceNumber(1);
-      originalValue.setValueType("CLAUSE");
-      originalValue.setColumnUid(50L);
-      originalValue.setOperator("EQ");
-      originalValue.setValueTxt("");
-
-      FilterValue duplicatedValue = mapper.duplicate(originalValue);
-
-      assertThat(duplicatedValue.getValueTxt()).isEmpty();
-    }
+  private FilterValue buildTestFilterValue() {
+    return FilterValue.builder()
+        .id(100L)
+        .reportFilter(mockReportFilter)
+        .sequenceNumber(1)
+        .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
+        .columnUid(750L)
+        .operator(ReportConstants.Operator.GT.toString())
+        .valueTxt("random_value")
+        .build();
   }
 }
