@@ -42,26 +42,27 @@ class NbsTestDatabaseInitializer
   }
 
   /** Execute the repository migrations within the running container to execute the repository . */
-  private void runMigrations(
-          final JdbcDatabaseContainer<?> container,
-          final String credential) {
+  private void runMigrations(final JdbcDatabaseContainer<?> container, final String credential) {
     try {
       var bdVersion = "6.0.19.1";
-      LOGGER.log(Level.INFO, "Database container live. Migrating database to version: {0}...", bdVersion);
+      LOGGER.log(
+          Level.INFO, "Database container live. Migrating database to version: {0}...", bdVersion);
 
-      var command = """
+      var command =
+          """
           export PATH="$PATH:/opt/mssql/bin:/opt/mssql-tools18/bin" && \
           export SQLCMDPASSWORD='%s' && \
           export MIGRATIONS_DIR='migrations' && \
           export SEED_DATA_DIR='seed_data' && \
           /var/data/run_migrations.sh %s
-          """.formatted(credential, bdVersion);
+          """
+              .formatted(credential, bdVersion);
 
       ExecResult result = container.execInContainer("/bin/bash", "-c", command);
 
       if (result.getExitCode() != 0) {
         throw new IllegalStateException(
-                "Migrations failed (%d): %s".formatted(result.getExitCode(), result.getStderr()));
+            "Migrations failed (%d): %s".formatted(result.getExitCode(), result.getStderr()));
       }
 
       LOGGER.log(Level.INFO, "Migrations completed successfully:\n{0}", result.getStdout());
