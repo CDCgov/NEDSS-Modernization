@@ -281,7 +281,8 @@ class ReportControllerTest {
       long dataSourceUid = 2L;
       String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-      when(reportFetcher.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
+      when(reportFetcher.getReport(reportUid, dataSourceUid))
+          .thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
           .isInstanceOf(NotFoundException.class)
@@ -409,7 +410,8 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(reportExecutionClient.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
+      when(reportExecutionClient.executeReport(request))
+          .thenThrow(new NotImplementedException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(NotImplementedException.class)
