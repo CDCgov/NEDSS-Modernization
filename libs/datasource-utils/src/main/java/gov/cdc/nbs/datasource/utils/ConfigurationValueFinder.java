@@ -20,10 +20,10 @@ public class ConfigurationValueFinder {
 
   private static final String CONFIG_QUERY =
       """
-              SELECT config_value
-              FROM NBS_ODSE..NBS_configuration
-              WHERE config_key = ?
-              """;
+      SELECT config_value
+      FROM NBS_ODSE..NBS_configuration
+      WHERE config_key = ?
+      """;
 
   public ConfigurationValueFinder(final JdbcClient client) {
     this.client = client;
