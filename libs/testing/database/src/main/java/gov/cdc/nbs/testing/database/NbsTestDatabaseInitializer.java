@@ -6,6 +6,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.PullPolicy;
 
 class NbsTestDatabaseInitializer
@@ -32,7 +33,8 @@ class NbsTestDatabaseInitializer
               .withUsername(username)
               .withPassword(credential)
               .withEnv("DATABASE_VERSION", "6.0.19.1")
-              .withImagePullPolicy(PullPolicy.alwaysPull());
+              .withImagePullPolicy(PullPolicy.alwaysPull())
+              .waitingFor(Wait.forHealthcheck());
 
       databaseContainer.start();
 
