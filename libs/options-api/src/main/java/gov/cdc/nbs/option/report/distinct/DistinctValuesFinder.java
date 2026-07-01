@@ -1,6 +1,5 @@
 package gov.cdc.nbs.option.report.distinct;
 
-import gov.cdc.nbs.datasource.utils.ConfigurationValueFinder;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.option.Option;
 import java.util.Collection;
@@ -41,9 +40,9 @@ public class DistinctValuesFinder {
   private final JdbcClient client;
   private final DataSourceNameUtils dataSourceNameUtils;
 
-  DistinctValuesFinder(final JdbcClient client, final ConfigurationValueFinder config) {
+  DistinctValuesFinder(final JdbcClient client, final DataSourceNameUtils dataSourceNameUtils) {
     this.client = client;
-    this.dataSourceNameUtils = new DataSourceNameUtils(config);
+    this.dataSourceNameUtils = dataSourceNameUtils;
   }
 
   Collection<Option> find(final String columnUid) {

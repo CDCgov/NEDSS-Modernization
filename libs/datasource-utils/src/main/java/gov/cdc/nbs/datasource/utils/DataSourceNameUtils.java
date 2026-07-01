@@ -1,5 +1,8 @@
 package gov.cdc.nbs.datasource.utils;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DataSourceNameUtils {
   private static final String ERROR_MSG = "No data source found for %s";
   private final ConfigurationValueFinder config;

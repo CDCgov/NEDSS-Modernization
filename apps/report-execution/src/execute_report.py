@@ -31,7 +31,7 @@ def execute_report(report_spec: models.ReportSpec):
             library_params=report_spec.library_params,
         )
 
-        check_valid_result(result, report_spec, trx)
+    check_valid_result(result, report_spec)
 
     # Most libraries won't have a specific header, so the report title is used
     if result.header is None:
@@ -47,7 +47,7 @@ def is_valid_library(library):
 
 
 def check_valid_result(
-    report_result: typing.Any, report_spec: models.ReportSpec, trx: Transaction
+    report_result: typing.Any, report_spec: models.ReportSpec
 ):
     """Check if the returned result is valid."""
     if report_result is None:

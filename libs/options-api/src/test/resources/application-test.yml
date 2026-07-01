@@ -10,3 +10,6 @@ spring:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: ${nbs.datasource.username}
     password: ${nbs.datasource.password}
+  liquibase:
+    enabled: true
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
