@@ -67,7 +67,9 @@ def serialize_table(table: Table) -> str:
             csv_date_strftime = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
             return pd.to_datetime(val).strftime(csv_date_strftime)
         elif type(val) is datetime:
-            csv_datetime_strftime = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
+            csv_datetime_strftime = get_cached_config_value(
+                'REPORT_EXPORT_DATETIME_FORMAT'
+            )
             return pd.to_datetime(val).strftime(csv_datetime_strftime)
 
         return val

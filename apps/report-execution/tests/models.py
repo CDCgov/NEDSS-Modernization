@@ -19,7 +19,11 @@ class TestModels:
     def test_serialize_table_formats_dates_correctly(self, monkeypatch):
         with monkeypatch.context() as m:
             m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y')
-            m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S')
+            m.setitem(
+                config._CONFIG_CACHE,
+                'REPORT_EXPORT_DATETIME_FORMAT',
+                '%m/%d/%Y %H:%M:%S',
+            )
             f = Faker()
 
             columns = ['example_date', 'example_datetime']
@@ -47,7 +51,9 @@ class TestModels:
     def test_serialize_table_with_env_vars_for_date_formatting(self, monkeypatch):
         with monkeypatch.context() as m:
             m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATE_FORMAT', '%d-%m-%Y')
-            m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATETIME_FORMAT', '%d-%m-%Y %H:%M')
+            m.setitem(
+                config._CONFIG_CACHE, 'REPORT_EXPORT_DATETIME_FORMAT', '%d-%m-%Y %H:%M'
+            )
 
             columns = ['example_date', 'example_datetime']
             data = [(datetime.date(1985, 4, 13), datetime.datetime(1985, 4, 13, 4, 15))]
