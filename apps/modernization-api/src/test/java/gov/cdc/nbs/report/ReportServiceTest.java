@@ -472,9 +472,9 @@ class ReportServiceTest {
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
       DisplayColumn displayColumn3 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(savedReport, column1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(savedReport, column2)).thenReturn(displayColumn2);
-      when(displayColumnBuilder.build(savedReport, column3)).thenReturn(displayColumn3);
+      when(displayColumnBuilder.build(existingReport, column1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(existingReport, column2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(existingReport, column3)).thenReturn(displayColumn3);
 
       Report result = service.saveReport(request, existingReport);
 
@@ -579,13 +579,17 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(basicFilterRequest), null);
 
-      ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
+      Mockito.lenient()
+          .when(filterCode.getFilterType())
+          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+      ReportFilter basicFilter = mock(ReportFilter.class);
       when(basicFilter.getId()).thenReturn(basicFilterUid);
-      when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(basicFilter.isBasicFilter()).thenReturn(true);
+
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       List<FilterValue> filterValues = List.of(mock(FilterValue.class));
@@ -614,9 +618,11 @@ class ReportServiceTest {
       ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
-      when(basicFilter.getId()).thenReturn(basicFilterUid);
-      when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      Mockito.lenient()
+          .when(filterCode.getFilterType())
+          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+      Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
+      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       assertThatThrownBy(() -> service.saveReport(request, existingReport))
@@ -637,9 +643,12 @@ class ReportServiceTest {
       ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+      Mockito.lenient()
+          .when(filterCode.getFilterType())
+          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
-      when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      when(basicFilter.isBasicFilter()).thenReturn(true);
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       Report result = service.saveReport(request, existingReport);
@@ -655,15 +664,21 @@ class ReportServiceTest {
       ReportExecutionRequest request =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, List.of(), null, null, null);
 
+      FilterCode filterCode = mock(FilterCode.class);
+      Mockito.lenient()
+          .when(filterCode.getFilterType())
+          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+
       ReportFilter basicFilter1 = mock(ReportFilter.class);
       when(basicFilter1.getId()).thenReturn(10L);
+      Mockito.lenient().when(basicFilter1.getFilterCode()).thenReturn(filterCode);
+      when(basicFilter1.isBasicFilter()).thenReturn(true);
+
       ReportFilter basicFilter2 = mock(ReportFilter.class);
       when(basicFilter2.getId()).thenReturn(20L);
-      FilterCode filterCode = mock(FilterCode.class);
+      Mockito.lenient().when(basicFilter2.getFilterCode()).thenReturn(filterCode);
+      when(basicFilter2.isBasicFilter()).thenReturn(true);
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
-      when(basicFilter1.getFilterCode()).thenReturn(filterCode);
-      when(basicFilter2.getFilterCode()).thenReturn(filterCode);
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter1, basicFilter2));
 
       Report result = service.saveReport(request, existingReport);
@@ -692,10 +707,11 @@ class ReportServiceTest {
       ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
       when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       List<FilterValue> filterValues = List.of(mock(FilterValue.class));
@@ -747,11 +763,13 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(), advancedFilterRequest);
 
       ReportFilter advancedFilter = mock(ReportFilter.class);
+      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
+
       FilterCode filterCode = mock(FilterCode.class);
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       assertThatThrownBy(() -> service.saveReport(request, existingReport))
@@ -767,12 +785,14 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
-      ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
+      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
 
-      when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      ReportFilter advancedFilter = mock(ReportFilter.class);
       Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
+
       when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       Report result = service.saveReport(request, existingReport);
@@ -841,18 +861,27 @@ class ReportServiceTest {
       when(existingReport.getReportSortColumns()).thenReturn(new ArrayList<>());
 
       ReportFilter basicFilter = mock(ReportFilter.class);
-      ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode basicFilterCode = mock(FilterCode.class);
+
+      ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode advancedFilterCode = mock(FilterCode.class);
 
-      when(basicFilterCode.getFilterType()).thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
-      when(advancedFilterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      Mockito.lenient()
+          .when(basicFilterCode.getFilterType())
+          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
-      when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      when(basicFilter.getFilterCode()).thenReturn(basicFilterCode);
-      when(advancedFilter.getFilterCode()).thenReturn(advancedFilterCode);
+      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(basicFilterCode);
       when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(basicFilter.isBasicFilter()).thenReturn(true);
+
+      Mockito.lenient()
+          .when(advancedFilterCode.getFilterType())
+          .thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      when(advancedFilter.getId()).thenReturn(advancedFilterUid);
+      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(advancedFilterCode);
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
+
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter, advancedFilter));
 
       DisplayColumn displayColumn = mock(DisplayColumn.class);
