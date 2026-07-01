@@ -85,7 +85,7 @@
         "typescript-plugin-css-modules": "^5.0.2",
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.0",
-        "webpack": "^5.105.0"
+        "webpack": "^5.108.3"
     },
     "scripts": {
         "start": "vite",
