@@ -12,7 +12,7 @@ import { LiveSearch } from 'components/Search/LiveSearch';
 
 import styles from './column-selector.module.scss';
 import { toSelectable } from './utils';
-import { ValidationErrorBanner } from '../../../../design-system/errors/ValidationError';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
