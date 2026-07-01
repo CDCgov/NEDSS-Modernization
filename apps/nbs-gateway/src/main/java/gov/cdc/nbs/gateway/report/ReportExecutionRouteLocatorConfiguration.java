@@ -45,10 +45,10 @@ import reactor.core.publisher.Mono;
  *
  * <p><b>Why OAuth2 token relay is handled manually here</b>
  *
- * <p>Every other route in nbs-gateway relays the OAuth2 access token via
- * {@code TokenRelayGatewayFilterFactory}, which is included in the {@code defaults} filter list
- * when the {@code oidc} profile is active. That works because those routes proxy through the
- * gateway: the token relay filter mutates the outbound proxy request before it leaves.
+ * <p>Every other route in nbs-gateway relays the OAuth2 access token via {@code
+ * TokenRelayGatewayFilterFactory}, which is included in the {@code defaults} filter list when the
+ * {@code oidc} profile is active. That works because those routes proxy through the gateway: the
+ * token relay filter mutates the outbound proxy request before it leaves.
  *
  * <p>This route is structurally different in two ways:
  *
@@ -64,11 +64,11 @@ import reactor.core.publisher.Mono;
  *
  * <p>{@link #resolveBearerToken} mirrors what {@code TokenRelayGatewayFilterFactory} does
  * internally: it uses {@link
- * org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager} to retrieve
- * the gateway's own OAuth2 access token and attaches it as a {@code Bearer} header on the
- * side-channel call. An {@link org.springframework.beans.factory.ObjectProvider} guards the lookup
- * so the code is a no-op when OIDC is not configured (e.g. local docker-compose), falling back to
- * the existing cookie-copy path.
+ * org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager} to retrieve the
+ * gateway's own OAuth2 access token and attaches it as a {@code Bearer} header on the side-channel
+ * call. An {@link org.springframework.beans.factory.ObjectProvider} guards the lookup so the code
+ * is a no-op when OIDC is not configured (e.g. local docker-compose), falling back to the existing
+ * cookie-copy path.
  */
 @Configuration
 @ConditionalOnProperty(
