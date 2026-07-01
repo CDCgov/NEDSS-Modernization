@@ -42,6 +42,33 @@ import reactor.core.publisher.Mono;
  *   <li>Request body has OperationType="117"
  *   <li>The referenced report has been modernized
  * </ul>
+ *
+ * <p><b>Why OAuth2 token relay is handled manually here</b>
+ *
+ * <p>Every other route in nbs-gateway relays the OAuth2 access token via
+ * {@code TokenRelayGatewayFilterFactory}, which is included in the {@code defaults} filter list
+ * when the {@code oidc} profile is active. That works because those routes proxy through the
+ * gateway: the token relay filter mutates the outbound proxy request before it leaves.
+ *
+ * <p>This route is structurally different in two ways:
+ *
+ * <ol>
+ *   <li>It uses {@code uri("no://op")} — the gateway never proxies anything. The {@code
+ *       redirectToMod} filter handles the response itself, so the {@code defaults} filter list
+ *       (including {@code TokenRelayGatewayFilterFactory}) is not applied.
+ *   <li>The modernization-api lookup happens inside {@code isModPredicate}, a route predicate that
+ *       runs <em>before</em> any filter. Even if {@code defaults} were applied, filters execute
+ *       after predicate evaluation and cannot inject headers into this side-channel {@link
+ *       org.springframework.web.reactive.function.client.WebClient} call.
+ * </ol>
+ *
+ * <p>{@link #resolveBearerToken} mirrors what {@code TokenRelayGatewayFilterFactory} does
+ * internally: it uses {@link
+ * org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager} to retrieve
+ * the gateway's own OAuth2 access token and attaches it as a {@code Bearer} header on the
+ * side-channel call. An {@link org.springframework.beans.factory.ObjectProvider} guards the lookup
+ * so the code is a no-op when OIDC is not configured (e.g. local docker-compose), falling back to
+ * the existing cookie-copy path.
  */
 @Configuration
 @ConditionalOnProperty(
