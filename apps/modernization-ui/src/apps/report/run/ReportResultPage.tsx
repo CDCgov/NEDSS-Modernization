@@ -1,8 +1,8 @@
 import { Button } from 'design-system/button';
 import { ReportLayout } from '../layout/ReportLayout';
-import { ReportConfiguration } from 'generated';
+import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { Heading } from 'components/heading';
 import { permissions, permitsAny, Permitted } from 'libs/permission';
 import { Shown } from 'conditional-render';
@@ -12,48 +12,90 @@ import layoutStyles from '../layout/layout.module.scss';
 import { PERMISSION_GROUP_MAP } from '../constants';
 import { ModalRef } from '@trussworks/react-uswds';
 import { SaveReportModal } from './modals/SaveReportModal.tsx';
-import { AlertMessage } from '../../../design-system/message';
+import { AlertMessage } from 'design-system/message';
+import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
+import { redirectToNBS6 } from 'utils';
+
+const NBS_MANAGE_REPORT_PAGE = '/nbs/ManageReports.do';
 
 const ReportResultPage = ({
     config,
     error,
     wasExported,
     resultLoading,
-    resultSaving,
-    isRedirecting,
     handleRefineReport,
-    handleSaveReport,
+    executionRequest,
 }: {
     config: ReportConfiguration;
     error: string | null;
     wasExported: boolean;
     resultLoading: boolean;
-    resultSaving: boolean;
-    isRedirecting: boolean;
     handleRefineReport: () => void;
-    handleSaveReport: () => void;
+    executionRequest: ReportExecutionRequest | undefined;
 }) => {
     const {
         state: { user },
     } = useUser();
+    const [status, setStatus] = useState<'saving' | null>(null);
+    const [saveError, setSaveError] = useState<string | null>(null);
     const saveReportModalRef = useRef<ModalRef>(null);
+    const saveAsReportModalRef = useRef<ModalRef>(null);
 
-    const getLoadingHeader = () => {
-        if (resultLoading) {
-            return `Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. Please do not leave
-        this page while your report is generating.`;
-        } else {
-            return 'Your report is saving and you will be redirected to the Manage Reports page once complete.';
+    const onSave = () => {
+        const runner = ReportControllerService.saveReport;
+        setStatus('saving');
+        setSaveError('');
+
+        if (executionRequest === undefined) {
+            setStatus(null);
+            setSaveError('No changes to the report to save.');
+            return;
         }
+
+        runner({
+            reportUid: executionRequest.reportUid,
+            dataSourceUid: executionRequest.dataSourceUid,
+            requestBody: executionRequest,
+        })
+            .then(() => {
+                redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
+            })
+            .catch((err) => {
+                setSaveError(err.message);
+            });
     };
 
-    const getLoadingBody = () => {
-        if (resultLoading) {
-            return (
-                'This might take several minutes for large reports. To be sure it opens, check that pop-ups ' +
-                ' are enabled in your browser.'
-            );
+    const onSaveAs = (response: SaveAsReportFormData) => {
+        const { reportTitle, sectionCode, group, description } = response;
+        const runner = ReportControllerService.saveAsReport;
+        setStatus('saving');
+        setSaveError('');
+
+        if (executionRequest === undefined) {
+            setStatus(null);
+            setSaveError('No changes to the report to save.');
+            return;
         }
+
+        const requestBody = {
+            reportTitle,
+            sectionCode,
+            group,
+            executionRequest,
+            description,
+        };
+
+        runner({
+            reportUid: executionRequest.reportUid,
+            dataSourceUid: executionRequest.dataSourceUid,
+            requestBody,
+        })
+            .then(() => {
+                redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
+            })
+            .catch((err) => {
+                setSaveError(err.message);
+            });
     };
 
     return (
@@ -62,7 +104,11 @@ const ReportResultPage = ({
             actions={
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
-                        <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading || resultSaving}>
+                        <Button
+                            onClick={handleRefineReport}
+                            secondary={true}
+                            disabled={resultLoading || status === 'saving'}
+                        >
                             Refine Report
                         </Button>
                     </Permitted>
@@ -73,57 +119,66 @@ const ReportResultPage = ({
                             permissions.reports.reportingFacility.create
                         )}
                     >
-                        <Button onClick={() => {}} disabled={resultLoading || resultSaving || !!error}>
+                        <Button
+                            onClick={() => saveAsReportModalRef.current?.toggleModal()}
+                            disabled={resultLoading || status === 'saving' || !!error}
+                        >
                             Save As
                         </Button>
+                        <SaveAsReportModal
+                            saveAsReportModalRef={saveAsReportModalRef}
+                            saving={status === 'saving'}
+                            onSaveAs={onSaveAs}
+                        />
                     </Permitted>
                     <Shown when={user?.identifier === config.ownerUid}>
                         <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
                             <Button
                                 onClick={() => saveReportModalRef.current?.toggleModal()}
-                                disabled={resultLoading || resultSaving || !!error}
+                                disabled={resultLoading || status === 'saving' || !!error}
                             >
                                 Save
                             </Button>
-                            <SaveReportModal saveReportModalRef={saveReportModalRef} onSave={handleSaveReport} />
+                            <SaveReportModal
+                                saveReportModalRef={saveReportModalRef}
+                                saving={status === 'saving'}
+                                onSave={onSave}
+                            />
                         </Permitted>
                     </Shown>
                 </>
             }
         >
-            <>
-                {error && (
-                    <div className={'padding-2'}>
-                        <>
-                            <AlertMessage
-                                type="error"
-                                title={
-                                    'There was an error saving your report. ' +
-                                    'If this error persists, contact your NBS administrator for help.'
-                                }
-                            >
-                                {error}
-                            </AlertMessage>
-                        </>
-                    </div>
-                )}
-                {resultLoading || resultSaving ? (
-                    <TextCard loading={true}>
-                        <Heading level={2}>{getLoadingHeader()}</Heading>
-                        <p>{getLoadingBody()}</p>
+            {saveError && (
+                <div className="padding-2">
+                    <AlertMessage
+                        type="error"
+                        title="There was an error saving your report If this error persists, contact your NBS administrator for help."
+                    >
+                        {saveError}
+                    </AlertMessage>
+                </div>
+            )}
+            {resultLoading ? (
+                <TextCard loading={true}>
+                    <Heading level={2}>
+                        {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. Please do not leave
+        this page while your report is generating.`}
+                    </Heading>
+                    <p>
+                        This might take several minutes for large reports. To be sure it opens, check that pop-ups are
+                        enabled in your browser.
+                    </p>
+                </TextCard>
+            ) : (
+                !error && (
+                    <TextCard>
+                        <Heading level={2}>
+                            {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
+                        </Heading>
                     </TextCard>
-                ) : (
-                    !error && (
-                        <TextCard>
-                            <Heading level={2}>
-                                {isRedirecting
-                                    ? 'Your report has been saved. You are being redirected to the Manage Reports page.'
-                                    : `Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
-                            </Heading>
-                        </TextCard>
-                    )
-                )}
-            </>
+                )
+            )}
         </ReportLayout>
     );
 };

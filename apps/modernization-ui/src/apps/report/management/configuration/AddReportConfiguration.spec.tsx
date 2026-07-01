@@ -1,4 +1,4 @@
-import { render, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import * as generated from 'generated';
 import * as options from 'options/selectableResolver';
 import { Layout } from 'layout';
@@ -150,7 +150,8 @@ describe('add report configuration page', () => {
         await user.type(await findByLabelText('Name'), 'Name');
         await user.type(await findByLabelText('Description'), 'Description');
         await user.selectOptions(await findByLabelText('Owner'), '0'); // System
-        await user.selectOptions(await findByLabelText('Group'), 'PRIVATE');
+        const privateRadio = screen.getByRole('radio', { name: 'Private' });
+        await user.click(privateRadio);
         await user.selectOptions(await findByLabelText('Section name'), 'My reports');
         const libDropDown = await findByRole('combobox', { name: 'Report execution library' });
         const libOptions = await within(libDropDown).findAllByRole('option');

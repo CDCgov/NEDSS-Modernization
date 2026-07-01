@@ -7,6 +7,7 @@ import { NoData } from 'design-system/data';
 import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text';
+import { RadioGroup } from 'design-system/radio';
 import { SingleSelect } from 'design-system/select';
 import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
@@ -20,7 +21,7 @@ import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 import { addLabelToName, EnumSelectable } from '../../utils';
 import { SIZING } from './constants';
 
-const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
+export const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
     { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
     { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
     { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
@@ -106,7 +107,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     isEditable={isEditable}
                     disabled={!dataSourceSelected}
                     fieldName="group"
-                    EditComponent={SingleSelect}
+                    EditComponent={RadioGroup}
                     label="Group"
                     defaultValue={config?.group}
                     getOptions={() => GROUP_OPTIONS}
