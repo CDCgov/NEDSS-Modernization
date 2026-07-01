@@ -6,16 +6,10 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.PullPolicy;
 
 class NbsTestDatabaseInitializer
     implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-  private static final System.Logger LOGGER =
-      System.getLogger(NbsTestDatabaseInitializer.class.getName());
-
-  private static JdbcDatabaseContainer<?> databaseContainer;
 
   @Override
   @SuppressWarnings({
@@ -23,36 +17,25 @@ class NbsTestDatabaseInitializer
     "resource"
   })
   public void initialize(final ConfigurableApplicationContext context) {
-    if (databaseContainer == null || !databaseContainer.isRunning()) {
-      String image =
-          context
-              .getEnvironment()
-              .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
-      String username = context.getEnvironment().getProperty("nbs.datasource.username");
-      String credential = context.getEnvironment().getProperty("nbs.datasource.password");
+    String image =
+        context
+            .getEnvironment()
+            .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
+    String username = context.getEnvironment().getProperty("nbs.datasource.username");
+    String credential = context.getEnvironment().getProperty("nbs.datasource.password");
 
-      LOGGER.log(System.Logger.Level.INFO, "Launching fresh test database container instance...");
+    JdbcDatabaseContainer<?> container =
+        new NbsDatabaseContainer<>(image)
+            .withUsername(username)
+            .withPassword(credential)
+            .withImagePullPolicy(PullPolicy.alwaysPull());
 
-      databaseContainer =
-          new NbsDatabaseContainer<>(image)
-              .withUsername(username)
-              .withPassword(credential)
-              .withEnv("DATABASE_VERSION", "6.0.19.1")
-              .withImagePullPolicy(PullPolicy.alwaysPull())
-              // Wait for the exact success message generated at the end of the entrypoint
-              .waitingFor(
-                  Wait.forLogMessage(
-                          ".*Container initialization complete\\. Waiting for signals\\.\\.\\..*\\n",
-                          1)
-                      .withStartupTimeout(java.time.Duration.ofMinutes(3)));
+    container.start();
 
-      databaseContainer.start();
+    // Seed the required configuration entries exactly once
+    seedBaselineConfiguration(container);
 
-      // Seed the required configuration entries exactly once
-      seedBaselineConfiguration(databaseContainer);
-    }
-
-    String url = databaseContainer.getJdbcUrl();
+    String url = container.getJdbcUrl();
 
     System.getLogger(NbsTestDatabaseInitializer.class.getCanonicalName())
         .log(System.Logger.Level.INFO, () -> "[url]: %s".formatted(url));
