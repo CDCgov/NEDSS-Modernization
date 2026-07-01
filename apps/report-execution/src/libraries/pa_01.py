@@ -9,6 +9,7 @@ from src.libraries.support.pa_01.queries import (
     case_interview_rows_query,
     cases_with_no_clusters_query,
     cases_with_no_partners_query,
+    cluster_previous_pos_query,
     clusters_initiated_query,
     filtered_cases_query,
     not_notified_clusters_query,
@@ -57,6 +58,18 @@ def execute(
       for "ALL WORKERS" doesn't use the distinct case id count like most other
       calculations.  I have replicated this behavior in Python but it is likely
       incorrect.
+    * In the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there are 2 occurances of
+      "PREVIOUS POS" and "OPEN" that come at the bottom of each column of the report
+      section.  Since these names are identical, and they contain no other grouping
+      I have labled them as:
+
+      - New Partners Previous Pos
+      - New Partners Open
+      - New Clusters Previous Pos
+      - New Clusters Open
+
+      in order to distinguish them in the CSV.  Otherwise if the CSV data were ever
+      sorted it would lose its positional meaning.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -113,6 +126,9 @@ def execute(
     )
     tables['partner_case_dispositions'] = trx.query(
         partner_case_dispositions_query(subset_query)
+    )
+    tables['clusters_previous_pos'] = trx.query(
+        cluster_previous_pos_query(subset_query)
     )
 
     # get list of workers (nb. None treated as "ALL WORKERS")

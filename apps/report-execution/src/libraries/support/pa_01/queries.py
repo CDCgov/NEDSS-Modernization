@@ -867,3 +867,58 @@ def partner_case_dispositions_query(subset_query: str) -> str:
                 ON investigation.investigation_key = a.investigation_KEY
                AND a.CA_PATIENT_INTV_STATUS IN ('I - Interviewed');
     """
+
+
+def cluster_previous_pos_query(subset_query: str) -> str:
+    """Used to calculate 'Previous Pos' for 'new clusters' in the Dispositions
+    report section.
+
+    Equivalent of the SAS `c1` table.
+    """
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT a.INVESTIGATOR_INTERVIEW_KEY,
+             PROVIDER_QUICK_CODE,
+             COUNT(DISTINCT f.INV_LOCAL_ID) AS clusters_prev_positive_count
+      FROM filtered_cases a
+        INNER JOIN RDB.dbo.F_INTERVIEW_CASE b
+                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE d
+                ON a.INVESTIGATION_KEY = d.SUBJECT_INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_CONTACT_RECORD e
+                ON e.D_CONTACT_RECORD_KEY = d.D_CONTACT_RECORD_KEY
+               AND e.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+        INNER JOIN RDB.dbo.STD_HIV_DATAMART f
+                ON d.CONTACT_INVESTIGATION_KEY = f.Investigation_key
+      WHERE a.FL_FUP_DISPOSITION IN ('1 - Prev. Pos')
+      AND   e.CTT_REFERRAL_BASIS IN (
+              'A1 - Associate 1',
+              'A2 - Associate 2',
+              'A3 - Associate 3',
+              'S1 - Social Contact 1',
+              'S2 - Social Contact 2',
+              'S3 - Social Contact 3'
+            )
+      GROUP BY a.INVESTIGATOR_INTERVIEW_KEY,
+               PROVIDER_QUICK_CODE
+      ORDER BY a.INVESTIGATOR_INTERVIEW_KEY,
+               PROVIDER_QUICK_CODE
+    """

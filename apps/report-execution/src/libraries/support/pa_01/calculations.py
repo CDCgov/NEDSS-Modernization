@@ -403,6 +403,14 @@ def _build_dispositions_new_partners_and_clusters_output(
     new_clusters_not_notified_buckets = _calc_new_clusters_not_notified_buckets(
         tables['not_notified_clusters'], new_clusters_not_notified, worker
     )
+    new_clusters_previous_pos, new_clusters_previous_pos_percentage = (
+        _calc_new_clusters_previous_pos(
+            tables['clusters_previous_pos'], total_clusters_initiated, worker
+        )
+    )
+    new_clusters_open, new_clusters_open_percentage = _calc_new_clusters_open(
+        tables['clusters_initiated'], total_clusters_initiated, worker
+    )
 
     rows: list[Pa01Row] = [
         (
@@ -543,7 +551,7 @@ def _build_dispositions_new_partners_and_clusters_output(
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
-            'Previous Pos',
+            'New Partners Previous Pos',
             None,
             new_partners_previous_pos,
             new_partners_previous_pos_percentage,
@@ -552,7 +560,7 @@ def _build_dispositions_new_partners_and_clusters_output(
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
-            'Open',
+            'New Partners Open',
             None,
             new_partners_open,
             new_partners_open_percentage,
@@ -693,18 +701,27 @@ def _build_dispositions_new_partners_and_clusters_output(
             new_clusters_not_notified_buckets[DISPO_PATIENT_DECEASED][1],
             None,
         ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Previous Pos',
+            None,
+            new_clusters_previous_pos,
+            new_clusters_previous_pos_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Open',
+            None,
+            new_clusters_open,
+            new_clusters_open_percentage,
+            None,
+        ),
     ]
 
     return rows
-
-
-# NEW PARTNERS NOT NOTIFIED
-# PREVIOUS POS, pp1, where fl_fup_disposition = 'E - Previously Treated...
-# OPEN, pp1, where fl_fup_disposition is null
-
-# NEW CLUSTERS NOT NOTIFIED
-# PREVIOUS POS, c1 as is
-# OPEN, cluster where fl_fup_dispositions is null
 
 
 # actual calculations
@@ -1224,6 +1241,34 @@ def _calc_new_clusters_not_notified_buckets(
         result[dispo] = (count, _percent_for_csv(count, new_clusters_not_notified))
 
     return result
+
+
+def _calc_new_clusters_previous_pos(
+    clusters_previous_pos: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Clusters Previous Pos'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(clusters_previous_pos, worker)
+    count = sum(row['clusters_prev_positive_count'] for row in rows)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_open(
+    clusters_initiated: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Clusters Open'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(clusters_initiated, worker)
+    count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
 
 
 # helpers
