@@ -468,7 +468,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -480,6 +480,7 @@ describe('report run page', () => {
 
                 expect(input).toBeInvalid();
                 expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                expect(await findAllByRole('link', { name: 'Other filters' })).toHaveLength(2);
                 expect(mockResultApi).not.toHaveBeenCalled();
             });
 
@@ -581,7 +582,7 @@ describe('report run page', () => {
                         .mocked(generated.ReportControllerService.exportReport)
                         .mockResolvedValue(MOCK_RESULT);
 
-                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                    const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -598,6 +599,7 @@ describe('report run page', () => {
                     expect(fromInput).toBeInvalid();
                     expect(toInput).toBeInvalid();
                     expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(await findAllByRole('link', { name: 'Time' })).toHaveLength(2);
                     expect(mockResultApi).not.toHaveBeenCalled();
                 });
 
@@ -702,7 +704,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -727,6 +729,7 @@ describe('report run page', () => {
                 expect(fromInput).toBeInvalid();
                 expect(toInput).toBeInvalid();
                 expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                expect(await findAllByRole('link', { name: 'Time' })).toHaveLength(2);
                 expect(mockResultApi).not.toHaveBeenCalled();
             });
 
@@ -837,7 +840,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -860,6 +863,7 @@ describe('report run page', () => {
                 expect(toMonthInput).toBeInvalid();
                 expect(toYearInput).toBeInvalid();
                 expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                expect(await findAllByRole('link', { name: 'Time' })).toHaveLength(2);
                 expect(mockResultApi).not.toHaveBeenCalled();
             });
 
@@ -978,7 +982,7 @@ describe('report run page', () => {
                             { value: '04', name: 'Arizona' },
                         ]);
 
-                        const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                        const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -995,6 +999,7 @@ describe('report run page', () => {
 
                         expect(dropDown).toBeInvalid();
                         expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                        expect(await findAllByRole('link', { name: 'Geographic area' })).toHaveLength(2);
                         expect(mockResultApi).not.toHaveBeenCalled();
                     });
 
@@ -1268,6 +1273,7 @@ describe('report run page', () => {
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
                         expect(await findAllByRole('alert')).toHaveLength(2); // county is required
+                        expect(await findAllByRole('link', { name: 'Geographic area' })).toHaveLength(2);
 
                         dropDown = await findByLabelText('Full Name');
                         await userEvent.selectOptions(dropDown, '04001');
@@ -1592,7 +1598,7 @@ describe('report run page', () => {
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                    const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1608,6 +1614,7 @@ describe('report run page', () => {
 
                     expect(dropDown).toBeInvalid();
                     expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(await findAllByRole('link', { name: 'Condition' })).toHaveLength(2);
                     expect(mockResultApi).not.toHaveBeenCalled();
                 });
 
@@ -1855,7 +1862,7 @@ describe('report run page', () => {
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
-                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                    const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1873,6 +1880,7 @@ describe('report run page', () => {
 
                     expect(dropDown).toBeInvalid();
                     expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(await findAllByRole('link', { name: 'Condition' })).toHaveLength(2);
                     expect(mockResultApi).not.toHaveBeenCalled();
                 });
 
@@ -2108,7 +2116,7 @@ describe('report run page', () => {
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
 
-                const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                 expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2119,6 +2127,7 @@ describe('report run page', () => {
                 await user.click(exportButton);
 
                 expect(await findAllByText('The Duplicate Investigations Time Frame is required.')).toHaveLength(2);
+                expect(await findAllByRole('link', { name: 'Time' })).toHaveLength(2);
                 expect(mockResultApi).not.toHaveBeenCalled();
             });
 
@@ -2318,7 +2327,7 @@ describe('report run page', () => {
                         .mockResolvedValue(MOCK_RESULT);
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                    const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
+                    const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
                     expect(mockConfigApi).toHaveBeenCalled();
 
@@ -2334,6 +2343,7 @@ describe('report run page', () => {
 
                     expect(dropDown).toBeInvalid();
                     expect(await findAllByText('The Full Name is required.')).toHaveLength(2);
+                    expect(await findAllByRole('link', { name: 'Other filters' })).toHaveLength(2);
                     expect(mockResultApi).not.toHaveBeenCalled();
                 });
 
@@ -2594,8 +2604,16 @@ describe('report run page', () => {
                 { value: '123', name: 'Terrible disease' },
                 { value: '456', name: 'Not so awful disease' },
             ]);
-            const { queryByText, getByText, findAllByText, getByLabelText, getByTestId, findByLabelText, findByRole } =
-                renderWithRouter();
+            const {
+                queryByText,
+                getByText,
+                findAllByRole,
+                findAllByText,
+                getByLabelText,
+                getByTestId,
+                findByLabelText,
+                findByRole,
+            } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -2611,6 +2629,7 @@ describe('report run page', () => {
             await user.click(exportButton);
 
             expect(await findAllByText('Enter a logic value for Full Name.')).toHaveLength(2);
+            expect(await findAllByRole('link', { name: 'Advanced filter' })).toHaveLength(2);
 
             // generally filled in text value
             const opSelect = getByLabelText('Logic');
@@ -3201,6 +3220,7 @@ describe('report run page', () => {
             await user.click(exportButton);
 
             expect(await findAllByText('Select at least one column from the Available columns list.')).toHaveLength(2);
+            expect(await findAllByRole('link', { name: 'Column selection' })).toHaveLength(2);
 
             await user.click(await findByLabelText('Select all'));
 

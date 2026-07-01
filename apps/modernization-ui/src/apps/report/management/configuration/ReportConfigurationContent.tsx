@@ -168,7 +168,7 @@ const ValidationErrors = ({ filtersIsDirty }: { filtersIsDirty: boolean }) => {
             <ValidationErrorBanner level={2}>
                 {hasFormErrs &&
                     (errors.dataSourceId?.message ? (
-                        <ValidationErrorSection id="report-source" title="Report Source">
+                        <ValidationErrorSection id="report-source" title="Report source">
                             <li>{errors.dataSourceId.message}</li>
                         </ValidationErrorSection>
                     ) : (
