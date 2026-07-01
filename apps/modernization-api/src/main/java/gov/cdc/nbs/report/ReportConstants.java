@@ -44,7 +44,7 @@ public final class ReportConstants {
     public static final String CREATEREPORTPUBLIC = "CREATEREPORTPUBLIC";
     public static final String CREATEREPORTPRIVATE = "CREATEREPORTPRIVATE";
     public static final String CREATEREPORTREPORTINGFACILITY = "CREATEREPORTREPORTINGFACILITY";
-    
+
     public static final String EDITREPORTPUBLIC = "EDITREPORTPUBLIC";
     public static final String EDITREPORTPRIVATE = "EDITREPORTPRIVATE";
     public static final String EDITREPORTREPORTINGFACILITY = "EDITREPORTREPORTINGFACILITY";

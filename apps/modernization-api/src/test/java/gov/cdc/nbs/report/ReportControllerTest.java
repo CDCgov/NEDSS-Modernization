@@ -55,7 +55,7 @@ class ReportControllerTest {
   @Mock private ReportFetcher reportFetcher;
   @Mock private ReportExecutionServiceClient reportExecutionClient;
   @Mock private ReportRepository reportRepository;
-  
+
   @InjectMocks private ReportController controller;
 
   @Nested

@@ -113,13 +113,14 @@ public class ReportController {
     ReportConstants.ReportGroup reportGroup = request.group();
 
     authOperationType =
-            switch (reportGroup) {
-              case PUBLIC -> ReportConstants.Permissions.CREATEREPORTPUBLIC;
-              case PRIVATE -> ReportConstants.Permissions.CREATEREPORTPRIVATE;
-              case REPORTING_FACILITY -> ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY;
-              case TEMPLATE ->
-                      throw new IllegalArgumentException("Template reports cannot be created using 'saveAs'");
-            };
+        switch (reportGroup) {
+          case PUBLIC -> ReportConstants.Permissions.CREATEREPORTPUBLIC;
+          case PRIVATE -> ReportConstants.Permissions.CREATEREPORTPRIVATE;
+          case REPORTING_FACILITY -> ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY;
+          case TEMPLATE ->
+              throw new IllegalArgumentException(
+                  "Template reports cannot be created using 'saveAs'");
+        };
 
     String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
 
