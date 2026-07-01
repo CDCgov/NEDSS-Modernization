@@ -376,6 +376,14 @@ def _build_dispositions_new_partners_and_clusters_output(
     new_partners_not_notified_buckets = _calc_new_partners_not_notified_buckets(
         tables['not_notified_partners'], new_partners_not_notified, worker
     )
+    new_partners_previous_pos, new_partners_previous_pos_percentage = (
+        _calc_new_partners_previous_pos(
+            tables['partner_case_dispositions'], total_partners_initiated, worker
+        )
+    )
+    new_partners_open, new_partners_open_percentage = _calc_new_partners_open(
+        tables['partner_case_dispositions'], total_partners_initiated, worker
+    )
     total_clusters_initiated = _calc_total_clusters_initiated(
         tables['clusters_initiated'], worker
     )
@@ -535,6 +543,24 @@ def _build_dispositions_new_partners_and_clusters_output(
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'Previous Pos',
+            None,
+            new_partners_previous_pos,
+            new_partners_previous_pos_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'Open',
+            None,
+            new_partners_open,
+            new_partners_open_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
             NEW_CLUSTERS_NOTIFIED,
             None,
             new_clusters_notified,
@@ -670,6 +696,15 @@ def _build_dispositions_new_partners_and_clusters_output(
     ]
 
     return rows
+
+
+# NEW PARTNERS NOT NOTIFIED
+# PREVIOUS POS, pp1, where fl_fup_disposition = 'E - Previously Treated...
+# OPEN, pp1, where fl_fup_disposition is null
+
+# NEW CLUSTERS NOT NOTIFIED
+# PREVIOUS POS, c1 as is
+# OPEN, cluster where fl_fup_dispositions is null
 
 
 # actual calculations
@@ -1065,6 +1100,39 @@ def _calc_new_partners_not_notified_buckets(
         result[dispo] = (count, _percent_for_csv(count, new_partners_not_notified))
 
     return result
+
+
+def _calc_new_partners_previous_pos(
+    partner_case_dispositions: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Partners Previous Pos'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(partner_case_dispositions, worker)
+    count = _count_distinct_case_ids(
+        rows,
+        lambda row: (
+            row[FL_FUP_DISPOSITION] == 'E - Previously Treated for This Infection'
+        ),
+    )
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_open(
+    partner_case_dispositions: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Partners Open'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(partner_case_dispositions, worker)
+    count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
 
 
 def _calc_new_clusters_notified(

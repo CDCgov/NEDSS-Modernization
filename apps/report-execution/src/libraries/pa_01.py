@@ -15,6 +15,7 @@ from src.libraries.support.pa_01.queries import (
     not_notified_partners_query,
     notified_clusters_query,
     notified_partners_query,
+    partner_case_dispositions_query,
     partner_notification_query,
     period_partners_query,
     testing_index_query,
@@ -109,6 +110,9 @@ def execute(
     tables['notified_clusters'] = trx.query(notified_clusters_query(subset_query))
     tables['not_notified_clusters'] = trx.query(
         not_notified_clusters_query(subset_query)
+    )
+    tables['partner_case_dispositions'] = trx.query(
+        partner_case_dispositions_query(subset_query)
     )
 
     # get list of workers (nb. None treated as "ALL WORKERS")

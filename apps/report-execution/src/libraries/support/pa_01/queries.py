@@ -822,3 +822,48 @@ def not_notified_clusters_query(subset_query: str) -> str:
         'Z - Previous Preventative Treatment'
       )
     """
+
+
+def partner_case_dispositions_query(subset_query: str) -> str:
+    """Return interviewed case rows used for partner disposition counts.
+
+    This is the SQL equivalent of SAS `pp1`, which is used to calculate the
+    partner-side Previous Pos and Open rows.
+    """
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT COALESCE(TRY_CONVERT (INT,a.STD_PRTNRS_PRD_TRNSGNDR_TTL),0)
+               AS STD_PRTNRS_TRNSGNDR_TTL,
+             a.FL_FUP_DISPOSITION,
+             COALESCE(TRY_CONVERT (INT,a.SOC_PRTNRS_PRD_FML_TTL),0)
+               AS SOC_PRTNRS_FML_TTL,
+             COALESCE(TRY_CONVERT (INT,a.SOC_PRTNRS_PRD_MALE_TTL),0)
+               AS SOC_PRTNRS_MALE_TTL,
+             COALESCE(TRY_CONVERT (INT,a.STD_PRTNRS_PRD_TRNSGNDR_TTL),0)
+               + COALESCE(TRY_CONVERT (INT,a.SOC_PRTNRS_PRD_FML_TTL),0)
+               + COALESCE(TRY_CONVERT (INT,a.SOC_PRTNRS_PRD_MALE_TTL),0) AS count_Q,
+             D_provider.PROVIDER_QUICK_CODE,
+             a.INV_LOCAL_ID,
+             a.CA_PATIENT_INTV_STATUS,
+             a.INVESTIGATOR_INTERVIEW_KEY,
+             a.INVESTIGATOR_INTERVIEW_QC
+      FROM filtered_cases a
+        INNER JOIN RDB.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+        INNER JOIN RDB.dbo.investigation
+                ON investigation.investigation_key = a.investigation_KEY
+               AND a.CA_PATIENT_INTV_STATUS IN ('I - Interviewed');
+    """
