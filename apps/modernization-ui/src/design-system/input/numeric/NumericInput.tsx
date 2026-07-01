@@ -40,7 +40,8 @@ const NumericInput = ({
             htmlFor={id}
             required={required}
             error={error}
-            helperText={helperText}>
+            helperText={helperText}
+        >
             <Numeric id={id} placeholder={placeholder} {...remaining} />
         </EntryWrapper>
     );
@@ -64,7 +65,8 @@ const NumericRangeInput = ({
             htmlFor={id}
             required={required}
             error={error}
-            helperText={helperText}>
+            helperText={helperText}
+        >
             <NumberRangeField id={id} sizing={sizing} required={required} {...remaining} />
         </EntryWrapper>
     );
