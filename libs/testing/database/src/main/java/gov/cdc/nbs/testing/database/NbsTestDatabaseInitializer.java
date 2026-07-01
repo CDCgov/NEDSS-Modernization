@@ -19,7 +19,7 @@ class NbsTestDatabaseInitializer
     "resource"
   })
   public void initialize(final ConfigurableApplicationContext context) {
-    if (databaseContainer == null) {
+    if (databaseContainer == null || !databaseContainer.isRunning()) {
       String image =
           context
               .getEnvironment()
