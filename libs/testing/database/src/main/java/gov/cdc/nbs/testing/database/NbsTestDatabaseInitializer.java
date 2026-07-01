@@ -44,14 +44,15 @@ class NbsTestDatabaseInitializer
   }
 
   /**
-   * Directly establishes a connection to the starting container and seeds the
-   * required global configuration rows if they are not already present.
+   * Directly establishes a connection to the starting container and seeds the required global
+   * configuration rows if they are not already present.
    */
   private void seedBaselineConfiguration(final JdbcDatabaseContainer<?> container) {
 
     // Uses fully qualified database identifiers (NBS_ODSE..NBS_configuration)
     // to insulate against whatever default catalog the connection starts in.
-    String seedSql = """
+    String seedSql =
+        """
         INSERT INTO [NBS_ODSE].[dbo].[NBS_configuration] (
             config_key, config_value, default_value,
             version_ctrl_nbr, add_user_id, add_time,
@@ -84,7 +85,7 @@ class NbsTestDatabaseInitializer
         """;
 
     try (Connection conn = container.createConnection("");
-         Statement stmt = conn.createStatement()) {
+        Statement stmt = conn.createStatement()) {
 
       stmt.execute(seedSql);
 
