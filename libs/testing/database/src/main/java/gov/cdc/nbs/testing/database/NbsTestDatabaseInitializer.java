@@ -21,18 +21,18 @@ class NbsTestDatabaseInitializer
   public void initialize(final ConfigurableApplicationContext context) {
     if (databaseContainer == null) {
       String image =
-              context
-                      .getEnvironment()
-                      .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
+          context
+              .getEnvironment()
+              .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
       String username = context.getEnvironment().getProperty("nbs.datasource.username");
       String credential = context.getEnvironment().getProperty("nbs.datasource.password");
 
       databaseContainer =
-              new NbsDatabaseContainer<>(image)
-                      .withUsername(username)
-                      .withPassword(credential)
-                      .withEnv("DATABASE_VERSION", "6.0.19.1")
-                      .withImagePullPolicy(PullPolicy.alwaysPull());
+          new NbsDatabaseContainer<>(image)
+              .withUsername(username)
+              .withPassword(credential)
+              .withEnv("DATABASE_VERSION", "6.0.19.1")
+              .withImagePullPolicy(PullPolicy.alwaysPull());
 
       databaseContainer.start();
 
