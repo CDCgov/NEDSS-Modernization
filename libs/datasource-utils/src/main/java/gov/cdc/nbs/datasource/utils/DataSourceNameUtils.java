@@ -43,7 +43,7 @@ public class DataSourceNameUtils {
     }
 
     String orgDBName = modifiedDataSourceName.substring(0, orgDBNameIndex);
-    String mappedDbName = config.getConfigValue(orgDBName);
+    String mappedDbName = config.getConfigValue("REPORT_DB_" + orgDBName);
 
     // check if DBName has an alias or is already a valid DB name
     if (mappedDbName.isEmpty()) {

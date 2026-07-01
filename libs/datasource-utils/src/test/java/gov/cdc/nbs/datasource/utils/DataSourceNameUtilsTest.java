@@ -20,10 +20,10 @@ class DataSourceNameUtilsTest {
 
   private static final Map<String, String> DATABASE_MAPPINGS =
       Map.of(
-          "nbs_ods", "NBS_ODSE",
-          "nbs_odse", "NBS_ODSE",
-          "odse", "NBS_ODSE",
-          "ods", "NBS_ODSE");
+          "report_db_nbs_ods", "NBS_ODSE",
+          "report_db_nbs_odse", "NBS_ODSE",
+          "report_db_odse", "NBS_ODSE",
+          "report_db_ods", "NBS_ODSE");
 
   @Mock ConfigurationValueFinder config;
   @InjectMocks private DataSourceNameUtils utils;
