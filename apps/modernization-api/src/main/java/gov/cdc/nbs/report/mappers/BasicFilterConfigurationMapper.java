@@ -21,7 +21,7 @@ public class BasicFilterConfigurationMapper {
 
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.type().startsWith(ReportConstants.BASIC_FILTER_PREFIX)) {
+    if (!filterType.type().startsWith(ReportFilter.BASIC_FILTER_PREFIX)) {
       throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
     }
 

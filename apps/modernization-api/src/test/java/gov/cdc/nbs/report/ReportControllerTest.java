@@ -28,6 +28,7 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
+import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -52,7 +53,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 class ReportControllerTest {
 
   @Mock private ReportService service;
+  @Mock private ReportFetcher reportFetcher;
+  @Mock private ReportExecutionServiceClient reportExecutionClient;
   @Mock private ReportRepository reportRepository;
+
   @InjectMocks private ReportController controller;
 
   @Nested
@@ -395,6 +399,146 @@ class ReportControllerTest {
   }
 
   @Nested
+  class SaveAsReport {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    private final long userId = 48930L;
+
+    private final NbsUserDetails user = mock(NbsUserDetails.class);
+    private final Report existingReport = mock(Report.class);
+
+    @BeforeEach
+    void setUp() {
+      when(user.getId()).thenReturn(userId);
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      when(existingReport.getId()).thenReturn(reportId);
+      when(existingReport.getOwnerUid()).thenReturn(userId);
+      when(existingReport.getShared()).thenReturn('P');
+
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(java.util.Optional.of(existingReport));
+    }
+
+    @Test
+    void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_private_report() {
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.PRIVATE,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to create PRIVATE reports");
+    }
+
+    @Test
+    void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_public_report() {
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.PUBLIC,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to create PUBLIC reports");
+    }
+
+    @Test
+    void
+        saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_reporting_facility_report() {
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.REPORTING_FACILITY,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining(
+              "User does not have permission to create REPORTING_FACILITY reports");
+    }
+
+    @Test
+    void saveAsReport_should_throw_422_if_user_is_trying_to_create_template_report() {
+      when(existingReport.getShared()).thenReturn('P');
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.TEMPLATE,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("Template reports cannot be created using 'saveAs'");
+    }
+  }
+
+  @Nested
   class GetReport {
     @Test
     void getReport_should_return_report_configuration_response() {
@@ -424,7 +568,7 @@ class ReportControllerTest {
               columns,
               null,
               null);
-      when(service.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+      when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
       ResponseEntity<ReportConfiguration> response =
           controller.getReportConfiguration(reportUid, dataSourceUid);
@@ -439,7 +583,8 @@ class ReportControllerTest {
       long dataSourceUid = 2L;
       String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-      when(service.getReport(reportUid, dataSourceUid)).thenThrow(new NotFoundException(errorMsg));
+      when(reportFetcher.getReport(reportUid, dataSourceUid))
+          .thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
           .isInstanceOf(NotFoundException.class)
@@ -454,7 +599,7 @@ class ReportControllerTest {
       Long reportUid = 1L;
       Long dataSourceUid = 2L;
 
-      when(service.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
+      when(reportFetcher.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
 
       ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
 
@@ -469,7 +614,7 @@ class ReportControllerTest {
 
       String errorMsg = "Report not found for Report UID: 1 and Data Source UID: 2";
 
-      when(service.getReportRunner(reportUid, dataSourceUid))
+      when(reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
@@ -486,7 +631,7 @@ class ReportControllerTest {
 
       String errorMsg = "No report library exists for report " + reportId;
 
-      when(service.getReportRunner(reportUid, dataSourceUid))
+      when(reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .thenThrow(new UnprocessableEntityException(errorMsg));
 
       assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
@@ -521,7 +666,7 @@ class ReportControllerTest {
               List.of(basicFilter),
               advancedFilter);
 
-      when(service.executeReport(request)).thenReturn(getReportExecutionResponse());
+      when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
 
       ResponseEntity<ReportExecutionResult> response = controller.exportReport(request);
       assertEquals(getReportExecutionResponse(), response.getBody());
@@ -544,7 +689,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(service.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
+      when(reportExecutionClient.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(NotFoundException.class)
@@ -567,7 +712,8 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(service.executeReport(request)).thenThrow(new NotImplementedException(errorMsg));
+      when(reportExecutionClient.executeReport(request))
+          .thenThrow(new NotImplementedException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(NotImplementedException.class)
@@ -590,7 +736,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(service.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
+      when(reportExecutionClient.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
       assertThatThrownBy(() -> controller.exportReport(request))
           .isInstanceOf(RuntimeException.class)
@@ -642,7 +788,7 @@ class ReportControllerTest {
               List.of(),
               advancedFilter);
 
-      when(service.executeReport(request)).thenReturn(getReportExecutionResponse());
+      when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
 
       ResponseEntity<ReportExecutionResult> response = controller.runReport(request);
       assertEquals(getReportExecutionResponse(), response.getBody());

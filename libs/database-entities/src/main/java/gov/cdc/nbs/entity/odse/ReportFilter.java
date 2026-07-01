@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity
@@ -68,4 +68,15 @@ public class ReportFilter {
   private Integer minValueCnt;
 
   protected ReportFilter() {}
+
+  public static final String BASIC_FILTER_PREFIX = "BAS_";
+  public static final String ADV_FILTER_TYPE = "ADV_WCB";
+
+  public boolean isAdvancedFilter() {
+    return getFilterCode().getFilterType().equals(ADV_FILTER_TYPE);
+  }
+
+  public boolean isBasicFilter() {
+    return getFilterCode().getFilterType().startsWith(BASIC_FILTER_PREFIX);
+  }
 }

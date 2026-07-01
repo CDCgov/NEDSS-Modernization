@@ -18,8 +18,6 @@ public final class ReportConstants {
 
   public static final String BASIC_FILTER_ALLOW_NULLS_OP = "ALLOW_NULLS";
 
-  public static final String BASIC_FILTER_PREFIX = "BAS_";
-  public static final String ADV_FILTER_TYPE = "ADV_WCB";
   public static final String BAS_DAYS = "BAS_DAYS";
 
   public static final Set<String> BAS_TIME_RANGE_TYPES =
@@ -42,6 +40,11 @@ public final class ReportConstants {
     public static final String VIEWREPORTPRIVATE = "VIEWREPORTPRIVATE";
     public static final String VIEWREPORTPUBLIC = "VIEWREPORTPUBLIC";
     public static final String VIEWREPORTREPORTINGFACILITY = "VIEWREPORTREPORTINGFACILITY";
+
+    public static final String CREATEREPORTPUBLIC = "CREATEREPORTPUBLIC";
+    public static final String CREATEREPORTPRIVATE = "CREATEREPORTPRIVATE";
+    public static final String CREATEREPORTREPORTINGFACILITY = "CREATEREPORTREPORTINGFACILITY";
+
     public static final String EDITREPORTPUBLIC = "EDITREPORTPUBLIC";
     public static final String EDITREPORTPRIVATE = "EDITREPORTPRIVATE";
     public static final String EDITREPORTREPORTINGFACILITY = "EDITREPORTREPORTINGFACILITY";
