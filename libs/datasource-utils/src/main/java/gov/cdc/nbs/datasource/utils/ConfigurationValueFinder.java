@@ -47,9 +47,9 @@ public class ConfigurationValueFinder {
       String value =
           this.client.sql(CONFIG_QUERY).param(normalizedKey).query(String.class).single();
 
-        String resolvedValue = value.strip();
-        this.cache.put(normalizedKey, resolvedValue);
-        return resolvedValue;
+      String resolvedValue = value.strip();
+      this.cache.put(normalizedKey, resolvedValue);
+      return resolvedValue;
 
     } catch (EmptyResultDataAccessException e) {
       LOGGER.log(
