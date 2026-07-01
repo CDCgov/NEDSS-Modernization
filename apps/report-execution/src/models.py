@@ -60,15 +60,14 @@ def serialize_table(table: Table) -> str:
      - datetime: mm/dd/yyyy hh:mm:ss
      - date: mm/dd/yyyy
     """
-    # strftime constants for Python date and datetime when outputting to CSV
-    csv_date_strftime = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
-    csv_datetime_strftime = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
 
     # properly format a given value if it's a date or datetime
     def convert_dates(val: Any) -> Any:
         if type(val) is date:
+            csv_date_strftime = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
             return pd.to_datetime(val).strftime(csv_date_strftime)
         elif type(val) is datetime:
+            csv_datetime_strftime = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
             return pd.to_datetime(val).strftime(csv_datetime_strftime)
 
         return val

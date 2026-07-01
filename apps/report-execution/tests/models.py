@@ -3,43 +3,51 @@ import io
 import re
 
 import pandas as pd
+import pytest
 from faker import Faker
 
-from src import models
+from src import config, models
 
 
 class TestModels:
     """Tests for the Models module."""
 
-    def test_serialize_table_formats_dates_correctly(self):
-        f = Faker()
+    @pytest.fixture(autouse=True)
+    def clear_cache_between_runs(self):
+        config.clear_config_cache()
 
-        columns = ['example_date', 'example_datetime']
-        data = []
-        for _ in range(20):
-            data.append(
-                (
-                    datetime.date.fromisoformat(f.date()),
-                    f.date_time(),
+    def test_serialize_table_formats_dates_correctly(self, monkeypatch):
+        with monkeypatch.context() as m:
+            m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y')
+            m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S')
+            f = Faker()
+
+            columns = ['example_date', 'example_datetime']
+            data = []
+            for _ in range(20):
+                data.append(
+                    (
+                        datetime.date.fromisoformat(f.date()),
+                        f.date_time(),
+                    )
                 )
-            )
 
-        t = models.Table(data=data, columns=columns)
-        csv_str = models.serialize_table(t)
+            t = models.Table(data=data, columns=columns)
+            csv_str = models.serialize_table(t)
 
-        date_re = re.compile(r'^\d{2}/\d{2}/\d{4}$')
-        datetime_re = re.compile(r'^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$')
+            date_re = re.compile(r'^\d{2}/\d{2}/\d{4}$')
+            datetime_re = re.compile(r'^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$')
 
-        for line in csv_str.split('\r\n')[1:]:
-            d, dt = line.split(',')
+            for line in csv_str.split('\r\n')[1:]:
+                d, dt = line.split(',')
 
-            assert date_re.match(d) is not None
-            assert datetime_re.match(dt) is not None
+                assert date_re.match(d) is not None
+                assert datetime_re.match(dt) is not None
 
     def test_serialize_table_with_env_vars_for_date_formatting(self, monkeypatch):
         with monkeypatch.context() as m:
-            m.setenv('REPORT_EXPORT_DATE_FORMAT', '%d-%m-%Y')
-            m.setenv('REPORT_EXPORT_DATETIME_FORMAT', '%d-%m-%Y %H:%M')
+            m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATE_FORMAT', '%d-%m-%Y')
+            m.setitem(config._CONFIG_CACHE, 'REPORT_EXPORT_DATETIME_FORMAT', '%d-%m-%Y %H:%M')
 
             columns = ['example_date', 'example_datetime']
             data = [(datetime.date(1985, 4, 13), datetime.datetime(1985, 4, 13, 4, 15))]
