@@ -11,31 +11,36 @@ import org.testcontainers.images.PullPolicy;
 class NbsTestDatabaseInitializer
     implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
+  private static JdbcDatabaseContainer<?> databaseContainer;
+
   @Override
   @SuppressWarnings({
     // We don't want to close the container until after tests have completed
     "resource"
   })
   public void initialize(final ConfigurableApplicationContext context) {
-    String image =
-        context
-            .getEnvironment()
-            .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
-    String username = context.getEnvironment().getProperty("nbs.datasource.username");
-    String credential = context.getEnvironment().getProperty("nbs.datasource.password");
+    if (databaseContainer == null) {
+      String image =
+              context
+                      .getEnvironment()
+                      .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
+      String username = context.getEnvironment().getProperty("nbs.datasource.username");
+      String credential = context.getEnvironment().getProperty("nbs.datasource.password");
 
-    JdbcDatabaseContainer<?> container =
-        new NbsDatabaseContainer<>(image)
-            .withUsername(username)
-            .withPassword(credential)
-            .withEnv("DATABASE_VERSION", "6.0.19.1")
-            .withImagePullPolicy(PullPolicy.alwaysPull());
+      databaseContainer =
+              new NbsDatabaseContainer<>(image)
+                      .withUsername(username)
+                      .withPassword(credential)
+                      .withEnv("DATABASE_VERSION", "6.0.19.1")
+                      .withImagePullPolicy(PullPolicy.alwaysPull());
 
-    container.start();
+      databaseContainer.start();
 
-    seedBaselineConfiguration(container);
+      // Seed the required configuration entries exactly once
+      seedBaselineConfiguration(databaseContainer);
+    }
 
-    String url = container.getJdbcUrl();
+    String url = databaseContainer.getJdbcUrl();
 
     System.getLogger(NbsTestDatabaseInitializer.class.getCanonicalName())
         .log(System.Logger.Level.INFO, () -> "[url]: %s".formatted(url));
