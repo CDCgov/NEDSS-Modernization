@@ -37,7 +37,6 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
     const [options, setOptions] = useState<Selectable[] | null>(null);
     const { ready, properties } = useConfiguration();
     const { codeDescCd, codesetNm, columnUid } = props.schema.fieldMap[props.field] ?? {};
-
     useEffect(() => {
         const getValues = async (): Promise<Selectable[]> => {
             const valueSetMap = getValueSetMap(properties.entries.NBS_STATE_CODE);
@@ -109,6 +108,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
             sizing="medium"
             options={options ?? []}
             value={value}
+            required={true}
             onChange={handleOnChange}
         />
     );

@@ -18,6 +18,12 @@ public class CountyOptionSteps {
     mother.create(name, state);
   }
 
+  @Given("there is an inactive {string} county for {state} state")
+  public void an_inactive_county_exists_in_the_value_set_for_state(
+      final String name, final String state) {
+    mother.createInactive(name, state);
+  }
+
   @ParameterType(name = "state", value = ".+")
   public String state(final String value) {
     return stateResolver.resolve(value).orElse(null);

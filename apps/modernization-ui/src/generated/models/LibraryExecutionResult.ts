@@ -2,14 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type ReportResult = {
-    content_type: ReportResult.content_type;
+export type LibraryExecutionResult = {
+    content_type: LibraryExecutionResult.content_type;
     content: string;
     header?: string;
     subheader?: string;
     description?: string;
 };
-export namespace ReportResult {
+export namespace LibraryExecutionResult {
     export enum content_type {
         TABLE = 'table',
     }
