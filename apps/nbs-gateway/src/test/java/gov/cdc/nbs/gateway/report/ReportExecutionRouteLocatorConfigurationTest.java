@@ -1,6 +1,9 @@
 package gov.cdc.nbs.gateway.report;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.forbidden;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
@@ -193,5 +196,92 @@ class ReportExecutionRouteLocatorConfigurationTest {
         .exchange()
         .expectStatus()
         .isOk();
+  }
+
+  @Test
+  void should_forward_cookies_to_the_modernization_api_runner_check() {
+    modApi.stubFor(
+        get(urlPathMatching("/nbs/api/report/runner/2/1"))
+            .willReturn(
+                ok().withBody("python")
+                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
+
+    MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
+    data.add("ObjectType", "7");
+    data.add("OperationType", "117");
+    data.add("ReportUID", "2");
+    data.add("DataSourceUID", "1");
+
+    webClient
+        .post()
+        .uri(builder -> builder.path("/nbs/nfc").build())
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .cookie("nbs_token", "test-token")
+        .body(BodyInserters.fromFormData(data))
+        .exchange()
+        .expectStatus()
+        .isFound();
+
+    modApi.verify(
+        getRequestedFor(urlPathMatching("/nbs/api/report/runner/2/1"))
+            .withCookie("nbs_token", equalTo("test-token")));
+  }
+
+  @Test
+  void should_forward_authorization_header_to_the_modernization_api_runner_check() {
+    modApi.stubFor(
+        get(urlPathMatching("/nbs/api/report/runner/2/1"))
+            .willReturn(
+                ok().withBody("python")
+                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)));
+
+    MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
+    data.add("ObjectType", "7");
+    data.add("OperationType", "117");
+    data.add("ReportUID", "2");
+    data.add("DataSourceUID", "1");
+
+    webClient
+        .post()
+        .uri(builder -> builder.path("/nbs/nfc").build())
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .header(HttpHeaders.AUTHORIZATION, "Bearer test-token")
+        .body(BodyInserters.fromFormData(data))
+        .exchange()
+        .expectStatus()
+        .isFound();
+
+    modApi.verify(
+        getRequestedFor(urlPathMatching("/nbs/api/report/runner/2/1"))
+            .withHeader(HttpHeaders.AUTHORIZATION, equalTo("Bearer test-token")));
+  }
+
+  @Test
+  void should_route_classic_ui_when_modernization_api_returns_forbidden() {
+    // Simulates the OIDC scenario where the runner check is rejected (e.g. missing bearer token),
+    // verifying the request falls through to classic rather than erroring.
+    classic.stubFor(
+        post("/nbs/nfc")
+            .willReturn(ok().withBody("{{request.body}}").withTransformers("response-template")));
+
+    modApi.stubFor(get(urlPathMatching("/nbs/api/report/runner/2/1")).willReturn(forbidden()));
+
+    MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
+    data.add("mode", "edit");
+    data.add("ObjectType", "7");
+    data.add("OperationType", "117");
+    data.add("ReportUID", "2");
+    data.add("DataSourceUID", "1");
+
+    webClient
+        .post()
+        .uri(builder -> builder.path("/nbs/nfc").build())
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(BodyInserters.fromFormData(data))
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody(String.class)
+        .value(v -> assertThat(v).contains("edit"));
   }
 }

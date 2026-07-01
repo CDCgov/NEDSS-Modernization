@@ -20,7 +20,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.access.method.P;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -100,12 +99,13 @@ class ReportExecutionRouteLocatorConfiguration {
           .get()
           .uri(path)
           .accept(MediaType.APPLICATION_JSON)
-          .headers(newHeaders -> {
-            List<String> bearer = exchange.getRequest().getHeaders().get("Authorization");
-            if (bearer != null) {
-                newHeaders.addAll("Authorization", bearer);
-            }
-          })
+          .headers(
+              newHeaders -> {
+                List<String> bearer = exchange.getRequest().getHeaders().get("Authorization");
+                if (bearer != null) {
+                  newHeaders.addAll("Authorization", bearer);
+                }
+              })
           .cookies(
               // Copy the cookies from the original request onto the new request to make sure auth
               // works
