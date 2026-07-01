@@ -8,8 +8,7 @@ export type ValidationResultMap = Record<string, ValidationResult>;
 
 export const validateRule = (rule: QbQuery, result: ValidationResultMap) => {
     const setInvalid = (id: string, reason: string) => {
-        result[id].valid = false;
-        result[id].reasons = [reason];
+        result[id] = { valid: false, reasons: [reason] };
     };
     if (isQbRuleType(rule)) {
         const { id, field, operator, value, type } = rule;
