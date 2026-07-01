@@ -36,6 +36,11 @@ class NbsTestDatabaseInitializer
     System.getLogger(NbsTestDatabaseInitializer.class.getCanonicalName())
         .log(System.Logger.Level.INFO, () -> "[url]: %s".formatted(url));
 
-    TestPropertyValues.of("spring.datasource.url=" + url).applyTo(context.getEnvironment());
+    TestPropertyValues.of(
+            "spring.datasource.url=" + url,
+            "spring.liquibase.enabled=true",
+            "spring.liquibase.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver",
+            "nbs.ui.features.report.execution.enabled=true")
+        .applyTo(context.getEnvironment());
   }
 }

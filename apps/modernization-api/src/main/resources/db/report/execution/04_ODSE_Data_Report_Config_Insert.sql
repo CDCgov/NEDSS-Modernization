@@ -14,9 +14,6 @@ configuration key is already present, it skips insertion entirely.
 ====================================================================================================
 */
 
-USE [NBS_ODSE]
-GO
-
 INSERT INTO [dbo].[NBS_configuration] (
     config_key,
     config_value,
@@ -232,4 +229,3 @@ WHERE NOT EXISTS (
     FROM [dbo].[NBS_configuration] AS config
     WHERE config.config_key = src.config_key
 );
-GO
