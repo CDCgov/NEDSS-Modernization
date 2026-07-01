@@ -80,7 +80,6 @@ public class ReportController {
   }
 
   @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
-  //  TODO: Figure out how to handle permissions more granularly NOSONAR
   public ResponseEntity<ReportId> saveAsReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
@@ -91,14 +90,19 @@ public class ReportController {
 
     authOperationType =
             switch (reportGroup) {
-              case PUBLIC -> ReportConstants.Permissions.EDITREPORTPUBLIC;
-              case PRIVATE -> ReportConstants.Permissions.EDITREPORTPRIVATE;
-              case REPORTING_FACILITY -> ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY;
+              case PUBLIC -> ReportConstants.Permissions.CREATEREPORTPUBLIC;
+              case PRIVATE -> ReportConstants.Permissions.CREATEREPORTPRIVATE;
+              case REPORTING_FACILITY -> ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY;
               case TEMPLATE ->
-                      throw new IllegalArgumentException("Template reports cannot be updated using 'save'");
+                      throw new IllegalArgumentException("Template reports cannot be created using 'saveAs'");
             };
 
     String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+
+    if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
+      throw new ForbiddenException(
+          "User does not have permission to create a report of type: " + reportGroup);
+    }
 
     Report report =
         reportService.saveAsReport(request, user, new ReportId(reportUid, dataSourceUid));

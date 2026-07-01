@@ -38,6 +38,10 @@ public final class ReportConstants {
     public static final String VIEWREPORTPRIVATE = "VIEWREPORTPRIVATE";
     public static final String VIEWREPORTPUBLIC = "VIEWREPORTPUBLIC";
     public static final String VIEWREPORTREPORTINGFACILITY = "VIEWREPORTREPORTINGFACILITY";
+
+    public static final String CREATEREPORTPUBLIC = "CREATEREPORTPUBLIC";
+    public static final String CREATEREPORTPRIVATE = "CREATEREPORTPRIVATE";
+    public static final String CREATEREPORTREPORTINGFACILITY = "CREATEREPORTREPORTINGFACILITY";
   }
 
   public enum SortDirection {
