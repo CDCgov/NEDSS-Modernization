@@ -67,15 +67,21 @@ export const validateRule = (rule: QbQuery, result: ValidationResultMap) => {
             }
         }
     } else if (isQbRuleGroupType(rule)) {
+        rule.rules.forEach((r) => validateRule(r, result));
+
+        if (!rule.id) {
+            // no key for the map, shouldn't happen in practice
+            logErrorToUserConsole('Advanced query filter rule group id is empty.');
+            return;
+        }
+
         // catch when rule group is empty or contain only another rule group
         const isInvalidRuleGroup =
             rule.rules.length === 0 || (rule.rules.length === 1 && isRuleGroupType(rule.rules[0]));
 
         if (isInvalidRuleGroup) {
-            setInvalid(rule.id!, 'Remove or add rules to the empty rule group.');
+            setInvalid(rule.id, 'Remove or add rules to the empty rule group.');
         }
-
-        rule.rules.forEach((r) => validateRule(r, result));
     }
 };
 
