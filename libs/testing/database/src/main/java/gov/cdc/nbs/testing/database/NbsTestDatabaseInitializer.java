@@ -13,7 +13,7 @@ class NbsTestDatabaseInitializer
     implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
   private static final System.Logger LOGGER =
-          System.getLogger(NbsTestDatabaseInitializer.class.getName());
+      System.getLogger(NbsTestDatabaseInitializer.class.getName());
 
   private static JdbcDatabaseContainer<?> databaseContainer;
 
@@ -39,9 +39,12 @@ class NbsTestDatabaseInitializer
               .withPassword(credential)
               .withEnv("DATABASE_VERSION", "6.0.19.1")
               .withImagePullPolicy(PullPolicy.alwaysPull())
-                  // Wait for the exact success message generated at the end of the entrypoint
-                  .waitingFor(Wait.forLogMessage(".*Container initialization complete\\. Waiting for signals\\.\\.\\..*\\n", 1)
-                          .withStartupTimeout(java.time.Duration.ofMinutes(3)));
+              // Wait for the exact success message generated at the end of the entrypoint
+              .waitingFor(
+                  Wait.forLogMessage(
+                          ".*Container initialization complete\\. Waiting for signals\\.\\.\\..*\\n",
+                          1)
+                      .withStartupTimeout(java.time.Duration.ofMinutes(3)));
 
       databaseContainer.start();
 
