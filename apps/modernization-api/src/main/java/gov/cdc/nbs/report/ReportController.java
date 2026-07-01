@@ -68,7 +68,27 @@ public class ReportController {
     //  We might consider investigating into creating a custom pre-authorizer for this sort of
     //  authorization check, should we ever need ownership permissions beyond this endpoint
     if (!existingReport.getOwnerUid().equals(user.getId())) {
-      throw new ForbiddenException("User does not have permission to save this report");
+      throw new ForbiddenException("Only report owners can save reports");
+    }
+
+    String authOperationType;
+    ReportConstants.ReportGroup reportGroup =
+        ReportConstants.dbCharToReportGroup(existingReport.getShared());
+
+    authOperationType =
+        switch (reportGroup) {
+          case PUBLIC -> ReportConstants.Permissions.EDITREPORTPUBLIC;
+          case PRIVATE -> ReportConstants.Permissions.EDITREPORTPRIVATE;
+          case REPORTING_FACILITY -> ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY;
+          case TEMPLATE ->
+              throw new IllegalArgumentException("Template reports cannot be updated using 'save'");
+        };
+
+    String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+
+    if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
+      throw new ForbiddenException(
+          "User does not have permission to save " + reportGroup.name() + " reports");
     }
 
     Report report = reportService.saveReport(request, existingReport);
