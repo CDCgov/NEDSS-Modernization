@@ -4,7 +4,7 @@ from importlib import import_module
 from pydantic import ValidationError
 
 from . import errors, models, utils
-from .config import get_cached_config_value, prime_report_configurations
+from .config import get_cached_config_value, load_report_configurations
 from .db_transaction import Transaction, db_transaction
 
 
@@ -20,7 +20,7 @@ def execute_report(report_spec: models.ReportSpec):
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
     with db_transaction(conn_string) as trx:
-        prime_report_configurations(trx)
+        load_report_configurations(trx)
 
         result = library.execute(
             trx,

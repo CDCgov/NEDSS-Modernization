@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING  # <-- Add this import
+from typing import TYPE_CHECKING
 
 from . import errors
 
@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 _CONFIG_CACHE: dict[str, str] = {}
 
 
-# FIX: Use quotes around "Transaction" to make it a string forward reference
 def get_config_value(trx: Transaction, config_key: str) -> str:
     """Retrieves a configuration value from NBS_configuration, with a cache for
     subsequent lookups. Automatically handles case-insensitivity.
@@ -55,8 +54,7 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
     return resolved_value
 
 
-# FIX: Use quotes around "Transaction" here as well
-def prime_report_configurations(trx: Transaction) -> None:
+def load_report_configurations(trx: Transaction) -> None:
     """Fetches and caches config keys needed by the report execution."""
     config_keys = [
         'REPORT_DB_NBS_RDB',
