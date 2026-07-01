@@ -86,6 +86,20 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody SaveAsReportRequest request) {
+    String authOperationType;
+    ReportConstants.ReportGroup reportGroup = request.group();
+
+    authOperationType =
+            switch (reportGroup) {
+              case PUBLIC -> ReportConstants.Permissions.EDITREPORTPUBLIC;
+              case PRIVATE -> ReportConstants.Permissions.EDITREPORTPRIVATE;
+              case REPORTING_FACILITY -> ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY;
+              case TEMPLATE ->
+                      throw new IllegalArgumentException("Template reports cannot be updated using 'save'");
+            };
+
+    String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+
     Report report =
         reportService.saveAsReport(request, user, new ReportId(reportUid, dataSourceUid));
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
