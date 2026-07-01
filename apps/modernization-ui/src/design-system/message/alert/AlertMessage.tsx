@@ -51,7 +51,8 @@ const AlertMessage = ({
                 },
                 className
             )}
-            {...props}>
+            {...props}
+        >
             {icon && <Icon name={icon} sizing={slim ? 'small' : 'medium'} />}
             <div className={styles.content}>
                 {title && <Heading level={level}>{title}</Heading>}
