@@ -1,10 +1,9 @@
-import { Heading, HeadingLevel } from 'components/heading';
+import { HeadingLevel } from 'components/heading';
 import { AlertMessage } from 'design-system/message';
 import { ReactNode } from 'react';
 
 const ValidationErrorBanner = ({ level, children }: { level: HeadingLevel; children: ReactNode }) => (
-    <AlertMessage type="error">
-        <Heading level={level}>Fix the following errors:</Heading>
+    <AlertMessage type="error" title="Fix the following errors:" level={level}>
         {children}
     </AlertMessage>
 );
