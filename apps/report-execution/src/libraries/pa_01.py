@@ -10,9 +10,10 @@ from src.libraries.support.pa_01.queries import (
     cases_with_no_clusters_query,
     cases_with_no_partners_query,
     clusters_initiated_query,
-    clusters_notified_query,
     filtered_cases_query,
+    not_notified_clusters_query,
     not_notified_partners_query,
+    notified_clusters_query,
     notified_partners_query,
     partner_notification_query,
     period_partners_query,
@@ -105,7 +106,10 @@ def execute(
     tables['not_notified_partners'] = trx.query(
         not_notified_partners_query(subset_query)
     )
-    tables['clusters_notified'] = trx.query(clusters_notified_query(subset_query))
+    tables['notified_clusters'] = trx.query(notified_clusters_query(subset_query))
+    tables['not_notified_clusters'] = trx.query(
+        not_notified_clusters_query(subset_query)
+    )
 
     # get list of workers (nb. None treated as "ALL WORKERS")
     workers: list[Pa01Worker | None] = [None]
