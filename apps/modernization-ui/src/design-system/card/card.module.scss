@@ -2,7 +2,7 @@
 @use 'styles/borders';
 @use 'styles/components';
 
-$content-width: (
+$content-max-width: (
     'widescreen': 90rem,
 );
 
@@ -38,7 +38,7 @@ section.card {
         @include components.required();
     }
 
-    @each $name, $value in $content-width {
+    @each $name, $value in $content-max-width {
         &--#{$name} {
             header {
                 div {
@@ -49,7 +49,7 @@ section.card {
 
                 // target the content div
                 + div {
-                    width: $value;
+                    max-width: $value;
                 }
             }
         }

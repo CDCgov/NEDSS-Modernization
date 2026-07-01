@@ -13,15 +13,13 @@ type BaseNumericInputProps = {
 } & NumericProps;
 
 type RangeInputProps = BaseNumericInputProps & {
-    isRange: true;
-    value: NumberBetweenCriteria;
+    value?: NumberBetweenCriteria;
+    onChange?: (val?: NumberBetweenCriteria) => void;
 };
 
 type SingleInputProps = BaseNumericInputProps & {
-    value: number;
+    value?: number;
 };
-
-type NumericInputProps = RangeInputProps | SingleInputProps;
 
 const NumericInput = ({
     id,
@@ -32,9 +30,8 @@ const NumericInput = ({
     required,
     placeholder,
     helperText,
-    isRange = false,
     ...remaining
-}: NumericInputProps) => {
+}: SingleInputProps) => {
     return (
         <EntryWrapper
             orientation={orientation}
@@ -43,15 +40,34 @@ const NumericInput = ({
             htmlFor={id}
             required={required}
             error={error}
-            helperText={helperText}
-        >
-            {isRange ? (
-                <NumberRangeField id={id} sizing={sizing} required={required} {...remaining} />
-            ) : (
-                <Numeric id={id} placeholder={placeholder} {...remaining} />
-            )}
+            helperText={helperText}>
+            <Numeric id={id} placeholder={placeholder} {...remaining} />
         </EntryWrapper>
     );
 };
 
-export { NumericInput };
+const NumericRangeInput = ({
+    id,
+    label,
+    orientation,
+    sizing,
+    error,
+    required,
+    helperText,
+    ...remaining
+}: Omit<RangeInputProps, 'placeholder'>) => {
+    return (
+        <EntryWrapper
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={id}
+            required={required}
+            error={error}
+            helperText={helperText}>
+            <NumberRangeField id={id} sizing={sizing} required={required} {...remaining} />
+        </EntryWrapper>
+    );
+};
+
+export { NumericInput, NumericRangeInput };
