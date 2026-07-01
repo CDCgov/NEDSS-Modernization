@@ -5,7 +5,7 @@ from pydantic import ValidationError
 
 from . import errors, models, utils
 from .config import get_cached_config_value, load_report_configurations
-from .db_transaction import Transaction, db_transaction
+from .db_transaction import db_transaction
 
 
 def execute_report(report_spec: models.ReportSpec):
@@ -46,9 +46,7 @@ def is_valid_library(library):
     return True
 
 
-def check_valid_result(
-    report_result: typing.Any, report_spec: models.ReportSpec
-):
+def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec):
     """Check if the returned result is valid."""
     if report_result is None:
         raise errors.InvalidResultError(report_spec.library_name, 'No result returned')
