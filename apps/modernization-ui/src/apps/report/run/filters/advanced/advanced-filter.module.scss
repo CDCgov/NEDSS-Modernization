@@ -2,14 +2,39 @@
 @use 'styles/buttons';
 @use 'styles/colors';
 
-.layout {
-    :global {
-        .alert-banner__right {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
 
+$error-border-width: 4px;
+
+@mixin highlight($color, $border-width: $error-border-width) {
+    border-left-color: $color;
+
+    input,
+    select,
+    textarea,
+    div:global(.multi-select) {
+        width: 100%;
+        outline: none;
+
+        border-width: $border-width;
+        border-style: solid;
+        border-color: $color;
+    }
+}
+
+.layout {
+    &.validate {
+        :global(.queryBuilder-invalid) {
+            &:global(.rule) {
+                @include highlight(colors.$error-dark);
+            }
+            &:global(.ruleGroup) {
+                border-width: $error-border-width;
+                border-color: colors.$error-dark;
+            }
+        }
+    }
+
+    :global {
         .queryBuilder {
             padding: 1rem;
         }
@@ -30,10 +55,6 @@
             flex-direction: row;
             align-items: end;
 
-            &:not(:first-of-type) {
-                margin-top: 0.5rem;
-            }
-
             button {
                 margin: 0 0.5rem;
             }
@@ -47,16 +68,14 @@
             padding: 1rem 0;
             border: 1px dashed colors.$base-light;
             margin-top: 0.75rem;
+            margin-left: 0;
+            padding: 0.5rem 1rem;
+        }
 
-            &:first-of-type {
-                border: none;
-                padding: 0;
-            }
-
-            &:not(:first-of-type) {
-                margin-left: 0;
-                padding: 0.5rem 1rem;
-            }
+        // no border on outermost rule group
+        .queryBuilder > .ruleGroup {
+            border: none;
+            padding: 0;
         }
 
         .rule {
