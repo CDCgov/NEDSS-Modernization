@@ -13,3 +13,5 @@ tables:
         data: random.choice(["PSN20067002GA01", "PSN30076044GA01", "PSN10082059GA01", "PSN10087055GA01", "PSN10087069GA01", "PSN10087071GA01", "PSN10088042GA01", "PSN10089067GA01", "PSN10089161GA01", "PSN10094077GA01", "PSN10094080GA01"])
       - column_name: EVENT_DATE
         data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+      - column_name: INVESTIGATION_KEY
+        data: row_id
