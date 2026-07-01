@@ -11,6 +11,7 @@ import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
@@ -27,20 +28,25 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
+import gov.cdc.nbs.repository.ReportRepository;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang3.NotImplementedException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @ExtendWith(MockitoExtension.class)
 class ReportControllerTest {
@@ -48,7 +54,8 @@ class ReportControllerTest {
   @Mock private ReportService service;
   @Mock private ReportFetcher reportFetcher;
   @Mock private ReportExecutionServiceClient reportExecutionClient;
-
+  @Mock private ReportRepository reportRepository;
+  
   @InjectMocks private ReportController controller;
 
   @Nested
@@ -233,6 +240,160 @@ class ReportControllerTest {
       assertThatThrownBy(() -> controller.deleteReport(reportUid, dataSourceUid))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
+    }
+  }
+
+  @Nested
+  class SaveReport {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    private final long userId = 48930L;
+
+    private final NbsUserDetails user = mock(NbsUserDetails.class);
+    private final Report report = mock(Report.class);
+
+    @BeforeEach
+    void setUp() {
+      when(user.getId()).thenReturn(userId);
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      when(report.getId()).thenReturn(reportId);
+      when(report.getOwnerUid()).thenReturn(userId);
+      when(report.getShared()).thenReturn('P');
+
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(java.util.Optional.of(report));
+    }
+
+    @Test
+    void saveReport_should_throw_404_if_report_not_found() {
+      when(service.getReportNotFoundText(reportId)).thenCallRealMethod();
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+
+      when(reportRepository.findById(reportId)).thenReturn(java.util.Optional.empty());
+
+      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessageContaining(
+              "Report not found for Report UID: "
+                  + reportUid
+                  + " and Data Source UID: "
+                  + dataSourceUid);
+    }
+
+    @Test
+    void saveReport_should_throw_403_if_user_is_not_owner_of_report() {
+      when(user.getId()).thenReturn(54321L);
+      when(report.getOwnerUid()).thenReturn(12345L);
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+
+      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("Only report owners can save reports");
+    }
+
+    @Test
+    void saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_private_report() {
+      when(report.getShared()).thenReturn('P');
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+
+      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to save PRIVATE reports");
+    }
+
+    @Test
+    void saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_public_report() {
+      when(report.getShared()).thenReturn('S');
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+
+      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to save PUBLIC reports");
+    }
+
+    @Test
+    void
+        saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_reporting_facility_report() {
+      when(report.getShared()).thenReturn('R');
+
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.EDITREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+
+      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to save REPORTING_FACILITY reports");
+    }
+
+    @Test
+    void saveReport_should_throw_422_if_report_is_template() {
+      when(report.getShared()).thenReturn('T');
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+
+      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("Template reports cannot be updated using 'save'");
     }
   }
 

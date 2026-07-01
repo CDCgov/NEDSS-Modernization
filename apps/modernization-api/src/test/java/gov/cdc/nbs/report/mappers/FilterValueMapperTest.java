@@ -84,6 +84,26 @@ class FilterValueMapperTest {
     }
 
     @Test
+    void fromBasicFilterRequest_should_handle_includeNulls_parameter() {
+      List<String> values = List.of("value1");
+      BasicFilterRequest request = new BasicFilterRequest(1L, values, true);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result)
+          .hasSize(2)
+          .allSatisfy(
+              fv -> {
+                assertThat(fv.getId()).isNotNull();
+                assertThat(fv.getReportFilter()).isEqualTo(mockReportFilter);
+                assertThat(fv.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
+              });
+
+      assertThat(result.getLast().getOperator())
+          .isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
+    }
+
+    @Test
     void fromBasicFilterRequest_should_create_filter_values_with_empty_strings() {
       List<String> values = List.of("", "value", "");
       BasicFilterRequest request = new BasicFilterRequest(1L, values, false);

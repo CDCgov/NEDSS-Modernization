@@ -62,7 +62,7 @@ class BasicFilterConfigurationMapperTest {
   FilterValue filterValueAllowNulls =
       FilterValue.builder()
           .id(6L)
-          .operator("ALLOW_NULLS")
+          .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
           .valueType("CODE")
           .valueTxt("value")
           .reportFilter(emptyFilter)
