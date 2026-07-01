@@ -159,7 +159,7 @@ public class ReportService {
 
     reportRepository.save(duplicate);
 
-    return saveReport(request.executionRequest(), duplicate.getId());
+    return saveReport(request.executionRequest(), duplicate);
   }
 
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
@@ -315,11 +315,5 @@ public class ReportService {
     }
 
     return new ReportMetadata(dataSource, reportLibrary);
-  }
-
-  public String getReportNotFoundText(ReportId reportId) {
-    return String.format(
-        "Report not found for Report UID: %d and Data Source UID: %d",
-        reportId.getReportUid(), reportId.getDataSourceUid());
   }
 }

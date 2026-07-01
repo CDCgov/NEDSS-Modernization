@@ -1015,7 +1015,7 @@ class ReportServiceTest {
               "some description text");
 
       Report finalReport = mock(Report.class);
-      when(service.saveReport(reportExecutionRequest, newReport.getId())).thenReturn(finalReport);
+      when(service.saveReport(reportExecutionRequest, newReport)).thenReturn(finalReport);
 
       Report result = service.saveAsReport(request, mockUser, existingReportId);
 

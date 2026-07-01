@@ -28,6 +28,7 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
+import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -394,6 +395,146 @@ class ReportControllerTest {
       assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Template reports cannot be updated using 'save'");
+    }
+  }
+
+  @Nested
+  class SaveAsReport {
+    long reportUid = 1L;
+    long dataSourceUid = 2L;
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    private final long userId = 48930L;
+
+    private final NbsUserDetails user = mock(NbsUserDetails.class);
+    private final Report existingReport = mock(Report.class);
+
+    @BeforeEach
+    void setUp() {
+      when(user.getId()).thenReturn(userId);
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      when(existingReport.getId()).thenReturn(reportId);
+      when(existingReport.getOwnerUid()).thenReturn(userId);
+      when(existingReport.getShared()).thenReturn('P');
+
+      Mockito.lenient()
+          .when(reportRepository.findById(reportId))
+          .thenReturn(java.util.Optional.of(existingReport));
+    }
+
+    @Test
+    void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_private_report() {
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.PRIVATE,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to create PRIVATE reports");
+    }
+
+    @Test
+    void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_public_report() {
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.PUBLIC,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining("User does not have permission to create PUBLIC reports");
+    }
+
+    @Test
+    void
+        saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_reporting_facility_report() {
+      when(user.getAuthorities())
+          .thenReturn(
+              Set.of(
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPRIVATE
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT),
+                  new SimpleGrantedAuthority(
+                      ReportConstants.Permissions.CREATEREPORTPUBLIC
+                          + "-"
+                          + ReportConstants.Permissions.REPORTINGOBJECT)));
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.REPORTING_FACILITY,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(ForbiddenException.class)
+          .hasMessageContaining(
+              "User does not have permission to create REPORTING_FACILITY reports");
+    }
+
+    @Test
+    void saveAsReport_should_throw_422_if_user_is_trying_to_create_template_report() {
+      when(existingReport.getShared()).thenReturn('P');
+
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "New Report",
+              "Description",
+              ReportGroup.TEMPLATE,
+              new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null),
+              "random descirption");
+
+      assertThatThrownBy(() -> controller.saveAsReport(user, reportUid, dataSourceUid, request))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("Template reports cannot be created using 'saveAs'");
     }
   }
 

@@ -126,7 +126,7 @@ public class ReportController {
 
     if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
       throw new ForbiddenException(
-          "User does not have permission to create a report of type: " + reportGroup);
+          "User does not have permission to create " + reportGroup.name() + " reports");
     }
 
     Report report =

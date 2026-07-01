@@ -2,6 +2,7 @@ package gov.cdc.nbs.report.mappers;
 
 import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.ReportFilter;
+import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.FilterType;
 import gov.cdc.nbs.report.utils.ValueCountCalculator;
