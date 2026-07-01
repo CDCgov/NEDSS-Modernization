@@ -16,7 +16,7 @@ import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
 import { ReportExecuteForm } from './ReportRunPage';
 import { FieldErrors, useFormState } from 'react-hook-form';
-import { ValidationErrorBanner, ValidationErrorSection } from './ValidationError';
+import { ValidationErrorBanner, ValidationErrorSection } from '../../../design-system/errors/ValidationError';
 
 const BASIC_SECTIONS = [
     {

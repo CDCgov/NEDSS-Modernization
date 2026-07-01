@@ -2,7 +2,6 @@
 @use 'styles/buttons';
 @use 'styles/colors';
 
-
 $error-border-width: 4px;
 
 @mixin highlight($color, $border-width: $error-border-width) {

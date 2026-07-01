@@ -53,10 +53,12 @@ const FilterRepeatingBlock = ({
     config,
     isEditable,
     dataSource,
+    setFiltersIsDirty,
 }: {
     config?: ReportConfiguration;
     isEditable: boolean;
     dataSource?: Selectable | string;
+    setFiltersIsDirty: (dirty: boolean) => void;
 }) => {
     const dataSourceSelected = !!dataSource;
     const filterOptions = useReportFilters();
@@ -93,6 +95,7 @@ const FilterRepeatingBlock = ({
                     dataSourceSelected={dataSourceSelected}
                     filterOptions={filterOptions}
                     columnOptions={columnOptions}
+                    setFiltersIsDirty={setFiltersIsDirty}
                     value={value}
                 />
             )}
@@ -123,6 +126,7 @@ const FilterRepeatingBlockImpl = ({
     filterOptions,
     columnOptions,
     onChange,
+    setFiltersIsDirty,
 }: {
     isEditable: boolean;
     dataSourceSelected: boolean;
@@ -130,6 +134,7 @@ const FilterRepeatingBlockImpl = ({
     filterOptions?: Selectable[];
     columnOptions?: Selectable[];
     onChange?: (v: FilterConfig[]) => void;
+    setFiltersIsDirty?: (v: boolean) => void;
 }) => {
     return (
         <RepeatingBlock<FilterConfig>
@@ -143,6 +148,7 @@ const FilterRepeatingBlockImpl = ({
             data={value}
             disabled={!dataSourceSelected}
             onChange={onChange}
+            isDirty={setFiltersIsDirty}
             viewRenderer={(entry: FilterConfig) =>
                 filterColumns.map((fc) => (
                     <ValueField key={fc.id} label={fc.name} sizing={SIZING}>

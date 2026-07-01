@@ -14,11 +14,16 @@ import { useReportDataSources, useReportLibraries, useReportSections } from 'opt
 import { useUserProfileOptions } from 'options/users';
 import { ReactComponentLike } from 'prop-types';
 import { ReactNode, useId, useRef, useState } from 'react';
-import { Controller, useWatch } from 'react-hook-form';
+import { Controller, useFormState, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 import { addLabelToName, EnumSelectable } from '../../utils';
 import { SIZING } from './constants';
+import {
+    DirtySectionErrorMessage,
+    ValidationErrorBanner,
+    ValidationErrorSection,
+} from 'design-system/errors/ValidationError';
 
 const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
     { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
@@ -58,12 +63,16 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
 
 const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportConfiguration; isEditable: boolean }) => {
     const [dataSource, setDataSource] = useState<string | Selectable | undefined>(config?.dataSource.id.toString());
+    const [filtersIsDirty, setFiltersIsDirty] = useState<boolean>(false);
     const dataSourceSelected = !!dataSource;
 
     return (
         <>
             {isEditable ? (
-                <DataSourceEditCard config={config} setDataSource={setDataSource} />
+                <>
+                    <ValidationErrors filtersIsDirty={filtersIsDirty} />
+                    <DataSourceEditCard config={config} setDataSource={setDataSource} />
+                </>
             ) : (
                 <DataSourceCard isEditable={false} defaultValue={config!.dataSource.id.toString()} disabled={false} />
             )}
@@ -140,9 +149,45 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     helperText="The query logic for the report"
                 />
             </Card>
-            <FilterRepeatingBlock config={config} isEditable={isEditable} dataSource={dataSource} />
+            <FilterRepeatingBlock
+                config={config}
+                isEditable={isEditable}
+                dataSource={dataSource}
+                setFiltersIsDirty={setFiltersIsDirty}
+            />
         </>
     );
+};
+
+const ValidationErrors = ({ filtersIsDirty }: { filtersIsDirty: boolean }) => {
+    const { errors, isSubmitted } = useFormState<ConfigForm>();
+    const hasFormErrs = !!Object.keys(errors).length;
+
+    if (isSubmitted && (hasFormErrs || filtersIsDirty)) {
+        return (
+            <ValidationErrorBanner level={2}>
+                {hasFormErrs &&
+                    (errors.dataSourceId?.message ? (
+                        <ValidationErrorSection id="report-source" title="Report Source">
+                            <li>{errors.dataSourceId.message}</li>
+                        </ValidationErrorSection>
+                    ) : (
+                        <ValidationErrorSection id="metadata" title="Report configuration">
+                            {Object.entries(errors).map(
+                                ([k, { message }]) => !!message && <li key={`error-${k}`}>{message}</li>
+                            )}
+                        </ValidationErrorSection>
+                    ))}
+                {filtersIsDirty && (
+                    <ValidationErrorSection id="filter-config" title="Available filters">
+                        <li>
+                            <DirtySectionErrorMessage title="Available filters" />
+                        </li>
+                    </ValidationErrorSection>
+                )}
+            </ValidationErrorBanner>
+        );
+    }
 };
 
 const DataSourceEditCard = ({
@@ -265,7 +310,7 @@ const Row = ({
     return isEditable && optionsReady ? (
         <Controller
             name={fieldName}
-            rules={required ? validateRequiredRule(label) : undefined}
+            rules={required && !disabled ? validateRequiredRule(label) : undefined}
             defaultValue={option}
             // ignoring the ref as it does not pass down well and isn't critical
             // eslint-disable-next-line @typescript-eslint/no-unused-vars

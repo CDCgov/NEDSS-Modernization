@@ -25,29 +25,23 @@ const EditReportConfiguration = () => {
         mode: 'onSubmit',
     });
 
-    const handleSubmit = form.handleSubmit(
-        (data) => {
-            setSubmitting(true);
-            setError('');
+    const handleSubmit = form.handleSubmit((data) => {
+        setSubmitting(true);
+        setError('');
 
-            ReportControllerService.editReport({
-                reportUid,
-                dataSourceUid,
-                requestBody: formToRequest(data),
+        ReportControllerService.editReport({
+            reportUid,
+            dataSourceUid,
+            requestBody: formToRequest(data),
+        })
+            .then(() => {
+                navigate(viewUrl);
             })
-                .then(() => {
-                    navigate(viewUrl);
-                })
-                .catch((err) => {
-                    setError(JSON.stringify(err));
-                })
-                .finally(() => setSubmitting(false));
-        },
-        (errors) => {
-            // TODO make this gather all errors and nicely format
-            setError(JSON.stringify(errors));
-        }
-    );
+            .catch((err) => {
+                setError(JSON.stringify(err));
+            })
+            .finally(() => setSubmitting(false));
+    });
 
     return !config ? (
         <LoadingBlock />

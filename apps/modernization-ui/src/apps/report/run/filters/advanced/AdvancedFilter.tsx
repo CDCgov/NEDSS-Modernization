@@ -29,7 +29,7 @@ import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { ReactNode } from 'react';
-import { ValidationErrorBanner } from '../../ValidationError.tsx';
+import { ValidationErrorBanner } from '../../../../../design-system/errors/ValidationError.tsx';
 
 import styles from './advanced-filter.module.scss';
 import classNames from 'classnames';
@@ -246,7 +246,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     return (
-        <div className={classNames(styles.layout, {[styles.validate]: !!error?.message})}>
+        <div className={classNames(styles.layout, { [styles.validate]: !!error?.message })}>
             {error?.message && (
                 <ValidationErrorBanner level={3}>
                     <ul>{formatAdvancedFilterErrors(error.message)}</ul>

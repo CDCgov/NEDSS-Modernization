@@ -17,4 +17,21 @@ const ValidationErrorSection = ({ id, title, children }: { id: string; title: st
     </div>
 );
 
-export { ValidationErrorBanner, ValidationErrorSection };
+// Generates an error message that will contain a link to the section if an id is provided
+const DirtySectionErrorMessage = ({ title, id }: { title: string; id?: string }) => {
+    return (
+        <>
+            Data have been entered in the{' '}
+            {id ? (
+                <a id={`link-to-${id}`} href={`#${id}`}>
+                    {title}
+                </a>
+            ) : (
+                title
+            )}{' '}
+            section. Please press Add or clear the data and submit again.
+        </>
+    );
+};
+
+export { ValidationErrorBanner, ValidationErrorSection, DirtySectionErrorMessage };
