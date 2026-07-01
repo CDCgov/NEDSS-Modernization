@@ -1237,7 +1237,8 @@ describe('report run page', () => {
                             .mockResolvedValue(MOCK_RESULT);
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
-                        const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
+                        const { findByRole, findAllByRole, findAllByText, findByLabelText, container } =
+                            renderWithRouter();
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1266,7 +1267,7 @@ describe('report run page', () => {
                         // make sure form values were really reset
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
-                        expect(await findByRole('alert')).toBeVisible(); // county is required
+                        expect(await findAllByRole('alert')).toHaveLength(2); // county is required
 
                         dropDown = await findByLabelText('Full Name');
                         await userEvent.selectOptions(dropDown, '04001');
@@ -2593,16 +2594,8 @@ describe('report run page', () => {
                 { value: '123', name: 'Terrible disease' },
                 { value: '456', name: 'Not so awful disease' },
             ]);
-            const {
-                queryByText,
-                getByText,
-                findByText,
-                findAllByText,
-                getByLabelText,
-                getByTestId,
-                findByLabelText,
-                findByRole,
-            } = renderWithRouter();
+            const { queryByText, getByText, findAllByText, getByLabelText, getByTestId, findByLabelText, findByRole } =
+                renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -2617,14 +2610,14 @@ describe('report run page', () => {
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(await findByText('Enter a logic value for Full Name.')).toBeVisible();
+            expect(await findAllByText('Enter a logic value for Full Name.')).toHaveLength(2);
 
             // generally filled in text value
             const opSelect = getByLabelText('Logic');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
 
-            expect(await findByText('Enter a value for Full Name.')).toBeVisible();
+            expect(await findAllByText('Enter a value for Full Name.')).toHaveLength(2);
 
             const valueBox = getByLabelText('Value');
             expect(valueBox).toHaveValue('');
@@ -2637,7 +2630,7 @@ describe('report run page', () => {
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, '=');
 
-            expect(await findByText('Enter a value for Days Old.')).toBeVisible();
+            expect(await findAllByText('Enter a value for Days Old.')).toHaveLength(2);
 
             const numberBox = await findByLabelText('Value');
             expect(numberBox).toHaveValue(null);
@@ -2650,7 +2643,7 @@ describe('report run page', () => {
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'in');
 
-            expect(await findByText('Enter a value for Condition Code.')).toBeVisible();
+            expect(await findAllByText('Enter a value for Condition Code.')).toHaveLength(2);
 
             await waitFor(() => expect(codedValueGetter).toHaveBeenCalledWith(`/nbs/api/options/races`));
 
@@ -2666,7 +2659,7 @@ describe('report run page', () => {
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Enter From and To values for Date of Birth.')).toBeVisible();
+            expect(await findAllByText('Enter From and To values for Date of Birth.')).toHaveLength(2);
 
             // The date entry will likely need to change once we switch to NBS components
             const dtContainer = getByTestId('date-range-editor');
@@ -2674,11 +2667,11 @@ describe('report run page', () => {
             const dtInputTo = await within(dtContainer).findByLabelText('To');
             await user.type(dtInputFrom, '10/18/2022{tab}');
 
-            expect(await findByText('Enter From and To values for Date of Birth.')).toBeVisible();
+            expect(await findAllByText('Enter From and To values for Date of Birth.')).toHaveLength(2);
 
             await user.type(dtInputTo, '10/17/2022{tab}');
 
-            expect(await findByText('From date must be before To date for Date of Birth.')).toBeVisible();
+            expect(await findAllByText('From date must be before To date for Date of Birth.')).toHaveLength(2);
             await user.clear(dtInputTo);
             await user.type(dtInputTo, '10/20/2022{tab}');
 
@@ -2689,18 +2682,18 @@ describe('report run page', () => {
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'between');
 
-            expect(await findByText('Enter From and To values for Days Old.')).toBeVisible();
+            expect(await findAllByText('Enter From and To values for Days Old.')).toHaveLength(2);
 
             const numContainer = getByTestId('number-range-editor');
             const numInputFrom = await within(numContainer).findByLabelText('From');
             const numInputTo = await within(numContainer).findByLabelText('To');
             await user.type(numInputFrom, '10');
 
-            expect(await findByText('Enter From and To values for Days Old.')).toBeVisible();
+            expect(await findAllByText('Enter From and To values for Days Old.')).toHaveLength(2);
 
             await user.type(numInputTo, '0');
 
-            expect(await findByText('From value must be before To value for Days Old.')).toBeVisible();
+            expect(await findAllByText('From value must be before To value for Days Old.')).toHaveLength(2);
 
             await user.clear(numInputTo);
             await user.type(numInputTo, '20');
@@ -2780,7 +2773,7 @@ describe('report run page', () => {
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
             ]);
-            const { getByTestId, findAllByText, findByRole, findAllByRole, findAllByLabelText } = renderWithRouter();
+            const { getByTestId, findAllByText, findByRole, findAllByLabelText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
@@ -3207,15 +3200,15 @@ describe('report run page', () => {
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
-            expect(await findByText('The column selection is required.')).toBeVisible();
+            expect(await findAllByText('Select at least one column from the Available columns list.')).toHaveLength(2);
 
             await user.click(await findByLabelText('Select all'));
 
-            expect(queryByText('The column selection is required.')).toBeNull();
+            expect(queryByText('Select at least one column from the Available columns list.')).toBeNull();
 
             await user.click(await findByRole('button', { name: 'Clear selections' }));
 
-            expect(await findByText('The column selection is required.')).toBeVisible();
+            expect(await findAllByText('Select at least one column from the Available columns list.')).toHaveLength(2);
 
             // check drag and drop, the library uses keycodes (deprecated) instead of names,
             // so requires this kinda hacky workaround vs user events

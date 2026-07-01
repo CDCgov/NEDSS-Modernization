@@ -9,7 +9,7 @@ const ValidationErrorBanner = ({ level, children }: { level: HeadingLevel; child
 );
 
 const ValidationErrorSection = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => (
-    <div key={id} className="usa-prose">
+    <div className="usa-prose">
         <p>
             For <a href={`#${id}`}>{title}</a>,
         </p>
