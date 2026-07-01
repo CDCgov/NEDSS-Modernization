@@ -1,6 +1,6 @@
-import http
 import json
 import os
+from http import client
 from typing import cast
 
 import mssql_python
@@ -131,7 +131,7 @@ class TestIntegrationExecuteReport:
         }
         invalid_spec.pop(missing_prop)
 
-        connection = http.client.HTTPConnection(
+        connection = client.HTTPConnection(
             f'localhost:{os.getenv("UVICORN_PORT", "8001")}'
         )
 
@@ -169,7 +169,7 @@ class TestIntegrationExecuteReport:
         invalid_spec.pop(empty_string_prop)
         invalid_spec[empty_string_prop] = ''
 
-        connection = http.client.HTTPConnection(
+        connection = client.HTTPConnection(
             f'localhost:{os.getenv("UVICORN_PORT", "8001")}'
         )
 

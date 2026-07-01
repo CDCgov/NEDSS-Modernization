@@ -45,6 +45,11 @@ class TestIntegrationPa01Library:
         with pytest.raises(ValueError, match=r'.*missing key.*'):
             execute_report(report_spec)
 
+        report_spec = self.create_spec(library_params='{"report_variant": "HIVV"}')
+
+        with pytest.raises(ValueError, match=r'.*only be "STD" or "HIV".*'):
+            execute_report(report_spec)
+
     def test_execute_report_check_data_hiv(self, snapshot):
         report_spec = self.create_spec()
 
