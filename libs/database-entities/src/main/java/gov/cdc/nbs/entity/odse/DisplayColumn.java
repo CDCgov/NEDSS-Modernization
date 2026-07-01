@@ -48,7 +48,7 @@ public class DisplayColumn {
   })
   private Report report;
 
-  @NonNull @Column(name = "sequence_nbr")
+  @Column(name = "sequence_nbr", nullable = false)
   private Integer sequenceNumber;
 
   //  TODO: add a converter? Or Separate Status class? // NOSONAR
