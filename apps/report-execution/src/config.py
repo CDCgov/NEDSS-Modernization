@@ -62,7 +62,7 @@ def prime_report_configurations(trx: Transaction) -> None:
         'REPORT_DB_NBS_RDB',
         'REPORT_DB_NBS_ODS',
         'REPORT_DB_NBS_SRT',
-        'REPORT_DB_NBS_MSGOUT',
+        'REPORT_DB_NBS_MSG',
         'REPORT_MAX_ROW_LIMIT_RUN',
         'REPORT_MAX_ROW_LIMIT_EXPORT',
         'REPORT_EXPORT_DATE_FORMAT',

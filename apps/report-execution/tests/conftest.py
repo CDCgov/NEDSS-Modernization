@@ -162,7 +162,7 @@ def _seed_baseline_configuration(conn_string: str):
             ('REPORT_DB_NBS_RDB', 'RDB'),
             ('REPORT_DB_NBS_ODS', 'NBS_ODSE'),
             ('REPORT_DB_NBS_SRT', 'NBS_SRTE'),
-            ('REPORT_DB_NBS_MSGOUT', 'NBS_MSGOUTE'),
+            ('REPORT_DB_NBS_MSG', 'NBS_MSGOUTE'),
             ('REPORT_MAX_ROW_LIMIT_EXPORT', '100000'),
             ('REPORT_MAX_ROW_LIMIT_RUN', '10000'),
             ('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y'),

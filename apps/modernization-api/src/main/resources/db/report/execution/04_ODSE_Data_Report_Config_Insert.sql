@@ -114,7 +114,7 @@ FROM (
      NULL
      ),
      (
-     'REPORT_DB_NBS_MSGOUT',
+     'REPORT_DB_NBS_MSG',
      'NBS_MSGOUTE',
      'MSG Database Name',
      'Database name or catalog alias for the message out database.',
