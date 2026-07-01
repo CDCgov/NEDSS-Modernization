@@ -7,10 +7,14 @@ class LoginPage {
   }
 
   login() {
+    this.loginAsUserName(user);
+  }
+
+  loginAsUserName(username) {
     cy.get("body").then((body) => {
       if (body.find("input[id='id_UserName']").length > 0) {
         cy.intercept("POST", "/graphql").as("loginRequest");
-        cy.get("#id_UserName").type(user);
+        cy.get("#id_UserName").type(username);
         if (pass != "") {
           cy.get("#id_Password").type(pass);
         }
@@ -19,7 +23,7 @@ class LoginPage {
         cy.url().should("include", "/search/patients");
       } else {
         cy.intercept("POST", "/graphql").as("loginRequest");
-        cy.get("#username").type(user);
+        cy.get("#username").type(username);
         if (pass != "") {
           cy.get("#password").type(pass);
         }
@@ -29,6 +33,7 @@ class LoginPage {
       }
     });
   }
+
 
   loginStayOnClassic() {
      cy.get("body").then((body) => {

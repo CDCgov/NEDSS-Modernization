@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.file.demographics.summary;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -112,5 +114,10 @@ public class PatientDemographicsSummaryVerificationSteps {
   public void summary_have_an_nth_race_of(final int nth, final String value) throws Exception {
     int position = nth - 1;
     this.results.active().andDo(print()).andExpect(jsonPath("$.races[%d]", position).value(value));
+  }
+
+  @Then("the demographics summary of the patient does not include the race {string}")
+  public void summary_does_not_include_the_race(final String value) throws Exception {
+    this.results.active().andExpect(jsonPath("$.races", not(hasItem(value))));
   }
 }

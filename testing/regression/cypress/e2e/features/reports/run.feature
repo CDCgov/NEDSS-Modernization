@@ -31,7 +31,7 @@ Feature: Run report
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    Scenario: I can run a report for library nbs_sr_11
+    Scenario: I can run a report for library nbs_sr_12
         When I navigate to report with reportUid: "8" and dataSourceUid: "1"
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I select "Appling County" from the "County Code" dropdown menu
