@@ -47,6 +47,9 @@ def execute(
       template for this calculation for "ALL WORKERS" uses a slightly different string:
       "CASES W/NO CLUSTERS" (note the difference in "/W" vs. "W/").  The Python library
       will give the proper answer, so in that way it differs from the SAS source.
+    * There is a bug in PA01_HIV.sas in which subsections of "NEW PARTNERS NOT
+      NOTIFIED" will show a percentage of 0.0% when they have more than 0 items.  The
+      Python version of this will show the actual percentages.
     """
     if not isinstance(library_params, dict):
         raise ValueError(

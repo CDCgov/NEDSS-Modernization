@@ -2,14 +2,14 @@ from src.libraries.support.pa_01.models import Pa01Row, Pa01Worker
 from src.models import Table
 
 # Constants
-CA_PATIENT_INTV_STATUS = 'CA_PATIENT_INTV_STATUS'
-CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
+CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
+CA_PATIENT_INTV_STATUS = 'CA_PATIENT_INTV_STATUS'
 DAYS = 'Days'
-INV_LOCAL_ID = 'INV_LOCAL_ID'
-INVESTIGATOR_INTERVIEW_KEY = 'INVESTIGATOR_INTERVIEW_KEY'
-IX_TYPE = 'IX_TYPE'
 DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS = 'Dispositions - New Partners & Clusters'
+INVESTIGATOR_INTERVIEW_KEY = 'INVESTIGATOR_INTERVIEW_KEY'
+INV_LOCAL_ID = 'INV_LOCAL_ID'
+IX_TYPE = 'IX_TYPE'
 NEW_PARTNERS_NOTIFIED = 'New Partners Notified'
 NEW_PARTNERS_NOT_NOTIFIED = 'New Partners Not Notified'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
@@ -357,6 +357,9 @@ def _build_dispositions_new_partners_and_clusters_output(
             tables['not_notified_partners'], total_partners_initiated, worker
         )
     )
+    new_partners_not_notified_buckets = _calc_new_partners_not_notified_buckets(
+        tables['not_notified_partners'], new_partners_not_notified, worker
+    )
 
     rows: list[Pa01Row] = [
         (
@@ -429,6 +432,77 @@ def _build_dispositions_new_partners_and_clusters_output(
             None,
             new_partners_not_notified,
             new_partners_not_notified_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Insufficient Info',
+            new_partners_not_notified_buckets[
+                'G - Insufficient Info to Begin Investigation'
+            ][0],
+            new_partners_not_notified_buckets[
+                'G - Insufficient Info to Begin Investigation'
+            ][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Unable to Locate',
+            new_partners_not_notified_buckets['H - Unable to Locate'][0],
+            new_partners_not_notified_buckets['H - Unable to Locate'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Refused Exam',
+            new_partners_not_notified_buckets[
+                'J - Located, Not Examined and/or Interviewed'
+            ][0],
+            new_partners_not_notified_buckets[
+                'J - Located, Not Examined and/or Interviewed'
+            ][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'OOJ',
+            new_partners_not_notified_buckets['K - Sent Out Of Jurisdiction'][0],
+            new_partners_not_notified_buckets['K - Sent Out Of Jurisdiction'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Other',
+            new_partners_not_notified_buckets['L - Other'][0],
+            new_partners_not_notified_buckets['L - Other'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Domestic Violence Risk',
+            new_partners_not_notified_buckets['V - Domestic Violence Risk'][0],
+            new_partners_not_notified_buckets['V - Domestic Violence Risk'][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Patient Deceased',
+            new_partners_not_notified_buckets['X - Patient Deceased'][0],
+            new_partners_not_notified_buckets['X - Patient Deceased'][1],
             None,
         ),
     ]
@@ -780,7 +854,7 @@ def _calc_new_partners_notified_buckets(
     for dispo in fl_fup_dispositions:
         count = _count_distinct_case_ids(
             rows,
-            lambda row, disposition=dispo: row['FL_FUP_DISPOSITION'] == disposition,
+            lambda row, dispo=dispo: row['FL_FUP_DISPOSITION'] == dispo,
         )
         result[dispo] = (count, _percent_for_csv(count, new_partners_notified))
 
@@ -792,13 +866,43 @@ def _calc_new_partners_not_notified(
     total_partners_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
-    """Calculate 'New Partners Not Notified' count and percentage.  Calculates for all
-    workers if passed in worker is None.
+    """Calculate the count and percentage for all of the sub sections of 'New Partners
+    Not Notified'.  Calculates for all workers if passed in worker is None.
     """
     rows = _rows_for_worker(not_notified_partners, worker)
     count = _count_distinct_case_ids(rows)
 
     return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_not_notified_buckets(
+    not_notified_partners: Table,
+    new_partners_not_notified: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    """Calculate the count and percentage for all of the sub sections of 'New Partners
+    Not Notified'.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(not_notified_partners, worker)
+    fl_fup_dispositions = [
+        'G - Insufficient Info to Begin Investigation',
+        'H - Unable to Locate',
+        'J - Located, Not Examined and/or Interviewed',
+        'K - Sent Out Of Jurisdiction',
+        'L - Other',
+        'V - Domestic Violence Risk',
+        'X - Patient Deceased',
+    ]
+
+    result = {}
+    for dispo in fl_fup_dispositions:
+        count = _count_distinct_case_ids(
+            rows,
+            lambda row, dispo=dispo: row['FL_FUP_DISPOSITION'] == dispo,
+        )
+        result[dispo] = (count, _percent_for_csv(count, new_partners_not_notified))
+
+    return result
 
 
 # helpers

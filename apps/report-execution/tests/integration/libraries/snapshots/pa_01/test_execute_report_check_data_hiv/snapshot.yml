@@ -247,6 +247,62 @@
   - 47.7%
   - null
 - !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Insufficient Info
+  - 10
+  - 14.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Unable to Locate
+  - 11
+  - 15.5%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Refused Exam
+  - 11
+  - 15.5%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - OOJ
+  - 11
+  - 15.5%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Other
+  - 10
+  - 14.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Domestic Violence Risk
+  - 11
+  - 15.5%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Patient Deceased
+  - 11
+  - 15.5%
+  - null
+- !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -493,6 +549,62 @@
   - null
   - 12
   - 42.9%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Insufficient Info
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Unable to Locate
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Refused Exam
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - OOJ
+  - 2
+  - 16.7%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Other
+  - 2
+  - 16.7%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Domestic Violence Risk
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Patient Deceased
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - avance
@@ -743,6 +855,62 @@
   - 55.6%
   - null
 - !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Unable to Locate
+  - 3
+  - 20.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Refused Exam
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - OOJ
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Other
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Domestic Violence Risk
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Patient Deceased
+  - 4
+  - 26.7%
+  - null
+- !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -989,6 +1157,62 @@
   - null
   - 12
   - 42.9%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Insufficient Info
+  - 4
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Unable to Locate
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Refused Exam
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - OOJ
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Other
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Domestic Violence Risk
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Patient Deceased
+  - 2
+  - 16.7%
   - null
 - !!python/tuple
   - fpoole
@@ -1239,6 +1463,62 @@
   - 55.3%
   - null
 - !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Insufficient Info
+  - 5
+  - 23.8%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Unable to Locate
+  - 3
+  - 14.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Refused Exam
+  - 1
+  - 4.8%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - OOJ
+  - 5
+  - 23.8%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Other
+  - 2
+  - 9.5%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Domestic Violence Risk
+  - 2
+  - 9.5%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Patient Deceased
+  - 3
+  - 14.3%
+  - null
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -1485,4 +1765,60 @@
   - null
   - 15
   - 53.6%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Unable to Locate
+  - 3
+  - 20.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Refused Exam
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - OOJ
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Other
+  - 3
+  - 20.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Domestic Violence Risk
+  - 3
+  - 20.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Not Notified
+  - Patient Deceased
+  - 2
+  - 13.3%
   - null
