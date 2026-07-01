@@ -25,11 +25,11 @@ public class ReportController {
   private final ReportService reportService;
   private final ReportFetcher reportFetcher;
   private final ReportRepository reportRepository;
-  private final ReportExecutionClient reportExecutionClient;
+  private final ReportExecutionServiceClient reportExecutionClient;
 
   public ReportController(
       ReportService reportService,
-      ReportExecutionClient reportExecutionClient,
+      ReportExecutionServiceClient reportExecutionClient,
       ReportRepository reportRepository,
       ReportFetcher reportFetcher) {
     this.reportService = reportService;

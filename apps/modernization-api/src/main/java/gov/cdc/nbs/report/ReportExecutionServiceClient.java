@@ -18,7 +18,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
 @Service
-public class ReportExecutionClient {
+public class ReportExecutionServiceClient {
   private final Clock clock;
 
   private final RestClient restClient;
@@ -26,7 +26,7 @@ public class ReportExecutionClient {
   private final WhereClauseService whereClauseService;
   private final ReportFetcher reportFetcher;
 
-  public ReportExecutionClient(
+  public ReportExecutionServiceClient(
       final Clock clock,
       final DataSourceNameConfiguration dataSourceNameConfig,
       RestClient restClient,

@@ -35,7 +35,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 
 @ExtendWith(MockitoExtension.class)
-class ReportExecutionClientTest {
+class ReportExecutionServiceClientTest {
   @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(1000000), ZoneId.systemDefault());
 
   @Mock private RestClient client;
@@ -45,7 +45,7 @@ class ReportExecutionClientTest {
   @Mock private RestClient.RequestBodySpec requestBodySpec;
   @Mock private RestClient.ResponseSpec responseSpec;
 
-  @InjectMocks private ReportExecutionClient reportExecutionClient;
+  @InjectMocks private ReportExecutionServiceClient reportExecutionClient;
 
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
