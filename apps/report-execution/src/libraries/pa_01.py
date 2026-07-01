@@ -10,6 +10,7 @@ from src.libraries.support.pa_01.queries import (
     cases_with_no_clusters_query,
     cases_with_no_partners_query,
     clusters_initiated_query,
+    clusters_notified_query,
     filtered_cases_query,
     not_notified_partners_query,
     notified_partners_query,
@@ -36,8 +37,8 @@ def execute(
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * The variant (STD or HIV) is determined by `library_params['report_variant']`
       which is defined in the Report_Library db table.
-    * For the data point "HIV Tested", the SAS PDF output does not include
-      percentages for individual workers, only "ALL WORKERS".  This report
+    * There is a quirk in PA01_HIV.sas in which the data point "HIV Tested" output does
+      not include percentages for individual workers, only "ALL WORKERS".  This report
       includes percentages for individual workers.
     * There are some rounding peculiarities between SAS and Python, so for instance
       a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
@@ -50,6 +51,10 @@ def execute(
     * There is a bug in PA01_HIV.sas in which subsections of "NEW PARTNERS NOT
       NOTIFIED" will show a percentage of 0.0% when they have more than 0 items.  The
       Python version of this will show the actual percentages.
+    * There is a quirk in PA01_HIV.sas in which the "NEW CLUSTERS NOTIFIED" count
+      for "ALL WORKERS" doesn't use the distinct case id count like most other
+      calculations.  I have replicated this behavior in Python but it is likely
+      incorrect.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -100,6 +105,7 @@ def execute(
     tables['not_notified_partners'] = trx.query(
         not_notified_partners_query(subset_query)
     )
+    tables['clusters_notified'] = trx.query(clusters_notified_query(subset_query))
 
     # get list of workers (nb. None treated as "ALL WORKERS")
     workers: list[Pa01Worker | None] = [None]

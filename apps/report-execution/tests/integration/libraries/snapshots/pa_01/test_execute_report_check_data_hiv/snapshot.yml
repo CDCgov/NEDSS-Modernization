@@ -303,6 +303,62 @@
   - 15.5%
   - null
 - !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 75
+  - 50.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, New Pos
+  - 18
+  - 24.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, No Test
+  - 16
+  - 21.3%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Neg
+  - 17
+  - 22.7%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, No Test
+  - 3
+  - 4.0%
+  - null
+- !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -605,6 +661,62 @@
   - Patient Deceased
   - 0
   - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 17
+  - 60.7%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, New Pos
+  - 3
+  - 17.6%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, No Test
+  - 2
+  - 11.8%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Neg
+  - 6
+  - 35.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, No Test
+  - 1
+  - 5.9%
   - null
 - !!python/tuple
   - avance
@@ -911,6 +1023,62 @@
   - 26.7%
   - null
 - !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 12
+  - 46.2%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, New Pos
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, No Test
+  - 4
+  - 33.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Neg
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, No Test
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -1213,6 +1381,62 @@
   - Patient Deceased
   - 2
   - 16.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 13
+  - 37.1%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, New Pos
+  - 5
+  - 38.5%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, No Test
+  - 2
+  - 15.4%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Neg
+  - 2
+  - 15.4%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, No Test
+  - 1
+  - 7.7%
   - null
 - !!python/tuple
   - fpoole
@@ -1519,6 +1743,62 @@
   - 14.3%
   - null
 - !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 17
+  - 53.1%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, New Pos
+  - 4
+  - 23.5%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, No Test
+  - 5
+  - 29.4%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Neg
+  - 5
+  - 29.4%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, No Test
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -1821,4 +2101,60 @@
   - Patient Deceased
   - 2
   - 13.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 14
+  - 48.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, New Pos
+  - 3
+  - 21.4%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, Still Neg
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - Prev. Neg, No Test
+  - 5
+  - 35.7%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Pos
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, New Neg
+  - 1
+  - 7.1%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Notified
+  - No Prev. Test, No Test
+  - 1
+  - 7.1%
   - null
