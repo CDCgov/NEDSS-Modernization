@@ -758,7 +758,7 @@ def notified_clusters_query(subset_query: str) -> str:
 def not_notified_clusters_query(subset_query: str) -> str:
     """Return non-notified cluster rows used for cluster disposition counts.
 
-    This is the equivalent of SAS's `cn`, which is a slight variation on SAS's 
+    This is the equivalent of SAS's `cn`, which is a slight variation on SAS's
     `cluster` table, containing just a simple extra where clause.  Used to calculate
     New Clusters Not Notified and its HIV partner disposition breakdowns.
     """
