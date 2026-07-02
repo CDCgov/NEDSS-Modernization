@@ -9,27 +9,27 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.images.PullPolicy;
 
 class NbsTestDatabaseInitializer
-        implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+    implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
   @Override
   @SuppressWarnings({
-          // We don't want to close the container until after tests have completed
-          "resource"
+    // We don't want to close the container until after tests have completed
+    "resource"
   })
   public void initialize(final ConfigurableApplicationContext context) {
     String image =
-            context
-                    .getEnvironment()
-                    .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
+        context
+            .getEnvironment()
+            .getProperty("testing.database.image", "ghcr.io/cdcent/nedssdb:latest");
     String username = context.getEnvironment().getProperty("nbs.datasource.username");
     String credential = context.getEnvironment().getProperty("nbs.datasource.password");
 
     JdbcDatabaseContainer<?> container =
-            new NbsDatabaseContainer<>(image)
-                    .withUsername(username)
-                    .withPassword(credential)
-                    .withEnv("DB_VERSION", "6.0.19.1")
-                    .withImagePullPolicy(PullPolicy.alwaysPull());
+        new NbsDatabaseContainer<>(image)
+            .withUsername(username)
+            .withPassword(credential)
+            .withEnv("DB_VERSION", "6.0.19.1")
+            .withImagePullPolicy(PullPolicy.alwaysPull());
 
     container.start();
 
@@ -38,7 +38,7 @@ class NbsTestDatabaseInitializer
     String url = container.getJdbcUrl();
 
     System.getLogger(NbsTestDatabaseInitializer.class.getCanonicalName())
-            .log(System.Logger.Level.INFO, () -> "[url]: %s".formatted(url));
+        .log(System.Logger.Level.INFO, () -> "[url]: %s".formatted(url));
 
     TestPropertyValues.of("spring.datasource.url=" + url).applyTo(context.getEnvironment());
   }
@@ -52,7 +52,7 @@ class NbsTestDatabaseInitializer
     // Uses fully qualified database identifiers (NBS_ODSE..NBS_configuration)
     // to insulate against whatever default catalog the connection starts in.
     String loadSql =
-            """
+        """
                 INSERT INTO [NBS_ODSE].[dbo].[NBS_configuration] (
                     config_key, config_value, default_value,
                     version_ctrl_nbr, add_user_id, add_time,
@@ -85,7 +85,7 @@ class NbsTestDatabaseInitializer
                 """;
 
     try (Connection conn = container.createConnection("");
-         Statement stmt = conn.createStatement()) {
+        Statement stmt = conn.createStatement()) {
 
       stmt.execute(loadSql);
 
