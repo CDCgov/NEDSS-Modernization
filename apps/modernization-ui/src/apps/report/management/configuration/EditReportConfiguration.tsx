@@ -27,7 +27,7 @@ const EditReportConfiguration = () => {
 
     const handleSubmit = form.handleSubmit((data) => {
         setSubmitting(true);
-        setError('');
+        setError(null);
 
         ReportControllerService.editReport({
             reportUid,

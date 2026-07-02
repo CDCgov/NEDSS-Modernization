@@ -121,7 +121,7 @@ describe('add report configuration page', () => {
         expect(await findAllByText('The Data source is required.')).toHaveLength(2);
         expect(await findByRole('link', { name: 'Report source' })).toBeVisible();
 
-        // fill out and cancel -> confirm data source
+        // fill out data source
         expect(await findByLabelText('Name')).toBeDisabled();
         await user.selectOptions(await findByLabelText('Data source'), '1');
         await user.click(await findByRole('button', { name: 'Confirm data source' }));

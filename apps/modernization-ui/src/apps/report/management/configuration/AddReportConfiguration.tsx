@@ -22,7 +22,7 @@ const AddReportConfiguration = () => {
 
     const handleSubmit = form.handleSubmit((data) => {
         setSubmitting(true);
-        setError('');
+        setError(null);
 
         ReportControllerService.createReport({
             requestBody: formToRequest(data),
