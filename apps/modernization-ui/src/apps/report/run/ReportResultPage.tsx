@@ -15,8 +15,10 @@ import { SaveReportModal } from './modals/SaveReportModal.tsx';
 import { AlertMessage } from 'design-system/message';
 import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
+import classNames from 'classnames';
 
 const NBS_MANAGE_REPORT_PAGE = '/nbs/ManageReports.do';
+const INTERNAL_ERROR_MSG = 'Something went wrong.';
 
 const ReportResultPage = ({
     config,
@@ -48,7 +50,7 @@ const ReportResultPage = ({
 
         if (executionRequest === undefined) {
             setSaving(false);
-            setSaveError('No changes to the report to save.');
+            setSaveError(INTERNAL_ERROR_MSG);
             return;
         }
 
@@ -61,6 +63,7 @@ const ReportResultPage = ({
                 redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
             })
             .catch((err) => {
+                saveReportModalRef.current?.toggleModal();
                 setSaveError(err.message);
             })
             .finally(() => {
@@ -75,7 +78,7 @@ const ReportResultPage = ({
 
         if (executionRequest === undefined) {
             setSaving(false);
-            setSaveError('No changes to the report to save.');
+            setSaveError(INTERNAL_ERROR_MSG);
             return;
         }
 
@@ -90,6 +93,7 @@ const ReportResultPage = ({
                 redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
             })
             .catch((err) => {
+                saveAsReportModalRef.current?.toggleModal();
                 setSaveError(err.message);
             })
             .finally(() => setSaving(false));
@@ -138,16 +142,6 @@ const ReportResultPage = ({
                 </>
             }
         >
-            {saveError && (
-                <AlertMessage
-                    className="margin-2"
-                    type="error"
-                    title="There was an error saving your report.
-                    If this error persists, contact your NBS administrator for help."
-                >
-                    {saveError}
-                </AlertMessage>
-            )}
             {resultLoading ? (
                 <TextCard loading={true}>
                     <Heading level={2}>
@@ -161,11 +155,23 @@ const ReportResultPage = ({
                 </TextCard>
             ) : (
                 !error && (
-                    <TextCard>
-                        <Heading level={2}>
-                            {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
-                        </Heading>
-                    </TextCard>
+                    <div className="display-flex flex-column">
+                        {saveError && (
+                            <AlertMessage
+                                className={classNames(layoutStyles.alertMessage, 'margin-top-2 margin-x-2')}
+                                type="error"
+                                title="There was an error saving your report.
+                    If this error persists, contact your NBS administrator for help."
+                            >
+                                {saveError}
+                            </AlertMessage>
+                        )}
+                        <TextCard>
+                            <Heading level={2}>
+                                {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
+                            </Heading>
+                        </TextCard>
+                    </div>
                 )
             )}
         </ReportLayout>
