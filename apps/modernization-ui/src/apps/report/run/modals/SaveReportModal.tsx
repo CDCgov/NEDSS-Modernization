@@ -1,5 +1,5 @@
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import React, { RefObject } from 'react';
+import { RefObject } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import styles from './save-report-modal.module.scss';
 import { ButtonGroup } from 'design-system/button';

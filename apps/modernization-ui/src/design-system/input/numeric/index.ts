@@ -1,2 +1,2 @@
-export { NumericInput } from './NumericInput';
+export { NumericInput, NumericRangeInput } from './NumericInput';
 export { onlyNumericKeys } from './onlyNumericKeys';
