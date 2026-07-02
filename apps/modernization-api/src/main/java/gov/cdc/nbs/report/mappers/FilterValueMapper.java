@@ -31,7 +31,7 @@ public class FilterValueMapper {
                         .id(generateFilterValueId())
                         .reportFilter(basicFilter)
                         .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
-                        .valueTxt(value)
+                        .valueTxt(value == null ? "" : value)
                         .build())
             .collect(Collectors.toCollection(ArrayList::new));
 
@@ -42,6 +42,7 @@ public class FilterValueMapper {
               .reportFilter(basicFilter)
               .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
               .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+              .valueTxt("")
               .build());
     }
 
