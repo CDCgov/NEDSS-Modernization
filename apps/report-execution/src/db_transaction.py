@@ -68,8 +68,7 @@ def db_transaction(connection_string, is_export: bool):
 
 
 def check_row_limits(num_rows: int, is_export: bool):
-    """Ensure the number of rows in the result set does not exceed limits.
-    """
+    """Ensure the number of rows in the result set does not exceed limits."""
     if is_export:
         config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'
     else:
