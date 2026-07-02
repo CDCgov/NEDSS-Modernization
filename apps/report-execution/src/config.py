@@ -27,18 +27,19 @@ def get_config_value(trx: Transaction, config_key: str) -> str:
             WHERE config_key = ? \
             """
 
-    table = trx.query(query, (normalized_key,))
+    # can't use 'query' as it needs this config to do row limit checks
+    data = trx._cursor.execute(query, (normalized_key,)).fetchall()
 
-    if not table.data:
+    if not data:
         raise errors.InvalidConfigurationError(config_key)
 
     # Handle duplicate keys
-    if len(table.data) > 1:
+    if len(data) > 1:
         raise errors.ConfigurationIntegrityError(
             f'Multiple rows found in NBS_Configuration for config key: {config_key}'
         )
 
-    val = table.data[0][0]
+    val = data[0][0]
 
     # Handle empty config and default values
     if val is None:
@@ -74,7 +75,7 @@ def get_cached_config_value(config_key: str) -> str:
     """Retrieves a configuration value from the cache.
 
     Raises:
-        InvalidConfigurationError: If the key was never primed, indicating
+        InvalidConfigurationError: If the key was never loaded, indicating
         a system lifecycle or development defect.
     """
     normalized_key = config_key.upper()
