@@ -3,7 +3,6 @@ from unittest.mock import MagicMock
 
 from src import errors
 from src.config import clear_config_cache, get_config_value
-from src.models import Table
 
 
 class TestConfigurationFinder(unittest.TestCase):
