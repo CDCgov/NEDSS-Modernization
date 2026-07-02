@@ -88,19 +88,30 @@ public final class ReportConstants {
     };
   }
 
-  // operator options for the advanced filter
+  /** Operator options for the advanced filter */
   public enum Operator {
-    EQ, // equals
-    NE, // not equals
-    IN, // is null
-    NN, // not null
-    SW, // starts with
-    CO, // contains
-    BW, // between
-    LT, // less than
-    GT, // greater than
-    LE, // less than or equal to
-    GE // greater than or equal to
+    /** EQUALS */
+    EQ,
+    /** NOT EQUALS */
+    NE,
+    /** IS NULL */
+    IN,
+    /** NOT NULL */
+    NN,
+    /** STARTS WITH */
+    SW,
+    /** CONTAINS */
+    CO,
+    /** BETWEEN */
+    BW,
+    /** LESS THAN */
+    LT,
+    /** GREATER THAN */
+    GT,
+    /** LESS THAN OR EQUAL TO */
+    LE,
+    /** GREATER THAN OR EQUAL TO */
+    GE
   }
 
   public static final Map<Operator, String> COMPARISON_OPERATORS =

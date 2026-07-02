@@ -1,4 +1,3 @@
-import React from 'react';
 import { Field, Orientation, Sizing } from 'design-system/field';
 
 import styles from './number-range-field.module.scss';
@@ -18,8 +17,9 @@ export type NumberRangeFieldProps = {
     id: string;
     value?: NumberBetweenCriteria;
     sizing?: Sizing;
-    onChange: (value?: NumberBetweenCriteria) => void;
+    onChange?: (value?: NumberBetweenCriteria) => void;
     onBlur?: () => void;
+    label?: string;
     required?: boolean;
     orientation?: Orientation;
     helperText?: string;
@@ -27,7 +27,7 @@ export type NumberRangeFieldProps = {
 };
 
 const parseValue = (value: number | undefined | null) => {
-    if (value === undefined || value === null) return '';
+    if (value === undefined || value === null) return undefined;
     return value;
 };
 
@@ -43,13 +43,13 @@ const NumberRangeField = ({
     helperText,
     error,
 }: NumberRangeFieldProps) => {
-    const handleFieldOnChange = (v, type) => {
+    const handleFieldOnChange = (v: number | null | undefined, type: 'to' | 'from') => {
         if (type === 'to') {
-            onChange({ between: { from: parseValue(value?.between.from), to: parseValue(v) } });
+            onChange?.({ between: { from: parseValue(value?.between.from), to: parseValue(v) } });
         }
 
         if (type === 'from') {
-            onChange({ between: { from: parseValue(v), to: parseValue(value?.between.to) } });
+            onChange?.({ between: { from: parseValue(v), to: parseValue(value?.between.to) } });
         }
     };
 

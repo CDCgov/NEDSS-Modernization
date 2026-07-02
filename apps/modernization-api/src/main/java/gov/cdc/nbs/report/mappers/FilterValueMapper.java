@@ -8,6 +8,7 @@ import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -22,17 +23,45 @@ public class FilterValueMapper {
 
   public List<FilterValue> fromBasicFilterRequest(
       ReportFilter basicFilter, BasicFilterRequest request) {
-    List<FilterValue> basicFilterValues =
-        request.values().stream()
-            .map(
-                value ->
-                    FilterValue.builder()
-                        .id(generateFilterValueId())
-                        .reportFilter(basicFilter)
-                        .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
-                        .valueTxt(value)
-                        .build())
-            .collect(Collectors.toCollection(ArrayList::new));
+    List<FilterValue> basicFilterValues = new ArrayList<>();
+
+    if (ReportConstants.BAS_TIME_RANGE_TYPES.contains(
+        basicFilter.getFilterCode().getFilterType())) {
+      if (request.values().size() != 2) {
+        throw new IllegalArgumentException(
+            "Time range filter must have exactly two values: start and end");
+      }
+
+      FilterValue beginRangeVal =
+          FilterValue.builder()
+              .id(generateFilterValueId())
+              .reportFilter(basicFilter)
+              .valueType("BEGIN_RANGE")
+              .valueTxt(request.values().getFirst())
+              .build();
+
+      FilterValue endRangeVal =
+          FilterValue.builder()
+              .id(generateFilterValueId())
+              .reportFilter(basicFilter)
+              .valueType("END_RANGE")
+              .valueTxt(request.values().getLast())
+              .build();
+
+      basicFilterValues.addAll(Arrays.asList(beginRangeVal, endRangeVal));
+    } else {
+      basicFilterValues.addAll(
+          request.values().stream()
+              .map(
+                  value ->
+                      FilterValue.builder()
+                          .id(generateFilterValueId())
+                          .reportFilter(basicFilter)
+                          .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+                          .valueTxt(value == null ? "" : value)
+                          .build())
+              .collect(Collectors.toCollection(ArrayList::new)));
+    }
 
     if (request.includeNulls()) {
       basicFilterValues.add(
@@ -41,6 +70,7 @@ public class FilterValueMapper {
               .reportFilter(basicFilter)
               .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
               .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+              .valueTxt("")
               .build());
     }
 
@@ -101,13 +131,21 @@ public class FilterValueMapper {
   }
 
   private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
+    String valueTxt = rule.value();
+
+    if (Arrays.asList(
+            ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
+        .contains(rule.operator())) {
+      valueTxt = "";
+    }
+
     return FilterValue.builder()
         .id(generateFilterValueId())
         .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
         .reportFilter(advancedFilter)
         .columnUid(rule.columnId())
         .operator(rule.operator())
-        .valueTxt(rule.value())
+        .valueTxt(valueTxt)
         .build();
   }
 
