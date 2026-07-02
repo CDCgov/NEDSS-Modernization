@@ -19,14 +19,7 @@ import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 import { addLabelToName, EnumSelectable } from '../../utils';
-import { SIZING } from './constants';
-
-export const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
-    { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
-    { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
-    { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
-    { value: ReportConfiguration.group.REPORTING_FACILITY, name: 'Reporting Facility' },
-];
+import { GROUP_OPTIONS, SIZING } from '../../constants.ts';
 
 export type ConfigForm = {
     dataSourceId: Selectable;

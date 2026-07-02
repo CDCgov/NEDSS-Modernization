@@ -1,8 +1,8 @@
-import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import React, { RefObject } from 'react';
+import { Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { RefObject } from 'react';
 import { Input } from 'components/FormInputs/Input.tsx';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
-import { ButtonGroup } from 'design-system/button';
+import { Button, ButtonGroup } from 'design-system/button';
 import { TextAreaField } from 'design-system/input/text';
 import { RadioGroup } from 'design-system/radio/RadioGroup.tsx';
 
@@ -12,8 +12,9 @@ import styles from './save-as-report-modal.module.scss';
 import { SingleSelect } from 'design-system/select';
 import { useReportSections } from 'options/report';
 import { SaveAsReportRequest } from 'generated';
-import { getUserReportCreatePermissionsOptions } from '../../utils/getUserReportCreatePermissions.ts';
-import { usePermissions } from 'libs/permission/usePermissions.ts';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
+import { Selectable } from 'options';
 
 export type SaveAsReportFormData = {
     reportTitle: string;
@@ -28,12 +29,20 @@ type SaveAsReportModalProps = {
     onSaveAs: (e: SaveAsReportFormData) => void;
 };
 
-const FORM_SIZE = 'large';
+const getUserReportCreatePermissionsOptions = (userPermissions: string[]): Selectable[] => {
+    const allowedKeys = (Object.keys(PERMISSION_GROUP_MAP) as Array<keyof typeof PERMISSION_GROUP_MAP>).filter((key) =>
+        userPermissions.includes(PERMISSION_GROUP_MAP[key].create)
+    );
+
+    // maintain order of user permissions
+    return allowedKeys.flatMap((key) => GROUP_OPTIONS.find((opt) => opt.value === key)) as Selectable[];
+};
 
 export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: SaveAsReportModalProps) => {
     const permissions = usePermissions();
 
     const reportGroupOptions = getUserReportCreatePermissionsOptions(permissions.permissions);
+
     const { control, handleSubmit } = useForm<SaveAsReportFormData>({
         defaultValues: {
             reportTitle: '',
@@ -60,7 +69,6 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             className={styles.layout}
             modalRef={saveAsReportModalRef}
             modalHeading="Save as a new report"
-            closer={true}
             modalBody={
                 <div className={styles.form}>
                     <Form onSubmit={handleSubmit(onSaveAs)}>
@@ -71,7 +79,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     id={name}
-                                    sizing={FORM_SIZE}
+                                    sizing={SIZING}
                                     label="Report name"
                                     onBlur={onBlur}
                                     onChange={onChange}
@@ -90,7 +98,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <TextAreaField
                                     id={name}
-                                    sizing={FORM_SIZE}
+                                    sizing={SIZING}
                                     label="Description"
                                     onBlur={onBlur}
                                     onChange={onChange}
@@ -108,7 +116,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <SingleSelect
                                     id={name}
-                                    sizing={FORM_SIZE}
+                                    sizing={SIZING}
                                     label="Report section"
                                     value={value}
                                     onChange={onChange}
@@ -126,7 +134,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <RadioGroup
                                     id={name}
-                                    sizing={FORM_SIZE}
+                                    sizing={SIZING}
                                     className={styles.radioGroupWrapper}
                                     label="Set access level"
                                     options={reportGroupOptions}
@@ -143,12 +151,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             }
             modalFooter={
                 <ButtonGroup>
-                    <ModalToggleButton
-                        modalRef={saveAsReportModalRef}
-                        closer
-                        outline
-                        disabled={saving}
-                    >
+                    <ModalToggleButton modalRef={saveAsReportModalRef} outline disabled={saving}>
                         Cancel
                     </ModalToggleButton>
                     <Button onClick={handleSubmit(handleOnSaveAs)} data-testid="report-save-as-btn" disabled={saving}>

@@ -63,12 +63,17 @@ vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     default: vi.fn(),
 }));
 
-vi.mock('../utils/getUserReportCreatePermissions.ts', () => ({
-    getUserReportCreatePermissionsOptions: vi.fn(() => [
-        { name: 'Private', value: 'PRIVATE' },
-        { name: 'Public', value: 'PUBLIC' },
-    ]),
-}));
+vi.mock('libs/permission/usePermissions.ts', () => {
+    return {
+        usePermissions: vi.fn(() => ({
+            permissions: [
+                'CREATEREPORTPRIVATE-REPORTING',
+                'CREATEREPORTPUBLIC-REPORTING',
+                'CREATEREPORTREPORTINGFACILITY-REPORTING',
+            ],
+        })),
+    };
+});
 
 vi.mock('options/report', () => ({
     useReportSections: () => [{ label: 'Section 1', value: '1000' }],

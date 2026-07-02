@@ -3,7 +3,7 @@ import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
 import { Layout } from 'layout';
 import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { LoadingBlock } from 'libs/loading/block';
 import { ReportResultPage } from './ReportResultPage.tsx';
 import { axe } from 'jest-axe';
@@ -53,12 +53,17 @@ vi.mock('libs/permission', async () => {
     };
 });
 
-vi.mock('../utils/getUserReportCreatePermissions.ts', () => ({
-    getUserReportCreatePermissionsOptions: vi.fn(() => [
-        { name: 'Private', value: 'PRIVATE' },
-        { name: 'Public', value: 'PUBLIC' },
-    ]),
-}));
+vi.mock('libs/permission/usePermissions.ts', () => {
+    return {
+        usePermissions: vi.fn(() => ({
+            permissions: [
+                'CREATEREPORTPRIVATE-REPORTING',
+                'CREATEREPORTPUBLIC-REPORTING',
+                'CREATEREPORTREPORTINGFACILITY-REPORTING',
+            ],
+        })),
+    };
+});
 
 vi.mock('options/report', () => ({
     useReportSections: () => [{ label: 'Section 1', value: '1000', name: 'Section 1' }],
@@ -124,7 +129,7 @@ const MOCK_SAVE_RESULT: generated.ReportId = {
     dataSourceUid: 2,
 };
 
-const renderWithRouter = (props?: Partial<React.ComponentProps<typeof ReportResultPage>>) => {
+const renderWithRouter = (props: React.ComponentProps<typeof ReportResultPage>) => {
     const routes = [
         {
             path: '/:reportUid/:dataSourceUid',
@@ -144,6 +149,7 @@ describe('report result page', () => {
         wasExported: false,
         resultLoading: false,
         handleRefineReport: vi.fn(),
+        error: null,
         executionRequest: {
             reportUid: 2,
             dataSourceUid: 1,

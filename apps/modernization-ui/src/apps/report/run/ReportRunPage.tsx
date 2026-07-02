@@ -45,9 +45,7 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [status, setStatus] = useState<'configuring' | 'submitting' | 'saving' | 'complete' | 'redirecting'>(
-        'configuring'
-    );
+    const [status, setStatus] = useState<'configuring' | 'submitting' | 'complete'>('configuring');
     const [error, setError] = useState<string | null>(null);
     const [wasExported, setWasExported] = useState<boolean>(true);
     const [lastReportExecutionRequest, setLastReportExecutionRequest] = useState<ReportExecutionRequest | undefined>(

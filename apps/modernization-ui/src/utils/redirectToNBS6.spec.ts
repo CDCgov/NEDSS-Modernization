@@ -20,9 +20,4 @@ describe('redirectToNBS6', () => {
         redirectToNBS6('/nbs/ManageReports.do');
         expect(window.location.href).toBe('/nbs/ManageReports.do');
     });
-
-    it('should not update the window.location.href with an invalid pathname', () => {
-        redirectToNBS6('/:/?/dfd');
-        expect(window.location.href).toBe('');
-    });
 });

@@ -2,7 +2,7 @@ import { Button } from 'design-system/button';
 import { ReportLayout } from '../layout/ReportLayout';
 import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
-import React, { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { Heading } from 'components/heading';
 import { permissions, permitsAny, Permitted } from 'libs/permission';
 import { Shown } from 'conditional-render';
@@ -74,7 +74,7 @@ const ReportResultPage = ({
         setSaveError(null);
 
         if (executionRequest === undefined) {
-            setStatus(null);
+            setSaving(false);
             setSaveError('No changes to the report to save.');
             return;
         }
@@ -101,11 +101,7 @@ const ReportResultPage = ({
             actions={
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
-                        <Button
-                            onClick={handleRefineReport}
-                            secondary={true}
-                            disabled={resultLoading || status === 'saving'}
-                        >
+                        <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading || saving}>
                             Refine Report
                         </Button>
                     </Permitted>
@@ -118,7 +114,7 @@ const ReportResultPage = ({
                     >
                         <Button
                             onClick={() => saveAsReportModalRef.current?.toggleModal()}
-                            disabled={resultLoading || status === 'saving' || !!error}
+                            disabled={resultLoading || !!error}
                         >
                             Save As
                         </Button>
@@ -132,29 +128,25 @@ const ReportResultPage = ({
                         <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
                             <Button
                                 onClick={saveReportModalRef.current?.toggleModal}
-                                disabled={resultLoading || status === 'saving' || !!error}
+                                disabled={resultLoading || !!error}
                             >
                                 Save
                             </Button>
-                            <SaveReportModal
-                                saveReportModalRef={saveReportModalRef}
-                                saving={saving}
-                                onSave={onSave}
-                            />
+                            <SaveReportModal saveReportModalRef={saveReportModalRef} saving={saving} onSave={onSave} />
                         </Permitted>
                     </Shown>
                 </>
             }
         >
             {saveError && (
-                    <AlertMessage
-                        className="margin-2"
-                        type="error"
-                        title="There was an error saving your report. If this error persists, contact your NBS administrator for help."
-                    >
-                        {saveError}
-                    </AlertMessage>
-                </div>
+                <AlertMessage
+                    className="margin-2"
+                    type="error"
+                    title="There was an error saving your report.
+                    If this error persists, contact your NBS administrator for help."
+                >
+                    {saveError}
+                </AlertMessage>
             )}
             {resultLoading ? (
                 <TextCard loading={true}>

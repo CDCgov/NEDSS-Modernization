@@ -6,12 +6,17 @@ import userEvent from '@testing-library/user-event/dist/cjs/index.js';
 const mockSaveAs = vi.fn();
 const modalRef = { current: null };
 
-vi.mock('../../utils/getUserReportCreatePermissions.ts', () => ({
-    getUserReportCreatePermissionsOptions: vi.fn(() => [
-        { name: 'Private', value: 'PRIVATE' },
-        { name: 'Public', value: 'PUBLIC' },
-    ]),
-}));
+vi.mock('libs/permission/usePermissions.ts', () => {
+    return {
+        usePermissions: vi.fn(() => ({
+            permissions: [
+                'CREATEREPORTPRIVATE-REPORTING',
+                'CREATEREPORTPUBLIC-REPORTING',
+                'CREATEREPORTREPORTINGFACILITY-REPORTING',
+            ],
+        })),
+    };
+});
 
 vi.mock('options/report', () => ({
     useReportSections: () => [
