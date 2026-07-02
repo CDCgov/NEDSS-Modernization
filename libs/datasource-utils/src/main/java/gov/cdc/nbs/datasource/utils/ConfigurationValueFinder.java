@@ -73,17 +73,14 @@ public class ConfigurationValueFinder {
   }
 
   /**
-   * Batch-loads and caches all keys known to be used by the application runtime. Throws an exception if any
-   * required key cannot be loaded.
+   * Batch-loads and caches all keys known to be used by the application runtime. Throws an
+   * exception if any required key cannot be loaded.
    */
   public void loadConfigurations() {
     LOGGER.log(System.Logger.Level.INFO, "Loading baseline system configuration cache...");
 
     String[] requiredKeys = {
-      "REPORT_DB_NBS_RDB",
-      "REPORT_DB_NBS_ODS",
-      "REPORT_DB_NBS_SRT",
-      "REPORT_DB_NBS_MSG"
+      "REPORT_DB_NBS_RDB", "REPORT_DB_NBS_ODS", "REPORT_DB_NBS_SRT", "REPORT_DB_NBS_MSG"
     };
 
     for (String key : requiredKeys) {
