@@ -31,23 +31,23 @@ const ReportResultPage = ({
     wasExported: boolean;
     resultLoading: boolean;
     handleRefineReport: () => void;
-    executionRequest: ReportExecutionRequest | undefined;
+    executionRequest?: ReportExecutionRequest;
 }) => {
     const {
         state: { user },
     } = useUser();
-    const [status, setStatus] = useState<'saving' | null>(null);
+    const [saving, setSaving] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string | null>(null);
     const saveReportModalRef = useRef<ModalRef>(null);
     const saveAsReportModalRef = useRef<ModalRef>(null);
 
     const onSave = () => {
         const runner = ReportControllerService.saveReport;
-        setStatus('saving');
-        setSaveError('');
+        setSaving(true);
+        setSaveError(null);
 
         if (executionRequest === undefined) {
-            setStatus(null);
+            setSaving(false);
             setSaveError('No changes to the report to save.');
             return;
         }
@@ -62,14 +62,16 @@ const ReportResultPage = ({
             })
             .catch((err) => {
                 setSaveError(err.message);
+            })
+            .finally(() => {
+                setSaving(false);
             });
     };
 
     const onSaveAs = (response: SaveAsReportFormData) => {
-        const { reportTitle, sectionCode, group, description } = response;
         const runner = ReportControllerService.saveAsReport;
-        setStatus('saving');
-        setSaveError('');
+        setSaving(false);
+        setSaveError(null);
 
         if (executionRequest === undefined) {
             setStatus(null);
@@ -77,13 +79,7 @@ const ReportResultPage = ({
             return;
         }
 
-        const requestBody = {
-            reportTitle,
-            sectionCode,
-            group,
-            executionRequest,
-            description,
-        };
+        const requestBody = { ...response, executionRequest };
 
         runner({
             reportUid: executionRequest.reportUid,
@@ -95,7 +91,8 @@ const ReportResultPage = ({
             })
             .catch((err) => {
                 setSaveError(err.message);
-            });
+            })
+            .finally(() => setSaving(false));
     };
 
     return (
@@ -127,21 +124,21 @@ const ReportResultPage = ({
                         </Button>
                         <SaveAsReportModal
                             saveAsReportModalRef={saveAsReportModalRef}
-                            saving={status === 'saving'}
+                            saving={saving}
                             onSaveAs={onSaveAs}
                         />
                     </Permitted>
                     <Shown when={user?.identifier === config.ownerUid}>
                         <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
                             <Button
-                                onClick={() => saveReportModalRef.current?.toggleModal()}
+                                onClick={saveReportModalRef.current?.toggleModal}
                                 disabled={resultLoading || status === 'saving' || !!error}
                             >
                                 Save
                             </Button>
                             <SaveReportModal
                                 saveReportModalRef={saveReportModalRef}
-                                saving={status === 'saving'}
+                                saving={saving}
                                 onSave={onSave}
                             />
                         </Permitted>
@@ -150,10 +147,10 @@ const ReportResultPage = ({
             }
         >
             {saveError && (
-                <div className="padding-2">
                     <AlertMessage
+                        className="margin-2"
                         type="error"
-                        title="There was an error saving your report If this error persists, contact your NBS administrator for help."
+                        title="There was an error saving your report. If this error persists, contact your NBS administrator for help."
                     >
                         {saveError}
                     </AlertMessage>

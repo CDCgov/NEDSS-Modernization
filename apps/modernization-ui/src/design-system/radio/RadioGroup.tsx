@@ -10,7 +10,7 @@ type Props = {
     helperText?: string;
     options: Selectable[];
     value?: Selectable | null;
-    onChange?: (value: Selectable | null) => void;
+    onChange?: (value: Selectable) => void;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;

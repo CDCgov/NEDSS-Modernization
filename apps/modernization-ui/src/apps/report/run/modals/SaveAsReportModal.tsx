@@ -147,7 +147,6 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                         modalRef={saveAsReportModalRef}
                         closer
                         outline
-                        data-testid="cancel-report-save-as-btn"
                         disabled={saving}
                     >
                         Cancel
