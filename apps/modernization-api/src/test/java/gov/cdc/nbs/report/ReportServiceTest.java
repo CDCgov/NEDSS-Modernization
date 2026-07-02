@@ -31,6 +31,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.support.SimpleTransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
@@ -44,10 +47,12 @@ class ReportServiceTest {
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private ReportSectionRepository reportSectionRepository;
   @Mock private ReportFilterRepository reportFilterRepository;
+
   @Mock private ReportMapper reportMapper;
   @Mock private ReportSortColumnMapper reportSortColumnMapper;
   @Mock private FilterValueMapper filterValueMapper;
   @Mock private DisplayColumnBuilder displayColumnBuilder;
+  @Mock private TransactionTemplate transactionTemplate;
   @Mock private ReportFetcher reportFetcher;
 
   @Mock private DataSource dataSource;
@@ -58,6 +63,17 @@ class ReportServiceTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
+
+  @BeforeEach
+  void setUp() {
+    Mockito.lenient()
+        .when(transactionTemplate.execute(any()))
+        .thenAnswer(
+            invocation ->
+                invocation
+                    .<TransactionCallback<Boolean>>getArgument(0)
+                    .doInTransaction(new SimpleTransactionStatus()));
+  }
 
   @Nested
   class CreateReport {

@@ -31,21 +31,23 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 public class ReportService {
-
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportSectionRepository reportSectionRepository;
   private final ReportFilterRepository reportFilterRepository;
+
   private final ReportMapper reportMapper;
   private final ReportSortColumnMapper reportSortColumnMapper;
   private final FilterValueMapper filterValueMapper;
   private final DisplayColumnBuilder displayColumnBuilder;
-
   private final ReportFilterBuilder reportFilterBuilder;
+
+  private final TransactionTemplate transactionTemplate;
 
   public ReportService(
       final ReportRepository reportRepository,
@@ -57,19 +59,21 @@ public class ReportService {
       ReportMapper reportMapper,
       ReportSortColumnMapper reportSortColumnMapper,
       FilterValueMapper filterValueMapper,
-      DisplayColumnBuilder displayColumnBuilder) {
+      DisplayColumnBuilder displayColumnBuilder,
+      TransactionTemplate transactionTemplate) {
 
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportSectionRepository = reportSectionRepository;
     this.reportFilterRepository = reportFilterRepository;
+
     this.reportMapper = reportMapper;
     this.reportSortColumnMapper = reportSortColumnMapper;
     this.filterValueMapper = filterValueMapper;
     this.displayColumnBuilder = displayColumnBuilder;
-
     this.reportFilterBuilder = reportFilterBuilder;
+    this.transactionTemplate = transactionTemplate;
   }
 
   @Transactional
@@ -123,42 +127,46 @@ public class ReportService {
    * The `save` action, which overwrites the various filter/sort details of a given report, without
    * changing the actual report mechanics themselves.
    */
-  @Transactional
   public Report saveReport(ReportExecutionRequest request, Report report) {
     if (report == null) {
       ReportId reportId = new ReportId(request.reportUid(), request.dataSourceUid());
       throw new NotFoundException(getReportNotFoundText(reportId));
     }
 
-    updateDisplayColumns(report, request.columnUids());
-    updateSortColumns(report, request.sort());
-    updateAdvancedFilterValues(report, request.advancedFilter());
-    updateBasicFilterValues(report, request.basicFilters());
+    return transactionTemplate.execute(
+        status -> {
+          updateDisplayColumns(report, request.columnUids());
+          updateSortColumns(report, request.sort());
+          updateAdvancedFilterValues(report, request.advancedFilter());
+          updateBasicFilterValues(report, request.basicFilters());
 
-    return reportRepository.save(report);
+          return reportRepository.save(report);
+        });
   }
 
-  @Transactional
   public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
-    Report report =
-        reportRepository
-            .findById(reportId)
-            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+    return transactionTemplate.execute(
+        status -> {
+          Report report =
+              reportRepository
+                  .findById(reportId)
+                  .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
-    Report duplicate = reportMapper.duplicate(report, user);
+          Report duplicate = reportMapper.duplicate(report, user);
 
-    duplicate.setReportTitle(request.reportTitle());
-    duplicate.setSectionCd(request.sectionCode());
-    duplicate.setShared(ReportConstants.reportGroupToDbChar(request.group()));
-    duplicate.setOwnerUid(user.getId());
+          duplicate.setReportTitle(request.reportTitle());
+          duplicate.setSectionCd(request.sectionCode());
+          duplicate.setShared(ReportConstants.reportGroupToDbChar(request.group()));
+          duplicate.setOwnerUid(user.getId());
 
-    if (request.description() != null) {
-      duplicate.setDescTxt(request.description());
-    }
+          if (request.description() != null) {
+            duplicate.setDescTxt(request.description());
+          }
 
-    reportRepository.save(duplicate);
+          reportRepository.save(duplicate);
 
-    return saveReport(request.executionRequest(), duplicate);
+          return saveReport(request.executionRequest(), duplicate);
+        });
   }
 
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
