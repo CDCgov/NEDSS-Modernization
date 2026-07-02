@@ -2876,12 +2876,10 @@ describe('report run page', () => {
         });
 
         it('renders the saved filter error when available', async () => {
-            const mockApi = vi
-                .mocked(useLoaderData)
-                .mockReturnValue({
-                    ...MOCK_CONFIG,
-                    advancedFilter: { ...MOCK_FILTER, exceptionMessage: 'Could not parse filter', query: '( AND OR )' },
-                });
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                ...MOCK_CONFIG,
+                advancedFilter: { ...MOCK_FILTER, exceptionMessage: 'Could not parse filter', query: '( AND OR )' },
+            });
             const { findAllByText, findByRole } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
