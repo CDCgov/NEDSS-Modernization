@@ -63,14 +63,13 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
 
 const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportConfiguration; isEditable: boolean }) => {
     const [dataSource, setDataSource] = useState<string | Selectable | undefined>(config?.dataSource.id.toString());
-    const [filtersIsDirty, setFiltersIsDirty] = useState<boolean>(false);
     const dataSourceSelected = !!dataSource;
 
     return (
         <>
             {isEditable ? (
                 <>
-                    <ValidationErrors filtersIsDirty={filtersIsDirty} />
+                    <ValidationErrors />
                     <DataSourceEditCard config={config} setDataSource={setDataSource} />
                 </>
             ) : (
@@ -149,42 +148,38 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     helperText="The query logic for the report"
                 />
             </Card>
-            <FilterRepeatingBlock
-                config={config}
-                isEditable={isEditable}
-                dataSource={dataSource}
-                setFiltersIsDirty={setFiltersIsDirty}
-            />
+            <FilterRepeatingBlock config={config} isEditable={isEditable} dataSource={dataSource} />
         </>
     );
 };
 
-const ValidationErrors = ({ filtersIsDirty }: { filtersIsDirty: boolean }) => {
-    const { errors, isSubmitted } = useFormState<ConfigForm>();
+const ValidationErrors = () => {
+    const { errors } = useFormState<ConfigForm>();
     const hasFormErrs = !!Object.keys(errors).length;
+    const metadataErrs = Object.entries(errors).filter(([k, _e]) => k !== 'dataSourceId' && k !== 'filterRequests');
 
-    if (isSubmitted && (hasFormErrs || filtersIsDirty)) {
+    if (hasFormErrs) {
         return (
             <ValidationErrorBanner level={2}>
-                {hasFormErrs &&
-                    (errors.dataSourceId?.message ? (
+                <>
+                    {errors.dataSourceId?.message && (
                         <ValidationErrorSection id="report-source" title="Report source">
                             <li>{errors.dataSourceId.message}</li>
                         </ValidationErrorSection>
-                    ) : (
+                    )}
+                    {!!metadataErrs.length && (
                         <ValidationErrorSection id="metadata" title="Report configuration">
-                            {Object.entries(errors).map(
-                                ([k, { message }]) => !!message && <li key={`error-${k}`}>{message}</li>
-                            )}
+                            {metadataErrs.map(([k, { message }]) => !!message && <li key={`error-${k}`}>{message}</li>)}
                         </ValidationErrorSection>
-                    ))}
-                {filtersIsDirty && (
-                    <ValidationErrorSection id="filter-config" title="Available filters">
-                        <li>
-                            <DirtySectionErrorMessage title="Available filters" />
-                        </li>
-                    </ValidationErrorSection>
-                )}
+                    )}
+                    {errors.filterRequests?.type && (
+                        <ValidationErrorSection id="filter-config" title="Available filters">
+                            <li>
+                                <DirtySectionErrorMessage title="Available filters" />
+                            </li>
+                        </ValidationErrorSection>
+                    )}
+                </>
             </ValidationErrorBanner>
         );
     }

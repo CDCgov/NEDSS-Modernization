@@ -4,7 +4,7 @@ import { HasValueFunction, NamedColumn } from 'design-system/table/header/column
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { addLabelToName, EnumSelectable } from '../../utils';
@@ -53,13 +53,13 @@ const FilterRepeatingBlock = ({
     config,
     isEditable,
     dataSource,
-    setFiltersIsDirty,
 }: {
     config?: ReportConfiguration;
     isEditable: boolean;
     dataSource?: Selectable | string;
-    setFiltersIsDirty: (dirty: boolean) => void;
 }) => {
+    const [filtersIsDirty, setFiltersIsDirty] = useState<boolean>(false);
+
     const dataSourceSelected = !!dataSource;
     const filterOptions = useReportFilters();
     const rawColumnOptions = useColumnOptions(dataSource);
@@ -88,17 +88,25 @@ const FilterRepeatingBlock = ({
         <Controller
             name="filterRequests"
             defaultValue={defaultFilterData}
-            render={({ field: { onChange, value } }) => (
-                <FilterRepeatingBlockImpl
-                    onChange={onChange}
-                    isEditable={isEditable}
-                    dataSourceSelected={dataSourceSelected}
-                    filterOptions={filterOptions}
-                    columnOptions={columnOptions}
-                    setFiltersIsDirty={setFiltersIsDirty}
-                    value={value}
-                />
-            )}
+            rules={{ validate: () => !filtersIsDirty }}
+            render={({ field: { onChange, value } }) => {
+                // force revalidation when dirty state changes
+                useEffect(() => {
+                    onChange(value);
+                }, [filtersIsDirty]);
+
+                return (
+                    <FilterRepeatingBlockImpl
+                        onChange={onChange}
+                        isEditable={isEditable}
+                        dataSourceSelected={dataSourceSelected}
+                        filterOptions={filterOptions}
+                        columnOptions={columnOptions}
+                        setFiltersIsDirty={setFiltersIsDirty}
+                        value={value}
+                    />
+                );
+            }}
         />
     ) : (
         <FilterRepeatingBlockImpl
