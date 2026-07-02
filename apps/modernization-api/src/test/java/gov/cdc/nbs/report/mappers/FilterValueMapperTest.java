@@ -3,6 +3,8 @@ package gov.cdc.nbs.report.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+import gov.cdc.nbs.audit.Status;
+import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.id.IdGeneratorService;
@@ -11,6 +13,11 @@ import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
+import gov.cdc.nbs.time.EffectiveTime;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +28,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class FilterValueMapperTest {
 
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(100000), ZoneId.systemDefault());
   @Mock private IdGeneratorService idGenerator;
   @InjectMocks private FilterValueMapper mapper;
 
@@ -35,6 +44,9 @@ class FilterValueMapperTest {
   @BeforeEach
   void setup() {
     mockReportFilter = mock(ReportFilter.class);
+    long reportFilterId = 832L;
+    Mockito.lenient().when(mockReportFilter.getId()).thenReturn(reportFilterId);
+
     generatedId = 100L;
 
     GeneratedId mockValidId = mock(GeneratedId.class);
@@ -50,7 +62,7 @@ class FilterValueMapperTest {
     @Test
     void fromBasicFilterRequest_should_create_filter_values_for_single_value() {
       List<String> values = List.of("testValue");
-      BasicFilterRequest request = new BasicFilterRequest(1L, values, false);
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 
@@ -66,7 +78,7 @@ class FilterValueMapperTest {
     @Test
     void fromBasicFilterRequest_should_create_filter_values_for_multiple_values() {
       List<String> values = List.of("value1", "value2", "value3");
-      BasicFilterRequest request = new BasicFilterRequest(1L, values, false);
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 
@@ -86,7 +98,7 @@ class FilterValueMapperTest {
     @Test
     void fromBasicFilterRequest_should_handle_includeNulls_parameter() {
       List<String> values = List.of("value1");
-      BasicFilterRequest request = new BasicFilterRequest(1L, values, true);
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 
@@ -106,7 +118,7 @@ class FilterValueMapperTest {
     @Test
     void fromBasicFilterRequest_should_create_filter_values_with_empty_strings() {
       List<String> values = List.of("", "value", "");
-      BasicFilterRequest request = new BasicFilterRequest(1L, values, false);
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 
@@ -119,7 +131,7 @@ class FilterValueMapperTest {
     @Test
     void fromBasicFilterRequest_should_generate_unique_ids_for_each_value() {
       List<String> values = List.of("value1", "value2");
-      BasicFilterRequest request = new BasicFilterRequest(1L, values, false);
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
       long id1 = 100L;
       long id2 = 101L;
 
@@ -140,13 +152,48 @@ class FilterValueMapperTest {
     }
 
     @Test
-    void fromBasicFilterRequest_should_handle_empty_list() {
+    void fromBasicFilterRequest_should_handle_empty_values_list() {
       List<String> values = new ArrayList<>();
-      BasicFilterRequest request = new BasicFilterRequest(1L, values, false);
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 
       assertThat(result).isEmpty();
+    }
+
+    @Test
+    void fromBasicFilterRequest_should_set_relevant_fields_for_bas_txt_filters() {
+      String searchText = "basic_text_search_value";
+
+      FilterCode basTxtFilterCode =
+          FilterCode.builder()
+              .id(48930L)
+              .codeTable("NONE")
+              .descTxt("Basic Text Filter")
+              .effectiveTime(
+                  new EffectiveTime(
+                      LocalDateTime.now(clock).minusMonths(4),
+                      LocalDateTime.now(clock).plusYears(3)))
+              .code("TXT_01")
+              .filterType("BAS_TXT")
+              .filterName("Basic Text Filter")
+              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+              .build();
+
+      List<String> values = List.of(searchText);
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
+
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(1);
+      FilterValue filterValue = result.getFirst();
+
+      assertThat(filterValue.getId()).isEqualTo(generatedId);
+      assertThat(filterValue.getReportFilter()).isEqualTo(mockReportFilter);
+      assertThat(filterValue.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
+      assertThat(filterValue.getValueTxt()).isEqualTo(searchText);
     }
   }
 
