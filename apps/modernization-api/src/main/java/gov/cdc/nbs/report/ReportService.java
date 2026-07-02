@@ -141,6 +141,12 @@ public class ReportService {
         .findById(id)
         .map(
             report -> {
+              ReportLibrary library = report.getReportLibrary();
+              if (library == null) {
+                throw new IllegalStateException(
+                    "No library found for this report. This can happen if a report was created or save-as'ed with NBS 6, but is trying to be opened in NBS 7. Sync the report and report library tables using the query in the report admin guide.");
+              }
+
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
                       .filter(
@@ -194,7 +200,7 @@ public class ReportService {
 
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
-                  new Library(report.getReportLibrary()),
+                  new Library(library),
                   report.getReportTitle(),
                   report.getDescTxt(),
                   report.getOwnerUid(),
@@ -219,9 +225,9 @@ public class ReportService {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     ReportLibrary reportLibrary = report.getReportLibrary();
+    // If the library is null, that means this report was save-as'ed with NBS 6 from a sas report
     if (reportLibrary == null) {
-      throw new UnprocessableEntityException(
-          String.format("No report library exists for report %s", reportId));
+      return "sas";
     }
 
     return reportLibrary.getRunner();

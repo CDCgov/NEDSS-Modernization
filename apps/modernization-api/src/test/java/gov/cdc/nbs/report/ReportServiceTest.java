@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.models.*;
@@ -579,15 +578,15 @@ class ReportServiceTest {
     }
 
     @Test
-    void getReportRunner_should_throw_when_report_has_no_library() {
+    void getReportRunner_should_return_sas_when_report_has_no_library() {
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
       Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
 
       when(report.getReportLibrary()).thenReturn(null);
 
-      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-          .isInstanceOf(UnprocessableEntityException.class)
-          .hasMessage("No report library exists for report %s", reportId);
+      String runner = service.getReportRunner(reportUid, dataSourceUid);
+
+      assertThat(runner).isEqualTo("sas");
     }
   }
 
