@@ -47,6 +47,11 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
         }
     }, [handleOnChange, operator, value]);
 
+    // clear value on un-mount
+    useEffect(() => {
+        return () => handleOnChange('');
+    }, []);
+
     const handleSingleOnChange = (newValue: number | string | undefined) => {
         if (newValue !== undefined) {
             props.handleOnChange(newValue.toString());
