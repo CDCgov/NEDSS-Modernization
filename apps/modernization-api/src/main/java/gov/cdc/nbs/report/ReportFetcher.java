@@ -8,7 +8,6 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.mappers.AdvancedFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.BasicFilterConfigurationMapper;
 import gov.cdc.nbs.report.mappers.ReportColumnMapper;
@@ -41,11 +40,11 @@ public class ReportFetcher {
         .findById(id)
         .map(
             report -> {
-                ReportLibrary library = report.getReportLibrary();
-                if (library == null) {
-                    throw new IllegalArgumentException(
-                            "No library found for this report. This can happen if a report was created or save-as'ed with NBS 6, but is trying to be opened in NBS 7. Ask your NBS administrator to sync the report and report library tables using the query in the report admin guide.");
-                }
+              ReportLibrary library = report.getReportLibrary();
+              if (library == null) {
+                throw new IllegalArgumentException(
+                    "No library found for this report. This can happen if a report was created or save-as'ed with NBS 6, but is trying to be opened in NBS 7. Ask your NBS administrator to sync the report and report library tables using the query in the report admin guide.");
+              }
 
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
@@ -117,10 +116,10 @@ public class ReportFetcher {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     ReportLibrary reportLibrary = report.getReportLibrary();
-      // If the library is null, that means this report was save-as'ed with NBS 6 from a sas report
-      if (reportLibrary == null) {
-          return "sas";
-      }
+    // If the library is null, that means this report was save-as'ed with NBS 6 from a sas report
+    if (reportLibrary == null) {
+      return "sas";
+    }
 
     return reportLibrary.getRunner();
   }
