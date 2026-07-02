@@ -1,4 +1,4 @@
-import { render, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import * as generated from 'generated';
 import * as options from 'options/selectableResolver';
 import { Layout } from 'layout';
@@ -176,7 +176,14 @@ describe('add report configuration page', () => {
         expect(await findByLabelText('Data source')).toHaveDisplayValue('nbs_ods.data_source (NBS Data Source)');
         expect(await findByLabelText('Name')).toHaveDisplayValue('Test Report');
         expect(await findByLabelText('Description')).toHaveDisplayValue('');
-        expect(await findByLabelText('Group')).toHaveDisplayValue('Public');
+        const privateRadio = screen.getByRole('radio', { name: 'Private' });
+        const publicRadio = screen.getByRole('radio', { name: 'Public' });
+        const reportingFacRadio = screen.getByRole('radio', { name: 'Reporting Facility' });
+        const templateRadio = screen.getByRole('radio', { name: 'Template' });
+        expect(publicRadio).toBeChecked();
+        expect(privateRadio).not.toBeChecked();
+        expect(reportingFacRadio).not.toBeChecked();
+        expect(templateRadio).not.toBeChecked();
         expect(await findByLabelText('Owner')).toHaveDisplayValue('System');
         expect(await findByLabelText('Section name')).toHaveDisplayValue('Default');
         expect(await findByLabelText('Report execution library')).toHaveDisplayValue(
@@ -198,13 +205,14 @@ describe('add report configuration page', () => {
 
         const user = userEvent.setup();
 
-        await user.selectOptions(await findByLabelText('Group'), '- Select -');
+        const nameInput = await findByLabelText('Name');
 
+        await user.clear(nameInput);
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        expect(await findByText(`The Group is required.`)).toBeVisible();
+        expect(await findByText(`The Name is required.`)).toBeVisible();
 
-        await user.selectOptions(await findByLabelText('Group'), 'Private');
+        await user.type(nameInput, 'Test report');
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 
