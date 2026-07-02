@@ -73,7 +73,7 @@ public class ConfigurationValueFinder {
   }
 
   /**
-   * Batch-loads and caches all keys required by the application runtime. Throws an exception if any
+   * Batch-loads and caches all keys known to be used by the application runtime. Throws an exception if any
    * required key cannot be loaded.
    */
   public void loadConfigurations() {
@@ -83,11 +83,7 @@ public class ConfigurationValueFinder {
       "REPORT_DB_NBS_RDB",
       "REPORT_DB_NBS_ODS",
       "REPORT_DB_NBS_SRT",
-      "REPORT_DB_NBS_MSG",
-      "REPORT_MAX_ROW_LIMIT_RUN",
-      "REPORT_MAX_ROW_LIMIT_EXPORT",
-      "REPORT_EXPORT_DATE_FORMAT",
-      "REPORT_EXPORT_DATETIME_FORMAT"
+      "REPORT_DB_NBS_MSG"
     };
 
     for (String key : requiredKeys) {
