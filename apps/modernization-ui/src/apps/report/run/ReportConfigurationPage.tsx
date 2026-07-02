@@ -14,6 +14,7 @@ import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
+import { NBS_MANAGE_REPORT_PAGE } from '../constants';
 
 const BASIC_SECTIONS = [
     {
@@ -109,6 +110,8 @@ const ReportConfigurationPage = ({
     return (
         <ReportLayout
             title={config.title}
+            startHref={NBS_MANAGE_REPORT_PAGE}
+            startPage="reports"
             actions={
                 <>
                     <Permitted permission={permissions.reports.run}>
