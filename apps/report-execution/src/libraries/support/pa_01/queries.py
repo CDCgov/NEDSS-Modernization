@@ -758,9 +758,9 @@ def notified_clusters_query(subset_query: str) -> str:
 def not_notified_clusters_query(subset_query: str) -> str:
     """Return non-notified cluster rows used for cluster disposition counts.
 
-    This is a slight variation on `notified_clusters_query` containing just a simple
-    where clause extra.  Used to calculate New Clusters Not Notified and its HIV
-    partner disposition breakdowns.
+    This is the equivalent of SAS's `cn`, which is a slight variation on SAS's 
+    `cluster` table, containing just a simple extra where clause.  Used to calculate
+    New Clusters Not Notified and its HIV partner disposition breakdowns.
     """
     return f"""
       WITH base AS
@@ -779,7 +779,7 @@ def not_notified_clusters_query(subset_query: str) -> str:
       )
       SELECT DISTINCT a.INVESTIGATION_KEY,
              PROVIDER_QUICK_CODE,
-             a.INV_LOCAL_ID,
+             a.INV_LOCAL_ID AS STD_INV_LOCAL_ID,
              f.FL_FUP_DISPOSITION,
              e.LOCAL_ID AS INV_LOCAL_ID,
              a.FL_FUP_DISPO_DT,

@@ -40,12 +40,12 @@ def execute(
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * The variant (STD or HIV) is determined by `library_params['report_variant']`
       which is defined in the Report_Library db table.
-    * There is a quirk in PA01_HIV.sas in which the data point "HIV Tested" output does
-      not include percentages for individual workers, only "ALL WORKERS".  This report
-      includes percentages for individual workers.
     * There are some rounding peculiarities between SAS and Python, so for instance
       a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
       SAS it will be 0.08.  In such cases the Python value will be used as is.
+    * There is a quirk in PA01_HIV.sas in which the data point "HIV Tested" output does
+      not include percentages for individual workers, only "ALL WORKERS".  This report
+      includes percentages for individual workers.
     * There is a bug in PA01_HIV.sas in which the "CASES /W NO CLUSTERS" shows up as
       0 for "ALL WORKERS" even if there is data present.  This is because the SAS
       template for this calculation for "ALL WORKERS" uses a slightly different string:

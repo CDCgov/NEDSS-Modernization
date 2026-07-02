@@ -829,7 +829,9 @@ def _calc_hiv_tested(
     """
     rows = _rows_for_worker(case_interview_rows, worker)
 
-    # nb. mirrors creation of "hiv_tested" table in SAS
+    # nb. mirrors the creation of "hiv_tested" table in SAS and the calculation of "HIV
+    #     Tested" (have to do this instead of _count_distinct_case_ids because
+    #     of how it is counted for "ALL WORKERS" in SAS)
     groups: dict[tuple, set] = {}
     for row in rows:
         if (
@@ -1267,6 +1269,20 @@ def _calc_new_clusters_open(
     """
     rows = _rows_for_worker(clusters_initiated, worker)
     count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
+
+    # nb. mirrors the creation of "Co" table in SAS and the calculation of "New
+    #     Clusters Open" (have to do this instead of _count_distinct_case_ids because
+    #     of how it is counted for "ALL WORKERS" in SAS)
+    groups: dict[tuple, set] = {}
+    for row in rows:
+        if row[FL_FUP_DISPOSITION] is None:
+            worker_key = (
+                row[INVESTIGATOR_INTERVIEW_KEY],
+                row[PROVIDER_QUICK_CODE],
+            )
+            groups.setdefault(worker_key, set()).add(row[INV_LOCAL_ID])
+
+    count = sum(len(cluster_ids) for cluster_ids in groups.values())
 
     return count, _percent_for_csv(count, total_clusters_initiated)
 
