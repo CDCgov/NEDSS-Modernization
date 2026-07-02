@@ -42,14 +42,6 @@ class MockTransaction:
         self._cursor = cursor
 
     def query(self, query, parameters=()):
-        if 'NBS_configuration' in query:
-            return Table(
-                columns=['config_value'],
-                data=[
-                    ('100000',)
-                ],  # Returns 1 row, satisfying the len(data) == 1 check
-            )
-
         return Table(
             columns=['id', 'name'],
             data=[
@@ -62,6 +54,20 @@ class MockTransaction:
 
     def execute(self, query):
         return None
+
+
+class MockCursor:
+    """Mock version of Cursor."""
+
+    def execute(self, query, parameters=()):
+        return MockResult()
+
+
+class MockResult:
+    """Mock version of Result."""
+
+    def fetchall(self):
+        return [('100000',)]  # Returns 1 row, satisfying the len(data) == 1 check
 
 
 class MockConnection:
@@ -91,7 +97,7 @@ def mock_db_connection_ctxt(conn_string):
 @contextmanager
 def mock_db_transaction_ctxt(conn_string, is_export):
     """Mock context function for db_transaction."""
-    yield MockTransaction()
+    yield MockTransaction(MockCursor())
 
 
 @pytest.fixture(scope='function')
