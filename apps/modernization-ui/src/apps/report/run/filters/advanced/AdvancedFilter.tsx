@@ -29,7 +29,9 @@ import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { ReactNode } from 'react';
-import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';  
+import { Heading } from '../../../../../components/heading';
+import { AlertMessage } from 'design-system/message/index.ts';
 
 import styles from './advanced-filter.module.scss';
 import classNames from 'classnames';
@@ -247,6 +249,21 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
 
     return (
         <div className={classNames(styles.layout, { [styles.validate]: !!error?.message })}>
+            {filter.exceptionMessage && (
+                <AlertMessage type="warning" title="Saved filter has an error and can't be applied">
+                    <p>
+                        The saved filter contains an error that prevents it from loading. You can still run this report,
+                        but the filter won't be applied to your results. To use this filter, rebuild it and save the
+                        report. If you need help, share the following details with your administrator:
+                    </p>
+                    <p>
+                        <strong>Error:</strong> <span className="font-mono-sm">{filter.exceptionMessage}</span>
+                    </p>
+                    <p>
+                        <strong>Saved filter query:</strong> <span className="font-mono-sm">{filter.query}</span>
+                    </p>
+                </AlertMessage>
+            )}
             {error?.message && (
                 <ValidationErrorBanner level={3}>
                     <ul>{formatAdvancedFilterErrors(error.message)}</ul>
