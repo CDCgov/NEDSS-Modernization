@@ -42,7 +42,11 @@ public class ReportFilter {
   private DataSourceColumn dataSourceColumn;
 
   // When a filter is deleted, it's values also need to be removed
-  @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(
+      mappedBy = "reportFilter",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.REMOVE)
   private List<FilterValue> filterValues;
 
   // Setting orphanRemoval to true so we can delete a ReportFilterValidation record when

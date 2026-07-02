@@ -13,7 +13,7 @@ import lombok.Getter;
  * Execution service for subsequent report generation. It assembles report metadata, includes
  * togglable report parameters and (arguably most importantly) compiles a SQL statement to be
  * invoked during report execution, accounting for all supplied parameters as well as relevant
- * permissions for the individual invoking said report.
+ * permissions for the individual invoking that report.
  */
 public class ReportSpecBuilder {
   @Getter private final ReportExecutionRequest reportExecRequest;

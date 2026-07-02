@@ -3,7 +3,10 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
+import gov.cdc.nbs.exception.ForbiddenException;
+import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.*;
+import gov.cdc.nbs.repository.ReportRepository;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
@@ -21,9 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
 
   private final ReportService reportService;
+  private final ReportRepository reportRepository;
 
-  public ReportController(ReportService reportService) {
+  public ReportController(ReportService reportService, ReportRepository reportRepository) {
     this.reportService = reportService;
+    this.reportRepository = reportRepository;
   }
 
   @PostMapping("/configuration")
@@ -47,14 +52,47 @@ public class ReportController {
   }
 
   @PutMapping("/configuration/{reportUid}/{dataSourceUid}/save")
-  //  TODO: Figure out how to handle permissions more granularly NOSONAR
   public ResponseEntity<ReportId> saveReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody ReportExecutionRequest request) {
-    //  @TODO: Finish implementation NOSONAR
-    return null;
+    ReportId reportId = new ReportId(reportUid, dataSourceUid);
+
+    Report existingReport = reportRepository.findById(reportId).orElse(null);
+    if (existingReport == null) {
+      throw new NotFoundException(reportService.getReportNotFoundText(reportId));
+    }
+
+    //  Only the report's owner should have permission to overwrite it
+    //  We might consider investigating into creating a custom pre-authorizer for this sort of
+    //  authorization check, should we ever need ownership permissions beyond this endpoint
+    if (!existingReport.getOwnerUid().equals(user.getId())) {
+      throw new ForbiddenException("Only report owners can save reports");
+    }
+
+    String authOperationType;
+    ReportConstants.ReportGroup reportGroup =
+        ReportConstants.dbCharToReportGroup(existingReport.getShared());
+
+    authOperationType =
+        switch (reportGroup) {
+          case PUBLIC -> ReportConstants.Permissions.EDITREPORTPUBLIC;
+          case PRIVATE -> ReportConstants.Permissions.EDITREPORTPRIVATE;
+          case REPORTING_FACILITY -> ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY;
+          case TEMPLATE ->
+              throw new IllegalArgumentException("Template reports cannot be updated using 'save'");
+        };
+
+    String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+
+    if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
+      throw new ForbiddenException(
+          "User does not have permission to save " + reportGroup.name() + " reports");
+    }
+
+    Report report = reportService.saveReport(request, existingReport);
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
   @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
