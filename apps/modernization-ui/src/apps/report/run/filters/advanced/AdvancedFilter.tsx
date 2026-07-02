@@ -241,12 +241,10 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         report. If you need help, share the following details with your administrator:
                     </p>
                     <p>
-                        <strong>Error:</strong>{' '}
-                        <span className="font-mono-sm">{filter.exceptionMessage}</span>
+                        <strong>Error:</strong> <span className="font-mono-sm">{filter.exceptionMessage}</span>
                     </p>
                     <p>
-                        <strong>Saved filter query:</strong>{' '}
-                        <span className="font-mono-sm">{filter.query}</span>
+                        <strong>Saved filter query:</strong> <span className="font-mono-sm">{filter.query}</span>
                     </p>
                 </AlertMessage>
             )}

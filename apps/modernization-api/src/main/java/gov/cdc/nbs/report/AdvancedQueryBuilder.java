@@ -58,7 +58,7 @@ public class AdvancedQueryBuilder {
                     }
 
                     String op = f.getOperator();
-                    String value = "'%s'".formatted(f.getValueTxt());
+                    String value = " '%s'".formatted(f.getValueTxt());
 
                     // translate more opaque codes and remove value for unary ops
                     if ("IN".equals(op)) {
@@ -75,7 +75,7 @@ public class AdvancedQueryBuilder {
                       op = "STARTS WITH";
                     }
 
-                    return "([%s] %s %s)".formatted(columnName, op, value);
+                    return "([%s] %s%s)".formatted(columnName, op, value);
                   }
                 })
             .toList());
