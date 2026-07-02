@@ -16,7 +16,7 @@ type CardProps = {
     footer?: ReactNode;
     required?: boolean;
     disabled?: boolean;
-    contentWidth?: string;
+    contentMaxWidth?: string;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
@@ -35,7 +35,7 @@ const Card = ({
     required = false,
     disabled = false,
     children,
-    contentWidth,
+    contentMaxWidth,
     ...remaining
 }: CardProps) => {
     const [collapsed, setCollapsed] = useState<boolean>(!open);
@@ -48,7 +48,7 @@ const Card = ({
             id={cardId}
             role="group"
             aria-labelledby={id}
-            className={classNames(styles.card, className, contentWidth ? styles[`card--${contentWidth}`] : '', {
+            className={classNames(styles.card, className, contentMaxWidth ? styles[`card--${contentMaxWidth}`] : '', {
                 [styles.disabled]: disabled,
             })}
             {...remaining}

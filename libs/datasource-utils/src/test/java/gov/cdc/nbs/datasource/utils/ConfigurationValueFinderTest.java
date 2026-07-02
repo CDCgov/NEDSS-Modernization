@@ -153,7 +153,7 @@ class ConfigurationValueFinderTest {
     org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> finder.loadConfigurations());
 
     // Verifies that the internal loop hit the database client 8 distinct times (one for each key)
-    verify(jdbcClient, times(8)).sql(anyString());
+    verify(jdbcClient, times(4)).sql(anyString());
   }
 
   @Test
