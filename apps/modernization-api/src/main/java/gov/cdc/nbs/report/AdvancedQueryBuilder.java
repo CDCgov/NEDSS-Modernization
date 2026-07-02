@@ -57,7 +57,25 @@ public class AdvancedQueryBuilder {
                       columnName = column.getColumnTitle();
                     }
 
-                    return "([%s] %s '%s')".formatted(columnName, f.getOperator(), f.getValueTxt());
+                    String op = f.getOperator();
+                    String value = "'%s'".formatted(f.getValueTxt());
+
+                    // translate more opaque codes and remove value for unary ops
+                    if ("IN".equals(op)) {
+                      op = "IS NULL";
+                      value = "";
+                    } else if ("NN".equals(op)) {
+                      op = "IS NOT NULL";
+                      value = "";
+                    } else if ("BW".equals(op)) {
+                      op = "BETWEEN";
+                    } else if ("CO".equals(op)) {
+                      op = "CONTAINS";
+                    } else if ("SW".equals(op)) {
+                      op = "STARTS WITH";
+                    }
+
+                    return "([%s] %s %s)".formatted(columnName, op, value);
                   }
                 })
             .toList());

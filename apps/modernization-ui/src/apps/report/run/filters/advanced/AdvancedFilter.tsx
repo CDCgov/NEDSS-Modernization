@@ -234,15 +234,20 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     return (
         <div className={styles.layout}>
             {filter.exceptionMessage && (
-                <AlertMessage type="warning" title="Unable to use saved filter">
+                <AlertMessage type="warning" title="Saved filter has an error and can't be applied">
                     <p>
-                        The filter saved on this report was unable to be read into the new format. It needs to be
-                        re-created and the report saved.
+                        The saved filter contains an error that prevents it from loading. You can still run this report,
+                        but the filter won't be applied to your results. To use this filter, rebuild it and save the
+                        report. If you need help, share the following details with your administrator:
                     </p>
-                    <p>The error message while trying to read the filter is:</p>
-                    <pre>{filter.exceptionMessage}</pre>
-                    <p>The original filter is:</p>
-                    <pre>{filter.query}</pre>
+                    <p>
+                        <strong>Error:</strong>{' '}
+                        <span className="font-mono-sm">{filter.exceptionMessage}</span>
+                    </p>
+                    <p>
+                        <strong>Saved filter query:</strong>{' '}
+                        <span className="font-mono-sm">{filter.query}</span>
+                    </p>
                 </AlertMessage>
             )}
             {error?.message && (
