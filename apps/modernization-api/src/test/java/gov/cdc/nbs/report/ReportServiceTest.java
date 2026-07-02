@@ -1049,6 +1049,8 @@ class ReportServiceTest {
 
     @Test
     void saveAsReport_should_invoke_saveReport_with_new_report_id() {
+      ReportService serviceSpy = spy(service);
+
       ReportExecutionRequest reportExecutionRequest =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
       SaveAsReportRequest request =
@@ -1060,10 +1062,12 @@ class ReportServiceTest {
               "some description text");
 
       Report finalReport = mock(Report.class);
-      when(service.saveReport(reportExecutionRequest, newReport)).thenReturn(finalReport);
 
-      Report result = service.saveAsReport(request, mockUser, existingReportId);
+      doReturn(finalReport).when(serviceSpy).saveReport(reportExecutionRequest, newReport);
 
+      Report result = serviceSpy.saveAsReport(request, mockUser, existingReportId);
+
+      verify(serviceSpy).saveReport(reportExecutionRequest, newReport);
       assertThat(result).isEqualTo(finalReport);
     }
   }

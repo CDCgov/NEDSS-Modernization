@@ -163,9 +163,9 @@ public class ReportService {
             duplicate.setDescTxt(request.description());
           }
 
-          reportRepository.save(duplicate);
+          Report newReport = reportRepository.save(duplicate);
 
-          return saveReport(request.executionRequest(), duplicate);
+          return saveReport(request.executionRequest(), newReport);
         });
   }
 
