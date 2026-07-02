@@ -1,18 +1,19 @@
-import React, { useId, useEffect } from 'react';
+import { useId, useEffect } from 'react';
 import { FullField, ValueEditorProps } from 'react-querybuilder';
-import { NumericInput, TextInputField } from '../../../../../design-system/input';
-import { DatePickerInput } from '../../../../../design-system/date';
-import { DatePickerRange } from '../../../../../design-system/date/range/DatePickerRange.tsx';
-import { DateBetweenCriteria } from '../../../../../design-system/date/criteria';
-import { NumberBetweenCriteria } from '../../../../../design-system/input/range/NumberRangeField.tsx';
+import { NumericInput, NumericRangeInput, TextInputField } from 'design-system/input';
+import { DatePickerInput } from 'design-system/date';
+import { DatePickerRange } from 'design-system/date/range/DatePickerRange.tsx';
+import { DateBetweenCriteria } from 'design-system/date/criteria';
+import { NumberBetweenCriteria } from 'design-system/input/range/NumberRangeField.tsx';
 import { BETWEEN_OPERATOR } from './operators.ts';
+import { ReactComponentLike } from 'prop-types';
 
-const RANGE_COMPONENTS = {
+const RANGE_COMPONENTS: Record<string, ReactComponentLike> = {
     date: DatePickerRange,
-    number: NumericInput,
+    number: NumericRangeInput,
 } as const;
 
-const SINGLE_COMPONENTS = {
+const SINGLE_COMPONENTS: Record<string, ReactComponentLike> = {
     date: DatePickerInput,
     number: NumericInput,
     text: TextInputField,
@@ -20,7 +21,7 @@ const SINGLE_COMPONENTS = {
 
 const BETWEEN_OPERATOR_NAME = BETWEEN_OPERATOR.name;
 
-const getConvertedRange = (props): DateBetweenCriteria | NumberBetweenCriteria => {
+const getConvertedRange = (props: ValueEditorProps<FullField>): DateBetweenCriteria | NumberBetweenCriteria => {
     if (props.operator === BETWEEN_OPERATOR_NAME && typeof props.value === 'string' && props.value) {
         const [from = '', to = ''] = props.value.split(',');
         return { between: { from, to } };
@@ -33,7 +34,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     const { handleOnChange, inputType, operator, title, value } = props;
     const labelName = title ?? '';
     const isBetween = operator === BETWEEN_OPERATOR_NAME;
-    const InputComponent = isBetween ? RANGE_COMPONENTS[inputType] : SINGLE_COMPONENTS[inputType];
+    const InputComponent = isBetween ? RANGE_COMPONENTS[inputType!] : SINGLE_COMPONENTS[inputType!];
 
     let convertedValue = isBetween ? getConvertedRange(props) : (value ?? '');
 
@@ -73,7 +74,6 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
                 value={convertedValue}
                 name={labelName}
                 onChange={isBetween ? handleBetweenOnChange : handleSingleOnChange}
-                {...(isBetween && inputType === 'number' ? { isRange: true } : {})}
                 required
             />
         </div>
