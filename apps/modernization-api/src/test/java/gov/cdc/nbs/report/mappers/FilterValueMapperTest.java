@@ -276,5 +276,79 @@ class FilterValueMapperTest {
 
       assertMatchingOperatorValue(result.getLast(), ")", 9);
     }
+
+    @Test
+    void fromAdvancedFilterRequest_should_set_value_txt_to_empty_string_for_not_null_operator() {
+      AdvancedQuery.Rule ruleWithEmptyStringVal =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(), 1L, ReportConstants.Operator.NN.toString(), "");
+
+      AdvancedQuery.Rule ruleWithNullVal =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(), 1L, ReportConstants.Operator.NN.toString(), null);
+
+      AdvancedQuery.Rule ruleWithTextVal =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(),
+              1L,
+              ReportConstants.Operator.NN.toString(),
+              "random Text");
+
+      AdvancedQuery.RuleGroup ruleGroup =
+          new AdvancedQuery.RuleGroup(
+              UUID.randomUUID().toString(),
+              ReportConstants.QueryCombinators.AND,
+              List.of(ruleWithEmptyStringVal, ruleWithNullVal, ruleWithTextVal));
+      AdvancedFilterRequest request = new AdvancedFilterRequest(1L, ruleGroup);
+
+      List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(7);
+
+      assertMatchingOperatorValue(result.getFirst(), "(", 1);
+
+      assertThat(result.get(1).getValueTxt()).isEmpty();
+      assertThat(result.get(3).getValueTxt()).isEmpty();
+      assertThat(result.get(5).getValueTxt()).isEmpty();
+
+      assertMatchingOperatorValue(result.getLast(), ")", 7);
+    }
+
+    @Test
+    void fromAdvancedFilterRequest_should_set_value_txt_to_empty_string_for_is_null_operator() {
+      AdvancedQuery.Rule ruleWithEmptyStringVal =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(), 1L, ReportConstants.Operator.IN.toString(), "");
+
+      AdvancedQuery.Rule ruleWithNullVal =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(), 1L, ReportConstants.Operator.IN.toString(), null);
+
+      AdvancedQuery.Rule ruleWithTextVal =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(),
+              1L,
+              ReportConstants.Operator.IN.toString(),
+              "random Text");
+
+      AdvancedQuery.RuleGroup ruleGroup =
+          new AdvancedQuery.RuleGroup(
+              UUID.randomUUID().toString(),
+              ReportConstants.QueryCombinators.AND,
+              List.of(ruleWithEmptyStringVal, ruleWithNullVal, ruleWithTextVal));
+      AdvancedFilterRequest request = new AdvancedFilterRequest(1L, ruleGroup);
+
+      List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(7);
+
+      assertMatchingOperatorValue(result.getFirst(), "(", 1);
+
+      assertThat(result.get(1).getValueTxt()).isEmpty();
+      assertThat(result.get(3).getValueTxt()).isEmpty();
+      assertThat(result.get(5).getValueTxt()).isEmpty();
+
+      assertMatchingOperatorValue(result.getLast(), ")", 7);
+    }
   }
 }

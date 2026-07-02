@@ -8,6 +8,7 @@ import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -101,13 +102,21 @@ public class FilterValueMapper {
   }
 
   private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
+    String valueTxt = rule.value();
+
+    if (Arrays.asList(
+            ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
+        .contains(rule.operator())) {
+      valueTxt = "";
+    }
+
     return FilterValue.builder()
         .id(generateFilterValueId())
         .valueType(ReportConstants.AdvancedFilterValueType.CLAUSE.toString())
         .reportFilter(advancedFilter)
         .columnUid(rule.columnId())
         .operator(rule.operator())
-        .valueTxt(rule.value())
+        .valueTxt(valueTxt)
         .build();
   }
 
