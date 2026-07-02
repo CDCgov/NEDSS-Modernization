@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +59,13 @@ class FilterValueMapperTest {
 
   @Nested
   class FromBasicFilterRequest {
+    @BeforeEach
+    void setUp() {
+      FilterCode mockFilterCode = mock(FilterCode.class);
+      Mockito.lenient().when(mockFilterCode.getFilterType()).thenReturn("BAS_TXT");
+
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(mockFilterCode);
+    }
 
     @Test
     void fromBasicFilterRequest_should_create_filter_values_for_single_value() {
@@ -192,8 +200,105 @@ class FilterValueMapperTest {
 
       assertThat(filterValue.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
       assertThat(filterValue.getValueTxt()).isEqualTo(searchText);
+
       assertThat(filterValue.getOperator()).isNull();
       assertThat(filterValue.getColumnUid()).isNull();
+      assertThat(filterValue.getSequenceNumber()).isNull();
+    }
+
+    @Test
+    void
+        fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_list_filters() {
+      FilterCode basTimRangeListFilterCode =
+          FilterCode.builder()
+              .id(48970L)
+              .codeTable("NONE")
+              .descTxt("Basic Time Filter for Time Period Has two drop downs for YYYY to YYYY")
+              .effectiveTime(
+                  new EffectiveTime(
+                      LocalDateTime.now(clock).minusMonths(4),
+                      LocalDateTime.now(clock).plusYears(3)))
+              .code("T_T02")
+              .filterType("BAS_TIM_RANGE_LIST")
+              .filterName("Time Period")
+              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+              .build();
+
+      String beginYear = "2010";
+      String endYear = "2026";
+      List<String> values = List.of(beginYear, endYear);
+
+      Mockito.lenient()
+          .when(mockReportFilter.getFilterCode())
+          .thenReturn(basTimRangeListFilterCode);
+
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(2);
+
+      FilterValue beginRangeVal = result.getFirst();
+      FilterValue endRangeVal = result.getLast();
+
+      assertThat(beginRangeVal.getValueType()).isEqualTo("BEGIN_RANGE");
+      assertThat(beginRangeVal.getValueTxt()).isEqualTo(beginYear);
+
+      assertThat(endRangeVal.getValueType()).isEqualTo("END_RANGE");
+      assertThat(endRangeVal.getValueTxt()).isEqualTo(endYear);
+
+      for (FilterValue filterValue : Arrays.asList(beginRangeVal, endRangeVal)) {
+        assertThat(filterValue.getOperator()).isNull();
+        assertThat(filterValue.getColumnUid()).isNull();
+        assertThat(filterValue.getSequenceNumber()).isNull();
+      }
+    }
+
+    @Test
+    void fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_filters() {
+      FilterCode basTimRangeListFilterCode =
+          FilterCode.builder()
+              .id(48970L)
+              .codeTable("NONE")
+              .descTxt("Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY")
+              .effectiveTime(
+                  new EffectiveTime(
+                      LocalDateTime.now(clock).minusMonths(4),
+                      LocalDateTime.now(clock).plusYears(3)))
+              .code("T_T01")
+              .filterType("BAS_TIM_RANGE")
+              .filterName("Time Range")
+              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+              .build();
+
+      String beginDate = "07/14/2010";
+      String endDate = "06/29/2026";
+      List<String> values = List.of(beginDate, endDate);
+
+      Mockito.lenient()
+          .when(mockReportFilter.getFilterCode())
+          .thenReturn(basTimRangeListFilterCode);
+
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(2);
+
+      FilterValue beginRangeVal = result.getFirst();
+      FilterValue endRangeVal = result.getLast();
+
+      assertThat(beginRangeVal.getValueType()).isEqualTo("BEGIN_RANGE");
+      assertThat(beginRangeVal.getValueTxt()).isEqualTo(beginDate);
+
+      assertThat(endRangeVal.getValueType()).isEqualTo("END_RANGE");
+      assertThat(endRangeVal.getValueTxt()).isEqualTo(endDate);
+
+      for (FilterValue filterValue : Arrays.asList(beginRangeVal, endRangeVal)) {
+        assertThat(filterValue.getOperator()).isNull();
+        assertThat(filterValue.getColumnUid()).isNull();
+        assertThat(filterValue.getSequenceNumber()).isNull();
+      }
     }
   }
 

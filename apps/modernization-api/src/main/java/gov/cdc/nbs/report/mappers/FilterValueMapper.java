@@ -23,17 +23,45 @@ public class FilterValueMapper {
 
   public List<FilterValue> fromBasicFilterRequest(
       ReportFilter basicFilter, BasicFilterRequest request) {
-    List<FilterValue> basicFilterValues =
-        request.values().stream()
-            .map(
-                value ->
-                    FilterValue.builder()
-                        .id(generateFilterValueId())
-                        .reportFilter(basicFilter)
-                        .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
-                        .valueTxt(value == null ? "" : value)
-                        .build())
-            .collect(Collectors.toCollection(ArrayList::new));
+    List<FilterValue> basicFilterValues = new ArrayList<>();
+
+    if (ReportConstants.BAS_TIME_RANGE_TYPES.contains(
+        basicFilter.getFilterCode().getFilterType())) {
+      if (request.values().size() != 2) {
+        throw new IllegalArgumentException(
+            "Time range filter must have exactly two values: start and end");
+      }
+
+      FilterValue beginRangeVal =
+          FilterValue.builder()
+              .id(generateFilterValueId())
+              .reportFilter(basicFilter)
+              .valueType("BEGIN_RANGE")
+              .valueTxt(request.values().getFirst())
+              .build();
+
+      FilterValue endRangeVal =
+          FilterValue.builder()
+              .id(generateFilterValueId())
+              .reportFilter(basicFilter)
+              .valueType("END_RANGE")
+              .valueTxt(request.values().getLast())
+              .build();
+
+      basicFilterValues.addAll(Arrays.asList(beginRangeVal, endRangeVal));
+    } else {
+      basicFilterValues.addAll(
+          request.values().stream()
+              .map(
+                  value ->
+                      FilterValue.builder()
+                          .id(generateFilterValueId())
+                          .reportFilter(basicFilter)
+                          .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+                          .valueTxt(value == null ? "" : value)
+                          .build())
+              .collect(Collectors.toCollection(ArrayList::new)));
+    }
 
     if (request.includeNulls()) {
       basicFilterValues.add(
