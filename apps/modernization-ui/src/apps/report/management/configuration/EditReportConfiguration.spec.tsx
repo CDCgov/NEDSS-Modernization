@@ -119,7 +119,7 @@ const renderWithRouter = () => {
     return render(<RouterProvider router={router} />);
 };
 
-describe('add report configuration page', () => {
+describe('edit report configuration page', () => {
     const mockOptionApiImpl = (url: string) => {
         if (url.includes('datasources')) {
             return Promise.resolve([

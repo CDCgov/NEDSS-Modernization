@@ -104,7 +104,7 @@ describe('add report configuration page', () => {
 
     it('renders empty form and marks fields required', async () => {
         const mockApi = vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
-        const { getByRole, findByRole, findByText, findAllByText, findByLabelText } = renderWithRouter();
+        const { getByRole, queryByRole, findByRole, findByText, findAllByText, findByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -144,6 +144,10 @@ describe('add report configuration page', () => {
             )
         ).toBeVisible();
         expect(await findByRole('link', { name: 'Available filters' })).toBeVisible();
+
+        // clear the filter and check validation error clears as well
+        await user.click(await findByRole('button', { name: 'Clear' }));
+        expect(queryByRole('link', { name: 'Available filters' })).toBeNull();
     });
 
     it('fills out form and redirects on submit', async () => {
