@@ -29,8 +29,7 @@ import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { ReactNode } from 'react';
-import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';  
-import { Heading } from '../../../../../components/heading';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
 import { AlertMessage } from 'design-system/message/index.ts';
 
 import styles from './advanced-filter.module.scss';
