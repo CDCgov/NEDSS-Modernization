@@ -92,7 +92,7 @@ public class ReportFetcher {
 
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
-                  new Library(report.getReportLibrary()),
+                  new Library(library),
                   report.getReportTitle(),
                   report.getDescTxt(),
                   report.getOwnerUid(),
@@ -117,10 +117,10 @@ public class ReportFetcher {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     ReportLibrary reportLibrary = report.getReportLibrary();
-    if (reportLibrary == null) {
-      throw new UnprocessableEntityException(
-          String.format("No report library exists for report %s", reportId));
-    }
+      // If the library is null, that means this report was save-as'ed with NBS 6 from a sas report
+      if (reportLibrary == null) {
+          return "sas";
+      }
 
     return reportLibrary.getRunner();
   }
