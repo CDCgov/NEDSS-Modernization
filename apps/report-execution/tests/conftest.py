@@ -157,7 +157,7 @@ def _seed_baseline_configuration(conn_string: str):
     """Initializes and seeds the NBS_configuration table for all integration tests."""
     logging.info('Seeding global configuration keys inside active containers...')
 
-    with db_transaction(conn_string) as trx:
+    with db_transaction(conn_string, True) as trx:
         baseline_configs = [
             ('REPORT_DB_NBS_RDB', 'RDB'),
             ('REPORT_DB_NBS_ODS', 'NBS_ODSE'),
@@ -285,7 +285,7 @@ def insert_fake_data(
     the current data in those db tables and saves the to temp tables
     """
     # swap out original data for fake data
-    with db_transaction(conn_string) as trx:
+    with db_transaction(conn_string, True) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
         # be backed up and cleared out to avoid FK constraint violations
         for fk_table in fk_tables:
@@ -319,7 +319,7 @@ def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: lis
     Intended to be run after `insert_fake_data`.
     """
     # restore the original data
-    with db_transaction(conn_string) as trx:
+    with db_transaction(conn_string, True) as trx:
         for db_table in db_tables:
             trx.execute(f'DELETE {db_table}')
             trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')
