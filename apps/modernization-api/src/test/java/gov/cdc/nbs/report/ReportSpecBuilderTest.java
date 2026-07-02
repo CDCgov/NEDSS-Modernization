@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
@@ -18,7 +17,6 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.report.utils.FieldFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,10 +90,6 @@ class ReportSpecBuilderTest {
   private ReportConfiguration mockReportConfiguration(
       List<BasicFilterConfiguration> filters, List<ReportColumn> columns, String title) {
     ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
-
-    DataSourceNameConfiguration dataSourceNameConfiguration =
-        Mockito.mock(DataSourceNameConfiguration.class);
-    Mockito.lenient().when(dataSourceNameConfiguration.getMappings()).thenReturn(new HashMap<>());
 
     Library library = Mockito.mock(Library.class);
     Mockito.lenient().when(reportConfiguration.library()).thenReturn(library);

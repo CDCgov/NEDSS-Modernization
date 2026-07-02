@@ -41,7 +41,15 @@ class MockTransaction:
     def __init__(self, cursor=None):
         self._cursor = cursor
 
-    def query(self, query):
+    def query(self, query, parameters=()):
+        if 'NBS_configuration' in query:
+            return Table(
+                columns=['config_value'],
+                data=[
+                    ('100000',)
+                ],  # Returns 1 row, satisfying the len(data) == 1 check
+            )
+
         return Table(
             columns=['id', 'name'],
             data=[
@@ -140,6 +148,44 @@ def setup_containers(request):
                 container.stop()
 
     request.addfinalizer(teardown)
+
+    conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+    _seed_baseline_configuration(conn_string)
+
+
+def _seed_baseline_configuration(conn_string: str):
+    """Initializes and seeds the NBS_configuration table for all integration tests."""
+    logging.info('Seeding global configuration keys inside active containers...')
+
+    with db_transaction(conn_string) as trx:
+        baseline_configs = [
+            ('REPORT_DB_NBS_RDB', 'RDB'),
+            ('REPORT_DB_NBS_ODS', 'NBS_ODSE'),
+            ('REPORT_DB_NBS_SRT', 'NBS_SRTE'),
+            ('REPORT_DB_NBS_MSG', 'NBS_MSGOUTE'),
+            ('REPORT_MAX_ROW_LIMIT_EXPORT', '100000'),
+            ('REPORT_MAX_ROW_LIMIT_RUN', '10000'),
+            ('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y'),
+            ('REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S'),
+        ]
+
+        for key, val in baseline_configs:
+            trx.execute(
+                'DELETE FROM NBS_ODSE..NBS_configuration WHERE config_key = ?', (key,)
+            )
+            trx.execute(
+                """
+                INSERT INTO NBS_ODSE..NBS_configuration (
+                    config_key, config_value,
+                    version_ctrl_nbr, add_user_id, add_time,
+                    last_chg_user_id, last_chg_time, status_cd, status_time
+                )
+                VALUES (?, ?, 1, 1, GETDATE(), 1, GETDATE(), 'A', GETDATE())
+                """,
+                (key, val),
+            )
+
+    logging.info('Global NBS_configuration entries seeded successfully.')
 
 
 def get_faker_sql(schema_name: str) -> list[str]:
