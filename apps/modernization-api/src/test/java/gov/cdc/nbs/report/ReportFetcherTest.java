@@ -35,9 +35,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ReportFetcherTest {
 
   @Mock private ReportRepository reportRepository;
-
-  private ReportLibrary reportLibrary;
-
+  
   @InjectMocks private ReportFetcher reportFetcher;
 
   private final Long reportUid = 1L;
