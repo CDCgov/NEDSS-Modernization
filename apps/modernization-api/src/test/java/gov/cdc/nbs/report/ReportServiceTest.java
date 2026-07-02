@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.mappers.ReportMapper;
@@ -560,6 +559,19 @@ class ReportServiceTest {
           .isInstanceOf(NotFoundException.class)
           .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
     }
+
+    @Test
+    void getReport_should_throw_when_library_not_found() {
+      Report report = mock(Report.class);
+
+      Mockito.lenient().when(report.getReportLibrary()).thenReturn(null);
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+      assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("No library found for this report");
+    }
   }
 
   @Nested
@@ -585,15 +597,15 @@ class ReportServiceTest {
     }
 
     @Test
-    void getReportRunner_should_throw_when_report_has_no_library() {
+    void getReportRunner_should_return_sas_when_report_has_no_library() {
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
       Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
 
       when(report.getReportLibrary()).thenReturn(null);
 
-      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
-          .isInstanceOf(UnprocessableEntityException.class)
-          .hasMessage("No report library exists for report %s", reportId);
+      String runner = service.getReportRunner(reportUid, dataSourceUid);
+
+      assertThat(runner).isEqualTo("sas");
     }
   }
 
