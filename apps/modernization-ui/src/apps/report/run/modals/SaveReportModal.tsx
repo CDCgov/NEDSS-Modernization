@@ -1,8 +1,8 @@
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import React, { RefObject } from 'react';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent.tsx';
+import { RefObject } from 'react';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import styles from './save-report-modal.module.scss';
-import { ButtonGroup } from '../../../../design-system/button';
+import { ButtonGroup } from 'design-system/button';
 
 type SaveReportModalProps = {
     saveReportModalRef: RefObject<ModalRef>;
