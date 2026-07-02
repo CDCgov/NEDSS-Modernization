@@ -32,6 +32,7 @@ import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { Heading } from '../../../../../components/heading';
+import { AlertMessage } from 'design-system/message/index.ts';
 
 // ============= Constants ============= /
 
@@ -232,6 +233,18 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
 
     return (
         <div className={styles.layout}>
+            {filter.exceptionMessage && (
+                <AlertMessage type="warning" title="Unable to use saved filter">
+                    <p>
+                        The filter saved on this report was unable to be read into the new format. It needs to be
+                        re-created and the report saved.
+                    </p>
+                    <p>The error message while trying to read the filter is:</p>
+                    <pre>{filter.exceptionMessage}</pre>
+                    <p>The original filter is:</p>
+                    <pre>{filter.query}</pre>
+                </AlertMessage>
+            )}
             {error?.message && (
                 <AlertBanner type="error">
                     <Heading level={2}>Fix the following errors:</Heading>
