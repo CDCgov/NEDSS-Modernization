@@ -38,7 +38,7 @@ class MockTransaction:
     """Mock version of Transaction with public api."""
 
     # Pointer to the parent connection for testing purposes
-    def __init__(self, cursor=None):
+    def __init__(self, cursor=None, is_export=True):
         self._cursor = cursor
 
     def query(self, query, parameters=()):
@@ -89,7 +89,7 @@ def mock_db_connection_ctxt(conn_string):
 
 
 @contextmanager
-def mock_db_transaction_ctxt(conn_string):
+def mock_db_transaction_ctxt(conn_string, is_export):
     """Mock context function for db_transaction."""
     yield MockTransaction()
 
