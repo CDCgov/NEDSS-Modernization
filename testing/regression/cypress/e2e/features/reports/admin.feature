@@ -39,7 +39,7 @@ Feature: View report configuration
         When I type "My test report" into the "Name" field
         When I type "My test report is the best report" into the "Description" field
         When I select value "System" in the "Owner" field
-        When I check "Reporting Facility" in the "Group" field
+        When I select radio "Reporting Facility" in the "Group" field
         When I select value "STD Report Section" in the "Section name" field
         When I select value "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" field
         # == Filters ==
@@ -113,7 +113,7 @@ Feature: View report configuration
         Then I should see value "My test report" in the "Name" "textbox" input field
         Then I should see value "My test report is the best report" in the "Description" "textbox" input field
         Then I should see option "System" in the "Owner" combobox input field
-        Then I should see "Reporting Facility" checked in the "Group" field
+        Then I should see "Reporting Facility" radio selected in the "Group" field
         Then I should see option "STD Report Section" in the "Section name" combobox input field
         Then I should see option "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" combobox input field
         Then I should see 4 available filters

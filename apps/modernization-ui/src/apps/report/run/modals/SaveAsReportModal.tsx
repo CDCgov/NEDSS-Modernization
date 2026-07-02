@@ -1,9 +1,8 @@
 import { Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
-import { Input } from 'components/FormInputs/Input.tsx';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import { Button, ButtonGroup } from 'design-system/button';
-import { TextAreaField } from 'design-system/input/text';
+import { TextAreaField, TextInputField } from 'design-system/input/text';
 import { RadioGroup } from 'design-system/radio/RadioGroup.tsx';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -11,10 +10,19 @@ import { Controller, useForm } from 'react-hook-form';
 import styles from './save-as-report-modal.module.scss';
 import { SingleSelect } from 'design-system/select';
 import { useReportSections } from 'options/report';
-import { SaveAsReportRequest } from 'generated';
+import { AdminReportRequest, SaveAsReportRequest } from 'generated';
 import { usePermissions } from 'libs/permission/usePermissions';
 import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
 import { Selectable } from 'options';
+import { validateRequiredRule } from 'validation/entry';
+import { EnumSelectable } from '../../utils.ts';
+
+type SaveAsForm = {
+    reportTitle: string;
+    description: string;
+    group: EnumSelectable<AdminReportRequest.group>;
+    sectionCode: Selectable;
+};
 
 export type SaveAsReportFormData = {
     reportTitle: string;
@@ -29,12 +37,19 @@ type SaveAsReportModalProps = {
     onSaveAs: (e: SaveAsReportFormData) => void;
 };
 
+const INPUT_LABELS = {
+    reportTitle: 'Name',
+    description: 'Description',
+    sectionCode: 'Section name',
+    group: 'Group',
+};
+
 const getUserReportCreatePermissionsOptions = (userPermissions: string[]): Selectable[] => {
     const allowedKeys = (Object.keys(PERMISSION_GROUP_MAP) as Array<keyof typeof PERMISSION_GROUP_MAP>).filter((key) =>
         userPermissions.includes(PERMISSION_GROUP_MAP[key].create)
     );
 
-    // maintain order of user permissions
+    // maintain order of user permissions when getting group options
     return allowedKeys.flatMap((key) => GROUP_OPTIONS.find((opt) => opt.value === key)) as Selectable[];
 };
 
@@ -43,16 +58,16 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
 
     const reportGroupOptions = getUserReportCreatePermissionsOptions(permissions.permissions);
 
-    const { control, handleSubmit } = useForm<SaveAsReportFormData>({
+    const { control, handleSubmit } = useForm<SaveAsForm>({
         defaultValues: {
             reportTitle: '',
             description: '',
-            sectionCode: '',
+            sectionCode: undefined,
             group: reportGroupOptions[0].valueOf(),
         },
     });
 
-    const handleOnSaveAs = (formData) => {
+    const handleOnSaveAs = (formData: SaveAsForm) => {
         const { reportTitle, sectionCode, group, description } = formData;
         const request = {
             reportTitle,
@@ -71,19 +86,19 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             modalHeading="Save as a new report"
             modalBody={
                 <div className={styles.form}>
-                    <Form onSubmit={handleSubmit(onSaveAs)}>
+                    <Form onSubmit={handleSubmit(handleOnSaveAs)}>
                         <Controller
                             name="reportTitle"
                             control={control}
-                            rules={{ required: 'Report name is required' }}
+                            rules={validateRequiredRule(INPUT_LABELS.reportTitle)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <TextInputField
                                     id={name}
                                     sizing={SIZING}
-                                    label="Report name"
+                                    label={INPUT_LABELS.reportTitle}
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    defaultValue={value || ''}
+                                    value={value}
                                     type="text"
                                     required
                                     error={error?.message}
@@ -94,12 +109,12 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                         <Controller
                             control={control}
                             name="description"
-                            rules={{ required: 'Description is required' }}
+                            rules={validateRequiredRule(INPUT_LABELS.description)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <TextAreaField
                                     id={name}
                                     sizing={SIZING}
-                                    label="Description"
+                                    label={INPUT_LABELS.description}
                                     onBlur={onBlur}
                                     onChange={onChange}
                                     value={value}
@@ -112,37 +127,39 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                         <Controller
                             control={control}
                             name="sectionCode"
-                            rules={{ required: 'Report section is required' }}
+                            rules={validateRequiredRule(INPUT_LABELS.sectionCode)}
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <SingleSelect
                                     id={name}
                                     sizing={SIZING}
-                                    label="Report section"
+                                    label={INPUT_LABELS.sectionCode}
                                     value={value}
                                     onChange={onChange}
                                     name={name}
                                     error={error?.message}
                                     required
                                     options={useReportSections()}
+                                    helperText="The heading under which the report appears."
                                 />
                             )}
                         />
                         <Controller
                             control={control}
                             name="group"
-                            rules={{ required: 'Access level is required' }}
+                            rules={validateRequiredRule(INPUT_LABELS.group)}
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <RadioGroup
                                     id={name}
                                     sizing={SIZING}
                                     className={styles.radioGroupWrapper}
-                                    label="Set access level"
+                                    label={INPUT_LABELS.group}
                                     options={reportGroupOptions}
                                     onChange={onChange}
                                     error={error?.message}
                                     value={value}
                                     orientation="vertical"
                                     required
+                                    helperText="The level of visibility for the report."
                                 />
                             )}
                         />
@@ -154,7 +171,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                     <ModalToggleButton modalRef={saveAsReportModalRef} outline disabled={saving}>
                         Cancel
                     </ModalToggleButton>
-                    <Button onClick={handleSubmit(handleOnSaveAs)} data-testid="report-save-as-btn" disabled={saving}>
+                    <Button onClick={handleSubmit(handleOnSaveAs)} disabled={saving}>
                         Save as new
                     </Button>
                 </ButtonGroup>

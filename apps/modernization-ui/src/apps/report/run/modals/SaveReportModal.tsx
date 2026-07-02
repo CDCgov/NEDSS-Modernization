@@ -25,12 +25,7 @@ export const SaveReportModal = ({ saveReportModalRef, saving, onSave }: SaveRepo
             }
             modalFooter={
                 <ButtonGroup>
-                    <ModalToggleButton
-                        modalRef={saveReportModalRef}
-                        outline
-                        data-testid="cancel-report-save-btn"
-                        disabled={saving}
-                    >
+                    <ModalToggleButton modalRef={saveReportModalRef} outline disabled={saving}>
                         Cancel
                     </ModalToggleButton>
                     <Button onClick={onSave} disabled={saving}>

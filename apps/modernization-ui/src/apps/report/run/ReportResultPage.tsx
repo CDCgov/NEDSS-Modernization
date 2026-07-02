@@ -116,7 +116,7 @@ const ReportResultPage = ({
                             onClick={() => saveAsReportModalRef.current?.toggleModal()}
                             disabled={resultLoading || !!error}
                         >
-                            Save As
+                            Save as new
                         </Button>
                         <SaveAsReportModal
                             saveAsReportModalRef={saveAsReportModalRef}

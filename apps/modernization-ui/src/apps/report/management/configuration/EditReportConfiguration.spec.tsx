@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, waitFor, within } from '@testing-library/react';
 import * as generated from 'generated';
 import * as options from 'options/selectableResolver';
 import { Layout } from 'layout';
@@ -119,7 +119,7 @@ const renderWithRouter = () => {
     return render(<RouterProvider router={router} />);
 };
 
-describe('add report configuration page', () => {
+describe('edit report configuration page', () => {
     const mockOptionApiImpl = (url: string) => {
         if (url.includes('datasources')) {
             return Promise.resolve([
@@ -176,10 +176,10 @@ describe('add report configuration page', () => {
         expect(await findByLabelText('Data source')).toHaveDisplayValue('nbs_ods.data_source (NBS Data Source)');
         expect(await findByLabelText('Name')).toHaveDisplayValue('Test Report');
         expect(await findByLabelText('Description')).toHaveDisplayValue('');
-        const privateRadio = screen.getByRole('radio', { name: 'Private' });
-        const publicRadio = screen.getByRole('radio', { name: 'Public' });
-        const reportingFacRadio = screen.getByRole('radio', { name: 'Reporting Facility' });
-        const templateRadio = screen.getByRole('radio', { name: 'Template' });
+        const privateRadio = getByRole('radio', { name: 'Private' });
+        const publicRadio = getByRole('radio', { name: 'Public' });
+        const reportingFacRadio = getByRole('radio', { name: 'Reporting Facility' });
+        const templateRadio = getByRole('radio', { name: 'Template' });
         expect(publicRadio).toBeChecked();
         expect(privateRadio).not.toBeChecked();
         expect(reportingFacRadio).not.toBeChecked();
@@ -210,9 +210,13 @@ describe('add report configuration page', () => {
         await user.clear(nameInput);
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        expect(await findByText(`The Name is required.`)).toBeVisible();
+        expect(await findByText('The Name is required.')).toBeVisible();
 
         await user.type(nameInput, 'Test report');
+
+        expect(await findByText('The Description is required.')).toBeVisible();
+        const descriptionInput = await findByLabelText('Description');
+        await user.type(descriptionInput, 'Test report description');
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 

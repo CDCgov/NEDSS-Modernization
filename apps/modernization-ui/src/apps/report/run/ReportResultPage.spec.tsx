@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
 import { Layout } from 'layout';
@@ -223,7 +223,7 @@ describe('report result page', () => {
             const props = createMockProps();
             const { getAllByRole, findByText } = renderWithRouter(props);
 
-            const saveButtons = await getAllByRole('button', { name: 'Save' });
+            const saveButtons = getAllByRole('button', { name: 'Save' });
             const openModalButton = saveButtons[0];
             await user.click(openModalButton);
 
@@ -244,27 +244,9 @@ describe('report result page', () => {
                 .mockResolvedValue(MOCK_SAVE_RESULT);
 
             const props = createMockProps();
-            const { findByLabelText, findByText, getByRole, getByTestId } = renderWithRouter(props);
+            const render = renderWithRouter(props);
 
-            const openModalButton = await getByRole('button', { name: 'Save As' });
-            await user.click(openModalButton);
-
-            expect(await findByText('Save as a new report')).toBeVisible();
-
-            const nameInput = await findByLabelText('Report name');
-            await user.type(nameInput, 'Test report');
-
-            const descInput = await findByLabelText('Description');
-            await user.type(descInput, 'Test report description');
-
-            const sectionInput = await findByLabelText('Report section');
-            await user.selectOptions(sectionInput, '1000');
-
-            const privateRadio = screen.getByRole('radio', { name: 'Private' });
-            expect(privateRadio).toBeChecked();
-
-            const confirmSaveAsButton = await getByTestId('report-save-as-btn');
-            await user.click(confirmSaveAsButton);
+            await fillAndSubmitSaveAsForm(user, render);
 
             expect(mockSaveAsApi).toHaveBeenCalledWith({
                 dataSourceUid: 1,
@@ -295,29 +277,37 @@ describe('report result page', () => {
             );
 
             const props = createMockProps();
-            const { getByRole, findByText, findByLabelText, getByTestId } = renderWithRouter(props);
+            const render = renderWithRouter(props);
 
-            const openModalButton = await getByRole('button', { name: 'Save As' });
-            await user.click(openModalButton);
+            await fillAndSubmitSaveAsForm(user, render);
 
-            const nameInput = await findByLabelText('Report name');
-            await user.type(nameInput, 'Test report');
-
-            const descInput = await findByLabelText('Description');
-            await user.type(descInput, 'Test report description');
-
-            const sectionInput = await findByLabelText('Report section');
-            await user.selectOptions(sectionInput, '1000');
-
-            const privateRadio = screen.getByRole('radio', { name: 'Private' });
-            expect(privateRadio).toBeChecked();
-
-            const confirmSaveAsButton = await getByTestId('report-save-as-btn');
-            await user.click(confirmSaveAsButton);
-
-            expect(await findByText('Issue with saving report as new')).toBeVisible();
-            expect(await findByText(/There was an error saving your report/)).toBeVisible();
+            expect(await render.findByText('Issue with saving report as new')).toBeVisible();
+            expect(await render.findByText(/There was an error saving your report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
     });
 });
+
+const fillAndSubmitSaveAsForm = async (
+    user: ReturnType<typeof userEvent.setup>,
+    render: ReturnType<typeof renderWithRouter>
+) => {
+    const { findByLabelText, getAllByRole, getByRole } = render;
+
+    const saveAsNewButtons = getAllByRole('button', { name: 'Save as new' });
+    await user.click(saveAsNewButtons[0]);
+
+    const nameInput = await findByLabelText('Name');
+    await user.type(nameInput, 'Test report');
+
+    const descInput = await findByLabelText('Description');
+    await user.type(descInput, 'Test report description');
+
+    const sectionInput = await findByLabelText('Section name');
+    await user.selectOptions(sectionInput, '1000');
+
+    const privateRadio = getByRole('radio', { name: 'Private' });
+    expect(privateRadio).toBeChecked();
+
+    await user.click(saveAsNewButtons[1]);
+};

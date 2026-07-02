@@ -24,7 +24,7 @@ import { GROUP_OPTIONS, SIZING } from '../../constants.ts';
 export type ConfigForm = {
     dataSourceId: Selectable;
     reportTitle: string;
-    description?: string;
+    description: string;
     ownerId: Selectable;
     group: EnumSelectable<ReportConfiguration.group>;
     sectionCode: Selectable;
@@ -78,7 +78,6 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     EditComponent={TextAreaField}
                     label="Description"
                     defaultValue={config?.description}
-                    required={false}
                     maxLength={300}
                 />
                 <Row

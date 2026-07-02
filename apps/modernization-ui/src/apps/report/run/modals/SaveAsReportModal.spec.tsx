@@ -43,21 +43,21 @@ describe('SaveAsReportModal', () => {
         await user.click(saveAsNewButton);
 
         expect(await axe(container)).toHaveNoViolations();
-        expect(await findByText('Report name is required')).toBeVisible();
-        expect(await findByText('Description is required')).toBeVisible();
-        expect(await findByText('Report section is required')).toBeVisible();
+        expect(await findByText('The Name is required.')).toBeVisible();
+        expect(await findByText('The Description is required.')).toBeVisible();
+        expect(await findByText('The Section name is required.')).toBeVisible();
 
-        const nameInput = await findByLabelText('Report name');
+        const nameInput = await findByLabelText('Name');
         await user.type(nameInput, 'Test report');
-        expect(queryByText('Report name is required')).toBeNull();
+        expect(queryByText('The Name is required.')).toBeNull();
 
         const descInput = await findByLabelText('Description');
         await user.type(descInput, 'Test report description');
-        expect(queryByText('Description is required')).toBeNull();
+        expect(queryByText('The Description is required.')).toBeNull();
 
-        const sectionInput = await findByLabelText('Report section');
+        const sectionInput = await findByLabelText('Section name');
         await user.selectOptions(sectionInput, '1000');
-        expect(queryByText('Report section is required')).toBeNull();
+        expect(queryByText('The Section name is required.')).toBeNull();
 
         const privateRadio = screen.getByRole('radio', { name: 'Private' });
         const publicRadio = screen.getByRole('radio', { name: 'Public' });
@@ -71,14 +71,12 @@ describe('SaveAsReportModal', () => {
         await user.click(saveAsNewButton);
 
         await waitFor(() => {
-            expect(mockOnSaveAs).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    reportTitle: 'Test report',
-                    description: 'Test report description',
-                    sectionCode: '1000',
-                    group: 'PUBLIC',
-                })
-            );
+            expect(mockOnSaveAs).toHaveBeenCalledWith({
+                reportTitle: 'Test report',
+                description: 'Test report description',
+                sectionCode: '1000',
+                group: 'PUBLIC',
+            });
         });
     });
 });

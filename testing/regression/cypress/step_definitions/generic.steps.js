@@ -28,7 +28,7 @@ When('I click the {string} button', (name) => {
     cy.findAllByRole('button', { name }).first().click();
 });
 
-When('I check {string} in the {string} field', (value, label) => {
+When('I select radio {string} in the {string} field', (value, label) => {
     cy.get(`[role="radiogroup"][aria-label="${label}"] input[name="${value}"]`)
       .check({ force: true });
 });
@@ -80,7 +80,7 @@ Then('I should not see the {string} {string}', (label, role) => {
     cy.findByRole({role}, { name: label }).should('not.exist');
 })
 
-Then('I should see {string} checked in the {string} field', (name, label) => {
+Then('I should see {string} radio selected in the {string} field', (name, label) => {
     cy.get(`[role="radiogroup"][aria-label="${label}"] input:checked`)
       .should('have.attr', 'name', name);
 });
