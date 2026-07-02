@@ -143,8 +143,8 @@ public class ReportService {
             report -> {
               ReportLibrary library = report.getReportLibrary();
               if (library == null) {
-                throw new IllegalStateException(
-                    "No library found for this report. This can happen if a report was created or save-as'ed with NBS 6, but is trying to be opened in NBS 7. Sync the report and report library tables using the query in the report admin guide.");
+                throw new IllegalArgumentException(
+                    "No library found for this report. This can happen if a report was created or save-as'ed with NBS 6, but is trying to be opened in NBS 7. Ask your NBS administrator to sync the report and report library tables using the query in the report admin guide.");
               }
 
               List<BasicFilterConfiguration> basicFilters =

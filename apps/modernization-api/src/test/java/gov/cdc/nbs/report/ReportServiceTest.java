@@ -553,6 +553,19 @@ class ReportServiceTest {
           .isInstanceOf(NotFoundException.class)
           .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
     }
+
+    @Test
+    void getReport_should_throw_when_library_not_found() {
+      Report report = mock(Report.class);
+
+      Mockito.lenient().when(report.getReportLibrary()).thenReturn(null);
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+      assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("No library found for this report");
+    }
   }
 
   @Nested
