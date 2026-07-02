@@ -14,6 +14,8 @@ configuration key is already present, it skips insertion entirely.
 ====================================================================================================
 */
 
+USE [NBS_ODSE]
+
 INSERT INTO [dbo].[NBS_configuration] (
     config_key,
     config_value,
