@@ -190,10 +190,10 @@ class FilterValueMapperTest {
       assertThat(result).hasSize(1);
       FilterValue filterValue = result.getFirst();
 
-      assertThat(filterValue.getId()).isEqualTo(generatedId);
-      assertThat(filterValue.getReportFilter()).isEqualTo(mockReportFilter);
       assertThat(filterValue.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
       assertThat(filterValue.getValueTxt()).isEqualTo(searchText);
+      assertThat(filterValue.getOperator()).isNull();
+      assertThat(filterValue.getColumnUid()).isNull();
     }
   }
 
