@@ -57,8 +57,7 @@ public class ReportService {
       ReportMapper reportMapper,
       ReportSortColumnMapper reportSortColumnMapper,
       FilterValueMapper filterValueMapper,
-      DisplayColumnBuilder displayColumnBuilder,
-      ReportFetcher reportFetcher) {
+      DisplayColumnBuilder displayColumnBuilder) {
 
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
