@@ -1268,7 +1268,6 @@ def _calc_new_clusters_open(
     for all workers if passed in worker is None.
     """
     rows = _rows_for_worker(clusters_initiated, worker)
-    count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
 
     # nb. mirrors the creation of "Co" table in SAS and the calculation of "New
     #     Clusters Open" (have to do this instead of _count_distinct_case_ids because
