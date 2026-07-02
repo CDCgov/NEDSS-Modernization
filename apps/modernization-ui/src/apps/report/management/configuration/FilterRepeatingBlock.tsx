@@ -4,7 +4,7 @@ import { HasValueFunction, NamedColumn } from 'design-system/table/header/column
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { addLabelToName, EnumSelectable } from '../../utils';
@@ -58,6 +58,8 @@ const FilterRepeatingBlock = ({
     isEditable: boolean;
     dataSource?: Selectable | string;
 }) => {
+    const [filtersIsDirty, setFiltersIsDirty] = useState<boolean>(false);
+
     const dataSourceSelected = !!dataSource;
     const filterOptions = useReportFilters();
     const rawColumnOptions = useColumnOptions(dataSource);
@@ -86,16 +88,25 @@ const FilterRepeatingBlock = ({
         <Controller
             name="filterRequests"
             defaultValue={defaultFilterData}
-            render={({ field: { onChange, value } }) => (
-                <FilterRepeatingBlockImpl
-                    onChange={onChange}
-                    isEditable={isEditable}
-                    dataSourceSelected={dataSourceSelected}
-                    filterOptions={filterOptions}
-                    columnOptions={columnOptions}
-                    value={value}
-                />
-            )}
+            rules={{ validate: () => !filtersIsDirty }}
+            render={({ field: { onChange, value } }) => {
+                // force revalidation when dirty state changes
+                useEffect(() => {
+                    onChange(value);
+                }, [filtersIsDirty]);
+
+                return (
+                    <FilterRepeatingBlockImpl
+                        onChange={onChange}
+                        isEditable={isEditable}
+                        dataSourceSelected={dataSourceSelected}
+                        filterOptions={filterOptions}
+                        columnOptions={columnOptions}
+                        setFiltersIsDirty={setFiltersIsDirty}
+                        value={value}
+                    />
+                );
+            }}
         />
     ) : (
         <FilterRepeatingBlockImpl
@@ -123,6 +134,7 @@ const FilterRepeatingBlockImpl = ({
     filterOptions,
     columnOptions,
     onChange,
+    setFiltersIsDirty,
 }: {
     isEditable: boolean;
     dataSourceSelected: boolean;
@@ -130,6 +142,7 @@ const FilterRepeatingBlockImpl = ({
     filterOptions?: Selectable[];
     columnOptions?: Selectable[];
     onChange?: (v: FilterConfig[]) => void;
+    setFiltersIsDirty?: (v: boolean) => void;
 }) => {
     return (
         <RepeatingBlock<FilterConfig>
@@ -143,6 +156,7 @@ const FilterRepeatingBlockImpl = ({
             data={value}
             disabled={!dataSourceSelected}
             onChange={onChange}
+            isDirty={setFiltersIsDirty}
             viewRenderer={(entry: FilterConfig) =>
                 filterColumns.map((fc) => (
                     <ValueField key={fc.id} label={fc.name} sizing={SIZING}>

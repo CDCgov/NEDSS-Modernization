@@ -12,7 +12,6 @@ import QueryBuilder, {
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
 import {
@@ -26,12 +25,14 @@ import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
 import { RemoveButton } from '././RemoveButton.tsx';
-
-import styles from './advanced-filter.module.scss';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
-import { Heading } from '../../../../../components/heading';
+import { ReactNode } from 'react';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
+
+import styles from './advanced-filter.module.scss';
+import classNames from 'classnames';
 
 // ============= Constants ============= /
 
@@ -54,9 +55,12 @@ const INPUT_TYPE_MAP: Record<string, string> = {
 type NbsQuery = RuleGroup | Rule;
 // to match `RuleType` more closely
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any };
+type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any; label?: string; type?: string };
 export type QbRuleGroup = RuleGroupType<QbRule>;
-type QbQuery = QbRuleGroup | QbRule;
+export type QbQuery = QbRuleGroup | QbRule;
+
+export const isQbRuleType = (rule: QbQuery): rule is QbRule => isRuleType(rule) && 'field' in rule;
+export const isQbRuleGroupType = (rule: QbQuery): rule is QbRuleGroup => !isQbRuleType(rule);
 
 // map rules and remove any extraneous fields
 function mapNbsRules(rule: NbsQuery, mapper: (r: Rule) => QbRule): QbQuery {
@@ -156,19 +160,21 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
 
 // Add another key 'label' to display in error msg
 // Add another key 'type' to support validation
-const addColNameAndTypeToRules = (columns: ReportColumn[], value: QbRuleGroup) => {
-    const rules = value.rules;
-    const updatedRules = rules.map((rule) => {
+const addColNameAndTypeToRules = (columns: ReportColumn[], value: QbRuleGroup): QbRuleGroup => {
+    const updatedRules: QbQuery[] = value.rules.map((rule) => {
         if ('rules' in rule && Array.isArray(rule.rules)) {
-            return addColNameAndTypeToRules(columns, rule as QbRuleGroup);
+            return addColNameAndTypeToRules(columns, rule);
         }
 
-        const matchedColumn = columns.find((col) => col.name === rule.field);
+        // cast to alternate type branch appease ts
+        const r = rule as QbRule;
+
+        const matchedColumn = columns.find((col) => col.name === r.field);
 
         return {
-            ...rule,
-            type: matchedColumn ? matchedColumn.sourceTypeCode : null,
-            label: matchedColumn ? matchedColumn.title : rule.field,
+            ...r,
+            type: matchedColumn ? matchedColumn.sourceTypeCode : undefined,
+            label: matchedColumn ? matchedColumn.title : r.field,
         };
     });
 
@@ -194,9 +200,18 @@ type ValidationResultMap = Record<string, ValidationResult>;
 
 const validator: QueryValidator = (q) => {
     const result: ValidationResultMap = {};
-    q.rules.forEach((r) => validateRule(r, result));
+    q.rules.forEach((r) => validateRule(r as QbQuery, result));
     return result;
 };
+
+const parseAdvancedFilterErrors = (message: string): string[] =>
+    message
+        .split('\n')
+        .map((str) => str.trim())
+        .filter(Boolean);
+
+const formatAdvancedFilterErrors = (message: string): ReactNode =>
+    parseAdvancedFilterErrors(message).map((msg, index) => <li key={`adv-filter-error-${index}`}>{msg}</li>);
 
 // ============= Drag And Drop ============= /
 
@@ -231,22 +246,11 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     return (
-        <div className={styles.layout}>
+        <div className={classNames(styles.layout, { [styles.validate]: !!error?.message })}>
             {error?.message && (
-                <AlertBanner type="error">
-                    <Heading level={2}>Fix the following errors:</Heading>
-                    <ul className={'margin-bottom-0'}>
-                        {error.message
-                            .split('.')
-                            .map((str) => str.trim())
-                            .filter(Boolean)
-                            .map((msg, index) => (
-                                <li key={`adv-filter-error-${index}`} className={'margin-bottom-1'}>
-                                    {msg}.
-                                </li>
-                            ))}
-                    </ul>
-                </AlertBanner>
+                <ValidationErrorBanner level={3}>
+                    <ul>{formatAdvancedFilterErrors(error.message)}</ul>
+                </ValidationErrorBanner>
             )}
             <KeyboardDnDProvider>
                 <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
@@ -298,4 +302,4 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
     );
 };
 
-export { AdvancedFilter, queryToAdvancedFilterRequest };
+export { AdvancedFilter, queryToAdvancedFilterRequest, parseAdvancedFilterErrors };
