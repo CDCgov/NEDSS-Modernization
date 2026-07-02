@@ -163,6 +163,21 @@ const MOCK_CONFIG: ReportConfiguration = {
     advancedFilter: undefined,
 };
 
+const MOCK_BASIC_FILTER = {
+    reportFilterUid: 1001,
+    filterType: {
+        id: 18,
+        codeTable: undefined,
+        descTxt: 'Basic Text Filter',
+        code: 'TXT_01',
+        codeSetName: undefined,
+        type: 'BAS_TXT',
+        name: 'Basic Text Filter',
+    },
+    isRequired: false,
+    defaultIncludeNulls: false,
+};
+
 const MOCK_RESULT: generated.ReportExecutionResult = {
     result: {
         content_type: generated.LibraryExecutionResult.content_type.TABLE,
@@ -194,12 +209,25 @@ const renderWithRouter = () => {
 describe('report run page', () => {
     describe('when given valid params', () => {
         it('renders the config', async () => {
-            const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
-            const { findByText } = renderWithRouter();
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const { findByText, queryByText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
             expect(await findByText('On this page')).toBeVisible();
+            expect(queryByText('No filters enabled')).toBeNull();
+        });
+
+        it('renders the no filter block when no filters', async () => {
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+            const { findByText, queryByText } = renderWithRouter();
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByText('No filters enabled')).toBeVisible();
+            expect(queryByText('On this page')).toBeNull();
         });
 
         it('run button submits config and opens in new tab', async () => {
@@ -208,9 +236,9 @@ describe('report run page', () => {
             const mockApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
             const windowOpen = vi.spyOn(window, 'open');
 
-            const { findByRole, findByText } = renderWithRouter();
+            const { findAllByRole, findByText } = renderWithRouter();
 
-            const runButton = await findByRole('button', { name: 'Run' });
+            const runButton = (await findAllByRole('button', { name: 'Run' }))[0];
             await user.click(runButton);
             expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: false }) });
 
@@ -225,9 +253,9 @@ describe('report run page', () => {
             const mockApi = vi.mocked(generated.ReportControllerService.exportReport).mockResolvedValue(MOCK_RESULT);
             const windowOpen = vi.spyOn(window, 'open');
 
-            const { findByRole, findByText } = renderWithRouter();
+            const { findAllByRole, findByText } = renderWithRouter();
 
-            const runButton = await findByRole('button', { name: 'Export' });
+            const runButton = (await findAllByRole('button', { name: 'Export' }))[0];
             await user.click(runButton);
             expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: true }) });
 
@@ -244,9 +272,9 @@ describe('report run page', () => {
                 .mocked(generated.ReportControllerService.saveReport)
                 .mockResolvedValue(MOCK_SAVE_RESULT);
 
-            const { findByRole, findByText, getAllByRole } = renderWithRouter();
+            const { findAllByRole, findByText, getAllByRole } = renderWithRouter();
 
-            const runButton = await findByRole('button', { name: 'Run' });
+            const runButton = (await findAllByRole('button', { name: 'Run' }))[0];
             await user.click(runButton);
             expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: false }) });
 
@@ -276,25 +304,11 @@ describe('report run page', () => {
 
     describe('basic filters', () => {
         describe('BasicFilter', () => {
-            const MOCK_FILTER = {
-                reportFilterUid: 1001,
-                filterType: {
-                    id: 18,
-                    codeTable: undefined,
-                    descTxt: 'Basic Text Filter',
-                    code: 'TXT_01',
-                    codeSetName: undefined,
-                    type: 'BAS_TXT',
-                    name: 'Basic Text Filter',
-                },
-                isRequired: false,
-                defaultIncludeNulls: false,
-            };
-
             it('renders the column title when available', async () => {
-                const mockApi = vi
-                    .mocked(useLoaderData)
-                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2001 }] });
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_BASIC_FILTER, reportColumnUid: 2001 }],
+                });
                 const { findByText, findByLabelText, queryByText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -305,9 +319,10 @@ describe('report run page', () => {
             });
 
             it('renders the filter name when column unavailable', async () => {
-                const mockApi = vi
-                    .mocked(useLoaderData)
-                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, reportColumnUid: 2099 }] });
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                    ...MOCK_CONFIG,
+                    basicFilters: [{ ...MOCK_BASIC_FILTER, reportColumnUid: 2099 }],
+                });
                 const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -318,7 +333,7 @@ describe('report run page', () => {
             it('renders the filter name when no column', async () => {
                 const mockApi = vi
                     .mocked(useLoaderData)
-                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER }] });
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_BASIC_FILTER }] });
                 const { findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -329,7 +344,7 @@ describe('report run page', () => {
             it('renders the required indicator', async () => {
                 const mockApi = vi
                     .mocked(useLoaderData)
-                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, isRequired: true }] });
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_BASIC_FILTER, isRequired: true }] });
                 const { findByText, findByRole } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -339,14 +354,14 @@ describe('report run page', () => {
             });
 
             describe('include nulls', () => {
-                const NULLABLE_MOCK_FILTER = {
-                    ...MOCK_FILTER,
-                    filterType: { ...MOCK_FILTER.filterType, code: 'J_S01_N' },
+                const NULLABLE_MOCK_BASIC_FILTER = {
+                    ...MOCK_BASIC_FILTER,
+                    filterType: { ...MOCK_BASIC_FILTER.filterType, code: 'J_S01_N' },
                 };
                 it('renders the include nulls checkbox when appropriate', async () => {
                     const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                         ...MOCK_CONFIG,
-                        basicFilters: [NULLABLE_MOCK_FILTER],
+                        basicFilters: [NULLABLE_MOCK_BASIC_FILTER],
                     });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
@@ -377,7 +392,7 @@ describe('report run page', () => {
                 it('starts from default value', async () => {
                     const mockApi = vi.mocked(useLoaderData).mockReturnValue({
                         ...MOCK_CONFIG,
-                        basicFilters: [{ ...NULLABLE_MOCK_FILTER, defaultIncludeNulls: true }],
+                        basicFilters: [{ ...NULLABLE_MOCK_BASIC_FILTER, defaultIncludeNulls: true }],
                     });
                     const mockResultApi = vi
                         .mocked(generated.ReportControllerService.exportReport)
