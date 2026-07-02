@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import gov.cdc.nbs.audit.Status;
@@ -207,6 +208,43 @@ class FilterValueMapperTest {
     }
 
     @Test
+    void fromBasicFilterRequest_should_set_relevant_fields_for_bas_days_filters() {
+      String numDays = "27";
+
+      FilterCode basDaysFilterCode =
+          FilterCode.builder()
+              .id(48930L)
+              .codeTable("NONE")
+              .descTxt("Days Filter for duplicate events")
+              .effectiveTime(
+                  new EffectiveTime(
+                      LocalDateTime.now(clock).minusMonths(4),
+                      LocalDateTime.now(clock).plusYears(3)))
+              .code("D_01")
+              .filterType("BAS_DAYS")
+              .filterName("Duplicate Investigations Time Frame")
+              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+              .build();
+
+      List<String> values = List.of(numDays);
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basDaysFilterCode);
+
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(1);
+      FilterValue filterValue = result.getFirst();
+
+      assertThat(filterValue.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
+      assertThat(filterValue.getValueTxt()).isEqualTo(numDays);
+
+      assertThat(filterValue.getOperator()).isNull();
+      assertThat(filterValue.getColumnUid()).isNull();
+      assertThat(filterValue.getSequenceNumber()).isNull();
+    }
+
+    @Test
     void
         fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_list_filters() {
       FilterCode basTimRangeListFilterCode =
@@ -255,8 +293,49 @@ class FilterValueMapperTest {
     }
 
     @Test
-    void fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_filters() {
+    void
+        fromBasicFilterRequest_should_throw_error_if_bas_tim_range_list_filter_does_not_have_two_values() {
       FilterCode basTimRangeListFilterCode =
+          FilterCode.builder()
+              .id(48970L)
+              .codeTable("NONE")
+              .descTxt("Basic Time Filter for Time Period Has two drop downs for YYYY to YYYY")
+              .effectiveTime(
+                  new EffectiveTime(
+                      LocalDateTime.now(clock).minusMonths(4),
+                      LocalDateTime.now(clock).plusYears(3)))
+              .code("T_T02")
+              .filterType("BAS_TIM_RANGE_LIST")
+              .filterName("Time Period")
+              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+              .build();
+
+      String year1 = "2010";
+      String year2 = "2017";
+      String year3 = "2026";
+
+      Mockito.lenient()
+          .when(mockReportFilter.getFilterCode())
+          .thenReturn(basTimRangeListFilterCode);
+
+      BasicFilterRequest requestWithThreeVals =
+          new BasicFilterRequest(mockReportFilter.getId(), List.of(year1, year2, year3), false);
+      BasicFilterRequest requestWithOneVal =
+          new BasicFilterRequest(mockReportFilter.getId(), List.of(year1), false);
+
+      assertThatThrownBy(
+              () -> mapper.fromBasicFilterRequest(mockReportFilter, requestWithThreeVals))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("Time range filter must have exactly two values: start and end");
+
+      assertThatThrownBy(() -> mapper.fromBasicFilterRequest(mockReportFilter, requestWithOneVal))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("Time range filter must have exactly two values: start and end");
+    }
+
+    @Test
+    void fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_filters() {
+      FilterCode basTimRangeFilterCode =
           FilterCode.builder()
               .id(48970L)
               .codeTable("NONE")
@@ -275,9 +354,7 @@ class FilterValueMapperTest {
       String endDate = "06/29/2026";
       List<String> values = List.of(beginDate, endDate);
 
-      Mockito.lenient()
-          .when(mockReportFilter.getFilterCode())
-          .thenReturn(basTimRangeListFilterCode);
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
@@ -299,6 +376,45 @@ class FilterValueMapperTest {
         assertThat(filterValue.getColumnUid()).isNull();
         assertThat(filterValue.getSequenceNumber()).isNull();
       }
+    }
+
+    @Test
+    void
+        fromBasicFilterRequest_should_throw_error_if_bas_tim_range_filter_does_not_have_two_values() {
+      FilterCode basTimRangeFilterCode =
+          FilterCode.builder()
+              .id(48970L)
+              .codeTable("NONE")
+              .descTxt("Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY")
+              .effectiveTime(
+                  new EffectiveTime(
+                      LocalDateTime.now(clock).minusMonths(4),
+                      LocalDateTime.now(clock).plusYears(3)))
+              .code("T_T01")
+              .filterType("BAS_TIM_RANGE")
+              .filterName("Time Range")
+              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+              .build();
+
+      String date1 = "07/14/2010";
+      String date2 = "06/29/2026";
+      String date3 = "06/29/2026";
+
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
+
+      BasicFilterRequest requestWithThreeVals =
+          new BasicFilterRequest(mockReportFilter.getId(), List.of(date1, date2, date3), false);
+      BasicFilterRequest requestWithOneVal =
+          new BasicFilterRequest(mockReportFilter.getId(), List.of(date1), false);
+
+      assertThatThrownBy(
+              () -> mapper.fromBasicFilterRequest(mockReportFilter, requestWithThreeVals))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("Time range filter must have exactly two values: start and end");
+
+      assertThatThrownBy(() -> mapper.fromBasicFilterRequest(mockReportFilter, requestWithOneVal))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessage("Time range filter must have exactly two values: start and end");
     }
   }
 
