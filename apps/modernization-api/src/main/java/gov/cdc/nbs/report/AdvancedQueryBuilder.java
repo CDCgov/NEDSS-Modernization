@@ -38,7 +38,7 @@ public class AdvancedQueryBuilder {
         filterValues.stream()
             .map(
                 f -> {
-                  if (f.getValueTxt() == null) {
+                  if (f.getValueType() == "OPERATOR") {
                     return f.getOperator();
                   } else {
                     DataSourceColumn column =
