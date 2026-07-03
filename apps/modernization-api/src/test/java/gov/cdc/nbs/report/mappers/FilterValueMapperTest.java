@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -209,8 +210,12 @@ class FilterValueMapperTest {
 
     @Test
     void fromBasicFilterRequest_should_return_empty_list_if_no_values_and_includeNulls_is_false() {
-      List<String> values = new ArrayList<>();
-      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
+      FilterCode filterCode = buildBasicTimeRangeListFilterCode();
+
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(filterCode);
+
+      BasicFilterRequest request =
+          new BasicFilterRequest(mockReportFilter.getId(), Collections.emptyList(), false);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 

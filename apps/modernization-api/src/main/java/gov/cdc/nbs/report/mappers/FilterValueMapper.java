@@ -25,15 +25,18 @@ public class FilterValueMapper {
       ReportFilter basicFilter, BasicFilterRequest request) {
     List<FilterValue> basicFilterValues = new ArrayList<>();
 
-    if (request.includeNulls() && request.values().isEmpty()) {
-      basicFilterValues.add(
-          FilterValue.builder()
-              .id(generateFilterValueId())
-              .reportFilter(basicFilter)
-              .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
-              .valueType(ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE)
-              .valueTxt("")
-              .build());
+    if (request.values().isEmpty()) {
+      if (!request.includeNulls()) return basicFilterValues;
+      else {
+        basicFilterValues.add(
+            FilterValue.builder()
+                .id(generateFilterValueId())
+                .reportFilter(basicFilter)
+                .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
+                .valueType(ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE)
+                .valueTxt("")
+                .build());
+      }
     } else if (ReportConstants.BAS_TIME_RANGE_TYPES.contains(
         basicFilter.getFilterCode().getFilterType())) {
       if (request.values().size() != 2) {
