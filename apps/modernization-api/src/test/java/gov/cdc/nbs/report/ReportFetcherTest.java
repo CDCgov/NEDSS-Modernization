@@ -17,7 +17,6 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
 import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.exception.NotFoundException;
-import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.repository.ReportRepository;
 import java.util.ArrayList;
@@ -144,17 +143,19 @@ class ReportFetcherTest {
     }
 
     @Test
-    void getReportRunner_should_return_sas_when_report_not_found() {
+    void getReportRunner_should_throw_when_report_not_found() {
       ReportId id = new ReportId(reportUid, dataSourceUid);
       when(reportRepository.findById(id)).thenReturn(Optional.empty());
 
-      String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
-
-      assertThat(runner).isEqualTo("sas");
+      assertThatThrownBy(() -> reportFetcher.getReportRunner(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage(
+              "Report not found for Report UID: %s and Data Source UID: %s",
+              reportUid, dataSourceUid);
     }
 
     @Test
-    void getReportRunner_should_throw_when_report_has_no_library() {
+    void getReportRunner_should_return_sas_when_report_has_no_library() {
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
       Report report = buildTestReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
 
@@ -162,9 +163,9 @@ class ReportFetcherTest {
 
       Mockito.lenient().when(reportRepository.findById(reportId)).thenReturn(Optional.of(report));
 
-      assertThatThrownBy(() -> reportFetcher.getReportRunner(reportUid, dataSourceUid))
-          .isInstanceOf(UnprocessableEntityException.class)
-          .hasMessage("No report library exists for report %s", reportId);
+      String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
+
+      assertThat(runner).isEqualTo("sas");
     }
   }
 
