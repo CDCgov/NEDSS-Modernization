@@ -25,7 +25,19 @@ public class FilterValueMapper {
       ReportFilter basicFilter, BasicFilterRequest request) {
     List<FilterValue> basicFilterValues = new ArrayList<>();
 
-    if (ReportConstants.BAS_TIME_RANGE_TYPES.contains(
+    if (request.values().isEmpty()) {
+      if (!request.includeNulls()) return basicFilterValues;
+      else {
+        basicFilterValues.add(
+            FilterValue.builder()
+                .id(generateFilterValueId())
+                .reportFilter(basicFilter)
+                .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
+                .valueType(ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE)
+                .valueTxt("")
+                .build());
+      }
+    } else if (ReportConstants.BAS_TIME_RANGE_TYPES.contains(
         basicFilter.getFilterCode().getFilterType())) {
       if (request.values().size() != 2) {
         throw new IllegalArgumentException(
@@ -37,6 +49,7 @@ public class FilterValueMapper {
               .id(generateFilterValueId())
               .reportFilter(basicFilter)
               .valueType("BEGIN_RANGE")
+              .operator(request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null)
               .valueTxt(request.values().getFirst())
               .build();
 
@@ -45,6 +58,7 @@ public class FilterValueMapper {
               .id(generateFilterValueId())
               .reportFilter(basicFilter)
               .valueType("END_RANGE")
+              .operator(request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null)
               .valueTxt(request.values().getLast())
               .build();
 
@@ -59,19 +73,12 @@ public class FilterValueMapper {
                           .reportFilter(basicFilter)
                           .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
                           .valueTxt(value == null ? "" : value)
+                          .operator(
+                              request.includeNulls()
+                                  ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP
+                                  : null)
                           .build())
               .collect(Collectors.toCollection(ArrayList::new)));
-    }
-
-    if (request.includeNulls()) {
-      basicFilterValues.add(
-          FilterValue.builder()
-              .id(generateFilterValueId())
-              .reportFilter(basicFilter)
-              .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
-              .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
-              .valueTxt("")
-              .build());
     }
 
     return basicFilterValues;

@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,8 +106,35 @@ class FilterValueMapperTest {
     }
 
     @Test
-    void fromBasicFilterRequest_should_handle_includeNulls_parameter() {
-      List<String> values = List.of("value1");
+    void fromBasicFilterRequest_should_handle_includeNulls_set_to_true_for_bas_txt_filters() {
+      FilterCode basTxtFilterCode = buildBasicTextFilterCode();
+
+      List<String> values = List.of("value1", "value2", "value3");
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
+
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result)
+          .hasSize(3)
+          .allSatisfy(
+              fv -> {
+                assertThat(fv.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
+                assertThat(fv.getOperator()).isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
+              });
+    }
+
+    @Test
+    void fromBasicFilterRequest_should_handle_includeNulls_set_to_true_for_bas_tim_range_filters() {
+      FilterCode basTimRangeFilterCode = buildBasicTimeRangeFilterCode();
+
+      String date1 = "07/14/2010";
+      String date2 = "06/29/2026";
+      List<String> values = List.of(date1, date2);
+
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
+
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
@@ -115,13 +143,33 @@ class FilterValueMapperTest {
           .hasSize(2)
           .allSatisfy(
               fv -> {
-                assertThat(fv.getId()).isNotNull();
-                assertThat(fv.getReportFilter()).isEqualTo(mockReportFilter);
-                assertThat(fv.getValueType()).isEqualTo(ReportConstants.BASIC_FILTER_VALUE_TYPE);
+                assertThat(fv.getOperator()).isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
               });
+    }
 
-      assertThat(result.getLast().getOperator())
-          .isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
+    @Test
+    void
+        fromBasicFilterRequest_should_handle_includeNulls_set_to_true_for_bas_tim_range_list_filters() {
+      FilterCode basTimRangeListFilterCode = buildBasicTimeRangeListFilterCode();
+
+      String year1 = "2010";
+      String year2 = "2026";
+      List<String> values = List.of(year1, year2);
+
+      Mockito.lenient()
+          .when(mockReportFilter.getFilterCode())
+          .thenReturn(basTimRangeListFilterCode);
+
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result)
+          .hasSize(2)
+          .allSatisfy(
+              fv -> {
+                assertThat(fv.getOperator()).isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
+              });
     }
 
     @Test
@@ -161,9 +209,13 @@ class FilterValueMapperTest {
     }
 
     @Test
-    void fromBasicFilterRequest_should_handle_empty_values_list() {
-      List<String> values = new ArrayList<>();
-      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
+    void fromBasicFilterRequest_should_return_empty_list_if_no_values_and_includeNulls_is_false() {
+      FilterCode filterCode = buildBasicTimeRangeListFilterCode();
+
+      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(filterCode);
+
+      BasicFilterRequest request =
+          new BasicFilterRequest(mockReportFilter.getId(), Collections.emptyList(), false);
 
       List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
 
@@ -171,23 +223,30 @@ class FilterValueMapperTest {
     }
 
     @Test
+    void
+        fromBasicFilterRequest_should_create_allow_nulls_val_if_no_values_and_includeNulls_is_true() {
+      List<String> values = new ArrayList<>();
+      BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
+
+      List<FilterValue> result = mapper.fromBasicFilterRequest(mockReportFilter, request);
+
+      assertThat(result).hasSize(1);
+
+      FilterValue filterValue = result.getFirst();
+      assertThat(filterValue.getValueType())
+          .isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE);
+      assertThat(filterValue.getOperator()).isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
+
+      assertThat(filterValue.getValueTxt()).isEqualTo("");
+      assertThat(filterValue.getColumnUid()).isNull();
+      assertThat(filterValue.getSequenceNumber()).isNull();
+    }
+
+    @Test
     void fromBasicFilterRequest_should_set_relevant_fields_for_bas_txt_filters() {
       String searchText = "basic_text_search_value";
 
-      FilterCode basTxtFilterCode =
-          FilterCode.builder()
-              .id(48930L)
-              .codeTable("NONE")
-              .descTxt("Basic Text Filter")
-              .effectiveTime(
-                  new EffectiveTime(
-                      LocalDateTime.now(clock).minusMonths(4),
-                      LocalDateTime.now(clock).plusYears(3)))
-              .code("TXT_01")
-              .filterType("BAS_TXT")
-              .filterName("Basic Text Filter")
-              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-              .build();
+      FilterCode basTxtFilterCode = buildBasicTextFilterCode();
 
       List<String> values = List.of(searchText);
       Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
@@ -247,20 +306,7 @@ class FilterValueMapperTest {
     @Test
     void
         fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_list_filters() {
-      FilterCode basTimRangeListFilterCode =
-          FilterCode.builder()
-              .id(48970L)
-              .codeTable("NONE")
-              .descTxt("Basic Time Filter for Time Period Has two drop downs for YYYY to YYYY")
-              .effectiveTime(
-                  new EffectiveTime(
-                      LocalDateTime.now(clock).minusMonths(4),
-                      LocalDateTime.now(clock).plusYears(3)))
-              .code("T_T02")
-              .filterType("BAS_TIM_RANGE_LIST")
-              .filterName("Time Period")
-              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-              .build();
+      FilterCode basTimRangeListFilterCode = buildBasicTimeRangeListFilterCode();
 
       String beginYear = "2010";
       String endYear = "2026";
@@ -295,20 +341,7 @@ class FilterValueMapperTest {
     @Test
     void
         fromBasicFilterRequest_should_throw_error_if_bas_tim_range_list_filter_does_not_have_two_values() {
-      FilterCode basTimRangeListFilterCode =
-          FilterCode.builder()
-              .id(48970L)
-              .codeTable("NONE")
-              .descTxt("Basic Time Filter for Time Period Has two drop downs for YYYY to YYYY")
-              .effectiveTime(
-                  new EffectiveTime(
-                      LocalDateTime.now(clock).minusMonths(4),
-                      LocalDateTime.now(clock).plusYears(3)))
-              .code("T_T02")
-              .filterType("BAS_TIM_RANGE_LIST")
-              .filterName("Time Period")
-              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-              .build();
+      FilterCode basTimRangeListFilterCode = buildBasicTimeRangeFilterCode();
 
       String year1 = "2010";
       String year2 = "2017";
@@ -335,20 +368,7 @@ class FilterValueMapperTest {
 
     @Test
     void fromBasicFilterRequest_should_create_relevant_filter_values_for_bas_tim_range_filters() {
-      FilterCode basTimRangeFilterCode =
-          FilterCode.builder()
-              .id(48970L)
-              .codeTable("NONE")
-              .descTxt("Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY")
-              .effectiveTime(
-                  new EffectiveTime(
-                      LocalDateTime.now(clock).minusMonths(4),
-                      LocalDateTime.now(clock).plusYears(3)))
-              .code("T_T01")
-              .filterType("BAS_TIM_RANGE")
-              .filterName("Time Range")
-              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-              .build();
+      FilterCode basTimRangeFilterCode = buildBasicTimeRangeFilterCode();
 
       String beginDate = "07/14/2010";
       String endDate = "06/29/2026";
@@ -381,20 +401,7 @@ class FilterValueMapperTest {
     @Test
     void
         fromBasicFilterRequest_should_throw_error_if_bas_tim_range_filter_does_not_have_two_values() {
-      FilterCode basTimRangeFilterCode =
-          FilterCode.builder()
-              .id(48970L)
-              .codeTable("NONE")
-              .descTxt("Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY")
-              .effectiveTime(
-                  new EffectiveTime(
-                      LocalDateTime.now(clock).minusMonths(4),
-                      LocalDateTime.now(clock).plusYears(3)))
-              .code("T_T01")
-              .filterType("BAS_TIM_RANGE")
-              .filterName("Time Range")
-              .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-              .build();
+      FilterCode basTimRangeFilterCode = buildBasicTimeRangeFilterCode();
 
       String date1 = "07/14/2010";
       String date2 = "06/29/2026";
@@ -415,6 +422,51 @@ class FilterValueMapperTest {
       assertThatThrownBy(() -> mapper.fromBasicFilterRequest(mockReportFilter, requestWithOneVal))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessage("Time range filter must have exactly two values: start and end");
+    }
+
+    private FilterCode buildBasicTextFilterCode() {
+      return FilterCode.builder()
+          .id(48930L)
+          .codeTable("NONE")
+          .descTxt("Basic Text Filter")
+          .effectiveTime(
+              new EffectiveTime(
+                  LocalDateTime.now(clock).minusMonths(4), LocalDateTime.now(clock).plusYears(3)))
+          .code("TXT_01")
+          .filterType("BAS_TXT")
+          .filterName("Basic Text Filter")
+          .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+          .build();
+    }
+
+    private FilterCode buildBasicTimeRangeFilterCode() {
+      return FilterCode.builder()
+          .id(48970L)
+          .codeTable("NONE")
+          .descTxt("Basic Time Filter for Time Range accepts MM;YYYY to MM;YYYY")
+          .effectiveTime(
+              new EffectiveTime(
+                  LocalDateTime.now(clock).minusMonths(4), LocalDateTime.now(clock).plusYears(3)))
+          .code("T_T01")
+          .filterType("BAS_TIM_RANGE")
+          .filterName("Time Range")
+          .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+          .build();
+    }
+
+    private FilterCode buildBasicTimeRangeListFilterCode() {
+      return FilterCode.builder()
+          .id(48970L)
+          .codeTable("NONE")
+          .descTxt("Basic Time Filter for Time Period Has two drop downs for YYYY to YYYY")
+          .effectiveTime(
+              new EffectiveTime(
+                  LocalDateTime.now(clock).minusMonths(4), LocalDateTime.now(clock).plusYears(3)))
+          .code("T_T02")
+          .filterType("BAS_TIM_RANGE_LIST")
+          .filterName("Time Period")
+          .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+          .build();
     }
   }
 
