@@ -1,6 +1,6 @@
 import { Button } from 'design-system/button';
 import { ReportLayout } from '../layout/ReportLayout';
-import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } from 'generated';
+import { ReportConfiguration, ReportControllerService, ReportExecutionRequest, SaveAsReportRequest } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { ReactNode, useRef, useState } from 'react';
 import { Heading } from 'components/heading';
@@ -43,27 +43,27 @@ const ReportResultPage = ({
     const saveReportModalRef = useRef<ModalRef>(null);
     const saveAsReportModalRef = useRef<ModalRef>(null);
 
-    const onSave = () => {
-        const runner = ReportControllerService.saveReport;
-        setSaving(true);
-        setSaveError(null);
-
-        if (executionRequest === undefined) {
-            setSaving(false);
+    const handleReportSave = (isSaveAs: boolean, request?: SaveAsReportRequest) => {
+        if (!executionRequest || (isSaveAs && !request)) {
             setSaveError(INTERNAL_ERROR_MSG);
             return;
         }
 
+        setSaving(true);
+        setSaveError(null);
+
+        const runner = isSaveAs ? ReportControllerService.saveAsReport : ReportControllerService.saveReport;
         runner({
             reportUid: executionRequest.reportUid,
             dataSourceUid: executionRequest.dataSourceUid,
-            requestBody: executionRequest,
+            requestBody: (isSaveAs ? request : executionRequest) as SaveAsReportRequest & ReportExecutionRequest,
         })
             .then(() => {
                 redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
             })
             .catch((err) => {
-                saveReportModalRef.current?.toggleModal();
+                const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
+                modalRef.current?.toggleModal();
                 setSaveError(err.message);
             })
             .finally(() => {
@@ -71,32 +71,12 @@ const ReportResultPage = ({
             });
     };
 
+    const onSave = () => {
+        handleReportSave(false);
+    };
+
     const onSaveAs = (response: SaveAsReportFormData) => {
-        const runner = ReportControllerService.saveAsReport;
-        setSaving(false);
-        setSaveError(null);
-
-        if (executionRequest === undefined) {
-            setSaving(false);
-            setSaveError(INTERNAL_ERROR_MSG);
-            return;
-        }
-
-        const requestBody = { ...response, executionRequest };
-
-        runner({
-            reportUid: executionRequest.reportUid,
-            dataSourceUid: executionRequest.dataSourceUid,
-            requestBody,
-        })
-            .then(() => {
-                redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
-            })
-            .catch((err) => {
-                saveAsReportModalRef.current?.toggleModal();
-                setSaveError(err.message);
-            })
-            .finally(() => setSaving(false));
+        handleReportSave(true, { ...response, executionRequest } as SaveAsReportRequest);
     };
 
     return (
@@ -105,7 +85,7 @@ const ReportResultPage = ({
             actions={
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
-                        <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading || saving}>
+                        <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading}>
                             Refine Report
                         </Button>
                     </Permitted>
@@ -131,7 +111,7 @@ const ReportResultPage = ({
                     <Shown when={user?.identifier === config.ownerUid}>
                         <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
                             <Button
-                                onClick={saveReportModalRef.current?.toggleModal}
+                                onClick={() => saveReportModalRef.current?.toggleModal()}
                                 disabled={resultLoading || !!error}
                             >
                                 Save

@@ -29,7 +29,8 @@ When('I click the {string} button', (name) => {
 });
 
 When('I select radio {string} in the {string} field', (value, label) => {
-    cy.get(`[role="radiogroup"][aria-label="${label}"] input[name="${value}"]`)
+    cy.findByRole('radiogroup', {name: label})
+      .findByRole('radio', { name: value })
       .check({ force: true });
 });
 
@@ -81,6 +82,7 @@ Then('I should not see the {string} {string}', (label, role) => {
 })
 
 Then('I should see {string} radio selected in the {string} field', (name, label) => {
-    cy.get(`[role="radiogroup"][aria-label="${label}"] input:checked`)
-      .should('have.attr', 'name', name);
+    cy.findByRole('radiogroup', {name: label})
+      .findByRole('radio', { name })
+      .should('be.checked');
 });
