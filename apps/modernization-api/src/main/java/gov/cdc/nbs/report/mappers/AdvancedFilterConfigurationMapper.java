@@ -38,7 +38,7 @@ public class AdvancedFilterConfigurationMapper {
         ruleGroup = advQueryBuilder.build();
       } catch (AdvancedQueryException e) {
         exceptionMsg = e.getMessage();
-        LOGGER.log(System.Logger.Level.WARNING, "Error occurred while building AdvancedQuery", e);
+        LOGGER.log(System.Logger.Level.WARNING, "Unable to parse saved advanced filter query", e);
       }
     }
 
