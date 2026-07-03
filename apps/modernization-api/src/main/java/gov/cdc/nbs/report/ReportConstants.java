@@ -15,6 +15,7 @@ public final class ReportConstants {
   }
 
   public static final String BASIC_FILTER_VALUE_TYPE = "code";
+  public static final String BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE = "none";
 
   public static final String BASIC_FILTER_ALLOW_NULLS_OP = "ALLOW_NULLS";
 
