@@ -2745,7 +2745,7 @@ describe('report run page', () => {
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
             ]);
-            const { getByTestId, findAllByText, findByRole, findAllByRole, findAllByLabelText } = renderWithRouter();
+            const { getByTestId, findAllByText, findByRole, findAllByLabelText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 

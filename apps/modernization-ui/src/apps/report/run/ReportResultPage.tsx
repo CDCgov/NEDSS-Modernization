@@ -142,38 +142,38 @@ const ReportResultPage = ({
                 </>
             }
         >
-            {resultLoading ? (
-                <TextCard loading={true}>
-                    <Heading level={2}>
-                        {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. Please do not leave
-        this page while your report is generating.`}
-                    </Heading>
-                    <p>
-                        This might take several minutes for large reports. To be sure it opens, check that pop-ups are
-                        enabled in your browser.
-                    </p>
-                </TextCard>
-            ) : (
-                !error && (
-                    <div className="display-flex flex-column">
-                        {saveError && (
-                            <AlertMessage
-                                className={classNames(layoutStyles.alertMessage, 'margin-top-2 margin-x-2')}
-                                type="error"
-                                title="There was an error saving your report.
-                    If this error persists, contact your NBS administrator for help."
-                            >
-                                {saveError}
-                            </AlertMessage>
-                        )}
+            <div className="display-flex flex-column">
+                {(error || saveError) && (
+                    <AlertMessage
+                        className={classNames(layoutStyles.alertMessage, 'margin-top-2 margin-x-2')}
+                        type="error"
+                        title={`There was an error ${saveError ? 'saving' : wasExported ? 'exporting' : 'running'} 
+                        your report. If this error persists, contact your NBS administrator for help.`}
+                    >
+                        {saveError}
+                    </AlertMessage>
+                )}
+                {resultLoading ? (
+                    <TextCard loading={true}>
+                        <Heading level={2}>
+                            {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. 
+                            Please do not leave this page while your report is generating.`}
+                        </Heading>
+                        <p>
+                            This might take several minutes for large reports. To be sure it opens, check that pop-ups
+                            are enabled in your browser.
+                        </p>
+                    </TextCard>
+                ) : (
+                    !error && (
                         <TextCard>
                             <Heading level={2}>
                                 {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
                             </Heading>
                         </TextCard>
-                    </div>
-                )
-            )}
+                    )
+                )}
+            </div>
         </ReportLayout>
     );
 };

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { SaveAsReportModal } from './SaveAsReportModal.tsx';
 import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event/dist/cjs/index.js';
@@ -28,7 +28,9 @@ vi.mock('options/report', () => ({
 
 describe('SaveAsReportModal', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<SaveAsReportModal onSaveAs={mockSaveAs} saveAsReportModalRef={modalRef} />);
+        const { container } = render(
+            <SaveAsReportModal onSaveAs={mockSaveAs} saveAsReportModalRef={modalRef} saving={false} />
+        );
         expect(await axe(container)).toHaveNoViolations();
     });
 
@@ -36,8 +38,8 @@ describe('SaveAsReportModal', () => {
         const mockOnSaveAs = vi.fn();
         const user = userEvent.setup();
 
-        const { container, findByLabelText, findByRole, findByText, queryByText } = render(
-            <SaveAsReportModal onSaveAs={mockOnSaveAs} saveAsReportModalRef={modalRef} />
+        const { container, findByLabelText, findByRole, findByText, queryByText, getByRole } = render(
+            <SaveAsReportModal onSaveAs={mockOnSaveAs} saveAsReportModalRef={modalRef} saving={false} />
         );
         const saveAsNewButton = await findByRole('button', { name: 'Save as new' });
         await user.click(saveAsNewButton);
@@ -59,8 +61,8 @@ describe('SaveAsReportModal', () => {
         await user.selectOptions(sectionInput, '1000');
         expect(queryByText('The Section name is required.')).toBeNull();
 
-        const privateRadio = screen.getByRole('radio', { name: 'Private' });
-        const publicRadio = screen.getByRole('radio', { name: 'Public' });
+        const privateRadio = getByRole('radio', { name: 'Private' });
+        const publicRadio = getByRole('radio', { name: 'Public' });
         expect(privateRadio).toBeChecked(); // first value should be default
         expect(publicRadio).not.toBeChecked();
 

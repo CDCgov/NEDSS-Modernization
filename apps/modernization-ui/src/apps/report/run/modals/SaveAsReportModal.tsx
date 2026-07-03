@@ -24,16 +24,11 @@ type SaveAsForm = {
     sectionCode: Selectable;
 };
 
-export type SaveAsReportFormData = {
-    reportTitle: string;
-    description: string;
-    sectionCode: string;
-    group: SaveAsReportRequest.group;
-};
+export type SaveAsReportFormData = Omit<SaveAsReportRequest, 'executionRequest'>;
 
 type SaveAsReportModalProps = {
     saveAsReportModalRef: RefObject<ModalRef>;
-    saving?: boolean;
+    saving: boolean;
     onSaveAs: (e: SaveAsReportFormData) => void;
 };
 
@@ -50,7 +45,7 @@ const getUserReportCreatePermissionsOptions = (userPermissions: string[]): Selec
     );
 
     // maintain order of user permissions when getting group options
-    return allowedKeys.flatMap((key) => GROUP_OPTIONS.find((opt) => opt.value === key)) as Selectable[];
+    return allowedKeys.map((key) => GROUP_OPTIONS.find((opt) => opt.value === key)) as Selectable[];
 };
 
 export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: SaveAsReportModalProps) => {

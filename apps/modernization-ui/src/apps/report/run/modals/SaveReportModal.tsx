@@ -6,7 +6,7 @@ import { Button, ButtonGroup } from 'design-system/button';
 
 type SaveReportModalProps = {
     saveReportModalRef: RefObject<ModalRef>;
-    saving?: boolean;
+    saving: boolean;
     onSave: () => void;
 };
 
