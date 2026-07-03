@@ -24,6 +24,7 @@ public class FilterValueMapper {
   public List<FilterValue> fromBasicFilterRequest(
       ReportFilter basicFilter, BasicFilterRequest request) {
     List<FilterValue> basicFilterValues = new ArrayList<>();
+    String operator = request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null;
 
     if (request.values().isEmpty()) {
       if (!request.includeNulls()) return basicFilterValues;
@@ -49,7 +50,7 @@ public class FilterValueMapper {
               .id(generateFilterValueId())
               .reportFilter(basicFilter)
               .valueType("BEGIN_RANGE")
-              .operator(request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null)
+              .operator(operator)
               .valueTxt(request.values().getFirst())
               .build();
 
@@ -58,7 +59,7 @@ public class FilterValueMapper {
               .id(generateFilterValueId())
               .reportFilter(basicFilter)
               .valueType("END_RANGE")
-              .operator(request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null)
+              .operator(operator)
               .valueTxt(request.values().getLast())
               .build();
 
@@ -73,10 +74,7 @@ public class FilterValueMapper {
                           .reportFilter(basicFilter)
                           .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
                           .valueTxt(value == null ? "" : value)
-                          .operator(
-                              request.includeNulls()
-                                  ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP
-                                  : null)
+                          .operator(operator)
                           .build())
               .collect(Collectors.toCollection(ArrayList::new)));
     }
