@@ -1066,15 +1066,9 @@ def _calc_new_partners_notified_buckets(
         DISPO_NO_PREV_TEST_NO_TEST,
     ]
 
-    result = {}
-    for dispo in fl_fup_dispositions:
-        count = _count_distinct_case_ids(
-            rows,
-            lambda row, dispo=dispo: row[FL_FUP_DISPOSITION] == dispo,
-        )
-        result[dispo] = (count, _percent_for_csv(count, new_partners_notified))
-
-    return result
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_partners_notified
+    )
 
 
 def _calc_new_partners_not_notified(
@@ -1110,15 +1104,9 @@ def _calc_new_partners_not_notified_buckets(
         DISPO_PATIENT_DECEASED,
     ]
 
-    result = {}
-    for dispo in fl_fup_dispositions:
-        count = _count_distinct_case_ids(
-            rows,
-            lambda row, dispo=dispo: row[FL_FUP_DISPOSITION] == dispo,
-        )
-        result[dispo] = (count, _percent_for_csv(count, new_partners_not_notified))
-
-    return result
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_partners_not_notified
+    )
 
 
 def _calc_new_partners_previous_pos(
@@ -1190,15 +1178,9 @@ def _calc_new_clusters_notified_buckets(
         DISPO_NO_PREV_TEST_NO_TEST,
     ]
 
-    result = {}
-    for dispo in fl_fup_dispositions:
-        count = _count_distinct_case_ids(
-            rows,
-            lambda row, dispo=dispo: row[FL_FUP_DISPOSITION] == dispo,
-        )
-        result[dispo] = (count, _percent_for_csv(count, new_clusters_notified))
-
-    return result
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_clusters_notified
+    )
 
 
 def _calc_new_clusters_not_notified(
@@ -1234,15 +1216,9 @@ def _calc_new_clusters_not_notified_buckets(
         DISPO_PATIENT_DECEASED,
     ]
 
-    result = {}
-    for dispo in fl_fup_dispositions:
-        count = _count_distinct_case_ids(
-            rows,
-            lambda row, dispo=dispo: row[FL_FUP_DISPOSITION] == dispo,
-        )
-        result[dispo] = (count, _percent_for_csv(count, new_clusters_not_notified))
-
-    return result
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_clusters_not_notified
+    )
 
 
 def _calc_new_clusters_previous_pos(
@@ -1313,6 +1289,23 @@ def _count_distinct_case_ids(rows: list[dict], predicate=lambda row: True) -> in
     If no predicate is given then the rows will not be filtered.
     """
     return len({row[INV_LOCAL_ID] for row in rows if predicate(row)})
+
+
+def _count_distinct_case_ids_and_percent_by_dispo(
+    rows: list[dict], dispositions: list[str], denominator: int
+) -> dict[str, tuple[int, str]]:
+    """Given a list of dispositions (column FL_FUP_DISPOSITION), create buckets for
+    the count of distinct case ids and percentages for each given disposition.
+    """
+    result = {}
+    for dispo in dispositions:
+        count = _count_distinct_case_ids(
+            rows,
+            lambda row, dispo=dispo: row[FL_FUP_DISPOSITION] == dispo,
+        )
+        result[dispo] = (count, _percent_for_csv(count, denominator))
+
+    return result
 
 
 def _percent_for_csv(numerator: int, denominator: int, precision: int = 1) -> str:
