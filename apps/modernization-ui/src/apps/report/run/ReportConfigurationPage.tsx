@@ -95,7 +95,8 @@ const SECTIONS = [
                         advanced filter as you build it.
                     </span>
                 }
-                contentMaxWidth="widescreen">
+                contentMaxWidth="widescreen"
+            >
                 <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
             </Card>
         ),
@@ -114,7 +115,8 @@ const SECTIONS = [
                 required={true}
                 subtext="Select the column variables you would like to include in this report."
                 actions={<Required />}
-                collapsible={true}>
+                collapsible={true}
+            >
                 <ColumnSelector columns={config.columns} defaultColumns={config.defaultColumnUids} />
                 <SortSelector
                     columns={config.columns}
@@ -190,7 +192,8 @@ const ReportConfigurationPage = ({
                         <CurrentStateProvider
                             stateFilter={config.basicFilters.find((f) =>
                                 f.filterType.code?.startsWith(STATE_FILTER_CODE)
-                            )}>
+                            )}
+                        >
                             {sectionData.map(({ id, title, Component }) => (
                                 <Component key={id} config={config} id={id} title={title} />
                             ))}
