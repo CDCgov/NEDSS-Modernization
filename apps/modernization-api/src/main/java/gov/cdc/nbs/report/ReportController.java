@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.ForbiddenException;
@@ -79,32 +80,29 @@ public class ReportController {
     switch (reportGroup) {
       case PUBLIC:
       case REPORTING_FACILITY:
-        String publicAuth =
-            ReportConstants.Permissions.EDITREPORTPUBLIC
-                + "-"
-                + ReportConstants.Permissions.REPORTINGOBJECT;
-        String reportingFacilityAuth =
-            ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
-                + "-"
-                + ReportConstants.Permissions.REPORTINGOBJECT;
+        Permission publicPermission =
+            new Permission(
+                ReportConstants.Permissions.EDITREPORTPUBLIC,
+                ReportConstants.Permissions.REPORTINGOBJECT);
+        Permission reportingFacilityPermission =
+            new Permission(
+                ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY,
+                ReportConstants.Permissions.REPORTINGOBJECT);
 
-        if (user.getAuthorities().stream()
-            .noneMatch(
-                a ->
-                    a.getAuthority().equals(publicAuth)
-                        || a.getAuthority().equals(reportingFacilityAuth))) {
+        if (!user.hasPermission(publicPermission)
+            && !user.hasPermission(reportingFacilityPermission)) {
           throw new ForbiddenException(
               "User does not have permission to save " + reportGroup.name() + " reports");
         }
         break;
       case PRIVATE:
       case TEMPLATE:
-        String privateAuth =
-            ReportConstants.Permissions.EDITREPORTPRIVATE
-                + "-"
-                + ReportConstants.Permissions.REPORTINGOBJECT;
+        Permission privatePermission =
+            new Permission(
+                ReportConstants.Permissions.EDITREPORTPRIVATE,
+                ReportConstants.Permissions.REPORTINGOBJECT);
 
-        if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(privateAuth))) {
+        if (!user.hasPermission(privatePermission)) {
           throw new ForbiddenException(
               "User does not have permission to save " + reportGroup.name() + " reports");
         }
