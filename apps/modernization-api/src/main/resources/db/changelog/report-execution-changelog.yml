@@ -16,6 +16,9 @@ databaseChangeLog:
             path: db/report/execution/03_ODSE_Data_Report_Library_Init.sql
             splitStatements: false
         - sqlFile:
+            path: db/report/execution/04_ODSE_Data_Report_Config_Insert.sql
+            splitStatements: false
+        - sqlFile:
             path: db/report/execution/libraries/nbs_custom.sql
             splitStatements: false
         - sqlFile:

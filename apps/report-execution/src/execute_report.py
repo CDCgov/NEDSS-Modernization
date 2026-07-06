@@ -4,6 +4,7 @@ from importlib import import_module
 from pydantic import ValidationError
 
 from . import errors, models, utils
+from .config import get_cached_config_value, load_report_configurations
 from .db_transaction import db_transaction
 
 
@@ -19,6 +20,8 @@ def execute_report(report_spec: models.ReportSpec):
     # set up database connection as read only and start a transaction
     conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
     with db_transaction(conn_string) as trx:
+        load_report_configurations(trx)
+
         result = library.execute(
             trx,
             subset_query=report_spec.subset_query,
@@ -53,14 +56,24 @@ def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec
     except ValidationError as e:
         raise errors.InvalidResultError(report_spec.library_name) from e
 
-    row_limit = (
-        utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_EXPORT', 100000)
-        if report_spec.is_export
-        else utils.get_int_env_or_default('REPORT_MAX_ROW_LIMIT_RUN', 10000)
-    )
+    if report_spec.is_export:
+        config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'
+    else:
+        config_key = 'REPORT_MAX_ROW_LIMIT_RUN'
+
+    row_limit = get_cached_config_value(config_key)
+
+    if not row_limit:
+        raise errors.InvalidConfigurationError(config_key)
+
+    try:
+        row_limit_int = int(row_limit)
+    except ValueError:
+        raise errors.IntConfigurationConversionError(config_key) from None
+
     num_rows = len(result.content.data)
-    if num_rows > row_limit:
-        raise errors.ResultTooBigError(report_spec.is_export, row_limit, num_rows)
+    if num_rows > row_limit_int:
+        raise errors.ResultTooBigError(report_spec.is_export, row_limit_int, num_rows)
 
     return None
 
