@@ -1,6 +1,5 @@
 package gov.cdc.nbs.report;
 
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.exception.UnprocessableEntityException;
 import gov.cdc.nbs.report.models.LibraryExecutionResult;
@@ -28,13 +27,13 @@ public class ReportExecutionServiceClient {
 
   public ReportExecutionServiceClient(
       final Clock clock,
-      final DataSourceNameConfiguration dataSourceNameConfig,
+      final DataSourceNameUtils dataSourceNameUtils,
       RestClient restClient,
       WhereClauseService whereClauseService,
       ReportFetcher reportFetcher) {
     this.clock = clock;
     this.restClient = restClient;
-    this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
+    this.dataSourceNameUtils = dataSourceNameUtils;
     this.whereClauseService = whereClauseService;
     this.reportFetcher = reportFetcher;
   }
