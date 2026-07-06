@@ -138,9 +138,9 @@ public class FilterValueMapper {
   private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
     String valueTxt = rule.value();
 
-    if (Arrays.asList(
-            ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
-        .contains(rule.operator())) {
+    //  If the operator is "IS NULL" or "NOT NULL", explicitly set `valueTxt` to empty string,
+    //  in order to maintain parity with 6
+    if (isNullishOperator(rule.operator())) {
       valueTxt = "";
     }
 
@@ -166,5 +166,14 @@ public class FilterValueMapper {
   private Long generateFilterValueId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
+  }
+
+  /**
+   * Return true if the operator is "IS NULL" or "NOT NULL".
+   */
+  private static boolean isNullishOperator(String operator) {
+    return Arrays.asList(
+                    ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
+            .contains(operator);
   }
 }
