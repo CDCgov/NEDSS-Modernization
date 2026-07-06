@@ -610,7 +610,7 @@ class ReportServiceTest {
       FilterCode filterCode = mock(FilterCode.class);
       Mockito.lenient()
           .when(filterCode.getFilterType())
-          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
 
       ReportFilter basicFilter = mock(ReportFilter.class);
       when(basicFilter.getId()).thenReturn(basicFilterUid);
@@ -648,7 +648,7 @@ class ReportServiceTest {
 
       Mockito.lenient()
           .when(filterCode.getFilterType())
-          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
       Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
       Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
@@ -673,7 +673,7 @@ class ReportServiceTest {
 
       Mockito.lenient()
           .when(filterCode.getFilterType())
-          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(basicFilter.isBasicFilter()).thenReturn(true);
@@ -700,7 +700,7 @@ class ReportServiceTest {
       FilterCode filterCode = mock(FilterCode.class);
       Mockito.lenient()
           .when(filterCode.getFilterType())
-          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
 
       ReportFilter basicFilter1 = mock(ReportFilter.class);
       when(basicFilter1.getId()).thenReturn(10L);
@@ -749,7 +749,7 @@ class ReportServiceTest {
       ReportFilter advancedFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
@@ -809,7 +809,7 @@ class ReportServiceTest {
 
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
@@ -828,13 +828,13 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
       FilterCode filterCode = mock(FilterCode.class);
-      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
+      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
 
       ReportFilter advancedFilter = mock(ReportFilter.class);
       List<FilterValue> filterValues = spy(new ArrayList<>());
       when(advancedFilter.getFilterValues()).thenReturn(filterValues);
 
-      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
       Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(advancedFilter.isAdvancedFilter()).thenReturn(true);
@@ -915,7 +915,7 @@ class ReportServiceTest {
 
       Mockito.lenient()
           .when(basicFilterCode.getFilterType())
-          .thenReturn(ReportFilter.BASIC_FILTER_PREFIX + "TEST");
+          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(basicFilterCode);
       when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
@@ -923,7 +923,7 @@ class ReportServiceTest {
 
       Mockito.lenient()
           .when(advancedFilterCode.getFilterType())
-          .thenReturn(ReportFilter.ADV_FILTER_TYPE);
+          .thenReturn(FilterCode.ADV_FILTER_TYPE);
       when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(advancedFilterCode);
       when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());

@@ -41,7 +41,7 @@ class AdvancedFilterConfigurationMapperTest {
           .code("T_T01")
           .codeTable("NONE")
           .filterName("Test Filter")
-          .filterType(ReportFilter.ADV_FILTER_TYPE)
+          .filterType(FilterCode.ADV_FILTER_TYPE)
           .build();
 
   @Test

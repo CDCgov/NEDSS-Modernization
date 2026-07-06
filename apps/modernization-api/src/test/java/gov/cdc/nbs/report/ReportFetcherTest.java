@@ -69,7 +69,7 @@ class ReportFetcherTest {
                       null,
                       "A_W01",
                       null,
-                      ReportFilter.ADV_FILTER_TYPE,
+                      FilterCode.ADV_FILTER_TYPE,
                       null,
                       null),
                   null,
