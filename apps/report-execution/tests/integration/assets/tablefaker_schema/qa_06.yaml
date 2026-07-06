@@ -1,7 +1,9 @@
 config:
   seed: 19
   nbs:
-    fk_tables: [ "[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]" ]
+    fk_tables:
+      - "[RDB].[dbo].[CONFIRMATION_METHOD_GROUP]"
+      - "[RDB].[dbo].[CASE_COUNT]"
 
 tables:
   - table_name: "[RDB].[dbo].[USER_PROFILE]"
