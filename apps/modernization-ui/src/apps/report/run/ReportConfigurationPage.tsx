@@ -14,6 +14,7 @@ import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
+import { NBS_MANAGE_REPORT_PAGE } from '../constants';
 import { Heading } from 'components/heading';
 
 const BASIC_SECTIONS = [
@@ -123,7 +124,7 @@ const ReportConfigurationPage = ({
     );
 
     return (
-        <ReportLayout title={config.title} actions={actions}>
+        <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="reports" actions={actions}>
             {!sectionData.length ? (
                 <div className={layoutStyles.fullPageBlock}>
                     <Heading level={2}>No filters available</Heading>

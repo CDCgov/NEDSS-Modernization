@@ -9,15 +9,13 @@ import { Shown } from 'conditional-render';
 import { useUser } from 'user';
 
 import layoutStyles from '../layout/layout.module.scss';
-import { PERMISSION_GROUP_MAP } from '../constants';
+import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
 import { ModalRef } from '@trussworks/react-uswds';
 import { SaveReportModal } from './modals/SaveReportModal.tsx';
 import { AlertMessage } from 'design-system/message';
 import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
 import classNames from 'classnames';
-
-const NBS_MANAGE_REPORT_PAGE = '/nbs/ManageReports.do';
 
 const ReportResultPage = ({
     config,
@@ -87,6 +85,8 @@ const ReportResultPage = ({
     return (
         <ReportLayout
             title={config.title}
+            startHref={NBS_MANAGE_REPORT_PAGE}
+            startPage="reports"
             actions={
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
