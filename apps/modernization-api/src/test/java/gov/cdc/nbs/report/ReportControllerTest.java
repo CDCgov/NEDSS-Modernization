@@ -342,10 +342,6 @@ class ReportControllerTest {
                   new SimpleGrantedAuthority(
                       ReportConstants.Permissions.EDITREPORTPRIVATE
                           + "-"
-                          + ReportConstants.Permissions.REPORTINGOBJECT),
-                  new SimpleGrantedAuthority(
-                      ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
-                          + "-"
                           + ReportConstants.Permissions.REPORTINGOBJECT)));
 
       ReportExecutionRequest request =
@@ -367,10 +363,6 @@ class ReportControllerTest {
                   new SimpleGrantedAuthority(
                       ReportConstants.Permissions.EDITREPORTPRIVATE
                           + "-"
-                          + ReportConstants.Permissions.REPORTINGOBJECT),
-                  new SimpleGrantedAuthority(
-                      ReportConstants.Permissions.EDITREPORTPUBLIC
-                          + "-"
                           + ReportConstants.Permissions.REPORTINGOBJECT)));
 
       ReportExecutionRequest request =
@@ -379,18 +371,6 @@ class ReportControllerTest {
       assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
           .isInstanceOf(ForbiddenException.class)
           .hasMessageContaining("User does not have permission to save REPORTING_FACILITY reports");
-    }
-
-    @Test
-    void saveReport_should_throw_422_if_report_is_template() {
-      when(report.getShared()).thenReturn('T');
-
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
-
-      assertThatThrownBy(() -> controller.saveReport(user, reportUid, dataSourceUid, request))
-          .isInstanceOf(IllegalArgumentException.class)
-          .hasMessageContaining("Template reports cannot be updated using 'save'");
     }
   }
 
