@@ -164,7 +164,7 @@ describe('edit report configuration page', () => {
         vi.mocked(generated.ReportControllerService.editReport).mockResolvedValue({ reportUid: 2, dataSourceUid: 1 });
         const navigate = vi.fn();
         vi.mocked(useNavigate).mockReturnValue(navigate);
-        const { findByRole, getByRole, findByLabelText, findByText } = renderWithRouter();
+        const { findByRole, getByRole, findByLabelText, findByText, findAllByText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -210,7 +210,7 @@ describe('edit report configuration page', () => {
         await user.clear(nameInput);
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        expect(await findByText('The Name is required.')).toBeVisible();
+        expect(await findAllByText(`The Name is required.`)).toHaveLength(2);
 
         await user.type(nameInput, 'Test report');
 
