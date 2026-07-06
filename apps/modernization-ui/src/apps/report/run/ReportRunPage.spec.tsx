@@ -2736,6 +2736,7 @@ describe('report run page', () => {
                             },
                         ],
                     },
+                    query: "([Column] STARTS WITH 'prefix')",
                 },
             });
             const mockResultApi = vi
@@ -2745,11 +2746,13 @@ describe('report run page', () => {
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
             ]);
-            const { getByTestId, findAllByText, findByRole, findAllByRole, findAllByLabelText } = renderWithRouter();
+            const { getByTestId, findAllByText, findByRole, queryByRole, findAllByLabelText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
 
             expect(await findAllByText('Advanced filter')).toHaveLength(2);
+            // no parse warning
+            expect(queryByRole('alert')).toBeNull();
 
             const combinators = await findAllByLabelText('Combinator');
             expect(combinators).toHaveLength(2);
@@ -2835,6 +2838,25 @@ describe('report run page', () => {
                     basicFilters: [],
                 }),
             });
+        });
+
+        it('renders the saved filter error when available', async () => {
+            const mockApi = vi.mocked(useLoaderData).mockReturnValue({
+                ...MOCK_CONFIG,
+                advancedFilter: { ...MOCK_FILTER, exceptionMessage: 'Could not parse filter', query: '( AND OR )' },
+            });
+            const { findAllByText, findByRole } = renderWithRouter();
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findAllByText('Advanced filter')).toHaveLength(2);
+
+            const warning = await findByRole('alert');
+            expect(warning).toHaveAccessibleDescription(
+                /The saved filter contains an error that prevents it from loading/
+            );
+            expect(warning).toHaveAccessibleDescription(/Error: Could not parse filter/);
+            expect(warning).toHaveAccessibleDescription(/Saved filter query: \( AND OR \)/);
         });
 
         describe('keyboard drag and drop', () => {

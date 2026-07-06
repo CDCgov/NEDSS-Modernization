@@ -10,8 +10,8 @@ export const PERMISSION_GROUP_MAP = {
 };
 
 export const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
-    { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
     { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
+    { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
     { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
     { value: ReportConfiguration.group.REPORTING_FACILITY, name: 'Reporting Facility' },
 ];

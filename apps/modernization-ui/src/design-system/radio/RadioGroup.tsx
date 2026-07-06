@@ -16,7 +16,7 @@ type Props = {
 const RadioGroup = ({ id, options, value, onChange, className, label, disabled, ...remaining }: Props) => {
     return (
         <EntryWrapper htmlFor={id} label={label} {...remaining}>
-            <div className={classNames(className, 'display-flex')} aria-label={label} role="radiogroup">
+            <div id={id} className={classNames(className, 'display-flex')} aria-label={label} role="radiogroup">
                 {options.map((option, index) => (
                     <Radio
                         className="margin-right-2 bg-transparent"
