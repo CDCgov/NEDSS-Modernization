@@ -12,9 +12,7 @@ from src.libraries.contact_record import (
 from src.models import ReportResult, Table
 
 WorkerKey = tuple[str | None, int | None]
-Pa05Row = tuple[
-    str, str, str | None, str | None, int, str | None, float | None
-]
+Pa05Row = tuple[str, str, str | None, str | None, int, str | None, float | None]
 
 INITIAL_INTERVIEW = 'Initial/Original'
 REINTERVIEW = 'Re-Interview'
@@ -27,9 +25,7 @@ OTHER_STATUS = 'O - Other'
 # associates combined -- unlike PA03, which reports them separately.
 CLUSTER_BASES = SOCIAL_BASES | ASSOCIATE_BASES
 
-METRICS: tuple[
-    tuple[str, str | None, str | None, str, str | None, str | None], ...
-] = (
+METRICS: tuple[tuple[str, str | None, str | None, str, str | None, str | None], ...] = (
     ('Num. Cases Assigned', None, None, 'A', None, None),  # Var_A, PA05.sas:304-309
     (
         'Num. Cases Assigned',
@@ -588,10 +584,10 @@ def execute(
             elif ix_type == REINTERVIEW:
                 # Var_V, PA05.sas:501-507 (PA05_PI filtered to Re-Interview)
                 contact_sets['V'][worker_key].add(contact_key)
-        if (
-            ctt_referral_basis in CLUSTER_BASES
-            and ix_type in {INITIAL_INTERVIEW, REINTERVIEW}
-        ):
+        if ctt_referral_basis in CLUSTER_BASES and ix_type in {
+            INITIAL_INTERVIEW,
+            REINTERVIEW,
+        }:
             # Var_W, PA05.sas:509-516 (PA05_CI, both ix_types summed together)
             contact_sets['W'][worker_key].add(contact_key)
 
@@ -608,10 +604,7 @@ def execute(
         }
     )
     metric_counts.update(
-        {
-            metric: _distinct_count_map(contact_sets[metric])
-            for metric in contact_sets
-        }
+        {metric: _distinct_count_map(contact_sets[metric]) for metric in contact_sets}
     )
     metric_counts['R'] = dict(period_partner_totals)
 
