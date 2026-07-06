@@ -71,24 +71,34 @@ public class ReportController {
       throw new ForbiddenException("Only report owners can save reports");
     }
 
-    String authOperationType;
     ReportConstants.ReportGroup reportGroup =
         ReportConstants.dbCharToReportGroup(existingReport.getShared());
 
-    authOperationType =
-        switch (reportGroup) {
-          case PUBLIC -> ReportConstants.Permissions.EDITREPORTPUBLIC;
-          case PRIVATE -> ReportConstants.Permissions.EDITREPORTPRIVATE;
-          case REPORTING_FACILITY -> ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY;
-          case TEMPLATE ->
-              throw new IllegalArgumentException("Template reports cannot be updated using 'save'");
-        };
+    switch (reportGroup) {
+      case PUBLIC:
+      case REPORTING_FACILITY:
+        String publicAuth = ReportConstants.Permissions.EDITREPORTPUBLIC + "-REPORTINGOBJECT";
+        String reportingFacilityAuth =
+            ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY + "-REPORTINGOBJECT";
 
-    String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+        if (user.getAuthorities().stream()
+            .noneMatch(
+                a ->
+                    a.getAuthority().equals(publicAuth)
+                        || a.getAuthority().equals(reportingFacilityAuth))) {
+          throw new ForbiddenException(
+              "User does not have permission to save" + reportGroup.name() + " reports");
+        }
+        break;
+      case PRIVATE:
+      case TEMPLATE:
+        String privateAuth = ReportConstants.Permissions.EDITREPORTPRIVATE + "-REPORTINGOBJECT";
 
-    if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
-      throw new ForbiddenException(
-          "User does not have permission to save " + reportGroup.name() + " reports");
+        if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(privateAuth))) {
+          throw new ForbiddenException(
+              "User does not have permission to save" + reportGroup.name() + " reports");
+        }
+        break;
     }
 
     Report report = reportService.saveReport(request, existingReport);

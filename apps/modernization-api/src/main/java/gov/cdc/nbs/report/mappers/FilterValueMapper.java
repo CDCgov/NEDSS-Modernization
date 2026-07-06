@@ -168,12 +168,10 @@ public class FilterValueMapper {
     return generatedId.getId();
   }
 
-  /**
-   * Return true if the operator is "IS NULL" or "NOT NULL".
-   */
+  /** Return true if the operator is "IS NULL" or "NOT NULL". */
   private static boolean isNullishOperator(String operator) {
     return Arrays.asList(
-                    ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
-            .contains(operator);
+            ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
+        .contains(operator);
   }
 }
