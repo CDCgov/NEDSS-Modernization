@@ -1,6 +1,6 @@
 import { Button } from 'design-system/button';
 import { ReportLayout } from '../layout/ReportLayout';
-import { ReportConfiguration, ReportControllerService, ReportExecutionRequest, SaveAsReportRequest } from 'generated';
+import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { ReactNode, useRef, useState } from 'react';
 import { Heading } from 'components/heading';
@@ -16,8 +16,6 @@ import { AlertMessage } from 'design-system/message';
 import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
 import classNames from 'classnames';
-
-const INTERNAL_ERROR_MSG = 'Something went wrong.';
 
 const ReportResultPage = ({
     config,
@@ -42,21 +40,27 @@ const ReportResultPage = ({
     const saveReportModalRef = useRef<ModalRef>(null);
     const saveAsReportModalRef = useRef<ModalRef>(null);
 
-    const handleReportSave = (isSaveAs: boolean, request?: SaveAsReportRequest) => {
-        if (!executionRequest || (isSaveAs && !request)) {
-            setSaveError(INTERNAL_ERROR_MSG);
+    const handleReportSave = <SaveAs extends boolean>(
+        isSaveAs: SaveAs,
+        saveAsData: SaveAs extends true ? SaveAsReportFormData : undefined
+    ) => {
+        if (!executionRequest || (isSaveAs && !saveAsData)) {
+            setSaveError('Something went wrong.');
             return;
         }
 
         setSaving(true);
         setSaveError(null);
 
-        const runner = isSaveAs ? ReportControllerService.saveAsReport : ReportControllerService.saveReport;
-        runner({
+        const id = {
             reportUid: executionRequest.reportUid,
             dataSourceUid: executionRequest.dataSourceUid,
-            requestBody: (isSaveAs ? request : executionRequest) as SaveAsReportRequest & ReportExecutionRequest,
-        })
+        };
+
+        const request = isSaveAs
+            ? ReportControllerService.saveAsReport({ ...id, requestBody: { ...saveAsData!, executionRequest } })
+            : ReportControllerService.saveReport({ ...id, requestBody: executionRequest });
+        request
             .then(() => {
                 redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
             })
@@ -71,11 +75,11 @@ const ReportResultPage = ({
     };
 
     const onSave = () => {
-        handleReportSave(false);
+        handleReportSave(false, undefined);
     };
 
-    const onSaveAs = (response: SaveAsReportFormData) => {
-        handleReportSave(true, { ...response, executionRequest } as SaveAsReportRequest);
+    const onSaveAs = (data: SaveAsReportFormData) => {
+        handleReportSave(true, data);
     };
 
     return (
@@ -131,7 +135,11 @@ const ReportResultPage = ({
                         title={`There was an error ${saveError ? 'saving' : wasExported ? 'exporting' : 'running'} 
                         your report. If this error persists, contact your NBS administrator for help.`}
                     >
-                        {saveError}
+                        <>
+                            {/* In practice, only one of these will be populated at a time */}
+                            {saveError}
+                            {error}
+                        </>
                     </AlertMessage>
                 )}
                 {resultLoading ? (

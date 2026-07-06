@@ -1,4 +1,4 @@
-import { Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import { Button, ButtonGroup } from 'design-system/button';
@@ -10,12 +10,13 @@ import { Controller, useForm } from 'react-hook-form';
 import styles from './save-as-report-modal.module.scss';
 import { SingleSelect } from 'design-system/select';
 import { useReportSections } from 'options/report';
-import { AdminReportRequest, SaveAsReportRequest } from 'generated';
+import { AdminReportRequest, ReportConfiguration, SaveAsReportRequest } from 'generated';
 import { usePermissions } from 'libs/permission/usePermissions';
 import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
 import { EnumSelectable } from '../../utils.ts';
+import { permits } from 'libs/permission';
 
 type SaveAsForm = {
     reportTitle: string;
@@ -39,14 +40,10 @@ const INPUT_LABELS = {
     group: 'Group',
 };
 
-const getUserReportCreatePermissionsOptions = (userPermissions: string[]): Selectable[] => {
-    const allowedKeys = (Object.keys(PERMISSION_GROUP_MAP) as Array<keyof typeof PERMISSION_GROUP_MAP>).filter((key) =>
-        userPermissions.includes(PERMISSION_GROUP_MAP[key].create)
-    );
-
-    // maintain order of user permissions when getting group options
-    return allowedKeys.map((key) => GROUP_OPTIONS.find((opt) => opt.value === key)) as Selectable[];
-};
+const getUserReportCreatePermissionsOptions = (
+    userPermissions: string[]
+): EnumSelectable<ReportConfiguration.group>[] =>
+    GROUP_OPTIONS.filter(({ value }) => permits(PERMISSION_GROUP_MAP[value].create)(userPermissions));
 
 export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: SaveAsReportModalProps) => {
     const permissions = usePermissions();
@@ -58,19 +55,17 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             reportTitle: '',
             description: '',
             sectionCode: undefined,
-            group: reportGroupOptions[0].valueOf(),
+            group: reportGroupOptions[0],
         },
     });
 
-    const handleOnSaveAs = (formData: SaveAsForm) => {
-        const { reportTitle, sectionCode, group, description } = formData;
-        const request = {
+    const handleOnSaveAs = ({ reportTitle, sectionCode, group, description }: SaveAsForm) => {
+        onSaveAs({
             reportTitle,
             sectionCode: sectionCode.value,
             group: group.value,
             description,
-        };
-        onSaveAs(request);
+        });
     };
 
     return (
@@ -81,7 +76,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             modalHeading="Save as a new report"
             modalBody={
                 <div className={styles.form}>
-                    <Form onSubmit={handleSubmit(handleOnSaveAs)}>
+                    <form onSubmit={handleSubmit(handleOnSaveAs)}>
                         <Controller
                             name="reportTitle"
                             control={control}
@@ -158,7 +153,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                 />
                             )}
                         />
-                    </Form>
+                    </form>
                 </div>
             }
             modalFooter={
