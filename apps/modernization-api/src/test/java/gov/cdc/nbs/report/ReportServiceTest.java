@@ -63,6 +63,41 @@ class ReportServiceTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
+  private final Long columnAId = 3L;
+  private final Long columnBId = 4L;
+
+  private Report mockReport(
+          ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
+    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
+  }
+
+  private Report mockReport(
+          ReportId id,
+          String runner,
+          String dataSourceName,
+          List<ReportFilter> reportFilters,
+          String sortDir) {
+    Report report = mock(Report.class);
+
+    Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
+    Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
+    Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
+    Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
+    Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
+    Mockito.lenient().when(report.getShared()).thenReturn('P');
+    Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
+    Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
+    Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
+    Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
+    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
+    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
+    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
+    Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
+    Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+    return report;
+  }
 
   @BeforeEach
   void setUp() {
