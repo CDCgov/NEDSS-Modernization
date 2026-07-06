@@ -86,8 +86,7 @@ public class ReportController {
     //  While long-term we likely want to map permissions 1:1 with report groups,
     //  this is currently how it works in 6, so we'll leave it be for now.
     switch (reportGroup) {
-      case PUBLIC:
-      case REPORTING_FACILITY:
+      case PUBLIC, REPORTING_FACILITY:
         Permission publicPermission =
             new Permission(
                 ReportConstants.Permissions.EDITREPORTPUBLIC,
@@ -103,8 +102,7 @@ public class ReportController {
               "User does not have permission to save " + reportGroup.name() + " reports");
         }
         break;
-      case PRIVATE:
-      case TEMPLATE:
+      case PRIVATE, TEMPLATE:
         Permission privatePermission =
             new Permission(
                 ReportConstants.Permissions.EDITREPORTPRIVATE,
