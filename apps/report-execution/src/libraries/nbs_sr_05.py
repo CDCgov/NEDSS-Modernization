@@ -175,7 +175,7 @@ def execute(
 * **Percentage change (current year vs. 5 year median):** Percentage change between the Current Year Totals by disease and the 5-Year median
 
 * **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to County, Report to State and Date the Investigation was created in the NBS.
-""" # noqa: E501
+"""  # noqa: E501
 
     return ReportResult(
         content_type='table',
