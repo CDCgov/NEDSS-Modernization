@@ -2,10 +2,10 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
@@ -18,7 +18,6 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.report.utils.FieldFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +45,7 @@ class ReportSpecBuilderTest {
   }
 
   private DataSourceNameUtils mockDataSourceNameUtils() {
-    DataSourceNameUtils dataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils dataSourceNameUtils = mock(DataSourceNameUtils.class);
     when(dataSourceNameUtils.buildDataSourceName("nbs_ods.NBS_configuration"))
         .thenReturn("[NBS_ODSE].[dbo].[NBS_configuration]");
     return dataSourceNameUtils;
@@ -79,7 +78,7 @@ class ReportSpecBuilderTest {
 
   private ReportColumn mockReportColumn(
       Long columnId, String columnName, String columnTitle, String typeCode) {
-    ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
+    ReportColumn reportColumn = mock(ReportColumn.class);
 
     Mockito.lenient().when(reportColumn.id()).thenReturn(columnId);
     Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
@@ -91,17 +90,13 @@ class ReportSpecBuilderTest {
 
   private ReportConfiguration mockReportConfiguration(
       List<BasicFilterConfiguration> filters, List<ReportColumn> columns, String title) {
-    ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
+    ReportConfiguration reportConfiguration = mock(ReportConfiguration.class);
 
-    DataSourceNameConfiguration dataSourceNameConfiguration =
-        Mockito.mock(DataSourceNameConfiguration.class);
-    Mockito.lenient().when(dataSourceNameConfiguration.getMappings()).thenReturn(new HashMap<>());
-
-    Library library = Mockito.mock(Library.class);
+    Library library = mock(Library.class);
     Mockito.lenient().when(reportConfiguration.library()).thenReturn(library);
     Mockito.lenient().when(library.name()).thenReturn("nbs_custom");
 
-    ReportDataSource dataSource = Mockito.mock(ReportDataSource.class);
+    ReportDataSource dataSource = mock(ReportDataSource.class);
     Mockito.lenient().when(reportConfiguration.dataSource()).thenReturn(dataSource);
     Mockito.lenient().when(dataSource.name()).thenReturn("nbs_ods.NBS_configuration");
 
@@ -113,7 +108,7 @@ class ReportSpecBuilderTest {
   }
 
   private ReportExecutionRequest mockReportExecutionRequest(List<Long> columnUids) {
-    ReportExecutionRequest request = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest request = mock(ReportExecutionRequest.class);
 
     Mockito.lenient().when(request.columnUids()).thenReturn(columnUids);
 
@@ -121,7 +116,7 @@ class ReportSpecBuilderTest {
   }
 
   private FilterType createFilterType(String type, String code) {
-    FilterType filterType = Mockito.mock(FilterType.class);
+    FilterType filterType = mock(FilterType.class);
     Mockito.lenient().when(filterType.type()).thenReturn(type);
     Mockito.lenient().when(filterType.code()).thenReturn(code);
 

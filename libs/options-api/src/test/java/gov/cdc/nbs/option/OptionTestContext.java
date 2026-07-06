@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan
+@ComponentScan(basePackages = {"gov.cdc.nbs.option", "gov.cdc.nbs.datasource.utils"})
 @ConfigurationPropertiesScan({"gov.cdc.nbs.option", "gov.cdc.nbs.datasource.utils"})
 public class OptionTestContext {
 
