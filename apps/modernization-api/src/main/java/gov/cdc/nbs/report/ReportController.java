@@ -77,9 +77,14 @@ public class ReportController {
     switch (reportGroup) {
       case PUBLIC:
       case REPORTING_FACILITY:
-        String publicAuth = ReportConstants.Permissions.EDITREPORTPUBLIC + "-REPORTINGOBJECT";
+        String publicAuth =
+            ReportConstants.Permissions.EDITREPORTPUBLIC
+                + "-"
+                + ReportConstants.Permissions.REPORTINGOBJECT;
         String reportingFacilityAuth =
-            ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY + "-REPORTINGOBJECT";
+            ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
+                + "-"
+                + ReportConstants.Permissions.REPORTINGOBJECT;
 
         if (user.getAuthorities().stream()
             .noneMatch(
@@ -87,16 +92,19 @@ public class ReportController {
                     a.getAuthority().equals(publicAuth)
                         || a.getAuthority().equals(reportingFacilityAuth))) {
           throw new ForbiddenException(
-              "User does not have permission to save" + reportGroup.name() + " reports");
+              "User does not have permission to save " + reportGroup.name() + " reports");
         }
         break;
       case PRIVATE:
       case TEMPLATE:
-        String privateAuth = ReportConstants.Permissions.EDITREPORTPRIVATE + "-REPORTINGOBJECT";
+        String privateAuth =
+            ReportConstants.Permissions.EDITREPORTPRIVATE
+                + "-"
+                + ReportConstants.Permissions.REPORTINGOBJECT;
 
         if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(privateAuth))) {
           throw new ForbiddenException(
-              "User does not have permission to save" + reportGroup.name() + " reports");
+              "User does not have permission to save " + reportGroup.name() + " reports");
         }
         break;
     }

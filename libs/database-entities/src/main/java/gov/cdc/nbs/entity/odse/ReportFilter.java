@@ -46,7 +46,7 @@ public class ReportFilter {
       mappedBy = "reportFilter",
       fetch = FetchType.LAZY,
       orphanRemoval = true,
-      cascade = CascadeType.REMOVE)
+      cascade = CascadeType.ALL)
   private List<FilterValue> filterValues;
 
   // Setting orphanRemoval to true so we can delete a ReportFilterValidation record when
