@@ -19,6 +19,7 @@ testing {
 
 dependencies {
     implementation libs.springBoot.web
+    implementation libs.springBoot.jdbc
 
     // lombok
     compileOnly libs.lombok

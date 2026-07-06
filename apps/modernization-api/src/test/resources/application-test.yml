@@ -15,11 +15,17 @@ nbs:
               enabled: true
             edit:
               enabled: false
+      report:
+        execution:
+          enabled: true
 
 spring:
   graphql:
     graphiql:
       enabled: false
+  liquibase:
+    enabled: true
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   main:
     allow-bean-definition-overriding: true
