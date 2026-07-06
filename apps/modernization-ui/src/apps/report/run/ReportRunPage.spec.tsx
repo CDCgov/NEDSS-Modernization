@@ -226,7 +226,7 @@ describe('report run page', () => {
 
             expect(mockApi).toHaveBeenCalled();
 
-            expect(await findByText('No filters enabled')).toBeVisible();
+            expect(await findByText('No filters available')).toBeVisible();
             expect(queryByText('On this page')).toBeNull();
         });
 

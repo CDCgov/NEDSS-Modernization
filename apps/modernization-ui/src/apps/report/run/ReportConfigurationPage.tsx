@@ -126,10 +126,10 @@ const ReportConfigurationPage = ({
         <ReportLayout title={config.title} actions={actions}>
             {!sectionData.length ? (
                 <div className={layoutStyles.fullPageBlock}>
-                    <Heading level={2}>No filters enabled</Heading>
+                    <Heading level={2}>No filters available</Heading>
                     <p className="maxw-mobile-lg text-center">
-                        When this report was created, no filters were added. Someone with{' '}
-                        <strong>Report Management</strong> permissions can set up filters for this report.
+                        This report will return all available results, which might be a large dataset. If you have{' '}
+                        <strong>Report Management</strong> permission, you can add filters by editing the report.
                     </p>
                     <div className="display-flex flex-row" style={{ gap: '0.5rem' }}>
                         {actions}
