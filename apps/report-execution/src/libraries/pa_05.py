@@ -3,6 +3,12 @@ from datetime import date, datetime
 from decimal import Decimal
 
 from src.db_transaction import Transaction
+from src.libraries.contact_record import (
+    ASSOCIATE_BASES,
+    PARTNER_BASES,
+    SOCIAL_BASES,
+    VALID_PROCESSING_DECISIONS,
+)
 from src.models import ReportResult, Table
 
 WorkerKey = tuple[str | None, int | None]
@@ -17,24 +23,9 @@ PENDING_STATUS = 'A - Awaiting'
 REFUSED_STATUS = 'R - Refused Interview'
 UNABLE_TO_LOCATE_STATUS = 'U - Unable to Locate'
 OTHER_STATUS = 'O - Other'
-PARTNER_BASES = {
-    'P1 - Partner, Sex',
-    'P2 - Partner, Needle-Sharing',
-    'P3 - Partner, Both',
-}
-CLUSTER_BASES = {
-    'A1 - Associate 1',
-    'A2 - Associate 2',
-    'A3 - Associate 3',
-    'S1 - Social Contact 1',
-    'S2 - Social Contact 2',
-    'S3 - Social Contact 3',
-}
-VALID_PROCESSING_DECISIONS = {
-    'Field Follow-up',
-    'Record Search Closure',
-    'Secondary Referral',
-}
+# PA05's "cluster" grouping (PA05_CI, PA05.sas:509-516) is social contacts and
+# associates combined -- unlike PA03, which reports them separately.
+CLUSTER_BASES = SOCIAL_BASES | ASSOCIATE_BASES
 
 METRICS: tuple[
     tuple[str, str | None, str | None, str, str | None, str | None], ...
