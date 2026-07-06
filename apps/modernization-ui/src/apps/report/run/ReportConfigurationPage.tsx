@@ -14,6 +14,7 @@ import layoutStyles from '../layout/layout.module.scss';
 import { Required } from 'design-system/entry';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { SortSelector } from './columns/SortSelector';
+import { Heading } from 'components/heading';
 
 const BASIC_SECTIONS = [
     {
@@ -106,32 +107,52 @@ const ReportConfigurationPage = ({
 }) => {
     const sectionData = SECTIONS.filter(({ hasData }) => hasData(config));
 
+    const actions = (
+        <>
+            <Permitted permission={permissions.reports.export}>
+                <Button onClick={(e) => handleSubmit(e, true)} secondary>
+                    Export
+                </Button>
+            </Permitted>
+            <Permitted permission={permissions.reports.run}>
+                <Button type="submit" onClick={(e) => handleSubmit(e, false)}>
+                    Run
+                </Button>
+            </Permitted>
+        </>
+    );
+
     return (
-        <ReportLayout
-            title={config.title}
-            actions={
+        <ReportLayout title={config.title} actions={actions}>
+            {!sectionData.length ? (
+                <div className={layoutStyles.fullPageBlock}>
+                    <Heading level={2}>No filters available</Heading>
+                    <p className="maxw-mobile-lg text-center">
+                        This report will return all available results, which might be a large dataset. If you have{' '}
+                        <strong>Report Management</strong> permission, you can add filters by editing the report.
+                    </p>
+                    <div className="display-flex flex-row" style={{ gap: '0.5rem' }}>
+                        {actions}
+                    </div>
+                </div>
+            ) : (
                 <>
-                    <Permitted permission={permissions.reports.run}>
-                        <Button onClick={(e) => handleSubmit(e, false)}>Run</Button>
-                    </Permitted>
-                    <Permitted permission={permissions.reports.export}>
-                        <Button onClick={(e) => handleSubmit(e, true)}>Export</Button>
-                    </Permitted>
+                    <aside>
+                        <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
+                    </aside>
+                    <form className={layoutStyles.columnContent}>
+                        <CurrentStateProvider
+                            stateFilter={config.basicFilters.find((f) =>
+                                f.filterType.code?.startsWith(STATE_FILTER_CODE)
+                            )}
+                        >
+                            {sectionData.map(({ id, title, Component }) => (
+                                <Component key={id} config={config} id={id} title={title} />
+                            ))}
+                        </CurrentStateProvider>
+                    </form>
                 </>
-            }
-        >
-            <aside>
-                <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
-            </aside>
-            <form className={layoutStyles.columnContent}>
-                <CurrentStateProvider
-                    stateFilter={config.basicFilters.find((f) => f.filterType.code?.startsWith(STATE_FILTER_CODE))}
-                >
-                    {sectionData.map(({ id, title, Component }) => (
-                        <Component key={id} config={config} id={id} title={title} />
-                    ))}
-                </CurrentStateProvider>
-            </form>
+            )}
         </ReportLayout>
     );
 };
