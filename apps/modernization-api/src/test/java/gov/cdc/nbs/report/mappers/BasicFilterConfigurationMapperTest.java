@@ -181,7 +181,7 @@ class BasicFilterConfigurationMapperTest {
             .id(4L)
             .code("T_T01")
             .filterName("Test Filter")
-            .filterType("ADV_FILTER")
+            .filterType("ADV_WCB")
             .codeTable("NONE")
             .build();
     ReportFilter reportFilter =
