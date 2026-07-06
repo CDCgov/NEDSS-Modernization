@@ -241,31 +241,34 @@ public class ReportService {
 
   private void updateDisplayColumns(Report report, List<Long> displayColumnIds) {
     report.getDisplayColumns().clear();
+
+    List<DataSourceColumn> reportColumns = report.getDataSource().getDataSourceColumns();
+
     if (displayColumnIds != null && !displayColumnIds.isEmpty()) {
 
-    List<DisplayColumn> newDisplayColumns =
-        displayColumnIds.stream()
-            .map(
-                columnId -> {
-                  DataSourceColumn matchingColumn =
-                      reportColumns.stream()
-                          .filter(c -> c.getId().equals(columnId))
-                          .findFirst()
-                          .orElseThrow(
-                              () ->
-                                  new NotFoundException(
-                                      "No matching column found for ID " + columnId));
+      List<DisplayColumn> newDisplayColumns =
+          displayColumnIds.stream()
+              .map(
+                  columnId -> {
+                    DataSourceColumn matchingColumn =
+                        reportColumns.stream()
+                            .filter(c -> c.getId().equals(columnId))
+                            .findFirst()
+                            .orElseThrow(
+                                () ->
+                                    new NotFoundException(
+                                        "No matching column found for ID " + columnId));
 
-                  return displayColumnBuilder.build(report, matchingColumn);
-                })
-            .toList();
+                    return displayColumnBuilder.build(report, matchingColumn);
+                  })
+              .toList();
 
-    for (int i = 0; i < newDisplayColumns.size(); i++) {
-      DisplayColumn newDisplayColumn = newDisplayColumns.get(i);
-      newDisplayColumn.setSequenceNumber(i + 1);
-    }
+      for (int i = 0; i < newDisplayColumns.size(); i++) {
+        DisplayColumn newDisplayColumn = newDisplayColumns.get(i);
+        newDisplayColumn.setSequenceNumber(i + 1);
+      }
 
-    report.getDisplayColumns().addAll(newDisplayColumns);
+      report.getDisplayColumns().addAll(newDisplayColumns);
     }
   }
 

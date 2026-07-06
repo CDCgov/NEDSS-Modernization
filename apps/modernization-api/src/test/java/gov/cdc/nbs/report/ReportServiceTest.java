@@ -830,8 +830,7 @@ class ReportServiceTest {
       FilterCode filterCode = mock(FilterCode.class);
       Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
 
-
-        ReportFilter advancedFilter = mock(ReportFilter.class);
+      ReportFilter advancedFilter = mock(ReportFilter.class);
       List<FilterValue> filterValues = spy(new ArrayList<>());
       when(advancedFilter.getFilterValues()).thenReturn(filterValues);
 
