@@ -32,7 +32,7 @@ Then('I should see a modal labelled {string}', (name) => {
     const modalHeadingTextMatcher = (elementText, element) => {
         // remove button and svg tags from modal heading tag
         const copiedElement = element.cloneNode(true);
-        copiedElement.querySelectorAll('button, svg').forEach(node => node.remove());
+        copiedElement.querySelectorAll('button, svg').forEach((node) => node.remove());
         const cleanText = copiedElement.textContent.trim();
         return cleanText.includes(name);
     };
@@ -51,7 +51,7 @@ Then('I should see value {string} in the {string} field', (value, label) => {
 });
 
 Then('I should see {string} validation error', (errorMsg) => {
-    cy.findByRole('alert').should('have.text', errorMsg);
+    cy.findAllByRole('alert').filter(`:contains("${errorMsg}")`).should('be.visible');
 });
 
 Then('I should see a loading indicator', () => {
@@ -68,8 +68,8 @@ Then('I should see option {string} in the {string} combobox input field', (value
 
 Then('I am redirected to {string}', (pathname) => {
     cy.location('pathname').should('eq', pathname);
-})
+});
 
 Then('I should not see the {string} {string}', (label, role) => {
-    cy.findByRole({role}, { name: label }).should('not.exist');
-})
+    cy.findByRole({ role }, { name: label }).should('not.exist');
+});

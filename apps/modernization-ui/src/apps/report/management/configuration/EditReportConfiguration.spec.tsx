@@ -119,7 +119,7 @@ const renderWithRouter = () => {
     return render(<RouterProvider router={router} />);
 };
 
-describe('add report configuration page', () => {
+describe('edit report configuration page', () => {
     const mockOptionApiImpl = (url: string) => {
         if (url.includes('datasources')) {
             return Promise.resolve([
@@ -164,7 +164,7 @@ describe('add report configuration page', () => {
         vi.mocked(generated.ReportControllerService.editReport).mockResolvedValue({ reportUid: 2, dataSourceUid: 1 });
         const navigate = vi.fn();
         vi.mocked(useNavigate).mockReturnValue(navigate);
-        const { findByRole, getByRole, findByLabelText, findByText } = renderWithRouter();
+        const { findByRole, getByRole, findByLabelText, findByText, findAllByText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -202,7 +202,7 @@ describe('add report configuration page', () => {
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        expect(await findByText(`The Group is required.`)).toBeVisible();
+        expect(await findAllByText(`The Group is required.`)).toHaveLength(2);
 
         await user.selectOptions(await findByLabelText('Group'), 'Private');
 
