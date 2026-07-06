@@ -30,7 +30,7 @@ import { RemoveButton } from '././RemoveButton.tsx';
 import styles from './advanced-filter.module.scss';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
-import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { Heading } from '../../../../../components/heading';
 import { AlertMessage } from 'design-system/message/index.ts';
 
@@ -114,7 +114,11 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
             id,
             operator: mapToNbsOp(operator)!,
             columnId: columns.find(({ name }) => field === name)!.id,
-            value: LIST_OPERATORS.find(({ name }) => name === operator) ? joinWith(value, '|') : value.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === operator)
+                ? joinWith(value, '|')
+                : NULL_OPERATORS.find(({ name }) => name === operator)
+                  ? ''
+                  : value.toString(),
         };
     }) as RuleGroup;
 };
