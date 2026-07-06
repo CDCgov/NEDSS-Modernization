@@ -27,13 +27,13 @@ import { ValueSingleSelector } from './ValueSingleSelector.tsx';
 import { RemoveButton } from '././RemoveButton.tsx';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
-import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { ReactNode } from 'react';
 import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
 import { AlertMessage } from 'design-system/message/index.ts';
+import classNames from 'classnames';
 
 import styles from './advanced-filter.module.scss';
-import classNames from 'classnames';
 
 // ============= Constants ============= /
 
@@ -118,7 +118,11 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
             id,
             operator: mapToNbsOp(operator)!,
             columnId: columns.find(({ name }) => field === name)!.id,
-            value: LIST_OPERATORS.find(({ name }) => name === operator) ? joinWith(value, '|') : value.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === operator)
+                ? joinWith(value, '|')
+                : NULL_OPERATORS.find(({ name }) => name === operator)
+                  ? ''
+                  : value.toString(),
         };
     }) as RuleGroup;
 };

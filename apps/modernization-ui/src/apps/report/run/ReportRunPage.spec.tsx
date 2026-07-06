@@ -2836,6 +2836,8 @@ describe('report run page', () => {
             await user.type(numHigh, '1');
             expect(numHigh).toHaveValue(201);
 
+            await user.selectOptions(operators[0], 'null');
+
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
 
@@ -2851,8 +2853,8 @@ describe('report run page', () => {
                                 {
                                     id: '124-124-124',
                                     columnId: 2001,
-                                    operator: 'SW',
-                                    value: 'prefix',
+                                    operator: 'IN',
+                                    value: '',
                                 },
                                 {
                                     id: '125-125-125',
