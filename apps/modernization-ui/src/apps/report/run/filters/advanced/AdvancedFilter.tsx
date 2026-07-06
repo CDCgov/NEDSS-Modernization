@@ -30,8 +30,9 @@ import { RemoveButton } from '././RemoveButton.tsx';
 import styles from './advanced-filter.module.scss';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
-import { ALL_OPERATORS, LIST_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { Heading } from '../../../../../components/heading';
+import { AlertMessage } from 'design-system/message/index.ts';
 
 // ============= Constants ============= /
 
@@ -113,7 +114,11 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
             id,
             operator: mapToNbsOp(operator)!,
             columnId: columns.find(({ name }) => field === name)!.id,
-            value: LIST_OPERATORS.find(({ name }) => name === operator) ? joinWith(value, '|') : value.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === operator)
+                ? joinWith(value, '|')
+                : NULL_OPERATORS.find(({ name }) => name === operator)
+                  ? ''
+                  : value.toString(),
         };
     }) as RuleGroup;
 };
@@ -232,6 +237,21 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
 
     return (
         <div className={styles.layout}>
+            {filter.exceptionMessage && (
+                <AlertMessage type="warning" title="Saved filter has an error and can't be applied">
+                    <p>
+                        The saved filter contains an error that prevents it from loading. You can still run this report,
+                        but the filter won't be applied to your results. To use this filter, rebuild it and save the
+                        report. If you need help, share the following details with your administrator:
+                    </p>
+                    <p>
+                        <strong>Error:</strong> <span className="font-mono-sm">{filter.exceptionMessage}</span>
+                    </p>
+                    <p>
+                        <strong>Saved filter query:</strong> <span className="font-mono-sm">{filter.query}</span>
+                    </p>
+                </AlertMessage>
+            )}
             {error?.message && (
                 <AlertBanner type="error">
                     <Heading level={2}>Fix the following errors:</Heading>

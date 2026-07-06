@@ -83,7 +83,7 @@ def get_cached_config_value(config_key: str) -> str:
     if normalized_key not in _CONFIG_CACHE:
         raise errors.InvalidConfigurationError(
             f"Configuration key '{config_key}' was accessed but was never primed. "
-            f'Please ensure it is registered in prime_report_configurations().'
+            f'Please ensure it is registered in load_report_configurations().'
         )
 
     return _CONFIG_CACHE[normalized_key]
