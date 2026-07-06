@@ -4,6 +4,7 @@ import {
     BasicFilterRequest,
     ReportConfiguration,
     ReportControllerService,
+    ReportExecutionRequest,
     SortSpec,
 } from 'generated';
 import { useCallback, useState } from 'react';
@@ -21,6 +22,8 @@ import { PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
 import { NotFoundError } from 'pages/error/NotFoundError';
 import { permitsAll } from 'libs/permission';
+
+const NBS_MANAGE_REPORT_PAGE = '/nbs/ManageReports.do';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -44,9 +47,14 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [status, setStatus] = useState<'configuring' | 'submitting' | 'complete'>('configuring');
+    const [status, setStatus] = useState<'configuring' | 'submitting' | 'saving' | 'complete' | 'redirecting'>(
+        'configuring'
+    );
     const [error, setError] = useState<string | null>(null);
     const [wasExported, setWasExported] = useState<boolean>(true);
+    const [lastReportExecutionRequest, setLastReportExecutionRequest] = useState<ReportExecutionRequest | undefined>(
+        undefined
+    );
     const { openNewTab } = useNewTab();
     const config = useLoaderData<ReportConfiguration>();
     const { permissions } = usePermissions();
@@ -122,26 +130,56 @@ const ReportRunPage = () => {
             setStatus('submitting');
             setError('');
             const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-            runner({
-                requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort },
-            })
+            const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
+            setLastReportExecutionRequest(requestBody);
+            runner({ requestBody })
                 .then((res) => {
                     setStatus('complete');
-                    if (!res.content) {
-                        setError('No content!');
-                        return;
-                    }
 
-                    if (isExport) {
-                        fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`);
-                    } else {
-                        openNewTab(<ResultDataPage result={res} />);
+                    try {
+                        if (isExport) {
+                            fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
+                        } else {
+                            openNewTab(
+                                <ResultDataPage
+                                    result={res}
+                                    title={config?.title ?? ''}
+                                    dataSourceName={config?.dataSource.name ?? ''}
+                                />,
+                                `NBS Report: ${config?.title ?? ''}`
+                            );
+                        }
+                    } catch (err) {
+                        setError(JSON.stringify(err));
                     }
                 })
                 .catch((err) => setError(JSON.stringify(err)));
         },
-        []
+        [config]
     );
+
+    const handleSaveReport = () => {
+        const runner = ReportControllerService.saveReport;
+        setStatus('saving');
+        setError('');
+
+        if (!lastReportExecutionRequest) {
+            setError('No changes to report to save.');
+            return;
+        }
+        runner({
+            reportUid: lastReportExecutionRequest.reportUid,
+            dataSourceUid: lastReportExecutionRequest.dataSourceUid,
+            requestBody: lastReportExecutionRequest,
+        })
+            .then(() => {
+                setStatus('redirecting');
+                window.location.href = NBS_MANAGE_REPORT_PAGE;
+            })
+            .catch((err) => {
+                setError(err.message);
+            });
+    };
 
     return !config ? (
         <>
@@ -159,9 +197,12 @@ const ReportRunPage = () => {
         <ReportResultPage
             config={config}
             resultLoading={status === 'submitting'}
+            resultSaving={status === 'saving'}
+            isRedirecting={status === 'redirecting'}
             wasExported={wasExported}
             error={error}
             handleRefineReport={() => setStatus('configuring')}
+            handleSaveReport={handleSaveReport}
         />
     );
 };

@@ -13,6 +13,8 @@ type ModalProps = {
     forceAction?: boolean;
     closer?: boolean;
     onCloseModal?: () => void;
+    id?: string;
+    className?: string;
 };
 
 export const ModalComponent = ({
@@ -22,25 +24,27 @@ export const ModalComponent = ({
     modalFooter,
     isLarge,
     size,
+    className,
     closer,
     onCloseModal,
+    id,
 }: ModalProps) => {
     return (
         <Modal
             ref={modalRef}
             isLarge={isLarge}
-            id="example-modal-1"
+            id={id}
             forceAction={true}
-            aria-labelledby="modal-1-heading"
-            className={`padding-0 ${size}`}
-            aria-describedby="modal-1-description"
+            aria-labelledby={`${id}-heading`}
+            className={`padding-0 ${size} ${className}`}
+            aria-describedby={`${id}-description`}
         >
             {modalHeading ? (
-                <ModalHeading id="modal-1-heading">
+                <ModalHeading id={`${id}-heading`}>
                     {modalHeading}
                     {closer ? (
                         <ModalToggleButton unstyled closer modalRef={modalRef!} onClick={onCloseModal}>
-                            <Icon.Close size={4} />
+                            <Icon.Close size={4} aria-label={'Close modal'} />
                         </ModalToggleButton>
                     ) : null}
                 </ModalHeading>

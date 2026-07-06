@@ -22,23 +22,25 @@ import gov.cdc.nbs.report.models.AdminReportRequest;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.Library;
+import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportResult;
+import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
@@ -46,6 +48,8 @@ import org.springframework.web.client.RestClientResponseException;
 
 @Service
 public class ReportService {
+
+  private final Clock clock;
 
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
@@ -59,6 +63,7 @@ public class ReportService {
   private final ReportFilterBuilder reportFilterBuilder;
 
   public ReportService(
+      final Clock clock,
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
@@ -68,6 +73,8 @@ public class ReportService {
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper) {
+    this.clock = clock;
+
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
@@ -134,6 +141,12 @@ public class ReportService {
         .findById(id)
         .map(
             report -> {
+              ReportLibrary library = report.getReportLibrary();
+              if (library == null) {
+                throw new IllegalArgumentException(
+                    "No library found for this report. This can happen if a report was created or save-as'ed with NBS 6, but is trying to be opened in NBS 7. Ask your NBS administrator to sync the report and report library tables using the query in the report admin guide.");
+              }
+
               List<BasicFilterConfiguration> basicFilters =
                   report.getReportFilters().stream()
                       .filter(
@@ -187,7 +200,7 @@ public class ReportService {
 
               return new ReportConfiguration(
                   new ReportDataSource(report.getDataSource()),
-                  new Library(report.getReportLibrary()),
+                  new Library(library),
                   report.getReportTitle(),
                   report.getDescTxt(),
                   report.getOwnerUid(),
@@ -212,15 +225,15 @@ public class ReportService {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     ReportLibrary reportLibrary = report.getReportLibrary();
+    // If the library is null, that means this report was save-as'ed with NBS 6 from a sas report
     if (reportLibrary == null) {
-      throw new UnprocessableEntityException(
-          String.format("No report library exists for report %s", reportId));
+      return "sas";
     }
 
     return reportLibrary.getRunner();
   }
 
-  public ResponseEntity<ReportResult> executeReport(ReportExecutionRequest request) {
+  public ReportExecutionResult executeReport(ReportExecutionRequest request) {
     Long reportUid = request.reportUid();
     Long dataSourceUid = request.dataSourceUid();
     ReportConfiguration reportConfigResponse = getReport(reportUid, dataSourceUid);
@@ -241,24 +254,34 @@ public class ReportService {
             request, reportConfigResponse, dataSourceNameUtils, whereClauseService);
     ReportSpec reportSpec = specBuilder.build();
 
-    return reportExecutionClient
-        .post()
-        .uri("/report/execute")
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(reportSpec)
-        .retrieve()
-        .onStatus(
-            status -> status.value() >= 400,
-            (req, resp) -> {
-              throw new RestClientResponseException(
-                  "Error response from the report-execution service",
-                  resp.getStatusCode(),
-                  resp.getStatusText(),
-                  resp.getHeaders(),
-                  resp.getBody().readAllBytes(),
-                  null);
-            })
-        .toEntity(ReportResult.class);
+    LibraryExecutionResult result =
+        reportExecutionClient
+            .post()
+            .uri("/report/execute")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(reportSpec)
+            .retrieve()
+            .onStatus(
+                status -> status.value() >= 400,
+                (req, resp) -> {
+                  throw new RestClientResponseException(
+                      "Error response from the report-execution service",
+                      resp.getStatusCode(),
+                      resp.getStatusText(),
+                      resp.getHeaders(),
+                      resp.getBody().readAllBytes(),
+                      null);
+                })
+            .toEntity(LibraryExecutionResult.class)
+            .getBody();
+
+    if (result == null) {
+      throw new IllegalStateException(
+          "No error response and no body parsed from report execution service");
+    }
+
+    return new ReportExecutionResult(
+        result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
   }
 
   private String getReportNotFoundText(ReportId reportId) {

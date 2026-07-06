@@ -59,7 +59,16 @@ const SECTIONS = [
         id: 'advanced-filter',
         hasData: (config: ReportConfiguration) => !!config.advancedFilter,
         Component: ({ config, id, title }: { config: ReportConfiguration; id: string; title: string }) => (
-            <Card id={id} title={title} collapsible={true}>
+            <Card
+                id={id}
+                title={title}
+                collapsible={true}
+                subtext="Add rules and rule groups to narrow or broaden your results.
+                Use AND to require all connected rules or groups to match, or OR to require
+                only one to match. Your advanced filter combines with your basic filters
+                using AND logic. The WHERE clause preview shows your advanced filter as you build it."
+                contentMaxWidth="widescreen"
+            >
                 <AdvancedFilter filter={config.advancedFilter!} columns={config.columns} />
             </Card>
         ),
