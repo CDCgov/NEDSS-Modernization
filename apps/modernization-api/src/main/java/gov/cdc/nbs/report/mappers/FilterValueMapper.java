@@ -24,6 +24,7 @@ public class FilterValueMapper {
   public List<FilterValue> fromBasicFilterRequest(
       ReportFilter basicFilter, BasicFilterRequest request) {
     List<FilterValue> basicFilterValues = new ArrayList<>();
+    String operator = request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null;
 
     if (request.values().isEmpty()) {
       if (!request.includeNulls()) return basicFilterValues;
@@ -49,7 +50,7 @@ public class FilterValueMapper {
               .id(generateFilterValueId())
               .reportFilter(basicFilter)
               .valueType("BEGIN_RANGE")
-              .operator(request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null)
+              .operator(operator)
               .valueTxt(request.values().getFirst())
               .build();
 
@@ -58,7 +59,7 @@ public class FilterValueMapper {
               .id(generateFilterValueId())
               .reportFilter(basicFilter)
               .valueType("END_RANGE")
-              .operator(request.includeNulls() ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP : null)
+              .operator(operator)
               .valueTxt(request.values().getLast())
               .build();
 
@@ -73,10 +74,7 @@ public class FilterValueMapper {
                           .reportFilter(basicFilter)
                           .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
                           .valueTxt(value == null ? "" : value)
-                          .operator(
-                              request.includeNulls()
-                                  ? ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP
-                                  : null)
+                          .operator(operator)
                           .build())
               .collect(Collectors.toCollection(ArrayList::new)));
     }
@@ -140,9 +138,9 @@ public class FilterValueMapper {
   private FilterValue buildClauseFilterValue(ReportFilter advancedFilter, AdvancedQuery.Rule rule) {
     String valueTxt = rule.value();
 
-    if (Arrays.asList(
-            ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
-        .contains(rule.operator())) {
+    //  If the operator is "IS NULL" or "NOT NULL", explicitly set `valueTxt` to empty string,
+    //  in order to maintain parity with 6
+    if (isNullishOperator(rule.operator())) {
       valueTxt = "";
     }
 
@@ -168,5 +166,12 @@ public class FilterValueMapper {
   private Long generateFilterValueId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
+  }
+
+  /** Return true if the operator is "IS NULL" or "NOT NULL". */
+  private static boolean isNullishOperator(String operator) {
+    return Arrays.asList(
+            ReportConstants.Operator.IN.toString(), ReportConstants.Operator.NN.toString())
+        .contains(operator);
   }
 }

@@ -34,7 +34,7 @@ public class Report {
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
-  // Report filters are updated/dete when reports save/dete, so we need to
+  // Report filters are updated/deleted when reports save/delete, so we need to
   // cascade all operations. When a report is no longer referenced, we want
   // to delete it, so set `orphanRemoval` to true
   @OneToMany(
@@ -48,7 +48,7 @@ public class Report {
       mappedBy = "report",
       fetch = FetchType.LAZY,
       orphanRemoval = true,
-      cascade = CascadeType.REMOVE)
+      cascade = CascadeType.ALL)
   private List<DisplayColumn> displayColumns;
 
   // should be 1:1 in practice, but the DB implies there could be
@@ -57,7 +57,7 @@ public class Report {
       mappedBy = "report",
       fetch = FetchType.LAZY,
       orphanRemoval = true,
-      cascade = CascadeType.REMOVE)
+      cascade = CascadeType.ALL)
   private List<ReportSortColumn> reportSortColumns;
 
   @Column(name = "desc_txt", length = 300)

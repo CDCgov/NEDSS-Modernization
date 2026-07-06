@@ -237,7 +237,7 @@ class FilterValueMapperTest {
           .isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE);
       assertThat(filterValue.getOperator()).isEqualTo(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP);
 
-      assertThat(filterValue.getValueTxt()).isEqualTo("");
+      assertThat(filterValue.getValueTxt()).isEmpty();
       assertThat(filterValue.getColumnUid()).isNull();
       assertThat(filterValue.getSequenceNumber()).isNull();
     }

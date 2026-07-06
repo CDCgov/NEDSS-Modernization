@@ -79,24 +79,44 @@ public class ReportController {
       throw new ForbiddenException("Only report owners can save reports");
     }
 
-    String authOperationType;
     ReportConstants.ReportGroup reportGroup =
         ReportConstants.dbCharToReportGroup(existingReport.getShared());
 
-    authOperationType =
-        switch (reportGroup) {
-          case PUBLIC -> ReportConstants.Permissions.EDITREPORTPUBLIC;
-          case PRIVATE -> ReportConstants.Permissions.EDITREPORTPRIVATE;
-          case REPORTING_FACILITY -> ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY;
-          case TEMPLATE ->
-              throw new IllegalArgumentException("Template reports cannot be updated using 'save'");
-        };
+    //  While long-term we likely want to map permissions 1:1 with report groups,
+    //  this is currently how it works in 6, so we'll leave it be for now.
+    switch (reportGroup) {
+      case PUBLIC:
+      case REPORTING_FACILITY:
+        String publicAuth =
+            ReportConstants.Permissions.EDITREPORTPUBLIC
+                + "-"
+                + ReportConstants.Permissions.REPORTINGOBJECT;
+        String reportingFacilityAuth =
+            ReportConstants.Permissions.EDITREPORTREPORTINGFACILITY
+                + "-"
+                + ReportConstants.Permissions.REPORTINGOBJECT;
 
-    String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+        if (user.getAuthorities().stream()
+            .noneMatch(
+                a ->
+                    a.getAuthority().equals(publicAuth)
+                        || a.getAuthority().equals(reportingFacilityAuth))) {
+          throw new ForbiddenException(
+              "User does not have permission to save " + reportGroup.name() + " reports");
+        }
+        break;
+      case PRIVATE:
+      case TEMPLATE:
+        String privateAuth =
+            ReportConstants.Permissions.EDITREPORTPRIVATE
+                + "-"
+                + ReportConstants.Permissions.REPORTINGOBJECT;
 
-    if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
-      throw new ForbiddenException(
-          "User does not have permission to save " + reportGroup.name() + " reports");
+        if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(privateAuth))) {
+          throw new ForbiddenException(
+              "User does not have permission to save " + reportGroup.name() + " reports");
+        }
+        break;
     }
 
     Report report = reportService.saveReport(request, existingReport);

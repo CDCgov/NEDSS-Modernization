@@ -178,7 +178,7 @@ public class ReportService {
     //  If no basic filter requests are provided, delete all filter values for all existing basic
     // filters
     if (basicFilterReqs == null || basicFilterReqs.isEmpty()) {
-      basicFiltersById.values().forEach(basicFilter -> basicFilter.setFilterValues(null));
+      basicFiltersById.values().forEach(basicFilter -> basicFilter.getFilterValues().clear());
     } else if (basicFilterReqs.stream()
         .anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
       throw new IllegalArgumentException(
@@ -192,16 +192,13 @@ public class ReportService {
           .values()
           .forEach(
               basicFilter -> {
-                BasicFilterRequest matchingReq = basicFilterReqsById.get(basicFilter.getId());
-                //  If a basic filter request isn't present for a given basic filter,
-                //  OR if it is present but has no values, then delete all filter values
-                //  for that particular basic filter
-                if (matchingReq == null || matchingReq.values().isEmpty()) {
-                  basicFilter.setFilterValues(null);
-                } else {
-                  //  Otherwise, reset the filter values to the new values provided
-                  basicFilter.getFilterValues().clear();
+                //  First, delete all existing filter values for this basic filter
+                basicFilter.getFilterValues().clear();
 
+                BasicFilterRequest matchingReq = basicFilterReqsById.get(basicFilter.getId());
+
+                //  Then, if there's a matching request, add the new filter values from the request
+                if (matchingReq != null && !matchingReq.values().isEmpty()) {
                   List<FilterValue> basicFilterValues =
                       filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
                   basicFilter.getFilterValues().addAll(basicFilterValues);
@@ -225,15 +222,13 @@ public class ReportService {
     }
 
     if (advancedFilter != null) {
-      if (advFilterReq == null) {
-        advancedFilter.setFilterValues(null);
-      } else {
+      advancedFilter.getFilterValues().clear();
+
+      if (advFilterReq != null) {
         if (!advancedFilter.getId().equals(advFilterReq.reportFilterUid())) {
           throw new IllegalArgumentException(
               "AdvancedFilterRequest.reportFilterUid does not match existing advanced filter ID");
         }
-
-        advancedFilter.getFilterValues().clear();
 
         List<FilterValue> advFilterValues =
             filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advFilterReq);
@@ -245,14 +240,8 @@ public class ReportService {
   }
 
   private void updateDisplayColumns(Report report, List<Long> displayColumnIds) {
-    if (displayColumnIds == null || displayColumnIds.isEmpty()) {
-      report.setDisplayColumns(null);
-      return;
-    }
-
-    List<DataSourceColumn> reportColumns = report.getDataSource().getDataSourceColumns();
-
     report.getDisplayColumns().clear();
+    if (displayColumnIds != null && !displayColumnIds.isEmpty()) {
 
     List<DisplayColumn> newDisplayColumns =
         displayColumnIds.stream()
@@ -277,18 +266,16 @@ public class ReportService {
     }
 
     report.getDisplayColumns().addAll(newDisplayColumns);
+    }
   }
 
   private void updateSortColumns(Report report, SortSpec sort) {
-    if (sort == null) {
-      report.setReportSortColumns(null);
-      return;
-    }
-
     report.getReportSortColumns().clear();
 
-    ReportSortColumn sortColumn = reportSortColumnMapper.fromSortSpec(report, sort);
-    report.getReportSortColumns().add(sortColumn);
+    if (sort != null) {
+      ReportSortColumn sortColumn = reportSortColumnMapper.fromSortSpec(report, sort);
+      report.getReportSortColumns().add(sortColumn);
+    }
   }
 
   protected String getReportNotFoundText(ReportId reportId) {

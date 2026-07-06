@@ -506,9 +506,13 @@ class ReportServiceTest {
       ReportExecutionRequest request =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
+      List<DisplayColumn> existingDisplayColumns = spy(new ArrayList<>());
+      when(existingReport.getDisplayColumns()).thenReturn(existingDisplayColumns);
+
       Report result = service.saveReport(request, existingReport);
 
-      verify(existingReport).setDisplayColumns(null);
+      verify(existingReport).getDisplayColumns();
+      verify(existingDisplayColumns).clear();
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -520,9 +524,13 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, new ArrayList<>(), null, List.of(), null);
 
+      List<DisplayColumn> existingDisplayColumns = spy(new ArrayList<>());
+      when(existingReport.getDisplayColumns()).thenReturn(existingDisplayColumns);
+
       Report result = service.saveReport(request, existingReport);
 
-      verify(existingReport).setDisplayColumns(null);
+      verify(existingReport).getDisplayColumns();
+      verify(existingDisplayColumns).clear();
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -578,9 +586,13 @@ class ReportServiceTest {
           new ReportExecutionRequest(
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
+      List<ReportSortColumn> sortColumns = spy(new ArrayList<>());
+      when(existingReport.getReportSortColumns()).thenReturn(sortColumns);
+
       Report result = service.saveReport(request, existingReport);
 
-      verify(existingReport).setReportSortColumns(null);
+      verify(existingReport).getReportSortColumns();
+      verify(sortColumns).clear();
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -665,11 +677,16 @@ class ReportServiceTest {
       when(basicFilter.getId()).thenReturn(basicFilterUid);
       Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(basicFilter.isBasicFilter()).thenReturn(true);
+
+      List<FilterValue> existingFilterValues = spy(new ArrayList<>());
+      when(basicFilter.getFilterValues()).thenReturn(existingFilterValues);
+
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       Report result = service.saveReport(request, existingReport);
 
-      verify(basicFilter).setFilterValues(null);
+      verify(basicFilter).getFilterValues();
+      verify(existingFilterValues).clear();
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -697,10 +714,19 @@ class ReportServiceTest {
 
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter1, basicFilter2));
 
+      List<FilterValue> existingFilterValues1 = spy(new ArrayList<>());
+      when(basicFilter1.getFilterValues()).thenReturn(existingFilterValues1);
+
+      List<FilterValue> existingFilterValues2 = spy(new ArrayList<>());
+      when(basicFilter2.getFilterValues()).thenReturn(existingFilterValues2);
+
       Report result = service.saveReport(request, existingReport);
 
-      verify(basicFilter1).setFilterValues(null);
-      verify(basicFilter2).setFilterValues(null);
+      verify(basicFilter1).getFilterValues();
+      verify(existingFilterValues1).clear();
+
+      verify(basicFilter2).getFilterValues();
+      verify(existingFilterValues2).clear();
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -804,7 +830,12 @@ class ReportServiceTest {
       FilterCode filterCode = mock(FilterCode.class);
       Mockito.lenient().when(filterCode.getFilterType()).thenReturn(ReportFilter.ADV_FILTER_TYPE);
 
-      ReportFilter advancedFilter = mock(ReportFilter.class);
+
+        ReportFilter advancedFilter = mock(ReportFilter.class);
+      List<FilterValue> filterValues = spy(new ArrayList<>());
+      when(advancedFilter.getFilterValues()).thenReturn(filterValues);
+
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
       Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
       Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
       when(advancedFilter.isAdvancedFilter()).thenReturn(true);
@@ -813,7 +844,8 @@ class ReportServiceTest {
 
       Report result = service.saveReport(request, existingReport);
 
-      verify(advancedFilter).setFilterValues(null);
+      verify(advancedFilter).getFilterValues();
+      verify(filterValues).clear();
       verify(reportFilterRepository).save(advancedFilter);
 
       verify(reportRepository).save(existingReport);
