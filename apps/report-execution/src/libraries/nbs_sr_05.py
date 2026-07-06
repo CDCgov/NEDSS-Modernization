@@ -2,7 +2,6 @@ import datetime
 
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import gen_subheader
 
 
 def execute(
@@ -46,7 +45,7 @@ def execute(
     last_year = year - 1
     years = range(year, year - 6, -1)
 
-    report_query = f"""
+    main_query = f"""
     -- State filtering is assumed to happen in the filters/subset
     WITH subset as ({subset_query}),
 
@@ -148,8 +147,7 @@ def execute(
     ORDER BY ty.phc_code_short_desc ASC
     """
 
-    content = trx.query(report_query)
-    subheader = gen_subheader()
+    content = trx.query(main_query)
 
     description = """
 **<u>Report content</u>**
@@ -177,11 +175,11 @@ def execute(
 * **Percentage change (current year vs. 5 year median):** Percentage change between the Current Year Totals by disease and the 5-Year median
 
 * **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to County, Report to State and Date the Investigation was created in the NBS.
-"""
+""" # noqa: E501
 
     return ReportResult(
         content_type='table',
         content=content,
-        subheader=subheader,
+        subheader=None,
         description=description,
     )
