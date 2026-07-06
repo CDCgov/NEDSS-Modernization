@@ -4,7 +4,7 @@ Feature: Save report after report run
         And I navigate to list reports
 
     Scenario: I cannot see the save button after running the report if I am not the owner
-        And I navigate to report with reportUid: "8" and dataSourceUid: "1"
+        And I navigate to "S" report with reportUid: 8 and dataSourceUid: 1
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I select "Appling County" from the "County Code" dropdown menu
         And I click the "Run" button
@@ -12,7 +12,7 @@ Feature: Save report after report run
         And I should not see the "Save" "button"
 
     Scenario: I can save as the report after running the report
-        When I navigate to report with reportUid: "8" and dataSourceUid: "1"
+        When I navigate to "S" report with reportUid: 8 and dataSourceUid: 1
         And I select "Anthrax" from the "Condition Code" dropdown menu
         And I select "Fulton County" from the "County Code" dropdown menu
         And I click the "Run" button
@@ -29,18 +29,16 @@ Feature: Save report after report run
         And I type "Test save as report" into the "Name" field
         And I type "Testing saving as a report" into the "Description" field
         And I select value "Default Report Section" in the "Section name" field
-        And I select radio "Public" in the "Group" field
+        And I should see "Private" radio selected in the "Group" field
         And I click the "Save as new" button
         Then I am redirected to "/nbs/ManageReports.do"
-        And I click on the "Expand subsections" link
-        And I click on the "Expand subsections" link
+        And I click on the "Expand Subsections" link
     # TODO APP-668: uncomment these tests and get passing
     #     Then I should see a "link" labelled "Test save as report"
 
     # Scenario: I can save the report after running the report if I am the owner
-    #     When I click on the "Expand subsections" link
-    #     And I click on the "Expand subsections" link
-    #     And I click on the "Test save as report" link
+    #     When I click on the "Expand Subsections" link
+    #     And I click on the "Run" link
     #     Then I should see option "Antrhax" in the "Condition Code" combobox input field
     #     Then I should see option "Fulton County" in the "County Code" combobox input field
     #     And I select "AIDS" from the "Condition Code" dropdown menu
