@@ -80,8 +80,7 @@ public class ReportExecutionServiceClient {
       ReportExecutionRequest request, ReportConfiguration reportConfigResponse) {
     if (!reportConfigResponse.isPython()) {
       throw new NotImplementedException(
-          String.format("Report not implemented for %s", reportConfigResponse.library().runner()),
-          String.valueOf(HttpStatus.NOT_IMPLEMENTED));
+          "Report not implemented for python", String.valueOf(HttpStatus.NOT_IMPLEMENTED));
     }
 
     if (request.columnUids() != null && request.columnUids().isEmpty()) {

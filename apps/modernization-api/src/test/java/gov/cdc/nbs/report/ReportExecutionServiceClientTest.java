@@ -108,7 +108,7 @@ class ReportExecutionServiceClientTest {
 
     assertThatThrownBy(() -> reportExecutionClient.executeReport(request))
         .isInstanceOf(NotImplementedException.class)
-        .hasMessage("Report not implemented for java");
+        .hasMessage("Report not implemented for python");
   }
 
   private ReportExecutionResult getReportExecutionResponse() {
