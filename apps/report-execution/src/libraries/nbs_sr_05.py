@@ -45,6 +45,9 @@ def execute(
     last_year = year - 1
     years = range(year, year - 6, -1)
 
+    # Because the base data is guaranteed to have a "0" entry for every year and disease
+    # in the current month, we know that all diseases for all years will be present
+    # and don't need to worry about null coalescing
     main_query = f"""
     -- State filtering is assumed to happen in the filters/subset
     WITH subset as ({subset_query}),
