@@ -28,40 +28,39 @@ class TestIntegrationPa05Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(result.content.columns) == 8
+        assert len(result.content.columns) == 7
         assert len(data) >= 23
         assert len(data) % 23 == 0
         assert len(data[0]) == len(result.content.columns)
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
-        overall_rows = [row for row in data if row[0] == 'Overall']
-        worker_rows = [row for row in data if row[0] == 'Worker']
+        overall_rows = [row for row in data if row[0] == 'ALL']
+        worker_rows = [row for row in data if row[0] != 'ALL']
 
+        # Every worker-row block (whether or not two investigator keys share a
+        # PROVIDER_QUICK_CODE -- see the `Worker` note in pa_05.py's execute()
+        # docstring) still contains all 23 metrics, so the totals are exact
+        # multiples of 23.
         assert len(overall_rows) == 23
         assert len(worker_rows) % 23 == 0
 
-        worker_keys = {(row[1], row[2]) for row in worker_rows}
-        for worker_key in worker_keys:
-            rows_for_worker = [
-                row for row in worker_rows if (row[1], row[2]) == worker_key
-            ]
-            assert len(rows_for_worker) == 23
-
-        row_map = {(row[0], row[1], row[2], row[4]): row for row in data}
-        assert row_map[('Overall', None, None, 'NUM. CASES ASSIGNED')][5] >= 0
-        assert row_map[('Overall', None, None, "NUM. CASES IX'D")][5] >= 0
-        assert row_map[('Overall', None, None, "NUM. OF OI'S")][5] >= 0
-        assert row_map[('Overall', None, None, "NUM. OF RI'S")][5] >= 0
+        row_map = {(row[0], row[1], row[2], row[3]): row for row in data}
+        assert row_map[('ALL', 'Num. Cases Assigned', None, None)][4] >= 0
+        assert row_map[('ALL', 'Num. Cases Assigned', "Num. Cases IX'D", None)][4] >= 0
+        assert row_map[('ALL', "Num. of OI'S", None, None)][4] >= 0
+        assert row_map[('ALL', "Num. of RI'S", None, None)][4] >= 0
 
         for row in data:
-            assert isinstance(row[5], int)
-            assert row[5] >= 0
-            assert row[7] in (None, 'percent', 'ratio')
-            if row[7] is None:
-                assert row[6] is None
-            else:
-                assert row[6] is None or isinstance(row[6], float)
+            count, percentage, index = row[4], row[5], row[6]
+            assert isinstance(count, int)
+            assert count >= 0
+            assert percentage is None or (
+                isinstance(percentage, str) and percentage.endswith('%')
+            )
+            assert index is None or isinstance(index, float)
+            # A metric is percent-type, ratio-type, or neither -- never both.
+            assert percentage is None or index is None
 
     def test_execute_report_no_data(self):
         report_spec = ReportSpec.model_validate(
@@ -82,23 +81,23 @@ class TestIntegrationPa05Library:
 
         data = result.content.data
         assert len(data) == 23
-        assert len(result.content.columns) == 8
-        assert all(row[0] == 'Overall' for row in data)
-        assert all(row[5] == 0 for row in data)
+        assert len(result.content.columns) == 7
+        assert all(row[0] == 'ALL' for row in data)
+        assert all(row[4] == 0 for row in data)
+        assert all(row[5] is None and row[6] is None for row in data)
 
-        row_map = {(row[0], row[4]): row for row in data}
-        assert row_map[('Overall', 'NUM. CASES ASSIGNED')] == (
-            'Overall',
+        row_map = {(row[0], row[1], row[2], row[3]): row for row in data}
+        assert row_map[('ALL', 'Num. Cases Assigned', None, None)] == (
+            'ALL',
+            'Num. Cases Assigned',
             None,
             None,
-            'Case Activity',
-            'NUM. CASES ASSIGNED',
             0,
             None,
             None,
         )
-        assert row_map[('Overall', "NUM. OF OI'S")][5] == 0
-        assert row_map[('Overall', "NUM. OF RI'S")][5] == 0
+        assert row_map[('ALL', "Num. of OI'S", None, None)][4] == 0
+        assert row_map[('ALL', "Num. of RI'S", None, None)][4] == 0
 
     def test_execute_report_check_metadata(self):
         report_spec = ReportSpec.model_validate(
@@ -118,12 +117,11 @@ class TestIntegrationPa05Library:
         assert result.description is None
         assert result.content_type == 'table'
         assert result.content.columns == [
-            'Scope',
-            'Provider Quick Code',
-            'Investigator Interview Key',
-            'Metric Group',
-            'Metric',
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Category 3',
             'Count',
-            'Rate',
-            'Rate Type',
+            'Percentage',
+            'Index',
         ]

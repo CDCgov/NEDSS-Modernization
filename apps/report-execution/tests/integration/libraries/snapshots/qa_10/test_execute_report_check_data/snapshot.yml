@@ -20,6 +20,27 @@
   - null
   - 69
 - !!python/tuple
+  - 775
+  - null
+  - null
+  - 24 Years
+  - F
+  - '200'
+  - Washington County
+  - null
+  - 2022-04-25
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2021-01-08
+  - '14'
+  - null
+  - null
+  - 24
+- !!python/tuple
   - 507
   - null
   - null
@@ -132,7 +153,7 @@
   - F
   - '710'
   - Middlesex County
-  - '48347527'
+  - null
   - 2021-09-24
   - N
   - N
@@ -146,27 +167,6 @@
   - 10005
   - 33
 - !!python/tuple
-  - 577
-  - Davis, Tom
-  - PSN10010005GA01
-  - 77 Days
-  - F
-  - '720'
-  - Middlesex County
-  - '58577185'
-  - null
-  - Y
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2022-07-23
-  - '14'
-  - davis, tom
-  - 10005
-  - 77
-- !!python/tuple
   - 814
   - Davis, Tom
   - PSN10010005GA01
@@ -174,9 +174,9 @@
   - F
   - '720'
   - Washington County
-  - '66962407'
-  - 2024-01-20
-  - N
+  - null
+  - null
+  - Y
   - Y
   - 'No'
   - 'No'
@@ -203,32 +203,32 @@
   - 'Yes'
   - 'No'
   - null
-  - 2023-10-05
+  - null
   - '14'
   - davis, tom
   - 10005
   - 96
 - !!python/tuple
-  - 115
+  - 988
   - Davis, Tom
   - PSN10010005GA01
-  - 20 Months
+  - 11 Months
   - F
-  - '790'
-  - Washington County
-  - '64933570'
-  - 2022-12-23
+  - '900'
+  - Middlesex County
+  - '55264454'
+  - 2020-10-04
   - N
   - N
+  - 'No'
   - 'No'
   - 'Yes'
   - 'No'
-  - 'No'
-  - 2021-03-15
+  - 2021-08-03
   - '14'
   - davis, tom
   - 10005
-  - 20
+  - 11
 - !!python/tuple
   - 349
   - Davis, Tom
@@ -272,27 +272,6 @@
   - 10002
   - 91
 - !!python/tuple
-  - 939
-  - Doe, Jane
-  - PSN10010002GA01
-  - 83 Days
-  - F
-  - '200'
-  - Washington County
-  - '68702523'
-  - 2023-10-20
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2021-07-20
-  - '14'
-  - doe, jane
-  - 10002
-  - 83
-- !!python/tuple
   - 627
   - Doe, Jane
   - PSN10010002GA01
@@ -308,7 +287,7 @@
   - 'No'
   - 'Yes'
   - 'No'
-  - 2019-08-24
+  - null
   - '14'
   - doe, jane
   - 10002
@@ -335,27 +314,6 @@
   - 10002
   - 31
 - !!python/tuple
-  - 309
-  - Doe, Jane
-  - PSN10010002GA01
-  - 46 Years
-  - F
-  - '720'
-  - Middlesex County
-  - '76916688'
-  - 2024-07-15
-  - N
-  - null
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2022-06-28
-  - '14'
-  - doe, jane
-  - 10002
-  - 46
-- !!python/tuple
   - 212
   - Doe, Jane
   - PSN10010002GA01
@@ -364,8 +322,8 @@
   - '730'
   - Washington County
   - '60704855'
-  - 2022-09-20
-  - N
+  - null
+  - Y
   - N
   - 'Yes'
   - 'No'
@@ -419,27 +377,6 @@
   - 10003
   - 47
 - !!python/tuple
-  - 36
-  - Miller, Amy
-  - PSN10010006GA01
-  - 99 Days
-  - F
-  - '710'
-  - Washington County
-  - '18516150'
-  - 2024-02-26
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2022-06-19
-  - '14'
-  - miller, amy
-  - 10006
-  - 99
-- !!python/tuple
   - 179
   - Miller, Amy
   - PSN10010006GA01
@@ -460,6 +397,27 @@
   - miller, amy
   - 10006
   - 27
+- !!python/tuple
+  - 36
+  - Miller, Amy
+  - PSN10010006GA01
+  - 99 Days
+  - F
+  - '710'
+  - Washington County
+  - '18516150'
+  - 2024-02-26
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2022-06-19
+  - '14'
+  - miller, amy
+  - 10006
+  - 99
 - !!python/tuple
   - 160
   - Miller, Amy
@@ -510,7 +468,7 @@
   - F
   - '720'
   - Middlesex County
-  - null
+  - '25290066'
   - 2023-02-27
   - N
   - N
@@ -518,11 +476,53 @@
   - 'Yes'
   - 'No'
   - 'No'
-  - null
+  - 2018-07-12
   - '14'
   - smith, john
   - 10001
   - null
+- !!python/tuple
+  - 420
+  - Smith, John
+  - PSN10010001GA01
+  - 33 Years
+  - F
+  - '730'
+  - Washington County
+  - '10804148'
+  - 2021-08-27
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2024-10-07
+  - '14'
+  - smith, john
+  - 10001
+  - 33
+- !!python/tuple
+  - 569
+  - Smith, John
+  - PSN10010001GA01
+  - 64 Years
+  - F
+  - '900'
+  - Washington County
+  - '15516969'
+  - 2018-05-19
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2024-05-08
+  - '14'
+  - smith, john
+  - 10001
+  - 64
 - !!python/tuple
   - 929
   - Smith, John
@@ -531,7 +531,7 @@
   - F
   - '900'
   - Washington County
-  - null
+  - '87090778'
   - 2018-09-05
   - N
   - Y

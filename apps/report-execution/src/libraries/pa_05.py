@@ -6,7 +6,9 @@ from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 
 WorkerKey = tuple[str | None, int | None]
-Pa05Row = tuple[str, str | None, int | None, str, str, int, float | None, str | None]
+Pa05Row = tuple[
+    str, str, str | None, str | None, int, str | None, float | None
+]
 
 INITIAL_INTERVIEW = 'Initial/Original'
 REINTERVIEW = 'Re-Interview'
@@ -34,30 +36,172 @@ VALID_PROCESSING_DECISIONS = {
     'Secondary Referral',
 }
 
-METRICS: tuple[tuple[str, str, str, str | None, str | None], ...] = (
-    ('Case Activity', 'NUM. CASES ASSIGNED', 'A', None, None),
-    ('Case Activity', 'NUM. CASES OPEN', 'B', 'A', 'percent'),
-    ('Case Activity', 'NUM. CASES CLOSED', 'C', 'A', 'percent'),
-    ('Case Activity', 'NUM. CASES PENDING', 'D', 'A', 'percent'),
-    ('Case Activity', "NUM. CASES IX'D", 'E', 'A', 'percent'),
-    ('Case Activity', "CLINIC IX'S", 'F', 'E', 'percent'),
-    ('Case Activity', "FIELD IX'S", 'G', 'E', 'percent'),
-    ('Case Activity', "IX'D W/IN 3 DAYS", 'H', 'E', 'percent'),
-    ('Case Activity', "IX'D W/IN 5 DAYS", 'I', 'E', 'percent'),
-    ('Case Activity', "IX'D W/IN 7 DAYS", 'J', 'E', 'percent'),
-    ('Case Activity', "IX'D W/IN 14 DAYS", 'K', 'E', 'percent'),
-    ('Case Activity', "NUM. CASES NOT IX'D", 'L', 'A', 'percent'),
-    ('Case Activity', 'REFUSED', 'M', 'L', 'percent'),
-    ('Case Activity', 'NO LOCATE', 'N', 'L', 'percent'),
-    ('Case Activity', 'OTHER', 'O', 'L', 'percent'),
-    ('Interview Activity', "NUM. OF OI'S", 'P', None, None),
-    ('Interview Activity', "OI'S THAT WERE NCI", 'Q', 'P', 'percent'),
-    ('Interview Activity', 'PERIOD PARTNERS', 'R', 'P', 'ratio'),
-    ('Interview Activity', 'PARTNERS INITIATED (OI)', 'S', 'P', 'ratio'),
-    ('Interview Activity', "NUM. OF RI'S", 'T', None, None),
-    ('Interview Activity', "RI'S THAT WERE NCI", 'U', 'T', 'percent'),
-    ('Interview Activity', 'PARTNERS INITIATED (RI)', 'V', 'T', 'ratio'),
-    ('Interview Activity', 'CLUSTERS INIT (OI & RI)', 'W', 'P', 'ratio'),
+METRICS: tuple[
+    tuple[str, str | None, str | None, str, str | None, str | None], ...
+] = (
+    ('Num. Cases Assigned', None, None, 'A', None, None),  # Var_A, PA05.sas:304-309
+    (
+        'Num. Cases Assigned',
+        'Num. Cases Open',
+        None,
+        'B',
+        'A',
+        'percent',
+    ),  # Var_B, PA05.sas:312-318
+    (
+        'Num. Cases Assigned',
+        'Num. Cases Closed',
+        None,
+        'C',
+        'A',
+        'percent',
+    ),  # Var_C, PA05.sas:320-326
+    (
+        'Num. Cases Assigned',
+        'Num. Cases Pending',
+        None,
+        'D',
+        'A',
+        'percent',
+    ),  # Var_D, PA05.sas:329-335
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        None,
+        'E',
+        'A',
+        'percent',
+    ),  # Var_E, PA05.sas:338-345
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        "Clinic IX'S",
+        'F',
+        'E',
+        'percent',
+    ),  # Var_F, PA05.sas:348-357
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        "Field IX'S",
+        'G',
+        'E',
+        'percent',
+    ),  # Var_G, PA05.sas:361-370
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        "IX'D w/in 3 Days",
+        'H',
+        'E',
+        'percent',
+    ),  # Var_H, PA05.sas:375-381
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        "IX'D w/in 5 Days",
+        'I',
+        'E',
+        'percent',
+    ),  # Var_I, PA05.sas:383-389
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        "IX'D w/in 7 Days",
+        'J',
+        'E',
+        'percent',
+    ),  # Var_J, PA05.sas:391-397
+    (
+        'Num. Cases Assigned',
+        "Num. Cases IX'D",
+        "IX'D w/in 14 Days",
+        'K',
+        'E',
+        'percent',
+    ),  # Var_K, PA05.sas:399-406
+    (
+        "Num. Cases Not IX'D",
+        None,
+        None,
+        'L',
+        'A',
+        'percent',
+    ),  # Var_L, PA05.sas:408-415
+    (
+        "Num. Cases Not IX'D",
+        'Refused',
+        None,
+        'M',
+        'L',
+        'percent',
+    ),  # Var_M, PA05.sas:418-425
+    (
+        "Num. Cases Not IX'D",
+        'No Locate',
+        None,
+        'N',
+        'L',
+        'percent',
+    ),  # Var_N, PA05.sas:428-435
+    (
+        "Num. Cases Not IX'D",
+        'Other',
+        None,
+        'O',
+        'L',
+        'percent',
+    ),  # Var_O, PA05.sas:438-445
+    ("Num. of OI'S", None, None, 'P', None, None),  # Var_P, PA05.sas:447-453
+    (
+        "Num. of OI'S",
+        "OI'S that were NCI",
+        None,
+        'Q',
+        'P',
+        'percent',
+    ),  # Var_Q, PA05.sas:455-461
+    (
+        "Num. of OI'S",
+        'Period Partners',
+        None,
+        'R',
+        'P',
+        'ratio',
+    ),  # Var_R, PA05.sas:269-289 (pp) + 464-474 (ppnodup/r)
+    (
+        "Num. of OI'S",
+        'Partners Initiated',
+        None,
+        'S',
+        'P',
+        'ratio',
+    ),  # Var_S, PA05.sas:476-482
+    ("Num. of RI'S", None, None, 'T', None, None),  # Var_T, PA05.sas:485-491
+    (
+        "Num. of RI'S",
+        "RI's that were NCI",
+        None,
+        'U',
+        'T',
+        'percent',
+    ),  # Var_U, PA05.sas:493-499
+    (
+        "Num. of RI'S",
+        'Partners Initiated',
+        None,
+        'V',
+        'T',
+        'ratio',
+    ),  # Var_V, PA05.sas:501-507
+    (
+        'Clusters Init. (OI & RI)',
+        None,
+        None,
+        'W',
+        'P',
+        'ratio',
+    ),  # Var_W, PA05.sas:509-516
 )
 
 
@@ -91,11 +235,28 @@ def _safe_int(value) -> int:
     return 0
 
 
-def _rate(numerator: int, denominator: int, rate_type: str | None) -> float | None:
-    if rate_type is None or denominator == 0:
+def _percentage(numerator: int, denominator: int) -> str | None:
+    """Format a fraction as a SAS `percent8.1`-style string, e.g. '78.1%'."""
+    if denominator == 0:
         return None
-    value = numerator / denominator
-    return round(value, 3 if rate_type == 'percent' else 1)
+    return f'{numerator / denominator * 100:.1f}%'
+
+
+def _index(numerator: int, denominator: int) -> float | None:
+    """Round a fraction to one decimal place, matching SAS's `round(per_x, 0.1)`."""
+    if denominator == 0:
+        return None
+    return round(numerator / denominator, 1)
+
+
+def _percentage_and_index(
+    numerator: int, denominator: int, rate_type: str | None
+) -> tuple[str | None, float | None]:
+    if rate_type == 'percent':
+        return _percentage(numerator, denominator), None
+    if rate_type == 'ratio':
+        return None, _index(numerator, denominator)
+    return None, None
 
 
 def _sorted_worker_keys(keys: set[WorkerKey]) -> list[WorkerKey]:
@@ -107,6 +268,11 @@ def _distinct_count_map(source: dict[WorkerKey, set]) -> dict[WorkerKey, int]:
 
 
 def _activity_query(subset_query: str) -> str:
+    # Equivalent to the PA05 dataset build (PA05.sas lines 122-132). Drops
+    # INVESTIGATION_KEY and INVESTIGATOR_INTERVIEW_QC from the SAS SELECT list:
+    # both are per-case attributes already 1:1 with INV_LOCAL_ID (so they can't
+    # affect SELECT DISTINCT row counts), and neither is referenced anywhere
+    # else in PA05.sas either -- they're dead columns in the original report.
     return f"""
     WITH shd AS (
         {subset_query}
@@ -124,9 +290,7 @@ def _activity_query(subset_query: str) -> str:
         di.LOCAL_ID AS INTERVIEW_LOCAL_ID,
         di.IX_TYPE,
         di.IX_LOCATION,
-        std_cases.INVESTIGATION_KEY,
         std_cases.INVESTIGATOR_INTERVIEW_KEY,
-        std_cases.INVESTIGATOR_INTERVIEW_QC,
         di.IX_DATE,
         std_cases.CA_INTERVIEWER_ASSIGN_DT,
         dp.PROVIDER_QUICK_CODE,
@@ -149,6 +313,8 @@ def _activity_query(subset_query: str) -> str:
 
 
 def _ixs_query(subset_query: str) -> str:
+    # Equivalent to the PA05_IXS_INIT dataset build (PA05.sas lines 141-168),
+    # including the worker-key/date-bound MIN/MAX derivation (lines 135-139).
     return f"""
     WITH shd AS (
         {subset_query}
@@ -185,6 +351,12 @@ def _ixs_query(subset_query: str) -> str:
             MIN(CC_CLOSED_DT) AS MIN_CLOSED_DT,
             MAX(CC_CLOSED_DT) AS MAX_CLOSED_DT
         FROM closed_cases
+    ),
+    open_bounds AS (
+        SELECT
+            SUM(CASE WHEN CC_CLOSED_DT IS NULL THEN 1 ELSE 0 END) AS NUM_OPEN
+        FROM std_cases
+        WHERE INVESTIGATOR_INTERVIEW_KEY <> 1
     )
     SELECT DISTINCT
         di.IX_TYPE,
@@ -210,6 +382,7 @@ def _ixs_query(subset_query: str) -> str:
        AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
     CROSS JOIN assign_bounds ab
     CROSS JOIN closed_bounds cb
+    CROSS JOIN open_bounds ob
     WHERE std.INVESTIGATOR_INTERVIEW_KEY IN (
         SELECT INVESTIGATOR_INTERVIEW_KEY FROM worker_keys
     )
@@ -223,6 +396,14 @@ def _ixs_query(subset_query: str) -> str:
                 AND CAST(std.CC_CLOSED_DT AS DATE) <= CAST(cb.MAX_CLOSED_DT AS DATE)
             )
             OR std.CC_CLOSED_DT IN (SELECT CC_CLOSED_DT FROM closed_cases)
+            -- SAS's fallback subquery (PA05.sas lines 166-167) selects CC_CLOSED_DT
+            -- from the subset without excluding NULLs, and SAS PROC SQL's IN
+            -- operator treats missing = missing as a match. That means an open
+            -- candidate case (CC_CLOSED_DT IS NULL) matches whenever the subset
+            -- itself contains any open case, regardless of whether the subset also
+            -- has closed cases. T-SQL's IN never matches NULL, so this clause
+            -- reproduces that behavior explicitly to keep parity with SAS.
+            OR (std.CC_CLOSED_DT IS NULL AND ob.NUM_OPEN > 0)
       );
     """
 
@@ -237,9 +418,41 @@ def execute(
 
     Conversion notes:
     * Mirrors the PA03 approach: narrow SQL plus SAS metric math in Python.
-    * Returns a long-form summary table instead of reproducing the SAS PDF/template.
-    * The `Rate` column contains both percent-style ratios and average-style ratios,
-      and `Rate Type` indicates how to interpret it.
+    * Returns a long-form summary table (`Worker`, `Category 1/2/3`, `Count`,
+      `Percentage`, `Index`) instead of reproducing the SAS PDF layout.
+    * `Worker` is the case's PROVIDER_QUICK_CODE ('ALL' for the overall summary
+      row). SAS groups its worker-level output by PROVIDER_QUICK_CODE for display
+      but computes per-row detail by (INVESTIGATOR_INTERVIEW_KEY,
+      PROVIDER_QUICK_CODE) without collapsing across investigator keys that share
+      a quick code -- this port keeps that same grouping, so a quick code shared by
+      multiple investigator keys will appear as multiple worker-row blocks rather
+      than a single summed block.
+    * `_ixs_query` deliberately does not join PA05_IXS_INIT-equivalent rows back to
+      the subset by investigation key. PA05.sas (lines 141-168) builds this dataset
+      the same way: from the full STD_HIV_DATAMART, filtered only by worker key
+      membership and by the min/max assign/closed date bounds of the subset. Per a
+      comment in the SAS source (line 162-163), this is intentional -- it picks up
+      interviews a worker performed even on cases not originally assigned to them.
+    * Within that, the closed-date bound has one extra clause
+      (`std.CC_CLOSED_DT IS NULL AND ob.NUM_OPEN > 0`) to reproduce a SAS-specific
+      quirk: PA05.sas's fallback subquery (lines 166-167) selects CC_CLOSED_DT from
+      the subset without excluding NULLs, and SAS PROC SQL's IN operator treats
+      missing = missing as a match. So an open candidate case matches whenever the
+      subset contains any open case, regardless of whether the subset also has
+      closed cases. T-SQL's IN never matches NULL, so without this clause the
+      Python port would silently exclude open-case interview activity any time the
+      subset has at least one closed case.
+    * KNOWN DEVIATION: PA05.sas computes MIN/MAX(CA_INTERVIEWER_ASSIGN_DT) into
+      macro variables, and SAS's default numeric-to-text conversion for those
+      macro variables truncates to ~5 significant digits (e.g. a MAX of
+      `28JAN2024:00:00:00`, datetime value 2,022,019,200, gets interpolated into
+      the query as the literal `2.022E9` = 2,022,000,000 -- about 5.3 hours
+      *earlier*, which crosses the midnight boundary down to 27JAN2024). SAS's
+      `datepart()` upper bound on assign date is therefore effectively one day
+      short of what the report intends, silently excluding any interview whose
+      assign date lands exactly on the true max day. This is a SAS-side
+      floating-point artifact, not a deliberate business rule, and its size
+      depends on the current date.
     """
     activity_rows = trx.query(_activity_query(subset_query)).data
     ixs_rows = trx.query(_ixs_query(subset_query)).data
@@ -253,15 +466,17 @@ def execute(
     contact_sets = {metric: defaultdict(set) for metric in ('S', 'V', 'W')}
     period_partner_totals: dict[WorkerKey, int] = defaultdict(int)
 
+    # Single pass over activity_rows: cases/day-buckets (Var_A-L) and period
+    # partners (Var_R) are independent per-row calculations, so both can be
+    # done from one destructure of the row tuple instead of two.
+    pp_seen_local_ids: set[str] = set()
     for row in activity_rows:
         (
             inv_local_id,
             interview_local_id,
             ix_type,
             ix_location,
-            _investigation_key,
             investigator_interview_key,
-            _investigator_interview_qc,
             ix_date,
             assign_dt,
             provider_quick_code,
@@ -274,34 +489,37 @@ def execute(
         worker_key = (provider_quick_code, investigator_interview_key)
 
         if inv_local_id is not None:
-            case_sets['A'][worker_key].add(inv_local_id)
+            case_sets['A'][worker_key].add(inv_local_id)  # Var_A, PA05.sas:304-309
             if cc_closed_dt is None:
-                case_sets['B'][worker_key].add(inv_local_id)
+                case_sets['B'][worker_key].add(inv_local_id)  # Var_B, PA05.sas:312-318
             else:
-                case_sets['C'][worker_key].add(inv_local_id)
+                case_sets['C'][worker_key].add(inv_local_id)  # Var_C, PA05.sas:320-326
 
             if patient_interview_status == PENDING_STATUS:
-                case_sets['D'][worker_key].add(inv_local_id)
+                case_sets['D'][worker_key].add(inv_local_id)  # Var_D, PA05.sas:329-335
             if patient_interview_status == INTERVIEWED_STATUS:
-                case_sets['E'][worker_key].add(inv_local_id)
+                case_sets['E'][worker_key].add(inv_local_id)  # Var_E, PA05.sas:338-345
             if patient_interview_status in {
                 OTHER_STATUS,
                 REFUSED_STATUS,
                 UNABLE_TO_LOCATE_STATUS,
             }:
-                case_sets['L'][worker_key].add(inv_local_id)
+                case_sets['L'][worker_key].add(inv_local_id)  # Var_L, PA05.sas:408-415
             if patient_interview_status == REFUSED_STATUS:
-                case_sets['M'][worker_key].add(inv_local_id)
+                case_sets['M'][worker_key].add(inv_local_id)  # Var_M, PA05.sas:418-425
             if patient_interview_status == UNABLE_TO_LOCATE_STATUS:
-                case_sets['N'][worker_key].add(inv_local_id)
+                case_sets['N'][worker_key].add(inv_local_id)  # Var_N, PA05.sas:428-435
             if patient_interview_status == OTHER_STATUS:
-                case_sets['O'][worker_key].add(inv_local_id)
+                case_sets['O'][worker_key].add(inv_local_id)  # Var_O, PA05.sas:438-445
 
             if ix_type == INITIAL_INTERVIEW and ix_location == 'Clinic':
-                case_sets['F'][worker_key].add(inv_local_id)
+                case_sets['F'][worker_key].add(inv_local_id)  # Var_F, PA05.sas:348-357
             if ix_type == INITIAL_INTERVIEW and ix_location == 'Field':
-                case_sets['G'][worker_key].add(inv_local_id)
+                case_sets['G'][worker_key].add(inv_local_id)  # Var_G, PA05.sas:361-370
 
+        # Var_H/I/J/K, PA05.sas:250-264 (PA05_DTE) + 295-301 (PROC FREQ) +
+        # 375-406 (days_A_03/05/07/14) -- cumulative day buckets, Initial/
+        # Original interviews only, non-negative days-to-interview.
         assign_date = _to_date(assign_dt)
         interview_date = _to_date(ix_date)
         if (
@@ -320,40 +538,22 @@ def execute(
                 if days <= 14:
                     day_counts['K'][worker_key] += 1
 
-    pp_seen_local_ids: set[str] = set()
-    for row in activity_rows:
-        (
-            _inv_local_id,
-            interview_local_id,
-            ix_type,
-            _ix_location,
-            _investigation_key,
-            investigator_interview_key,
-            _investigator_interview_qc,
-            _ix_date,
-            _assign_dt,
-            provider_quick_code,
-            _cc_closed_dt,
-            patient_interview_status,
-            std_prtnrs_prd_trnsgndr_ttl,
-            soc_prtnrs_prd_fml_ttl,
-            soc_prtnrs_prd_male_ttl,
-        ) = row
+        # Var_R, PA05.sas:269-289 (pp) + 464-474 (ppnodup/r) -- distinct by
+        # D_INTERVIEW local_id (interview_local_id here), summed across the
+        # three partner-total fields, for Initial/Original interviews with
+        # status 'I - Interviewed'.
         if (
-            interview_local_id is None
-            or interview_local_id in pp_seen_local_ids
-            or ix_type != INITIAL_INTERVIEW
-            or patient_interview_status != INTERVIEWED_STATUS
+            interview_local_id is not None
+            and interview_local_id not in pp_seen_local_ids
+            and ix_type == INITIAL_INTERVIEW
+            and patient_interview_status == INTERVIEWED_STATUS
         ):
-            continue
-
-        pp_seen_local_ids.add(interview_local_id)
-        worker_key = (provider_quick_code, investigator_interview_key)
-        period_partner_totals[worker_key] += (
-            _safe_int(std_prtnrs_prd_trnsgndr_ttl)
-            + _safe_int(soc_prtnrs_prd_fml_ttl)
-            + _safe_int(soc_prtnrs_prd_male_ttl)
-        )
+            pp_seen_local_ids.add(interview_local_id)
+            period_partner_totals[worker_key] += (
+                _safe_int(std_prtnrs_prd_trnsgndr_ttl)
+                + _safe_int(soc_prtnrs_prd_fml_ttl)
+                + _safe_int(soc_prtnrs_prd_male_ttl)
+            )
 
     for row in ixs_rows:
         (
@@ -370,12 +570,16 @@ def execute(
 
         if d_interview_key is not None:
             if ix_type == INITIAL_INTERVIEW:
+                # Var_P, PA05.sas:447-453 (PA05_WRKR filtered to Initial/Original)
                 interview_sets['P'][worker_key].add(d_interview_key)
                 if d_contact_record_key in (None, 1):
+                    # Var_Q, PA05.sas:455-461 (PA05_NCI filtered to Initial/Original)
                     interview_sets['Q'][worker_key].add(d_interview_key)
             elif ix_type == REINTERVIEW:
+                # Var_T, PA05.sas:485-491 (PA05_WRKR filtered to Re-Interview)
                 interview_sets['T'][worker_key].add(d_interview_key)
                 if d_contact_record_key in (None, 1):
+                    # Var_U, PA05.sas:493-499 (PA05_NCI filtered to Re-Interview)
                     interview_sets['U'][worker_key].add(d_interview_key)
 
         if (
@@ -388,13 +592,16 @@ def execute(
         contact_key = f'{contact_investigation_key}|{ctt_referral_basis}'
         if ctt_referral_basis in PARTNER_BASES:
             if ix_type == INITIAL_INTERVIEW:
+                # Var_S, PA05.sas:476-482 (PA05_PI filtered to Initial/Original)
                 contact_sets['S'][worker_key].add(contact_key)
             elif ix_type == REINTERVIEW:
+                # Var_V, PA05.sas:501-507 (PA05_PI filtered to Re-Interview)
                 contact_sets['V'][worker_key].add(contact_key)
         if (
             ctt_referral_basis in CLUSTER_BASES
             and ix_type in {INITIAL_INTERVIEW, REINTERVIEW}
         ):
+            # Var_W, PA05.sas:509-516 (PA05_CI, both ix_types summed together)
             contact_sets['W'][worker_key].add(contact_key)
 
     metric_counts: dict[str, dict[WorkerKey, int]] = {
@@ -424,31 +631,40 @@ def execute(
 
     overall_counts = {
         metric_key: sum(metric_counts.get(metric_key, {}).values())
-        for _, _, metric_key, _, _ in METRICS
+        for _, _, _, metric_key, _, _ in METRICS
     }
 
     rows: list[Pa05Row] = []
-    for metric_group, metric_label, metric_key, denominator_key, rate_type in METRICS:
+    for (
+        category_1,
+        category_2,
+        category_3,
+        metric_key,
+        denominator_key,
+        rate_type,
+    ) in METRICS:
         count = overall_counts.get(metric_key, 0)
         denominator = overall_counts.get(denominator_key, 0) if denominator_key else 0
+        percentage, index = _percentage_and_index(count, denominator, rate_type)
         rows.append(
             (
-                'Overall',
-                None,
-                None,
-                metric_group,
-                metric_label,
+                'ALL',
+                category_1,
+                category_2,
+                category_3,
                 count,
-                _rate(count, denominator, rate_type),
-                rate_type,
+                percentage,
+                index,
             )
         )
 
     for provider_quick_code, investigator_interview_key in worker_keys:
         worker_key = (provider_quick_code, investigator_interview_key)
+        worker_label = provider_quick_code or f'Worker {investigator_interview_key}'
         for (
-            metric_group,
-            metric_label,
+            category_1,
+            category_2,
+            category_3,
             metric_key,
             denominator_key,
             rate_type,
@@ -459,29 +675,28 @@ def execute(
                 if denominator_key
                 else 0
             )
+            percentage, index = _percentage_and_index(count, denominator, rate_type)
             rows.append(
                 (
-                    'Worker',
-                    provider_quick_code,
-                    investigator_interview_key,
-                    metric_group,
-                    metric_label,
+                    worker_label,
+                    category_1,
+                    category_2,
+                    category_3,
                     count,
-                    _rate(count, denominator, rate_type),
-                    rate_type,
+                    percentage,
+                    index,
                 )
             )
 
     content = Table(
         columns=[
-            'Scope',
-            'Provider Quick Code',
-            'Investigator Interview Key',
-            'Metric Group',
-            'Metric',
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Category 3',
             'Count',
-            'Rate',
-            'Rate Type',
+            'Percentage',
+            'Index',
         ],
         data=rows,
     )
