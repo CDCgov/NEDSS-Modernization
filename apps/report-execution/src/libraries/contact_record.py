@@ -3,8 +3,7 @@
 CTT_REFERRAL_BASIS and CTT_PROCESSING_DECISION code sets used by both PA03
 (Internet Partner Services Report) and PA05 (Worker Interview Activity
 Report) when deciding which contact records count toward partner, social
-contact, and associate totals. Centralized here since the two libraries
-otherwise define byte-for-byte identical (or trivially derived) sets.
+contact, and associate totals.
 """
 
 PARTNER_BASES = {
