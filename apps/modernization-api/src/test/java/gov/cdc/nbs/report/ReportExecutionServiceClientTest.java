@@ -128,7 +128,7 @@ class ReportExecutionServiceClientTest {
     Library library = mock(Library.class);
 
     Mockito.lenient().when(library.isBuiltin()).thenReturn(true);
-    Mockito.lenient().when(library.runner()).thenReturn(isPython ? "python" : "java");
+    Mockito.lenient().when(library.runner()).thenReturn(isPython ? "python" : "sas");
 
     Mockito.lenient().when(reportConfig.isPython()).thenReturn(isPython);
     Mockito.lenient().when(reportConfig.library()).thenReturn(library);
