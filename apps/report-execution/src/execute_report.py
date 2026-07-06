@@ -4,7 +4,7 @@ from importlib import import_module
 from pydantic import ValidationError
 
 from . import errors, models, utils
-from .config import get_cached_config_value, load_report_configurations
+from .config import load_report_configurations
 from .db_transaction import check_row_limits, db_transaction
 
 
