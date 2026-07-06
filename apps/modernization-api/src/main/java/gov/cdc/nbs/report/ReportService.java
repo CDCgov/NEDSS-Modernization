@@ -1,7 +1,6 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.entity.odse.DataSource;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
@@ -84,7 +83,7 @@ public class ReportService {
       final ReportSectionRepository reportSectionRepository,
       final ReportFilterRepository reportFilterRepository,
       RestClient reportExecutionClient,
-      final DataSourceNameConfiguration dataSourceNameConfig,
+      final DataSourceNameUtils dataSourceNameUtils,
       WhereClauseService whereClauseService,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper,
@@ -104,7 +103,7 @@ public class ReportService {
     this.displayColumnBuilder = displayColumnBuilder;
 
     this.reportExecutionClient = reportExecutionClient;
-    this.dataSourceNameUtils = new DataSourceNameUtils(dataSourceNameConfig);
+    this.dataSourceNameUtils = dataSourceNameUtils;
     this.whereClauseService = whereClauseService;
     this.reportFilterBuilder = reportFilterBuilder;
   }
