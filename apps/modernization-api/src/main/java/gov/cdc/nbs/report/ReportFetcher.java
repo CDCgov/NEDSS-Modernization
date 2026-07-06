@@ -33,6 +33,7 @@ public class ReportFetcher {
     this.reportRepository = reportRepository;
   }
 
+  @Transactional(readOnly = true)
   public ReportConfiguration getReport(Long reportUid, Long dataSourceUid) {
     ReportId id = new ReportId(reportUid, dataSourceUid);
 
