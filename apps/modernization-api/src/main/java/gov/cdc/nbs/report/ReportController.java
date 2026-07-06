@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.exception.ForbiddenException;
@@ -142,9 +143,10 @@ public class ReportController {
                   "Template reports cannot be created using 'saveAs'");
         };
 
-    String authority = authOperationType + "-" + ReportConstants.Permissions.REPORTINGOBJECT;
+    Permission permission =
+        new Permission(authOperationType, ReportConstants.Permissions.REPORTINGOBJECT);
 
-    if (user.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(authority))) {
+    if (!user.hasPermission(permission)) {
       throw new ForbiddenException(
           "User does not have permission to create " + reportGroup.name() + " reports");
     }
