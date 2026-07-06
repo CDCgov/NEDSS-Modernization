@@ -74,6 +74,8 @@ public class ReportController {
     ReportConstants.ReportGroup reportGroup =
         ReportConstants.dbCharToReportGroup(existingReport.getShared());
 
+    //  While long-term we likely want to map permissions 1:1 with report groups,
+    //  this is currently how it works in 6, so we'll leave it be for now.
     switch (reportGroup) {
       case PUBLIC:
       case REPORTING_FACILITY:
