@@ -26,6 +26,7 @@ def execute(
     * Run has columns in different order
     * Use pipe separator instead of new line for subheader
     * Remove "by county" from the description since this isn't by county
+    * Removed state functionality from the subheader
     * Negative precentages are displayed with parentheses to match SAS
       output (e.g. -0.12 gets displayed as (12%)).  The SAS script uses
       the `percent9.0` format, meaning the result is always 9 characters
@@ -45,10 +46,7 @@ def execute(
     last_year = year - 1
     years = range(year, year - 6, -1)
 
-    # Place holder value used when ensuring all disease+year have data
-    filler_state = '<FILLER>'
-
-    temp_table_query = f"""
+    report_query = f"""
     -- State filtering is assumed to happen in the filters/subset
     WITH subset as ({subset_query}),
 
@@ -61,49 +59,44 @@ def execute(
     -- all diseases and all years with zero's pre-filtering CTE ensures that row
     -- exists for all diseases and median is correct
     disease_year as (
-        SELECT phc_code_short_desc, '{filler_state}' as state,
-        {month} as month, year, 0 as cases
+        SELECT phc_code_short_desc,
+               {month} as month, 
+               year, 
+               0 as cases
         FROM diseases,
         (VALUES {', '.join([f'({y})' for y in years])}) as year_values(year)
     ),
 
-    -- base_data CTE
-    base_data as (
-        SELECT phc_code_short_desc, state, MONTH(event_date) as month,
-        YEAR(event_date) as year, sum(group_case_cnt) as cases
+    -- base_data_raw CTE
+    base_data_raw as (
+        SELECT phc_code_short_desc, 
+               MONTH(event_date) as month,
+               YEAR(event_date) as year, 
+               sum(group_case_cnt) as cases
         FROM subset
         WHERE event_date is not NULL
-        AND MONTH(event_date) <= {month}
-        AND YEAR(event_date) >= ({year} - 5)
-        GROUP BY phc_code_short_desc, state, MONTH(event_date), YEAR(event_date)
-    )
+          AND MONTH(event_date) <= {month}
+          AND YEAR(event_date) >= ({year} - 5)
+        GROUP BY phc_code_short_desc, MONTH(event_date), YEAR(event_date)
+    ),
 
-    -- base_data temp table
-    SELECT *
-    INTO #base_data
-    FROM base_data
-    UNION ALL
-    SELECT *
-    FROM disease_year
-    """
+    base_data as (
+        SELECT phc_code_short_desc, month, year, cases FROM base_data_raw
+        UNION ALL
+        SELECT phc_code_short_desc, month, year, cases FROM disease_year
+    ),
 
-    trx.execute(temp_table_query)
-
-    # Because the base data is guaranteed to have a "0" entry for every year and disease
-    # in the current month, we know that all diseases for all years will be present
-    # and don't need to worry about null coalescing
-    main_query = f"""
     -- year_data CTE
-    WITH year_data as (
+    year_data as (
         SELECT phc_code_short_desc, year, SUM(cases) as cases
-        FROM #base_data
+        FROM base_data
         GROUP BY phc_code_short_desc, year
     ),
 
     -- this_month CTE
     this_month as (
         SELECT phc_code_short_desc, SUM(cases) as curr_month
-        FROM #base_data
+        FROM base_data
         WHERE month = {month}
         AND year = {year}
         GROUP BY phc_code_short_desc
@@ -155,16 +148,9 @@ def execute(
     ORDER BY ty.phc_code_short_desc ASC
     """
 
-    content = trx.query(main_query)
+    content = trx.query(report_query)
+    subheader = gen_subheader()
 
-    # Get the state(s) in the data set for subheader display
-    states = trx.query('SELECT DISTINCT state FROM #base_data ORDER BY state')
-    state_list = states.get_unique_column('state')
-    state_list = [s for s in state_list if s != filler_state]
-
-    trx.execute('DROP TABLE #base_data')
-
-    subheader = gen_subheader(states=state_list)
     description = """
 **<u>Report content</u>**
 
@@ -191,7 +177,7 @@ def execute(
 * **Percentage change (current year vs. 5 year median):** Percentage change between the Current Year Totals by disease and the 5-Year median
 
 * **Event Date:** Derived using the hierarchy of Onset Date, Diagnosis Date, Report to County, Report to State and Date the Investigation was created in the NBS.
-"""  # noqa: E501
+"""
 
     return ReportResult(
         content_type='table',
