@@ -33,28 +33,33 @@ Feature: Save report after report run
         And I click the "Save as new" button
         Then I am redirected to "/nbs/ManageReports.do"
         And I click on the "Expand Subsections" link
-    # TODO APP-668: uncomment these tests and get passing
-    #     Then I should see a "link" labelled "Test save as report"
+        Then I should see a "link" labelled "Test save as report"
 
-    # Scenario: I can save the report after running the report if I am the owner
-    #     When I click on the "Expand Subsections" link
-    #     And I click on the "Run" link
-    #     Then I should see option "Antrhax" in the "Condition Code" combobox input field
-    #     Then I should see option "Fulton County" in the "County Code" combobox input field
-    #     And I select "AIDS" from the "Condition Code" dropdown menu
-    #     And I click the "Run" button
-    #     And I should see a "heading" labelled "Your report has opened in a new tab."
-    #     And I click the "Save" button
-    #     Then I should see a modal labelled "Overwrite saved report?"
+    Scenario: I can save the report after running the report if I am the owner
+        When I click on the "Expand Subsections" link
+        And I click on the "Run" link
+        Then I should see option "Anthrax" in the "Condition Code" combobox input field
+        Then I should see option "Fulton County" in the "County Code" multi-select combobox input field
+        And I select "AIDS" from the "Condition Code" dropdown menu
+        And I click the "Run" button
+        And I should see a "heading" labelled "Your report has opened in a new tab."
+        And I click the "Save" button
+        Then I should see a modal labelled "Overwrite saved report?"
 
-    #     # Cancelling modal closes it
-    #     When I click the "Cancel" button
-    #     Then I should see a "heading" labelled "Your report has opened in a new tab."
+        # Cancelling modal closes it
+        When I click the "Cancel" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    #     When I click the "Save" button
-    #     And I should see a modal labelled "Overwrite saved report?"
-    #     And I click the "Save" button
-    #     Then I am redirected to "/nbs/ManageReports.do"
-    #     And I click on the "Test save as report" link
-    #     Then I should see option "AIDS" in the "Condition Code" combobox input field
-    #     Then I should see option "Fulton County" in the "County Code" combobox input field
+        When I click the "Save" button
+        And I should see a modal labelled "Overwrite saved report?"
+        And I click the "Save" button
+        Then I am redirected to "/nbs/ManageReports.do"
+        When I click on the "Expand Subsections" link
+        And I click on the "Run" link
+        Then I should see option "AIDS" in the "Condition Code" combobox input field
+        Then I should see option "Fulton County" in the "County Code" multi-select combobox input field
+        When I click on the "Back to reports" link
+        Then I am redirected to "/nbs/ManageReports.do"
+        When I click on the "Expand Subsections" link
+        Then I should see a "link" labelled "Test save as report"
+        And I click on the "Delete" link

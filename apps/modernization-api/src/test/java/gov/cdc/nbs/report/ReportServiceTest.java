@@ -31,9 +31,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.transaction.support.SimpleTransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
@@ -46,13 +43,11 @@ class ReportServiceTest {
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private ReportSectionRepository reportSectionRepository;
-  @Mock private ReportFilterRepository reportFilterRepository;
 
   @Mock private ReportMapper reportMapper;
   @Mock private ReportSortColumnMapper reportSortColumnMapper;
   @Mock private FilterValueMapper filterValueMapper;
   @Mock private DisplayColumnBuilder displayColumnBuilder;
-  @Mock private TransactionTemplate transactionTemplate;
   @Mock private ReportFetcher reportFetcher;
 
   @Mock private DataSource dataSource;
@@ -63,17 +58,6 @@ class ReportServiceTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
-
-  @BeforeEach
-  void setUp() {
-    Mockito.lenient()
-        .when(transactionTemplate.execute(any()))
-        .thenAnswer(
-            invocation ->
-                invocation
-                    .<TransactionCallback<Boolean>>getArgument(0)
-                    .doInTransaction(new SimpleTransactionStatus()));
-  }
 
   @Nested
   class CreateReport {
@@ -219,9 +203,6 @@ class ReportServiceTest {
 
   @Nested
   class EditReport {
-    private final Long reportUid = 1L;
-    private final Long dataSourceUid = 2L;
-    private final Long libraryId = 20L;
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
     private final String sectionCd = "1000";
@@ -416,9 +397,6 @@ class ReportServiceTest {
 
   @Nested
   class DeleteReport {
-    private final Long reportUid = 1L;
-    private final Long dataSourceUid = 2L;
-
     private Report savedReport;
     private ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
@@ -453,8 +431,6 @@ class ReportServiceTest {
 
   @Nested
   class SaveReport {
-    private final Long reportUid = 1L;
-    private final Long dataSourceUid = 2L;
     private Report existingReport;
     private Report savedReport;
 
@@ -632,7 +608,6 @@ class ReportServiceTest {
       Report result = service.saveReport(request, existingReport);
 
       verify(filterValueMapper).fromBasicFilterRequest(basicFilter, basicFilterRequest);
-      verify(reportFilterRepository).saveAll(any());
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -772,7 +747,6 @@ class ReportServiceTest {
       Report result = service.saveReport(request, existingReport);
 
       verify(filterValueMapper).fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest);
-      verify(reportFilterRepository).save(advancedFilter);
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -853,7 +827,6 @@ class ReportServiceTest {
 
       verify(advancedFilter).getFilterValues();
       verify(filterValues).clear();
-      verify(reportFilterRepository).save(advancedFilter);
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -1021,9 +994,6 @@ class ReportServiceTest {
 
   @Nested
   class SaveAsReport {
-    private final Long reportUid = 1L;
-    private final Long dataSourceUid = 2L;
-
     private final ReportId existingReportId = new ReportId(reportUid, dataSourceUid);
     private Report existingReport;
 
