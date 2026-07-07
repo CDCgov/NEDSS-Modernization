@@ -54,10 +54,10 @@ public class FilterCode {
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
 
   public boolean isAdvancedFilterCode() {
-    return getFilterType().equals(ADV_FILTER_TYPE);
+    return getFilterType() != null && getFilterType().equalsIgnoreCase(ADV_FILTER_TYPE);
   }
 
   public boolean isBasicFilterCode() {
-    return getFilterType().startsWith(BASIC_FILTER_PREFIX);
+    return getFilterType() != null && getFilterType().startsWith(BASIC_FILTER_PREFIX);
   }
 }
