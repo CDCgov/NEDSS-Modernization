@@ -139,7 +139,7 @@ const ReportRunPage = () => {
                         setError(err);
                     }
                 })
-                .catch((err) => setError(err));
+                .catch(setError);
         },
         [config]
     );
