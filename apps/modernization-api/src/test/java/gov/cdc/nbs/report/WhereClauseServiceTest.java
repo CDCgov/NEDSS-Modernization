@@ -10,6 +10,7 @@ import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
@@ -975,7 +976,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_throw_illegal_arg_exception_when_user_has_no_assigned_ids() {
+  void should_throw_forbidden_exception_when_user_has_no_assigned_ids() {
     ReportConfiguration reportConfig =
         createReportConfig(List.of(), List.of(), ReportGroup.REPORTING_FACILITY);
 
@@ -989,7 +990,7 @@ class WhereClauseServiceTest {
     mockAuthenticatedUser(null);
 
     assertThatThrownBy(() -> whereClauseService.buildPermissionFragment(reportConfig))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(ForbiddenException.class)
         .hasMessageContaining("No Jurisdiction or Program Area permissions found for user: null");
   }
 

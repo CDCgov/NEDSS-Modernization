@@ -14,6 +14,7 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -162,8 +163,8 @@ public class WhereClauseService {
    * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1,
    *     2))"}). Returns an empty string {@code ""} if jurisdiction/program area security is not
    *     set.
-   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's
-   *     resolved {@link PermissionScope} contains no assigned identifiers.
+   * @throws ForbiddenException If jurisdiction/progam area security is set but the user's resolved
+   *     {@link PermissionScope} contains no assigned identifiers.
    */
   private String getJurisProgramRestrictionCriteria(
       boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
@@ -174,7 +175,7 @@ public class WhereClauseService {
 
     PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
     if (scope.any().isEmpty()) {
-      throw new IllegalArgumentException(
+      throw new ForbiddenException(
           "No Jurisdiction or Program Area permissions found for user: %s for group: %s"
               .formatted(SecurityUtil.getUserDetails().getUsername(), group));
     }
