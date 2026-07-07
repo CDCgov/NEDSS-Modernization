@@ -134,7 +134,7 @@ public class ReportService {
       throw new NotFoundException(getReportNotFoundText(reportId));
     }
 
-    updateReport(request, report);
+    updateReportExecutionData(request, report);
     return reportRepository.save(report);
   }
 
@@ -146,7 +146,7 @@ public class ReportService {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     // Update values before duplicating otherwise the fk's in the request don't match
-    updateReport(request.executionRequest(), report);
+    updateReportExecutionData(request.executionRequest(), report);
 
     Report duplicate = reportMapper.duplicate(report, user);
 
@@ -162,7 +162,12 @@ public class ReportService {
     return reportRepository.save(duplicate);
   }
 
-  private void updateReport(ReportExecutionRequest request, Report report) {
+  /**
+   * Updates all relevant Report details based on the ReportExecutionRequest provided.
+   * <b>This method does NOT persist the report to the database,</b> as `saveAsReport`
+   * uses this as part of the creation of an entirely separate (duplicated) report.
+   */
+  private void updateReportExecutionData(ReportExecutionRequest request, Report report) {
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());
     updateAdvancedFilterValues(report, request.advancedFilter());
@@ -182,14 +187,13 @@ public class ReportService {
     } else {
       Map<Long, BasicFilterRequest> basicFilterReqsById =
           basicFilterReqs.stream()
-              .map(
+              .peek(
                   req -> {
                     if (!basicFiltersById.containsKey(req.reportFilterUid()))
                       throw new IllegalArgumentException(
                           "BasicFilterRequest.reportFilterUid (%s) does not match existing basic filter ID"
                               .formatted(req.reportFilterUid()));
 
-                    return req;
                   })
               .collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
