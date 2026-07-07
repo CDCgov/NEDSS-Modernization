@@ -636,7 +636,7 @@ class ReportServiceTest {
       assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining(
-              "BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
+              "BasicFilterRequest.reportFilterUid (20) does not match existing basic filter ID");
     }
 
     @Test
