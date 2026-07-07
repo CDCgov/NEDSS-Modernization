@@ -5050,7 +5050,7 @@ WHERE
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
                             <position>
 <x>4264.0</x>
-<y>360.0</y>
+<y>368.0</y>
                             </position>
                             <versionedComponentId>da051a46-5b03-3597-9846-be42d06b6893</versionedComponentId>
                             <height>40.0</height>
@@ -5063,7 +5063,7 @@ to insert into Elasticsearch</label>
 </entry>
                             </style>
                             <width>288.0</width>
-                            <zIndex>0</zIndex>
+                            <zIndex>1</zIndex>
                         </labels>
                         <labels>
                             <id>a5a402f7-fa5b-3312-0000-000000000000</id>
@@ -6022,7 +6022,7 @@ INTO #target_people
 FROM Person WITH (NOLOCK)
 WHERE person_parent_uid IN (${person_ids});
 
-CREATE INDEX ix_tp_uid    ON #target_people (person_uid)        INCLUDE (person_parent_uid);
+ALTER TABLE #target_people ADD CONSTRAINT PK_tp PRIMARY KEY CLUSTERED (person_uid);
 CREATE INDEX ix_tp_parent ON #target_people (person_parent_uid) INCLUDE (person_uid);
 
 -- ============================================================
@@ -6066,6 +6066,8 @@ CREATE INDEX ix_par_class_type ON #par (act_class_cd, type_cd)
     INCLUDE (person_parent_uid, act_uid, subject_class_cd, record_status_cd);
 CREATE INDEX ix_par_act_uid ON #par (act_uid)
     INCLUDE (person_parent_uid, act_class_cd, type_cd);
+CREATE INDEX ix_par_filter ON #par (act_class_cd, type_cd, subject_class_cd, record_status_cd)
+    INCLUDE (person_parent_uid, act_uid);
 
 -- ============================================================
 -- Shared second level join to Public_health_case
@@ -6105,6 +6107,8 @@ WHERE p.subject_class_cd   = 'PSN'
   AND p.type_cd            = 'SubjOfDoc'
 GROUP BY p.person_parent_uid;
 
+CREATE INDEX ix_doc_puid ON #document_ids (person_parent_uid);
+
 -- morbidity_report_ids --------------------------------------------
 DROP TABLE IF EXISTS #morbidity_report_ids;
 
@@ -6121,6 +6125,8 @@ WHERE p.subject_class_cd   = 'PSN'
   AND p.act_class_cd       = 'OBS'
   AND p.type_cd            = 'SubjOfMorbReport'
 GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_morb_puid ON #morbidity_report_ids (person_parent_uid);
 
 -- treatment_ids ---------------------------------------------------
 DROP TABLE IF EXISTS #treatment_ids;
@@ -6139,6 +6145,8 @@ WHERE p.subject_class_cd   = 'PSN'
   AND p.type_cd            = 'SubjOfTrmt'
 GROUP BY p.person_parent_uid;
 
+CREATE INDEX ix_trt_puid ON #treatment_ids (person_parent_uid);
+
 -- vaccination_ids -------------------------------------------------
 DROP TABLE IF EXISTS #vaccination_ids;
 
@@ -6153,6 +6161,8 @@ JOIN Intervention inv WITH (NOLOCK)
 WHERE p.subject_class_cd = 'PAT'
   AND p.type_cd          = 'SubOfVacc'
 GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_vacc_puid ON #vaccination_ids (person_parent_uid);
 
 -- case_ids --------------------------------------------------------
 DROP TABLE IF EXISTS #case_ids;
@@ -6179,6 +6189,8 @@ CROSS APPLY (
 WHERE ct.case_type IS NOT NULL
 GROUP BY pp.person_parent_uid;
 
+CREATE INDEX ix_case_puid ON #case_ids (person_parent_uid);
+
 -- notification_ids ------------------------------------------------
 DROP TABLE IF EXISTS #notification_ids;
 
@@ -6198,6 +6210,8 @@ JOIN Notification noti WITH (NOLOCK)
     ON  noti.notification_uid = ar.source_act_uid
 GROUP BY pp.person_parent_uid;
 
+CREATE INDEX ix_notif_puid ON #notification_ids (person_parent_uid);
+
 -- investigation_ids -----------------------------------------------
 DROP TABLE IF EXISTS #investigation_ids;
 
@@ -6208,6 +6222,8 @@ SELECT
 INTO #investigation_ids
 FROM #par_phc pp
 GROUP BY pp.person_parent_uid;
+
+CREATE INDEX ix_inv_puid ON #investigation_ids (person_parent_uid);
 
 -- lab_report_ids --------------------------------------------------
 DROP TABLE IF EXISTS #lab_report_ids;
@@ -6222,6 +6238,8 @@ JOIN Observation obs WITH (NOLOCK)
     ON  obs.observation_uid = p.act_uid
 WHERE p.act_class_cd = 'OBS'
 GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_lab_puid ON #lab_report_ids (person_parent_uid);
 
 -- accession_ids ---------------------------------------------------
 DROP TABLE IF EXISTS #accession_obs;
@@ -6251,6 +6269,8 @@ JOIN Act_id ai WITH (NOLOCK)
     AND ai.root_extension_txt IS NOT NULL
     AND ai.root_extension_txt &lt;&gt; ''
 GROUP BY ao.person_parent_uid;
+
+CREATE INDEX ix_acc_puid ON #accession_ids (person_parent_uid);
 
 DROP TABLE IF EXISTS #accession_obs;
 
@@ -6329,6 +6349,8 @@ SELECT
 INTO #person_address
 FROM (SELECT DISTINCT person_uid FROM #elp_postal_raw) r;
 
+CREATE INDEX ix_pa_uid ON #person_address (person_uid);
+
 DROP TABLE IF EXISTS #elp_postal_raw;
 
 ---- Phone ----------------------------------------------------
@@ -6375,6 +6397,8 @@ SELECT
 INTO #person_phone
 FROM (SELECT DISTINCT person_uid FROM #elp_tele_raw) r;
 
+CREATE INDEX ix_pp_uid ON #person_phone (person_uid);
+
 ---- Email ----------------------------------------------------
 DROP TABLE IF EXISTS #person_email;
 
@@ -6391,6 +6415,8 @@ SELECT
     ) AS email
 INTO #person_email
 FROM (SELECT DISTINCT person_uid FROM #elp_tele_raw) r;
+
+CREATE INDEX ix_pe_uid ON #person_email (person_uid);
 
 DROP TABLE IF EXISTS #elp_tele_raw;
 
@@ -6448,6 +6474,8 @@ SELECT
 INTO #person_name
 FROM (SELECT DISTINCT person_uid FROM #person_name_raw) r;
 
+CREATE INDEX ix_pn_uid ON #person_name (person_uid);
+
 DROP TABLE IF EXISTS #person_name_raw;
 
 ---- Race ----------------------------------------------------
@@ -6479,6 +6507,8 @@ SELECT
     ) AS race
 INTO #person_race
 FROM (SELECT DISTINCT person_uid FROM #person_race_raw) r;
+
+CREATE INDEX ix_prc_uid ON #person_race (person_uid);
 
 DROP TABLE IF EXISTS #person_race_raw;
 
@@ -6517,6 +6547,8 @@ SELECT
     ) AS entity_id
 INTO #person_entity_id
 FROM (SELECT DISTINCT person_uid FROM #entity_id_raw) r;
+
+CREATE INDEX ix_pei_uid ON #person_entity_id (person_uid);
 
 DROP TABLE IF EXISTS #entity_id_raw;
 
@@ -9891,5 +9923,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/01/2026 14:34:37 UTC</timestamp>
+    <timestamp>07/07/2026 00:19:22 UTC</timestamp>
 </template>
