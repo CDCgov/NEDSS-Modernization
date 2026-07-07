@@ -11,10 +11,10 @@ from src.libraries.support.pa_01.queries import (
     cases_with_no_partners_query,
     cluster_previous_pos_query,
     clusters_initiated_query,
-    filtered_cases_query,
     not_notified_clusters_query,
     not_notified_partners_query,
     notified_clusters_query,
+    notified_partners_by_speed_query,
     notified_partners_query,
     partner_case_dispositions_query,
     partner_notification_query,
@@ -70,6 +70,10 @@ def execute(
 
       in order to distinguish them in the CSV.  Otherwise if the CSV data were ever
       sorted it would lose its positional meaning.
+    * In the "SPEED OF NOTIFICATION - PARTNERS & CLUSTERS" section, under "New Clusters
+      Notified" for "ALL WORKERS", the percentages appear as 0.0% even if there are
+      counts.  This is due to an issue in the SAS and the Python library includes the
+      correct percentages.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -99,7 +103,6 @@ def execute(
 
     # run queries
     tables: dict[str, Table] = {}
-    tables['filtered_cases'] = trx.query(filtered_cases_query(subset_query))
     tables['case_interview_rows'] = trx.query(
         case_interview_rows_query(subset_query, report_variant)
     )
@@ -129,6 +132,9 @@ def execute(
     )
     tables['clusters_previous_pos'] = trx.query(
         cluster_previous_pos_query(subset_query)
+    )
+    tables['notified_partners_by_speed'] = trx.query(
+        notified_partners_by_speed_query(subset_query)
     )
 
     # get list of workers (nb. None treated as "ALL WORKERS")
