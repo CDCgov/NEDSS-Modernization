@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -34,11 +35,11 @@ public class ReportFilter {
   private Report report;
 
   @NonNull @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "filter_uid")
+  @JoinColumn(name = "filter_uid", nullable = false)
   private FilterCode filterCode;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "column_uid")
+  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "column_uid", nullable = false)
   private DataSourceColumn dataSourceColumn;
 
   // When a filter is deleted, it's values also need to be removed
@@ -51,7 +52,7 @@ public class ReportFilter {
 
   // Setting orphanRemoval to true so we can delete a ReportFilterValidation record when
   // it's detached from its parent ReportFilter (i.e. `filterValidation` is set to null).
-  @OneToOne(
+  @Nullable @OneToOne(
       mappedBy = "reportFilter",
       fetch = FetchType.LAZY,
       orphanRemoval = true,

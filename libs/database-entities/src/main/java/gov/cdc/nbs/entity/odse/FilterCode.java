@@ -2,6 +2,7 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.time.EffectiveTime;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -26,24 +27,24 @@ public class FilterCode {
   @Column(name = "filter_uid", nullable = false)
   private Long id;
 
-  @Column(name = "code_table", length = 50)
+  @Nullable @Column(name = "code_table", length = 50)
   private String codeTable;
 
-  @Column(name = "desc_txt", length = 300)
+  @Nullable @Column(name = "desc_txt", length = 300)
   private String descTxt;
 
   @Embedded private EffectiveTime effectiveTime;
 
-  @Column(name = "filter_code", length = 20)
+  @Nullable @Column(name = "filter_code", length = 20)
   private String code;
 
-  @Column(name = "filter_code_set_nm", length = 256)
+  @Nullable @Column(name = "filter_code_set_nm", length = 256)
   private String filterCodeSetName;
 
-  @Column(name = "filter_type", length = 20)
+  @Nullable @Column(name = "filter_type", length = 20)
   private String filterType;
 
-  @Column(name = "filter_name", length = 50)
+  @Nullable @Column(name = "filter_name", length = 50)
   private String filterName;
 
   @Embedded private Status status;
@@ -54,10 +55,10 @@ public class FilterCode {
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
 
   public boolean isAdvancedFilterCode() {
-    return getFilterType().equals(ADV_FILTER_TYPE);
+    return ADV_FILTER_TYPE.equalsIgnoreCase(getFilterType());
   }
 
   public boolean isBasicFilterCode() {
-    return getFilterType().startsWith(BASIC_FILTER_PREFIX);
+    return getFilterType() != null && getFilterType().startsWith(BASIC_FILTER_PREFIX);
   }
 }
