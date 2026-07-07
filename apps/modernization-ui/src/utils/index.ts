@@ -9,6 +9,7 @@ export * from './focusedTarget';
 export * from './mapIf';
 export * from './isEmpty';
 export * from './text';
+export * from './redirectToNBS6';
 
 export type { Predicate } from './predicate';
 

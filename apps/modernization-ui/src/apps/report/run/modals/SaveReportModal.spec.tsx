@@ -7,7 +7,9 @@ const modalRef = { current: null };
 
 describe('SaveReportModal', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<SaveReportModal onSave={mockSave} saveReportModalRef={modalRef} />);
+        const { container } = render(
+            <SaveReportModal onSave={mockSave} saveReportModalRef={modalRef} saving={false} />
+        );
         expect(await axe(container)).toHaveNoViolations();
     });
 });

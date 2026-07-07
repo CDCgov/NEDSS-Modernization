@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { addLabelToName, EnumSelectable } from '../../utils';
-import { SIZING } from './constants';
+import { SIZING } from '../../constants';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
