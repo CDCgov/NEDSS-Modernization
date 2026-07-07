@@ -4,7 +4,7 @@ import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } 
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { ReactNode, useRef, useState } from 'react';
 import { Heading } from 'components/heading';
-import { permissions, permitsAny, Permitted } from 'libs/permission';
+import { permissions, permits, permitsAny, Permitted } from 'libs/permission';
 import { Shown } from 'conditional-render';
 import { useUser } from 'user';
 
@@ -114,7 +114,19 @@ const ReportResultPage = ({
                         />
                     </Permitted>
                     <Shown when={user?.identifier === config.ownerUid}>
-                        <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
+                        {/* These permissions do not match what the operators would strictly imply,
+                        but do match what NBS 6 does */}
+                        <Permitted
+                            permission={(userPermissions: string[]) =>
+                                config.group === ReportConfiguration.group.PUBLIC ||
+                                config.group === ReportConfiguration.group.REPORTING_FACILITY
+                                    ? permitsAny(
+                                          permissions.reports.public.edit,
+                                          permissions.reports.reportingFacility.edit
+                                      )(userPermissions)
+                                    : permits(permissions.reports.private.edit)(userPermissions)
+                            }
+                        >
                             <Button
                                 onClick={() => saveReportModalRef.current?.toggleModal()}
                                 disabled={resultLoading || !!error}

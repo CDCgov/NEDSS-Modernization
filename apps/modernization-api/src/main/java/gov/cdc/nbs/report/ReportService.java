@@ -114,21 +114,6 @@ public class ReportService {
     return reportRepository.save(report);
   }
 
-  /**
-   * The `save` action, which overwrites the various filter/sort details of a given report, without
-   * changing the actual report mechanics themselves.
-   */
-  @Transactional
-  public Report saveReport(ReportExecutionRequest request, Report report) {
-    if (report == null) {
-      ReportId reportId = new ReportId(request.reportUid(), request.dataSourceUid());
-      throw new NotFoundException(getReportNotFoundText(reportId));
-    }
-
-    updateReport(request, report);
-    return reportRepository.save(report);
-  }
-
   @Transactional
   public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
     Report report =
@@ -137,7 +122,7 @@ public class ReportService {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     // Update values before duplicating otherwise the fk's in the request don't match
-    updateReport(request.executionRequest(), report);
+    updateReportExecutionData(request.executionRequest(), report);
 
     Report duplicate = reportMapper.duplicate(report, user);
 
@@ -153,13 +138,37 @@ public class ReportService {
     return reportRepository.save(duplicate);
   }
 
-  private void updateReport(ReportExecutionRequest request, Report report) {
+  /**
+   * The `save` action, which overwrites the various filter/sort details of a given report, without
+   * changing the actual report mechanics themselves.
+   */
+  @Transactional
+  public Report saveReport(ReportExecutionRequest request, Report report) {
+    if (report == null) {
+      ReportId reportId = new ReportId(request.reportUid(), request.dataSourceUid());
+      throw new NotFoundException(getReportNotFoundText(reportId));
+    }
+
+    updateReportExecutionData(request, report);
+    return reportRepository.save(report);
+  }
+
+  /**
+   * Updates all relevant Report details based on the ReportExecutionRequest provided. <b>This
+   * method does NOT persist the report to the database,</b> as `saveAsReport` uses this as part of
+   * the creation of an entirely separate (duplicated) report.
+   */
+  private void updateReportExecutionData(ReportExecutionRequest request, Report report) {
     updateDisplayColumns(report, request.columnUids());
     updateSortColumns(report, request.sort());
     updateAdvancedFilterValues(report, request.advancedFilter());
     updateBasicFilterValues(report, request.basicFilters());
   }
 
+  /**
+   * Updates all ReportFilter and FilterValue values based on the BasicFilterRequest provided,
+   * <b>without persisting said changes to the database.</b>
+   */
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
     Map<Long, ReportFilter> basicFiltersById =
         report.getReportFilters().stream()
@@ -173,14 +182,12 @@ public class ReportService {
     } else {
       Map<Long, BasicFilterRequest> basicFilterReqsById =
           basicFilterReqs.stream()
-              .map(
+              .peek(
                   req -> {
                     if (!basicFiltersById.containsKey(req.reportFilterUid()))
                       throw new IllegalArgumentException(
                           "BasicFilterRequest.reportFilterUid (%s) does not match existing basic filter ID"
                               .formatted(req.reportFilterUid()));
-
-                    return req;
                   })
               .collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
@@ -203,6 +210,10 @@ public class ReportService {
     }
   }
 
+  /**
+   * Updates all ReportFilter and FilterValue values based on the AdvancedFilterRequest provided,
+   * <b>without persisting said changes to the database.</b>
+   */
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
     ReportFilter advancedFilter =
         report.getReportFilters().stream()
@@ -231,6 +242,10 @@ public class ReportService {
     }
   }
 
+  /**
+   * Updates the set of Report DisplayColumns based on the list of column IDs provided, <b>without
+   * persisting said changes to the database.</b>
+   */
   private void updateDisplayColumns(Report report, List<Long> displayColumnIds) {
     report.getDisplayColumns().clear();
 
@@ -264,6 +279,10 @@ public class ReportService {
     }
   }
 
+  /**
+   * Updates the set of Report SortColumns based on the SortSpec provided, <b>without persisting
+   * said changes to the database.</b>
+   */
   private void updateSortColumns(Report report, SortSpec sort) {
     report.getReportSortColumns().clear();
 
