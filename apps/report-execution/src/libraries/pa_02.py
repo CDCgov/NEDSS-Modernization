@@ -10,9 +10,6 @@ def execute(
     library_params: dict,
     **kwargs,
 ) -> ReportResult:
-    """
-    PA02: Field Investigation Outcomes - STD and HIV.
-    """
     # ------------------------------------------------------------------
     # 1. Validate input
     # ------------------------------------------------------------------
@@ -28,7 +25,7 @@ def execute(
         raise ValueError(f"report_type must be 'STD' or 'HIV', got {report_type}")
 
     # ------------------------------------------------------------------
-    # 2. Define disposition sets based on report_type
+    # 2. Disposition sets
     # ------------------------------------------------------------------
     if report_type == 'STD':
         examined_dispos = [
@@ -86,7 +83,6 @@ def execute(
         }
         specific_var_order = ["var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_s_p"]
 
-    # Individual not examined codes (same for both types)
     not_examined_var_map = {
         "var_u_p": "G - Insufficient Info to Begin Investigation",
         "var_v_p": "H - Unable to Locate",
@@ -99,9 +95,6 @@ def execute(
     }
     not_examined_var_order = ["var_u_p", "var_v_p", "var_w_p", "var_x_p", "var_y_p", "var_z_p", "var_aa_p", "var_ab_p"]
 
-    # ------------------------------------------------------------------
-    # 3. Referral basis groups
-    # ------------------------------------------------------------------
     referral_groups = {
         "partners": ["P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "P3 - Partner, Both"],
         "clus": ["A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3",
@@ -111,7 +104,7 @@ def execute(
     }
 
     # ------------------------------------------------------------------
-    # 4. Compute global min/max dates from the unfiltered base
+    # 3. Compute global min/max dates (unfiltered by referral basis)
     # ------------------------------------------------------------------
     global_date_sql = f"""
     WITH a AS ({subset_query}),
@@ -133,19 +126,28 @@ def execute(
     """
     date_result = trx.query(global_date_sql)
     if not date_result.data:
-        # No data – return empty table
         return ReportResult(
             content_type='table',
             content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
         )
     min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
-    # Convert to date strings for SQL
-    min_dispo_str = min_dispo.strftime('%Y-%m-%d') if hasattr(min_dispo, 'strftime') else str(min_dispo)
-    max_dispo_str = max_dispo.strftime('%Y-%m-%d') if hasattr(max_dispo, 'strftime') else str(max_dispo)
-    min_assign_str = min_assign.strftime('%Y-%m-%d') if hasattr(min_assign, 'strftime') else str(min_assign)
-    max_assign_str = max_assign.strftime('%Y-%m-%d') if hasattr(max_assign, 'strftime') else str(max_assign)
 
-    # Get the set of INVESTIGATOR_DISP_FL_FUP_KEY that appear in the base
+    # Convert to integer dates (days since 1900-01-01)
+    from datetime import date
+    epoch = date(1900, 1, 1)
+    def to_days_since_epoch(dt):
+        if dt is None:
+            return None
+        if hasattr(dt, 'date'):
+            dt = dt.date()
+        return (dt - epoch).days
+
+    min_dispo_days = to_days_since_epoch(min_dispo)
+    max_dispo_days = to_days_since_epoch(max_dispo)
+    min_assign_days = to_days_since_epoch(min_assign)
+    max_assign_days = to_days_since_epoch(max_assign)
+
+    # Get the set of INVESTIGATOR_DISP_FL_FUP_KEY that appear in the base (unfiltered)
     disp_keys_sql = f"""
     WITH a AS ({subset_query}),
     base AS (
@@ -168,10 +170,9 @@ def execute(
     keys_in = ", ".join(str(k) for k in disp_keys)
 
     # ------------------------------------------------------------------
-    # 5. Helper to build SQL for one referral group
+    # 4. Helper to build SQL for one referral group
     # ------------------------------------------------------------------
     def build_group_sql(group_name: str, referral_list: List[str]) -> Tuple[str, str]:
-        """Returns (assignment_metrics_sql, ae_metrics_sql)."""
         def fmt_list(lst):
             return ", ".join(f"'{item}'" for item in lst)
 
@@ -179,14 +180,11 @@ def execute(
         examined_in = fmt_list(examined_dispos)
         not_examined_in = fmt_list(not_examined_dispos)
 
-        # Build specific dispo CASE clauses
         specific_clauses = []
         for var_name, dispo_str in specific_var_map.items():
             specific_clauses.append(
                 f"COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}' THEN base.INV_LOCAL_ID END) AS {var_name}"
             )
-
-        # Build individual not examined CASE clauses
         not_examined_clauses = []
         for var_name, dispo_str in not_examined_var_map.items():
             not_examined_clauses.append(
@@ -260,7 +258,7 @@ def execute(
             dt.var_m_p
         """
 
-        # Non-assigned dispositions (var_ae_p) - with global date filters and key restriction
+        # Non-assigned dispositions – using integer days since epoch
         ae_sql = f"""
         WITH a AS ({subset_query}),
         base_dispo AS (
@@ -278,10 +276,10 @@ def execute(
             WHERE a.INVESTIGATOR_DISP_FL_FUP_KEY != 1
               AND b.REFERRAL_BASIS IN ({referral_in})
               AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
-              AND CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
-              AND CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
-              AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{min_assign_str}' AS DATE)
-              AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{max_assign_str}' AS DATE)
+              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_DISPO_DT) >= {min_dispo_days}
+              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_DISPO_DT) <= {max_dispo_days}
+              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_INVESTIGATOR_ASSGN_DT) >= {min_assign_days}
+              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_INVESTIGATOR_ASSGN_DT) <= {max_assign_days}
               AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
               AND a.FL_FUP_DISPOSITION IS NOT NULL
         )
@@ -296,9 +294,9 @@ def execute(
         return assignment_sql, ae_sql
 
     # ------------------------------------------------------------------
-    # 6. Execute queries for all groups and merge results
+    # 5. Execute queries and merge
     # ------------------------------------------------------------------
-    provider_data = {}  # key: (INVESTIGATOR_FL_FUP_KEY, PROVIDER_QUICK_CODE) -> dict
+    provider_data = {}
 
     for group_name, referral_list in referral_groups.items():
         assign_sql, ae_sql = build_group_sql(group_name, referral_list)
@@ -314,7 +312,6 @@ def execute(
         assign_col_idx = {col: i for i, col in enumerate(assign_columns)}
         ae_col_idx = {col: i for i, col in enumerate(ae_columns)}
 
-        # Process assignment rows
         for row in assign_rows:
             provider_key = row[assign_col_idx['INVESTIGATOR_FL_FUP_KEY']]
             quick_code = row[assign_col_idx['PROVIDER_QUICK_CODE']]
@@ -330,7 +327,6 @@ def execute(
                 else:
                     provider_data[key][group_name][var] = 0
 
-        # Process ae rows
         for row in ae_rows:
             provider_key = row[ae_col_idx['INVESTIGATOR_FL_FUP_KEY']]
             quick_code = row[ae_col_idx['PROVIDER_QUICK_CODE']]
@@ -341,7 +337,6 @@ def execute(
                 provider_data[key][group_name] = {}
             provider_data[key][group_name]['var_ae_p'] = row[ae_col_idx['var_ae_p']]
 
-    # If no data, return empty table
     if not provider_data:
         return ReportResult(
             content_type='table',
@@ -349,7 +344,7 @@ def execute(
         )
 
     # ------------------------------------------------------------------
-    # 7. Define final metric labels
+    # 6. Metric labels
     # ------------------------------------------------------------------
     metric_labels = [
         ("Assigned:", "var_g_p"),
@@ -361,39 +356,32 @@ def execute(
         ("Exam'd w/in 14:", "var_m_p"),
     ]
 
-    # Specific dispositions (without E for STD, with all for HIV)
     if report_type == 'STD':
-        # STD: A, B, C, D, F (no E yet)
         std_specific_vars = ['var_n_p', 'var_o_p', 'var_p_p', 'var_q_p', 'var_r_p']
         for var_name in std_specific_vars:
             dispo_str = specific_var_map[var_name]
             letter = dispo_str.split(" - ")[0]
             metric_labels.append((f"Dispo {letter}:", var_name))
-    else:  # HIV
+    else:
         for var_name in specific_var_order:
             dispo_str = specific_var_map[var_name]
             num = dispo_str.split(" - ")[0]
             metric_labels.append((f"Dispo {num}:", var_name))
 
-    # Not Examined
     metric_labels.append(("Not Examined:", "var_t_p"))
-
-    # Individual not examined (G, H, J, K, L, V, X, Z)
     for var_name in not_examined_var_order:
         dispo_str = not_examined_var_map[var_name]
         letter = dispo_str.split(" - ")[0]
         metric_labels.append((f"Dispo {letter}:", var_name))
 
-    # For STD, add Dispo E after Z
     if report_type == 'STD':
         metric_labels.append(("Dispo E:", "var_ac_p"))
 
-    # Open and Non-assigned
     metric_labels.append(("Open:", "var_ad_p"))
     metric_labels.append(("Non-assigned Dispos:", "var_ae_p"))
 
     # ------------------------------------------------------------------
-    # 8. Build final rows: provider-level only (no ALL rows)
+    # 7. Build final table (no ALL rows)
     # ------------------------------------------------------------------
     provider_rows = []
     for (provider_key, quick_code), data in provider_data.items():
@@ -408,11 +396,9 @@ def execute(
             }
             provider_rows.append(row)
 
-    # Sort by pname_l (lowercase provider) and metric order
     metric_index = {label: idx for idx, (label, _) in enumerate(metric_labels)}
     provider_rows.sort(key=lambda r: (r['PROVIDER_QUICK_CODE_new'].lower(), metric_index[r['colname']]))
 
-    # Build final table data
     table_data = []
     for row in provider_rows:
         table_data.append((
@@ -423,7 +409,7 @@ def execute(
             row['colval3'],
             row['colval4'],
             row['PROVIDER_QUICK_CODE_new'].lower(),
-            5  # i constant - matches SAS
+            5
         ))
 
     columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
