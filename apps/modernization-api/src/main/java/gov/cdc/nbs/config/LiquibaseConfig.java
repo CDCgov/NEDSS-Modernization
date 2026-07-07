@@ -16,6 +16,8 @@ public class LiquibaseConfig {
   private static final String REPORT_EXECUTION_CHANGE_LOG =
       "classpath:db/changelog/report-execution-changelog.yml";
 
+  private static final String ODSE_CHANGE_LOG = "classpath:db/changelog/odse-changelog.yml";
+
   @Value("${spring.liquibase.driver-class-name}")
   private String driverClassName;
 
@@ -52,6 +54,18 @@ public class LiquibaseConfig {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
     liquibase.setChangeLog(REPORT_EXECUTION_CHANGE_LOG);
+    if (liquibase.getContexts() != null) {
+      liquibase.setContexts(String.join(",", liquibase.getContexts()));
+    }
+    return liquibase;
+  }
+
+  @Bean(name = "odseLiquibase")
+  @ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", havingValue = "true")
+  public SpringLiquibase odseLiquibase(DataSource dataSource) {
+    SpringLiquibase liquibase = new SpringLiquibase();
+    liquibase.setDataSource(dataSource);
+    liquibase.setChangeLog(ODSE_CHANGE_LOG);
     if (liquibase.getContexts() != null) {
       liquibase.setContexts(String.join(",", liquibase.getContexts()));
     }
