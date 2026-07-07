@@ -300,7 +300,7 @@ class ReportFilterBuilderTest {
 
     @BeforeEach
     void setUp() {
-      Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(new IdGeneratorService.GeneratedId(nextId));
     }
 
@@ -407,7 +407,7 @@ class ReportFilterBuilderTest {
       ReportFilter originalFilter = buildReportFilter();
       originalFilter.setFilterValidation(null);
 
-      Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(new IdGeneratorService.GeneratedId(500L));
 
       ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
@@ -459,7 +459,7 @@ class ReportFilterBuilderTest {
       ReportFilter originalFilter = buildReportFilter();
       originalFilter.setFilterValues(null);
 
-      Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(new IdGeneratorService.GeneratedId(500L));
 
       ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
@@ -472,7 +472,7 @@ class ReportFilterBuilderTest {
       ReportFilter originalFilter = buildReportFilter();
       originalFilter.setFilterValues(Collections.emptyList());
 
-      Mockito.when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
+      when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(new IdGeneratorService.GeneratedId(500L));
 
       ReportFilter duplicatedFilter = builder.duplicate(originalFilter);
