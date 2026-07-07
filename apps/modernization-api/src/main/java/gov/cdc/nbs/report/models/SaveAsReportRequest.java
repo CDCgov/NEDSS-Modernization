@@ -9,6 +9,6 @@ import jakarta.validation.constraints.NotNull;
 public record SaveAsReportRequest(
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String reportTitle,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank String sectionCode,
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull @NotBlank ReportConstants.ReportGroup group,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull ReportConstants.ReportGroup group,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @Valid ReportExecutionRequest executionRequest,
     String description) {}

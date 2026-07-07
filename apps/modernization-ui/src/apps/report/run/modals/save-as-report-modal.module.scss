@@ -1,0 +1,40 @@
+.layout {
+    :global {
+        min-width: 38rem;
+
+        .usa-modal__content {
+            .usa-modal__heading {
+                button {
+                    top: unset !important;
+                    margin-right: 1rem;
+                }
+            }
+
+            .usa-modal__footer {
+                div {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+
+    .radioGroupWrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+}
+
+.form {
+    margin: 1rem;
+
+    :global {
+        .usa-form {
+            max-width: 100%;
+
+            > span {
+                padding-bottom: 1.25rem;
+            }
+        }
+    }
+}

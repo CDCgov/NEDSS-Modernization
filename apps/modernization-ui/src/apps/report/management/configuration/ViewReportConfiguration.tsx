@@ -11,6 +11,7 @@ import { ConfirmationModal } from 'confirmation';
 import { ReportConfiguration, ReportControllerService } from 'generated';
 import { LoadingBlock } from 'libs/loading/block';
 import { AlertMessage } from 'design-system/message';
+import { redirectToNBS6 } from 'utils';
 
 const ViewReportConfiguration = () => {
     const params = useParams();
@@ -54,7 +55,7 @@ const ViewReportConfiguration = () => {
                     setDeleting(true);
                     ReportControllerService.deleteReport({ reportUid, dataSourceUid })
                         .then(() => {
-                            window.location.href = NBS_LIST_REPORT_CONFIG_PAGE;
+                            redirectToNBS6(NBS_LIST_REPORT_CONFIG_PAGE);
                         })
                         .catch((err) => {
                             setError(JSON.stringify(err));
