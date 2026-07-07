@@ -211,7 +211,7 @@ describe('report result page', () => {
             await user.click(confirmSaveButton);
 
             expect(await findByText('Issue with saving report')).toBeVisible();
-            expect(await findByText(/There was an error saving your report/)).toBeVisible();
+            expect(await findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
     });
@@ -262,7 +262,7 @@ describe('report result page', () => {
             await fillAndSubmitSaveAsForm(user, render);
 
             expect(await render.findByText('Issue with saving report as new')).toBeVisible();
-            expect(await render.findByText(/There was an error saving your report/)).toBeVisible();
+            expect(await render.findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
     });

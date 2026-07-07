@@ -21,7 +21,6 @@ import { PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
 import { NotFoundError } from 'pages/error/NotFoundError';
 import { permitsAll } from 'libs/permission';
-import { AlertMessage } from 'design-system/message';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
 export type ReportExecuteForm = {

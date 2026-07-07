@@ -99,10 +99,12 @@ const ReportResultPage = ({
                             permissions.reports.public.create,
                             permissions.reports.private.create,
                             permissions.reports.reportingFacility.create
-                        )}>
+                        )}
+                    >
                         <Button
                             onClick={() => saveAsReportModalRef.current?.toggleModal()}
-                            disabled={resultLoading || !!error}>
+                            disabled={resultLoading || !!error}
+                        >
                             Save as new
                         </Button>
                         <SaveAsReportModal
@@ -115,14 +117,16 @@ const ReportResultPage = ({
                         <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
                             <Button
                                 onClick={() => saveReportModalRef.current?.toggleModal()}
-                                disabled={resultLoading || !!error}>
+                                disabled={resultLoading || !!error}
+                            >
                                 Save
                             </Button>
                             <SaveReportModal saveReportModalRef={saveReportModalRef} saving={saving} onSave={onSave} />
                         </Permitted>
                     </Shown>
                 </>
-            }>
+            }
+        >
             <div className="display-flex flex-column">
                 {(error || saveError) && (
                     <ApiErrorBanner
@@ -132,26 +136,25 @@ const ReportResultPage = ({
                         error={error ?? saveError}
                     />
                 )}
-                {resultLoading ? (
-                    <TextCard loading={true}>
-                        <Heading level={2}>
-                            {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. 
+                {!error &&
+                    (resultLoading ? (
+                        <TextCard loading={true}>
+                            <Heading level={2}>
+                                {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. 
                             Please do not leave this page while your report is generating.`}
-                        </Heading>
-                        <p>
-                            This might take several minutes for large reports. To be sure it opens, check that pop-ups
-                            are enabled in your browser.
-                        </p>
-                    </TextCard>
-                ) : (
-                    !error && (
+                            </Heading>
+                            <p>
+                                This might take several minutes for large reports. To be sure it opens, check that
+                                pop-ups are enabled in your browser.
+                            </p>
+                        </TextCard>
+                    ) : (
                         <TextCard>
                             <Heading level={2}>
                                 {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
                             </Heading>
                         </TextCard>
-                    )
-                )}
+                    ))}
             </div>
         </ReportLayout>
     );

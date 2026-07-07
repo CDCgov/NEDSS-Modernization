@@ -16,14 +16,18 @@ const ApiErrorBanner = ({
     error: unknown;
     className?: string;
 }) => {
+    // Log the error to the user's console as a backup method of getting any/all details if needed
+    // for debugging
     logErrorToUserConsole(error);
+
     return (
         <AlertMessage
             type="error"
             className={className}
             // eslint-disable-next-line max-len
             title={`There was an error ${action} this ${item}. If this error persists, contact your system administrator.`}
-            level={level}>
+            level={level}
+        >
             <p>{error instanceof Error && error.name} Details:</p>
             {error instanceof ApiError ? (
                 <>
