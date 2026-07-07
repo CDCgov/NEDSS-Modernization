@@ -1,6 +1,7 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult, Table
 from typing import List, Tuple
+from datetime import date
 
 
 def execute(
@@ -10,6 +11,9 @@ def execute(
     library_params: dict,
     **kwargs,
 ) -> ReportResult:
+    """
+    PA02: Field Investigation Outcomes - STD and HIV.
+    """
     # ------------------------------------------------------------------
     # 1. Validate input
     # ------------------------------------------------------------------
@@ -25,7 +29,7 @@ def execute(
         raise ValueError(f"report_type must be 'STD' or 'HIV', got {report_type}")
 
     # ------------------------------------------------------------------
-    # 2. Disposition sets
+    # 2. Define disposition sets
     # ------------------------------------------------------------------
     if report_type == 'STD':
         examined_dispos = [
@@ -104,7 +108,7 @@ def execute(
     }
 
     # ------------------------------------------------------------------
-    # 3. Compute global min/max dates (unfiltered by referral basis)
+    # 3. Compute global min/max dates from the unfiltered base
     # ------------------------------------------------------------------
     global_date_sql = f"""
     WITH a AS ({subset_query}),
@@ -130,22 +134,20 @@ def execute(
             content_type='table',
             content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
         )
+
     min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
 
-    # Convert to integer dates (days since 1900-01-01)
-    from datetime import date
-    epoch = date(1900, 1, 1)
-    def to_days_since_epoch(dt):
+    def to_date_str(dt):
         if dt is None:
             return None
         if hasattr(dt, 'date'):
             dt = dt.date()
-        return (dt - epoch).days
+        return dt.strftime('%Y-%m-%d')
 
-    min_dispo_days = to_days_since_epoch(min_dispo)
-    max_dispo_days = to_days_since_epoch(max_dispo)
-    min_assign_days = to_days_since_epoch(min_assign)
-    max_assign_days = to_days_since_epoch(max_assign)
+    min_dispo_str = to_date_str(min_dispo)
+    max_dispo_str = to_date_str(max_dispo)
+    min_assign_str = to_date_str(min_assign)
+    max_assign_str = to_date_str(max_assign)
 
     # Get the set of INVESTIGATOR_DISP_FL_FUP_KEY that appear in the base (unfiltered)
     disp_keys_sql = f"""
@@ -191,7 +193,7 @@ def execute(
                 f"COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}' THEN base.INV_LOCAL_ID END) AS {var_name}"
             )
 
-        # Assignment metrics SQL
+        # Assignment metrics SQL – unchanged
         assignment_sql = f"""
         WITH a AS ({subset_query}),
         base AS (
@@ -258,11 +260,11 @@ def execute(
             dt.var_m_p
         """
 
-        # Non-assigned dispositions – using integer days since epoch
+        # Non‑assigned dispositions – allow NULL dates in the date filters
         ae_sql = f"""
         WITH a AS ({subset_query}),
         base_dispo AS (
-            SELECT
+            SELECT DISTINCT
                 a.INV_LOCAL_ID,
                 a.INVESTIGATOR_FL_FUP_KEY,
                 a.INVESTIGATOR_DISP_FL_FUP_KEY,
@@ -276,10 +278,22 @@ def execute(
             WHERE a.INVESTIGATOR_DISP_FL_FUP_KEY != 1
               AND b.REFERRAL_BASIS IN ({referral_in})
               AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
-              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_DISPO_DT) >= {min_dispo_days}
-              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_DISPO_DT) <= {max_dispo_days}
-              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_INVESTIGATOR_ASSGN_DT) >= {min_assign_days}
-              AND DATEDIFF(day, '1900-01-01', a.FL_FUP_INVESTIGATOR_ASSGN_DT) <= {max_assign_days}
+              AND (
+                  CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
+                  OR a.FL_FUP_DISPO_DT IS NULL
+              )
+              AND (
+                  CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
+                  OR a.FL_FUP_DISPO_DT IS NULL
+              )
+              AND (
+                  CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{min_assign_str}' AS DATE)
+                  OR a.FL_FUP_INVESTIGATOR_ASSGN_DT IS NULL
+              )
+              AND (
+                  CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{max_assign_str}' AS DATE)
+                  OR a.FL_FUP_INVESTIGATOR_ASSGN_DT IS NULL
+              )
               AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
               AND a.FL_FUP_DISPOSITION IS NOT NULL
         )
@@ -294,7 +308,7 @@ def execute(
         return assignment_sql, ae_sql
 
     # ------------------------------------------------------------------
-    # 5. Execute queries and merge
+    # 5. Execute queries for all groups and merge results
     # ------------------------------------------------------------------
     provider_data = {}
 
@@ -344,7 +358,7 @@ def execute(
         )
 
     # ------------------------------------------------------------------
-    # 6. Metric labels
+    # 6. Metric labels (SAS order)
     # ------------------------------------------------------------------
     metric_labels = [
         ("Assigned:", "var_g_p"),
