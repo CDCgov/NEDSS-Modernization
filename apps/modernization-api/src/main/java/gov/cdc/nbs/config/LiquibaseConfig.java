@@ -2,10 +2,7 @@ package gov.cdc.nbs.config;
 
 import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,39 +15,12 @@ public class LiquibaseConfig {
 
   private static final String ODSE_CHANGE_LOG = "classpath:db/changelog/odse-changelog.yml";
 
-  @Value("${spring.liquibase.driver-class-name}")
-  private String driverClassName;
-
-  @Value("${spring.datasource.username}")
-  private String dbUserName;
-
-  @Value("${spring.datasource.password}")
-  private String dbUserPassword;
-
-  @Value("${spring.datasource.url}")
-  private String dbUrl;
-
-  @Bean
-  @ConditionalOnProperty(
-      prefix = "nbs.ui.features.report.execution",
-      name = "enabled",
-      havingValue = "true")
-  public DataSource reportExecutionDataSource() {
-    return DataSourceBuilder.create()
-        .url(dbUrl)
-        .username(dbUserName)
-        .password(dbUserPassword)
-        .driverClassName(driverClassName)
-        .build();
-  }
-
   @Bean(name = "reportExecutionLiquibase")
   @ConditionalOnProperty(
       prefix = "nbs.ui.features.report.execution",
       name = "enabled",
       havingValue = "true")
-  public SpringLiquibase reportExecutionLiquibase(
-      @Qualifier("reportExecutionDataSource") DataSource dataSource) {
+  public SpringLiquibase reportExecutionLiquibase(DataSource dataSource) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
     liquibase.setChangeLog(REPORT_EXECUTION_CHANGE_LOG);
