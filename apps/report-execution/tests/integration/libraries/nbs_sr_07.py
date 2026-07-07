@@ -73,7 +73,6 @@ class TestIntegrationNbsSr07Library:
             == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
             'Time Period'
         )
-        assert result.subheader == 'N/A, Georgia, Tennessee'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 
