@@ -104,7 +104,7 @@ class WhereClauseServiceTest {
       Long reportFilterUid,
       Long reportColumnUid,
       Boolean defaultIncludeNulls,
-      FilterType fitlerType) {
+      FilterType filterType) {
 
     return new BasicFilterConfiguration(
         reportFilterUid,
@@ -113,7 +113,7 @@ class WhereClauseServiceTest {
         defaultIncludeNulls,
         null,
         null,
-        fitlerType);
+        filterType);
   }
 
   private FilterType createFilterType(String type, String code) {
@@ -225,6 +225,34 @@ class WhereClauseServiceTest {
     String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
 
     assertThat(whereFragment).isEqualTo("([ColumnName1] IN ('A')) AND ([ColumnName2] IN ('B'))");
+  }
+
+  @Test
+  void should_disregard_basic_filters_requests_without_values() {
+    Long filter1 = 101L;
+    Long col1 = 1L;
+    Long filter2 = 102L;
+    Long col2 = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
+    ReportConfiguration reportConfig =
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filter1, col1, false, filterType),
+                createBasicFilterConfiguration(List.of(), filter2, col2, false, filterType)),
+            List.of(
+                mockReportColumn(col1, "STRING", "ColumnName1"),
+                mockReportColumn(col2, "STRING", "ColumnName2")));
+
+    List<BasicFilterRequest> basicFilterRequests =
+        List.of(
+            new BasicFilterRequest(filter1, List.of(), false),
+            new BasicFilterRequest(filter2, List.of(), false));
+
+    String whereFragment =
+        whereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequests);
+
+    assertThat(whereFragment).isEqualTo("");
   }
 
   @Test
