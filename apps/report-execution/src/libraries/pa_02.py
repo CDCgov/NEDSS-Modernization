@@ -111,7 +111,64 @@ def execute(
     }
 
     # ------------------------------------------------------------------
-    # 4. Helper to build SQL for one referral group
+    # 4. Compute global min/max dates from the unfiltered base
+    # ------------------------------------------------------------------
+    global_date_sql = f"""
+    WITH a AS ({subset_query}),
+    base AS (
+        SELECT
+            a.FL_FUP_INVESTIGATOR_ASSGN_DT,
+            a.FL_FUP_DISPO_DT
+        FROM a
+        INNER JOIN [RDB].[dbo].INVESTIGATION b
+            ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
+    )
+    SELECT
+        MIN(FL_FUP_DISPO_DT) AS min_dispo,
+        MAX(FL_FUP_DISPO_DT) AS max_dispo,
+        MIN(FL_FUP_INVESTIGATOR_ASSGN_DT) AS min_assign,
+        MAX(FL_FUP_INVESTIGATOR_ASSGN_DT) AS max_assign
+    FROM base
+    """
+    date_result = trx.query(global_date_sql)
+    if not date_result.data:
+        # No data – return empty table
+        return ReportResult(
+            content_type='table',
+            content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
+        )
+    min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
+    # Convert to date strings for SQL
+    min_dispo_str = min_dispo.strftime('%Y-%m-%d') if hasattr(min_dispo, 'strftime') else str(min_dispo)
+    max_dispo_str = max_dispo.strftime('%Y-%m-%d') if hasattr(max_dispo, 'strftime') else str(max_dispo)
+    min_assign_str = min_assign.strftime('%Y-%m-%d') if hasattr(min_assign, 'strftime') else str(min_assign)
+    max_assign_str = max_assign.strftime('%Y-%m-%d') if hasattr(max_assign, 'strftime') else str(max_assign)
+
+    # Get the set of INVESTIGATOR_DISP_FL_FUP_KEY that appear in the base
+    disp_keys_sql = f"""
+    WITH a AS ({subset_query}),
+    base AS (
+        SELECT DISTINCT a.INVESTIGATOR_DISP_FL_FUP_KEY
+        FROM a
+        INNER JOIN [RDB].[dbo].INVESTIGATION b
+            ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
+          AND a.INVESTIGATOR_DISP_FL_FUP_KEY IS NOT NULL
+    )
+    SELECT INVESTIGATOR_DISP_FL_FUP_KEY FROM base
+    """
+    keys_result = trx.query(disp_keys_sql)
+    disp_keys = [row[0] for row in keys_result.data]
+    if not disp_keys:
+        return ReportResult(
+            content_type='table',
+            content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
+        )
+    keys_in = ", ".join(str(k) for k in disp_keys)
+
+    # ------------------------------------------------------------------
+    # 5. Helper to build SQL for one referral group
     # ------------------------------------------------------------------
     def build_group_sql(group_name: str, referral_list: List[str]) -> Tuple[str, str]:
         """Returns (assignment_metrics_sql, ae_metrics_sql)."""
@@ -136,6 +193,7 @@ def execute(
                 f"COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}' THEN base.INV_LOCAL_ID END) AS {var_name}"
             )
 
+        # Assignment metrics SQL
         assignment_sql = f"""
         WITH a AS ({subset_query}),
         base AS (
@@ -202,6 +260,7 @@ def execute(
             dt.var_m_p
         """
 
+        # Non-assigned dispositions (var_ae_p) - with global date filters and key restriction
         ae_sql = f"""
         WITH a AS ({subset_query}),
         base_dispo AS (
@@ -218,6 +277,11 @@ def execute(
                 ON a.INVESTIGATOR_DISP_FL_FUP_KEY = c.PROVIDER_KEY
             WHERE a.INVESTIGATOR_DISP_FL_FUP_KEY != 1
               AND b.REFERRAL_BASIS IN ({referral_in})
+              AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
+              AND CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
+              AND CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
+              AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{min_assign_str}' AS DATE)
+              AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{max_assign_str}' AS DATE)
               AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
               AND a.FL_FUP_DISPOSITION IS NOT NULL
         )
@@ -232,23 +296,21 @@ def execute(
         return assignment_sql, ae_sql
 
     # ------------------------------------------------------------------
-    # 5. Execute queries for all groups and merge results
+    # 6. Execute queries for all groups and merge results
     # ------------------------------------------------------------------
     provider_data = {}  # key: (INVESTIGATOR_FL_FUP_KEY, PROVIDER_QUICK_CODE) -> dict
 
     for group_name, referral_list in referral_groups.items():
         assign_sql, ae_sql = build_group_sql(group_name, referral_list)
 
-        assign_result = trx.query(assign_sql)  # returns Table
-        ae_result = trx.query(ae_sql)          # returns Table
+        assign_result = trx.query(assign_sql)
+        ae_result = trx.query(ae_sql)
 
-        # Extract columns and data
         assign_columns = assign_result.columns
-        assign_rows = assign_result.data       # list of tuples
+        assign_rows = assign_result.data
         ae_columns = ae_result.columns
         ae_rows = ae_result.data
 
-        # Build index maps for quick access
         assign_col_idx = {col: i for i, col in enumerate(assign_columns)}
         ae_col_idx = {col: i for i, col in enumerate(ae_columns)}
 
@@ -260,7 +322,6 @@ def execute(
             if key not in provider_data:
                 provider_data[key] = {'PROVIDER_QUICK_CODE': quick_code}
             provider_data[key][group_name] = {}
-            # All variable names that appear in assignment query
             var_names = ['var_g_p', 'var_h_p', 'var_i_p', 'var_j_p', 'var_k_p', 'var_l_p', 'var_m_p',
                          'var_t_p', 'var_ad_p'] + specific_var_order + not_examined_var_order
             for var in var_names:
@@ -269,7 +330,7 @@ def execute(
                 else:
                     provider_data[key][group_name][var] = 0
 
-        # Process ae rows (var_ae_p only)
+        # Process ae rows
         for row in ae_rows:
             provider_key = row[ae_col_idx['INVESTIGATOR_FL_FUP_KEY']]
             quick_code = row[ae_col_idx['PROVIDER_QUICK_CODE']]
@@ -280,15 +341,15 @@ def execute(
                 provider_data[key][group_name] = {}
             provider_data[key][group_name]['var_ae_p'] = row[ae_col_idx['var_ae_p']]
 
-    # If no data, return empty Table with the expected columns
+    # If no data, return empty table
     if not provider_data:
         return ReportResult(
             content_type='table',
-            content=Table(columns=['provider', 'metric', 'partners', 'clus', 'reac', 'cohort', 'total'], data=[])
+            content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
         )
 
     # ------------------------------------------------------------------
-    # 6. Define final metric labels
+    # 7. Define final metric labels
     # ------------------------------------------------------------------
     metric_labels = [
         ("Assigned:", "var_g_p"),
@@ -299,77 +360,73 @@ def execute(
         ("Exam'd w/in 7:", "var_l_p"),
         ("Exam'd w/in 14:", "var_m_p"),
     ]
-    # Add specific dispos
-    for var_name in specific_var_order:
-        dispo_str = specific_var_map[var_name]
-        if report_type == 'STD':
-            letter = dispo_str.split(" - ")[0]
-            label = f"Dispo {letter}:"
-        else:
-            num = dispo_str.split(" - ")[0]
-            label = f"Dispo {num}:"
-        metric_labels.append((label, var_name))
 
+    # Specific dispositions (without E for STD, with all for HIV)
+    if report_type == 'STD':
+        # STD: A, B, C, D, F (no E yet)
+        std_specific_vars = ['var_n_p', 'var_o_p', 'var_p_p', 'var_q_p', 'var_r_p']
+        for var_name in std_specific_vars:
+            dispo_str = specific_var_map[var_name]
+            letter = dispo_str.split(" - ")[0]
+            metric_labels.append((f"Dispo {letter}:", var_name))
+    else:  # HIV
+        for var_name in specific_var_order:
+            dispo_str = specific_var_map[var_name]
+            num = dispo_str.split(" - ")[0]
+            metric_labels.append((f"Dispo {num}:", var_name))
+
+    # Not Examined
     metric_labels.append(("Not Examined:", "var_t_p"))
+
+    # Individual not examined (G, H, J, K, L, V, X, Z)
     for var_name in not_examined_var_order:
         dispo_str = not_examined_var_map[var_name]
         letter = dispo_str.split(" - ")[0]
         metric_labels.append((f"Dispo {letter}:", var_name))
 
+    # For STD, add Dispo E after Z
+    if report_type == 'STD':
+        metric_labels.append(("Dispo E:", "var_ac_p"))
+
+    # Open and Non-assigned
     metric_labels.append(("Open:", "var_ad_p"))
     metric_labels.append(("Non-assigned Dispos:", "var_ae_p"))
 
     # ------------------------------------------------------------------
-    # 7. Build final rows: overall + per provider
+    # 8. Build final rows: provider-level only (no ALL rows)
     # ------------------------------------------------------------------
-    group_names = list(referral_groups.keys())  # ['partners', 'clus', 'reac', 'cohort']
-    all_rows = []  # list of dicts
-
-    # Overall sums
-    overall = {metric: {g: 0 for g in group_names} for metric, _ in metric_labels}
-
-    # Provider rows
+    provider_rows = []
     for (provider_key, quick_code), data in provider_data.items():
         for metric_label, var_name in metric_labels:
-            row = {'provider': quick_code, 'metric': metric_label}
-            total = 0
-            for g in group_names:
-                val = data.get(g, {}).get(var_name, 0)
-                row[g] = val
-                total += val
-                overall[metric_label][g] += val
-            row['total'] = total
-            all_rows.append(row)
+            row = {
+                'PROVIDER_QUICK_CODE_new': quick_code,
+                'colname': metric_label,
+                'colval': data.get('partners', {}).get(var_name, 0),
+                'colval2': data.get('clus', {}).get(var_name, 0),
+                'colval3': data.get('reac', {}).get(var_name, 0),
+                'colval4': data.get('cohort', {}).get(var_name, 0),
+            }
+            provider_rows.append(row)
 
-    # Overall rows
-    for metric_label, var_name in metric_labels:
-        row = {'provider': 'ALL', 'metric': metric_label}
-        total = 0
-        for g in group_names:
-            val = overall[metric_label][g]
-            row[g] = val
-            total += val
-        row['total'] = total
-        all_rows.append(row)
-
-    # Sort: ALL first, then providers alphabetically, then metrics in defined order
+    # Sort by pname_l (lowercase provider) and metric order
     metric_index = {label: idx for idx, (label, _) in enumerate(metric_labels)}
-    all_rows.sort(key=lambda r: (r['provider'] != 'ALL', r['provider'], metric_index[r['metric']]))
+    provider_rows.sort(key=lambda r: (r['PROVIDER_QUICK_CODE_new'].lower(), metric_index[r['colname']]))
 
-    # Convert to Table
-    columns = ['provider', 'metric'] + group_names + ['total']
-    table_data = [
-        (
-            row['provider'],
-            row['metric'],
-            row['partners'],
-            row['clus'],
-            row['reac'],
-            row['cohort'],
-            row['total']
-        )
-        for row in all_rows
-    ]
+    # Build final table data
+    table_data = []
+    for row in provider_rows:
+        table_data.append((
+            row['PROVIDER_QUICK_CODE_new'],
+            row['colname'],
+            row['colval'],
+            row['colval2'],
+            row['colval3'],
+            row['colval4'],
+            row['PROVIDER_QUICK_CODE_new'].lower(),
+            5  # i constant - matches SAS
+        ))
+
+    columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
 
     return ReportResult(
         content_type='table',
