@@ -21,7 +21,7 @@ vi.mock('react-router', async () => {
         useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
     };
 });
-vi.mock('js-file-download', { spy: true });
+vi.mock('js-file-download');
 
 vi.mock('generated');
 vi.mock('options/selectableResolver');

@@ -1,23 +1,11 @@
 import { render, waitFor } from '@testing-library/react';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import { Layout } from 'layout';
-import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
 import React, { ReactNode } from 'react';
-import { LoadingBlock } from 'libs/loading/block';
 import { ReportResultPage } from './ReportResultPage.tsx';
 import { axe } from 'jest-axe';
 import { ReportConfiguration } from 'generated';
-
-vi.mock('react-router', async () => {
-    const actual = await vi.importActual<typeof import('react-router')>('react-router');
-    return {
-        ...actual,
-        default: actual,
-        useLoaderData: vi.fn(),
-        useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
-    };
-});
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext.tsx';
 
 vi.mock('generated', async (importOriginal) => {
     const actual = await importOriginal<typeof import('generated')>();
@@ -79,8 +67,6 @@ beforeEach((): void => {
     locationMock.href = '';
     originalWindow = window.location;
     (window as any).location = locationMock;
-
-    vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
 });
 
 afterAll((): void => {
@@ -130,17 +116,11 @@ const MOCK_SAVE_RESULT: generated.ReportId = {
 };
 
 const renderWithRouter = (props: React.ComponentProps<typeof ReportResultPage>) => {
-    const routes = [
-        {
-            path: '/:reportUid/:dataSourceUid',
-            element: <Layout />,
-            HydrateFallback: LoadingBlock,
-            children: [{ index: true, element: <ReportResultPage {...props} /> }],
-        },
-    ];
-
-    const router = createMemoryRouter(routes, { initialEntries: ['/2/1'] });
-    return render(<RouterProvider router={router} />);
+    return render(
+        <SkipLinkProvider>
+            <ReportResultPage {...props} />
+        </SkipLinkProvider>
+    );
 };
 
 describe('report result page', () => {
