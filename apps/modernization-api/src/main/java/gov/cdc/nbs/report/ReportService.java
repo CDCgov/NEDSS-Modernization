@@ -21,7 +21,6 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.repository.DataSourceRepository;
-import gov.cdc.nbs.repository.ReportFilterRepository;
 import gov.cdc.nbs.repository.ReportLibraryRepository;
 import gov.cdc.nbs.repository.ReportRepository;
 import gov.cdc.nbs.repository.ReportSectionRepository;
@@ -31,7 +30,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 public class ReportService {
@@ -39,7 +37,6 @@ public class ReportService {
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
   private final ReportSectionRepository reportSectionRepository;
-  private final ReportFilterRepository reportFilterRepository;
 
   private final ReportMapper reportMapper;
   private final ReportSortColumnMapper reportSortColumnMapper;
@@ -47,33 +44,27 @@ public class ReportService {
   private final DisplayColumnBuilder displayColumnBuilder;
   private final ReportFilterBuilder reportFilterBuilder;
 
-  private final TransactionTemplate transactionTemplate;
-
   public ReportService(
       final ReportRepository reportRepository,
       final DataSourceRepository dataSourceRepository,
       final ReportLibraryRepository reportLibraryRepository,
       final ReportSectionRepository reportSectionRepository,
-      final ReportFilterRepository reportFilterRepository,
       ReportFilterBuilder reportFilterBuilder,
       ReportMapper reportMapper,
       ReportSortColumnMapper reportSortColumnMapper,
       FilterValueMapper filterValueMapper,
-      DisplayColumnBuilder displayColumnBuilder,
-      TransactionTemplate transactionTemplate) {
+      DisplayColumnBuilder displayColumnBuilder) {
 
     this.reportRepository = reportRepository;
     this.dataSourceRepository = dataSourceRepository;
     this.reportLibraryRepository = reportLibraryRepository;
     this.reportSectionRepository = reportSectionRepository;
-    this.reportFilterRepository = reportFilterRepository;
 
     this.reportMapper = reportMapper;
     this.reportSortColumnMapper = reportSortColumnMapper;
     this.filterValueMapper = filterValueMapper;
     this.displayColumnBuilder = displayColumnBuilder;
     this.reportFilterBuilder = reportFilterBuilder;
-    this.transactionTemplate = transactionTemplate;
   }
 
   @Transactional
