@@ -1,4 +1,4 @@
-import { render, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import * as generated from 'generated';
 import * as options from 'options/selectableResolver';
 import { Layout } from 'layout';
@@ -104,7 +104,7 @@ describe('add report configuration page', () => {
 
     it('renders empty form and marks fields required', async () => {
         const mockApi = vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
-        const { getByRole, findByRole, findByText } = renderWithRouter();
+        const { getByRole, queryByRole, findByRole, findByText, findAllByText, findByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -118,9 +118,36 @@ describe('add report configuration page', () => {
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        for (const field of ['Data source', 'Name', 'Owner', 'Group', 'Section name', 'Report execution library']) {
-            expect(await findByText(`The ${field} is required.`)).toBeVisible();
+        expect(await findAllByText('The Data source is required.')).toHaveLength(2);
+        expect(await findByRole('link', { name: 'Report source' })).toBeVisible();
+
+        // fill out data source
+        expect(await findByLabelText('Name')).toBeDisabled();
+        await user.selectOptions(await findByLabelText('Data source'), '1');
+        await user.click(await findByRole('button', { name: 'Confirm data source' }));
+        await user.click(await findByRole('button', { name: 'Confirm' }));
+        expect(await findByLabelText('Name')).not.toBeDisabled();
+
+        await user.click(await findByRole('button', { name: 'Submit' }));
+
+        for (const field of ['Name', 'Owner', 'Group', 'Section name', 'Report execution library']) {
+            expect(await findAllByText(`The ${field} is required.`)).toHaveLength(2);
+            expect(await findByRole('link', { name: 'Report configuration' })).toBeVisible();
         }
+
+        // Partially add filter
+        await user.selectOptions(await findByLabelText('Filter'), '1');
+
+        expect(
+            await findByText(
+                /Data have been entered in the Available filters section. Please press Add or clear the data and submit again/
+            )
+        ).toBeVisible();
+        expect(await findByRole('link', { name: 'Available filters' })).toBeVisible();
+
+        // clear the filter and check validation error clears as well
+        await user.click(await findByRole('button', { name: 'Clear' }));
+        expect(queryByRole('link', { name: 'Available filters' })).toBeNull();
     });
 
     it('fills out form and redirects on submit', async () => {
@@ -150,7 +177,8 @@ describe('add report configuration page', () => {
         await user.type(await findByLabelText('Name'), 'Name');
         await user.type(await findByLabelText('Description'), 'Description');
         await user.selectOptions(await findByLabelText('Owner'), '0'); // System
-        await user.selectOptions(await findByLabelText('Group'), 'PRIVATE');
+        const privateRadio = screen.getByRole('radio', { name: 'Private' });
+        await user.click(privateRadio);
         await user.selectOptions(await findByLabelText('Section name'), 'My reports');
         const libDropDown = await findByRole('combobox', { name: 'Report execution library' });
         const libOptions = await within(libDropDown).findAllByRole('option');

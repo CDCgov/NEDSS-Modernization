@@ -1,4 +1,3 @@
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import { Button, LinkButton } from 'design-system/button';
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ReportControllerService } from 'generated';
 import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 import { useNavigate } from 'react-router';
+import { AlertMessage } from 'design-system/message';
 
 import styles from 'apps/report/layout/layout.module.scss';
 
@@ -20,27 +20,21 @@ const AddReportConfiguration = () => {
         mode: 'onSubmit',
     });
 
-    const handleSubmit = form.handleSubmit(
-        (data) => {
-            setSubmitting(true);
-            setError('');
+    const handleSubmit = form.handleSubmit((data) => {
+        setSubmitting(true);
+        setError(null);
 
-            ReportControllerService.createReport({
-                requestBody: formToRequest(data),
+        ReportControllerService.createReport({
+            requestBody: formToRequest(data),
+        })
+            .then((reportId) => {
+                navigate(`/report/management/configuration/${reportId.reportUid}/${reportId.dataSourceUid}`);
             })
-                .then((reportId) => {
-                    navigate(`/report/management/configuration/${reportId.reportUid}/${reportId.dataSourceUid}`);
-                })
-                .catch((err) => {
-                    setError(JSON.stringify(err));
-                })
-                .finally(() => setSubmitting(false));
-        },
-        (errors) => {
-            // TODO make this gather all errors and nicely format
-            setError(JSON.stringify(errors));
-        }
-    );
+            .catch((err) => {
+                setError(JSON.stringify(err));
+            })
+            .finally(() => setSubmitting(false));
+    });
 
     return (
         <ReportLayout
@@ -57,7 +51,7 @@ const AddReportConfiguration = () => {
             }
         >
             <div className={styles.columnContent}>
-                {error && <AlertBanner type="error">{error}</AlertBanner>}
+                {error && <AlertMessage type="error">{error}</AlertMessage>}
                 <FormProvider {...form}>
                     <form className={styles.columnContent} onSubmit={handleSubmit}>
                         <ReportConfigurationContent isEditable={true} />

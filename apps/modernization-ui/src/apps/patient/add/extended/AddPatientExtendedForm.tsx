@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useComponentSizing } from 'design-system/sizing';
 import { Card } from 'design-system/card';
 import { AlertMessage } from 'design-system/message';
+import { DirtySectionErrorMessage } from 'design-system/errors/ValidationError';
 import { ExtendedNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
@@ -28,37 +29,35 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
 
     const formRef = useRef<HTMLDivElement>(null);
 
-    // Generates an error message that will contain a link to the section if an id is provided
-    const generateErrorMessage = (section: string, id?: string) => {
-        const linkOrText = id ? (
-            <a id={`link-to-${id}`} href={`#${id}`}>
-                {section}
-            </a>
-        ) : (
-            section
-        );
-        return (
-            <React.Fragment key={section}>
-                Data have been entered in the {linkOrText} section. Please press Add or clear the data and submit again.
-            </React.Fragment>
-        );
-    };
-
-    const renderErrorMessages = () => {
-        return (
-            <ul className={styles.errorList}>
-                {validationErrors?.dirtySections.name && <li>{generateErrorMessage('Name', 'names')}</li>}
-                {validationErrors?.dirtySections.address && <li>{generateErrorMessage('Address', 'addresses')}</li>}
-                {validationErrors?.dirtySections.phone && (
-                    <li>{generateErrorMessage('Phone & Email', 'phoneEmails')}</li>
-                )}
-                {validationErrors?.dirtySections.identification && (
-                    <li>{generateErrorMessage('Identification', 'identifications')}</li>
-                )}
-                {validationErrors?.dirtySections.race && <li>{generateErrorMessage('Race', 'races')}</li>}
-            </ul>
-        );
-    };
+    const renderErrorMessages = () => (
+        <ul className={styles.errorList}>
+            {validationErrors?.dirtySections.name && (
+                <li>
+                    <DirtySectionErrorMessage title="Name" id="names" />
+                </li>
+            )}
+            {validationErrors?.dirtySections.address && (
+                <li>
+                    <DirtySectionErrorMessage title="Address" id="addresses" />
+                </li>
+            )}
+            {validationErrors?.dirtySections.phone && (
+                <li>
+                    <DirtySectionErrorMessage title="Phone & Email" id="phoneEmails" />
+                </li>
+            )}
+            {validationErrors?.dirtySections.identification && (
+                <li>
+                    <DirtySectionErrorMessage title="Identification" id="identifications" />
+                </li>
+            )}
+            {validationErrors?.dirtySections.race && (
+                <li>
+                    <DirtySectionErrorMessage title="Race" id="races" />
+                </li>
+            )}
+        </ul>
+    );
     useEffect(() => {
         if (validationErrors) {
             formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -89,7 +88,11 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             values={value}
                             isDirty={(isDirty) => setSubFormState({ name: isDirty })}
                             onChange={onChange}
-                            errors={validationErrors?.dirtySections.name ? [generateErrorMessage('Name')] : undefined}
+                            errors={
+                                validationErrors?.dirtySections.name
+                                    ? [<DirtySectionErrorMessage title="Name" />]
+                                    : undefined
+                            }
                             sizing={sizing}
                         />
                     )}
@@ -104,7 +107,9 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             isDirty={(isDirty) => setSubFormState({ address: isDirty })}
                             onChange={onChange}
                             errors={
-                                validationErrors?.dirtySections.address ? [generateErrorMessage('Address')] : undefined
+                                validationErrors?.dirtySections.address
+                                    ? [<DirtySectionErrorMessage title="Address" />]
+                                    : undefined
                             }
                             sizing={sizing}
                         />
@@ -121,7 +126,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             onChange={onChange}
                             errors={
                                 validationErrors?.dirtySections.phone
-                                    ? [generateErrorMessage('Phone & Email')]
+                                    ? [<DirtySectionErrorMessage title="Phone & Email" />]
                                     : undefined
                             }
                             sizing={sizing}
@@ -139,7 +144,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             onChange={onChange}
                             errors={
                                 validationErrors?.dirtySections.identification
-                                    ? [generateErrorMessage('Identification')]
+                                    ? [<DirtySectionErrorMessage title="Identification" />]
                                     : undefined
                             }
                             sizing={sizing}
@@ -156,7 +161,11 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             values={value}
                             isDirty={(isDirty) => setSubFormState({ race: isDirty })}
                             onChange={onChange}
-                            errors={validationErrors?.dirtySections.race ? [generateErrorMessage('Race')] : undefined}
+                            errors={
+                                validationErrors?.dirtySections.race
+                                    ? [<DirtySectionErrorMessage title="Race" />]
+                                    : undefined
+                            }
                             sizing={sizing}
                         />
                     )}

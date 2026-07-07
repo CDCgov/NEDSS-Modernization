@@ -82,7 +82,7 @@ class TestIntegrationExecuteReport:
         """Should catch execution dataset overflows using limits managed in the DB."""
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
-        with db_transaction(conn_string) as trx:
+        with db_transaction(conn_string, True) as trx:
             trx.execute(
                 "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE "
                 + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
@@ -107,7 +107,7 @@ class TestIntegrationExecuteReport:
                 ' is 10 rows. Please refine your filter criteria.'
             )
         finally:
-            with db_transaction(conn_string) as trx:
+            with db_transaction(conn_string, True) as trx:
                 trx.execute(
                     "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' "
                     + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
@@ -117,7 +117,7 @@ class TestIntegrationExecuteReport:
         """Should catch export dataset overflows using limits managed in the DB."""
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
-        with db_transaction(conn_string) as trx:
+        with db_transaction(conn_string, True) as trx:
             trx.execute(
                 "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE "
                 + "config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
@@ -142,7 +142,7 @@ class TestIntegrationExecuteReport:
                 ' is 10 rows. Please refine your filter criteria.'
             )
         finally:
-            with db_transaction(conn_string) as trx:
+            with db_transaction(conn_string, True) as trx:
                 trx.execute(
                     "UPDATE NBS_ODSE..NBS_configuration SET config_value = '100000' "
                     + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
@@ -154,7 +154,7 @@ class TestIntegrationExecuteReport:
         """
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
-        with db_transaction(conn_string) as trx:
+        with db_transaction(conn_string, True) as trx:
             trx.execute(
                 'DELETE FROM NBS_ODSE..NBS_configuration WHERE '
                 + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
@@ -179,7 +179,7 @@ class TestIntegrationExecuteReport:
                 in exc_info.value.message
             )
         finally:
-            with db_transaction(conn_string) as trx:
+            with db_transaction(conn_string, True) as trx:
                 trx.execute("""
                     INSERT INTO NBS_ODSE..NBS_configuration (
                         config_key, config_value, default_value, version_ctrl_nbr,
@@ -195,7 +195,7 @@ class TestIntegrationExecuteReport:
         """
         conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
 
-        with db_transaction(conn_string) as trx:
+        with db_transaction(conn_string, True) as trx:
             trx.execute(
                 "UPDATE NBS_ODSE..NBS_configuration SET config_value = 'NOT_A_NUMBER' "
                 + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
@@ -220,7 +220,7 @@ class TestIntegrationExecuteReport:
                 in exc_info.value.message
             )
         finally:
-            with db_transaction(conn_string) as trx:
+            with db_transaction(conn_string, True) as trx:
                 trx.execute(
                     "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' "
                     + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
