@@ -214,7 +214,7 @@ describe('edit report configuration page', () => {
 
         await user.type(nameInput, 'Test report');
 
-        expect(await findByText('The Description is required.')).toBeVisible();
+        expect(await findAllByText('The Description is required.')).toHaveLength(2);
         const descriptionInput = await findByLabelText('Description');
         await user.type(descriptionInput, 'Test report description');
 

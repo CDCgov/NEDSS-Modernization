@@ -7,15 +7,28 @@ When('I navigate to list reports', () => {
     cy.contains('Private Reports').should('be.visible');
 });
 
-When('I navigate to {string} report with reportUid: {int} and dataSourceUid: {int}', (group, reportUid, dataSourceUid) => {
-    // click somewhere or else NBS6 may get angry later about no clicks having happened
-    cy.contains('a', 'Collapse Sections').click();
-    // mimic clicking a "Run" link
-    cy.window().then((win) => {
-        cy.log(`Calling runReport with Report ID: ${reportUid} and Data Source ID: ${dataSourceUid}`);
-        win.runReport(group, reportUid, dataSourceUid);
-    });
-});
+const GROUP_LOOKUP = {
+    Public: 'S',
+    Private: 'P',
+    Template: 'T',
+    'Reporting Facility': 'R',
+};
+
+When(
+    'I navigate to {string} report with reportUid: {int} and dataSourceUid: {int}',
+    (group, reportUid, dataSourceUid) => {
+        // click somewhere or else NBS6 may get angry later about no clicks having happened
+        cy.contains('a', 'Collapse Sections').click();
+        // mimic clicking a "Run" link
+        const resolvedGroup = GROUP_LOOKUP[group] ?? group;
+        cy.window().then((win) => {
+            cy.log(
+                `Calling runReport with Group: ${resolvedGroup}, Report ID: ${reportUid}, and Data Source ID: ${dataSourceUid}`
+            );
+            win.runReport(resolvedGroup, reportUid, dataSourceUid);
+        });
+    }
+);
 
 // Component input steps
 

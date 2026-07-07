@@ -4,7 +4,7 @@ Feature: Save report after report run
         And I navigate to list reports
 
     Scenario: I cannot see the save button after running the report if I am not the owner
-        And I navigate to "S" report with reportUid: 8 and dataSourceUid: 1
+        And I navigate to "Public" report with reportUid: 8 and dataSourceUid: 1
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I select "Appling County" from the "County Code" dropdown menu
         And I click the "Run" button
@@ -12,7 +12,7 @@ Feature: Save report after report run
         And I should not see the "Save" "button"
 
     Scenario: I can save as the report after running the report
-        When I navigate to "S" report with reportUid: 8 and dataSourceUid: 1
+        When I navigate to "Public" report with reportUid: 8 and dataSourceUid: 1
         And I select "Anthrax" from the "Condition Code" dropdown menu
         And I select "Fulton County" from the "County Code" dropdown menu
         And I click the "Run" button
