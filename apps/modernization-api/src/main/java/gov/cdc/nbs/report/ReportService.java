@@ -127,46 +127,46 @@ public class ReportService {
    * The `save` action, which overwrites the various filter/sort details of a given report, without
    * changing the actual report mechanics themselves.
    */
+  @Transactional
   public Report saveReport(ReportExecutionRequest request, Report report) {
     if (report == null) {
       ReportId reportId = new ReportId(request.reportUid(), request.dataSourceUid());
       throw new NotFoundException(getReportNotFoundText(reportId));
     }
 
-    return transactionTemplate.execute(
-        status -> {
-          updateDisplayColumns(report, request.columnUids());
-          updateSortColumns(report, request.sort());
-          updateAdvancedFilterValues(report, request.advancedFilter());
-          updateBasicFilterValues(report, request.basicFilters());
-
-          return reportRepository.save(report);
-        });
+    updateReport(request, report);
+    return reportRepository.save(report);
   }
 
+  @Transactional
   public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
-    return transactionTemplate.execute(
-        status -> {
-          Report report =
-              reportRepository
-                  .findById(reportId)
-                  .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
+    Report report =
+        reportRepository
+            .findById(reportId)
+            .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
-          Report duplicate = reportMapper.duplicate(report, user);
+    // Update values before duplicating otherwise the fk's in the request don't match
+    updateReport(request.executionRequest(), report);
 
-          duplicate.setReportTitle(request.reportTitle());
-          duplicate.setSectionCd(request.sectionCode());
-          duplicate.setShared(ReportConstants.reportGroupToDbChar(request.group()));
-          duplicate.setOwnerUid(user.getId());
+    Report duplicate = reportMapper.duplicate(report, user);
 
-          if (request.description() != null) {
-            duplicate.setDescTxt(request.description());
-          }
+    duplicate.setReportTitle(request.reportTitle());
+    duplicate.setSectionCd(request.sectionCode());
+    duplicate.setShared(ReportConstants.reportGroupToDbChar(request.group()));
+    duplicate.setOwnerUid(user.getId());
 
-          Report newReport = reportRepository.save(duplicate);
+    if (request.description() != null) {
+      duplicate.setDescTxt(request.description());
+    }
 
-          return saveReport(request.executionRequest(), newReport);
-        });
+    return reportRepository.save(duplicate);
+  }
+
+  private void updateReport(ReportExecutionRequest request, Report report) {
+    updateDisplayColumns(report, request.columnUids());
+    updateSortColumns(report, request.sort());
+    updateAdvancedFilterValues(report, request.advancedFilter());
+    updateBasicFilterValues(report, request.basicFilters());
   }
 
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
@@ -179,13 +179,18 @@ public class ReportService {
     // filters
     if (basicFilterReqs == null || basicFilterReqs.isEmpty()) {
       basicFiltersById.values().forEach(basicFilter -> basicFilter.getFilterValues().clear());
-    } else if (basicFilterReqs.stream()
-        .anyMatch(req -> !basicFiltersById.containsKey(req.reportFilterUid()))) {
-      throw new IllegalArgumentException(
-          "BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
     } else {
       Map<Long, BasicFilterRequest> basicFilterReqsById =
           basicFilterReqs.stream()
+              .map(
+                  req -> {
+                    if (!basicFiltersById.containsKey(req.reportFilterUid()))
+                      throw new IllegalArgumentException(
+                          "BasicFilterRequest.reportFilterUid (%s) does not match existing basic filter ID"
+                              .formatted(req.reportFilterUid()));
+
+                    return req;
+                  })
               .collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
       basicFiltersById
@@ -205,8 +210,6 @@ public class ReportService {
                 }
               });
     }
-
-    reportFilterRepository.saveAll(basicFiltersById.values());
   }
 
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
@@ -234,8 +237,6 @@ public class ReportService {
             filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advFilterReq);
         advancedFilter.getFilterValues().addAll(advFilterValues);
       }
-
-      reportFilterRepository.save(advancedFilter);
     }
   }
 
