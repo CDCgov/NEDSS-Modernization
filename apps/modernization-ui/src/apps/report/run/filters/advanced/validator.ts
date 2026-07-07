@@ -1,20 +1,22 @@
-import { isRuleGroupType, isRuleType, RuleGroupTypeAny, RuleType, ValidationResult } from 'react-querybuilder';
+import { isRuleGroupType, ValidationResult } from 'react-querybuilder';
 import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
 import { BINARY_OPERATORS } from './operators.ts';
+import { logErrorToUserConsole } from 'utils/logging.ts';
+import { isQbRuleGroupType, isQbRuleType, QbQuery } from './AdvancedFilter.tsx';
 
 export type ValidationResultMap = Record<string, ValidationResult>;
 
-export const validateRule = (rule: RuleGroupTypeAny | RuleType, result: ValidationResultMap) => {
+export const validateRule = (rule: QbQuery, result: ValidationResultMap) => {
     const setInvalid = (id: string, reason: string) => {
-        result[id]['valid'] = false;
-        result[id]['reasons'] = [reason];
+        result[id] = { valid: false, reasons: [reason] };
     };
-    if (isRuleType(rule)) {
-        const { id, field, operator, value, label, type } = rule;
+    if (isQbRuleType(rule)) {
+        const { id, field, operator, value, type } = rule;
+        const label = rule.label!; // this will be there, but need to convince ts
 
         if (!id) {
             // no key for the map, shouldn't happen in practice
-            console.warn('Advanced query filter rule id is empty.');
+            logErrorToUserConsole('Advanced query filter rule id is empty.');
             return;
         }
 
@@ -64,17 +66,22 @@ export const validateRule = (rule: RuleGroupTypeAny | RuleType, result: Validati
                 }
             }
         }
-    } else if (isRuleGroupType(rule)) {
+    } else if (isQbRuleGroupType(rule)) {
+        rule.rules.forEach((r) => validateRule(r, result));
+
+        if (!rule.id) {
+            // no key for the map, shouldn't happen in practice
+            logErrorToUserConsole('Advanced query filter rule group id is empty.');
+            return;
+        }
+
         // catch when rule group is empty or contain only another rule group
         const isInvalidRuleGroup =
             rule.rules.length === 0 || (rule.rules.length === 1 && isRuleGroupType(rule.rules[0]));
 
         if (isInvalidRuleGroup) {
-            result[rule.id] = {};
             setInvalid(rule.id, 'Remove or add rules to the empty rule group.');
         }
-
-        rule.rules.forEach((r) => validateRule(r, result));
     }
 };
 
