@@ -7,15 +7,15 @@ import { Heading } from 'components/heading';
 import { permissions, permitsAny, Permitted } from 'libs/permission';
 import { Shown } from 'conditional-render';
 import { useUser } from 'user';
-
-import layoutStyles from '../layout/layout.module.scss';
 import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
 import { ModalRef } from '@trussworks/react-uswds';
 import { SaveReportModal } from './modals/SaveReportModal.tsx';
-import { AlertMessage } from 'design-system/message';
 import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
 import classNames from 'classnames';
+import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
+
+import layoutStyles from '../layout/layout.module.scss';
 
 const ReportResultPage = ({
     config,
@@ -26,7 +26,7 @@ const ReportResultPage = ({
     executionRequest,
 }: {
     config: ReportConfiguration;
-    error: string | null;
+    error: unknown | null;
     wasExported: boolean;
     resultLoading: boolean;
     handleRefineReport: () => void;
@@ -67,7 +67,7 @@ const ReportResultPage = ({
             .catch((err) => {
                 const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
                 modalRef.current?.toggleModal();
-                setSaveError(err.message);
+                setSaveError(err);
             })
             .finally(() => {
                 setSaving(false);
@@ -99,12 +99,10 @@ const ReportResultPage = ({
                             permissions.reports.public.create,
                             permissions.reports.private.create,
                             permissions.reports.reportingFacility.create
-                        )}
-                    >
+                        )}>
                         <Button
                             onClick={() => saveAsReportModalRef.current?.toggleModal()}
-                            disabled={resultLoading || !!error}
-                        >
+                            disabled={resultLoading || !!error}>
                             Save as new
                         </Button>
                         <SaveAsReportModal
@@ -117,30 +115,22 @@ const ReportResultPage = ({
                         <Permitted permission={PERMISSION_GROUP_MAP[config.group].edit}>
                             <Button
                                 onClick={() => saveReportModalRef.current?.toggleModal()}
-                                disabled={resultLoading || !!error}
-                            >
+                                disabled={resultLoading || !!error}>
                                 Save
                             </Button>
                             <SaveReportModal saveReportModalRef={saveReportModalRef} saving={saving} onSave={onSave} />
                         </Permitted>
                     </Shown>
                 </>
-            }
-        >
+            }>
             <div className="display-flex flex-column">
                 {(error || saveError) && (
-                    <AlertMessage
+                    <ApiErrorBanner
                         className={classNames(layoutStyles.alertMessage, 'margin-top-2 margin-x-2')}
-                        type="error"
-                        title={`There was an error ${saveError ? 'saving' : wasExported ? 'exporting' : 'running'} 
-                        your report. If this error persists, contact your NBS administrator for help.`}
-                    >
-                        <>
-                            {/* In practice, only one of these will be populated at a time */}
-                            {saveError}
-                            {error}
-                        </>
-                    </AlertMessage>
+                        action={saveError ? 'saving' : wasExported ? 'exporting' : 'running'}
+                        item="report"
+                        error={error ?? saveError}
+                    />
                 )}
                 {resultLoading ? (
                     <TextCard loading={true}>
