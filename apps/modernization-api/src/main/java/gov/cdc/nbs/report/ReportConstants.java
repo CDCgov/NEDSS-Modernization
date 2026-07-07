@@ -9,10 +9,15 @@ public final class ReportConstants {
     AND
   }
 
-  public enum FilterValueType {
+  public enum AdvancedFilterValueType {
     OPERATOR,
     CLAUSE
   }
+
+  public static final String BASIC_FILTER_VALUE_TYPE = "code";
+  public static final String BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE = "none";
+
+  public static final String BASIC_FILTER_ALLOW_NULLS_OP = "ALLOW_NULLS";
 
   public static final String BASIC_FILTER_PREFIX = "BAS_";
   public static final String ADV_FILTER_TYPE = "ADV_WCB";
@@ -38,6 +43,9 @@ public final class ReportConstants {
     public static final String VIEWREPORTPRIVATE = "VIEWREPORTPRIVATE";
     public static final String VIEWREPORTPUBLIC = "VIEWREPORTPUBLIC";
     public static final String VIEWREPORTREPORTINGFACILITY = "VIEWREPORTREPORTINGFACILITY";
+    public static final String EDITREPORTPUBLIC = "EDITREPORTPUBLIC";
+    public static final String EDITREPORTPRIVATE = "EDITREPORTPRIVATE";
+    public static final String EDITREPORTREPORTINGFACILITY = "EDITREPORTREPORTINGFACILITY";
   }
 
   public enum SortDirection {
@@ -78,19 +86,30 @@ public final class ReportConstants {
     };
   }
 
-  // operator options for the advanced filter
+  /** Operator options for the advanced filter */
   public enum Operator {
-    EQ, // equals
-    NE, // not equals
-    IN, // is null
-    NN, // not null
-    SW, // starts with
-    CO, // contains
-    BW, // between
-    LT, // less than
-    GT, // greater than
-    LE, // less than or equal to
-    GE // greater than or equal to
+    /** EQUALS */
+    EQ,
+    /** NOT EQUALS */
+    NE,
+    /** IS NULL */
+    IN,
+    /** NOT NULL */
+    NN,
+    /** STARTS WITH */
+    SW,
+    /** CONTAINS */
+    CO,
+    /** BETWEEN */
+    BW,
+    /** LESS THAN */
+    LT,
+    /** GREATER THAN */
+    GT,
+    /** LESS THAN OR EQUAL TO */
+    LE,
+    /** GREATER THAN OR EQUAL TO */
+    GE
   }
 
   public static final Map<Operator, String> COMPARISON_OPERATORS =
