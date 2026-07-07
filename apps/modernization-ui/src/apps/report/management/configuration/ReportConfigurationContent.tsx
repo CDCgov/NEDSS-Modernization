@@ -7,6 +7,7 @@ import { NoData } from 'design-system/data';
 import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text';
+import { RadioGroup } from 'design-system/radio';
 import { SingleSelect } from 'design-system/select';
 import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
@@ -18,24 +19,17 @@ import { Controller, useFormState, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 import { addLabelToName, EnumSelectable } from '../../utils';
-import { SIZING } from './constants';
+import { GROUP_OPTIONS, SIZING } from '../../constants.ts';
 import {
     DirtySectionErrorMessage,
     ValidationErrorBanner,
     ValidationErrorSection,
 } from 'design-system/errors/ValidationError';
 
-const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
-    { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
-    { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
-    { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
-    { value: ReportConfiguration.group.REPORTING_FACILITY, name: 'Reporting Facility' },
-];
-
 export type ConfigForm = {
     dataSourceId: Selectable;
     reportTitle: string;
-    description?: string;
+    description: string;
     ownerId: Selectable;
     group: EnumSelectable<ReportConfiguration.group>;
     sectionCode: Selectable;
@@ -92,7 +86,6 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     EditComponent={TextAreaField}
                     label="Description"
                     defaultValue={config?.description}
-                    required={false}
                     maxLength={300}
                 />
                 <Row
@@ -114,7 +107,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     isEditable={isEditable}
                     disabled={!dataSourceSelected}
                     fieldName="group"
-                    EditComponent={SingleSelect}
+                    EditComponent={RadioGroup}
                     label="Group"
                     defaultValue={config?.group}
                     getOptions={() => GROUP_OPTIONS}

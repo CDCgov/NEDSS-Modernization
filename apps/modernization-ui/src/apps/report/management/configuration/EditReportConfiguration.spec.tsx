@@ -176,7 +176,14 @@ describe('edit report configuration page', () => {
         expect(await findByLabelText('Data source')).toHaveDisplayValue('nbs_ods.data_source (NBS Data Source)');
         expect(await findByLabelText('Name')).toHaveDisplayValue('Test Report');
         expect(await findByLabelText('Description')).toHaveDisplayValue('');
-        expect(await findByLabelText('Group')).toHaveDisplayValue('Public');
+        const privateRadio = getByRole('radio', { name: 'Private' });
+        const publicRadio = getByRole('radio', { name: 'Public' });
+        const reportingFacRadio = getByRole('radio', { name: 'Reporting Facility' });
+        const templateRadio = getByRole('radio', { name: 'Template' });
+        expect(publicRadio).toBeChecked();
+        expect(privateRadio).not.toBeChecked();
+        expect(reportingFacRadio).not.toBeChecked();
+        expect(templateRadio).not.toBeChecked();
         expect(await findByLabelText('Owner')).toHaveDisplayValue('System');
         expect(await findByLabelText('Section name')).toHaveDisplayValue('Default');
         expect(await findByLabelText('Report execution library')).toHaveDisplayValue(
@@ -198,13 +205,18 @@ describe('edit report configuration page', () => {
 
         const user = userEvent.setup();
 
-        await user.selectOptions(await findByLabelText('Group'), '- Select -');
+        const nameInput = await findByLabelText('Name');
 
+        await user.clear(nameInput);
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        expect(await findAllByText(`The Group is required.`)).toHaveLength(2);
+        expect(await findAllByText(`The Name is required.`)).toHaveLength(2);
 
-        await user.selectOptions(await findByLabelText('Group'), 'Private');
+        await user.type(nameInput, 'Test report');
+
+        expect(await findAllByText('The Description is required.')).toHaveLength(2);
+        const descriptionInput = await findByLabelText('Description');
+        await user.type(descriptionInput, 'Test report description');
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 

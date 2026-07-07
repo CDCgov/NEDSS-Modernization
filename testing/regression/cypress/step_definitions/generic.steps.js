@@ -28,6 +28,13 @@ When('I click the {string} button', (name) => {
     cy.findAllByRole('button', { name }).first().click();
 });
 
+When('I select radio {string} in the {string} field', (value, label) => {
+    cy.findByRole('radiogroup', {name: label})
+      .findByRole('radio', { name: value })
+      .check({ force: true });
+});
+
+
 Then('I should see a modal labelled {string}', (name) => {
     const modalHeadingTextMatcher = (elementText, element) => {
         // remove button and svg tags from modal heading tag
@@ -71,5 +78,11 @@ Then('I am redirected to {string}', (pathname) => {
 });
 
 Then('I should not see the {string} {string}', (label, role) => {
-    cy.findByRole({ role }, { name: label }).should('not.exist');
+    cy.findByRole({role}, { name: label }).should('not.exist');
+})
+
+Then('I should see {string} radio selected in the {string} field', (name, label) => {
+    cy.findByRole('radiogroup', {name: label})
+      .findByRole('radio', { name })
+      .should('be.checked');
 });
