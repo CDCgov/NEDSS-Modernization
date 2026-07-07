@@ -9,8 +9,14 @@ from src.libraries.support.pa_01.queries import (
     case_interview_rows_query,
     cases_with_no_clusters_query,
     cases_with_no_partners_query,
+    cluster_previous_pos_query,
     clusters_initiated_query,
     filtered_cases_query,
+    not_notified_clusters_query,
+    not_notified_partners_query,
+    notified_clusters_query,
+    notified_partners_query,
+    partner_case_dispositions_query,
     partner_notification_query,
     period_partners_query,
     testing_index_query,
@@ -34,17 +40,36 @@ def execute(
     * This report is the combination of both `PA01_HIV.sas` and `PA01_STD.sas`
     * The variant (STD or HIV) is determined by `library_params['report_variant']`
       which is defined in the Report_Library db table.
-    * For the data point "HIV Tested", the SAS PDF output does not include
-      percentages for individual workers, only "ALL WORKERS".  This report
-      includes percentages for individual workers.
     * There are some rounding peculiarities between SAS and Python, so for instance
       a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
       SAS it will be 0.08.  In such cases the Python value will be used as is.
+    * There is a quirk in PA01_HIV.sas in which the data point "HIV Tested" output does
+      not include percentages for individual workers, only "ALL WORKERS".  This report
+      includes percentages for individual workers.
     * There is a bug in PA01_HIV.sas in which the "CASES /W NO CLUSTERS" shows up as
       0 for "ALL WORKERS" even if there is data present.  This is because the SAS
       template for this calculation for "ALL WORKERS" uses a slightly different string:
       "CASES W/NO CLUSTERS" (note the difference in "/W" vs. "W/").  The Python library
       will give the proper answer, so in that way it differs from the SAS source.
+    * There is a bug in PA01_HIV.sas in which subsections of "NEW PARTNERS NOT
+      NOTIFIED" will show a percentage of 0.0% when they have more than 0 items.  The
+      Python version of this will show the actual percentages.
+    * There is a quirk in PA01_HIV.sas in which the "NEW CLUSTERS NOTIFIED" count
+      for "ALL WORKERS" doesn't use the distinct case id count like most other
+      calculations.  I have replicated this behavior in Python but it is likely
+      incorrect.
+    * In the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there are 2 occurances of
+      "PREVIOUS POS" and "OPEN" that come at the bottom of each column of the report
+      section.  Since these names are identical, and they contain no other grouping
+      I have labled them as:
+
+      - New Partners Previous Pos
+      - New Partners Open
+      - New Clusters Previous Pos
+      - New Clusters Open
+
+      in order to distinguish them in the CSV.  Otherwise if the CSV data were ever
+      sorted it would lose its positional meaning.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -90,6 +115,20 @@ def execute(
     tables['clusters_initiated'] = trx.query(clusters_initiated_query(subset_query))
     tables['cases_with_no_clusters'] = trx.query(
         cases_with_no_clusters_query(subset_query)
+    )
+    tables['notified_partners'] = trx.query(notified_partners_query(subset_query))
+    tables['not_notified_partners'] = trx.query(
+        not_notified_partners_query(subset_query)
+    )
+    tables['notified_clusters'] = trx.query(notified_clusters_query(subset_query))
+    tables['not_notified_clusters'] = trx.query(
+        not_notified_clusters_query(subset_query)
+    )
+    tables['partner_case_dispositions'] = trx.query(
+        partner_case_dispositions_query(subset_query)
+    )
+    tables['clusters_previous_pos'] = trx.query(
+        cluster_previous_pos_query(subset_query)
     )
 
     # get list of workers (nb. None treated as "ALL WORKERS")

@@ -2,14 +2,32 @@ from src.libraries.support.pa_01.models import Pa01Row, Pa01Worker
 from src.models import Table
 
 # Constants
-ALL = 'ALL'
-CA_PATIENT_INTV_STATUS = 'CA_PATIENT_INTV_STATUS'
-CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
 CASES_IXD = "Cases IX'D"
+CASE_ASSIGNMENTS_AND_OUTCOMES = 'Case Assignments & Outcomes'
+CA_PATIENT_INTV_STATUS = 'CA_PATIENT_INTV_STATUS'
 DAYS = 'Days'
-INV_LOCAL_ID = 'INV_LOCAL_ID'
+DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS = 'Dispositions - New Partners & Clusters'
+DISPO_DOMESTIC_VIOLENCE_RISK = 'V - Domestic Violence Risk'
+DISPO_INSUFFICIENT_INFO = 'G - Insufficient Info to Begin Investigation'
+DISPO_NO_PREV_TEST_NEW_NEG = '6 - No Prev Test, New Neg'
+DISPO_NO_PREV_TEST_NEW_POS = '5 - No Prev Test, New Pos'
+DISPO_NO_PREV_TEST_NO_TEST = '7 - No Prev Test, No Test'
+DISPO_OOJ = 'K - Sent Out Of Jurisdiction'
+DISPO_OTHER = 'L - Other'
+DISPO_PATIENT_DECEASED = 'X - Patient Deceased'
+DISPO_PREV_NEG_NEW_POS = '2 - Prev. Neg, New Pos'
+DISPO_PREV_NEG_NO_TEST = '4 - Prev. Neg, No Test'
+DISPO_PREV_NEG_STILL_NEG = '3 - Prev. Neg, Still Neg'
+DISPO_REFUSED_EXAM = 'J - Located, Not Examined and/or Interviewed'
+DISPO_UNABLE_TO_LOCATE = 'H - Unable to Locate'
+FL_FUP_DISPOSITION = 'FL_FUP_DISPOSITION'
 INVESTIGATOR_INTERVIEW_KEY = 'INVESTIGATOR_INTERVIEW_KEY'
+INV_LOCAL_ID = 'INV_LOCAL_ID'
 IX_TYPE = 'IX_TYPE'
+NEW_CLUSTERS_NOTIFIED = 'New Clusters Notified'
+NEW_CLUSTERS_NOT_NOTIFIED = 'New Clusters Not Notified'
+NEW_PARTNERS_NOTIFIED = 'New Partners Notified'
+NEW_PARTNERS_NOT_NOTIFIED = 'New Partners Not Notified'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 PROVIDER_QUICK_CODE = 'PROVIDER_QUICK_CODE'
 TOTAL_CLUSTERS_INITIATED = 'Total Clusters Initiated'
@@ -33,6 +51,7 @@ def build_output_for_worker(
 
     rows.extend(_build_case_assignments_and_outcomes_output(tables, worker))
     rows.extend(_build_partners_and_clusters_initiated_output(tables, worker))
+    rows.extend(_build_dispositions_new_partners_and_clusters_output(tables, worker))
 
     return rows
 
@@ -332,6 +351,380 @@ def _build_partners_and_clusters_initiated_output(
     return rows
 
 
+def _build_dispositions_new_partners_and_clusters_output(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Dispositions - New Partners & Clusters"
+    section for a given worker, output data for the final CSV.
+    """
+    total_partners_initiated = _calc_total_partners_initiated(
+        tables['period_partners'], worker
+    )
+    new_partners_notified, new_partners_notified_percentage = (
+        _calc_new_partners_notified(
+            tables['notified_partners'], total_partners_initiated, worker
+        )
+    )
+    new_partners_notified_buckets = _calc_new_partners_notified_buckets(
+        tables['notified_partners'], new_partners_notified, worker
+    )
+    new_partners_not_notified, new_partners_not_notified_percentage = (
+        _calc_new_partners_not_notified(
+            tables['not_notified_partners'], total_partners_initiated, worker
+        )
+    )
+    new_partners_not_notified_buckets = _calc_new_partners_not_notified_buckets(
+        tables['not_notified_partners'], new_partners_not_notified, worker
+    )
+    new_partners_previous_pos, new_partners_previous_pos_percentage = (
+        _calc_new_partners_previous_pos(
+            tables['partner_case_dispositions'], total_partners_initiated, worker
+        )
+    )
+    new_partners_open, new_partners_open_percentage = _calc_new_partners_open(
+        tables['partner_case_dispositions'], total_partners_initiated, worker
+    )
+    total_clusters_initiated = _calc_total_clusters_initiated(
+        tables['clusters_initiated'], worker
+    )
+    new_clusters_notified, new_clusters_notified_percentage = (
+        _calc_new_clusters_notified(
+            tables['notified_clusters'], total_clusters_initiated, worker
+        )
+    )
+    new_clusters_notified_buckets = _calc_new_clusters_notified_buckets(
+        tables['notified_clusters'], new_clusters_notified, worker
+    )
+    new_clusters_not_notified, new_clusters_not_notified_percentage = (
+        _calc_new_clusters_not_notified(
+            tables['not_notified_clusters'], total_clusters_initiated, worker
+        )
+    )
+    new_clusters_not_notified_buckets = _calc_new_clusters_not_notified_buckets(
+        tables['not_notified_clusters'], new_clusters_not_notified, worker
+    )
+    new_clusters_previous_pos, new_clusters_previous_pos_percentage = (
+        _calc_new_clusters_previous_pos(
+            tables['clusters_previous_pos'], total_clusters_initiated, worker
+        )
+    )
+    new_clusters_open, new_clusters_open_percentage = _calc_new_clusters_open(
+        tables['clusters_initiated'], total_clusters_initiated, worker
+    )
+
+    rows: list[Pa01Row] = [
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            None,
+            new_partners_notified,
+            new_partners_notified_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'Prev. Neg, New Pos',
+            new_partners_notified_buckets[DISPO_PREV_NEG_NEW_POS][0],
+            new_partners_notified_buckets[DISPO_PREV_NEG_NEW_POS][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'Prev. Neg, Still Neg',
+            new_partners_notified_buckets[DISPO_PREV_NEG_STILL_NEG][0],
+            new_partners_notified_buckets[DISPO_PREV_NEG_STILL_NEG][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'Prev. Neg, No Test',
+            new_partners_notified_buckets[DISPO_PREV_NEG_NO_TEST][0],
+            new_partners_notified_buckets[DISPO_PREV_NEG_NO_TEST][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'No Prev. Test, New Pos',
+            new_partners_notified_buckets[DISPO_NO_PREV_TEST_NEW_POS][0],
+            new_partners_notified_buckets[DISPO_NO_PREV_TEST_NEW_POS][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'No Prev. Test, New Neg',
+            new_partners_notified_buckets[DISPO_NO_PREV_TEST_NEW_NEG][0],
+            new_partners_notified_buckets[DISPO_NO_PREV_TEST_NEW_NEG][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOTIFIED,
+            'No Prev. Test, No Test',
+            new_partners_notified_buckets[DISPO_NO_PREV_TEST_NO_TEST][0],
+            new_partners_notified_buckets[DISPO_NO_PREV_TEST_NO_TEST][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            None,
+            new_partners_not_notified,
+            new_partners_not_notified_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Insufficient Info',
+            new_partners_not_notified_buckets[DISPO_INSUFFICIENT_INFO][0],
+            new_partners_not_notified_buckets[DISPO_INSUFFICIENT_INFO][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Unable to Locate',
+            new_partners_not_notified_buckets[DISPO_UNABLE_TO_LOCATE][0],
+            new_partners_not_notified_buckets[DISPO_UNABLE_TO_LOCATE][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Refused Exam',
+            new_partners_not_notified_buckets[DISPO_REFUSED_EXAM][0],
+            new_partners_not_notified_buckets[DISPO_REFUSED_EXAM][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'OOJ',
+            new_partners_not_notified_buckets[DISPO_OOJ][0],
+            new_partners_not_notified_buckets[DISPO_OOJ][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Other',
+            new_partners_not_notified_buckets[DISPO_OTHER][0],
+            new_partners_not_notified_buckets[DISPO_OTHER][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Domestic Violence Risk',
+            new_partners_not_notified_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][0],
+            new_partners_not_notified_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_NOT_NOTIFIED,
+            'Patient Deceased',
+            new_partners_not_notified_buckets[DISPO_PATIENT_DECEASED][0],
+            new_partners_not_notified_buckets[DISPO_PATIENT_DECEASED][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Previous Pos',
+            None,
+            new_partners_previous_pos,
+            new_partners_previous_pos_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Open',
+            None,
+            new_partners_open,
+            new_partners_open_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            None,
+            new_clusters_notified,
+            new_clusters_notified_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            'Prev. Neg, New Pos',
+            new_clusters_notified_buckets[DISPO_PREV_NEG_NEW_POS][0],
+            new_clusters_notified_buckets[DISPO_PREV_NEG_NEW_POS][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            'Prev. Neg, Still Neg',
+            new_clusters_notified_buckets[DISPO_PREV_NEG_STILL_NEG][0],
+            new_clusters_notified_buckets[DISPO_PREV_NEG_STILL_NEG][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            'Prev. Neg, No Test',
+            new_clusters_notified_buckets[DISPO_PREV_NEG_NO_TEST][0],
+            new_clusters_notified_buckets[DISPO_PREV_NEG_NO_TEST][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            'No Prev. Test, New Pos',
+            new_clusters_notified_buckets[DISPO_NO_PREV_TEST_NEW_POS][0],
+            new_clusters_notified_buckets[DISPO_NO_PREV_TEST_NEW_POS][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            'No Prev. Test, New Neg',
+            new_clusters_notified_buckets[DISPO_NO_PREV_TEST_NEW_NEG][0],
+            new_clusters_notified_buckets[DISPO_NO_PREV_TEST_NEW_NEG][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOTIFIED,
+            'No Prev. Test, No Test',
+            new_clusters_notified_buckets[DISPO_NO_PREV_TEST_NO_TEST][0],
+            new_clusters_notified_buckets[DISPO_NO_PREV_TEST_NO_TEST][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            None,
+            new_clusters_not_notified,
+            new_clusters_not_notified_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'Insufficient Info',
+            new_clusters_not_notified_buckets[DISPO_INSUFFICIENT_INFO][0],
+            new_clusters_not_notified_buckets[DISPO_INSUFFICIENT_INFO][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'Unable to Locate',
+            new_clusters_not_notified_buckets[DISPO_UNABLE_TO_LOCATE][0],
+            new_clusters_not_notified_buckets[DISPO_UNABLE_TO_LOCATE][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'Refused Exam',
+            new_clusters_not_notified_buckets[DISPO_REFUSED_EXAM][0],
+            new_clusters_not_notified_buckets[DISPO_REFUSED_EXAM][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'OOJ',
+            new_clusters_not_notified_buckets[DISPO_OOJ][0],
+            new_clusters_not_notified_buckets[DISPO_OOJ][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'Other',
+            new_clusters_not_notified_buckets[DISPO_OTHER][0],
+            new_clusters_not_notified_buckets[DISPO_OTHER][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'Domestic Violence Risk',
+            new_clusters_not_notified_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][0],
+            new_clusters_not_notified_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_NOT_NOTIFIED,
+            'Patient Deceased',
+            new_clusters_not_notified_buckets[DISPO_PATIENT_DECEASED][0],
+            new_clusters_not_notified_buckets[DISPO_PATIENT_DECEASED][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Previous Pos',
+            None,
+            new_clusters_previous_pos,
+            new_clusters_previous_pos_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Open',
+            None,
+            new_clusters_open,
+            new_clusters_open_percentage,
+            None,
+        ),
+    ]
+
+    return rows
+
+
+# actual calculations
 def _calc_cases_assigned(
     case_interview_rows: Table, worker: Pa01Worker | None = None
 ) -> int:
@@ -436,7 +829,9 @@ def _calc_hiv_tested(
     """
     rows = _rows_for_worker(case_interview_rows, worker)
 
-    # nb. mirrors creation of "hiv_tested" table in SAS
+    # nb. mirrors the creation of "hiv_tested" table in SAS and the calculation of "HIV
+    #     Tested" (have to do this instead of _count_distinct_case_ids because
+    #     of how it is counted for "ALL WORKERS" in SAS)
     groups: dict[tuple, set] = {}
     for row in rows:
         if (
@@ -639,6 +1034,234 @@ def _calc_cases_with_no_clusters(
     return count, _percent_for_csv(count, cases_ixd)
 
 
+def _calc_new_partners_notified(
+    notified_partners: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate 'New Partners Notified' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(notified_partners, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_notified_buckets(
+    notified_partners: Table,
+    new_partners_notified: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    """Calculate the count and percentage for all of the sub sections of 'New Partners
+    Notified'.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(notified_partners, worker)
+    fl_fup_dispositions = [
+        DISPO_PREV_NEG_NEW_POS,
+        DISPO_PREV_NEG_STILL_NEG,
+        DISPO_PREV_NEG_NO_TEST,
+        DISPO_NO_PREV_TEST_NEW_POS,
+        DISPO_NO_PREV_TEST_NEW_NEG,
+        DISPO_NO_PREV_TEST_NO_TEST,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_partners_notified
+    )
+
+
+def _calc_new_partners_not_notified(
+    not_notified_partners: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage for 'New Partners Not Notified'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(not_notified_partners, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_not_notified_buckets(
+    not_notified_partners: Table,
+    new_partners_not_notified: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    """Calculate the count and percentage for all of the sub sections of 'New Partners
+    Not Notified'.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(not_notified_partners, worker)
+    fl_fup_dispositions = [
+        DISPO_INSUFFICIENT_INFO,
+        DISPO_UNABLE_TO_LOCATE,
+        DISPO_REFUSED_EXAM,
+        DISPO_OOJ,
+        DISPO_OTHER,
+        DISPO_DOMESTIC_VIOLENCE_RISK,
+        DISPO_PATIENT_DECEASED,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_partners_not_notified
+    )
+
+
+def _calc_new_partners_previous_pos(
+    partner_case_dispositions: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Partners Previous Pos'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(partner_case_dispositions, worker)
+    count = _count_distinct_case_ids(
+        rows,
+        lambda row: (
+            row[FL_FUP_DISPOSITION] == 'E - Previously Treated for This Infection'
+        ),
+    )
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_open(
+    partner_case_dispositions: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Partners Open'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(partner_case_dispositions, worker)
+    count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_clusters_notified(
+    clusters_notified: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate 'New Clusters Notified' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(clusters_notified, worker)
+
+    # nb. normally I would use the _count_distinct_case_ids for both ALL WORKERS
+    #     and individual workers.  However the SAS script has a different count
+    #     approach when ALL WORKERS is being calculated.
+    count = len(rows) if worker is None else _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_notified_buckets(
+    clusters_notified: Table,
+    new_clusters_notified: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    """Calculate the count and percentage for all of the sub sections of 'New Clusters
+    Notified'.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(clusters_notified, worker)
+    fl_fup_dispositions = [
+        DISPO_PREV_NEG_NEW_POS,
+        DISPO_PREV_NEG_STILL_NEG,
+        DISPO_PREV_NEG_NO_TEST,
+        DISPO_NO_PREV_TEST_NEW_POS,
+        DISPO_NO_PREV_TEST_NEW_NEG,
+        DISPO_NO_PREV_TEST_NO_TEST,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_clusters_notified
+    )
+
+
+def _calc_new_clusters_not_notified(
+    not_notified_clusters: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate 'New Clusters Not Notified' count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(not_notified_clusters, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_not_notified_buckets(
+    not_notified_clusters: Table,
+    new_clusters_not_notified: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    """Calculate the count and percentage for all of the sub sections of 'New Clusters
+    Not Notified'.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(not_notified_clusters, worker)
+    fl_fup_dispositions = [
+        DISPO_INSUFFICIENT_INFO,
+        DISPO_UNABLE_TO_LOCATE,
+        DISPO_REFUSED_EXAM,
+        DISPO_OOJ,
+        DISPO_OTHER,
+        DISPO_DOMESTIC_VIOLENCE_RISK,
+        DISPO_PATIENT_DECEASED,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, fl_fup_dispositions, new_clusters_not_notified
+    )
+
+
+def _calc_new_clusters_previous_pos(
+    clusters_previous_pos: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Clusters Previous Pos'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(clusters_previous_pos, worker)
+    count = sum(row['clusters_prev_positive_count'] for row in rows)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_open(
+    clusters_initiated: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate the count and percentage of 'New Clusters Open'.  Calculates
+    for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(clusters_initiated, worker)
+
+    # nb. mirrors the creation of "Co" table in SAS and the calculation of "New
+    #     Clusters Open" (have to do this instead of _count_distinct_case_ids because
+    #     of how it is counted for "ALL WORKERS" in SAS)
+    groups: dict[tuple, set] = {}
+    for row in rows:
+        if row[FL_FUP_DISPOSITION] is None:
+            worker_key = (
+                row[INVESTIGATOR_INTERVIEW_KEY],
+                row[PROVIDER_QUICK_CODE],
+            )
+            groups.setdefault(worker_key, set()).add(row[INV_LOCAL_ID])
+
+    count = sum(len(cluster_ids) for cluster_ids in groups.values())
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
 # helpers
 def _rows_for_worker(table: Table, worker: Pa01Worker | None = None) -> list[dict]:
     """Filter a given table's data for the given worker.  If the given worker is None
@@ -668,6 +1291,23 @@ def _count_distinct_case_ids(rows: list[dict], predicate=lambda row: True) -> in
     return len({row[INV_LOCAL_ID] for row in rows if predicate(row)})
 
 
+def _count_distinct_case_ids_and_percent_by_dispo(
+    rows: list[dict], dispositions: list[str], denominator: int
+) -> dict[str, tuple[int, str]]:
+    """Given a list of dispositions (column FL_FUP_DISPOSITION), create buckets for
+    the count of distinct case ids and percentages for each given disposition.
+    """
+    result = {}
+    for dispo in dispositions:
+        count = _count_distinct_case_ids(
+            rows,
+            lambda row, dispo=dispo: row[FL_FUP_DISPOSITION] == dispo,
+        )
+        result[dispo] = (count, _percent_for_csv(count, denominator))
+
+    return result
+
+
 def _percent_for_csv(numerator: int, denominator: int, precision: int = 1) -> str:
     """Format a percent that matches the PDF format for output in the CSV."""
     return f'{round((numerator / denominator) * 100, precision) if denominator else 0}%'
@@ -682,4 +1322,4 @@ def _worker_for_csv(worker: Pa01Worker | None = None) -> str:
     """Return the str value for the worker column for output in the CSV.  If worker
     is None then ALL is returned.
     """
-    return ALL if worker is None else worker.provider_quick_code
+    return 'ALL' if worker is None else worker.provider_quick_code
