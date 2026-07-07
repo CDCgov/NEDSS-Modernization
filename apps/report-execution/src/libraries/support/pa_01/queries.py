@@ -13,26 +13,6 @@ PA1_DTE_DATE_COL = {
 }
 
 
-def filtered_cases_query(subset_query: str) -> str:
-    """Return the base PA01 case population.
-
-    This is the SQL equivalent of SAS `STD_HIV_DATAMART1`: cases from the
-    report subset that are probable/confirmed and have an interviewer assigned.
-    """
-    return f"""
-      WITH base AS
-      (
-        {subset_query}
-      )
-      SELECT b.*
-      FROM base b
-        INNER JOIN RDB.dbo.INVESTIGATION i
-                ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-               AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
-               AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL;
-    """
-
-
 def case_interview_rows_query(subset_query: str, report_variant: str) -> str:
     """Return case rows joined to interview and worker details.
 
@@ -75,7 +55,7 @@ def case_interview_rows_query(subset_query: str, report_variant: str) -> str:
                DAY,
                CAST(fc.{PA1_NEW_DATE_COL[report_variant]} AS DATE),
                CAST(di.IX_DATE AS DATE)
-             ) AS Days,
+             ) AS DAYS,
              dp.PROVIDER_QUICK_CODE
       FROM filtered_cases fc
         LEFT JOIN RDB.dbo.F_INTERVIEW_CASE fic
@@ -128,7 +108,7 @@ def timed_interviews_query(subset_query: str, report_variant: str) -> str:
              fb.CA_PATIENT_INTV_STATUS,
              fb.INVESTIGATOR_INTERVIEW_KEY,
              fb.INVESTIGATOR_INTERVIEW_QC,
-             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[report_variant]},di.IX_DATE) AS Days,
+             DATEDIFF(DAY,fb.{PA1_DTE_DATE_COL[report_variant]},di.IX_DATE) AS DAYS,
              dp.PROVIDER_QUICK_CODE
       FROM filtered_base fb
         INNER JOIN RDB.dbo.F_INTERVIEW_CASE fic
@@ -591,8 +571,11 @@ def notified_partners_query(subset_query: str) -> str:
              f.FL_FUP_DISPOSITION,
              a.FL_FUP_DISPO_DT,
              a.FL_FUP_INIT_ASSGN_DT,
-             datepart(DAY,a.FL_FUP_DISPO_DT) - datepart(DAY,a.FL_FUP_INIT_ASSGN_DT)
-                AS days,
+             DATEDIFF(
+                DAY,
+                CAST(a.FL_FUP_INIT_ASSGN_DT AS DATE),
+                CAST(a.FL_FUP_DISPO_DT AS DATE)
+             ) AS DAYS,
              a.INVESTIGATOR_INTERVIEW_KEY,
              a.INVESTIGATOR_INTERVIEW_QC
       FROM filtered_cases a
@@ -718,8 +701,11 @@ def notified_clusters_query(subset_query: str) -> str:
              f.FL_FUP_INVESTIGATOR_ASSGN_DT,
              a.INVESTIGATOR_INTERVIEW_KEY,
              a.INVESTIGATOR_INTERVIEW_QC,
-             datepart(day, f.FL_FUP_DISPO_DT)
-               - datepart(day, f.FL_FUP_INVESTIGATOR_ASSGN_DT) AS days
+             DATEDIFF(
+               DAY,
+               CAST(f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE),
+               CAST(f.FL_FUP_DISPO_DT AS DATE)
+             ) AS DAYS
       FROM filtered_cases a
         INNER JOIN RDB.dbo.F_INTERVIEW_CASE b
                 ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
@@ -921,4 +907,71 @@ def cluster_previous_pos_query(subset_query: str) -> str:
                PROVIDER_QUICK_CODE
       ORDER BY a.INVESTIGATOR_INTERVIEW_KEY,
                PROVIDER_QUICK_CODE
+    """
+
+
+def notified_partners_by_speed_query(subset_query: str) -> str:
+    """Query used to calculate the "New Partners Notified" counts in the "SPEED OF
+    NOTIFICATION - PARTNERS & CLUSTERS" section.
+
+    Equivalent of `partner2_dte` in SAS.
+    """
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN RDB.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT a.INVESTIGATION_KEY,
+             PROVIDER_QUICK_CODE,
+             f.INV_LOCAL_ID,
+             f.FL_FUP_DISPOSITION,
+             f.FL_FUP_DISPO_DT,
+             f.FL_FUP_INVESTIGATOR_ASSGN_DT,
+             DATEDIFF(
+                DAY,
+                CAST(f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE),
+                CAST(f.FL_FUP_DISPO_DT AS DATE)
+             ) AS DAYS,
+             a.INVESTIGATOR_INTERVIEW_KEY,
+             a.INVESTIGATOR_INTERVIEW_QC
+      FROM filtered_cases a
+        INNER JOIN RDB.dbo.F_INTERVIEW_CASE b
+                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.F_CONTACT_RECORD_CASE d
+                ON a.INVESTIGATION_KEY = d.SUBJECT_INVESTIGATION_KEY
+        INNER JOIN RDB.dbo.STD_HIV_DATAMART f
+                ON d.CONTACT_INVESTIGATION_KEY = f.Investigation_key
+        INNER JOIN RDB.dbo.D_CONTACT_RECORD e
+                ON e.D_CONTACT_RECORD_KEY = d.D_CONTACT_RECORD_KEY
+               AND e.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN RDB.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+               AND e.CTT_REFERRAL_BASIS IN (
+                     'P1 - Partner, Sex',
+                     'P2 - Partner, Needle-Sharing',
+                     'P3 - Partner, Both'
+                   )
+               AND f.FL_FUP_DISPOSITION IN (
+                     '2 - Prev. Neg, New Pos',
+                     '3 - Prev. Neg, Still Neg',
+                     '4 - Prev. Neg, No Test',
+                     '5 - No Prev Test, New Pos',
+                     '6 - No Prev Test, New Neg',
+                     '7 - No Prev Test, No Test'
+                   )
+               AND CAST(f.FL_FUP_DISPO_DT AS DATE) >=
+                     CAST(f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE);
     """
