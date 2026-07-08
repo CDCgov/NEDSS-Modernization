@@ -1,3 +1,5 @@
+import logging
+
 from src.db_transaction import Transaction
 from src.errors import MissingColumnError
 from src.models import ReportResult
@@ -9,6 +11,7 @@ def execute(
     data_source_name: str,
     days_value: None | int,
     column_map: list[list[str]],
+    sort_by: str | None,
     **kwargs,
 ):
     """Potential Duplicate Investigations.
@@ -96,10 +99,13 @@ def execute(
         OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
     )
     ORDER BY
+        {sort_by + ',' if sort_by else ''}
         d.[{col_dict['PATIENT_LOCAL_ID']}],
         d.[{col_dict['DISEASE_CD']}],
         d.[{col_dict['EVENT_DATE']}] desc
     """
+
+    logging.info(full_query)
 
     content = trx.query(full_query)
 
