@@ -265,6 +265,28 @@ describe('report run page', () => {
             expect(windowOpen).not.toHaveBeenCalled();
             expect(fileDownload).toHaveBeenCalled();
         });
+
+        it('run error displays error', async () => {
+            const user = userEvent.setup();
+            vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.runReport)
+                .mockRejectedValue(new RangeError('uh oh'));
+            const windowOpen = vi.spyOn(window, 'open');
+
+            const { findAllByRole, findByRole, findAllByText, findByText } = renderWithRouter();
+
+            const runButton = (await findAllByRole('button', { name: 'Run' }))[0];
+            await user.click(runButton);
+            expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: false }) });
+
+            expect(await findByText(/There was an error running this report/));
+            expect(await findAllByText(/uh oh/)).toHaveLength(2);
+            expect(await findAllByText(/RangeError/)).toHaveLength(2);
+            expect(await findByRole('button', { name: 'Refine report' })).toBeEnabled();
+            expect(windowOpen).not.toHaveBeenCalled();
+            expect(fileDownload).not.toHaveBeenCalled();
+        });
     });
 
     describe('basic filters', () => {
@@ -3407,7 +3429,7 @@ describe('report run page', () => {
                 });
 
                 // refine and un-set and make sure things are good
-                await user.click(await findByRole('button', { name: 'Refine Report' }));
+                await user.click(await findByRole('button', { name: 'Refine report' }));
                 await user.selectOptions(await findByLabelText('Sort by'), '- Select -');
 
                 await user.click(await findByRole('button', { name: 'Export' }));

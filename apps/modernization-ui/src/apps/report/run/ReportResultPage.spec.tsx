@@ -144,12 +144,12 @@ describe('report result page', () => {
         expect(await axe(container)).toHaveNoViolations();
     });
 
-    it('calls handleRefineReport when "Refine Report" button is clicked', async () => {
+    it('calls handleRefineReport when "Refine report" button is clicked', async () => {
         const user = userEvent.setup();
         const props = createMockProps();
         const { getByRole } = renderWithRouter(props);
 
-        const refineButton = getByRole('button', { name: 'Refine Report' });
+        const refineButton = getByRole('button', { name: 'Refine report' });
         await user.click(refineButton);
 
         expect(props.handleRefineReport).toHaveBeenCalledTimes(1);
