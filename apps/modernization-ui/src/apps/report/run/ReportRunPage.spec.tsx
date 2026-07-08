@@ -3416,8 +3416,7 @@ describe('report run page', () => {
                 await user.selectOptions(await findByLabelText('Sort by'), '2001');
                 await user.selectOptions(await findByLabelText('Sort order'), generated.SortSpec.direction.DESC);
 
-                const exportButton = await findByRole('button', { name: 'Export' });
-                await user.click(exportButton);
+                await user.click(await findByRole('button', { name: 'Export' }));
 
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
@@ -3426,6 +3425,22 @@ describe('report run page', () => {
                         basicFilters: [],
                         columnUids: [2001, 2002],
                         sort: { columnUid: 2001, direction: generated.SortSpec.direction.DESC },
+                    }),
+                });
+
+                // refine and un-set and make sure things are good
+                await user.click(await findByRole('button', { name: 'Refine Report' }));
+                await user.selectOptions(await findByLabelText('Sort by'), '- Select -');
+
+                await user.click(await findByRole('button', { name: 'Export' }));
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2001, 2002],
+                        sort: undefined,
                     }),
                 });
             });
