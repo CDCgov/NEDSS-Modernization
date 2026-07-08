@@ -25,7 +25,6 @@ spring:
       enabled: false
   liquibase:
     enabled: true
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   main:
     allow-bean-definition-overriding: true

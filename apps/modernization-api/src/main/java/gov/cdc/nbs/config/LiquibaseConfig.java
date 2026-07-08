@@ -31,7 +31,6 @@ public class LiquibaseConfig {
   }
 
   @Bean(name = "odseLiquibase")
-  @ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", havingValue = "true")
   public SpringLiquibase odseLiquibase(DataSource dataSource) {
     SpringLiquibase liquibase = new SpringLiquibase();
     liquibase.setDataSource(dataSource);
