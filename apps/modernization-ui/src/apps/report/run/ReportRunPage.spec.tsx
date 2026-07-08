@@ -265,6 +265,28 @@ describe('report run page', () => {
             expect(windowOpen).not.toHaveBeenCalled();
             expect(fileDownload).toHaveBeenCalled();
         });
+
+        it('run error displays error', async () => {
+            const user = userEvent.setup();
+            vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+            const mockApi = vi
+                .mocked(generated.ReportControllerService.runReport)
+                .mockRejectedValue(new RangeError('uh oh'));
+            const windowOpen = vi.spyOn(window, 'open');
+
+            const { findAllByRole, findByRole, findAllByText, findByText } = renderWithRouter();
+
+            const runButton = (await findAllByRole('button', { name: 'Run' }))[0];
+            await user.click(runButton);
+            expect(mockApi).toHaveBeenCalledWith({ requestBody: expect.objectContaining({ isExport: false }) });
+
+            expect(await findByText(/There was an error running this report/));
+            expect(await findAllByText(/uh oh/)).toHaveLength(2);
+            expect(await findAllByText(/RangeError/)).toHaveLength(2);
+            expect(await findByRole('button', { name: 'Refine report' })).toBeEnabled();
+            expect(windowOpen).not.toHaveBeenCalled();
+            expect(fileDownload).not.toHaveBeenCalled();
+        });
     });
 
     describe('basic filters', () => {
@@ -3394,8 +3416,7 @@ describe('report run page', () => {
                 await user.selectOptions(await findByLabelText('Sort by'), '2001');
                 await user.selectOptions(await findByLabelText('Sort order'), generated.SortSpec.direction.DESC);
 
-                const exportButton = await findByRole('button', { name: 'Export' });
-                await user.click(exportButton);
+                await user.click(await findByRole('button', { name: 'Export' }));
 
                 expect(mockResultApi).toHaveBeenCalledWith({
                     requestBody: expect.objectContaining({
@@ -3404,6 +3425,22 @@ describe('report run page', () => {
                         basicFilters: [],
                         columnUids: [2001, 2002],
                         sort: { columnUid: 2001, direction: generated.SortSpec.direction.DESC },
+                    }),
+                });
+
+                // refine and un-set and make sure things are good
+                await user.click(await findByRole('button', { name: 'Refine report' }));
+                await user.selectOptions(await findByLabelText('Sort by'), '- Select -');
+
+                await user.click(await findByRole('button', { name: 'Export' }));
+
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [],
+                        columnUids: [2001, 2002],
+                        sort: undefined,
                     }),
                 });
             });

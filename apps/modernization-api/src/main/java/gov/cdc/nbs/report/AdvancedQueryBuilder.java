@@ -17,10 +17,22 @@ public class AdvancedQueryBuilder {
 
   private final FilterValue firstOpenParen =
       new FilterValue(
-          1L, null, 0, ReportConstants.FilterValueType.OPERATOR.toString(), null, "(", null);
+          1L,
+          null,
+          0,
+          ReportConstants.AdvancedFilterValueType.OPERATOR.toString(),
+          null,
+          "(",
+          null);
   private final FilterValue lastCloseParen =
       new FilterValue(
-          2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
+          2L,
+          null,
+          1000,
+          ReportConstants.AdvancedFilterValueType.OPERATOR.toString(),
+          null,
+          ")",
+          null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues, List<DataSourceColumn> columns) {
     this.filterValues =
@@ -322,11 +334,13 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isClause(FilterValue fv) {
-    return fv.getValueType().equalsIgnoreCase(ReportConstants.FilterValueType.CLAUSE.toString());
+    return fv.getValueType()
+        .equalsIgnoreCase(ReportConstants.AdvancedFilterValueType.CLAUSE.toString());
   }
 
   private boolean isOperator(FilterValue fv) {
-    return fv.getValueType().equalsIgnoreCase(ReportConstants.FilterValueType.OPERATOR.toString());
+    return fv.getValueType()
+        .equalsIgnoreCase(ReportConstants.AdvancedFilterValueType.OPERATOR.toString());
   }
 
   private boolean isCombinator(FilterValue fv) {

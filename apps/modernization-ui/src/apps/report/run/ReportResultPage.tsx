@@ -7,15 +7,15 @@ import { Heading } from 'components/heading';
 import { permissions, permits, permitsAny, Permitted } from 'libs/permission';
 import { Shown } from 'conditional-render';
 import { useUser } from 'user';
-
-import layoutStyles from '../layout/layout.module.scss';
 import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
 import { ModalRef } from '@trussworks/react-uswds';
 import { SaveReportModal } from './modals/SaveReportModal.tsx';
-import { AlertMessage } from 'design-system/message';
 import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
 import classNames from 'classnames';
+import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
+
+import layoutStyles from '../layout/layout.module.scss';
 
 const ReportResultPage = ({
     config,
@@ -26,7 +26,7 @@ const ReportResultPage = ({
     executionRequest,
 }: {
     config: ReportConfiguration;
-    error: string | null;
+    error: unknown | null;
     wasExported: boolean;
     resultLoading: boolean;
     handleRefineReport: () => void;
@@ -67,7 +67,7 @@ const ReportResultPage = ({
             .catch((err) => {
                 const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
                 modalRef.current?.toggleModal();
-                setSaveError(err.message);
+                setSaveError(err);
             })
             .finally(() => {
                 setSaving(false);
@@ -91,7 +91,7 @@ const ReportResultPage = ({
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
                         <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading}>
-                            Refine Report
+                            Refine report
                         </Button>
                     </Permitted>
                     <Permitted
@@ -141,39 +141,32 @@ const ReportResultPage = ({
         >
             <div className="display-flex flex-column">
                 {(error || saveError) && (
-                    <AlertMessage
+                    <ApiErrorBanner
                         className={classNames(layoutStyles.alertMessage, 'margin-top-2 margin-x-2')}
-                        type="error"
-                        title={`There was an error ${saveError ? 'saving' : wasExported ? 'exporting' : 'running'} 
-                        your report. If this error persists, contact your NBS administrator for help.`}
-                    >
-                        <>
-                            {/* In practice, only one of these will be populated at a time */}
-                            {saveError}
-                            {error}
-                        </>
-                    </AlertMessage>
+                        action={saveError ? 'saving' : wasExported ? 'exporting' : 'running'}
+                        item="report"
+                        error={error ?? saveError}
+                    />
                 )}
-                {resultLoading ? (
-                    <TextCard loading={true}>
-                        <Heading level={2}>
-                            {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. 
+                {!error &&
+                    (resultLoading ? (
+                        <TextCard loading={true}>
+                            <Heading level={2}>
+                                {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. 
                             Please do not leave this page while your report is generating.`}
-                        </Heading>
-                        <p>
-                            This might take several minutes for large reports. To be sure it opens, check that pop-ups
-                            are enabled in your browser.
-                        </p>
-                    </TextCard>
-                ) : (
-                    !error && (
+                            </Heading>
+                            <p>
+                                This might take several minutes for large reports. To be sure it opens, check that
+                                pop-ups are enabled in your browser.
+                            </p>
+                        </TextCard>
+                    ) : (
                         <TextCard>
                             <Heading level={2}>
                                 {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
                             </Heading>
                         </TextCard>
-                    )
-                )}
+                    ))}
             </div>
         </ReportLayout>
     );
