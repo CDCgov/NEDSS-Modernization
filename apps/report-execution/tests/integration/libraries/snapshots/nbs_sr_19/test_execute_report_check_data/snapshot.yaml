@@ -1,0 +1,432 @@
+- !!python/tuple
+  - JAN2020
+  - 21915
+  - 5
+  - 2
+  - 7
+- !!python/tuple
+  - FEB2020
+  - 21946
+  - 6
+  - 2
+  - 8
+- !!python/tuple
+  - MAR2020
+  - 21975
+  - 0
+  - 0
+  - 0
+- !!python/tuple
+  - APR2020
+  - 22006
+  - 1
+  - 1
+  - 2
+- !!python/tuple
+  - MAY2020
+  - 22036
+  - 3
+  - 0
+  - 3
+- !!python/tuple
+  - JUN2020
+  - 22067
+  - 2
+  - 1
+  - 3
+- !!python/tuple
+  - JUL2020
+  - 22097
+  - 5
+  - 4
+  - 9
+- !!python/tuple
+  - AUG2020
+  - 22128
+  - 3
+  - 2
+  - 5
+- !!python/tuple
+  - SEP2020
+  - 22159
+  - 5
+  - 4
+  - 9
+- !!python/tuple
+  - OCT2020
+  - 22189
+  - 6
+  - 4
+  - 10
+- !!python/tuple
+  - NOV2020
+  - 22220
+  - 2
+  - 3
+  - 5
+- !!python/tuple
+  - DEC2020
+  - 22250
+  - 5
+  - 4
+  - 9
+- !!python/tuple
+  - JAN2021
+  - 22281
+  - 7
+  - 3
+  - 10
+- !!python/tuple
+  - FEB2021
+  - 22312
+  - 3
+  - 2
+  - 5
+- !!python/tuple
+  - MAR2021
+  - 22340
+  - 4
+  - 2
+  - 6
+- !!python/tuple
+  - APR2021
+  - 22371
+  - 8
+  - 6
+  - 14
+- !!python/tuple
+  - MAY2021
+  - 22401
+  - 2
+  - 3
+  - 5
+- !!python/tuple
+  - JUN2021
+  - 22432
+  - 4
+  - 1
+  - 5
+- !!python/tuple
+  - JUL2021
+  - 22462
+  - 1
+  - 3
+  - 4
+- !!python/tuple
+  - AUG2021
+  - 22493
+  - 2
+  - 4
+  - 6
+- !!python/tuple
+  - SEP2021
+  - 22524
+  - 4
+  - 8
+  - 12
+- !!python/tuple
+  - OCT2021
+  - 22554
+  - 6
+  - 2
+  - 8
+- !!python/tuple
+  - NOV2021
+  - 22585
+  - 6
+  - 3
+  - 9
+- !!python/tuple
+  - DEC2021
+  - 22615
+  - 4
+  - 2
+  - 6
+- !!python/tuple
+  - JAN2022
+  - 22646
+  - 2
+  - 0
+  - 2
+- !!python/tuple
+  - FEB2022
+  - 22677
+  - 4
+  - 3
+  - 7
+- !!python/tuple
+  - MAR2022
+  - 22705
+  - 2
+  - 1
+  - 3
+- !!python/tuple
+  - APR2022
+  - 22736
+  - 2
+  - 2
+  - 4
+- !!python/tuple
+  - MAY2022
+  - 22766
+  - 4
+  - 3
+  - 7
+- !!python/tuple
+  - JUN2022
+  - 22797
+  - 5
+  - 5
+  - 10
+- !!python/tuple
+  - JUL2022
+  - 22827
+  - 3
+  - 3
+  - 6
+- !!python/tuple
+  - AUG2022
+  - 22858
+  - 5
+  - 0
+  - 5
+- !!python/tuple
+  - SEP2022
+  - 22889
+  - 4
+  - 3
+  - 7
+- !!python/tuple
+  - OCT2022
+  - 22919
+  - 3
+  - 0
+  - 3
+- !!python/tuple
+  - NOV2022
+  - 22950
+  - 6
+  - 2
+  - 8
+- !!python/tuple
+  - DEC2022
+  - 22980
+  - 7
+  - 3
+  - 10
+- !!python/tuple
+  - JAN2023
+  - 23011
+  - 4
+  - 1
+  - 5
+- !!python/tuple
+  - FEB2023
+  - 23042
+  - 5
+  - 2
+  - 7
+- !!python/tuple
+  - MAR2023
+  - 23070
+  - 7
+  - 9
+  - 16
+- !!python/tuple
+  - APR2023
+  - 23101
+  - 2
+  - 5
+  - 7
+- !!python/tuple
+  - MAY2023
+  - 23131
+  - 5
+  - 1
+  - 6
+- !!python/tuple
+  - JUN2023
+  - 23162
+  - 4
+  - 2
+  - 6
+- !!python/tuple
+  - JUL2023
+  - 23192
+  - 3
+  - 4
+  - 7
+- !!python/tuple
+  - AUG2023
+  - 23223
+  - 2
+  - 2
+  - 4
+- !!python/tuple
+  - SEP2023
+  - 23254
+  - 1
+  - 2
+  - 3
+- !!python/tuple
+  - OCT2023
+  - 23284
+  - 5
+  - 2
+  - 7
+- !!python/tuple
+  - NOV2023
+  - 23315
+  - 6
+  - 4
+  - 10
+- !!python/tuple
+  - DEC2023
+  - 23345
+  - 5
+  - 1
+  - 6
+- !!python/tuple
+  - JAN2024
+  - 23376
+  - 2
+  - 5
+  - 7
+- !!python/tuple
+  - FEB2024
+  - 23407
+  - 6
+  - 2
+  - 8
+- !!python/tuple
+  - MAR2024
+  - 23436
+  - 2
+  - 3
+  - 5
+- !!python/tuple
+  - APR2024
+  - 23467
+  - 1
+  - 0
+  - 1
+- !!python/tuple
+  - MAY2024
+  - 23497
+  - 5
+  - 1
+  - 6
+- !!python/tuple
+  - JUN2024
+  - 23528
+  - 5
+  - 1
+  - 6
+- !!python/tuple
+  - JUL2024
+  - 23558
+  - 4
+  - 3
+  - 7
+- !!python/tuple
+  - AUG2024
+  - 23589
+  - 1
+  - 2
+  - 3
+- !!python/tuple
+  - SEP2024
+  - 23620
+  - 8
+  - 3
+  - 11
+- !!python/tuple
+  - OCT2024
+  - 23650
+  - 5
+  - 4
+  - 9
+- !!python/tuple
+  - NOV2024
+  - 23681
+  - 0
+  - 0
+  - 0
+- !!python/tuple
+  - DEC2024
+  - 23711
+  - 4
+  - 4
+  - 8
+- !!python/tuple
+  - JAN2025
+  - 23742
+  - 3
+  - 3
+  - 6
+- !!python/tuple
+  - FEB2025
+  - 23773
+  - 5
+  - 1
+  - 6
+- !!python/tuple
+  - MAR2025
+  - 23801
+  - 3
+  - 1
+  - 4
+- !!python/tuple
+  - APR2025
+  - 23832
+  - 3
+  - 1
+  - 4
+- !!python/tuple
+  - MAY2025
+  - 23862
+  - 2
+  - 5
+  - 7
+- !!python/tuple
+  - JUN2025
+  - 23893
+  - 1
+  - 1
+  - 2
+- !!python/tuple
+  - JUL2025
+  - 23923
+  - 5
+  - 3
+  - 8
+- !!python/tuple
+  - AUG2025
+  - 23954
+  - 4
+  - 3
+  - 7
+- !!python/tuple
+  - SEP2025
+  - 23985
+  - 0
+  - 0
+  - 0
+- !!python/tuple
+  - OCT2025
+  - 24015
+  - 1
+  - 5
+  - 6
+- !!python/tuple
+  - NOV2025
+  - 24046
+  - 4
+  - 2
+  - 6
+- !!python/tuple
+  - DEC2025
+  - 24076
+  - 2
+  - 5
+  - 7

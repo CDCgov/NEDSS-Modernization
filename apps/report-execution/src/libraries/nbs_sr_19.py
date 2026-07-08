@@ -13,9 +13,8 @@ def execute(
     """SR19: TB Record Count - Count of cases by "countability" and month.
 
     Conversion Notes:
-    * Tailored for SQL Server (T-SQL) using YEAR() and MONTH().
-    * Aggregation is pushed to SQL Server via CTEs.
-    * Python handles time-series expansion to fill in 0-count month gaps.
+    * Parameterized date column handled safely.
+    * Pushes heavy aggregations to SQL Server using fast integer date functions.
     """
 
     # --- Helper Function ---
@@ -24,19 +23,14 @@ def execute(
         target_date = date(year, month, day)
         return (target_date - sas_epoch).days
 
-    if not isinstance(library_params, dict):
-        raise ValueError(f"""
-            library_params must be a dictionary containing 'count_column' \
-            (e.g., COUNT_DATE, DATE_REPORTED), got {library_params}
-        """)
-    count_column = library_params.get('count_column')
-    if count_column is None:
-        raise ValueError(f"""
-            library_params must be a dictionary containing 'count_column' \
-            (e.g., COUNT_DATE, DATE_REPORTED), got {library_params}
-        """)
+    # --- Parameter Validation ---
+    if not isinstance(library_params, dict) or 'count_column' not in library_params:
+        raise ValueError(
+            f"library_params must be a dictionary containing 'count_column'. Got: {library_params}"
+        )
 
-    # --- Step 1: Push Aggregation to SQL Server via CTE ---
+    count_column = library_params['count_column']
+
     query = f"""
         WITH subset AS (
             {subset_query}
@@ -45,81 +39,70 @@ def execute(
             SELECT 
                 YEAR({count_column}) AS case_year,
                 MONTH({count_column}) AS case_month,
-                SUM(CASE WHEN count_status = 'Count as a TB Case' THEN 1 ELSE 0 END) AS counted,
-                SUM(CASE WHEN count_status != 'Count as a TB Case' OR count_status IS NULL THEN 1 ELSE 0 END) AS non_counted
+                SUM(CASE WHEN count_status = 'Count as a TB Case' THEN 1 ELSE 0 END) AS counted_cases,
+                SUM(CASE WHEN count_status != 'Count as a TB Case' OR count_status IS NULL THEN 1 ELSE 0 END) AS non_counted_cases
             FROM subset
             WHERE {count_column} IS NOT NULL
             GROUP BY YEAR({count_column}), MONTH({count_column})
         )
-        SELECT case_year, case_month, counted, non_counted 
+        SELECT case_year, case_month, counted_cases, non_counted_cases
         FROM monthly_aggregates
         ORDER BY case_year, case_month
     """
 
     db_rows = trx.query(query)
 
-    if not db_rows:
-        return ReportResult(content_type="table", content=[])
+    # Define expected columns early
+    columns = ["monthYear", "sasdate", "counted_cases", "non_counted_cases", "total_cases"]
 
-    # --- Step 2: Map DB results into a quick-lookup dictionary ---
-    # Mapping: (year, month) -> (counted, non_counted)
+    # Short circuit on empty data with full columns schema ---
+    if not db_rows or (hasattr(db_rows, 'data') and not db_rows.data):
+        return ReportResult(content_type="table", content={"columns": columns, "data": []})
+
     db_map = {}
-    for row in db_rows:
-        y = (
-            int(row.get("case_year"))
-            if isinstance(row, dict)
-            else int(row.case_year)
-        )
-        m = (
-            int(row.get("case_month"))
-            if isinstance(row, dict)
-            else int(row.case_month)
-        )
-        counted = (
-            int(row.get("counted"))
-            if isinstance(row, dict)
-            else int(row.counted)
-        )
-        non_counted = (
-            int(row.get("non_counted"))
-            if isinstance(row, dict)
-            else int(row.non_counted)
-        )
+    for row in db_rows.data:
+        y = int(row[0])
+        m = int(row[1])
+        counted = int(row[2])
+        non_counted = int(row[3])
+
         db_map[(y, m)] = (counted, non_counted)
 
-    # --- Step 3: Determine Date Boundaries from the Aggregated Rows ---
+    # --- Track timeline boundaries ---
     years_months = list(db_map.keys())
-    start_year, start_month = years_months[0]
-    end_year, end_month = years_months[-1]
+    start_date = date(years_months[0][0], years_months[0][1], 1)
+    end_date = date(years_months[-1][0], years_months[-1][1], 1)
 
-    start_date = date(start_year, start_month, 1)
-    end_date = date(end_year, end_month, 1)
-
-    # --- Step 4: Time-series Generation (Gap-Filling) & SAS Date Calculation ---
-    content = []
+    # --- MonthYear Matrix Build to fill in months with no cases ---
+    data_matrix = []
     current = start_date
 
     while current <= end_date:
         y, m = current.year, current.month
 
-        # Pull from our SQL aggregate map, defaulting to 0 if the month didn't exist in DB
         counted, non_counted = db_map.get((y, m), (0, 0))
         total = counted + non_counted
 
-        content.append(
-            {
-                "monthYear": current.strftime("%b%Y").upper(),
-                "sasdate": get_sas_date(y, m, 1),
-                "counted_cases": counted,
-                "non_counted_cases": non_counted,
-                "total_cases": total,
-            }
-        )
+        month_year_txt = current.strftime("%b%Y").upper()
+        sas_date_val = get_sas_date(y, m, 1)
 
-        # Move to next month
+        data_matrix.append([
+            month_year_txt,
+            sas_date_val,
+            counted,
+            non_counted,
+            total
+        ])
+
         if current.month == 12:
             current = date(current.year + 1, 1, 1)
         else:
             current = date(current.year, current.month + 1, 1)
+
+    # --- Package ReportResult content ---
+    content = {
+        "columns": columns,
+        "data": data_matrix
+    }
 
     return ReportResult(content_type="table", content=content)
