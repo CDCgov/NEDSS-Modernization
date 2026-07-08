@@ -13,9 +13,11 @@ import lombok.Getter;
  * Execution service for subsequent report generation. It assembles report metadata, includes
  * togglable report parameters and (arguably most importantly) compiles a SQL statement to be
  * invoked during report execution, accounting for all supplied parameters as well as relevant
- * permissions for the individual invoking said report.
+ * permissions for the individual invoking that report.
  */
 public class ReportSpecBuilder {
+  private static final System.Logger LOGGER = System.getLogger(ReportSpecBuilder.class.getName());
+
   @Getter private final ReportExecutionRequest reportExecRequest;
   @Getter private final ReportConfiguration reportConfig;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -114,6 +116,8 @@ public class ReportSpecBuilder {
             .filter(clause -> clause != null && !clause.isBlank())
             .collect(Collectors.joining(" "))
             .trim();
+
+    LOGGER.log(System.Logger.Level.DEBUG, "Subset Query: %s", subsetQuery);
 
     Integer daysValue = extractDaysValue();
     String libraryParams = reportConfig.library().libraryParams();

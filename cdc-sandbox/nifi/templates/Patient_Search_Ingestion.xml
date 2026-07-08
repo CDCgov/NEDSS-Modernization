@@ -5050,7 +5050,7 @@ WHERE
                             <parentGroupId>a936bd06-061e-3eb2-0000-000000000000</parentGroupId>
                             <position>
 <x>4264.0</x>
-<y>360.0</y>
+<y>368.0</y>
                             </position>
                             <versionedComponentId>da051a46-5b03-3597-9846-be42d06b6893</versionedComponentId>
                             <height>40.0</height>
@@ -5063,7 +5063,7 @@ to insert into Elasticsearch</label>
 </entry>
                             </style>
                             <width>288.0</width>
-                            <zIndex>0</zIndex>
+                            <zIndex>1</zIndex>
                         </labels>
                         <labels>
                             <id>a5a402f7-fa5b-3312-0000-000000000000</id>
@@ -6012,466 +6012,630 @@ These processors extract the fields into an attribute, remove the existing field
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>SELECT
-  p.cd,
-  p.person_uid,
-  p.local_id,
-  cast(
-    substring(
-      p.local_id, 
-      len(id_settings.prefix) + 1, 
-      len(p.local_id) - len(id_settings.prefix) - len(id_settings.suffix)
-    ) as bigint
-   ) - id_settings.initial as short_id,
-  p.record_status_cd,
-  p.birth_time,
-  p.deceased_ind_cd,
-  p.curr_sex_cd,
-  p.ethnic_group_ind,
-  p.person_uid id,
-  nested.name,
-  nested.address,
-  nested.phone,
-  nested.email,
-  nested.race,
-  nested.entity_id,
-  --documentIds
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(documentId as varchar)
-    FROM (
-	  SELECT DISTINCT
-        doc.local_id documentId
-      FROM
-        nbs_document doc WITH (NOLOCK)
-        JOIN Participation par WITH (NOLOCK)
-        ON doc.nbs_document_uid = par.act_uid
-          AND par.subject_class_cd = 'PSN'
-          AND par.record_status_cd = 'ACTIVE'
-          AND par.act_class_cd = 'DOC'
-          AND par.type_cd = 'SubjOfDoc'
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-        AND p2.person_parent_uid in(${person_ids})
-        JOIN NBS_SRTE..Code_value_general cvg
-WITH
-(NOLOCK)
-        ON cvg.code_set_nm = 'PUBLIC_HEALTH_EVENT'
-          AND cvg.code = doc.doc_type_cd
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) document_ids,
+        <value>-- ============================================================
+-- Step 1: Materialize target people with covering indexes
+-- ============================================================
+DROP TABLE IF EXISTS #target_people;
 
-  --morbidityReportIds
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(morbidityReportId as varchar)
-    FROM (
-	  SELECT DISTINCT
-        obs.local_id morbidityReportId
-      FROM
-        Observation obs WITH (NOLOCK)
-        JOIN Participation par WITH (NOLOCK)
-        ON par.act_uid = obs.observation_uid
-          AND par.subject_class_cd = 'PSN'
-          AND par.record_status_cd = 'ACTIVE'
-          AND par.act_class_cd = 'OBS'
-          AND par.type_cd = 'SubjOfMorbReport'
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) morbidity_report_ids,
+SELECT person_uid, person_parent_uid
+INTO #target_people
+FROM Person WITH (NOLOCK)
+WHERE person_parent_uid IN (${person_ids});
 
-  --treatmentIds
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(treatmentId as varchar)
-    FROM (
-	  SELECT DISTINCT
-        trt.local_id treatmentId
-      FROM
-        Treatment trt with (NOLOCK)
-        JOIN Participation par WITH (NOLOCK)
-        ON par.act_uid = trt.treatment_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-          AND par.act_class_cd = 'TRMT'
-          AND par.record_status_cd = 'ACTIVE'
-          AND par.subject_class_cd='PSN'
-          AND par.type_cd = 'SubjOfTrmt'
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) treatment_ids,
+ALTER TABLE #target_people ADD CONSTRAINT PK_tp PRIMARY KEY CLUSTERED (person_uid);
 
-  --vaccinationIds
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(vaccinationId as varchar)
-    FROM (
-  SELECT DISTINCT
-        inv.local_id vaccinationId
-      FROM
-        Intervention inv WITH (NOLOCK)
-        JOIN Participation par WITH (NOLOCK)
-        ON inv.intervention_uid = par.act_uid
-          AND par.subject_class_cd='PAT'
-          AND par.type_cd = 'SubOfVacc'
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) vaccination_ids,
+-- ============================================================
+-- Step 2: Materialize id_settings (single-row lookup)
+-- ============================================================
+DROP TABLE IF EXISTS #id_settings;
 
-  --State Case Ids
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(stateCaseId as varchar)
-    FROM (  
-        SELECT DISTINCT ai.root_extension_txt stateCaseId
-      FROM
-        Public_health_case phc WITH (NOLOCK)
-        JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
-          and ai.type_cd='STATE'
-          and (ai.assigning_authority_cd &lt;&gt; 'ABCS' OR ai.assigning_authority_cd IS NULL)
-          and ai.root_extension_txt is not null
-          and ai.root_extension_txt&lt;&gt;''
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) state_case_ids,
+SELECT
+    g.UID_prefix_cd                 AS prefix,
+    g.UID_suffix_cd                 AS suffix,
+    LEN(g.UID_prefix_cd)            AS prefix_len,
+    LEN(g.UID_suffix_cd)            AS suffix_len,
+    LEN(g.UID_prefix_cd) + 1        AS prefix_start,
+    CAST(c.config_value AS bigint)  AS initial
+INTO #id_settings
+FROM Local_UID_generator g WITH (NOLOCK)
+CROSS JOIN NBS_configuration c WITH (NOLOCK)
+WHERE g.class_name_cd = 'PERSON'
+  AND g.type_cd       = 'LOCAL'
+  AND c.config_key    = 'SEED_VALUE';
 
-  --ABCS Case IDs
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(abcsCaseId as varchar)
-    FROM (  
-		SELECT DISTINCT ai.root_extension_txt abcsCaseId
-      FROM
-        Public_health_case phc WITH (NOLOCK)
-        JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
-          and ai.act_id_seq=2
-          and ai.type_cd='STATE'
-          and ai.assigning_authority_cd='ABCS'
-          and ai.root_extension_txt is not null
-          and ai.root_extension_txt&lt;&gt;''
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) abcs_case_ids,
+-- ============================================================
+-- Step 3: Shared base — join #target_people to Participation
+--         once for all downstream _id queries
+-- ============================================================
+DROP TABLE IF EXISTS #par;
 
-  --City Case Ids
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(cityCaseId as varchar)
-    FROM (  
-		SELECT DISTINCT ai.root_extension_txt cityCaseId
-      FROM
-        Public_health_case phc WITH (NOLOCK)
-        JOIN Act_id ai WITH (NOLOCK) ON phc.public_health_case_uid = ai.act_uid
-          and ai.type_cd='CITY'
-          and ai.root_extension_txt is not null
-          and ai.root_extension_txt&lt;&gt;''
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-    ) tmp
-    FOR XML PATH
-('')
-  ), 1, 1, '')) city_case_ids,
+SELECT
+    tp.person_parent_uid,
+    par.act_uid,
+    par.act_class_cd,
+    par.type_cd,
+    par.subject_class_cd,
+    par.record_status_cd
+INTO #par
+FROM #target_people tp
+JOIN Participation par WITH (NOLOCK)
+    ON par.subject_entity_uid = tp.person_uid;
 
-  --Notification Ids
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(notificationId as varchar)
-    FROM (  
-		SELECT DISTINCT noti.local_id notificationId
-      FROM
-        Public_health_case phc WITH (NOLOCK)
-        JOIN Act_relationship ar WITH (NOLOCK) ON ar.target_act_uid=phc.public_health_case_uid
-          AND ar.type_cd='Notification'
-          AND ar.target_class_cd='CASE'
-          AND ar.source_class_cd='NOTF'
-          AND ar.record_status_cd='ACTIVE'
-        JOIN notification noti WITH (NOLOCK) ON noti.notification_uid=ar.source_act_uid
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-      ) tmp
-    FOR XML PATH
-('')
-    ), 1, 1, '')) notification_ids,
+CREATE INDEX ix_par_class_type ON #par (act_class_cd, type_cd)
+    INCLUDE (person_parent_uid, act_uid, subject_class_cd, record_status_cd);
+CREATE INDEX ix_par_act_uid ON #par (act_uid)
+    INCLUDE (person_parent_uid, act_class_cd, type_cd);
+CREATE INDEX ix_par_filter ON #par (act_class_cd, type_cd, subject_class_cd, record_status_cd)
+    INCLUDE (person_parent_uid, act_uid);
 
-  --Investigation Ids
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(investigationId as varchar)
-    FROM (  
-		SELECT DISTINCT phc.local_id investigationId
-      FROM
-        Public_health_case phc WITH (NOLOCK)
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = phc.public_health_case_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-      ) tmp
-    FOR XML PATH
-('')
-    ), 1, 1, '')) investigation_ids,
+-- ============================================================
+-- Shared second level join to Public_health_case
+-- Used by #case_ids #notification_ids and #investigation_ids
+-- ============================================================
+DROP TABLE IF EXISTS #par_phc;
 
+SELECT DISTINCT
+    p.person_parent_uid,
+    phc.public_health_case_uid,
+    phc.local_id
+INTO #par_phc
+FROM #par p
+JOIN Public_health_case phc WITH (NOLOCK)
+    ON phc.public_health_case_uid = p.act_uid;
 
-  --Lab Report Ids
-  (SELECT STUFF(
-  (
-    SELECT ','+ cast(labReportId as varchar)
-    FROM (  
-		SELECT DISTINCT
-        obs.local_id labReportId
-      FROM
-        observation obs WITH (NOLOCK)
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = obs.observation_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-      ) tmp
-    FOR XML PATH
-('')
-    ), 1, 1, '')) lab_report_ids,
+CREATE INDEX ix_par_phc_uid ON #par_phc (public_health_case_uid)
+    INCLUDE (person_parent_uid, local_id);
 
+-- document_ids ----------------------------------------------------
+DROP TABLE IF EXISTS #document_ids;
 
-  --Accession Ids
-  (SELECT STUFF(
-  (
-    SELECT ','+ replace(cast(accessionId as varchar), '-', '')
-    FROM (  
-		SELECT DISTINCT ai.root_extension_txt accessionId
-      FROM
-        observation obs WITH (NOLOCK)
-        JOIN act_id ai WITH (NOLOCK) ON ai.act_uid = obs.observation_uid
-          AND ai.type_cd='FN'
-          and ai.root_extension_txt is not null
-          and ai.root_extension_txt&lt;&gt;''
-        JOIN participation par WITH (NOLOCK) ON par.act_uid = obs.observation_uid
-        JOIN Person p2 WITH (NOLOCK)
-        ON par.subject_entity_uid=p2.person_uid
-          AND p2.person_parent_uid=p.person_parent_uid
-          AND p2.person_parent_uid in(${person_ids})
-      ) tmp
-    FOR XML PATH
-('')
-    ), 1, 1, '')) accession_ids
+SELECT
+    p.person_parent_uid,
+    STRING_AGG(CAST(doc.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY doc.local_id) AS document_ids
+INTO #document_ids
+FROM #par p
+JOIN nbs_document doc WITH (NOLOCK)
+    ON  doc.nbs_document_uid = p.act_uid
+JOIN NBS_SRTE..Code_value_general cvg WITH (NOLOCK)
+    ON  cvg.code_set_nm = 'PUBLIC_HEALTH_EVENT'
+    AND cvg.code        = doc.doc_type_cd
+WHERE p.subject_class_cd   = 'PSN'
+  AND p.record_status_cd   = 'ACTIVE'
+  AND p.act_class_cd       = 'DOC'
+  AND p.type_cd            = 'SubjOfDoc'
+GROUP BY p.person_parent_uid;
 
-FROM
-  person p
-WITH
-(NOLOCK)
-  OUTER apply
-(
-    SELECT
-    *
-  FROM
-    -- address
+CREATE INDEX ix_doc_puid ON #document_ids (person_parent_uid);
+
+-- morbidity_report_ids --------------------------------------------
+DROP TABLE IF EXISTS #morbidity_report_ids;
+
+SELECT
+    p.person_parent_uid,
+    STRING_AGG(CAST(obs.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY obs.local_id) AS morbidity_report_ids
+INTO #morbidity_report_ids
+FROM #par p
+JOIN Observation obs WITH (NOLOCK)
+    ON  obs.observation_uid = p.act_uid
+WHERE p.subject_class_cd   = 'PSN'
+  AND p.record_status_cd   = 'ACTIVE'
+  AND p.act_class_cd       = 'OBS'
+  AND p.type_cd            = 'SubjOfMorbReport'
+GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_morb_puid ON #morbidity_report_ids (person_parent_uid);
+
+-- treatment_ids ---------------------------------------------------
+DROP TABLE IF EXISTS #treatment_ids;
+
+SELECT
+    p.person_parent_uid,
+    STRING_AGG(CAST(trt.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY trt.local_id) AS treatment_ids
+INTO #treatment_ids
+FROM #par p
+JOIN Treatment trt WITH (NOLOCK)
+    ON  trt.treatment_uid = p.act_uid
+WHERE p.subject_class_cd   = 'PSN'
+  AND p.record_status_cd   = 'ACTIVE'
+  AND p.act_class_cd       = 'TRMT'
+  AND p.type_cd            = 'SubjOfTrmt'
+GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_trt_puid ON #treatment_ids (person_parent_uid);
+
+-- vaccination_ids -------------------------------------------------
+DROP TABLE IF EXISTS #vaccination_ids;
+
+SELECT
+    p.person_parent_uid,
+    STRING_AGG(CAST(inv.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY inv.local_id) AS vaccination_ids
+INTO #vaccination_ids
+FROM #par p
+JOIN Intervention inv WITH (NOLOCK)
+    ON  inv.intervention_uid = p.act_uid
+WHERE p.subject_class_cd = 'PAT'
+  AND p.type_cd          = 'SubOfVacc'
+GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_vacc_puid ON #vaccination_ids (person_parent_uid);
+
+-- case_ids --------------------------------------------------------
+DROP TABLE IF EXISTS #case_ids;
+
+SELECT
+    pp.person_parent_uid,
+    STRING_AGG(CASE WHEN ct.case_type = 'STATE' THEN ai.root_extension_txt END, ',') AS state_case_ids,
+    STRING_AGG(CASE WHEN ct.case_type = 'ABCS'  THEN ai.root_extension_txt END, ',') AS abcs_case_ids,
+    STRING_AGG(CASE WHEN ct.case_type = 'CITY'  THEN ai.root_extension_txt END, ',') AS city_case_ids
+INTO #case_ids
+FROM #par_phc pp
+JOIN Act_id ai WITH (NOLOCK)
+    ON  ai.act_uid            = pp.public_health_case_uid
+    AND ai.root_extension_txt IS NOT NULL
+    AND ai.root_extension_txt &lt;&gt; ''
+    AND ai.type_cd            IN ('STATE', 'CITY')
+CROSS APPLY (
+    SELECT CASE
+        WHEN ai.type_cd = 'CITY'                                                                                  THEN 'CITY'
+        WHEN ai.type_cd = 'STATE' AND ai.act_id_seq = 2 AND ai.assigning_authority_cd = 'ABCS'                    THEN 'ABCS'
+        WHEN ai.type_cd = 'STATE' AND (ai.assigning_authority_cd &lt;&gt; 'ABCS' OR ai.assigning_authority_cd IS NULL)  THEN 'STATE'
+    END AS case_type
+) ct
+WHERE ct.case_type IS NOT NULL
+GROUP BY pp.person_parent_uid;
+
+CREATE INDEX ix_case_puid ON #case_ids (person_parent_uid);
+
+-- notification_ids ------------------------------------------------
+DROP TABLE IF EXISTS #notification_ids;
+
+SELECT
+    pp.person_parent_uid,
+    STRING_AGG(CAST(noti.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY noti.local_id) AS notification_ids
+INTO #notification_ids
+FROM #par_phc pp
+JOIN Act_relationship ar WITH (NOLOCK)
+    ON  ar.target_act_uid   = pp.public_health_case_uid
+    AND ar.type_cd          = 'Notification'
+    AND ar.target_class_cd  = 'CASE'
+    AND ar.source_class_cd  = 'NOTF'
+    AND ar.record_status_cd = 'ACTIVE'
+JOIN Notification noti WITH (NOLOCK)
+    ON  noti.notification_uid = ar.source_act_uid
+GROUP BY pp.person_parent_uid;
+
+CREATE INDEX ix_notif_puid ON #notification_ids (person_parent_uid);
+
+-- investigation_ids -----------------------------------------------
+DROP TABLE IF EXISTS #investigation_ids;
+
+SELECT
+    pp.person_parent_uid,
+    STRING_AGG(CAST(pp.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY pp.local_id) AS investigation_ids
+INTO #investigation_ids
+FROM #par_phc pp
+GROUP BY pp.person_parent_uid;
+
+CREATE INDEX ix_inv_puid ON #investigation_ids (person_parent_uid);
+
+-- lab_report_ids --------------------------------------------------
+DROP TABLE IF EXISTS #lab_report_ids;
+
+SELECT
+    p.person_parent_uid,
+    STRING_AGG(CAST(obs.local_id AS varchar(36)), ',')
+        WITHIN GROUP (ORDER BY obs.local_id) AS lab_report_ids
+INTO #lab_report_ids
+FROM #par p
+JOIN Observation obs WITH (NOLOCK)
+    ON  obs.observation_uid = p.act_uid
+WHERE p.act_class_cd = 'OBS'
+GROUP BY p.person_parent_uid;
+
+CREATE INDEX ix_lab_puid ON #lab_report_ids (person_parent_uid);
+
+-- accession_ids ---------------------------------------------------
+DROP TABLE IF EXISTS #accession_obs;
+
+SELECT DISTINCT
+    p.person_parent_uid,
+    obs.observation_uid
+INTO #accession_obs
+FROM #par p
+JOIN Observation obs WITH (NOLOCK)
+    ON  obs.observation_uid    = p.act_uid;
+
+CREATE INDEX ix_ao_uid ON #accession_obs (observation_uid)
+    INCLUDE (person_parent_uid);
+
+DROP TABLE IF EXISTS #accession_ids;
+
+SELECT
+    ao.person_parent_uid,
+    STRING_AGG(REPLACE(ai.root_extension_txt, '-', ''), ',')
+        WITHIN GROUP (ORDER BY ai.root_extension_txt) AS accession_ids
+INTO #accession_ids
+FROM #accession_obs ao
+JOIN Act_id ai WITH (NOLOCK)
+    ON  ai.act_uid            = ao.observation_uid
+    AND ai.type_cd            = 'FN'
+    AND ai.root_extension_txt IS NOT NULL
+    AND ai.root_extension_txt &lt;&gt; ''
+GROUP BY ao.person_parent_uid;
+
+CREATE INDEX ix_acc_puid ON #accession_ids (person_parent_uid);
+
+DROP TABLE IF EXISTS #accession_obs;
+
+-- Cleanup shared tables
+DROP TABLE IF EXISTS #par;
+DROP TABLE IF EXISTS #par_phc;
+
+-- ============================================================
+-- Step 4: Pre-aggregate person detail — set-based, one pass
+--         each per table, no correlated subqueries.
+-- ============================================================
+
+-- -- Address -------------------------------------------------
+DROP TABLE IF EXISTS #elp_postal_raw;
+
+SELECT
+    elp.entity_uid                  AS person_uid,
+    pl.street_addr1,
+    pl.street_addr2,
+    pl.city_desc_txt,
+    pl.zip_cd,
+    pl.cnty_cd,
+    pl.state_cd,
+    pl.cntry_cd,
+    county.code_desc_txt            AS county_desc,
+    state.state_nm,
+    country.code_short_desc_txt     AS country_desc,
+    elp.as_of_date,
+    elp.locator_uid,
+    TRIM(
+        ISNULL(UPPER(pl.street_addr1),  '') + ' ' +
+        ISNULL(UPPER(pl.street_addr2),  '') + ' ' +
+        ISNULL(UPPER(pl.city_desc_txt), '') + ' ' +
+        ISNULL(UPPER(state.state_nm),   '') + ' ' +
+        ISNULL(pl.zip_cd, '')
+    )                               AS full_address
+INTO #elp_postal_raw
+FROM #target_people tp
+JOIN Entity_locator_participation elp WITH (NOLOCK)
+    ON  elp.entity_uid       = tp.person_uid
+    AND elp.class_cd         = 'PST'
+    AND elp.status_cd        = 'A'
+    AND elp.record_status_cd = 'ACTIVE'
+JOIN Postal_locator pl WITH (NOLOCK)
+    ON  pl.postal_locator_uid = elp.locator_uid
+    AND pl.record_status_cd   = 'ACTIVE'
+LEFT JOIN NBS_SRTE..State_county_code_value county  WITH (NOLOCK) ON county.code    = pl.cnty_cd
+LEFT JOIN NBS_SRTE..State_code              state   WITH (NOLOCK) ON state.state_cd = pl.state_cd
+LEFT JOIN NBS_SRTE..Country_code            country WITH (NOLOCK) ON country.code   = pl.cntry_cd
+OPTION (MAXDOP 1);
+
+CREATE INDEX ix_epr_uid ON #elp_postal_raw (person_uid, as_of_date DESC, locator_uid DESC);
+
+DROP TABLE IF EXISTS #person_address;
+
+SELECT
+    r.person_uid,
     (
         SELECT
-      (
-            SELECT
-        STRING_ESCAPE(UPPER(pl.street_addr1), 'json') streetAddr1,
-        STRING_ESCAPE(UPPER(pl.street_addr2), 'json') streetAddr2,
-        STRING_ESCAPE(UPPER(pl.city_desc_txt), 'json') city,
-        pl.zip_cd zip,
-        pl.cnty_cd cntyCd,
-        pl.state_cd state,
-        pl.cntry_cd cntryCd,
-        UPPER([county].code_desc_txt) cntyText,
-        UPPER([state].state_nm) stateText,
-        UPPER([country].code_short_desc_txt) cntryText,
-        trim(string_escape(isNull(UPPER(pl.street_addr1), '') + ' ' + isNull(UPPER(pl.street_addr2), '') + ' ' + isNull(UPPER(pl.city_desc_txt), '') + ' ' + isNull(UPPER([state].state_nm), '')  + ' ' + isNull(pl.zip_cd, ''),'json')) as [full]
-      FROM
-        Entity_locator_participation elp WITH (NOLOCK)
-        JOIN Postal_locator pl WITH (NOLOCK) ON 
-            pl.postal_locator_uid = elp.locator_uid
-          and pl.record_status_cd = 'ACTIVE'
-        left join NBS_SRTE..State_county_code_value [county] WITH (NOLOCK) on [county].code = pl.cnty_cd
-        left join NBS_SRTE..State_code [state] WITH (NOLOCK) on [state].state_cd = pl.state_cd
-        left join NBS_SRTE..Country_code [country] WITH (NOLOCK) on [country].code = pl.cntry_cd
-      WHERE 
-              elp.entity_uid = p.person_uid
-        AND elp.class_cd = 'PST'
-        AND elp.status_cd = 'A'
-        AND elp.record_status_cd = 'ACTIVE'
-      order by 
-      elp.as_of_date desc,
-      elp.locator_uid desc
-      FOR json path, 
-              INCLUDE_NULL_VALUES
-          ) AS address
-      ) AS address,
-    -- person phone
-    (
-        SELECT
-      (
-            SELECT
-        REPLACE(REPLACE(tl.phone_nbr_txt,'-',''),' ','') telephoneNbr,
-        tl.extension_txt extensionTxt,
-        elp.cd typeCd,
-        elp.use_cd useCd
-      FROM
-        Entity_locator_participation elp WITH (NOLOCK)
-        JOIN Tele_locator tl WITH (NOLOCK) ON 
-            tl.tele_locator_uid = elp.locator_uid
-          and tl.record_status_cd = 'ACTIVE'
-      WHERE 
-              elp.entity_uid = p.person_uid
-        AND elp.class_cd = 'TELE'
-        AND elp.status_cd = 'A'
-        AND elp.record_status_cd = 'ACTIVE'
-        AND tl.phone_nbr_txt IS NOT NULL
-      order by 
-      elp.as_of_date desc,
-      elp.locator_uid desc
-      FOR json path, 
-              INCLUDE_NULL_VALUES
-          ) AS phone
-      ) AS phone,
-    -- person email
-    (
-        SELECT
-      (
-            SELECT
-        STRING_ESCAPE(UPPER(tl.email_address), 'json') emailAddress
-      FROM
-        Entity_locator_participation elp WITH (NOLOCK)
-        JOIN Tele_locator tl WITH (NOLOCK) ON 
-          tl.tele_locator_uid = elp.locator_uid
-          and tl.record_status_cd = 'ACTIVE'
-      WHERE 
-              elp.entity_uid = p.person_uid
-        AND elp.class_cd = 'TELE'
-        AND elp.status_cd = 'A'
-        AND elp.record_status_cd = 'ACTIVE'
-        AND tl.email_address IS NOT NULL
-      order by 
-      elp.as_of_date desc,
-      elp.locator_uid desc
-      FOR json path, 
-              INCLUDE_NULL_VALUES
-          ) AS email
-      ) AS email,
-    -- person_names
-    (
-        SELECT (
-          SELECT
-        STRING_ESCAPE(REPLACE(UPPER(pn.last_nm),'-',' '), 'json') lastNm,
-        soundex(pn.last_nm) lastNmSndx,
-        STRING_ESCAPE(UPPER(pn.middle_nm), 'json') middleNm,
-        STRING_ESCAPE(UPPER(pn.first_nm), 'json') firstNm,
-        soundex(pn.first_nm) firstNmSndx,
-        pn.nm_use_cd,
-        UPPER(pn.nm_suffix) nmSuffix,
-        trim(
-          string_escape(
-              replace(
-                isNull(UPPER(pn.last_nm), '') + ' ' 
-              + isNull(UPPER(pn.first_nm), '') + ' ' 
-              + isNull(UPPER(pn.middle_nm), '') + ' ' 
-              + isNull(UPPER([suffix].code_short_desc_txt), ''),
-              '-', ' '
-            ),
-            'json'
-          )
-        ) as [full]
-      FROM person_name pn WITH (NOLOCK)
+            STRING_ESCAPE(UPPER(r2.street_addr1),  'json') AS streetAddr1,
+            STRING_ESCAPE(UPPER(r2.street_addr2),  'json') AS streetAddr2,
+            STRING_ESCAPE(UPPER(r2.city_desc_txt), 'json') AS city,
+            r2.zip_cd                                      AS zip,
+            r2.cnty_cd                                     AS cntyCd,
+            r2.state_cd                                    AS state,
+            r2.cntry_cd                                    AS cntryCd,
+            UPPER(r2.county_desc)                          AS cntyText,
+            UPPER(r2.state_nm)                             AS stateText,
+            UPPER(r2.country_desc)                         AS cntryText,
+            STRING_ESCAPE(r2.full_address, 'json')         AS [full]
+        FROM #elp_postal_raw r2
+        WHERE r2.person_uid = r.person_uid
+        ORDER BY r2.as_of_date DESC, r2.locator_uid DESC
+        FOR JSON PATH, INCLUDE_NULL_VALUES
+    ) AS address
+INTO #person_address
+FROM (SELECT DISTINCT person_uid FROM #elp_postal_raw) r;
 
-        left join NBS_SRTE..Code_value_general [suffix] on
-                   [suffix].[code_set_nm] = 'P_NM_SFX'
-          and [suffix].[code] = [pn].nm_suffix
+CREATE INDEX ix_pa_uid ON #person_address (person_uid);
 
-      WHERE pn.person_uid = p.person_uid
-        and pn.record_status_cd = 'ACTIVE'
-      order by
-        [pn].as_of_date desc,
-        [pn].person_name_seq desc
-      FOR json path, 
-                  INCLUDE_NULL_VALUES
-          ) AS name
-      ) AS name,
-    -- person races
+DROP TABLE IF EXISTS #elp_postal_raw;
+
+---- Phone ----------------------------------------------------
+DROP TABLE IF EXISTS #elp_tele_raw;
+
+SELECT
+    elp.entity_uid  AS person_uid,
+    tl.phone_nbr_txt,
+    tl.extension_txt,
+    elp.cd,
+    elp.use_cd,
+    elp.as_of_date,
+    elp.locator_uid,
+    tl.email_address
+INTO #elp_tele_raw
+FROM #target_people tp
+JOIN Entity_locator_participation elp WITH (NOLOCK)
+    ON  elp.entity_uid       = tp.person_uid
+    AND elp.class_cd         = 'TELE'
+    AND elp.status_cd        = 'A'
+    AND elp.record_status_cd = 'ACTIVE'
+JOIN Tele_locator tl WITH (NOLOCK)
+    ON  tl.tele_locator_uid = elp.locator_uid
+    AND tl.record_status_cd = 'ACTIVE';
+
+CREATE INDEX ix_etr_uid ON #elp_tele_raw (person_uid, as_of_date DESC, locator_uid DESC);
+
+DROP TABLE IF EXISTS #person_phone;
+
+SELECT
+    r.person_uid,
     (
         SELECT
-      (
-            SELECT
-        pr.race_cd raceCd,
-        pr.race_category_cd raceCategoryCd
-      FROM Person_race pr WITH (NOLOCK)
-      WHERE pr.person_uid = p.person_uid
-        and pr.record_status_cd = 'ACTIVE'
-      FOR json path, 
-              INCLUDE_NULL_VALUES
-          ) AS race
-      ) AS race,
-    -- Entity id (Identification)
+            REPLACE(REPLACE(r2.phone_nbr_txt, '-', ''), ' ', '') AS telephoneNbr,
+            r2.extension_txt                                      AS extensionTxt,
+            r2.cd                                                 AS typeCd,
+            r2.use_cd                                             AS useCd
+        FROM #elp_tele_raw r2
+        WHERE r2.person_uid    = r.person_uid
+          AND r2.phone_nbr_txt IS NOT NULL
+        ORDER BY r2.as_of_date DESC, r2.locator_uid DESC
+        FOR JSON PATH, INCLUDE_NULL_VALUES
+    ) AS phone
+INTO #person_phone
+FROM (SELECT DISTINCT person_uid FROM #elp_tele_raw) r;
+
+CREATE INDEX ix_pp_uid ON #person_phone (person_uid);
+
+---- Email ----------------------------------------------------
+DROP TABLE IF EXISTS #person_email;
+
+SELECT
+    r.person_uid,
     (
         SELECT
-      (
-        SELECT
-        ei.type_cd typeCd,
-        STRING_ESCAPE(REPLACE(REPLACE(UPPER(ei.root_extension_txt),'-',''),' ',''), 'json') rootExtensionTxt
-      FROM
-        entity_id ei WITH (NOLOCK)
-      WHERE ei.entity_uid = p.person_uid
-        and ei.record_status_cd = 'ACTIVE'
-      order by 
-          ei.as_of_date desc,
-          ei.entity_id_seq desc
-      FOR json path, INCLUDE_NULL_VALUES
-          ) AS entity_id
-      ) AS entity_id
-  )
-AS nested,
-  (
-  select
-    [generator].UID_prefix_cd     as [prefix],
-    [generator].UID_suffix_CD     as [suffix],
-    cast([configuration].config_value as bigint)  as [initial]
-  from Local_UID_generator [generator] WITH (NOLOCK),
-    NBS_configuration [configuration] WITH (NOLOCK)
-  where [generator].class_name_cd = 'PERSON'
-    and [generator].type_cd = 'LOCAL'
-    and [configuration].config_key = 'SEED_VALUE'
-) as id_settings
+            STRING_ESCAPE(UPPER(r2.email_address), 'json') AS emailAddress
+        FROM #elp_tele_raw r2
+        WHERE r2.person_uid    = r.person_uid
+          AND r2.email_address IS NOT NULL
+        ORDER BY r2.as_of_date DESC, r2.locator_uid DESC
+        FOR JSON PATH, INCLUDE_NULL_VALUES
+    ) AS email
+INTO #person_email
+FROM (SELECT DISTINCT person_uid FROM #elp_tele_raw) r;
 
-WHERE p.person_uid = p.person_parent_uid
-  and p.person_uid in (${person_ids})
-  and p.cd = 'PAT'
- ;
-</value>
+CREATE INDEX ix_pe_uid ON #person_email (person_uid);
+
+DROP TABLE IF EXISTS #elp_tele_raw;
+
+---- Name ----------------------------------------------------
+DROP TABLE IF EXISTS #person_name_raw;
+
+SELECT
+    pn.person_uid,
+    pn.last_nm,
+    pn.first_nm,
+    pn.middle_nm,
+    pn.nm_suffix,
+    pn.nm_use_cd,
+    pn.as_of_date,
+    pn.person_name_seq,
+    cvg.code_short_desc_txt         AS suffix_desc
+INTO #person_name_raw
+FROM #target_people tp
+JOIN Person_name pn WITH (NOLOCK)
+    ON  pn.person_uid       = tp.person_uid
+    AND pn.record_status_cd = 'ACTIVE'
+LEFT JOIN NBS_SRTE..Code_value_general cvg WITH (NOLOCK)
+    ON  cvg.code_set_nm = 'P_NM_SFX'
+    AND cvg.code        = pn.nm_suffix;
+
+CREATE INDEX ix_pnr_uid ON #person_name_raw (person_uid, as_of_date DESC, person_name_seq DESC);
+
+DROP TABLE IF EXISTS #person_name;
+
+SELECT
+    r.person_uid,
+    (
+        SELECT
+            STRING_ESCAPE(REPLACE(UPPER(r2.last_nm),  '-', ' '), 'json') AS lastNm,
+            SOUNDEX(r2.last_nm)                                           AS lastNmSndx,
+            STRING_ESCAPE(UPPER(r2.middle_nm),        'json')            AS middleNm,
+            STRING_ESCAPE(UPPER(r2.first_nm),         'json')            AS firstNm,
+            SOUNDEX(r2.first_nm)                                         AS firstNmSndx,
+            r2.nm_use_cd,
+            UPPER(r2.nm_suffix)                                          AS nmSuffix,
+            TRIM(STRING_ESCAPE(
+                REPLACE(
+                    ISNULL(UPPER(r2.last_nm),       '') + ' ' +
+                    ISNULL(UPPER(r2.first_nm),      '') + ' ' +
+                    ISNULL(UPPER(r2.middle_nm),     '') + ' ' +
+                    ISNULL(UPPER(r2.suffix_desc),   ''),
+                    '-', ' '
+                ), 'json'
+            ))                                                           AS [full]
+        FROM #person_name_raw r2
+        WHERE r2.person_uid = r.person_uid
+        ORDER BY r2.as_of_date DESC, r2.person_name_seq DESC
+        FOR JSON PATH, INCLUDE_NULL_VALUES
+    ) AS name
+INTO #person_name
+FROM (SELECT DISTINCT person_uid FROM #person_name_raw) r;
+
+CREATE INDEX ix_pn_uid ON #person_name (person_uid);
+
+DROP TABLE IF EXISTS #person_name_raw;
+
+---- Race ----------------------------------------------------
+DROP TABLE IF EXISTS #person_race_raw;
+
+SELECT
+    pr.person_uid,
+    pr.race_cd,
+    pr.race_category_cd
+INTO #person_race_raw
+FROM #target_people tp
+JOIN Person_race pr WITH (NOLOCK)
+    ON  pr.person_uid       = tp.person_uid
+    AND pr.record_status_cd = 'ACTIVE';
+
+CREATE INDEX ix_prr_uid ON #person_race_raw (person_uid);
+
+DROP TABLE IF EXISTS #person_race;
+
+SELECT
+    r.person_uid,
+    (
+        SELECT
+            r2.race_cd          AS raceCd,
+            r2.race_category_cd AS raceCategoryCd
+        FROM #person_race_raw r2
+        WHERE r2.person_uid = r.person_uid
+        FOR JSON PATH, INCLUDE_NULL_VALUES
+    ) AS race
+INTO #person_race
+FROM (SELECT DISTINCT person_uid FROM #person_race_raw) r;
+
+CREATE INDEX ix_prc_uid ON #person_race (person_uid);
+
+DROP TABLE IF EXISTS #person_race_raw;
+
+---- Identification ----------------------------------------------------
+DROP TABLE IF EXISTS #entity_id_raw;
+
+SELECT
+    ei.entity_uid               AS person_uid,
+    ei.type_cd,
+    ei.root_extension_txt,
+    ei.as_of_date,
+    ei.entity_id_seq
+INTO #entity_id_raw
+FROM #target_people tp
+JOIN Entity_id ei WITH (NOLOCK)
+    ON  ei.entity_uid       = tp.person_uid
+    AND ei.record_status_cd = 'ACTIVE';
+
+CREATE INDEX ix_eir_uid ON #entity_id_raw (person_uid, as_of_date DESC, entity_id_seq DESC);
+
+DROP TABLE IF EXISTS #person_entity_id;
+
+SELECT
+    r.person_uid,
+    (
+        SELECT
+            r2.type_cd AS typeCd,
+            STRING_ESCAPE(
+                REPLACE(REPLACE(UPPER(r2.root_extension_txt), '-', ''), ' ', ''),
+                'json'
+            )          AS rootExtensionTxt
+        FROM #entity_id_raw r2
+        WHERE r2.person_uid = r.person_uid
+        ORDER BY r2.as_of_date DESC, r2.entity_id_seq DESC
+        FOR JSON PATH, INCLUDE_NULL_VALUES
+    ) AS entity_id
+INTO #person_entity_id
+FROM (SELECT DISTINCT person_uid FROM #entity_id_raw) r;
+
+CREATE INDEX ix_pei_uid ON #person_entity_id (person_uid);
+
+DROP TABLE IF EXISTS #entity_id_raw;
+
+-- ============================================================
+-- Step 5: Final SELECT
+-- ============================================================
+SELECT
+    p.cd,
+    p.person_uid,
+    p.local_id,
+    CASE
+      WHEN LEN(p.local_id) - ids.prefix_len - ids.suffix_len &lt;= 0 THEN NULL
+      ELSE
+        CAST(
+            SUBSTRING(
+                p.local_id,
+                ids.prefix_start,
+                LEN(p.local_id) - ids.prefix_len - ids.suffix_len
+            ) AS bigint
+        ) - ids.initial
+    END AS short_id,
+    p.record_status_cd,
+    p.birth_time,
+    p.deceased_ind_cd,
+    p.curr_sex_cd,
+    p.ethnic_group_ind,
+    p.person_uid                    AS id,
+
+    pn.name,
+    pa.address,
+    pp.phone,
+    pe.email,
+    pr.race,
+    pei.entity_id,
+
+    doc.document_ids,
+    morb.morbidity_report_ids,
+    trt.treatment_ids,
+    vacc.vaccination_ids,
+    cas.state_case_ids,
+    cas.abcs_case_ids,
+    cas.city_case_ids,
+    notif.notification_ids,
+    inv.investigation_ids,
+    lab.lab_report_ids,
+    acc.accession_ids
+
+FROM Person p WITH (NOLOCK)
+JOIN #target_people tp ON tp.person_uid = p.person_uid
+CROSS JOIN #id_settings ids
+LEFT JOIN #person_address       pa    ON pa.person_uid          = p.person_uid
+LEFT JOIN #person_phone         pp    ON pp.person_uid          = p.person_uid
+LEFT JOIN #person_email         pe    ON pe.person_uid          = p.person_uid
+LEFT JOIN #person_name          pn    ON pn.person_uid          = p.person_uid
+LEFT JOIN #person_race          pr    ON pr.person_uid          = p.person_uid
+LEFT JOIN #person_entity_id     pei   ON pei.person_uid         = p.person_uid
+LEFT JOIN #document_ids         doc   ON doc.person_parent_uid  = p.person_parent_uid
+LEFT JOIN #morbidity_report_ids morb  ON morb.person_parent_uid = p.person_parent_uid
+LEFT JOIN #treatment_ids        trt   ON trt.person_parent_uid  = p.person_parent_uid
+LEFT JOIN #vaccination_ids      vacc  ON vacc.person_parent_uid = p.person_parent_uid
+LEFT JOIN #case_ids             cas   ON cas.person_parent_uid  = p.person_parent_uid
+LEFT JOIN #notification_ids     notif ON notif.person_parent_uid = p.person_parent_uid
+LEFT JOIN #investigation_ids    inv   ON inv.person_parent_uid  = p.person_parent_uid
+LEFT JOIN #lab_report_ids       lab   ON lab.person_parent_uid  = p.person_parent_uid
+LEFT JOIN #accession_ids        acc   ON acc.person_parent_uid  = p.person_parent_uid
+WHERE p.person_uid        = p.person_parent_uid
+  AND p.cd                = 'PAT';
+
+-- ============================================================
+-- Cleanup
+-- ============================================================
+DROP TABLE IF EXISTS #target_people;
+DROP TABLE IF EXISTS #id_settings;
+DROP TABLE IF EXISTS #document_ids;
+DROP TABLE IF EXISTS #morbidity_report_ids;
+DROP TABLE IF EXISTS #treatment_ids;
+DROP TABLE IF EXISTS #vaccination_ids;
+DROP TABLE IF EXISTS #case_ids;
+DROP TABLE IF EXISTS #notification_ids;
+DROP TABLE IF EXISTS #investigation_ids;
+DROP TABLE IF EXISTS #lab_report_ids;
+DROP TABLE IF EXISTS #accession_ids;
+DROP TABLE IF EXISTS #person_address;
+DROP TABLE IF EXISTS #person_phone;
+DROP TABLE IF EXISTS #person_email;
+DROP TABLE IF EXISTS #person_name;
+DROP TABLE IF EXISTS #person_race;
+DROP TABLE IF EXISTS #person_entity_id;</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -9762,5 +9926,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/23/2025 03:09:26 UTC</timestamp>
+    <timestamp>07/08/2026 15:06:34 UTC</timestamp>
 </template>

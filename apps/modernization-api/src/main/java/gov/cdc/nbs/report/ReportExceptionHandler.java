@@ -62,7 +62,10 @@ public class ReportExceptionHandler {
   @ExceptionHandler(RestClientResponseException.class)
   public ResponseEntity<ErrorResponseBody> handleRestClientFailure(RestClientResponseException ex) {
     String err = ex.getResponseBodyAsString();
-    LOGGER.log(System.Logger.Level.ERROR, "Error received from rest client: %s".formatted(err), ex);
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Error received from rest client: %s (Status Code: %s)".formatted(err, ex.getStatusCode()),
+        ex);
     return new ResponseEntity<>(new ErrorResponseBody(err), ex.getStatusCode());
   }
 
