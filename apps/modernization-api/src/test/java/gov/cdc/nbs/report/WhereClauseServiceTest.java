@@ -252,7 +252,7 @@ class WhereClauseServiceTest {
     String whereFragment =
         whereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequests);
 
-    assertThat(whereFragment).isEqualTo("");
+    assertThat(whereFragment).isEmpty();
   }
 
   @Test
