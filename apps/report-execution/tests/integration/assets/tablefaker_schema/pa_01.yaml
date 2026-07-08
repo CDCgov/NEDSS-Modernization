@@ -77,7 +77,10 @@ tables:
       - column_name: SOURCE_SPREAD
         data: random.choice(["1 - Spread", "2 - Source"])
       - column_name: FL_FUP_INIT_ASSGN_DT
-        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+        data: |
+          if row_id <= 400:
+            return date(2024, 1, 1)
+          return fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
       - column_name: CA_PATIENT_INTV_STATUS
         data: r"I - Interviewed"
       - column_name: INVESTIGATOR_INTERVIEW_KEY
@@ -167,7 +170,11 @@ tables:
           ])
         null_percentage: 0.1
       - column_name: FL_FUP_DISPO_DT
-        data: date(2024, 1, min(row_id, 28))
+        data: |
+          if row_id <= 400:
+            day_offsets = [2, 4, 6, 10, 16]
+            return date(2024, 1, 1 + day_offsets[row_id % len(day_offsets)])
+          return date(2024, 1, min(row_id, 28))
       - column_name: FL_FUP_INVESTIGATOR_ASSGN_DT
         data: date(2024, 1, 1)
       - column_name: INIT_FUP_INITIAL_FOLL_UP

@@ -26,73 +26,73 @@
   - ALL
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 3 days
-  - 2
-  - 0.7%
+  - Within 3 Days
+  - 4
+  - 1.4%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 5 days
-  - 2
-  - 0.7%
+  - Within 5 Days
+  - 5
+  - 1.7%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 7 days
-  - 2
-  - 0.7%
+  - Within 7 Days
+  - 5
+  - 1.7%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 14 days
-  - 214
-  - 74.6%
+  - Within 14 Days
+  - 218
+  - 76.0%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 172
-  - 59.9%
+  - 159
+  - 55.4%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 145
-  - 50.5%
+  - 138
+  - 48.1%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 217
-  - 75.6%
+  - 215
+  - 74.9%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 245
-  - 112.9%
+  - 246
+  - 114.4%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 210
-  - 96.8%
+  - 215
+  - 100.0%
   - null
 - !!python/tuple
   - ALL
@@ -131,7 +131,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 68
+  - 83
   - null
   - null
 - !!python/tuple
@@ -139,7 +139,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 81
+  - 66
   - null
   - null
 - !!python/tuple
@@ -307,8 +307,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 11
-  - 7.4%
+  - 8
+  - 5.4%
   - null
 - !!python/tuple
   - ALL
@@ -339,8 +339,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
+  - 1
+  - 1.4%
   - null
 - !!python/tuple
   - ALL
@@ -371,8 +371,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - No Prev. Test, No Test
-  - 2
-  - 2.9%
+  - 1
+  - 1.4%
   - null
 - !!python/tuple
   - ALL
@@ -443,8 +443,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Previous Pos
   - null
-  - 2
-  - 1.3%
+  - 4
+  - 2.7%
   - null
 - !!python/tuple
   - ALL
@@ -453,6 +453,86 @@
   - null
   - 10
   - 6.7%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - null
+  - 63
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 3 Days
+  - 13
+  - 20.6%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 5 Days
+  - 28
+  - 44.4%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 7 Days
+  - 41
+  - 65.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 14 Days
+  - 55
+  - 87.3%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 69
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 3 Days
+  - 15
+  - 21.7%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 5 Days
+  - 29
+  - 42.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 7 Days
+  - 42
+  - 60.9%
+  - null
+- !!python/tuple
+  - ALL
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 14 Days
+  - 55
+  - 79.7%
   - null
 - !!python/tuple
   - adevraj
@@ -482,54 +562,38 @@
   - adevraj
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 3 days
-  - 1
-  - 1.4%
+  - Within 3 Days
+  - 2
+  - 2.8%
   - null
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 5 days
-  - 1
-  - 1.4%
+  - Within 5 Days
+  - 2
+  - 2.8%
   - null
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 7 days
-  - 1
-  - 1.4%
+  - Within 7 Days
+  - 2
+  - 2.8%
   - null
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 14 days
-  - 40
-  - 56.3%
+  - Within 14 Days
+  - 43
+  - 60.6%
   - null
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - Cases Reinterviewed
-  - null
-  - 37
-  - 52.1%
-  - null
-- !!python/tuple
-  - adevraj
-  - Case Assignments & Outcomes
-  - HIV Previous Positive
-  - null
-  - 25
-  - 35.2%
-  - null
-- !!python/tuple
-  - adevraj
-  - Case Assignments & Outcomes
-  - HIV Tested
   - null
   - 36
   - 50.7%
@@ -537,18 +601,34 @@
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
+  - HIV Previous Positive
+  - null
+  - 27
+  - 38.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - HIV Tested
+  - null
+  - 41
+  - 57.7%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 57
-  - 158.3%
+  - 65
+  - 158.5%
   - null
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 43
-  - 119.4%
+  - 47
+  - 114.6%
   - null
 - !!python/tuple
   - adevraj
@@ -587,7 +667,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 12
+  - 17
   - null
   - null
 - !!python/tuple
@@ -595,7 +675,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 16
+  - 11
   - null
   - null
 - !!python/tuple
@@ -763,8 +843,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 3
-  - 10.7%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - adevraj
@@ -819,8 +899,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - No Prev. Test, New Neg
-  - 5
-  - 31.2%
+  - 4
+  - 25.0%
   - null
 - !!python/tuple
   - adevraj
@@ -899,8 +979,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Previous Pos
   - null
-  - 1
-  - 3.6%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - adevraj
@@ -909,6 +989,86 @@
   - null
   - 1
   - 3.6%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - null
+  - 15
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 3 Days
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 5 Days
+  - 4
+  - 26.7%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 7 Days
+  - 5
+  - 33.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 14 Days
+  - 11
+  - 73.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 16
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 3 Days
+  - 5
+  - 31.2%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 5 Days
+  - 7
+  - 43.8%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 7 Days
+  - 11
+  - 68.8%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 14 Days
+  - 13
+  - 81.2%
   - null
 - !!python/tuple
   - avance
@@ -938,7 +1098,7 @@
   - avance
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 3 days
+  - Within 3 Days
   - 0
   - 0.0%
   - null
@@ -946,7 +1106,7 @@
   - avance
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 5 days
+  - Within 5 Days
   - 0
   - 0.0%
   - null
@@ -954,7 +1114,7 @@
   - avance
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 7 days
+  - Within 7 Days
   - 0
   - 0.0%
   - null
@@ -962,33 +1122,33 @@
   - avance
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 14 days
-  - 37
-  - 50.7%
+  - Within 14 Days
+  - 44
+  - 60.3%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 45
-  - 61.6%
+  - 36
+  - 49.3%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 27
-  - 37.0%
+  - 39
+  - 53.4%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 42
-  - 57.5%
+  - 46
+  - 63.0%
   - null
 - !!python/tuple
   - avance
@@ -996,15 +1156,15 @@
   - HIV New Positive
   - null
   - 57
-  - 135.7%
+  - 123.9%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 40
-  - 95.2%
+  - 38
+  - 82.6%
   - null
 - !!python/tuple
   - avance
@@ -1355,8 +1515,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Previous Pos
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 3.8%
   - null
 - !!python/tuple
   - avance
@@ -1365,6 +1525,86 @@
   - null
   - 1
   - 3.8%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - null
+  - 9
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 3 Days
+  - 2
+  - 22.2%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 5 Days
+  - 3
+  - 33.3%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 7 Days
+  - 6
+  - 66.7%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 14 Days
+  - 6
+  - 66.7%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 12
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 3 Days
+  - 2
+  - 16.7%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 5 Days
+  - 7
+  - 58.3%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 7 Days
+  - 9
+  - 75.0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 14 Days
+  - 10
+  - 83.3%
   - null
 - !!python/tuple
   - dbowman
@@ -1394,57 +1634,57 @@
   - dbowman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 3 days
-  - 0
-  - 0.0%
+  - Within 3 Days
+  - 1
+  - 1.2%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 5 days
-  - 0
-  - 0.0%
+  - Within 5 Days
+  - 1
+  - 1.2%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 7 days
-  - 0
-  - 0.0%
+  - Within 7 Days
+  - 1
+  - 1.2%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 14 days
-  - 49
-  - 61.3%
+  - Within 14 Days
+  - 45
+  - 56.2%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 36
-  - 45.0%
+  - 42
+  - 52.5%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 40
-  - 50.0%
+  - 28
+  - 35.0%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 49
-  - 61.3%
+  - 39
+  - 48.8%
   - null
 - !!python/tuple
   - dbowman
@@ -1452,15 +1692,15 @@
   - HIV New Positive
   - null
   - 64
-  - 130.6%
+  - 164.1%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 39
-  - 79.6%
+  - 48
+  - 123.1%
   - null
 - !!python/tuple
   - dbowman
@@ -1499,7 +1739,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 15
+  - 17
   - null
   - null
 - !!python/tuple
@@ -1507,7 +1747,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 13
+  - 11
   - null
   - null
 - !!python/tuple
@@ -1675,8 +1915,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 3
-  - 10.7%
+  - 4
+  - 14.3%
   - null
 - !!python/tuple
   - dbowman
@@ -1739,8 +1979,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - No Prev. Test, No Test
-  - 1
-  - 8.3%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
@@ -1811,8 +2051,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Previous Pos
   - null
-  - 1
-  - 2.9%
+  - 2
+  - 5.7%
   - null
 - !!python/tuple
   - dbowman
@@ -1821,6 +2061,86 @@
   - null
   - 2
   - 5.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - null
+  - 14
+  - null
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 3 Days
+  - 5
+  - 35.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 5 Days
+  - 8
+  - 57.1%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 7 Days
+  - 8
+  - 57.1%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 14 Days
+  - 10
+  - 71.4%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 12
+  - null
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 3 Days
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 5 Days
+  - 4
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 7 Days
+  - 6
+  - 50.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 14 Days
+  - 9
+  - 75.0%
   - null
 - !!python/tuple
   - fpoole
@@ -1850,7 +2170,7 @@
   - fpoole
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 3 days
+  - Within 3 Days
   - 0
   - 0.0%
   - null
@@ -1858,7 +2178,7 @@
   - fpoole
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 5 days
+  - Within 5 Days
   - 0
   - 0.0%
   - null
@@ -1866,7 +2186,7 @@
   - fpoole
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 7 days
+  - Within 7 Days
   - 0
   - 0.0%
   - null
@@ -1874,49 +2194,49 @@
   - fpoole
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 14 days
-  - 43
-  - 53.8%
+  - Within 14 Days
+  - 41
+  - 51.2%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 45
-  - 56.2%
+  - 47
+  - 58.8%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 35
-  - 43.8%
+  - 31
+  - 38.8%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 45
-  - 56.2%
+  - 46
+  - 57.5%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 63
-  - 140.0%
+  - 65
+  - 141.3%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 46
-  - 102.2%
+  - 40
+  - 87.0%
   - null
 - !!python/tuple
   - fpoole
@@ -1955,7 +2275,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 14
+  - 18
   - null
   - null
 - !!python/tuple
@@ -1963,7 +2283,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 24
+  - 20
   - null
   - null
 - !!python/tuple
@@ -2131,8 +2451,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 3
-  - 7.9%
+  - 1
+  - 2.6%
   - null
 - !!python/tuple
   - fpoole
@@ -2163,16 +2483,16 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
+  - 1
+  - 6.7%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - Prev. Neg, No Test
-  - 5
-  - 33.3%
+  - 4
+  - 26.7%
   - null
 - !!python/tuple
   - fpoole
@@ -2187,8 +2507,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - No Prev. Test, New Neg
-  - 4
-  - 26.7%
+  - 5
+  - 33.3%
   - null
 - !!python/tuple
   - fpoole
@@ -2279,6 +2599,86 @@
   - 9.4%
   - null
 - !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - null
+  - 15
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 3 Days
+  - 2
+  - 13.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 5 Days
+  - 6
+  - 40.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 7 Days
+  - 11
+  - 73.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 14 Days
+  - 14
+  - 93.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 15
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 3 Days
+  - 4
+  - 26.7%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 5 Days
+  - 8
+  - 53.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 7 Days
+  - 9
+  - 60.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 14 Days
+  - 13
+  - 86.7%
+  - null
+- !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Assigned
@@ -2306,7 +2706,7 @@
   - gfreeman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 3 days
+  - Within 3 Days
   - 1
   - 1.3%
   - null
@@ -2314,23 +2714,23 @@
   - gfreeman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 5 days
-  - 1
-  - 1.3%
+  - Within 5 Days
+  - 2
+  - 2.5%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 7 days
-  - 1
-  - 1.3%
+  - Within 7 Days
+  - 2
+  - 2.5%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases IX'D
-  - Within 14 days
+  - Within 14 Days
   - 45
   - 57.0%
   - null
@@ -2347,24 +2747,24 @@
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 39
-  - 49.4%
+  - 38
+  - 48.1%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 45
-  - 57.0%
+  - 43
+  - 54.4%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 67
-  - 148.9%
+  - 60
+  - 139.5%
   - null
 - !!python/tuple
   - gfreeman
@@ -2372,7 +2772,7 @@
   - HIV Posttest Counsel
   - null
   - 42
-  - 93.3%
+  - 97.7%
   - null
 - !!python/tuple
   - gfreeman
@@ -2411,7 +2811,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 13
+  - 17
   - null
   - null
 - !!python/tuple
@@ -2419,7 +2819,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 15
+  - 11
   - null
   - null
 - !!python/tuple
@@ -2587,8 +2987,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 1
-  - 3.6%
+  - 2
+  - 7.1%
   - null
 - !!python/tuple
   - gfreeman
@@ -2627,8 +3027,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Notified
   - Prev. Neg, No Test
-  - 4
-  - 33.3%
+  - 5
+  - 41.7%
   - null
 - !!python/tuple
   - gfreeman
@@ -2723,8 +3123,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Previous Pos
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 3.4%
   - null
 - !!python/tuple
   - gfreeman
@@ -2733,4 +3133,84 @@
   - null
   - 3
   - 10.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - null
+  - 14
+  - null
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 3 Days
+  - 2
+  - 14.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 5 Days
+  - 7
+  - 50.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 7 Days
+  - 11
+  - 78.6%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Partners Notified
+  - Within 14 Days
+  - 14
+  - 100.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - null
+  - 12
+  - null
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 3 Days
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 5 Days
+  - 3
+  - 25.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 7 Days
+  - 7
+  - 58.3%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Speed of Notification - Partners & Clusters
+  - New Clusters Notified
+  - Within 14 Days
+  - 10
+  - 83.3%
   - null
