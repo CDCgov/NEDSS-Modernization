@@ -130,6 +130,14 @@ tables:
           cluster_not_notified_dispositions = not_notified_dispositions + [
             "Z - Previous Preventative Treatment"
           ]
+          if 401 <= row_id <= 430:
+            treatment_dispositions = [
+              "A - Preventative Treatment",
+              "C - Infected, Brought to Treatment",
+              "E - Previously Treated for This Infection"
+            ]
+            return treatment_dispositions[row_id % len(treatment_dispositions)]
+
           if 101 <= row_id <= 400:
             contact_row_id = row_id - 100
             bucket = contact_row_id % 4
@@ -203,7 +211,7 @@ tables:
         data: row_id
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
-    row_count: 300
+    row_count: 330
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id
@@ -218,6 +226,9 @@ tables:
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
       - column_name: CTT_REFERRAL_BASIS
         data: |
+          if row_id > 300:
+            return None
+
           partner_bases = [
             "P1 - Partner, Sex",
             "P2 - Partner, Needle-Sharing",
@@ -244,7 +255,7 @@ tables:
           return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
 
   - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
-    row_count: 300
+    row_count: 330
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id

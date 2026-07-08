@@ -42,7 +42,7 @@ WITHIN_FOURTEEN_DAYS = 'Within 14 Days'
 
 
 def build_output_for_worker(
-    tables: dict[str, Table], worker: Pa01Worker | None = None
+    tables: dict[str, Table], report_variant: str, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for a given worker, output data for
     the final CSV.
@@ -56,8 +56,12 @@ def build_output_for_worker(
     """
     rows: list[Pa01Row] = []
 
-    rows.extend(_build_case_assignments_and_outcomes_output(tables, worker))
-    rows.extend(_build_partners_and_clusters_initiated_output(tables, worker))
+    rows.extend(
+        _build_case_assignments_and_outcomes_output(tables, report_variant, worker)
+    )
+    rows.extend(
+        _build_partners_and_clusters_initiated_output(tables, report_variant, worker)
+    )
     rows.extend(_build_dispositions_new_partners_and_clusters_output(tables, worker))
     rows.extend(_build_speed_of_notification_partners_and_clusters(tables, worker))
 
@@ -65,10 +69,28 @@ def build_output_for_worker(
 
 
 def _build_case_assignments_and_outcomes_output(
-    tables: dict, worker: Pa01Worker | None = None
+    tables: dict, report_variant: str, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for the "Case Assignments and Outcomes" section
     for a given worker, output data for the final CSV.
+    """
+    rows: list[Pa01Row] = []
+
+    rows = _build_common_case_assignment_rows(tables, report_variant, worker)
+
+    if report_variant == 'HIV':
+        rows.extend(_build_hiv_case_assignment_rows(tables, worker))
+    elif report_variant == 'STD':
+        rows.extend(_build_std_case_assignment_rows(tables, worker))
+
+    return rows
+
+
+def _build_common_case_assignment_rows(
+    tables: dict, report_variant: str, worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Build all the datapoints for 'CASE ASSIGNMENTS & OUTCOMES' that are common for
+    both 'HIV' and 'STD' report variants.
     """
     cases_assigned = _calc_cases_assigned(tables['case_interview_rows'], worker)
     cases_closed, cases_closed_percent = _calc_cases_closed(
@@ -87,18 +109,14 @@ def _build_case_assignments_and_outcomes_output(
         tables['case_interview_rows'], cases_assigned, worker
     )
     hiv_tested, hiv_tested_percent = _calc_hiv_tested(
-        tables['case_interview_rows'], cases_assigned, worker
+        tables['case_interview_rows'], cases_assigned, report_variant, worker
     )
     hiv_new_positive, hiv_new_positive_percent = _calc_hiv_new_positive(
-        tables['case_interview_rows'], hiv_tested, worker
+        tables['case_interview_rows'], hiv_tested, report_variant, worker
     )
     hiv_posttest_counsel, hiv_posttest_counsel_percent = _calc_hiv_posttest_counsel(
-        tables['case_interview_rows'], hiv_tested, worker
+        tables['case_interview_rows'], hiv_tested, report_variant, worker
     )
-    partner_notification_index = _calc_partner_notification_index(
-        tables['partner_notification'], cases_ixd, worker
-    )
-    testing_index = _calc_testing_index(tables['testing_index'], cases_ixd, worker)
 
     # output CSV data
     rows: list[Pa01Row] = [
@@ -210,6 +228,27 @@ def _build_case_assignments_and_outcomes_output(
             hiv_posttest_counsel_percent,
             None,
         ),
+    ]
+
+    return rows
+
+
+def _build_hiv_case_assignment_rows(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Build rows for 'Case Assignments and Outcomes' that are specific to the 'HIV'
+    report variant.
+    """
+    cases_assigned = _calc_cases_assigned(tables['case_interview_rows'], worker)
+    cases_ixd, _ = _calc_cases_ixd(
+        tables['case_interview_rows'], cases_assigned, worker
+    )
+    partner_notification_index = _calc_partner_notification_index(
+        tables['partner_notification'], cases_ixd, worker
+    )
+    testing_index = _calc_testing_index(tables['testing_index'], cases_ixd, worker)
+
+    rows: list[Pa01Row] = [
         (
             _worker_for_csv(worker),
             CASE_ASSIGNMENTS_AND_OUTCOMES,
@@ -233,8 +272,61 @@ def _build_case_assignments_and_outcomes_output(
     return rows
 
 
-def _build_partners_and_clusters_initiated_output(
+def _build_std_case_assignment_rows(
     tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Build rows for 'Case Assignments and Outcomes' that are specific to the 'STD'
+    report variant.
+    """
+    cases_assigned = _calc_cases_assigned(tables['case_interview_rows'], worker)
+    cases_ixd, _ = _calc_cases_ixd(
+        tables['case_interview_rows'], cases_assigned, worker
+    )
+    disease_intervention_index = _calc_disease_intervention_index(
+        tables['disease_intervention_index'], cases_assigned, worker
+    )
+    treatment_index = _calc_treatment_index(
+        tables['treatment_index'], cases_ixd, worker
+    )
+    cases_with_source_identified, cases_with_source_identified_percentage = (
+        _calc_cases_with_source_identified(
+            tables['case_interview_rows'], cases_ixd, worker
+        )
+    )
+
+    return [
+        (
+            _worker_for_csv(worker),
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Disease Intervention Index',
+            None,
+            None,
+            None,
+            disease_intervention_index,
+        ),
+        (
+            _worker_for_csv(worker),
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Treatment Index',
+            None,
+            None,
+            None,
+            treatment_index,
+        ),
+        (
+            _worker_for_csv(worker),
+            CASE_ASSIGNMENTS_AND_OUTCOMES,
+            'Cases W/ Source Identified',
+            None,
+            cases_with_source_identified,
+            cases_with_source_identified_percentage,
+            None,
+        ),
+    ]
+
+
+def _build_partners_and_clusters_initiated_output(
+    tables: dict[str, Table], report_variant: str, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for the "Partners and Clusters Initiated"
     section for a given worker, output data for the final CSV.
@@ -243,8 +335,16 @@ def _build_partners_and_clusters_initiated_output(
     cases_ixd, _ = _calc_cases_ixd(
         tables['case_interview_rows'], cases_assigned, worker
     )
+
+    # Account for the different data source in STD vs. HIV
+    total_period_partners_rows = (
+        tables['partner_case_dispositions']
+        if report_variant == 'STD'
+        else tables['period_partners']
+    )
+
     total_period_partners, total_period_partners_index = _calc_total_period_partners(
-        tables['period_partners'], cases_ixd, worker
+        total_period_partners_rows, cases_ixd, worker
     )
     total_partners_initiated = _calc_total_partners_initiated(
         tables['period_partners'], worker
@@ -255,7 +355,9 @@ def _build_partners_and_clusters_initiated_output(
     total_partners_initiated_ri = _calc_total_partners_initiated_ri(
         tables['period_partners'], worker
     )
-    contact_index = _calc_contact_index(tables['period_partners'], cases_ixd, worker)
+    contact_index = _calc_contact_index(
+        tables['period_partners'], cases_ixd, report_variant, worker
+    )
     cases_with_no_partners, cases_with_no_partners_percentage = (
         _calc_cases_with_no_partners(
             tables['cases_with_no_partners'], cases_ixd, worker
@@ -946,12 +1048,21 @@ def _calc_hiv_previous_positive(
 
 
 def _calc_hiv_tested(
-    case_interview_rows: Table, cases_assigned: int, worker: Pa01Worker | None = None
+    case_interview_rows: Table,
+    cases_assigned: int,
+    report_variant: str,
+    worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
     """Calculate 'HIV Tested' count and percentage.  Calculates for all workers if
     passed in worker is None.
     """
     rows = _rows_for_worker(case_interview_rows, worker)
+
+    if report_variant == 'STD' and worker is None:
+        count = _count_distinct_case_ids(
+            rows, lambda row: row['HIV_900_TEST_IND'] == 'Yes'
+        )
+        return count, _percent_for_csv(count, cases_assigned)
 
     # nb. mirrors the creation of "hiv_tested" table in SAS and the calculation of "HIV
     #     Tested" (have to do this instead of _count_distinct_case_ids because
@@ -975,7 +1086,10 @@ def _calc_hiv_tested(
 
 
 def _calc_hiv_new_positive(
-    case_interview_rows: Table, hiv_tested: int, worker: Pa01Worker | None = None
+    case_interview_rows: Table,
+    hiv_tested: int,
+    report_variant: str,
+    worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
     """Calculate 'HIV New Positive' count and percentage.  Calculates for all workers
     if passed in worker is None.
@@ -991,6 +1105,16 @@ def _calc_hiv_new_positive(
         '12-Prelim Positive',
     }
 
+    if report_variant == 'STD' and worker is not None:
+        count = _count_distinct_case_ids(
+            rows,
+            lambda row: (
+                row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
+                and row['HIV_900_RESULT'] in positive_results
+            ),
+        )
+        return count, _percent_for_csv(count, hiv_tested)
+
     count = _count_distinct_case_ids(
         rows, lambda row: row['HIV_900_RESULT'] in positive_results
     )
@@ -999,12 +1123,21 @@ def _calc_hiv_new_positive(
 
 
 def _calc_hiv_posttest_counsel(
-    case_interview_rows: Table, hiv_tested: int, worker: Pa01Worker | None = None
+    case_interview_rows: Table,
+    hiv_tested: int,
+    report_variant: str,
+    worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
     """Calculate 'HIV Posttest Counsel' count and percentage.  Calculates for all
     workers if passed in worker is None.
     """
     rows = _rows_for_worker(case_interview_rows, worker)
+
+    if report_variant == 'STD' and worker is None:
+        count = _count_distinct_case_ids(
+            rows, lambda row: row['HIV_POST_TEST_900_COUNSELING'] == 'Yes'
+        )
+        return count, _percent_for_csv(count, hiv_tested)
 
     # mirrors creation of "hiv_post_test" table in SAS
     groups: dict[tuple, set] = {}
@@ -1099,7 +1232,10 @@ def _calc_total_partners_initiated_ri(
 
 
 def _calc_contact_index(
-    period_partners: Table, cases_ixd: int, worker: Pa01Worker | None = None
+    period_partners: Table,
+    cases_ixd: int,
+    report_variant: str,
+    worker: Pa01Worker | None = None,
 ) -> str:
     """Calculate 'Contact Index'.  Calculates for all workers if passed in worker is
     None.
@@ -1107,8 +1243,11 @@ def _calc_contact_index(
     rows = _rows_for_worker(period_partners, worker)
     count = _count_distinct_case_ids(rows)
 
-    # nb. this is to align with the precision found in the SAS report
-    precision = 2 if worker is None else 1
+    # nb. this is to align with the precision found in the SAS report:
+    #     - STD variant = 0.01
+    #     - ALL WORKERS in HIV variant = 0.01
+    #     - Other workers in HIV variant = 0.1
+    precision = 2 if report_variant == 'STD' or worker is None else 1
     return _index_for_csv(count, cases_ixd, precision)
 
 
@@ -1412,6 +1551,45 @@ def _calc_new_clusters_notified_day_buckets(
     rows = [row for row in rows if row[DAYS] is not None and 0 <= row[DAYS] <= 14]
 
     return _count_and_percent_day_buckets(rows, new_clusters_notified)
+
+
+def _calc_disease_intervention_index(
+    disease_intervention_index: Table,
+    cases_assigned: int,
+    worker: Pa01Worker | None = None,
+) -> str:
+    rows = _rows_for_worker(disease_intervention_index, worker)
+    count = sum(row['disease_intervention_count'] for row in rows)
+
+    return _index_for_csv(count, cases_assigned)
+
+
+def _calc_cases_with_source_identified(
+    case_interview_rows: Table,
+    cases_ixd: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(case_interview_rows, worker)
+    rows = [
+        row
+        for row in rows
+        if row[CA_PATIENT_INTV_STATUS] == 'I - Interviewed'
+        and row['SOURCE_SPREAD'] == '2 - Source'
+    ]
+
+    count = _count_distinct_case_ids(rows)
+    return count, _percent_for_csv(count, cases_ixd)
+
+
+def _calc_treatment_index(
+    treatment_index: Table,
+    cases_ixd: int,
+    worker: Pa01Worker | None = None,
+) -> str:
+    rows = _rows_for_worker(treatment_index, worker)
+    count = sum(row['treatment_index_count'] for row in rows)
+
+    return _index_for_csv(count, cases_ixd)
 
 
 # helpers

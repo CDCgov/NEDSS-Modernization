@@ -75,8 +75,8 @@
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 205
-  - 71.4%
+  - 173
+  - 60.3%
   - null
 - !!python/tuple
   - ALL
@@ -84,40 +84,48 @@
   - HIV New Positive
   - null
   - 249
-  - 121.5%
+  - 143.9%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 218
-  - 106.3%
+  - 191
+  - 110.4%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.16'
+  - '0.06'
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.16'
+  - '0.09'
+- !!python/tuple
+  - ALL
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 175
+  - 61.0%
+  - null
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 75
+  - 1758
   - null
-  - '0.3'
+  - '6.1'
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
@@ -633,27 +641,35 @@
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.17'
+  - '0.06'
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.17'
+  - '0.07'
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 33
+  - 46.5%
+  - null
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 16
+  - 396
   - null
-  - '0.2'
+  - '5.6'
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
@@ -685,7 +701,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.39'
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
@@ -1169,27 +1185,35 @@
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.07'
+  - '0.05'
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.07'
+  - '0.1'
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 42
+  - 57.5%
+  - null
 - !!python/tuple
   - avance
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 12
+  - 396
   - null
-  - '0.2'
+  - '5.4'
 - !!python/tuple
   - avance
   - Partners & Clusters Initiated
@@ -1221,7 +1245,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.37'
 - !!python/tuple
   - avance
   - Partners & Clusters Initiated
@@ -1705,27 +1729,35 @@
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.11'
+  - '0.0'
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.11'
+  - '0.03'
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 46
+  - 57.5%
+  - null
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 16
+  - 356
   - null
-  - '0.2'
+  - '4.5'
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
@@ -1757,7 +1789,7 @@
   - null
   - null
   - null
-  - '0.3'
+  - '0.35'
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
@@ -2241,27 +2273,35 @@
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.12'
+  - '0.07'
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.12'
+  - '0.09'
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 44
+  - 55.0%
+  - null
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 17
+  - 304
   - null
-  - '0.2'
+  - '3.8'
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
@@ -2293,7 +2333,7 @@
   - null
   - null
   - null
-  - '0.5'
+  - '0.47'
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
@@ -2777,27 +2817,35 @@
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.13'
+  - '0.05'
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.13'
+  - '0.08'
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 40
+  - 50.6%
+  - null
 - !!python/tuple
   - gfreeman
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 14
+  - 306
   - null
-  - '0.2'
+  - '3.9'
 - !!python/tuple
   - gfreeman
   - Partners & Clusters Initiated
@@ -2829,7 +2877,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.35'
 - !!python/tuple
   - gfreeman
   - Partners & Clusters Initiated
