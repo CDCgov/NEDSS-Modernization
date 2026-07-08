@@ -6023,7 +6023,6 @@ FROM Person WITH (NOLOCK)
 WHERE person_parent_uid IN (${person_ids});
 
 ALTER TABLE #target_people ADD CONSTRAINT PK_tp PRIMARY KEY CLUSTERED (person_uid);
-CREATE INDEX ix_tp_parent ON #target_people (person_parent_uid) INCLUDE (person_uid);
 
 -- ============================================================
 -- Step 2: Materialize id_settings (single-row lookup)
@@ -6559,13 +6558,17 @@ SELECT
     p.cd,
     p.person_uid,
     p.local_id,
-    CAST(
-        SUBSTRING(
-            p.local_id,
-            ids.prefix_start,
-            LEN(p.local_id) - ids.prefix_len - ids.suffix_len
-        ) AS bigint
-    ) - ids.initial                 AS short_id,
+    CASE
+      WHEN LEN(p.local_id) - ids.prefix_len - ids.suffix_len &lt;= 0 THEN NULL
+      ELSE
+        CAST(
+            SUBSTRING(
+                p.local_id,
+                ids.prefix_start,
+                LEN(p.local_id) - ids.prefix_len - ids.suffix_len
+            ) AS bigint
+        ) - ids.initial
+    END AS short_id,
     p.record_status_cd,
     p.birth_time,
     p.deceased_ind_cd,
@@ -9923,5 +9926,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/07/2026 00:19:22 UTC</timestamp>
+    <timestamp>07/08/2026 15:06:34 UTC</timestamp>
 </template>
