@@ -16,7 +16,7 @@ SET
     desc_txt = @desc,
     last_chg_time = CURRENT_TIMESTAMP,
     last_chg_user_id = 99999999,
-    library_params = @libraryParam
+    library_params = @libraryParams
 
 WHERE
     UPPER(library_name) = @sasLib;
