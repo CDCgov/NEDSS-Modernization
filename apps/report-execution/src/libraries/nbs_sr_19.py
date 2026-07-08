@@ -76,7 +76,9 @@ def execute(
             else int(row.case_month)
         )
         counted = (
-            int(row.get("counted")) if isinstance(row, dict) else int(row.counted)
+            int(row.get("counted"))
+            if isinstance(row, dict)
+            else int(row.counted)
         )
         non_counted = (
             int(row.get("non_counted"))
