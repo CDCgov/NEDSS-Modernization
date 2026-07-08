@@ -26,12 +26,50 @@ class TestIntegrationNbsCustomLibrary:
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,
                                PATIENT_LOCAL_ID,
+                               EVENT_DATE,
+                               INVESTIGATION_KEY
+                        FROM rdb.dbo.DM_INV_STD
+                """,
+                'sort_by': '[INVESTIGATION_KEY] ASC',
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        data = result.content.data
+        assert len(data) == 500
+        assert len(data[0]) == len(result.content.columns)
+        assert result.content.columns == [
+            'PROGRAM_JURISDICTION_OID',
+            'PATIENT_LOCAL_ID',
+            'EVENT_DATE',
+            'INVESTIGATION_KEY',
+        ]
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+        for data in result.content.data:
+            assert isinstance(data[0], decimal.Decimal)
+            assert isinstance(data[1], str)
+            assert isinstance(data[2], datetime.datetime)
+            assert isinstance(data[3], decimal.Decimal)
+
+    def test_execute_report_no_sort(self, snapshot):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'NBS Custom',
+                'library_name': 'nbs_custom',
+                'data_source_name': '[NBS_RDB].[dbo].[DM_INV_STD]',
+                'subset_query': """
+                        SELECT PROGRAM_JURISDICTION_OID,
+                               PATIENT_LOCAL_ID,
                                EVENT_DATE
                         FROM rdb.dbo.DM_INV_STD
-                        ORDER BY PROGRAM_JURISDICTION_OID,
-                                 PATIENT_LOCAL_ID,
-                                 EVENT_DATE
                 """,
+                'sort_by': None,
             }
         )
 
@@ -46,13 +84,6 @@ class TestIntegrationNbsCustomLibrary:
             'PATIENT_LOCAL_ID',
             'EVENT_DATE',
         ]
-
-        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
-
-        for data in result.content.data:
-            assert isinstance(data[0], decimal.Decimal)
-            assert isinstance(data[1], str)
-            assert isinstance(data[2], datetime.datetime)
 
     def test_execute_report_no_data(self, snapshot):
         report_spec = ReportSpec.model_validate(

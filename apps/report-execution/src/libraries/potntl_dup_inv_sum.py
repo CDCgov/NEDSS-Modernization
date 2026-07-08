@@ -1,8 +1,14 @@
-import logging
-
 from src.db_transaction import Transaction
 from src.errors import MissingColumnError
 from src.models import ReportResult
+
+REQUIRED_COLS = [
+    {'name': 'PATIENT_LOCAL_ID', 'sort': 'asc'},
+    {'name': 'DISEASE_CD', 'sort': 'asc'},
+    {'name': 'EVENT_DATE', 'sort': 'desc'},
+]
+
+REQUIRED_COL_NAMES = [col['name'] for col in REQUIRED_COLS]
 
 
 def execute(
@@ -25,14 +31,13 @@ def execute(
     Event Date to ensure consistent results regardless of encoding.
     * Dates defer to default formatting
     """
-    required_cols = ['PATIENT_LOCAL_ID', 'DISEASE_CD', 'EVENT_DATE']
     if not column_map:
-        raise MissingColumnError(required_cols)
+        raise MissingColumnError(REQUIRED_COL_NAMES)
     # for easier lookups when order doesn't matter
     col_dict = {m[0]: m[1] for m in column_map}
 
     missing_columns = []
-    for col in required_cols:
+    for col in REQUIRED_COL_NAMES:
         if col not in col_dict:
             missing_columns.append(col)
     if len(missing_columns) > 0:
@@ -45,6 +50,14 @@ def execute(
         days_value = 3650
 
     select_clause = ', '.join([f'd.[{item[1]}]' for item in column_map])
+    # can't sort by the same column twice - remove sort_by from the base sort
+    base_order_by = ', '.join(
+        [
+            f'd.[{col_dict[col["name"]]}] {col["sort"]}'
+            for col in REQUIRED_COLS
+            if sort_by is None or f'[{col_dict[col["name"]]}]' not in sort_by
+        ]
+    )
 
     full_query = f"""
     WITH subset AS ({subset_query})
@@ -99,13 +112,9 @@ def execute(
         OR (d.days_until_next IS NOT NULL AND d.days_until_next <= {days_value})
     )
     ORDER BY
-        {sort_by + ',' if sort_by else ''}
-        d.[{col_dict['PATIENT_LOCAL_ID']}],
-        d.[{col_dict['DISEASE_CD']}],
-        d.[{col_dict['EVENT_DATE']}] desc
+        {sort_by.replace('[', 'd.[') + ',' if sort_by else ''}
+        {base_order_by}
     """
-
-    logging.info(full_query)
 
     content = trx.query(full_query)
 
