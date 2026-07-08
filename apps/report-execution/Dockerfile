@@ -7,20 +7,25 @@ ENV UVICORN_HOST="0.0.0.0"
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+# uv settings for production
+ENV UV_NO_DEV=1
+ENV UV_FROZEN=1
+
 WORKDIR /usr/report-execution
 
 # Install mssql driver deps
 RUN microdnf update && microdnf install -y libtool-ltdl krb5-libs
 
-# Copy relevant application code
+# Copy relevant dependency code
 COPY pyproject.toml pyproject.toml
-COPY pytest.toml  pytest.toml
 COPY uv.toml uv.toml
 COPY uv.lock uv.lock
-COPY src src
 
 # Install dependencies
-RUN uv sync --frozen --no-dev
+RUN uv sync
+
+# Copy application code
+COPY src src
 
 # Run the FastAPI application using uvicorn
 CMD ["uv", "run", "uvicorn", "src.main:app"]
