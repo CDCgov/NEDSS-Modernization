@@ -152,7 +152,8 @@ public class ReportController {
   }
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")
-  @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
+  @PreAuthorize(
+      "hasAuthority('RUNREPORT-REPORTING') or hasAuthority('EXPORTREPORT-REPORTING') or hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<ReportConfiguration> getReportConfiguration(
       @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
     ReportConfiguration reportConfigResponse = reportFetcher.getReport(reportUid, dataSourceUid);
@@ -160,7 +161,8 @@ public class ReportController {
   }
 
   @GetMapping("/runner/{reportUid}/{dataSourceUid}")
-  @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
+  @PreAuthorize(
+      "hasAuthority('RUNREPORT-REPORTING') or hasAuthority('EXPORTREPORT-REPORTING') or hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<String> getReportRunner(
       @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
     String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);

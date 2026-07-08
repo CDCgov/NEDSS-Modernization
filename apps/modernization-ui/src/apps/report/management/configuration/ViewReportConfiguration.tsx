@@ -10,8 +10,8 @@ import { ModalRef } from '@trussworks/react-uswds';
 import { ConfirmationModal } from 'confirmation';
 import { ReportConfiguration, ReportControllerService } from 'generated';
 import { LoadingBlock } from 'libs/loading/block';
-import { AlertMessage } from 'design-system/message';
 import { redirectToNBS6 } from 'utils';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
 const ViewReportConfiguration = () => {
     const params = useParams();
@@ -19,7 +19,7 @@ const ViewReportConfiguration = () => {
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
     const confirmDeleteRef = useRef<ModalRef>(null);
     const [deleting, setDeleting] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
+    const [error, setError] = useState<unknown | null>(null);
     const config = useLoaderData<ReportConfiguration>();
 
     return !config ? (
@@ -40,7 +40,7 @@ const ViewReportConfiguration = () => {
                 </>
             }
         >
-            {error && <AlertMessage type="error">{error}</AlertMessage>}
+            {!!error && <ApiErrorBanner action="viewing" item="report" error={error} />}
             <div className={styles.columnContent}>
                 <ReportConfigurationContent isEditable={false} config={config} />
             </div>
@@ -58,7 +58,7 @@ const ViewReportConfiguration = () => {
                             redirectToNBS6(NBS_LIST_REPORT_CONFIG_PAGE);
                         })
                         .catch((err) => {
-                            setError(JSON.stringify(err));
+                            setError(err);
                             confirmDeleteRef.current?.toggleModal();
                         })
                         .finally(() => setDeleting(false));

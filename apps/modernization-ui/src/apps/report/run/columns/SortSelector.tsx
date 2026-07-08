@@ -39,8 +39,8 @@ const SortSelector = ({
 
     // make sure the sort column data resets if column un-selected
     useEffect(() => {
-        if (!selectedColumns.includes(value)) {
-            onChange(undefined);
+        if (!!value && !selectedColumns.includes(value)) {
+            onChange(null);
         }
     }, [selectedColumns, value]);
 
@@ -59,7 +59,7 @@ const SortSelector = ({
                     orientation="vertical"
                     options={columnOptions}
                     value={columnOptions.find((option) => option.value === value)}
-                    onChange={(option) => onChange(option?.value)}
+                    onChange={(option) => onChange(option?.value ?? null)}
                 />
                 <Controller
                     name="sort.direction"
@@ -72,7 +72,7 @@ const SortSelector = ({
                             placeholder="" // force a choice
                             options={DIRECTION_OPTIONS}
                             value={DIRECTION_OPTIONS.find((option) => option.value === value)}
-                            onChange={(option) => onChange(option?.value)}
+                            onChange={(option) => onChange(option?.value ?? null)}
                         />
                     )}
                 />
