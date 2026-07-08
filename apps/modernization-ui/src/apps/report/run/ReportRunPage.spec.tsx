@@ -3429,7 +3429,7 @@ describe('report run page', () => {
                 });
 
                 // refine and un-set and make sure things are good
-                await user.click(await findByRole('button', { name: 'Refine Report' }));
+                await user.click(await findByRole('button', { name: 'Refine report' }));
                 await user.selectOptions(await findByLabelText('Sort by'), '- Select -');
 
                 await user.click(await findByRole('button', { name: 'Export' }));
