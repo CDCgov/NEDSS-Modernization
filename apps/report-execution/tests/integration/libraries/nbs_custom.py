@@ -53,7 +53,7 @@ class TestIntegrationNbsCustomLibrary:
             assert isinstance(data[0], decimal.Decimal)
             assert isinstance(data[1], str)
             assert isinstance(data[2], datetime.datetime)
-            assert isinstance(data[3], decimal.Decimal)
+            assert isinstance(data[3], int)
 
     def test_execute_report_no_sort(self, snapshot):
         report_spec = ReportSpec.model_validate(
