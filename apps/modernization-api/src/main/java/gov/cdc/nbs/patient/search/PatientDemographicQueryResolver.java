@@ -342,7 +342,12 @@ class PatientDemographicQueryResolver {
             Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(value))));
         case "after" ->
             Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).gt(value))));
-        default -> Optional.of(MatchQuery.of(match -> match.field(BIRTHDAY).query(value)));
+        default -> {
+          String nextDayValue = FlexibleInstantConverter.toString(dateOfBirth.plusDays(1));
+          yield Optional.of(
+              RangeQuery.of(
+                  range -> range.term(term -> term.field(BIRTHDAY).gte(value).lt(nextDayValue))));
+        }
       };
     }
 
@@ -351,10 +356,13 @@ class PatientDemographicQueryResolver {
         && dateCriteria.equals() != null
         && dateCriteria.equals().isCompleteDate()) {
       Equals equals = dateCriteria.equals();
-      String value =
-          FlexibleInstantConverter.toString(
-              LocalDate.of(equals.year(), equals.month(), equals.day()));
-      return Optional.of(MatchQuery.of(match -> match.field(BIRTHDAY).query(value)));
+      LocalDate targetDate = LocalDate.of(equals.year(), equals.month(), equals.day());
+      String value = FlexibleInstantConverter.toString(targetDate);
+
+      String nextDayValue = FlexibleInstantConverter.toString(targetDate.plusDays(1));
+      return Optional.of(
+          RangeQuery.of(
+              range -> range.term(term -> term.field(BIRTHDAY).gte(value).lt(nextDayValue))));
     }
 
     return Optional.empty();
