@@ -25,11 +25,19 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
 
   private final ReportService reportService;
+  private final ReportFetcher reportFetcher;
   private final ReportRepository reportRepository;
+  private final ReportExecutionServiceClient reportExecutionClient;
 
-  public ReportController(ReportService reportService, ReportRepository reportRepository) {
+  public ReportController(
+      ReportService reportService,
+      ReportExecutionServiceClient reportExecutionClient,
+      ReportRepository reportRepository,
+      ReportFetcher reportFetcher) {
     this.reportService = reportService;
     this.reportRepository = reportRepository;
+    this.reportExecutionClient = reportExecutionClient;
+    this.reportFetcher = reportFetcher;
   }
 
   @PostMapping("/configuration")
@@ -112,14 +120,35 @@ public class ReportController {
   }
 
   @PostMapping("/configuration/{reportUid}/{dataSourceUid}/save-as")
-  //  TODO: Figure out how to handle permissions more granularly NOSONAR
   public ResponseEntity<ReportId> saveAsReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody SaveAsReportRequest request) {
-    //  @TODO: Finish implementation NOSONAR
-    return null;
+    String authOperationType;
+    ReportConstants.ReportGroup reportGroup = request.group();
+
+    authOperationType =
+        switch (reportGroup) {
+          case PUBLIC -> ReportConstants.Permissions.CREATEREPORTPUBLIC;
+          case PRIVATE -> ReportConstants.Permissions.CREATEREPORTPRIVATE;
+          case REPORTING_FACILITY -> ReportConstants.Permissions.CREATEREPORTREPORTINGFACILITY;
+          case TEMPLATE ->
+              throw new IllegalArgumentException(
+                  "Template reports cannot be created using 'saveAs'");
+        };
+
+    Permission permission =
+        new Permission(authOperationType, ReportConstants.Permissions.REPORTINGOBJECT);
+
+    if (!user.hasPermission(permission)) {
+      throw new ForbiddenException(
+          "User does not have permission to create " + reportGroup.name() + " reports");
+    }
+
+    Report report =
+        reportService.saveAsReport(request, user, new ReportId(reportUid, dataSourceUid));
+    return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
 
   @GetMapping("/configuration/{reportUid}/{dataSourceUid}")
@@ -127,7 +156,7 @@ public class ReportController {
       "hasAuthority('RUNREPORT-REPORTING') or hasAuthority('EXPORTREPORT-REPORTING') or hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<ReportConfiguration> getReportConfiguration(
       @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
-    ReportConfiguration reportConfigResponse = reportService.getReport(reportUid, dataSourceUid);
+    ReportConfiguration reportConfigResponse = reportFetcher.getReport(reportUid, dataSourceUid);
     return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
   }
 
@@ -136,7 +165,7 @@ public class ReportController {
       "hasAuthority('RUNREPORT-REPORTING') or hasAuthority('EXPORTREPORT-REPORTING') or hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<String> getReportRunner(
       @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
-    String runner = reportService.getReportRunner(reportUid, dataSourceUid);
+    String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
     return new ResponseEntity<>(runner, HttpStatus.OK);
   }
 
@@ -158,7 +187,7 @@ public class ReportController {
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
 
-    return new ResponseEntity<>(reportService.executeReport(request), HttpStatus.OK);
+    return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
   }
 
   @PostMapping("/export")
@@ -167,6 +196,6 @@ public class ReportController {
       @Valid @RequestBody ReportExecutionRequest request) {
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    return new ResponseEntity<>(reportService.executeReport(request), HttpStatus.OK);
+    return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
   }
 }

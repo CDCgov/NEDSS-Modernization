@@ -19,14 +19,13 @@ public class DisplayColumnBuilder {
     this.idGenerator = idGenerator;
   }
 
-  public DisplayColumn build(Report report, DataSourceColumn column, int sequence) {
+  public DisplayColumn build(Report report, DataSourceColumn column) {
     LocalDateTime now = LocalDateTime.now(this.clock);
 
     return DisplayColumn.builder()
         .id(generateColumnId())
         .dataSourceColumn(column)
         .report(report)
-        .sequenceNumber(sequence)
         .statusCd(Status.ACTIVE_CODE)
         .statusTime(now)
         .build();
