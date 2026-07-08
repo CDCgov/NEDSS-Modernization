@@ -120,8 +120,6 @@ const ReportRunPage = () => {
             setLastReportExecutionRequest(requestBody);
             runner({ requestBody })
                 .then((res) => {
-                    setStatus('complete');
-
                     try {
                         if (isExport) {
                             fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
@@ -139,7 +137,8 @@ const ReportRunPage = () => {
                         setError(err);
                     }
                 })
-                .catch(setError);
+                .catch(setError)
+                .finally(() => setStatus('complete'));
         },
         [config]
     );

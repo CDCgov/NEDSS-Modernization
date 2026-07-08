@@ -34,7 +34,7 @@ const ApiErrorBanner = ({
                     <pre>
                         {error.status} {error.statusText}
                     </pre>
-                    {!!error.body.message && <pre>{error.body.message}</pre>}
+                    {!!error.body?.message && <pre>{error.body.message}</pre>}
                 </>
             ) : error instanceof Error ? (
                 <>
