@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.exception.NotFoundException;
+import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.mappers.FilterValueMapper;
 import gov.cdc.nbs.report.mappers.ReportMapper;
 import gov.cdc.nbs.report.mappers.ReportSortColumnMapper;
@@ -17,20 +17,30 @@ import gov.cdc.nbs.repository.*;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClient.RequestBodySpec;
+import org.springframework.web.client.RestClient.RequestBodyUriSpec;
+import org.springframework.web.client.RestClient.ResponseSpec;
 
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
@@ -43,21 +53,64 @@ class ReportServiceTest {
   @Mock private FilterCodeRepository filterCodeRepository;
   @Mock private DataSourceColumnRepository dataSourceColumnRepository;
   @Mock private ReportSectionRepository reportSectionRepository;
-
+  @Mock private ReportFilterRepository reportFilterRepository;
   @Mock private ReportMapper reportMapper;
   @Mock private ReportSortColumnMapper reportSortColumnMapper;
   @Mock private FilterValueMapper filterValueMapper;
   @Mock private DisplayColumnBuilder displayColumnBuilder;
-  @Mock private ReportFetcher reportFetcher;
 
+  @Mock private RestClient reportExecutionClient;
+  @Mock private ReportLibrary reportLibrary;
   @Mock private DataSource dataSource;
+  @Mock private ReportSortColumn reportSortColumn;
   @Mock private ReportFilterBuilder reportFilterBuilder;
+
+  @Mock private RequestBodyUriSpec requestBodyUriSpec;
+  @Mock private RequestBodySpec requestBodySpec;
+  @Mock private ResponseSpec responseSpec;
+  @Mock private DisplayColumn columnA;
+  @Mock private DisplayColumn columnB;
 
   @InjectMocks private ReportService service;
 
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
   private final Long libraryId = 20L;
+  private final Long columnAId = 3L;
+  private final Long columnBId = 4L;
+
+  private Report mockReport(
+      ReportId id, String runner, String dataSourceName, List<ReportFilter> reportFilters) {
+    return mockReport(id, runner, dataSourceName, reportFilters, "DESC");
+  }
+
+  private Report mockReport(
+      ReportId id,
+      String runner,
+      String dataSourceName,
+      List<ReportFilter> reportFilters,
+      String sortDir) {
+    Report report = mock(Report.class);
+
+    Mockito.lenient().when(report.getReportLibrary()).thenReturn(reportLibrary);
+    Mockito.lenient().when(report.getDataSource()).thenReturn(dataSource);
+    Mockito.lenient().when(dataSource.getDataSourceName()).thenReturn(dataSourceName);
+    Mockito.lenient().when(report.getReportFilters()).thenReturn(reportFilters);
+    Mockito.lenient().when(report.getDisplayColumns()).thenReturn(List.of(columnA, columnB));
+    Mockito.lenient().when(report.getShared()).thenReturn('P');
+    Mockito.lenient().when(columnA.getDataSourceColumnId()).thenReturn(columnAId);
+    Mockito.lenient().when(columnB.getDataSourceColumnId()).thenReturn(columnBId);
+    Mockito.lenient().when(columnA.getSequenceNumber()).thenReturn(2);
+    Mockito.lenient().when(columnB.getSequenceNumber()).thenReturn(1);
+    Mockito.lenient().when(report.getReportSortColumns()).thenReturn(List.of(reportSortColumn));
+    Mockito.lenient().when(reportSortColumn.getReportSortOrderCode()).thenReturn(sortDir);
+    Mockito.lenient().when(reportSortColumn.getDataSourceColumnUid()).thenReturn(columnAId);
+    Mockito.lenient().when(reportLibrary.getRunner()).thenReturn(runner);
+    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("nbs_custom");
+    Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+    return report;
+  }
 
   @Nested
   class CreateReport {
@@ -203,6 +256,9 @@ class ReportServiceTest {
 
   @Nested
   class EditReport {
+    private final Long reportUid = 1L;
+    private final Long dataSourceUid = 2L;
+    private final Long libraryId = 20L;
     private final Long filterCodeUid = 7L;
     private final Long columnUid = 8L;
     private final String sectionCd = "1000";
@@ -397,12 +453,15 @@ class ReportServiceTest {
 
   @Nested
   class DeleteReport {
+    private final Long reportUid = 1L;
+    private final Long dataSourceUid = 2L;
+
     private Report savedReport;
     private ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
     @BeforeEach
     void setup() {
-      savedReport = buildTestReport();
+      savedReport = mock(Report.class);
 
       Mockito.lenient()
           .when(reportRepository.findById(reportId))
@@ -430,7 +489,205 @@ class ReportServiceTest {
   }
 
   @Nested
+  class GetReport {
+    @Test
+    void getReport_should_return_configuration_when_report_exists() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      List<ReportFilter> reportFilters =
+          List.of(
+              new ReportFilter(
+                  3L,
+                  mock(Report.class),
+                  new FilterCode(4L, "NONE", null, null, "J_S01", null, "BAS_JUR_LIST", null, null),
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null),
+              new ReportFilter(
+                  6L,
+                  mock(Report.class),
+                  new FilterCode(
+                      5L,
+                      "NONE",
+                      null,
+                      null,
+                      "A_W01",
+                      null,
+                      ReportConstants.ADV_FILTER_TYPE,
+                      null,
+                      null),
+                  null,
+                  List.of(
+                      FilterValue.builder()
+                          .id(47L)
+                          .sequenceNumber(1)
+                          .valueType("CLAUSE")
+                          .columnUid(9L)
+                          .operator("EQUALS")
+                          .valueTxt("value1")
+                          .build()),
+                  null,
+                  null,
+                  null,
+                  null));
+      mockReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
+
+      ReportConfiguration config = service.getReport(reportUid, dataSourceUid);
+
+      assertThat(config.dataSource().name()).isEqualTo("nbs_ods.PHCDemographic");
+      assertThat(config.basicFilters())
+          .hasSize(1)
+          .allSatisfy(
+              filterConfig -> {
+                assertThat(filterConfig.reportFilterUid()).isEqualTo(3L);
+
+                assertThat(filterConfig.filterType().code()).isEqualTo("J_S01");
+              });
+      assertThat(config.advancedFilter().reportFilterUid()).isEqualTo(6L);
+      assertThat(config.defaultColumnUids()).isEqualTo(List.of(columnBId, columnAId));
+      assertThat(config.group()).isEqualTo(ReportGroup.PRIVATE);
+    }
+
+    @Test
+    void getReport_should_throw_when_report_not_found() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+      assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    }
+
+    @Test
+    void getReport_should_throw_when_library_not_found() {
+      Report report = mock(Report.class);
+
+      Mockito.lenient().when(report.getReportLibrary()).thenReturn(null);
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+      assertThatThrownBy(() -> service.getReport(reportUid, dataSourceUid))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("No library found for this report");
+    }
+  }
+
+  @Nested
+  class GetReportRunner {
+    @Test
+    void getReportRunner_should_return_runner_when_report_exists() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
+
+      String runner = service.getReportRunner(reportUid, dataSourceUid);
+
+      assertThat(runner).isEqualTo("python");
+    }
+
+    @Test
+    void getReportRunner_should_throw_when_report_not_found() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+      assertThatThrownBy(() -> service.getReportRunner(reportUid, dataSourceUid))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    }
+
+    @Test
+    void getReportRunner_should_return_sas_when_report_has_no_library() {
+      ReportId reportId = new ReportId(reportUid, dataSourceUid);
+      Report report = mockReport(reportId, "python", "nbs_ods.PHCDemographic", List.of());
+
+      when(report.getReportLibrary()).thenReturn(null);
+
+      String runner = service.getReportRunner(reportUid, dataSourceUid);
+
+      assertThat(runner).isEqualTo("sas");
+    }
+  }
+
+  @Nested
+  class ExecuteReport {
+    @Test
+    void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      mockReport(id, "python", "nbs_ods.PHCDemographic", List.of());
+
+      ReportSpec spec =
+          new ReportSpec(
+              true,
+              true,
+              "Test Report",
+              "nbs_custom",
+              "[NBS_ODSE].[dbo].[PHCDemographic]",
+              "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+              null,
+              null,
+              null,
+              null);
+      try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
+          mockConstruction(
+              ReportSpecBuilder.class,
+              (builder, context) -> when(builder.build()).thenReturn(spec))) {
+        when(reportExecutionClient.post()).thenReturn(requestBodyUriSpec);
+        when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
+        when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
+        when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
+
+        ResponseEntity<LibraryExecutionResult> expectedResponse =
+            new ResponseEntity<>(getReportExecutionResponse().result(), HttpStatus.OK);
+        when(responseSpec.toEntity(LibraryExecutionResult.class)).thenReturn(expectedResponse);
+
+        ReportExecutionRequest request =
+            new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
+
+        ReportExecutionResult response = service.executeReport(request);
+
+        assertThat(response.result()).isEqualTo(expectedResponse.getBody());
+        ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
+        verify(specBuilder).build();
+      }
+    }
+
+    @Test
+    void executeReport_should_throw_not_implemented_when_runner_not_python() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+      mockReport(id, "java", "nbs_rdb.V_CHALK_TALK", List.of());
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid, dataSourceUid, true, List.of(17L), null, List.of(), null);
+
+      assertThatThrownBy(() -> service.executeReport(request))
+          .isInstanceOf(NotImplementedException.class)
+          .hasMessage("Report not implemented for java");
+    }
+
+    @Test
+    void executeReport_should_throw_not_found_when_report_not_found() {
+      ReportId id = new ReportId(reportUid, dataSourceUid);
+
+      when(reportRepository.findById(id)).thenReturn(Optional.empty());
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid, dataSourceUid, true, List.of(18L), null, List.of(), null);
+
+      assertThatThrownBy(() -> service.executeReport(request))
+          .isInstanceOf(NotFoundException.class)
+          .hasMessage("Report not found for Report UID: 1 and Data Source UID: 2");
+    }
+  }
+
+  @Nested
   class SaveReport {
+    private final Long reportUid = 1L;
+    private final Long dataSourceUid = 2L;
     private Report existingReport;
     private Report savedReport;
 
@@ -438,10 +695,6 @@ class ReportServiceTest {
     void setup() {
       existingReport = mock(Report.class);
       savedReport = mock(Report.class);
-
-      Mockito.lenient().when(existingReport.getDataSource()).thenReturn(dataSource);
-      Mockito.lenient().when(existingReport.getDisplayColumns()).thenReturn(new ArrayList<>());
-      Mockito.lenient().when(existingReport.getReportSortColumns()).thenReturn(new ArrayList<>());
 
       Mockito.lenient().when(reportRepository.save(existingReport)).thenReturn(savedReport);
     }
@@ -468,14 +721,15 @@ class ReportServiceTest {
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
       DisplayColumn displayColumn3 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(existingReport, column1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(existingReport, column2)).thenReturn(displayColumn2);
-      when(displayColumnBuilder.build(existingReport, column3)).thenReturn(displayColumn3);
+      when(displayColumnBuilder.build(existingReport, column1, 1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(existingReport, column2, 2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(existingReport, column3, 3)).thenReturn(displayColumn3);
 
       Report result = service.saveReport(request, existingReport);
 
       verify(existingReport, times(2)).getDisplayColumns();
-      verify(displayColumnBuilder, times(3)).build(any(Report.class), any(DataSourceColumn.class));
+      verify(displayColumnBuilder, times(3))
+          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -588,26 +842,22 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(basicFilterRequest), null);
 
       ReportFilter basicFilter = mock(ReportFilter.class);
-      when(basicFilter.isBasicFilter()).thenReturn(true);
-
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient()
-          .when(filterCode.getFilterType())
-          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
-      Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
-      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
-      Mockito.lenient().when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      Mockito.lenient().when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(basicFilter.getId()).thenReturn(basicFilterUid);
+      when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       List<FilterValue> filterValues = List.of(mock(FilterValue.class));
-      Mockito.lenient()
-          .when(filterValueMapper.fromBasicFilterRequest(basicFilter, basicFilterRequest))
+      when(filterValueMapper.fromBasicFilterRequest(basicFilter, basicFilterRequest))
           .thenReturn(filterValues);
 
       Report result = service.saveReport(request, existingReport);
 
       verify(filterValueMapper).fromBasicFilterRequest(basicFilter, basicFilterRequest);
+      verify(reportFilterRepository).saveAll(any());
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -626,17 +876,15 @@ class ReportServiceTest {
       ReportFilter basicFilter = mock(ReportFilter.class);
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient()
-          .when(filterCode.getFilterType())
-          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
-      Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
-      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(basicFilter.getId()).thenReturn(basicFilterUid);
+      when(basicFilter.getFilterCode()).thenReturn(filterCode);
       when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
 
       assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining(
-              "BasicFilterRequest.reportFilterUid (20) does not match existing basic filter ID");
+              "BasicFilterRequest.reportFilterUid does not match existing basic filter ID");
     }
 
     @Test
@@ -649,15 +897,11 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(basicFilterRequest), null);
 
       ReportFilter basicFilter = mock(ReportFilter.class);
-      when(basicFilter.isBasicFilter()).thenReturn(true);
-
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient()
-          .when(filterCode.getFilterType())
-          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
-      Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
-      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(basicFilter.getId()).thenReturn(basicFilterUid);
+      when(basicFilter.getFilterCode()).thenReturn(filterCode);
 
       List<FilterValue> existingFilterValues = spy(new ArrayList<>());
       when(basicFilter.getFilterValues()).thenReturn(existingFilterValues);
@@ -680,22 +924,14 @@ class ReportServiceTest {
 
       ReportFilter basicFilter1 = mock(ReportFilter.class);
       when(basicFilter1.getId()).thenReturn(10L);
-      when(basicFilter1.isBasicFilter()).thenReturn(true);
-
       ReportFilter basicFilter2 = mock(ReportFilter.class);
       when(basicFilter2.getId()).thenReturn(20L);
-      when(basicFilter2.isBasicFilter()).thenReturn(true);
-
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient()
-          .when(filterCode.getFilterType())
-          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
-      Mockito.lenient().when(basicFilter1.getFilterCode()).thenReturn(filterCode);
-      Mockito.lenient().when(basicFilter2.getFilterCode()).thenReturn(filterCode);
-      Mockito.lenient()
-          .when(existingReport.getReportFilters())
-          .thenReturn(List.of(basicFilter1, basicFilter2));
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(basicFilter1.getFilterCode()).thenReturn(filterCode);
+      when(basicFilter2.getFilterCode()).thenReturn(filterCode);
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter1, basicFilter2));
 
       List<FilterValue> existingFilterValues1 = spy(new ArrayList<>());
       when(basicFilter1.getFilterValues()).thenReturn(existingFilterValues1);
@@ -730,15 +966,13 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(), advancedFilterRequest);
 
       ReportFilter advancedFilter = mock(ReportFilter.class);
-      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
-
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
-      Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
-      Mockito.lenient().when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      Mockito.lenient().when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(advancedFilter.getId()).thenReturn(advancedFilterUid);
+      when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       List<FilterValue> filterValues = List.of(mock(FilterValue.class));
       when(filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest))
@@ -747,6 +981,7 @@ class ReportServiceTest {
       Report result = service.saveReport(request, existingReport);
 
       verify(filterValueMapper).fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest);
+      verify(reportFilterRepository).save(advancedFilter);
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -788,14 +1023,12 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(), advancedFilterRequest);
 
       ReportFilter advancedFilter = mock(ReportFilter.class);
-      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
-
       FilterCode filterCode = mock(FilterCode.class);
 
-      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
-      Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
-      Mockito.lenient().when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(advancedFilter.getId()).thenReturn(advancedFilterUid);
+      when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       assertThatThrownBy(() -> service.saveReport(request, existingReport))
           .isInstanceOf(IllegalArgumentException.class)
@@ -811,22 +1044,21 @@ class ReportServiceTest {
               reportUid, dataSourceUid, true, List.of(), null, List.of(), null);
 
       ReportFilter advancedFilter = mock(ReportFilter.class);
-      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
-
       FilterCode filterCode = mock(FilterCode.class);
 
       List<FilterValue> filterValues = spy(new ArrayList<>());
       when(advancedFilter.getFilterValues()).thenReturn(filterValues);
 
-      Mockito.lenient().when(filterCode.getFilterType()).thenReturn(FilterCode.ADV_FILTER_TYPE);
+      when(filterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
       Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(filterCode);
-      Mockito.lenient().when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
+      when(advancedFilter.getFilterCode()).thenReturn(filterCode);
+      when(existingReport.getReportFilters()).thenReturn(List.of(advancedFilter));
 
       Report result = service.saveReport(request, existingReport);
 
       verify(advancedFilter).getFilterValues();
       verify(filterValues).clear();
+      verify(reportFilterRepository).save(advancedFilter);
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -889,52 +1121,38 @@ class ReportServiceTest {
       when(existingReport.getReportSortColumns()).thenReturn(new ArrayList<>());
 
       ReportFilter basicFilter = mock(ReportFilter.class);
-      when(basicFilter.isBasicFilter()).thenReturn(true);
-
       ReportFilter advancedFilter = mock(ReportFilter.class);
-      when(advancedFilter.isAdvancedFilter()).thenReturn(true);
-
       FilterCode basicFilterCode = mock(FilterCode.class);
       FilterCode advancedFilterCode = mock(FilterCode.class);
 
-      Mockito.lenient()
-          .when(basicFilterCode.getFilterType())
-          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
-      Mockito.lenient()
-          .when(advancedFilterCode.getFilterType())
-          .thenReturn(FilterCode.ADV_FILTER_TYPE);
-      Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
-      Mockito.lenient().when(advancedFilter.getId()).thenReturn(advancedFilterUid);
-      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(basicFilterCode);
-      Mockito.lenient().when(advancedFilter.getFilterCode()).thenReturn(advancedFilterCode);
-      Mockito.lenient().when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      Mockito.lenient().when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
-      Mockito.lenient()
-          .when(existingReport.getReportFilters())
-          .thenReturn(List.of(basicFilter, advancedFilter));
+      when(basicFilterCode.getFilterType())
+          .thenReturn(ReportConstants.BASIC_FILTER_PREFIX + "TEST");
+      when(advancedFilterCode.getFilterType()).thenReturn(ReportConstants.ADV_FILTER_TYPE);
+      when(basicFilter.getId()).thenReturn(basicFilterUid);
+      when(advancedFilter.getId()).thenReturn(advancedFilterUid);
+      when(basicFilter.getFilterCode()).thenReturn(basicFilterCode);
+      when(advancedFilter.getFilterCode()).thenReturn(advancedFilterCode);
+      when(basicFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(advancedFilter.getFilterValues()).thenReturn(new ArrayList<>());
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter, advancedFilter));
 
       DisplayColumn displayColumn = mock(DisplayColumn.class);
-      Mockito.lenient()
-          .when(displayColumnBuilder.build(existingReport, column1))
-          .thenReturn(displayColumn);
+      when(displayColumnBuilder.build(existingReport, column1, 1)).thenReturn(displayColumn);
 
       ReportSortColumn sortColumn = mock(ReportSortColumn.class);
-      Mockito.lenient()
-          .when(reportSortColumnMapper.fromSortSpec(existingReport, sortSpec))
-          .thenReturn(sortColumn);
+      when(reportSortColumnMapper.fromSortSpec(existingReport, sortSpec)).thenReturn(sortColumn);
 
       List<FilterValue> basicFilterValues = List.of(mock(FilterValue.class));
       List<FilterValue> advancedFilterValues = List.of(mock(FilterValue.class));
-      Mockito.lenient()
-          .when(filterValueMapper.fromBasicFilterRequest(basicFilter, basicFilterRequest))
+      when(filterValueMapper.fromBasicFilterRequest(basicFilter, basicFilterRequest))
           .thenReturn(basicFilterValues);
-      Mockito.lenient()
-          .when(filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest))
+      when(filterValueMapper.fromAdvancedFilterRequest(advancedFilter, advancedFilterRequest))
           .thenReturn(advancedFilterValues);
 
       Report result = service.saveReport(request, existingReport);
 
-      verify(displayColumnBuilder).build(any(Report.class), any(DataSourceColumn.class));
+      verify(displayColumnBuilder)
+          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
       verify(reportSortColumnMapper).fromSortSpec(any(), any());
       verify(filterValueMapper).fromBasicFilterRequest(any(), any());
       verify(filterValueMapper).fromAdvancedFilterRequest(any(), any());
@@ -962,12 +1180,13 @@ class ReportServiceTest {
       DisplayColumn displayColumn1 = mock(DisplayColumn.class);
       DisplayColumn displayColumn2 = mock(DisplayColumn.class);
 
-      when(displayColumnBuilder.build(existingReport, column1)).thenReturn(displayColumn1);
-      when(displayColumnBuilder.build(existingReport, column2)).thenReturn(displayColumn2);
+      when(displayColumnBuilder.build(existingReport, column1, 1)).thenReturn(displayColumn1);
+      when(displayColumnBuilder.build(existingReport, column2, 2)).thenReturn(displayColumn2);
 
       Report result = service.saveReport(request, existingReport);
 
-      verify(displayColumnBuilder, times(2)).build(any(Report.class), any(DataSourceColumn.class));
+      verify(displayColumnBuilder, times(2))
+          .build(any(Report.class), any(DataSourceColumn.class), any(int.class));
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -992,130 +1211,15 @@ class ReportServiceTest {
     }
   }
 
-  @Nested
-  class SaveAsReport {
-    private final ReportId existingReportId = new ReportId(reportUid, dataSourceUid);
-    private Report existingReport;
-
-    private Report newReport;
-
-    private NbsUserDetails mockUser;
-
-    private ReportService serviceSpy;
-
-    @BeforeEach
-    void setup() {
-      serviceSpy = spy(service);
-
-      mockUser = mock(NbsUserDetails.class);
-
-      existingReport = mock(Report.class);
-      newReport = mock(Report.class);
-
-      Mockito.lenient().when(existingReport.getDataSource()).thenReturn(dataSource);
-
-      Mockito.lenient().when(existingReport.getId()).thenReturn(existingReportId);
-      Mockito.lenient()
-          .when(reportRepository.findById(existingReportId))
-          .thenReturn(Optional.of(existingReport));
-
-      Mockito.lenient()
-          .when(reportRepository.findById(newReport.getId()))
-          .thenReturn(Optional.of(newReport));
-
-      Mockito.lenient()
-          .when(reportMapper.duplicate(existingReport, mockUser))
-          .thenReturn(newReport);
-      Mockito.lenient().when(reportRepository.save(newReport)).thenReturn(newReport);
-
-      Mockito.lenient()
-          .doReturn(newReport)
-          .when(serviceSpy)
-          .saveReport(any(ReportExecutionRequest.class), any(Report.class));
-    }
-
-    @Test
-    void saveAsReport_should_duplicate_original_report_and_override_select_fields() {
-      ReportExecutionRequest reportExecutionRequest =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
-      SaveAsReportRequest request =
-          new SaveAsReportRequest(
-              "Custom Title",
-              "Custom",
-              ReportConstants.ReportGroup.PUBLIC,
-              reportExecutionRequest,
-              "some description text");
-
-      serviceSpy.saveAsReport(request, mockUser, existingReportId);
-
-      verify(reportMapper).duplicate(existingReport, mockUser);
-
-      verify(newReport).setReportTitle(request.reportTitle());
-      verify(newReport).setSectionCd(request.sectionCode());
-      verify(newReport).setShared(ReportConstants.reportGroupToDbChar(request.group()));
-      verify(newReport).setDescTxt(request.description());
-    }
-
-    @Test
-    void saveAsReport_should_set_owner_uid_to_user_making_request() {
-      ReportExecutionRequest reportExecutionRequest =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
-      SaveAsReportRequest request =
-          new SaveAsReportRequest(
-              "Custom Title",
-              "Custom",
-              ReportConstants.ReportGroup.PUBLIC,
-              reportExecutionRequest,
-              "some description text");
-
-      Report result = serviceSpy.saveAsReport(request, mockUser, existingReportId);
-
-      assertThat(result.getOwnerUid()).isEqualTo(mockUser.getId());
-    }
-
-    @Test
-    void saveAsReport_should_invoke_updateReport_with_new_report_id() {
-      ReportExecutionRequest reportExecutionRequest =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
-      SaveAsReportRequest request =
-          new SaveAsReportRequest(
-              "Custom Title",
-              "Custom",
-              ReportConstants.ReportGroup.PUBLIC,
-              reportExecutionRequest,
-              "some description text");
-
-      Report finalReport = mock(Report.class);
-
-      doReturn(finalReport).when(serviceSpy).updateReport(reportExecutionRequest, existingReport);
-
-      Report result = serviceSpy.saveAsReport(request, mockUser, existingReportId);
-
-      verify(serviceSpy).updateReport(reportExecutionRequest, newReport);
-      assertThat(result).isEqualTo(finalReport);
-    }
-  }
-
-  private Report buildTestReport() {
-    ReportId reportId = new ReportId(50L, dataSourceUid);
-    return Report.builder()
-        .id(reportId)
-        .dataSource(dataSource)
-        .reportFilters(Collections.emptyList())
-        .descTxt("Test Description")
-        .addTime(LocalDateTime.now(clock))
-        .filterMode('B')
-        .isModifiableIndicator('N')
-        .location("test location")
-        .ownerUid(84930L)
-        .reportTitle("Test Report")
-        .reportTypeCode("SAS_CUSTOM")
-        .shared(ReportConstants.reportGroupToDbChar(ReportConstants.ReportGroup.PUBLIC))
-        .category("Test Category")
-        .sectionCd("section")
-        .addTime(LocalDateTime.now(clock))
-        .addUserUid(849032L)
-        .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
-        .build();
+  private ReportExecutionResult getReportExecutionResponse() {
+    return new ReportExecutionResult(
+        new LibraryExecutionResult(
+            "table",
+            "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
+            "result header",
+            "result subheader",
+            "result description"),
+        "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
+        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }
