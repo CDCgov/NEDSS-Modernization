@@ -23,8 +23,6 @@ spring:
   graphql:
     graphiql:
       enabled: false
-  liquibase:
-    enabled: true
 
   main:
     allow-bean-definition-overriding: true
