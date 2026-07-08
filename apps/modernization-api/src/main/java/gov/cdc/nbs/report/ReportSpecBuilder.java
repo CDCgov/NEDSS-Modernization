@@ -3,7 +3,6 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
