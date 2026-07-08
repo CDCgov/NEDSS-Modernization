@@ -180,15 +180,17 @@ public class ReportService {
     if (basicFilterReqs == null || basicFilterReqs.isEmpty()) {
       basicFiltersById.values().forEach(basicFilter -> basicFilter.getFilterValues().clear());
     } else {
+
+      basicFilterReqs.forEach(
+          req -> {
+            if (!basicFiltersById.containsKey(req.reportFilterUid()))
+              throw new IllegalArgumentException(
+                  "BasicFilterRequest.reportFilterUid (%s) does not match existing basic filter ID"
+                      .formatted(req.reportFilterUid()));
+          });
+
       Map<Long, BasicFilterRequest> basicFilterReqsById =
           basicFilterReqs.stream()
-              .peek(
-                  req -> {
-                    if (!basicFiltersById.containsKey(req.reportFilterUid()))
-                      throw new IllegalArgumentException(
-                          "BasicFilterRequest.reportFilterUid (%s) does not match existing basic filter ID"
-                              .formatted(req.reportFilterUid()));
-                  })
               .collect(Collectors.toMap(BasicFilterRequest::reportFilterUid, Function.identity()));
 
       basicFiltersById
