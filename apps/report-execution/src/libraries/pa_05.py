@@ -2,6 +2,7 @@ from collections import defaultdict
 from datetime import date, datetime
 from decimal import Decimal
 
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.libraries.contact_record import (
     ASSOCIATE_BASES,
@@ -255,6 +256,8 @@ def _distinct_count_map(source: dict[WorkerKey, set]) -> dict[WorkerKey, int]:
 
 
 def _activity_query(subset_query: str) -> str:
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+
     # Equivalent to the PA05 dataset build (PA05.sas lines 122-132). Drops
     # INVESTIGATION_KEY and INVESTIGATOR_INTERVIEW_QC from the SAS SELECT list:
     # both are per-case attributes already 1:1 with INV_LOCAL_ID (so they can't
@@ -267,7 +270,7 @@ def _activity_query(subset_query: str) -> str:
     std_cases AS (
         SELECT shd.*
         FROM shd
-        INNER JOIN RDB.DBO.INVESTIGATION i
+        INNER JOIN {nbs_rdb}.DBO.INVESTIGATION i
             ON i.INVESTIGATION_KEY = shd.INVESTIGATION_KEY
         WHERE i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
           AND shd.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
@@ -289,17 +292,19 @@ def _activity_query(subset_query: str) -> str:
         TRY_CAST(std_cases.SOC_PRTNRS_PRD_FML_TTL AS INT) AS SOC_PRTNRS_PRD_FML_TTL,
         TRY_CAST(std_cases.SOC_PRTNRS_PRD_MALE_TTL AS INT) AS SOC_PRTNRS_PRD_MALE_TTL
     FROM std_cases
-    LEFT JOIN RDB.DBO.F_INTERVIEW_CASE fic
+    LEFT JOIN {nbs_rdb}.DBO.F_INTERVIEW_CASE fic
         ON fic.INVESTIGATION_KEY = std_cases.INVESTIGATION_KEY
-    LEFT JOIN RDB.DBO.D_INTERVIEW di
+    LEFT JOIN {nbs_rdb}.DBO.D_INTERVIEW di
         ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
        AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-    LEFT JOIN RDB.DBO.D_PROVIDER dp
+    LEFT JOIN {nbs_rdb}.DBO.D_PROVIDER dp
         ON dp.PROVIDER_KEY = std_cases.INVESTIGATOR_INTERVIEW_KEY;
     """
 
 
 def _ixs_query(subset_query: str) -> str:
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+
     # Equivalent to the PA05_IXS_INIT dataset build (PA05.sas lines 141-168),
     # including the worker-key/date-bound MIN/MAX derivation (lines 135-139).
     return f"""
@@ -309,7 +314,7 @@ def _ixs_query(subset_query: str) -> str:
     std_cases AS (
         SELECT shd.*
         FROM shd
-        INNER JOIN RDB.DBO.INVESTIGATION i
+        INNER JOIN {nbs_rdb}.DBO.INVESTIGATION i
             ON i.INVESTIGATION_KEY = shd.INVESTIGATION_KEY
         WHERE i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
           AND shd.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
@@ -354,17 +359,17 @@ def _ixs_query(subset_query: str) -> str:
         fcrc.CONTACT_INVESTIGATION_KEY,
         dcr.CTT_REFERRAL_BASIS,
         dcr.CTT_PROCESSING_DECISION
-    FROM RDB.DBO.D_INTERVIEW di
-    INNER JOIN RDB.DBO.F_INTERVIEW_CASE fic
+    FROM {nbs_rdb}.DBO.D_INTERVIEW di
+    INNER JOIN {nbs_rdb}.DBO.F_INTERVIEW_CASE fic
         ON di.D_INTERVIEW_KEY = fic.D_INTERVIEW_KEY
        AND di.RECORD_STATUS_CD <> 'LOG_DEL'
-    INNER JOIN RDB.DBO.STD_HIV_DATAMART std
+    INNER JOIN {nbs_rdb}.DBO.STD_HIV_DATAMART std
         ON fic.INVESTIGATION_KEY = std.INVESTIGATION_KEY
-    INNER JOIN RDB.DBO.D_PROVIDER dp
+    INNER JOIN {nbs_rdb}.DBO.D_PROVIDER dp
         ON fic.IX_INTERVIEWER_KEY = dp.PROVIDER_KEY
-    LEFT JOIN RDB.DBO.F_CONTACT_RECORD_CASE fcrc
+    LEFT JOIN {nbs_rdb}.DBO.F_CONTACT_RECORD_CASE fcrc
         ON fcrc.CONTACT_INTERVIEW_KEY = di.D_INTERVIEW_KEY
-    LEFT JOIN RDB.DBO.D_CONTACT_RECORD dcr
+    LEFT JOIN {nbs_rdb}.DBO.D_CONTACT_RECORD dcr
         ON fcrc.D_CONTACT_RECORD_KEY = dcr.D_CONTACT_RECORD_KEY
        AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
     CROSS JOIN assign_bounds ab
