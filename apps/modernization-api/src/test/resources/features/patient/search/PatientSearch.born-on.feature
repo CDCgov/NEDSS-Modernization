@@ -7,6 +7,28 @@ Feature: Patient Search by Date of birth
     Given I have a patient
     And I have another patient
 
+  Scenario: I can find patients born on a specific date even if the record contains a birth time
+    Given the patient was born on 02/02/1990
+    And I have another patient
+    And the patient was born exactly at "1990-01-01T00:26:00"
+    And patients are available for search
+    And I add the patient criteria for patient's born in the month of January
+    And I add the patient criteria for patient's born on the 1st day of the month
+    And I add the patient criteria for patient's born in the year 1990
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find patients with a birth time when they fall on the exact upper boundary of a date range search
+    Given the patient was born on 01/02/1990
+    And I have another patient
+    And the patient was born exactly at "1990-01-01T23:45:00"
+    And patients are available for search
+    And I add the patient criteria for patient's born between 01/01/1990 and 01/01/1990
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find patients born on a specific day
     Given the patient was born on 01/15/1974
     And I have another patient
