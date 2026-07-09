@@ -500,8 +500,7 @@ class ReportSpecBuilderTest {
             .build();
 
     assertThat(reportSpec.subsetQuery())
-        .isEqualTo(
-            "SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY UPPER([Last Name]) ASC");
+        .isEqualTo("SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
 
     assertThat(reportSpec.sortBy()).isEqualTo("UPPER([Last Name]) ASC");
   }
@@ -527,8 +526,7 @@ class ReportSpecBuilderTest {
             .build();
 
     assertThat(reportSpec.subsetQuery())
-        .isEqualTo(
-            "SELECT [number] AS [Number] FROM [NBS_ODSE].[dbo].[NBS_configuration] ORDER BY [Number] ASC");
+        .isEqualTo("SELECT [number] AS [Number] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
 
     assertThat(reportSpec.sortBy()).isEqualTo("[Number] ASC");
   }
@@ -596,7 +594,7 @@ class ReportSpecBuilderTest {
         new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
             .build();
 
-    // Verify SQL does not have a double space or a trailing space where ORDER BY should be
+    // Verify SQL does not have a double space or a trailing space at end
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT [col1] AS [Col 1] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
 

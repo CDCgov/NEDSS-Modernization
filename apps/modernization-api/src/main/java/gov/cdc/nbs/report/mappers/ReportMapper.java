@@ -3,24 +3,86 @@ package gov.cdc.nbs.report.mappers;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.odse.DataSource;
+import gov.cdc.nbs.entity.odse.DisplayColumn;
 import gov.cdc.nbs.entity.odse.Report;
+import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.entity.odse.ReportLibrary;
+import gov.cdc.nbs.entity.odse.ReportSortColumn;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.report.ReportConstants;
+import gov.cdc.nbs.report.ReportFilterBuilder;
 import gov.cdc.nbs.report.models.AdminReportRequest;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportMapper {
   private final Clock clock;
   private final IdGeneratorService idGenerator;
+  private final ReportFilterBuilder reportFilterBuilder;
 
-  public ReportMapper(final Clock clock, IdGeneratorService idGenerator) {
+  public ReportMapper(
+      final Clock clock, IdGeneratorService idGenerator, ReportFilterBuilder reportFilterBuilder) {
     this.clock = clock;
     this.idGenerator = idGenerator;
+    this.reportFilterBuilder = reportFilterBuilder;
+  }
+
+  public Report duplicate(Report existingReport, NbsUserDetails user) {
+    Report newReport =
+        existingReport.toBuilder()
+            .id(new ReportId(generateId(), existingReport.getDataSource().getId()))
+            .addTime(LocalDateTime.now(clock))
+            .addUserUid(user.getId())
+            .status(new Status(Status.ACTIVE_CODE, LocalDateTime.now(clock)))
+            .build();
+
+    if (existingReport.getReportFilters() != null) {
+      List<ReportFilter> newFilters =
+          existingReport.getReportFilters().stream()
+              .map(reportFilterBuilder::duplicate)
+              .map(f -> f.toBuilder().report(newReport).build())
+              .toList();
+
+      newReport.setReportFilters(newFilters);
+    }
+
+    if (existingReport.getReportSortColumns() != null) {
+      List<ReportSortColumn> newSortColumns =
+          existingReport.getReportSortColumns().stream()
+              .map(
+                  c ->
+                      c.toBuilder()
+                          .id(generateId())
+                          .report(newReport)
+                          .statusCd(Status.ACTIVE_CODE)
+                          .statusTime(LocalDateTime.now(clock))
+                          .build())
+              .toList();
+
+      newReport.setReportSortColumns(newSortColumns);
+    }
+
+    if (existingReport.getDisplayColumns() != null) {
+      List<DisplayColumn> newDisplayColumns =
+          existingReport.getDisplayColumns().stream()
+              .map(
+                  c ->
+                      c.toBuilder()
+                          .id(generateId())
+                          .report(newReport)
+                          .statusCd(Status.ACTIVE_CODE)
+                          .statusTime(LocalDateTime.now(clock))
+                          .build())
+              .toList();
+
+      newReport.setDisplayColumns(newDisplayColumns);
+    }
+
+    return newReport;
   }
 
   public Report fromAdminReportRequest(
@@ -35,7 +97,7 @@ public class ReportMapper {
     if (report == null) {
       report =
           Report.builder()
-              .id(new ReportId(generateReportId(), dataSource.getId()))
+              .id(new ReportId(generateId(), dataSource.getId()))
               .addTime(now)
               .addUserUid((user.getId()))
               .dataSource(dataSource)
@@ -64,7 +126,7 @@ public class ReportMapper {
     return report;
   }
 
-  private Long generateReportId() {
+  private Long generateId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }
