@@ -16,12 +16,20 @@ tables:
         data: random.choice(["0 - Not a Verified Case", "1 - Positive Culture", "1A - Positive NAA", "2 - Positive Smear/Tissue", "3 - Clinical Case Definition", "4 - Verified by Provider Diagnosis", "5 - Suspect"])
       - column_name: calc_disease_site
         data: random.choice(["Pulmonary", "Extra Pulmonary", "Both", "Unknown"])
+      - column_name: count_status
+        data: |
+          if random.random() < 0.4:
+            return None
+          else:
+            return "Count as a TB Case"
+          type: string
       - column_name: count_date
-        data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
-        null_percentage: 0.1
+        data: |
+          if count_status == "Count as a TB Case":
+            return fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
+          else:
+            return None
       - column_name: date_reported
         data: fake.date_between(start_date=datetime(2020, 1, 1), end_date=datetime(2025, 12, 31))
         null_percentage: 0.1
-      - column_name: count_status
-        data: r"Count as a TB Case"
-        null_percentage: 0.4
+

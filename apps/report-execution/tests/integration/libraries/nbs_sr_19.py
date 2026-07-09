@@ -12,7 +12,7 @@ faker_schema = 'tb_datamart.yaml'
 class TestIntegrationNbsSr19Library:
     """Integration tests for the SR19 TB Record Count library."""
 
-    def test_execute_report_check_data(self, snapshot):
+    def test_execute_report_check_data_with_count_date(self, snapshot):
         report_spec = ReportSpec.model_validate(
             {
                 'is_export': True,
@@ -22,6 +22,44 @@ class TestIntegrationNbsSr19Library:
                 'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
                 'library_params': '{"count_column": "COUNT_DATE"}',
+            }
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        data = result.content.data
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yaml')
+
+        assert len(data) > 0
+
+        assert result.content.columns == [
+            'monthYear',
+            'sasdate',
+            'counted_cases',
+            'non_counted_cases',
+            'total_cases',
+        ]
+
+        for d in data:
+            assert len(d) == 5
+            assert isinstance(d[0], str)
+            assert isinstance(d[1], int)
+            assert isinstance(d[2], int)
+            assert isinstance(d[3], int)
+            assert isinstance(d[4], int)
+
+    def test_execute_report_check_data_with_date_reported(self, snapshot):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'SR 19',
+                'library_name': 'nbs_sr_19',
+                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
+                'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
+                'library_params': '{"count_column": "DATE_REPORTED"}',
             }
         )
 
