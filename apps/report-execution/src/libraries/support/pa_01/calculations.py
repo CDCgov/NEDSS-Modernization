@@ -8,17 +8,22 @@ CA_PATIENT_INTV_STATUS = 'CA_PATIENT_INTV_STATUS'
 DAYS = 'DAYS'
 DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS = 'Dispositions - New Partners & Clusters'
 DISPO_DOMESTIC_VIOLENCE_RISK = 'V - Domestic Violence Risk'
+DISPO_INFECTED_NO_RX = 'D - Infected, Not Treated'
+DISPO_INFECTED_RXD = 'C - Infected, Brought to Treatment'
 DISPO_INSUFFICIENT_INFO = 'G - Insufficient Info to Begin Investigation'
+DISPO_NOT_INFECTED = 'F - Not Infected'
 DISPO_NO_PREV_TEST_NEW_NEG = '6 - No Prev Test, New Neg'
 DISPO_NO_PREV_TEST_NEW_POS = '5 - No Prev Test, New Pos'
 DISPO_NO_PREV_TEST_NO_TEST = '7 - No Prev Test, No Test'
 DISPO_OOJ = 'K - Sent Out Of Jurisdiction'
 DISPO_OTHER = 'L - Other'
 DISPO_PATIENT_DECEASED = 'X - Patient Deceased'
+DISPO_PREVENTATIVE_RX = 'A - Preventative Treatment'
 DISPO_PREV_NEG_NEW_POS = '2 - Prev. Neg, New Pos'
 DISPO_PREV_NEG_NO_TEST = '4 - Prev. Neg, No Test'
 DISPO_PREV_NEG_STILL_NEG = '3 - Prev. Neg, Still Neg'
 DISPO_REFUSED_EXAM = 'J - Located, Not Examined and/or Interviewed'
+DISPO_REFUSED_PREV_RX = 'B - Refused Preventative Treatment'
 DISPO_UNABLE_TO_LOCATE = 'H - Unable to Locate'
 FL_FUP_DISPOSITION = 'FL_FUP_DISPOSITION'
 INVESTIGATOR_INTERVIEW_KEY = 'INVESTIGATOR_INTERVIEW_KEY'
@@ -62,7 +67,11 @@ def build_output_for_worker(
     rows.extend(
         _build_partners_and_clusters_initiated_output(tables, report_variant, worker)
     )
-    rows.extend(_build_dispositions_new_partners_and_clusters_output(tables, worker))
+    rows.extend(
+        _build_dispositions_new_partners_and_clusters_output(
+            tables, report_variant, worker
+        )
+    )
     rows.extend(_build_speed_of_notification_partners_and_clusters(tables, worker))
 
     return rows
@@ -462,10 +471,27 @@ def _build_partners_and_clusters_initiated_output(
 
 
 def _build_dispositions_new_partners_and_clusters_output(
-    tables: dict[str, Table], worker: Pa01Worker | None = None
+    tables: dict[str, Table], report_variant: str, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for the "Dispositions - New Partners & Clusters"
     section for a given worker, output data for the final CSV.
+    """
+    rows: list[Pa01Row] = []
+
+    if report_variant == 'HIV':
+        rows.extend(_build_hiv_dispositions_output(tables, worker))
+    elif report_variant == 'STD':
+        rows.extend(_build_std_dispositions_output(tables, worker))
+
+    return rows
+
+
+def _build_hiv_dispositions_output(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Dispositions - New Partners & Clusters"
+    section for a given worker for the HIV report variant, output data for the final
+    CSV.
     """
     total_partners_initiated = _calc_total_partners_initiated(
         tables['period_partners'], worker
@@ -827,6 +853,81 @@ def _build_dispositions_new_partners_and_clusters_output(
             None,
             new_clusters_open,
             new_clusters_open_percentage,
+            None,
+        ),
+    ]
+
+    return rows
+
+
+def _build_std_dispositions_output(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    total_partners_initiated = _calc_total_partners_initiated(
+        tables['period_partners'], worker
+    )
+    new_partners_examined, new_partners_examined_percentage = (
+        _calc_new_partners_examined(
+            tables['examined_partners'], total_partners_initiated, worker
+        )
+    )
+    new_partners_examined_buckets = _calc_new_partners_examined_buckets(
+        tables['examined_partners'], new_partners_examined, worker
+    )
+
+    rows: list[Pa01Row] = [
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Examined',
+            None,
+            new_partners_examined,
+            new_partners_examined_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Examined',
+            'Preventative RX',
+            new_partners_examined_buckets[DISPO_PREVENTATIVE_RX][0],
+            new_partners_examined_buckets[DISPO_PREVENTATIVE_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Examined',
+            'Refused Prev. RX',
+            new_partners_examined_buckets[DISPO_REFUSED_PREV_RX][0],
+            new_partners_examined_buckets[DISPO_REFUSED_PREV_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Examined',
+            "Infected, RX'D",
+            new_partners_examined_buckets[DISPO_INFECTED_RXD][0],
+            new_partners_examined_buckets[DISPO_INFECTED_RXD][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Examined',
+            'Infected, No RX',
+            new_partners_examined_buckets[DISPO_INFECTED_NO_RX][0],
+            new_partners_examined_buckets[DISPO_INFECTED_NO_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Examined',
+            'Not Infected',
+            new_partners_examined_buckets[DISPO_NOT_INFECTED][0],
+            new_partners_examined_buckets[DISPO_NOT_INFECTED][1],
             None,
         ),
     ]
@@ -1590,6 +1691,72 @@ def _calc_treatment_index(
     count = sum(row['treatment_index_count'] for row in rows)
 
     return _index_for_csv(count, cases_ixd)
+
+
+def _calc_new_partners_examined(
+    examined_partners: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(examined_partners, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_examined_buckets(
+    examined_partners: Table,
+    new_partners_examined: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    rows = _rows_for_worker(examined_partners, worker)
+    dispositions = [
+        DISPO_PREVENTATIVE_RX,
+        DISPO_REFUSED_PREV_RX,
+        DISPO_INFECTED_RXD,
+        DISPO_INFECTED_NO_RX,
+        DISPO_NOT_INFECTED,
+    ]
+
+    if worker is not None:
+        return _count_distinct_case_ids_and_percent_by_dispo(
+            rows, dispositions, new_partners_examined
+        )
+
+    # nb. this next part is to match a SAS quirk in which the "buckets" for "ALL
+    #     WORKERS" use different disposition matching than with every other worker.
+    #     I don't actually think the SAS is correct in this, but I am mirroring its
+    #     behavior.
+    buckets = {
+        DISPO_PREVENTATIVE_RX: {
+            DISPO_PREVENTATIVE_RX,
+            DISPO_NOT_INFECTED,
+        },
+        DISPO_REFUSED_PREV_RX: {
+            DISPO_REFUSED_PREV_RX,
+            DISPO_NOT_INFECTED,
+        },
+        DISPO_INFECTED_RXD: {
+            DISPO_INFECTED_RXD,
+        },
+        DISPO_INFECTED_NO_RX: {
+            DISPO_INFECTED_NO_RX,
+        },
+        DISPO_NOT_INFECTED: {
+            DISPO_NOT_INFECTED,
+        },
+    }
+
+    return {
+        disposition: (
+            count := _count_distinct_case_ids(
+                rows,
+                lambda row, bucket=bucket: row[FL_FUP_DISPOSITION] in bucket,
+            ),
+            _percent_for_csv(count, new_partners_examined),
+        )
+        for disposition, bucket in buckets.items()
+    }
 
 
 # helpers

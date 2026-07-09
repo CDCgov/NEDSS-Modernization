@@ -35,14 +35,6 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 5 Days
-  - 2
-  - 0.7%
-  - null
-- !!python/tuple
-  - ALL
-  - Case Assignments & Outcomes
-  - Cases IX'D
-  - Within 7 Days
   - 4
   - 1.4%
   - null
@@ -50,49 +42,57 @@
   - ALL
   - Case Assignments & Outcomes
   - Cases IX'D
+  - Within 7 Days
+  - 6
+  - 2.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Case Assignments & Outcomes
+  - Cases IX'D
   - Within 14 Days
-  - 213
-  - 74.2%
+  - 217
+  - 75.6%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 179
-  - 62.4%
+  - 165
+  - 57.5%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 138
-  - 48.1%
+  - 144
+  - 50.2%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 205
-  - 71.4%
+  - 208
+  - 72.5%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 249
-  - 121.5%
+  - 246
+  - 118.3%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 218
-  - 106.3%
+  - 223
+  - 107.2%
   - null
 - !!python/tuple
   - ALL
@@ -123,7 +123,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - null
-  - 149
+  - 159
   - null
   - null
 - !!python/tuple
@@ -131,7 +131,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 82
+  - 90
   - null
   - null
 - !!python/tuple
@@ -139,7 +139,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 67
+  - 69
   - null
   - null
 - !!python/tuple
@@ -149,21 +149,21 @@
   - null
   - null
   - null
-  - '0.52'
+  - '0.55'
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
   - Cases W/No Partners
   - null
-  - 161
-  - 56.1%
+  - 153
+  - 53.3%
   - null
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - null
-  - 150
+  - 160
   - null
   - null
 - !!python/tuple
@@ -173,14 +173,14 @@
   - Cluster Index
   - null
   - null
-  - '0.52'
+  - '0.56'
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - Cases /W No Clusters
-  - 155
-  - 54.0%
+  - 147
+  - 51.2%
   - null
 - !!python/tuple
   - ALL
@@ -188,7 +188,7 @@
   - New Partners Notified
   - null
   - 63
-  - 42.3%
+  - 39.6%
   - null
 - !!python/tuple
   - ALL
@@ -244,7 +244,7 @@
   - New Partners Not Notified
   - null
   - 63
-  - 42.3%
+  - 39.6%
   - null
 - !!python/tuple
   - ALL
@@ -307,8 +307,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 13
-  - 8.7%
+  - 14
+  - 8.8%
   - null
 - !!python/tuple
   - ALL
@@ -316,7 +316,7 @@
   - New Partners Open
   - null
   - 31
-  - 20.8%
+  - 19.5%
   - null
 - !!python/tuple
   - ALL
@@ -324,7 +324,7 @@
   - New Clusters Notified
   - null
   - 69
-  - 46.0%
+  - 43.1%
   - null
 - !!python/tuple
   - ALL
@@ -380,7 +380,7 @@
   - New Clusters Not Notified
   - null
   - 71
-  - 47.3%
+  - 44.4%
   - null
 - !!python/tuple
   - ALL
@@ -444,15 +444,15 @@
   - New Clusters Previous Pos
   - null
   - 4
-  - 2.7%
+  - 2.5%
   - null
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
   - New Clusters Open
   - null
-  - 10
-  - 6.7%
+  - 13
+  - 8.1%
   - null
 - !!python/tuple
   - ALL
@@ -563,22 +563,6 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 3 Days
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - adevraj
-  - Case Assignments & Outcomes
-  - Cases IX'D
-  - Within 5 Days
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - adevraj
-  - Case Assignments & Outcomes
-  - Cases IX'D
-  - Within 7 Days
   - 1
   - 1.4%
   - null
@@ -586,9 +570,25 @@
   - adevraj
   - Case Assignments & Outcomes
   - Cases IX'D
+  - Within 5 Days
+  - 1
+  - 1.4%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
+  - Within 7 Days
+  - 2
+  - 2.8%
+  - null
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases IX'D
   - Within 14 Days
-  - 43
-  - 60.6%
+  - 41
+  - 57.7%
   - null
 - !!python/tuple
   - adevraj
@@ -603,8 +603,8 @@
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 30
-  - 42.3%
+  - 29
+  - 40.8%
   - null
 - !!python/tuple
   - adevraj
@@ -619,16 +619,16 @@
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 65
-  - 166.7%
+  - 66
+  - 169.2%
   - null
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 47
-  - 120.5%
+  - 46
+  - 117.9%
   - null
 - !!python/tuple
   - adevraj
@@ -659,7 +659,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - null
-  - 28
+  - 31
   - null
   - null
 - !!python/tuple
@@ -667,7 +667,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 16
+  - 18
   - null
   - null
 - !!python/tuple
@@ -675,7 +675,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 12
+  - 13
   - null
   - null
 - !!python/tuple
@@ -691,15 +691,15 @@
   - Partners & Clusters Initiated
   - Cases W/No Partners
   - null
-  - 32
-  - 45.1%
+  - 29
+  - 40.8%
   - null
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - null
-  - 28
+  - 30
   - null
   - null
 - !!python/tuple
@@ -709,14 +709,14 @@
   - Cluster Index
   - null
   - null
-  - '0.39'
+  - '0.42'
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - Cases /W No Clusters
-  - 35
-  - 49.3%
+  - 34
+  - 47.9%
   - null
 - !!python/tuple
   - adevraj
@@ -724,7 +724,7 @@
   - New Partners Notified
   - null
   - 15
-  - 53.6%
+  - 48.4%
   - null
 - !!python/tuple
   - adevraj
@@ -780,7 +780,7 @@
   - New Partners Not Notified
   - null
   - 11
-  - 39.3%
+  - 35.5%
   - null
 - !!python/tuple
   - adevraj
@@ -844,7 +844,7 @@
   - New Partners Previous Pos
   - null
   - 2
-  - 7.1%
+  - 6.5%
   - null
 - !!python/tuple
   - adevraj
@@ -852,7 +852,7 @@
   - New Partners Open
   - null
   - 6
-  - 21.4%
+  - 19.4%
   - null
 - !!python/tuple
   - adevraj
@@ -860,7 +860,7 @@
   - New Clusters Notified
   - null
   - 16
-  - 57.1%
+  - 53.3%
   - null
 - !!python/tuple
   - adevraj
@@ -916,7 +916,7 @@
   - New Clusters Not Notified
   - null
   - 11
-  - 39.3%
+  - 36.7%
   - null
 - !!python/tuple
   - adevraj
@@ -987,8 +987,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Open
   - null
-  - 1
-  - 3.6%
+  - 2
+  - 6.7%
   - null
 - !!python/tuple
   - adevraj
@@ -1123,24 +1123,24 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 14 Days
-  - 44
-  - 60.3%
+  - 38
+  - 52.1%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 36
-  - 49.3%
+  - 42
+  - 57.5%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 37
-  - 50.7%
+  - 42
+  - 57.5%
   - null
 - !!python/tuple
   - avance
@@ -1155,16 +1155,16 @@
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 56
-  - 124.4%
+  - 54
+  - 120.0%
   - null
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 38
-  - 84.4%
+  - 42
+  - 93.3%
   - null
 - !!python/tuple
   - avance
@@ -1195,7 +1195,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - null
-  - 27
+  - 30
   - null
   - null
 - !!python/tuple
@@ -1203,7 +1203,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 14
+  - 12
   - null
   - null
 - !!python/tuple
@@ -1211,7 +1211,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 13
+  - 18
   - null
   - null
 - !!python/tuple
@@ -1227,8 +1227,8 @@
   - Partners & Clusters Initiated
   - Cases W/No Partners
   - null
-  - 42
-  - 57.5%
+  - 40
+  - 54.8%
   - null
 - !!python/tuple
   - avance
@@ -1260,7 +1260,7 @@
   - New Partners Notified
   - null
   - 9
-  - 33.3%
+  - 30.0%
   - null
 - !!python/tuple
   - avance
@@ -1316,7 +1316,7 @@
   - New Partners Not Notified
   - null
   - 15
-  - 55.6%
+  - 50.0%
   - null
 - !!python/tuple
   - avance
@@ -1380,7 +1380,7 @@
   - New Partners Previous Pos
   - null
   - 2
-  - 7.4%
+  - 6.7%
   - null
 - !!python/tuple
   - avance
@@ -1388,7 +1388,7 @@
   - New Partners Open
   - null
   - 9
-  - 33.3%
+  - 30.0%
   - null
 - !!python/tuple
   - avance
@@ -1635,24 +1635,24 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 3 Days
-  - 1
-  - 1.2%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 5 Days
-  - 1
-  - 1.2%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 7 Days
-  - 1
-  - 1.2%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
@@ -1667,8 +1667,8 @@
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 42
-  - 52.5%
+  - 44
+  - 55.0%
   - null
 - !!python/tuple
   - dbowman
@@ -1683,24 +1683,24 @@
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 36
-  - 45.0%
+  - 38
+  - 47.5%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 67
-  - 186.1%
+  - 68
+  - 178.9%
   - null
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 49
-  - 136.1%
+  - 51
+  - 134.2%
   - null
 - !!python/tuple
   - dbowman
@@ -1731,7 +1731,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - null
-  - 28
+  - 30
   - null
   - null
 - !!python/tuple
@@ -1739,7 +1739,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 19
+  - 16
   - null
   - null
 - !!python/tuple
@@ -1747,7 +1747,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 9
+  - 14
   - null
   - null
 - !!python/tuple
@@ -1757,21 +1757,21 @@
   - null
   - null
   - null
-  - '0.3'
+  - '0.4'
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
   - Cases W/No Partners
   - null
-  - 41
-  - 51.2%
+  - 39
+  - 48.8%
   - null
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - null
-  - 35
+  - 39
   - null
   - null
 - !!python/tuple
@@ -1781,14 +1781,14 @@
   - Cluster Index
   - null
   - null
-  - '0.44'
+  - '0.49'
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - Cases /W No Clusters
-  - 34
-  - 42.5%
+  - 31
+  - 38.8%
   - null
 - !!python/tuple
   - dbowman
@@ -1796,7 +1796,7 @@
   - New Partners Notified
   - null
   - 14
-  - 50.0%
+  - 46.7%
   - null
 - !!python/tuple
   - dbowman
@@ -1852,7 +1852,7 @@
   - New Partners Not Notified
   - null
   - 8
-  - 28.6%
+  - 26.7%
   - null
 - !!python/tuple
   - dbowman
@@ -1916,7 +1916,7 @@
   - New Partners Previous Pos
   - null
   - 5
-  - 17.9%
+  - 16.7%
   - null
 - !!python/tuple
   - dbowman
@@ -1924,7 +1924,7 @@
   - New Partners Open
   - null
   - 9
-  - 32.1%
+  - 30.0%
   - null
 - !!python/tuple
   - dbowman
@@ -1932,7 +1932,7 @@
   - New Clusters Notified
   - null
   - 12
-  - 34.3%
+  - 30.8%
   - null
 - !!python/tuple
   - dbowman
@@ -1988,7 +1988,7 @@
   - New Clusters Not Notified
   - null
   - 20
-  - 57.1%
+  - 51.3%
   - null
 - !!python/tuple
   - dbowman
@@ -2052,15 +2052,15 @@
   - New Clusters Previous Pos
   - null
   - 2
-  - 5.7%
+  - 5.1%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
   - New Clusters Open
   - null
-  - 2
-  - 5.7%
+  - 3
+  - 7.7%
   - null
 - !!python/tuple
   - dbowman
@@ -2195,40 +2195,40 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 14 Days
-  - 40
-  - 50.0%
+  - 49
+  - 61.3%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 47
-  - 58.8%
+  - 40
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 31
-  - 38.8%
+  - 33
+  - 41.2%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 44
-  - 55.0%
+  - 45
+  - 56.2%
   - null
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
   - HIV New Positive
   - null
-  - 64
-  - 145.5%
+  - 65
+  - 144.4%
   - null
 - !!python/tuple
   - fpoole
@@ -2236,7 +2236,7 @@
   - HIV Posttest Counsel
   - null
   - 41
-  - 93.2%
+  - 91.1%
   - null
 - !!python/tuple
   - fpoole
@@ -2267,7 +2267,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - null
-  - 38
+  - 40
   - null
   - null
 - !!python/tuple
@@ -2275,7 +2275,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From OI
-  - 17
+  - 28
   - null
   - null
 - !!python/tuple
@@ -2283,7 +2283,7 @@
   - Partners & Clusters Initiated
   - Total Partners Initiated
   - From RI
-  - 21
+  - 12
   - null
   - null
 - !!python/tuple
@@ -2299,15 +2299,15 @@
   - Partners & Clusters Initiated
   - Cases W/No Partners
   - null
-  - 37
-  - 46.2%
+  - 35
+  - 43.8%
   - null
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - null
-  - 32
+  - 36
   - null
   - null
 - !!python/tuple
@@ -2317,14 +2317,14 @@
   - Cluster Index
   - null
   - null
-  - '0.4'
+  - '0.45'
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
   - Total Clusters Initiated
   - Cases /W No Clusters
-  - 43
-  - 53.8%
+  - 39
+  - 48.8%
   - null
 - !!python/tuple
   - fpoole
@@ -2332,7 +2332,7 @@
   - New Partners Notified
   - null
   - 15
-  - 39.5%
+  - 37.5%
   - null
 - !!python/tuple
   - fpoole
@@ -2388,7 +2388,7 @@
   - New Partners Not Notified
   - null
   - 20
-  - 52.6%
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
@@ -2451,8 +2451,8 @@
   - Dispositions - New Partners & Clusters
   - New Partners Previous Pos
   - null
-  - 2
-  - 5.3%
+  - 3
+  - 7.5%
   - null
 - !!python/tuple
   - fpoole
@@ -2460,7 +2460,7 @@
   - New Partners Open
   - null
   - 5
-  - 13.2%
+  - 12.5%
   - null
 - !!python/tuple
   - fpoole
@@ -2468,7 +2468,7 @@
   - New Clusters Notified
   - null
   - 15
-  - 46.9%
+  - 41.7%
   - null
 - !!python/tuple
   - fpoole
@@ -2524,7 +2524,7 @@
   - New Clusters Not Notified
   - null
   - 14
-  - 43.8%
+  - 38.9%
   - null
 - !!python/tuple
   - fpoole
@@ -2595,8 +2595,8 @@
   - Dispositions - New Partners & Clusters
   - New Clusters Open
   - null
-  - 3
-  - 9.4%
+  - 4
+  - 11.1%
   - null
 - !!python/tuple
   - fpoole
@@ -2715,40 +2715,40 @@
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 5 Days
-  - 1
-  - 1.3%
+  - 3
+  - 3.8%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 7 Days
-  - 2
-  - 2.5%
+  - 4
+  - 5.1%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases IX'D
   - Within 14 Days
-  - 42
-  - 53.2%
+  - 45
+  - 57.0%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - Cases Reinterviewed
   - null
-  - 38
-  - 48.1%
+  - 35
+  - 44.3%
   - null
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
   - HIV Previous Positive
   - null
-  - 35
-  - 44.3%
+  - 36
+  - 45.6%
   - null
 - !!python/tuple
   - gfreeman
@@ -2835,8 +2835,8 @@
   - Partners & Clusters Initiated
   - Cases W/No Partners
   - null
-  - 41
-  - 51.9%
+  - 40
+  - 50.6%
   - null
 - !!python/tuple
   - gfreeman
