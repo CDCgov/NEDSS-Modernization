@@ -14,7 +14,8 @@ OTHER_STATUS = 'O - Other'
 # associates combined -- unlike PA03, which reports them separately.
 CLUSTER_BASES = SOCIAL_BASES | ASSOCIATE_BASES
 
-# Each entry: (category_1, category_2, category_3, metric_key, denominator_key, rate_type)
+# Each entry: 
+# (category_1, category_2, category_3, metric_key, denominator_key, rate_type)
 METRICS: tuple[tuple[str, str | None, str | None, str, str | None, str | None], ...] = (
     ('Num. Cases Assigned', None, None, 'A', None, None),  # Var_A, PA05.sas:304-309
     (

@@ -2,13 +2,14 @@ from src.config import get_cached_config_value
 
 
 def activity_query(subset_query: str) -> str:
+    """Equivalent to the PA05 dataset build (PA05.sas lines 122-132). Drops
+    INVESTIGATION_KEY and INVESTIGATOR_INTERVIEW_QC from the SAS SELECT list:
+    both are per-case attributes already 1:1 with INV_LOCAL_ID (so they can't
+     affect SELECT DISTINCT row counts), and neither is referenced anywhere
+     else in PA05.sas either -- they're dead columns in the original report.
+    """
     nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
 
-    # Equivalent to the PA05 dataset build (PA05.sas lines 122-132). Drops
-    # INVESTIGATION_KEY and INVESTIGATOR_INTERVIEW_QC from the SAS SELECT list:
-    # both are per-case attributes already 1:1 with INV_LOCAL_ID (so they can't
-    # affect SELECT DISTINCT row counts), and neither is referenced anywhere
-    # else in PA05.sas either -- they're dead columns in the original report.
     return f"""
     WITH shd AS (
         {subset_query}
@@ -49,10 +50,11 @@ def activity_query(subset_query: str) -> str:
 
 
 def ixs_query(subset_query: str) -> str:
+    """Equivalent to the PA05_IXS_INIT dataset build (PA05.sas lines 141-168),
+    including the worker-key/date-bound MIN/MAX derivation (lines 135-139).
+    """
     nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
 
-    # Equivalent to the PA05_IXS_INIT dataset build (PA05.sas lines 141-168),
-    # including the worker-key/date-bound MIN/MAX derivation (lines 135-139).
     return f"""
     WITH shd AS (
         {subset_query}

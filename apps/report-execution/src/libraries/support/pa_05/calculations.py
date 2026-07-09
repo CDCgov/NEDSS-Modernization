@@ -9,11 +9,11 @@ from src.libraries.support.pa_05.models import (
     INTERVIEWED_STATUS,
     METRICS,
     OTHER_STATUS,
-    Pa05Row,
     PENDING_STATUS,
     REFUSED_STATUS,
     REINTERVIEW,
     UNABLE_TO_LOCATE_STATUS,
+    Pa05Row,
     WorkerKey,
 )
 
@@ -84,7 +84,8 @@ def build_metric_counts(
     activity_rows: list[tuple], ixs_rows: list[tuple]
 ) -> dict[str, dict[WorkerKey, int]]:
     """Aggregates the activity and IXS_INIT-equivalent rows into per-metric,
-    per-worker distinct counts (Var_A through Var_W)."""
+    per-worker distinct counts (Var_A through Var_W).
+    """
     case_sets = {
         metric: defaultdict(set)
         for metric in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'L', 'M', 'N', 'O')
@@ -255,7 +256,8 @@ def build_metric_counts(
 def build_rows(metric_counts: dict[str, dict[WorkerKey, int]]) -> list[Pa05Row]:
     """Builds the 'ALL' summary row block plus one row block per worker key,
     in METRICS order, computing each row's Percentage/Index from its
-    metric/denominator counts."""
+    metric/denominator counts.
+    """
     all_worker_keys: set[WorkerKey] = set()
     for counts in metric_counts.values():
         all_worker_keys.update(counts.keys())
