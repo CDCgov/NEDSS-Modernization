@@ -1044,7 +1044,7 @@ def _build_std_dispositions_output(
         (
             _worker_for_csv(worker),
             DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
-            'New Partners Previous Open',
+            'New Partners Open',
             None,
             new_partners_open,
             new_partners_open_percentage,
