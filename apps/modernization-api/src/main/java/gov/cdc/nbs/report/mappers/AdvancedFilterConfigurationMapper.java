@@ -4,10 +4,8 @@ import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.report.AdvancedQueryBuilder;
 import gov.cdc.nbs.report.AdvancedQueryException;
-import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedQuery;
-import gov.cdc.nbs.report.models.FilterType;
 import java.util.List;
 
 public class AdvancedFilterConfigurationMapper {
@@ -18,9 +16,7 @@ public class AdvancedFilterConfigurationMapper {
 
   public static AdvancedFilterConfiguration fromReportFilter(
       ReportFilter filter, List<DataSourceColumn> columns) {
-    FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
-
-    if (!filterType.type().equals(ReportConstants.ADV_FILTER_TYPE)) {
+    if (!filter.isAdvancedFilter()) {
       throw new IllegalArgumentException(
           "Cannot create advanced filter from non where clause builder filter");
     }
