@@ -22,6 +22,7 @@ DISPO_PREVENTATIVE_RX = 'A - Preventative Treatment'
 DISPO_PREV_NEG_NEW_POS = '2 - Prev. Neg, New Pos'
 DISPO_PREV_NEG_NO_TEST = '4 - Prev. Neg, No Test'
 DISPO_PREV_NEG_STILL_NEG = '3 - Prev. Neg, Still Neg'
+DISPO_PREV_PREV_RX = 'Z - Previous Preventative Treatment'
 DISPO_REFUSED_EXAM = 'J - Located, Not Examined and/or Interviewed'
 DISPO_REFUSED_PREV_RX = 'B - Refused Preventative Treatment'
 DISPO_UNABLE_TO_LOCATE = 'H - Unable to Locate'
@@ -863,6 +864,10 @@ def _build_hiv_dispositions_output(
 def _build_std_dispositions_output(
     tables: dict[str, Table], worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Dispositions - New Partners & Clusters"
+    section for a given worker for the STD report variant, output data for the final
+    CSV.
+    """
     total_partners_initiated = _calc_total_partners_initiated(
         tables['period_partners'], worker
     )
@@ -873,6 +878,14 @@ def _build_std_dispositions_output(
     )
     new_partners_examined_buckets = _calc_new_partners_examined_buckets(
         tables['examined_partners'], new_partners_examined, worker
+    )
+    new_partners_not_examined, new_partners_not_examined_percentage = (
+        _calc_new_partners_not_examined(
+            tables['not_examined_partners'], total_partners_initiated, worker
+        )
+    )
+    new_partners_not_examined_buckets = _calc_new_partners_not_examined_buckets(
+        tables['not_examined_partners'], new_partners_not_examined, worker
     )
 
     rows: list[Pa01Row] = [
@@ -928,6 +941,87 @@ def _build_std_dispositions_output(
             'Not Infected',
             new_partners_examined_buckets[DISPO_NOT_INFECTED][0],
             new_partners_examined_buckets[DISPO_NOT_INFECTED][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            None,
+            new_partners_not_examined,
+            new_partners_not_examined_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Insufficient Info',
+            new_partners_not_examined_buckets[DISPO_INSUFFICIENT_INFO][0],
+            new_partners_not_examined_buckets[DISPO_INSUFFICIENT_INFO][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Unable to Locate',
+            new_partners_not_examined_buckets[DISPO_UNABLE_TO_LOCATE][0],
+            new_partners_not_examined_buckets[DISPO_UNABLE_TO_LOCATE][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Refused Exam',
+            new_partners_not_examined_buckets[DISPO_REFUSED_EXAM][0],
+            new_partners_not_examined_buckets[DISPO_REFUSED_EXAM][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'OOJ',
+            new_partners_not_examined_buckets[DISPO_OOJ][0],
+            new_partners_not_examined_buckets[DISPO_OOJ][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Other',
+            new_partners_not_examined_buckets[DISPO_OTHER][0],
+            new_partners_not_examined_buckets[DISPO_OTHER][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Domestic Violence Risk',
+            new_partners_not_examined_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][0],
+            new_partners_not_examined_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Patient Deceased',
+            new_partners_not_examined_buckets[DISPO_PATIENT_DECEASED][0],
+            new_partners_not_examined_buckets[DISPO_PATIENT_DECEASED][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners No Exam',
+            'Previous Prev RX',
+            new_partners_not_examined_buckets[DISPO_PREV_PREV_RX][0],
+            new_partners_not_examined_buckets[DISPO_PREV_PREV_RX][1],
             None,
         ),
     ]
@@ -1659,6 +1753,9 @@ def _calc_disease_intervention_index(
     cases_assigned: int,
     worker: Pa01Worker | None = None,
 ) -> str:
+    """Calculate "Disease Intervention Index".  Calculates for all workers if passed
+    in worker is None.
+    """
     rows = _rows_for_worker(disease_intervention_index, worker)
     count = sum(row['disease_intervention_count'] for row in rows)
 
@@ -1670,6 +1767,9 @@ def _calc_cases_with_source_identified(
     cases_ixd: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "Cases W/ Source Identified" count and percentage.  Calculates for
+    all workers if passed in worker is None.
+    """
     rows = _rows_for_worker(case_interview_rows, worker)
     rows = [
         row
@@ -1687,6 +1787,9 @@ def _calc_treatment_index(
     cases_ixd: int,
     worker: Pa01Worker | None = None,
 ) -> str:
+    """Calculate "Treatment Index".  Calculates for all workers if passed in worker is
+    None.
+    """
     rows = _rows_for_worker(treatment_index, worker)
     count = sum(row['treatment_index_count'] for row in rows)
 
@@ -1698,6 +1801,9 @@ def _calc_new_partners_examined(
     total_partners_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "New Partners Examined" count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_partners, worker)
     count = _count_distinct_case_ids(rows)
 
@@ -1709,6 +1815,9 @@ def _calc_new_partners_examined_buckets(
     new_partners_examined: int,
     worker: Pa01Worker | None = None,
 ) -> dict[str, tuple[int, str]]:
+    """Calculate "New Partners Examined" disposition counts and percentages.
+    Calculates for all workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_partners, worker)
     dispositions = [
         DISPO_PREVENTATIVE_RX,
@@ -1757,6 +1866,45 @@ def _calc_new_partners_examined_buckets(
         )
         for disposition, bucket in buckets.items()
     }
+
+
+def _calc_new_partners_not_examined(
+    new_partners_not_examined: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    """Calculate "New Partners No Exam" count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(new_partners_not_examined, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_partners_not_examined_buckets(
+    new_partners_not_examined: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    """Calculate "New Partners No Exam" disposition counts and percentages.
+    Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(new_partners_not_examined, worker)
+    dispositions = [
+        DISPO_INSUFFICIENT_INFO,
+        DISPO_UNABLE_TO_LOCATE,
+        DISPO_REFUSED_EXAM,
+        DISPO_OOJ,
+        DISPO_OTHER,
+        DISPO_DOMESTIC_VIOLENCE_RISK,
+        DISPO_PATIENT_DECEASED,
+        DISPO_PREV_PREV_RX,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, dispositions, total_partners_initiated
+    )
 
 
 # helpers

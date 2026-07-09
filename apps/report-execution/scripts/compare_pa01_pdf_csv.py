@@ -399,22 +399,34 @@ def disposition_entry(
 ) -> PdfEntry | None:
     normalized = normalize_label(label)
     if side == 'left':
-        if normalized in {'NEW PARTNERS NOTIFIED', 'NEW PARTNERS EXAMINED'}:
+        if normalized == 'NEW PARTNERS NOTIFIED':
             context.category_2 = 'New Partners Notified'
             return PdfEntry(DISPOSITIONS, context.category_2, '', values)
-        if normalized in {'NEW PARTNERS NOT NOTIFIED', 'NEW PARTNERS NO EXAM'}:
+        if normalized == 'NEW PARTNERS EXAMINED':
+            context.category_2 = 'New Partners Examined'
+            return PdfEntry(DISPOSITIONS, context.category_2, '', values)
+        if normalized == 'NEW PARTNERS NOT NOTIFIED':
             context.category_2 = 'New Partners Not Notified'
+            return PdfEntry(DISPOSITIONS, context.category_2, '', values)
+        if normalized == 'NEW PARTNERS NO EXAM':
+            context.category_2 = 'New Partners No Exam'
             return PdfEntry(DISPOSITIONS, context.category_2, '', values)
         if normalized in {'PREVIOUS POS', 'PREVIOUS RX'}:
             return PdfEntry(DISPOSITIONS, 'New Partners Previous Pos', '', values)
         if normalized == 'OPEN':
             return PdfEntry(DISPOSITIONS, 'New Partners Open', '', values)
     else:
-        if normalized in {'NEW CLUSTERS NOTIFIED', 'NEW CLUSTERS EXAMINED'}:
+        if normalized == 'NEW CLUSTERS NOTIFIED':
             context.category_2 = 'New Clusters Notified'
             return PdfEntry(DISPOSITIONS, context.category_2, '', values)
-        if normalized in {'NEW CLUSTERS NOT NOTIFIED', 'NEW CLUSTERS NO EXAM'}:
+        if normalized == 'NEW CLUSTERS EXAMINED':
+            context.category_2 = 'New Clusters Examined'
+            return PdfEntry(DISPOSITIONS, context.category_2, '', values)
+        if normalized == 'NEW CLUSTERS NOT NOTIFIED':
             context.category_2 = 'New Clusters Not Notified'
+            return PdfEntry(DISPOSITIONS, context.category_2, '', values)
+        if normalized == 'NEW CLUSTERS NO EXAM':
+            context.category_2 = 'New Clusters No Exam'
             return PdfEntry(DISPOSITIONS, context.category_2, '', values)
         if normalized in {'PREVIOUS POS', 'PREVIOUS RX'}:
             return PdfEntry(DISPOSITIONS, 'New Clusters Previous Pos', '', values)
@@ -462,11 +474,11 @@ def disposition_child_label(normalized_label: str) -> str | None:
         'NO PREV TEST NEW POS': 'No Prev. Test, New Pos',
         'NO PREV TEST NEW NEG': 'No Prev. Test, New Neg',
         'NO PREV TEST NO TEST': 'No Prev. Test, No Test',
-        'PREVENTATIVE RX': 'Prev. Neg, New Pos',
-        'REFUSED PREV RX': 'Prev. Neg, Still Neg',
-        'INFECTED RXD': 'Prev. Neg, No Test',
-        'INFECTED NO RX': 'No Prev. Test, New Pos',
-        'NOT INFECTED': 'No Prev. Test, New Neg',
+        'PREVENTATIVE RX': 'Preventative RX',
+        'REFUSED PREV RX': 'Refused Prev. RX',
+        'INFECTED RXD': "Infected, RX'D",
+        'INFECTED NO RX': 'Infected, No RX',
+        'NOT INFECTED': 'Not Infected',
         'PREVIOUS PREV RX': 'Previous Prev Rx',
         'INSUFFICIENT INFO': 'Insufficient Info',
         'UNABLE TO LOCATE': 'Unable to Locate',
