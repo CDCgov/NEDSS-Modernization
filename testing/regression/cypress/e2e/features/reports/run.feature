@@ -23,19 +23,41 @@ Feature: Run report
         Then I should see a loading indicator
         Then I should see a "heading" labelled "Your report has downloaded."
 
-    Scenario: I can run a report for library nbs_sr_5
-        When I navigate to "Public" report with reportUid: 2 and dataSourceUid: 1
+    Scenario: I can run a report for library nbs_sr_02
+        When I navigate to "Public" report with reportUid: 1 and dataSourceUid: 1
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "AIDS" from the "Condition Code" dropdown menu
+        And I select "Appling County" from the "County Code" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+    Scenario Outline: I can run a report for library with condition code
+        When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    Scenario: I can run a report for library nbs_sr_08
-        When I navigate to "Public" report with reportUid: 4 and dataSourceUid: 1
+        Examples:
+            | name       | reportUid | dataSourceUid |
+            | sr_05      | 2         | 1             |
+            | sr_07      | 3         | 1             |
+            | sr_10      | 6         | 1             |
+            | sr_11      | 7         | 1             |
+            | sr_13      | 23        | 1             |
+
+    Scenario Outline: I can run a report for library with date range and condition code
+        When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+        Examples:
+            | name       | reportUid | dataSourceUid |
+            | sr_08      | 4         | 1             |
+            | sr_09      | 5         | 1             |
 
     Scenario: I can run a report for library nbs_sr_12
         When I navigate to "Public" report with reportUid: 8 and dataSourceUid: 1
@@ -59,7 +81,7 @@ Feature: Run report
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    Scenario Outline: I can run a report for library qa with date range and diagnosis
+    Scenario Outline: I can run a report for library with date range and diagnosis
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
@@ -76,11 +98,19 @@ Feature: Run report
             | qa_07 (60) | 10066757  | 23            |
             | qa_07 (90) | 10066758  | 23            |
             | qa_10      | 10066759  | 23            |
+            | pa_03      | 10066749  | 23            |
 
     Scenario: I can run a report for library qa_05
         When I navigate to "Public" report with reportUid: 10066762 and dataSourceUid: 25
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
         And I select "PKS PKS" from the "Provider QEC" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+    Scenario: I can run a report for library potntl_dup_inv_sum
+        When I navigate to "Template" report with reportUid: 10066763 and dataSourceUid: 22
+        And I type 999 into the "Duplicate Investigations Time Frame" field
+        And I select "Anthrax" from the "Disease Code" dropdown menu
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
