@@ -10,6 +10,7 @@ import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
@@ -104,7 +105,7 @@ class WhereClauseServiceTest {
       Long reportFilterUid,
       Long reportColumnUid,
       Boolean defaultIncludeNulls,
-      FilterType fitlerType) {
+      FilterType filterType) {
 
     return new BasicFilterConfiguration(
         reportFilterUid,
@@ -113,7 +114,7 @@ class WhereClauseServiceTest {
         defaultIncludeNulls,
         null,
         null,
-        fitlerType);
+        filterType);
   }
 
   private FilterType createFilterType(String type, String code) {
@@ -225,6 +226,34 @@ class WhereClauseServiceTest {
     String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
 
     assertThat(whereFragment).isEqualTo("([ColumnName1] IN ('A')) AND ([ColumnName2] IN ('B'))");
+  }
+
+  @Test
+  void should_disregard_basic_filters_requests_without_values() {
+    Long filter1 = 101L;
+    Long col1 = 1L;
+    Long filter2 = 102L;
+    Long col2 = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
+    ReportConfiguration reportConfig =
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filter1, col1, false, filterType),
+                createBasicFilterConfiguration(List.of(), filter2, col2, false, filterType)),
+            List.of(
+                mockReportColumn(col1, "STRING", "ColumnName1"),
+                mockReportColumn(col2, "STRING", "ColumnName2")));
+
+    List<BasicFilterRequest> basicFilterRequests =
+        List.of(
+            new BasicFilterRequest(filter1, List.of(), false),
+            new BasicFilterRequest(filter2, List.of(), false));
+
+    String whereFragment =
+        whereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequests);
+
+    assertThat(whereFragment).isEmpty();
   }
 
   @Test
@@ -975,7 +1004,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_throw_illegal_arg_exception_when_user_has_no_assigned_ids() {
+  void should_throw_forbidden_exception_when_user_has_no_assigned_ids() {
     ReportConfiguration reportConfig =
         createReportConfig(List.of(), List.of(), ReportGroup.REPORTING_FACILITY);
 
@@ -989,7 +1018,7 @@ class WhereClauseServiceTest {
     mockAuthenticatedUser(null);
 
     assertThatThrownBy(() -> whereClauseService.buildPermissionFragment(reportConfig))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(ForbiddenException.class)
         .hasMessageContaining("No Jurisdiction or Program Area permissions found for user: null");
   }
 

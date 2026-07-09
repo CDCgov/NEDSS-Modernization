@@ -26,6 +26,7 @@ def execute_report(report_spec: models.ReportSpec):
             trx,
             subset_query=report_spec.subset_query,
             data_source_name=report_spec.data_source_name,
+            sort_by=report_spec.sort_by,
             days_value=report_spec.days_value,
             column_map=report_spec.column_map,
             library_params=report_spec.library_params,

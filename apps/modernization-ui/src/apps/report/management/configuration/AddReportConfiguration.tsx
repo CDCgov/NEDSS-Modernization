@@ -6,12 +6,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ReportControllerService } from 'generated';
 import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 import { useNavigate } from 'react-router';
-import { AlertMessage } from 'design-system/message';
 
 import styles from 'apps/report/layout/layout.module.scss';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
 const AddReportConfiguration = () => {
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown | null>(null);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const navigate = useNavigate();
@@ -30,9 +30,7 @@ const AddReportConfiguration = () => {
             .then((reportId) => {
                 navigate(`/report/management/configuration/${reportId.reportUid}/${reportId.dataSourceUid}`);
             })
-            .catch((err) => {
-                setError(JSON.stringify(err));
-            })
+            .catch(setError)
             .finally(() => setSubmitting(false));
     });
 
@@ -51,7 +49,7 @@ const AddReportConfiguration = () => {
             }
         >
             <div className={styles.columnContent}>
-                {error && <AlertMessage type="error">{error}</AlertMessage>}
+                {!!error && <ApiErrorBanner action="adding" item="report" error={error} />}
                 <FormProvider {...form}>
                     <form className={styles.columnContent} onSubmit={handleSubmit}>
                         <ReportConfigurationContent isEditable={true} />
