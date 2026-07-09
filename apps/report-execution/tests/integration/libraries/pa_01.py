@@ -102,3 +102,61 @@ class TestIntegrationPa01Library:
         ]
 
         assert len(result.content.data) == 0
+
+    def test_execute_report_check_data_std(self, snapshot):
+        report_spec = self.create_spec(
+            library_params='{"report_variant": "STD"}',
+            report_title='PA01 Case Management Report (Interview Assign Date) - STD',
+        )
+
+        result = execute_report(report_spec)
+
+        assert result is not None
+
+        assert result.content.columns == [
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Category 3',
+            'Count',
+            'Percentage',
+            'Index',
+        ]
+
+        data = result.content.data
+
+        assert len(data) > 0
+
+        for row in data:
+            assert isinstance(row[0], str)
+            assert isinstance(row[1], str)
+            assert isinstance(row[2], str)
+            assert row[3] is None or isinstance(row[3], str)
+            assert row[4] is None or isinstance(row[4], int)
+            assert row[5] is None or isinstance(row[5], str)
+            assert row[6] is None or isinstance(row[6], str)
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+    def test_execute_report_no_data_std(self):
+        report_spec = self.create_spec(
+            subset_query='SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2',
+            library_params='{"report_variant": "STD"}',
+            report_title='PA01 Case Management Report (Interview Assign Date) - STD',
+        )
+
+        result = execute_report(report_spec)
+
+        assert result is not None
+
+        assert result.content.columns == [
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Category 3',
+            'Count',
+            'Percentage',
+            'Index',
+        ]
+
+        assert len(result.content.data) == 0
