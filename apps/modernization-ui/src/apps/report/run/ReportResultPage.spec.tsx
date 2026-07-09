@@ -144,12 +144,12 @@ describe('report result page', () => {
         expect(await axe(container)).toHaveNoViolations();
     });
 
-    it('calls handleRefineReport when "Refine Report" button is clicked', async () => {
+    it('calls handleRefineReport when "Refine report" button is clicked', async () => {
         const user = userEvent.setup();
         const props = createMockProps();
         const { getByRole } = renderWithRouter(props);
 
-        const refineButton = getByRole('button', { name: 'Refine Report' });
+        const refineButton = getByRole('button', { name: 'Refine report' });
         await user.click(refineButton);
 
         expect(props.handleRefineReport).toHaveBeenCalledTimes(1);
@@ -211,7 +211,7 @@ describe('report result page', () => {
             await user.click(confirmSaveButton);
 
             expect(await findByText('Issue with saving report')).toBeVisible();
-            expect(await findByText(/There was an error saving your report/)).toBeVisible();
+            expect(await findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
     });
@@ -262,7 +262,7 @@ describe('report result page', () => {
             await fillAndSubmitSaveAsForm(user, render);
 
             expect(await render.findByText('Issue with saving report as new')).toBeVisible();
-            expect(await render.findByText(/There was an error saving your report/)).toBeVisible();
+            expect(await render.findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
     });

@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity
@@ -42,7 +42,11 @@ public class ReportFilter {
   private DataSourceColumn dataSourceColumn;
 
   // When a filter is deleted, it's values also need to be removed
-  @OneToMany(mappedBy = "reportFilter", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(
+      mappedBy = "reportFilter",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL)
   private List<FilterValue> filterValues;
 
   // Setting orphanRemoval to true so we can delete a ReportFilterValidation record when
@@ -64,4 +68,12 @@ public class ReportFilter {
   private Integer minValueCnt;
 
   protected ReportFilter() {}
+
+  public boolean isAdvancedFilter() {
+    return getFilterCode().isAdvancedFilterCode();
+  }
+
+  public boolean isBasicFilter() {
+    return getFilterCode().isBasicFilterCode();
+  }
 }

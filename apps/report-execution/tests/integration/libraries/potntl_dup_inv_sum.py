@@ -67,6 +67,63 @@ class TestIntegrationNbsSrDupInvLibrary:
         assert len(data.data) >= 0
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
 
+    def test_execute_report_check_data_with_required_string_col_order_by(
+        self, snapshot
+    ):
+        """Test with sort by of a string required column."""
+        report_spec = self.create_spec(sort_by='UPPER([Disease Code]) ASC')
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.header == 'Potential Duplicate Investigations'
+
+        data = result.content.data
+        assert len(data) >= 0
+        for i in range(1, len(data)):
+            prior = data[i - 1][2]
+            cur = data[i][2]
+            assert (prior is None and cur is None) or (prior is None) or prior <= cur
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+    def test_execute_report_check_data_with_non_required_string_col_order_by(
+        self, snapshot
+    ):
+        """Test with sort by of a string non-required column."""
+        report_spec = self.create_spec(sort_by='UPPER([Investigation Local Id]) ASC')
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.header == 'Potential Duplicate Investigations'
+
+        data = result.content.data
+        assert len(data) >= 0
+        for i in range(1, len(data)):
+            prior = data[i - 1][3]
+            cur = data[i][3]
+            assert (prior is None and cur is None) or (prior is None) or prior <= cur
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+    def test_execute_report_check_data_with_required_non_string_col_order_by(
+        self, snapshot
+    ):
+        """Test with sort by of a non-string required column."""
+        report_spec = self.create_spec(sort_by='[Event Date] ASC')
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.header == 'Potential Duplicate Investigations'
+
+        data = result.content.data
+        assert len(data) >= 0
+        for i in range(1, len(data)):
+            prior = data[i - 1][0]
+            cur = data[i][0]
+            assert (prior is None and cur is None) or (prior is None) or prior <= cur
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
     def test_execute_report_with_days_value(self):
         """Test with a specific days value (e.g., 365 days)."""
         report_spec = self.create_spec(days_value=365)
