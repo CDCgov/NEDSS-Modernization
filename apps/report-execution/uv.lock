@@ -951,7 +951,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fastapi", extras = ["standard"], specifier = "~=0.138" },
+    { name = "fastapi", extras = ["standard"], specifier = "==0.138" },
     { name = "mssql-python", specifier = "==1.7.1" },
     { name = "pandas", specifier = ">=3.0.1" },
     { name = "pydantic", specifier = ">=2.13.0,<3.0.0" },
