@@ -276,26 +276,14 @@ def execute(
             INNER JOIN [RDB].[dbo].D_PROVIDER c
                 ON a.INVESTIGATOR_DISP_FL_FUP_KEY = c.PROVIDER_KEY
             WHERE a.INVESTIGATOR_DISP_FL_FUP_KEY != 1
-              AND b.REFERRAL_BASIS IN ({referral_in})
-              AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
-              AND (
-                  CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
-                  OR a.FL_FUP_DISPO_DT IS NULL
-              )
-              AND (
-                  CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
-                  OR a.FL_FUP_DISPO_DT IS NULL
-              )
-              AND (
-                  CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{min_assign_str}' AS DATE)
-                  OR a.FL_FUP_INVESTIGATOR_ASSGN_DT IS NULL
-              )
-              AND (
-                  CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{max_assign_str}' AS DATE)
-                  OR a.FL_FUP_INVESTIGATOR_ASSGN_DT IS NULL
-              )
-              AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
-              AND a.FL_FUP_DISPOSITION IS NOT NULL
+                AND b.REFERRAL_BASIS IN ({referral_in})
+                AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
+                AND CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
+                AND CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
+                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{min_assign_str}' AS DATE)
+                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{max_assign_str}' AS DATE)
+                AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
+                AND a.FL_FUP_DISPOSITION IS NOT NULL
         )
         SELECT
             INVESTIGATOR_DISP_FL_FUP_KEY AS INVESTIGATOR_FL_FUP_KEY,

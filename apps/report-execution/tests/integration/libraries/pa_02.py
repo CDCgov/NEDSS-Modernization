@@ -29,20 +29,20 @@ class TestIntegrationPa02Library:
         return ReportSpec.model_validate(base)
 
     def test_execute_std_structure_and_columns(self):
-        """Test that the STD report has correct columns and structure matching SAS."""
+        """Test that the STD report has correct columns and structure."""
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
         assert result.content_type == 'table'
         table = result.content
         
-        # Check columns match SAS exactly
+        # Check columns match
         expected_columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
         assert table.columns == expected_columns
         
         # Check there is data
         assert len(table.data) > 0
         
-        # Check i column is always 5 (matches SAS constant)
+        # Check i column is always 5
         for row in table.data:
             assert row[7] == 5  # i column
         
@@ -51,12 +51,12 @@ class TestIntegrationPa02Library:
             assert row[6] == row[0].lower()  # pname_l == lowercase(provider)
 
     def test_execute_std_metric_labels_sas_order(self):
-        """Verify metric labels in SAS order for STD."""
+        """Verify metric labels for STD."""
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
         table = result.content
         
-        # Expected STD metric labels in SAS order
+        # Expected STD metric labels
         expected_labels = [
             "Assigned:",
             "Dispositioned:",
@@ -95,12 +95,12 @@ class TestIntegrationPa02Library:
         assert len(metrics) == len(expected_labels), "STD report has extra metrics"
 
     def test_execute_hiv_metric_labels_sas_order(self):
-        """Verify metric labels in SAS order for HIV."""
+        """Verify metric labels for HIV."""
         spec = self.create_spec(library_params='{"report_type": "HIV"}')
         result = execute_report(spec)
         table = result.content
         
-        # Expected HIV metric labels in SAS order
+        # Expected HIV metric labels
         expected_labels = [
             "Assigned:",
             "Dispositioned:",
