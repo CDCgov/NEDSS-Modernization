@@ -95,16 +95,22 @@ tables:
         data: row_id
       - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
         data: |
+          if 331 <= row_id <= 350:
+            return 0
           if row_id <= 300:
             return 1 if row_id % 4 == 0 else 0
           return fake.random_digit()
       - column_name: SOC_PRTNRS_PRD_FML_TTL
         data: |
+          if 331 <= row_id <= 350:
+            return 0
           if row_id <= 300:
             return 0
           return fake.random_digit()
       - column_name: SOC_PRTNRS_PRD_MALE_TTL
         data: |
+          if 331 <= row_id <= 350:
+            return 0
           if row_id <= 300:
             return 0
           return fake.random_digit()
@@ -137,6 +143,17 @@ tables:
               "E - Previously Treated for This Infection"
             ]
             return treatment_dispositions[row_id % len(treatment_dispositions)]
+
+          if 431 <= row_id <= 450:
+            std_exam_dispositions = [
+              "A - Preventative Treatment",
+              "B - Refused Preventative Treatment",
+              "C - Infected, Brought to Treatment",
+              "D - Infected, Not Treated",
+              "E - Previously Treated for This Infection",
+              "F - Not Infected"
+            ]
+            return std_exam_dispositions[row_id % len(std_exam_dispositions)]
 
           if 101 <= row_id <= 400:
             contact_row_id = row_id - 100
@@ -211,7 +228,7 @@ tables:
         data: row_id
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
-    row_count: 330
+    row_count: 350
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id
@@ -226,6 +243,25 @@ tables:
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
       - column_name: CTT_REFERRAL_BASIS
         data: |
+          if 331 <= row_id <= 340:
+            partner_bases = [
+              "P1 - Partner, Sex",
+              "P2 - Partner, Needle-Sharing",
+              "P3 - Partner, Both"
+            ]
+            return partner_bases[row_id % len(partner_bases)]
+
+          if 341 <= row_id <= 350:
+            cluster_bases = [
+              "A1 - Associate 1",
+              "A2 - Associate 2",
+              "A3 - Associate 3",
+              "S1 - Social Contact 1",
+              "S2 - Social Contact 2",
+              "S3 - Social Contact 3"
+            ]
+            return cluster_bases[row_id % len(cluster_bases)]
+
           if row_id > 300:
             return None
 
@@ -255,7 +291,7 @@ tables:
           return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
 
   - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
-    row_count: 330
+    row_count: 350
     columns:
       - column_name: D_CONTACT_RECORD_KEY
         data: row_id
