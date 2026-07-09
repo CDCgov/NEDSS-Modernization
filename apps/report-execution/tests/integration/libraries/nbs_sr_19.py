@@ -1,6 +1,7 @@
 import pytest
 import yaml
 
+from src.errors import InvalidLibraryParamsError
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
@@ -113,7 +114,7 @@ class TestIntegrationNbsSr19Library:
         ]
 
     def test_execute_report_invalid_params_raises_error(self):
-        """Verifies that missing or malformed library_params throws a ValueError."""
+        """Verifies malformed library_params throws a InvalidLibraryParamsError."""
         # Scenario A: Missing 'count_column' key entirely
         report_spec_missing = ReportSpec.model_validate(
             {
@@ -128,8 +129,9 @@ class TestIntegrationNbsSr19Library:
         )
 
         with pytest.raises(
-            ValueError,
-            match="library_params must be a dictionary containing 'count_column'",
+            InvalidLibraryParamsError,
+            match="Invalid library parameters: "
+                  "'count_column' is required but was absent",
         ):
             execute_report(report_spec_missing)
 
@@ -147,8 +149,9 @@ class TestIntegrationNbsSr19Library:
         )
 
         with pytest.raises(
-            ValueError,
-            match="library_params must be a dictionary containing 'count_column'",
+            InvalidLibraryParamsError,
+            match="Invalid library parameters: "
+                  "'count_column' is required but was absent",
         ):
             execute_report(report_spec_bad_type)
 
