@@ -1,7 +1,9 @@
 @use 'styles/borders';
 
 .row {
-    @extend %thin-bottom;
+    &:not(:last-child) {
+        @extend %thin-bottom;
+    }
 }
 
 .fieldWithNulls {
