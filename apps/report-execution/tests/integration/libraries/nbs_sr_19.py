@@ -130,8 +130,8 @@ class TestIntegrationNbsSr19Library:
 
         with pytest.raises(
             InvalidLibraryParamsError,
-            match="Invalid library parameters: "
-                  "'count_column' is required but was absent",
+            match='Invalid library parameters: '
+            "'count_column' is required but was absent",
         ):
             execute_report(report_spec_missing)
 
@@ -150,8 +150,8 @@ class TestIntegrationNbsSr19Library:
 
         with pytest.raises(
             InvalidLibraryParamsError,
-            match="Invalid library parameters: "
-                  "'count_column' is required but was absent",
+            match='Invalid library parameters: '
+            "'count_column' is required but was absent",
         ):
             execute_report(report_spec_bad_type)
 
