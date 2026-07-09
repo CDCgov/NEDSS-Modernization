@@ -887,6 +887,14 @@ def _build_std_dispositions_output(
     new_partners_not_examined_buckets = _calc_new_partners_not_examined_buckets(
         tables['not_examined_partners'], new_partners_not_examined, worker
     )
+    new_partners_previously_treated, new_partners_previously_treated_percentage = (
+        _calc_new_partners_previously_treated(
+            tables['previously_treated_partners'], total_partners_initiated, worker
+        )
+    )
+    new_partners_open, new_partners_open_percentage = _calc_new_partners_open(
+        tables['period_partners'], total_partners_initiated, worker
+    )
 
     rows: list[Pa01Row] = [
         (
@@ -1022,6 +1030,24 @@ def _build_std_dispositions_output(
             'Previous Prev RX',
             new_partners_not_examined_buckets[DISPO_PREV_PREV_RX][0],
             new_partners_not_examined_buckets[DISPO_PREV_PREV_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Previous RX',
+            None,
+            new_partners_previously_treated,
+            new_partners_previously_treated_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Partners Previous Open',
+            None,
+            new_partners_open,
+            new_partners_open_percentage,
             None,
         ),
     ]
@@ -1905,6 +1931,17 @@ def _calc_new_partners_not_examined_buckets(
     return _count_distinct_case_ids_and_percent_by_dispo(
         rows, dispositions, total_partners_initiated
     )
+
+
+def _calc_new_partners_previously_treated(
+    previously_treated_partners: Table,
+    total_partners_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(previously_treated_partners, worker)
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_partners_initiated)
 
 
 # helpers

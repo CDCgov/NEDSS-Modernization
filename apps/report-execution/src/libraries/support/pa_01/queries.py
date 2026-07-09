@@ -1247,3 +1247,58 @@ def not_examined_partners_query(subset_query: str) -> str:
               'Z - Previous Preventative Treatment'
             );
     """
+
+
+def previously_treated_partners_query(subset_query: str) -> str:
+    """Query to calculate the previously treated partners (PREVIOUS RX).
+
+    Equivalent to `PE` table in SAS.
+    """
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN {nbs_rdb}.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT b.D_INTERVIEW_KEY,
+             c.IX_TYPE,
+             a.INVESTIGATION_KEY,
+             PROVIDER_QUICK_CODE,
+             e.LOCAL_ID AS INV_LOCAL_ID,
+             f.FL_FUP_DISPOSITION,
+             a.INVESTIGATOR_INTERVIEW_KEY
+      FROM filtered_cases a
+        INNER JOIN {nbs_rdb}.dbo.F_INTERVIEW_CASE b
+                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        INNER JOIN {nbs_rdb}.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN {nbs_rdb}.dbo.F_CONTACT_RECORD_CASE d
+                ON a.INVESTIGATION_KEY = d.SUBJECT_INVESTIGATION_KEY
+        INNER JOIN {nbs_rdb}.dbo.STD_HIV_DATAMART f
+                ON d.CONTACT_INVESTIGATION_KEY = f.Investigation_key
+        INNER JOIN {nbs_rdb}.dbo.D_CONTACT_RECORD e
+                ON e.D_CONTACT_RECORD_KEY = d.D_CONTACT_RECORD_KEY
+               AND e.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN {nbs_rdb}.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+               AND e.CTT_REFERRAL_BASIS IN (
+                     'P1 - Partner, Sex',
+                     'P2 - Partner, Needle-Sharing',
+                     'P3 - Partner, Both'
+                   )
+               AND f.fl_fup_disposition IN (
+                     'E - Previously Treated for This Infection'
+                   );
+    """

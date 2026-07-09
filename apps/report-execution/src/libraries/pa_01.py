@@ -22,6 +22,7 @@ from src.libraries.support.pa_01.queries import (
     partner_case_dispositions_query,
     partner_notification_query,
     period_partners_query,
+    previously_treated_partners_query,
     testing_index_query,
     timed_interviews_query,
     treatment_index_query,
@@ -147,6 +148,9 @@ def execute(
     tables['examined_partners'] = trx.query(examined_partners_query(subset_query))
     tables['not_examined_partners'] = trx.query(
         not_examined_partners_query(subset_query)
+    )
+    tables['previously_treated_partners'] = trx.query(
+        previously_treated_partners_query(subset_query)
     )
 
     # get list of workers (nb. None treated as "ALL WORKERS")
