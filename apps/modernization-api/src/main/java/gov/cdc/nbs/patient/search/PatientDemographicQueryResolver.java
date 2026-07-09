@@ -394,7 +394,8 @@ class PatientDemographicQueryResolver {
     LocalDate toDate = betweenDate.to();
     String nextDayValue = FlexibleInstantConverter.toString(toDate.plusDays(1));
 
-    return Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(nextDayValue))));
+    return Optional.of(
+        RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(nextDayValue))));
   }
 
   private String resolveDateOperator(final String operator) {
