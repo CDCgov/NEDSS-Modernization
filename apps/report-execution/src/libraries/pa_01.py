@@ -12,6 +12,7 @@ from src.libraries.support.pa_01.queries import (
     cluster_previous_pos_query,
     clusters_initiated_query,
     disease_intervention_index_query,
+    examined_clusters_query,
     examined_partners_query,
     not_examined_partners_query,
     not_notified_clusters_query,
@@ -152,6 +153,7 @@ def execute(
     tables['previously_treated_partners'] = trx.query(
         previously_treated_partners_query(subset_query)
     )
+    tables['examined_clusters'] = trx.query(examined_clusters_query(subset_query))
 
     # get list of workers (nb. None treated as "ALL WORKERS")
     workers: list[Pa01Worker | None] = [None]

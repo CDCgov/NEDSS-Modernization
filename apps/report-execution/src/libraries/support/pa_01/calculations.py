@@ -861,6 +861,11 @@ def _build_hiv_dispositions_output(
     return rows
 
 
+# colname2 = 'NEW CLUSTERS EXAMINED:';
+# colval2 = var_CM;
+# colpct2 = PER_CM;
+
+
 def _build_std_dispositions_output(
     tables: dict[str, Table], worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
@@ -895,6 +900,31 @@ def _build_std_dispositions_output(
     new_partners_open, new_partners_open_percentage = _calc_new_partners_open(
         tables['period_partners'], total_partners_initiated, worker
     )
+    total_clusters_initiated = _calc_total_clusters_initiated(
+        tables['clusters_initiated'], worker
+    )
+    new_clusters_examined, new_clusters_examined_percentage = (
+        _calc_new_clusters_examined(
+            tables['examined_clusters'], total_clusters_initiated, worker
+        )
+    )
+    new_clusters_examined_buckets = _calc_new_clusters_examined_buckets(
+        tables['examined_clusters'], new_clusters_examined, worker
+    )
+    new_clusters_no_exam, new_clusters_no_exam_percentage = _calc_new_clusters_no_exam(
+        tables['examined_clusters'], total_clusters_initiated, worker
+    )
+    new_clusters_no_exam_buckets = _calc_new_clusters_no_exam_buckets(
+        tables['examined_clusters'], new_clusters_no_exam, worker
+    )
+    new_clusters_previously_treated, new_clusters_previously_treated_percentage = (
+        _calc_new_clusters_previously_treated(
+            tables['examined_clusters'], total_clusters_initiated, worker
+        )
+    )
+
+    # PREVIOUS RX -> examined_clusters_query
+    # OPEN -> clusters_initiated_query
 
     rows: list[Pa01Row] = [
         (
@@ -1048,6 +1078,150 @@ def _build_std_dispositions_output(
             None,
             new_partners_open,
             new_partners_open_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Examined',
+            None,
+            new_clusters_examined,
+            new_clusters_examined_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Examined',
+            'Preventative RX',
+            new_clusters_examined_buckets[DISPO_PREVENTATIVE_RX][0],
+            new_clusters_examined_buckets[DISPO_PREVENTATIVE_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Examined',
+            'Refused Prev. RX',
+            new_clusters_examined_buckets[DISPO_REFUSED_PREV_RX][0],
+            new_clusters_examined_buckets[DISPO_REFUSED_PREV_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Examined',
+            "Infected, RX'D",
+            new_clusters_examined_buckets[DISPO_INFECTED_RXD][0],
+            new_clusters_examined_buckets[DISPO_INFECTED_RXD][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Examined',
+            'Infected, No RX',
+            new_clusters_examined_buckets[DISPO_INFECTED_NO_RX][0],
+            new_clusters_examined_buckets[DISPO_INFECTED_NO_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Examined',
+            'Not Infected',
+            new_clusters_examined_buckets[DISPO_NOT_INFECTED][0],
+            new_clusters_examined_buckets[DISPO_NOT_INFECTED][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            None,
+            new_clusters_no_exam,
+            new_clusters_no_exam_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Insufficient Info',
+            new_clusters_no_exam_buckets[DISPO_INSUFFICIENT_INFO][0],
+            new_clusters_no_exam_buckets[DISPO_INSUFFICIENT_INFO][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Unable to Locate',
+            new_clusters_no_exam_buckets[DISPO_UNABLE_TO_LOCATE][0],
+            new_clusters_no_exam_buckets[DISPO_UNABLE_TO_LOCATE][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Refused Exam',
+            new_clusters_no_exam_buckets[DISPO_REFUSED_EXAM][0],
+            new_clusters_no_exam_buckets[DISPO_REFUSED_EXAM][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'OOJ',
+            new_clusters_no_exam_buckets[DISPO_OOJ][0],
+            new_clusters_no_exam_buckets[DISPO_OOJ][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Other',
+            new_clusters_no_exam_buckets[DISPO_OTHER][0],
+            new_clusters_no_exam_buckets[DISPO_OTHER][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Domestic Violence Risk',
+            new_clusters_no_exam_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][0],
+            new_clusters_no_exam_buckets[DISPO_DOMESTIC_VIOLENCE_RISK][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Patient Deceased',
+            new_clusters_no_exam_buckets[DISPO_PATIENT_DECEASED][0],
+            new_clusters_no_exam_buckets[DISPO_PATIENT_DECEASED][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters No Exam',
+            'Previous Prev RX',
+            new_clusters_no_exam_buckets[DISPO_PREV_PREV_RX][0],
+            new_clusters_no_exam_buckets[DISPO_PREV_PREV_RX][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Previous RX',
+            None,
+            new_clusters_previously_treated,
+            new_clusters_previously_treated_percentage,
             None,
         ),
     ]
@@ -1942,6 +2116,112 @@ def _calc_new_partners_previously_treated(
     count = _count_distinct_case_ids(rows)
 
     return count, _percent_for_csv(count, total_partners_initiated)
+
+
+def _calc_new_clusters_examined(
+    examined_clusters: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(examined_clusters, worker)
+    rows = [
+        row
+        for row in rows
+        if row[FL_FUP_DISPOSITION]
+        in [
+            DISPO_PREVENTATIVE_RX,
+            DISPO_REFUSED_PREV_RX,
+            DISPO_INFECTED_RXD,
+            DISPO_INFECTED_NO_RX,
+            DISPO_NOT_INFECTED,
+        ]
+    ]
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_examined_buckets(
+    examined_clusters: Table,
+    new_clusters_examined: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    rows = _rows_for_worker(examined_clusters, worker)
+    dispositions = [
+        DISPO_PREVENTATIVE_RX,
+        DISPO_REFUSED_PREV_RX,
+        DISPO_INFECTED_RXD,
+        DISPO_INFECTED_NO_RX,
+        DISPO_NOT_INFECTED,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, dispositions, new_clusters_examined
+    )
+
+
+def _calc_new_clusters_no_exam(
+    examined_clusters: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(examined_clusters, worker)
+    rows = [
+        row
+        for row in rows
+        if row[FL_FUP_DISPOSITION]
+        in [
+            DISPO_INSUFFICIENT_INFO,
+            DISPO_UNABLE_TO_LOCATE,
+            DISPO_REFUSED_EXAM,
+            DISPO_OOJ,
+            DISPO_OTHER,
+            DISPO_DOMESTIC_VIOLENCE_RISK,
+            DISPO_PATIENT_DECEASED,
+            DISPO_PREV_PREV_RX,
+        ]
+    ]
+    count = _count_distinct_case_ids(rows)
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_no_exam_buckets(
+    examined_clusters: Table,
+    new_clusters_no_exam: int,
+    worker: Pa01Worker | None = None,
+) -> dict[str, tuple[int, str]]:
+    rows = _rows_for_worker(examined_clusters, worker)
+    dispositions = [
+        DISPO_INSUFFICIENT_INFO,
+        DISPO_UNABLE_TO_LOCATE,
+        DISPO_REFUSED_EXAM,
+        DISPO_OOJ,
+        DISPO_OTHER,
+        DISPO_DOMESTIC_VIOLENCE_RISK,
+        DISPO_PATIENT_DECEASED,
+        DISPO_PREV_PREV_RX,
+    ]
+
+    return _count_distinct_case_ids_and_percent_by_dispo(
+        rows, dispositions, new_clusters_no_exam
+    )
+
+
+def _calc_new_clusters_previously_treated(
+    examined_clusters: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(examined_clusters, worker)
+    count = _count_distinct_case_ids(
+        rows,
+        lambda row: (
+            row[FL_FUP_DISPOSITION] == 'E - Previously Treated for This Infection'
+        ),
+    )
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
 
 
 # helpers

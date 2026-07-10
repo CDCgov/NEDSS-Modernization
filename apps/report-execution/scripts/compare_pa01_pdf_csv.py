@@ -416,10 +416,6 @@ def disposition_entry(
         if normalized == 'PREVIOUS POS':
             return PdfEntry(DISPOSITIONS, 'New Partners Previous Pos', '', values)
         if normalized == 'OPEN':
-            if is_std_partner_disposition_context(context):
-                return PdfEntry(
-                    DISPOSITIONS, 'New Partners Previous Open', '', values
-                )
             return PdfEntry(DISPOSITIONS, 'New Partners Open', '', values)
     else:
         if normalized == 'NEW CLUSTERS NOTIFIED':
@@ -447,13 +443,6 @@ def disposition_entry(
     if category_3 and context.category_2:
         return PdfEntry(DISPOSITIONS, context.category_2, category_3, values)
     return None
-
-
-def is_std_partner_disposition_context(context: PdfContext) -> bool:
-    return context.category_2 in {
-        'New Partners Examined',
-        'New Partners No Exam',
-    }
 
 
 def is_std_cluster_disposition_context(context: PdfContext) -> bool:

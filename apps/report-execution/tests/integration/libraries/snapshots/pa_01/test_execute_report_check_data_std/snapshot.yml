@@ -328,6 +328,134 @@
   - null
 - !!python/tuple
   - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 5
+  - 3.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 2
+  - 40.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 1
+  - 20.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 2
+  - 40.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - null
+  - 71
+  - 44.4%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Unable to Locate
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Refused Exam
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - OOJ
+  - 35
+  - 49.3%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Other
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Domestic Violence Risk
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Patient Deceased
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 36
+  - 50.7%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 2
+  - 1.2%
+  - null
+- !!python/tuple
+  - ALL
   - Speed of Notification - Partners & Clusters
   - New Partners Notified
   - null
@@ -733,6 +861,134 @@
   - null
   - 2
   - 6.5%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - null
+  - 11
+  - 36.7%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Unable to Locate
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Refused Exam
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - OOJ
+  - 6
+  - 54.5%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Other
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Domestic Violence Risk
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Patient Deceased
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 5
+  - 45.5%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 1
+  - 3.3%
   - null
 - !!python/tuple
   - adevraj
@@ -1144,6 +1400,134 @@
   - null
 - !!python/tuple
   - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - null
+  - 13
+  - 50.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Unable to Locate
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Refused Exam
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - OOJ
+  - 5
+  - 38.5%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Other
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Domestic Violence Risk
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Patient Deceased
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 8
+  - 61.5%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
   - Speed of Notification - Partners & Clusters
   - New Partners Notified
   - null
@@ -1549,6 +1933,134 @@
   - null
   - 6
   - 20.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 3
+  - 7.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - null
+  - 20
+  - 51.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Unable to Locate
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Refused Exam
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - OOJ
+  - 11
+  - 55.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Other
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Domestic Violence Risk
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Patient Deceased
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 9
+  - 45.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
@@ -1960,6 +2472,134 @@
   - null
 - !!python/tuple
   - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 2
+  - 5.6%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - null
+  - 14
+  - 38.9%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Unable to Locate
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Refused Exam
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - OOJ
+  - 9
+  - 64.3%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Other
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Domestic Violence Risk
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Patient Deceased
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 5
+  - 35.7%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 1
+  - 2.8%
+  - null
+- !!python/tuple
+  - fpoole
   - Speed of Notification - Partners & Clusters
   - New Partners Notified
   - null
@@ -2365,6 +3005,134 @@
   - null
   - 2
   - 7.1%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - null
+  - 13
+  - 44.8%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Insufficient Info
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Unable to Locate
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Refused Exam
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - OOJ
+  - 4
+  - 30.8%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Other
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Domestic Violence Risk
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Patient Deceased
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 9
+  - 69.2%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - gfreeman
