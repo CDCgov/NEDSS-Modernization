@@ -38,9 +38,7 @@ NEW_PARTNERS_NOTIFIED = 'New Partners Notified'
 NEW_PARTNERS_NOT_NOTIFIED = 'New Partners Not Notified'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 PROVIDER_QUICK_CODE = 'PROVIDER_QUICK_CODE'
-SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS = (
-    'Speed of Exam - Partners & Clusters'
-)
+SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS = 'Speed of Exam - Partners & Clusters'
 SPEED_OF_NOTIFICATION_PARTNERS_AND_CLUSTERS = (
     'Speed of Notification - Partners & Clusters'
 )
