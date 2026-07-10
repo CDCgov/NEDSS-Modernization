@@ -64,10 +64,10 @@ def execute(
       for "ALL WORKERS" doesn't use the distinct case id count like most other
       calculations.  I have replicated this behavior in Python but it is likely
       incorrect.
-    * In the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there are 2 occurances of
-      "PREVIOUS POS" and "OPEN" that come at the bottom of each column of the report
-      section.  Since these names are identical, and they contain no other grouping
-      I have labled them as:
+    * For the HIV variant in the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there
+      are 2 occurances of "PREVIOUS POS" and "OPEN" that come at the bottom of each
+      column of the report section.  Since these names are identical, and they contain
+      no other grouping I have labled them as:
 
       - New Partners Previous Pos
       - New Partners Open
@@ -76,10 +76,22 @@ def execute(
 
       in order to distinguish them in the CSV.  Otherwise if the CSV data were ever
       sorted it would lose its positional meaning.
-    * In the "SPEED OF NOTIFICATION - PARTNERS & CLUSTERS" section, under "New Clusters
-      Notified" for "ALL WORKERS", the percentages appear as 0.0% even if there are
-      counts.  This is due to an issue in the SAS and the Python library includes the
-      correct percentages.
+    * The above changes also apply in a similar fashion to the STD variant, converting 
+      "PREVIOUS RX" and "OPEN" to:
+
+      - New Partners Previous RX
+      - New Partners Open
+      - New Clusters Previous RX
+      - New Clusters Open
+    * In the HIV variant section "SPEED OF NOTIFICATION - PARTNERS & CLUSTERS", under
+      "New Clusters Notified" for "ALL WORKERS", the percentages appear as 0.0% even
+      if there are counts.  This is due to an issue in the SAS and the Python library
+      includes the correct percentages.
+    * There is a bug in PA01_STD.sas for the rightmost "PREVIOUS RX" calculation in the
+      "DISPOSITIONS - NEW PARTNERS & CLUSTERS" section.  It erroneously re-uses the
+      "PREVIOUS PREV RX" value for each individual workers (ALL WORKERS has the correct
+      value).  The Python library will not re-create this bug and instead will give
+      the actual values for each worker.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
