@@ -1261,18 +1261,11 @@ def _build_speed_of_notification(
     Clusters" section for a given worker for the HIV report variant, output data for
     the final CSV.
     """
-    total_partners_initiated = _calc_total_partners_initiated(
-        tables['period_partners'], worker
-    )
-    total_clusters_initiated = _calc_total_clusters_initiated(
-        tables['clusters_initiated'], worker
-    )
-    # TODO for these 2 function calls, pass in bogus int and remove above queries
     new_partners_notified, _ = _calc_new_partners_notified(
-        tables['notified_partners'], total_partners_initiated, worker
+        tables['notified_partners'], 0, worker
     )
     new_clusters_notified, _ = _calc_new_clusters_notified(
-        tables['notified_clusters'], total_clusters_initiated, worker
+        tables['notified_clusters'], 0, worker
     )
     new_partners_notified_day_buckets = _calc_new_partners_notified_day_buckets(
         tables['notified_partners_by_speed'], new_partners_notified, worker
