@@ -1361,21 +1361,165 @@ def examined_clusters_query(subset_query: str) -> str:
                      'S1 - Social Contact 1',
                      'S2 - Social Contact 2',
                      'S3 - Social Contact 3'
-                   ) 
+                   )
                AND f.FL_FUP_DISPOSITION IN (
-                     'A - Preventative Treatment', 
-                     'B - Refused Preventative Treatment', 
-                     'C - Infected, Brought to Treatment', 
-                     'D - Infected, Not Treated', 
-                     'E - Previously Treated for This Infection', 
-                     'F - Not Infected', 
-                     'G - Insufficient Info to Begin Investigation', 
-                     'H - Unable to Locate', 
-                     'J - Located, Not Examined and/or Interviewed', 
-                     'K - Sent Out Of Jurisdiction', 
-                     'L - Other', 
-                     'V - Domestic Violence Risk', 
-                     'X - Patient Deceased', 
+                     'A - Preventative Treatment',
+                     'B - Refused Preventative Treatment',
+                     'C - Infected, Brought to Treatment',
+                     'D - Infected, Not Treated',
+                     'E - Previously Treated for This Infection',
+                     'F - Not Infected',
+                     'G - Insufficient Info to Begin Investigation',
+                     'H - Unable to Locate',
+                     'J - Located, Not Examined and/or Interviewed',
+                     'K - Sent Out Of Jurisdiction',
+                     'L - Other',
+                     'V - Domestic Violence Risk',
+                     'X - Patient Deceased',
                      'Z - Previous Preventative Treatment'
                );
+    """
+
+
+def examined_partners_by_speed_query(subset_query: str) -> str:
+    """Equivalent of `partner2_dte` in PA01_STD.sas."""
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN {nbs_rdb}.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT a.INVESTIGATION_KEY,
+             PROVIDER_QUICK_CODE,
+             e.LOCAL_ID AS INV_LOCAL_ID,
+             f.FL_FUP_DISPOSITION,
+             f.FL_FUP_DISPO_DT,
+             f.FL_FUP_INVESTIGATOR_ASSGN_DT,
+             DATEDIFF(
+               DAY,
+               CAST(f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE),
+               CAST(f.FL_FUP_DISPO_DT AS DATE)
+             ) AS DAYS,
+             a.INVESTIGATOR_INTERVIEW_KEY,
+             a.INVESTIGATOR_INTERVIEW_QC
+      FROM filtered_cases a
+        INNER JOIN {nbs_rdb}.dbo.F_INTERVIEW_CASE b
+                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        INNER JOIN {nbs_rdb}.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN {nbs_rdb}.dbo.F_CONTACT_RECORD_CASE d
+                ON a.INVESTIGATION_KEY = d.SUBJECT_INVESTIGATION_KEY
+        INNER JOIN {nbs_rdb}.dbo.STD_HIV_DATAMART f
+                ON d.CONTACT_INVESTIGATION_KEY = f.Investigation_key
+        INNER JOIN {nbs_rdb}.dbo.D_CONTACT_RECORD e
+                ON e.D_CONTACT_RECORD_KEY = d.D_CONTACT_RECORD_KEY
+               AND e.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN {nbs_rdb}.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+               AND e.CTT_REFERRAL_BASIS IN (
+                     'P1 - Partner, Sex',
+                     'P2 - Partner, Needle-Sharing',
+                     'P3 - Partner, Both'
+                   )
+               AND f.FL_FUP_DISPOSITION IN (
+                     'A - Preventative Treatment',
+                     'B - Refused Preventative Treatment',
+                     'C - Infected, Brought to Treatment',
+                     'D - Infected, Not Treated',
+                     'F - Not Infected'
+                   )
+               AND CAST (f.FL_FUP_DISPO_DT AS DATE)
+                     >= CAST (f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE)
+      ORDER BY INVESTIGATOR_INTERVIEW_KEY;
+    """
+
+
+def examined_clusters_by_speed_query(subset_query: str) -> str:
+    """Equivalent of `CM_dte` in PA01_STD.sas."""
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+
+    return f"""
+      WITH base AS
+      (
+        {subset_query}
+      ),
+      filtered_cases AS
+      (
+        -- STD_HIV_DATAMART1 in SAS
+        SELECT b.*
+        FROM base b
+          INNER JOIN {nbs_rdb}.dbo.INVESTIGATION i
+                  ON i.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+                 AND i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
+                 AND b.CA_INTERVIEWER_ASSIGN_DT IS NOT NULL
+      )
+      SELECT DISTINCT b.D_INTERVIEW_KEY,
+             c.IX_TYPE,
+             a.INVESTIGATION_KEY,
+             PROVIDER_QUICK_CODE,
+             e.LOCAL_ID AS INV_LOCAL_ID,
+             f.FL_FUP_DISPOSITION,
+             f.FL_FUP_DISPO_DT,
+             f.FL_FUP_INVESTIGATOR_ASSGN_DT,
+             DATEDIFF(
+               DAY,
+               CAST(f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE),
+               CAST(f.FL_FUP_DISPO_DT AS DATE)
+             ) AS DAYS,
+             a.INVESTIGATOR_INTERVIEW_KEY
+      FROM filtered_cases a
+        INNER JOIN {nbs_rdb}.dbo.F_INTERVIEW_CASE b
+                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+        INNER JOIN {nbs_rdb}.dbo.D_INTERVIEW c
+                ON c.D_INTERVIEW_KEY = b.D_INTERVIEW_KEY
+               AND c.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN {nbs_rdb}.dbo.F_CONTACT_RECORD_CASE d
+                ON a.INVESTIGATION_KEY = d.SUBJECT_INVESTIGATION_KEY
+               AND d.contact_interview_key = c.D_INTERVIEW_KEY
+        INNER JOIN {nbs_rdb}.dbo.STD_HIV_DATAMART f
+                ON d.CONTACT_INVESTIGATION_KEY = f.Investigation_key
+        INNER JOIN {nbs_rdb}.dbo.D_CONTACT_RECORD e
+                ON e.D_CONTACT_RECORD_KEY = d.D_CONTACT_RECORD_KEY
+               AND e.RECORD_STATUS_CD <> 'LOG_DEL'
+        INNER JOIN {nbs_rdb}.dbo.D_provider
+                ON D_provider.provider_key = a.INVESTIGATOR_INTERVIEW_KEY
+               AND e.CTT_REFERRAL_BASIS IN (
+                     'A1 - Associate 1',
+                     'A2 - Associate 2',
+                     'A3 - Associate 3',
+                     'C1- Cohort',
+                     'S1 - Social Contact 1',
+                     'S2 - Social Contact 2',
+                     'S3 - Social Contact 3'
+                   )
+               AND f.FL_FUP_DISPOSITION IN (
+                     'A - Preventative Treatment',
+                     'B - Refused Preventative Treatment',
+                     'C - Infected, Brought to Treatment',
+                     'D - Infected, Not Treated',
+                     'E - Previously Treated for This Infection',
+                     'F - Not Infected',
+                     'G - Insufficient Info to Begin Investigation',
+                     'H - Unable to Locate',
+                     'J - Located, Not Examined and/or Interviewed',
+                     'K - Sent Out Of Jurisdiction',
+                     'L - Other',
+                     'V - Domestic Violence Risk',
+                     'X - Patient Deceased',
+                     'Z - Previous Preventative Treatment'
+                   )
+      WHERE CAST(f.FL_FUP_DISPO_DT AS DATE)
+              >= CAST(f.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE);
     """

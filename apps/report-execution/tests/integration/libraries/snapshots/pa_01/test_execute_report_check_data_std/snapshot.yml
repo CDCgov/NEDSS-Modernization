@@ -464,83 +464,83 @@
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 63
+  - 9
   - null
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 13
-  - 20.6%
+  - 2
+  - 22.2%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 28
-  - 44.4%
+  - 3
+  - 33.3%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 41
-  - 65.1%
+  - 5
+  - 55.6%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 55
-  - 87.3%
+  - 9
+  - 100.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - null
-  - 69
+  - 5
   - null
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 3 Days
-  - 15
-  - 21.7%
+  - 2
+  - 40.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 5 Days
-  - 29
-  - 42.0%
+  - 3
+  - 60.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 7 Days
-  - 42
-  - 60.9%
+  - 4
+  - 80.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 14 Days
-  - 55
-  - 79.7%
+  - 5
+  - 100.0%
   - null
 - !!python/tuple
   - adevraj
@@ -1008,83 +1008,83 @@
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 15
+  - 3
   - null
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 2
-  - 13.3%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 4
-  - 26.7%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 7 Days
-  - 5
+  - 1
   - 33.3%
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 14 Days
-  - 11
-  - 73.3%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 16
-  - null
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 3 Days
-  - 5
-  - 31.2%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 5 Days
-  - 7
-  - 43.8%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 11
-  - 68.8%
+  - 1
+  - 33.3%
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 13
-  - 81.2%
+  - 3
+  - 100.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 5 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 7 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 14 Days
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - avance
@@ -1552,83 +1552,83 @@
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 9
-  - null
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 3 Days
-  - 2
-  - 22.2%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 5 Days
   - 3
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
+  - Within 3 Days
+  - 1
   - 33.3%
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 7 Days
-  - 6
-  - 66.7%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 14 Days
-  - 6
-  - 66.7%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 12
-  - null
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 3 Days
-  - 2
-  - 16.7%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 7
-  - 58.3%
+  - 1
+  - 33.3%
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 9
-  - 75.0%
+  - 3
+  - 100.0%
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 10
-  - 83.3%
+  - 3
+  - 100.0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 5 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 7 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 14 Days
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - dbowman
@@ -2096,83 +2096,83 @@
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 14
+  - 1
   - null
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 5
-  - 35.7%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 8
-  - 57.1%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 8
-  - 57.1%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 10
-  - 71.4%
+  - 1
+  - 100.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - null
-  - 12
-  - null
-  - null
-- !!python/tuple
-  - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 3 Days
   - 3
-  - 25.0%
+  - null
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 2
+  - 66.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 5 Days
-  - 4
-  - 33.3%
+  - 2
+  - 66.7%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 7 Days
-  - 6
-  - 50.0%
+  - 3
+  - 100.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 14 Days
-  - 9
-  - 75.0%
+  - 3
+  - 100.0%
   - null
 - !!python/tuple
   - fpoole
@@ -2640,83 +2640,83 @@
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 15
-  - null
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 3 Days
   - 2
-  - 13.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 5 Days
-  - 6
-  - 40.0%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 7 Days
-  - 11
-  - 73.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 14 Days
-  - 14
-  - 93.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 15
   - null
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 4
-  - 26.7%
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 8
-  - 53.3%
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 9
-  - 60.0%
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 13
-  - 86.7%
+  - 2
+  - 100.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 2
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 5 Days
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 7 Days
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 14 Days
+  - 2
+  - 100.0%
   - null
 - !!python/tuple
   - gfreeman
@@ -3184,81 +3184,81 @@
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 14
+  - 0
   - null
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 2
-  - 14.3%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 7
-  - 50.0%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 11
-  - 78.6%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 14
-  - 100.0%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - null
-  - 12
+  - 0
   - null
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 3 Days
-  - 1
-  - 8.3%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 5 Days
-  - 3
-  - 25.0%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 7 Days
-  - 7
-  - 58.3%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 14 Days
-  - 10
-  - 83.3%
+  - 0
+  - 0%
   - null

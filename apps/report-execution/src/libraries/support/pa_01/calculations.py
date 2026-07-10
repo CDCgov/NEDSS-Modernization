@@ -30,12 +30,17 @@ FL_FUP_DISPOSITION = 'FL_FUP_DISPOSITION'
 INVESTIGATOR_INTERVIEW_KEY = 'INVESTIGATOR_INTERVIEW_KEY'
 INV_LOCAL_ID = 'INV_LOCAL_ID'
 IX_TYPE = 'IX_TYPE'
+NEW_CLUSTERS_EXAMINED = 'New Clusters Examined'
 NEW_CLUSTERS_NOTIFIED = 'New Clusters Notified'
 NEW_CLUSTERS_NOT_NOTIFIED = 'New Clusters Not Notified'
+NEW_PARTNERS_EXAMINED = 'New Partners Examined'
 NEW_PARTNERS_NOTIFIED = 'New Partners Notified'
 NEW_PARTNERS_NOT_NOTIFIED = 'New Partners Not Notified'
 PARTNERS_AND_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 PROVIDER_QUICK_CODE = 'PROVIDER_QUICK_CODE'
+SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS = (
+    'Speed of Exam - Partners & Clusters'
+)
 SPEED_OF_NOTIFICATION_PARTNERS_AND_CLUSTERS = (
     'Speed of Notification - Partners & Clusters'
 )
@@ -73,7 +78,7 @@ def build_output_for_worker(
             tables, report_variant, worker
         )
     )
-    rows.extend(_build_speed_of_notification_partners_and_clusters(tables, worker))
+    rows.extend(_build_speed_of_partners_and_clusters(tables, report_variant, worker))
 
     return rows
 
@@ -921,9 +926,6 @@ def _build_std_dispositions_output(
         tables['clusters_initiated'], total_clusters_initiated, worker
     )
 
-    # PREVIOUS RX -> examined_clusters_query
-    # OPEN -> clusters_initiated_query
-
     rows: list[Pa01Row] = [
         (
             _worker_for_csv(worker),
@@ -1236,11 +1238,28 @@ def _build_std_dispositions_output(
     return rows
 
 
-def _build_speed_of_notification_partners_and_clusters(
-    tables: dict[str, Table], worker: Pa01Worker | None = None
+def _build_speed_of_partners_and_clusters(
+    tables: dict[str, Table], report_variant: str, worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
     """Perform all needed calculations for the "Speed of Notification - Partners &
     Clusters" section for a given worker, output data for the final CSV.
+    """
+    rows: list[Pa01Row] = []
+
+    if report_variant == 'HIV':
+        rows.extend(_build_speed_of_notification(tables, worker))
+    elif report_variant == 'STD':
+        rows.extend(_build_speed_of_exam(tables, worker))
+
+    return rows
+
+
+def _build_speed_of_notification(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Speed of Notification - Partners &
+    Clusters" section for a given worker for the HIV report variant, output data for
+    the final CSV.
     """
     total_partners_initiated = _calc_total_partners_initiated(
         tables['period_partners'], worker
@@ -1248,6 +1267,7 @@ def _build_speed_of_notification_partners_and_clusters(
     total_clusters_initiated = _calc_total_clusters_initiated(
         tables['clusters_initiated'], worker
     )
+    # TODO for these 2 function calls, pass in bogus int and remove above queries
     new_partners_notified, _ = _calc_new_partners_notified(
         tables['notified_partners'], total_partners_initiated, worker
     )
@@ -1355,6 +1375,120 @@ def _build_speed_of_notification_partners_and_clusters(
     ]
 
     return rows
+
+
+def _build_speed_of_exam(
+    tables: dict[str, Table], worker: Pa01Worker | None = None
+) -> list[Pa01Row]:
+    """Perform all needed calculations for the "Speed of Exam - Partners & Clusters"
+    section for a given worker for the STD report variant, output data for the final
+    CSV.
+    """
+    new_partners_examined, _ = _calc_new_partners_examined(
+        tables['examined_partners'], 0, worker
+    )
+    new_clusters_examined, _ = _calc_new_clusters_examined(
+        tables['examined_clusters'], 0, worker
+    )
+    new_partners_examined_day_buckets = _calc_new_partners_examined_day_buckets(
+        tables['examined_partners_by_speed'], new_partners_examined, worker
+    )
+    new_clusters_examined_day_buckets = _calc_new_clusters_examined_day_buckets(
+        tables['examined_clusters_by_speed'], new_clusters_examined, worker
+    )
+
+    return [
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_EXAMINED,
+            None,
+            new_partners_examined,
+            None,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_EXAMINED,
+            WITHIN_THREE_DAYS,
+            new_partners_examined_day_buckets[3][0],
+            new_partners_examined_day_buckets[3][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_EXAMINED,
+            WITHIN_FIVE_DAYS,
+            new_partners_examined_day_buckets[5][0],
+            new_partners_examined_day_buckets[5][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_EXAMINED,
+            WITHIN_SEVEN_DAYS,
+            new_partners_examined_day_buckets[7][0],
+            new_partners_examined_day_buckets[7][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_PARTNERS_EXAMINED,
+            WITHIN_FOURTEEN_DAYS,
+            new_partners_examined_day_buckets[14][0],
+            new_partners_examined_day_buckets[14][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_EXAMINED,
+            None,
+            new_clusters_examined,
+            None,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_EXAMINED,
+            WITHIN_THREE_DAYS,
+            new_clusters_examined_day_buckets[3][0],
+            new_clusters_examined_day_buckets[3][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_EXAMINED,
+            WITHIN_FIVE_DAYS,
+            new_clusters_examined_day_buckets[5][0],
+            new_clusters_examined_day_buckets[5][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_EXAMINED,
+            WITHIN_SEVEN_DAYS,
+            new_clusters_examined_day_buckets[7][0],
+            new_clusters_examined_day_buckets[7][1],
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            SPEED_OF_EXAM_PARTNERS_AND_CLUSTERS,
+            NEW_CLUSTERS_EXAMINED,
+            WITHIN_FOURTEEN_DAYS,
+            new_clusters_examined_day_buckets[14][0],
+            new_clusters_examined_day_buckets[14][1],
+            None,
+        ),
+    ]
 
 
 # actual calculations
@@ -1498,14 +1632,14 @@ def _calc_hiv_new_positive(
     """
     rows = _rows_for_worker(case_interview_rows, worker)
 
-    positive_results = {
+    positive_results = [
         '13-Positive/Reactive',
         '21-HIV-1 Pos',
         '22-HIV-1 Pos, Possible Acute',
         '23-HIV-2 Pos',
         '24-HIV-Undifferentiated',
         '12-Prelim Positive',
-    }
+    ]
 
     if report_variant == 'STD' and worker is not None:
         count = _count_distinct_case_ids(
@@ -2119,6 +2253,9 @@ def _calc_new_partners_previously_treated(
     total_partners_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "New Partners Previous RX" count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
     rows = _rows_for_worker(previously_treated_partners, worker)
     count = _count_distinct_case_ids(rows)
 
@@ -2130,6 +2267,9 @@ def _calc_new_clusters_examined(
     total_clusters_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "New Clusters Examined" count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_clusters, worker)
     rows = [
         row
@@ -2153,6 +2293,9 @@ def _calc_new_clusters_examined_buckets(
     new_clusters_examined: int,
     worker: Pa01Worker | None = None,
 ) -> dict[str, tuple[int, str]]:
+    """Calculate "New Clusters Examined" disposition counts and percentages.
+    Calculates for all workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_clusters, worker)
     dispositions = [
         DISPO_PREVENTATIVE_RX,
@@ -2172,6 +2315,9 @@ def _calc_new_clusters_no_exam(
     total_clusters_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "New Clusters No Exam" count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_clusters, worker)
     rows = [
         row
@@ -2198,6 +2344,9 @@ def _calc_new_clusters_no_exam_buckets(
     new_clusters_no_exam: int,
     worker: Pa01Worker | None = None,
 ) -> dict[str, tuple[int, str]]:
+    """Calculate "New Clusters No Exam" disposition counts and percentages.
+    Calculates for all workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_clusters, worker)
     dispositions = [
         DISPO_INSUFFICIENT_INFO,
@@ -2220,6 +2369,9 @@ def _calc_new_clusters_previously_treated(
     total_clusters_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "New Clusters Previous RX" count and percentage.  Calculates for all
+    workers if passed in worker is None.
+    """
     rows = _rows_for_worker(examined_clusters, worker)
     count = _count_distinct_case_ids(
         rows,
@@ -2236,10 +2388,54 @@ def _calc_new_clusters_open_std(
     total_clusters_initiated: int,
     worker: Pa01Worker | None = None,
 ) -> tuple[int, str]:
+    """Calculate "New Clusters Open" count and percentage for the STD report variant.
+    Calculates for all workers if passed in worker is None.
+    """
     rows = _rows_for_worker(clusters_initiated, worker)
     count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
 
     return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_partners_examined_day_buckets(
+    examined_partners_by_speed: Table,
+    new_partners_examined: int,
+    worker: Pa01Worker | None = None,
+) -> dict[int, tuple[int, str]]:
+    """Calculate "New Partners Examined" count and percentage for within 3, 5, 7,
+    and 14 days.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(examined_partners_by_speed, worker)
+    rows = [row for row in rows if row[DAYS] is not None and 0 <= row[DAYS] <= 14]
+
+    return _count_and_percent_day_buckets(rows, new_partners_examined)
+
+
+def _calc_new_clusters_examined_day_buckets(
+    examined_clusters_by_speed: Table,
+    new_clusters_examined: int,
+    worker: Pa01Worker | None = None,
+) -> dict[int, tuple[int, str]]:
+    """Calculate "New Clusters Examined" count and percentage for within 3, 5, 7,
+    and 14 days.  Calculates for all workers if passed in worker is None.
+    """
+    rows = _rows_for_worker(examined_clusters_by_speed, worker)
+    dispositions = [
+        DISPO_PREVENTATIVE_RX,
+        DISPO_REFUSED_PREV_RX,
+        DISPO_INFECTED_RXD,
+        DISPO_INFECTED_NO_RX,
+        DISPO_NOT_INFECTED,
+    ]
+    rows = [
+        row
+        for row in rows
+        if row[DAYS] is not None
+        and 0 <= row[DAYS] <= 14
+        and row[FL_FUP_DISPOSITION] in dispositions
+    ]
+
+    return _count_and_percent_day_buckets(rows, new_clusters_examined)
 
 
 # helpers

@@ -199,6 +199,9 @@ tables:
           if row_id <= 400:
             day_offsets = [2, 4, 6, 10, 16]
             return date(2024, 1, 1 + day_offsets[row_id % len(day_offsets)])
+          if 431 <= row_id <= 450:
+            day_offsets = [2, 4, 6, 10, 14]
+            return date(2024, 1, 1 + day_offsets[row_id % len(day_offsets)])
           return date(2024, 1, min(row_id, 28))
       - column_name: FL_FUP_INVESTIGATOR_ASSGN_DT
         data: date(2024, 1, 1)

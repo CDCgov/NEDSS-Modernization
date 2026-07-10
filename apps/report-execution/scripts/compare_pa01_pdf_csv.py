@@ -31,7 +31,8 @@ LEFT_COLUMN_WIDTH = 60
 CASE_ASSIGNMENTS = 'Case Assignments & Outcomes'
 PARTNERS_CLUSTERS_INITIATED = 'Partners & Clusters Initiated'
 DISPOSITIONS = 'Dispositions - New Partners & Clusters'
-SPEED_OF_NOTIFICATION = 'Speed Of Notification - Partners & Clusters'
+SPEED_OF_NOTIFICATION = 'Speed of Notification - Partners & Clusters'
+SPEED_OF_EXAM = 'Speed of Exam - Partners & Clusters'
 
 
 @dataclass(frozen=True)
@@ -261,10 +262,10 @@ def section_from_line(line: str) -> str | None:
         return PARTNERS_CLUSTERS_INITIATED
     if 'DISPOSITIONS' in normalized and 'PARTNERS CLUSTERS' in normalized:
         return DISPOSITIONS
-    if (
-        'SPEED OF NOTIFICATION' in normalized or 'SPEED OF EXAM' in normalized
-    ) and 'PARTNERS CLUSTERS' in normalized:
+    if 'SPEED OF NOTIFICATION' in normalized and 'PARTNERS CLUSTERS' in normalized:
         return SPEED_OF_NOTIFICATION
+    if 'SPEED OF EXAM' in normalized and 'PARTNERS CLUSTERS' in normalized:
+        return SPEED_OF_EXAM
     return None
 
 
@@ -319,7 +320,7 @@ def pdf_entry_for_label(
         return partners_clusters_entry(context, label, values)
     if context.category_1 == DISPOSITIONS:
         return disposition_entry(context, side, label, values)
-    if context.category_1 == SPEED_OF_NOTIFICATION:
+    if context.category_1 in {SPEED_OF_NOTIFICATION, SPEED_OF_EXAM}:
         return speed_entry(context, side, label, values)
     return None
 
@@ -447,22 +448,26 @@ def speed_entry(
     context: PdfContext, side: str, label: str, values: list[str]
 ) -> PdfEntry | None:
     normalized = normalize_label(label)
-    if side == 'left' and normalized in {
-        'NEW PARTNERS NOTIFIED',
-        'NEW PARTNERS EXAMINED',
-    }:
-        context.category_2 = 'New Partners Notified'
-        return PdfEntry(SPEED_OF_NOTIFICATION, context.category_2, '', values)
-    if side == 'right' and normalized in {
-        'NEW CLUSTERS NOTIFIED',
-        'NEW CLUSTERS EXAMINED',
-    }:
-        context.category_2 = 'New Clusters Notified'
-        return PdfEntry(SPEED_OF_NOTIFICATION, context.category_2, '', values)
+    if context.category_1 == SPEED_OF_NOTIFICATION:
+        if side == 'left' and normalized == 'NEW PARTNERS NOTIFIED':
+            context.category_2 = 'New Partners Notified'
+            return PdfEntry(SPEED_OF_NOTIFICATION, context.category_2, '', values)
+        if side == 'right' and normalized == 'NEW CLUSTERS NOTIFIED':
+            context.category_2 = 'New Clusters Notified'
+            return PdfEntry(SPEED_OF_NOTIFICATION, context.category_2, '', values)
+
+    if context.category_1 == SPEED_OF_EXAM:
+        if side == 'left' and normalized == 'NEW PARTNERS EXAMINED':
+            context.category_2 = 'New Partners Examined'
+            return PdfEntry(SPEED_OF_EXAM, context.category_2, '', values)
+        if side == 'right' and normalized == 'NEW CLUSTERS EXAMINED':
+            context.category_2 = 'New Clusters Examined'
+            return PdfEntry(SPEED_OF_EXAM, context.category_2, '', values)
+
     within_match = re.fullmatch(r'WITHIN (\d+) DAYS', normalized)
-    if within_match and context.category_2:
+    if within_match and context.category_1 and context.category_2:
         return PdfEntry(
-            SPEED_OF_NOTIFICATION,
+            context.category_1,
             context.category_2,
             f'Within {within_match.group(1)} days',
             values,

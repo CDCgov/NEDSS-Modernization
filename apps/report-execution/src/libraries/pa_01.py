@@ -13,7 +13,9 @@ from src.libraries.support.pa_01.queries import (
     clusters_initiated_query,
     disease_intervention_index_query,
     examined_clusters_query,
+    examined_clusters_by_speed_query,
     examined_partners_query,
+    examined_partners_by_speed_query,
     not_examined_partners_query,
     not_notified_clusters_query,
     not_notified_partners_query,
@@ -76,7 +78,7 @@ def execute(
 
       in order to distinguish them in the CSV.  Otherwise if the CSV data were ever
       sorted it would lose its positional meaning.
-    * The above changes also apply in a similar fashion to the STD variant, converting 
+    * The above changes also apply in a similar fashion to the STD variant, converting
       "PREVIOUS RX" and "OPEN" to:
 
       - New Partners Previous RX
@@ -166,6 +168,12 @@ def execute(
         previously_treated_partners_query(subset_query)
     )
     tables['examined_clusters'] = trx.query(examined_clusters_query(subset_query))
+    tables['examined_partners_by_speed'] = trx.query(
+        examined_partners_by_speed_query(subset_query)
+    )
+    tables['examined_clusters_by_speed'] = trx.query(
+        examined_clusters_by_speed_query(subset_query)
+    )
 
     # get list of workers (nb. None treated as "ALL WORKERS")
     workers: list[Pa01Worker | None] = [None]
