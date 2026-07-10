@@ -22,7 +22,7 @@ class TestIntegrationNbsSr19Library:
                 'library_name': 'nbs_sr_19',
                 'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
-                'library_params': '{"count_column": "COUNT_DATE"}',
+                'library_params': '{"date_column": "COUNT_DATE"}',
             }
         )
 
@@ -60,7 +60,7 @@ class TestIntegrationNbsSr19Library:
                 'library_name': 'nbs_sr_19',
                 'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
-                'library_params': '{"count_column": "DATE_REPORTED"}',
+                'library_params': '{"date_column": "DATE_REPORTED"}',
             }
         )
 
@@ -98,7 +98,7 @@ class TestIntegrationNbsSr19Library:
                 'library_name': 'nbs_sr_19',
                 'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART] WHERE 1 = 2',
-                'library_params': '{"count_column": "COUNT_DATE"}',
+                'library_params': '{"date_column": "COUNT_DATE"}',
             }
         )
 
@@ -115,7 +115,7 @@ class TestIntegrationNbsSr19Library:
 
     def test_execute_report_invalid_params_raises_error(self):
         """Verifies malformed library_params throws a InvalidLibraryParamsError."""
-        # Scenario A: Missing 'count_column' key entirely
+        # Scenario A: Missing 'date_column' key entirely
         report_spec_missing = ReportSpec.model_validate(
             {
                 'is_export': True,
@@ -131,7 +131,7 @@ class TestIntegrationNbsSr19Library:
         with pytest.raises(
             InvalidLibraryParamsError,
             match='Invalid library parameters: '
-            "'count_column' is required but was absent",
+            "'date_column' is required but was absent",
         ):
             execute_report(report_spec_missing)
 
@@ -151,7 +151,7 @@ class TestIntegrationNbsSr19Library:
         with pytest.raises(
             InvalidLibraryParamsError,
             match='Invalid library parameters: '
-            "'count_column' is required but was absent",
+            "'date_column' is required but was absent",
         ):
             execute_report(report_spec_bad_type)
 
@@ -176,7 +176,7 @@ class TestIntegrationNbsSr19Library:
                 'library_name': 'nbs_sr_19',
                 'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': status_query,
-                'library_params': '{"count_column": "COUNT_DATE"}',
+                'library_params': '{"date_column": "COUNT_DATE"}',
             }
         )
 

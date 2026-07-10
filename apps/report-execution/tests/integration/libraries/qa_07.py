@@ -82,7 +82,7 @@ class TestIntegrationQa07Library:
     def test_execute_report_missing_days_parameter(self):
         """Test that missing 'report_days' in library_params raises an error."""
         spec = self.create_spec(library_params='{}')
-        with pytest.raises(ValueError, match="must contain 'days_value'"):
+        with pytest.raises(InvalidLibraryParamsError, match="must contain 'days_value'"):
             execute_report(spec)
 
     def test_execute_report_invalid_days_format(self):

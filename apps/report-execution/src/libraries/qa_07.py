@@ -1,5 +1,6 @@
 from src.config import get_cached_config_value
 from src.db_transaction import Transaction
+from src.errors import InvalidLibraryParamsError
 from src.models import ReportResult
 
 
@@ -30,13 +31,13 @@ def execute(
     """
     nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     if not isinstance(library_params, dict):
-        raise ValueError(f"""
+        raise InvalidLibraryParamsError(f"""
             library_params must be a dictionary containing 'days_value' \
             (e.g., 30, 60, 90), got {library_params}
         """)
     days = library_params.get('days_value')
     if days is None:
-        raise ValueError(f"""
+        raise InvalidLibraryParamsError(f"""
             library_params must contain 'days_value' \
             (e.g., 30, 60, 90), got {library_params}
         """)
