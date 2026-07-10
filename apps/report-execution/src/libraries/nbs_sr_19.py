@@ -16,6 +16,8 @@ def execute(
     * Parameterized date column handled safely. This change allowed for the
     merging of SR20 into SR19 as the input date column was the only difference
     * date_column is now a required library_param
+    * total_cases will always be the SUM total. The SAS library did not include
+    the total when one of the count_values was 0.
     """
     # --- Parameter Validation ---
     if not isinstance(library_params, dict) or 'date_column' not in library_params:
@@ -31,11 +33,11 @@ def execute(
         -- Find the first month/year and last month/year from the subset
         boundaries AS (
             SELECT 
-                MIN(CAST(DATEFROMPARTS(
-                    YEAR({date_column}), MONTH({date_column}), 1) AS DATE)
+                MIN(DATEFROMPARTS(
+                    YEAR({date_column}), MONTH({date_column}), 1))
                 ) AS start_date,
-                MAX(CAST(DATEFROMPARTS(
-                    YEAR({date_column}), MONTH({date_column}), 1) AS DATE)
+                MAX(DATEFROMPARTS(
+                    YEAR({date_column}), MONTH({date_column}), 1))
                 ) AS end_date
             FROM subset
             WHERE {date_column} IS NOT NULL

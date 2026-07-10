@@ -74,9 +74,9 @@ Feature: Run report
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
         Examples:
-            | library | reportUid | dataSourceUid |
-            | nbs_sr_19   | 10066724  | 15            |
-            | nbs_sr_20   | 10066726  | 15            |
+            | library   | reportUid | dataSourceUid |
+            | nbs_sr_19 | 10066724  | 15            |
+            | nbs_sr_20 | 10066726  | 15            |
 
     Scenario: I can run a report for library nbs_custom
         When I navigate to "Template" report with reportUid: 10066768 and dataSourceUid: 30
