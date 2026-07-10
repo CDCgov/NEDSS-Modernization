@@ -34,10 +34,10 @@ def execute(
         boundaries AS (
             SELECT 
                 MIN(DATEFROMPARTS(
-                    YEAR({date_column}), MONTH({date_column}), 1))
+                    YEAR({date_column}), MONTH({date_column}), 1)
                 ) AS start_date,
                 MAX(DATEFROMPARTS(
-                    YEAR({date_column}), MONTH({date_column}), 1))
+                    YEAR({date_column}), MONTH({date_column}), 1)
                 ) AS end_date
             FROM subset
             WHERE {date_column} IS NOT NULL
