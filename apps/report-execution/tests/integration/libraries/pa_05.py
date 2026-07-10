@@ -4,7 +4,7 @@ import yaml
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
-faker_schema = 'pa_05.yaml'
+faker_schema = 'std_hiv_datamart.yaml'
 
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')
