@@ -20,7 +20,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
 @NamedEntityGraph(
-    name = "Report.save",
+    name = "Report.saveAs",
     attributeNodes = {
       @NamedAttributeNode(value = "dataSource", subgraph = "dataSource.dataSourceColumns"),
       @NamedAttributeNode(value = "reportFilters", subgraph = "reportFilters.details"),

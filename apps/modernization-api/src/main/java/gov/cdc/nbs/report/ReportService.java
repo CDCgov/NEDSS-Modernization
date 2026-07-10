@@ -118,7 +118,7 @@ public class ReportService {
   public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
     Report report =
         reportRepository
-            .findById(reportId)
+            .findWithGraphById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     // Update values before duplicating otherwise the fk's in the request don't match
