@@ -2,7 +2,7 @@
 
 USE [NBS_ODSE]
 
-DECLARE @pyLib VARCHAR(50) = 'nbs_sr_19'
+DECLARE @pyLib VARCHAR(50) = 'nbs_sr_20'
 DECLARE @sasLib VARCHAR(50) = 'NBSSR00020.SAS'
 DECLARE @desc VARCHAR(300) = 'TB Record Count - Summary Report by Count Date.'
 DECLARE @libraryParams VARCHAR(300) = '{"date_column": "COUNT_DATE"}'
