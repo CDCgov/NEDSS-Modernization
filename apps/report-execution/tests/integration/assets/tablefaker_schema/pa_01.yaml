@@ -14,6 +14,8 @@ tables:
         is_primary_key: true
       - column_name: INV_CASE_STATUS
         data: |
+          # Keep most rows eligible for PA01, but leave some non-eligible statuses
+          # so the report filters are exercised.
           if row_id <= 350:
             return random.choice(["Confirmed", "Probable"])
           return random.choice(["Confirmed", "Probable", "Suspect", "Unknown"])
@@ -78,6 +80,8 @@ tables:
         data: random.choice(["1 - Spread", "2 - Source"])
       - column_name: FL_FUP_INIT_ASSGN_DT
         data: |
+          # The first 400 rows are pinned to the report period so they can drive
+          # deterministic PA01 case/contact totals.
           if row_id <= 400:
             return date(2024, 1, 1)
           return fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
@@ -95,6 +99,8 @@ tables:
         data: row_id
       - column_name: STD_PRTNRS_PRD_TRNSGNDR_TTL
         data: |
+          # Rows 331-350 are forced to zero to create "no period partners"
+          # cases; rows <= 300 create a low, predictable contact index.
           if 331 <= row_id <= 350:
             return 0
           if row_id <= 300:
@@ -102,6 +108,8 @@ tables:
           return fake.random_digit()
       - column_name: SOC_PRTNRS_PRD_FML_TTL
         data: |
+          # Match the zeroed no-partner band above and keep early rows from
+          # inflating period partner counts.
           if 331 <= row_id <= 350:
             return 0
           if row_id <= 300:
@@ -109,6 +117,8 @@ tables:
           return fake.random_digit()
       - column_name: SOC_PRTNRS_PRD_MALE_TTL
         data: |
+          # Match the zeroed no-partner band above and keep early rows from
+          # inflating period partner counts.
           if 331 <= row_id <= 350:
             return 0
           if row_id <= 300:
@@ -116,6 +126,8 @@ tables:
           return fake.random_digit()
       - column_name: FL_FUP_DISPOSITION
         data: |
+          # HIV notification buckets use numeric dispositions; STD exam/no-exam
+          # buckets use lettered dispositions.
           notified_dispositions = [
             "2 - Prev. Neg, New Pos",
             "3 - Prev. Neg, Still Neg",
@@ -136,6 +148,8 @@ tables:
           cluster_not_notified_dispositions = not_notified_dispositions + [
             "Z - Previous Preventative Treatment"
           ]
+
+          # Rows 401-430 seed STD disease/treatment index rows.
           if 401 <= row_id <= 430:
             treatment_dispositions = [
               "A - Preventative Treatment",
@@ -144,6 +158,8 @@ tables:
             ]
             return treatment_dispositions[row_id % len(treatment_dispositions)]
 
+          # Rows 431-450 seed the STD Speed of Exam section with examined
+          # partner/cluster outcomes.
           if 431 <= row_id <= 450:
             std_exam_dispositions = [
               "A - Preventative Treatment",
@@ -155,6 +171,9 @@ tables:
             ]
             return std_exam_dispositions[row_id % len(std_exam_dispositions)]
 
+          # Contact records point at datamart rows row_id + 100, so rows
+          # 101-400 mirror D_CONTACT_RECORD rows 1-300. The modulo pattern
+          # alternates partner vs. cluster and notified vs. not-notified data.
           if 101 <= row_id <= 400:
             contact_row_id = row_id - 100
             bucket = contact_row_id % 4
@@ -170,6 +189,7 @@ tables:
               contact_row_id % len(cluster_not_notified_dispositions)
             ]
 
+          # Remaining rows get broad random coverage for incidental joins.
           return random.choice([
             "2 - Prev. Neg, New Pos",
             "3 - Prev. Neg, Still Neg",
@@ -196,9 +216,13 @@ tables:
         null_percentage: 0.1
       - column_name: FL_FUP_DISPO_DT
         data: |
+          # Keep most contact dispositions close to 2024-01-01 so the speed
+          # bucket calculations have rows within 3/5/7/14 days and beyond.
           if row_id <= 400:
             day_offsets = [2, 4, 6, 10, 16]
             return date(2024, 1, 1 + day_offsets[row_id % len(day_offsets)])
+          # STD Speed of Exam rows need deterministic offsets inside the
+          # 3/5/7/14 day buckets.
           if 431 <= row_id <= 450:
             day_offsets = [2, 4, 6, 10, 14]
             return date(2024, 1, 1 + day_offsets[row_id % len(day_offsets)])
@@ -246,6 +270,8 @@ tables:
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
       - column_name: CTT_REFERRAL_BASIS
         data: |
+          # Rows 331-350 are reserved for extra STD partner/cluster contact
+          # coverage without changing the earlier HIV-focused pattern.
           if 331 <= row_id <= 340:
             partner_bases = [
               "P1 - Partner, Sex",
@@ -265,9 +291,13 @@ tables:
             ]
             return cluster_bases[row_id % len(cluster_bases)]
 
+          # Rows above 300 are generally excluded unless explicitly reserved
+          # above; this keeps the contact volume predictable.
           if row_id > 300:
             return None
 
+          # For rows 1-300, align with the FL_FUP_DISPOSITION modulo pattern:
+          # 0/1 are partners, 2/3 are clusters.
           partner_bases = [
             "P1 - Partner, Sex",
             "P2 - Partner, Needle-Sharing",
@@ -309,6 +339,8 @@ tables:
           return 1000 + row_id
       - column_name: SUBJECT_KEY
         data: |
+          # Give the first few contact records a shared source key so the
+          # source-identified calculations have deterministic positives.
           return 2000 + (1 if row_id in (1, 2, 3) else 2)
       - column_name: THIRD_PARTY_INVESTIGATION_KEY
         data: 1
