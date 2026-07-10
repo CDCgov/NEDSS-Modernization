@@ -19,6 +19,28 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
+@NamedEntityGraph(
+    name = "Report.save",
+    attributeNodes = {
+      @NamedAttributeNode(value = "dataSource", subgraph = "dataSource.dataSourceColumns"),
+      @NamedAttributeNode(value = "reportFilters", subgraph = "reportFilters.details"),
+      @NamedAttributeNode("reportSortColumns"),
+    },
+    subgraphs = {
+      @NamedSubgraph(
+          name = "reportFilters.details",
+          type = ReportFilter.class,
+          attributeNodes = {
+            @NamedAttributeNode("filterCode"),
+            @NamedAttributeNode("filterValues"),
+          }),
+      @NamedSubgraph(
+          name = "dataSource.dataSourceColumns",
+          type = DataSource.class,
+          attributeNodes = {
+            @NamedAttributeNode("dataSourceColumns"),
+          })
+    })
 public class Report {
   @NonNull @EmbeddedId private ReportId id;
 
