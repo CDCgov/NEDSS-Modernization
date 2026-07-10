@@ -24,6 +24,7 @@ import lombok.Setter;
     attributeNodes = {
       @NamedAttributeNode(value = "dataSource", subgraph = "dataSource.dataSourceColumns"),
       @NamedAttributeNode(value = "reportFilters", subgraph = "reportFilters.details"),
+      @NamedAttributeNode("displayColumns"),
       @NamedAttributeNode("reportSortColumns"),
     },
     subgraphs = {
