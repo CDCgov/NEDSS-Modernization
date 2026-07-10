@@ -8,7 +8,7 @@ Feature: Patient Search by Date of birth
     And I have another patient
 
   Scenario: I can find patients born on a specific date even if the record contains a birth time
-    Given the patient was born on 02/02/1990
+    Given the patient was born on 01/02/1990
     And I have another patient
     And the patient was born exactly at "1990-01-01T00:26:00"
     And patients are available for search

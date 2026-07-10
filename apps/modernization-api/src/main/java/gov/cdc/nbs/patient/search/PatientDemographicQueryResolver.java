@@ -329,6 +329,7 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
+  // Accounts for datetime comparison (i.e. DOB values with time components)
   private QueryVariant asFullDayRange(final String field, final LocalDate date) {
     String start = FlexibleInstantConverter.toString(date);
     String end = FlexibleInstantConverter.toString(date.plusDays(1));
@@ -391,6 +392,7 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
+    // Day+1 accounts for datetime comparison (i.e. DOB values with time components)
     LocalDate toDate = betweenDate.to();
     String nextDayValue = FlexibleInstantConverter.toString(toDate.plusDays(1));
 
