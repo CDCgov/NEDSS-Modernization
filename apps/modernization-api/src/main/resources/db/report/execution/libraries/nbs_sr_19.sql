@@ -5,7 +5,7 @@ USE [NBS_ODSE]
 DECLARE @pyLib VARCHAR(50) = 'nbs_sr_19'
 DECLARE @sasLib VARCHAR(50) = 'NBSSR00019.SAS'
 DECLARE @desc VARCHAR(300) = 'TB Record Count - Summary Report by Report Date.'
-DECLARE @libraryParams VARCHAR(300) = '{"count_column": "DATE_REPORTED"}'
+DECLARE @libraryParams VARCHAR(300) = '{"date_column": "DATE_REPORTED"}'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
