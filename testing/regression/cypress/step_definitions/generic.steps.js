@@ -20,6 +20,10 @@ When('I type {string} into the {string} field', (value, label) => {
     cy.findByRole('textbox', { name: label }).type(value);
 });
 
+When('I type {int} into the {string} field', (value, label) => {
+    cy.findByRole('spinbutton', { name: label }).type(value);
+});
+
 Then('The {string} {string} should be disabled', (name, role) => {
     cy.findByRole(role, { name }).should('be.disabled');
 });
