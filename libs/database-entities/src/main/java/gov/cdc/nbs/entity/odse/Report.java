@@ -18,6 +18,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@NamedEntityGraph(
+    name = "report.all-values",
+    attributeNodes = {
+      @NamedAttributeNode("reportFilters"),
+      @NamedAttributeNode("displayColumns"),
+      @NamedAttributeNode("reportSortColumns")
+    })
 @Table(name = "Report", catalog = "NBS_ODSE")
 public class Report {
   @NonNull @EmbeddedId private ReportId id;
@@ -30,7 +37,8 @@ public class Report {
       updatable = false)
   private DataSource dataSource;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  // We always use the library metadata when dealing with a report
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 

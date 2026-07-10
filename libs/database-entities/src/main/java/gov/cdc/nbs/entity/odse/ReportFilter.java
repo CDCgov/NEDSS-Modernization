@@ -44,7 +44,7 @@ public class ReportFilter {
   // When a filter is deleted, it's values also need to be removed
   @OneToMany(
       mappedBy = "reportFilter",
-      fetch = FetchType.LAZY,
+      fetch = FetchType.EAGER,
       orphanRemoval = true,
       cascade = CascadeType.ALL)
   private List<FilterValue> filterValues;
@@ -53,7 +53,7 @@ public class ReportFilter {
   // it's detached from its parent ReportFilter (i.e. `filterValidation` is set to null).
   @OneToOne(
       mappedBy = "reportFilter",
-      fetch = FetchType.LAZY,
+      fetch = FetchType.EAGER,
       orphanRemoval = true,
       cascade = CascadeType.ALL)
   private ReportFilterValidation filterValidation;

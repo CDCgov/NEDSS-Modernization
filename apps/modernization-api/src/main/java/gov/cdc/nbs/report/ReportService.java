@@ -122,6 +122,11 @@ public class ReportService {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     // Update values before duplicating otherwise the fk's in the request don't match
+    // Hibernate.initialize(report.getDataSource());
+    // Hibernate.initialize(report.getDisplayColumns());
+    // Hibernate.initialize(report.getReportFilters());
+    // Hibernate.initialize(report.getReportSortColumns());
+    reportRepository.detach(report);
     updateReportExecutionData(request.executionRequest(), report);
 
     Report duplicate = reportMapper.duplicate(report, user);
