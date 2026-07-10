@@ -79,7 +79,8 @@ def execute(
             DATEDIFF(day, '1960-01-01', c.month_date) AS sasdate,
             COALESCE(a.counted_cases, 0) AS counted_cases,
             COALESCE(a.non_counted_cases, 0) AS non_counted_cases,
-            COALESCE(a.counted_cases, 0) + COALESCE(a.non_counted_cases, 0) AS total_cases
+            COALESCE(a.counted_cases, 0) + COALESCE(a.non_counted_cases, 0)
+                AS total_cases
         FROM calendar c
         LEFT JOIN monthly_aggregates a 
             ON YEAR(c.month_date) = a.case_year 
