@@ -357,7 +357,7 @@ describe('report run page', () => {
 
                     expect(mockApi).toHaveBeenCalled();
 
-                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    const checkbox = await findByLabelText('Include nulls for Basic Text Filter');
                     expect(checkbox).not.toBeChecked();
                     const user = userEvent.setup();
                     await user.click(checkbox);
@@ -388,7 +388,7 @@ describe('report run page', () => {
 
                     expect(mockApi).toHaveBeenCalled();
 
-                    const checkbox = await findByLabelText('Include Nulls for Basic Text Filter');
+                    const checkbox = await findByLabelText('Include nulls for Basic Text Filter');
                     expect(checkbox).toBeChecked();
                     const user = userEvent.setup();
                     await user.click(checkbox);
@@ -805,13 +805,13 @@ describe('report run page', () => {
                 expect(await findAllByText('Time')).toHaveLength(2);
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
-                const fromMonthInput = await findByLabelText('From Month');
+                const fromMonthInput = await findByLabelText('From month');
                 await userEvent.selectOptions(fromMonthInput, '1');
-                const fromYearInput = await findByLabelText('From Year');
+                const fromYearInput = await findByLabelText('From year');
                 await userEvent.selectOptions(fromYearInput, '2025');
-                const toMonthInput = await findByLabelText('To Month');
+                const toMonthInput = await findByLabelText('To month');
                 await userEvent.selectOptions(toMonthInput, '1');
-                const toYearInput = await findByLabelText('To Year');
+                const toYearInput = await findByLabelText('To year');
                 await userEvent.selectOptions(toYearInput, '2026');
 
                 expect(fromMonthInput).toHaveValue('1');
@@ -847,10 +847,10 @@ describe('report run page', () => {
                 expect(mockConfigApi).toHaveBeenCalled();
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
-                const fromMonthInput = await findByLabelText('From Month');
-                const fromYearInput = await findByLabelText('From Year');
-                const toMonthInput = await findByLabelText('To Month');
-                const toYearInput = await findByLabelText('To Year');
+                const fromMonthInput = await findByLabelText('From month');
+                const fromYearInput = await findByLabelText('From year');
+                const toMonthInput = await findByLabelText('To month');
+                const toYearInput = await findByLabelText('To year');
 
                 expect(fromMonthInput).toHaveValue('');
                 expect(fromYearInput).toHaveValue('');
@@ -885,10 +885,10 @@ describe('report run page', () => {
                 expect(mockConfigApi).toHaveBeenCalled();
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
-                const fromMonthInput = await findByLabelText('From Month');
-                const fromYearInput = await findByLabelText('From Year');
-                const toMonthInput = await findByLabelText('To Month');
-                const toYearInput = await findByLabelText('To Year');
+                const fromMonthInput = await findByLabelText('From month');
+                const fromYearInput = await findByLabelText('From year');
+                const toMonthInput = await findByLabelText('To month');
+                const toYearInput = await findByLabelText('To year');
 
                 expect(fromMonthInput).toHaveValue('1');
                 expect(fromYearInput).toHaveValue('2024');
