@@ -122,6 +122,7 @@ public class ReportService {
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
     // Update values before duplicating otherwise the fk's in the request don't match
+    reportRepository.detach(report);
     updateReportExecutionData(request.executionRequest(), report);
 
     Report duplicate = reportMapper.duplicate(report, user);
