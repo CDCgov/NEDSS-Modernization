@@ -545,7 +545,7 @@ def _build_hiv_dispositions_output(
             tables['clusters_previous_pos'], total_clusters_initiated, worker
         )
     )
-    new_clusters_open, new_clusters_open_percentage = _calc_new_clusters_open(
+    new_clusters_open, new_clusters_open_percentage = _calc_new_clusters_open_hiv(
         tables['clusters_initiated'], total_clusters_initiated, worker
     )
 
@@ -861,11 +861,6 @@ def _build_hiv_dispositions_output(
     return rows
 
 
-# colname2 = 'NEW CLUSTERS EXAMINED:';
-# colval2 = var_CM;
-# colpct2 = PER_CM;
-
-
 def _build_std_dispositions_output(
     tables: dict[str, Table], worker: Pa01Worker | None = None
 ) -> list[Pa01Row]:
@@ -921,6 +916,9 @@ def _build_std_dispositions_output(
         _calc_new_clusters_previously_treated(
             tables['examined_clusters'], total_clusters_initiated, worker
         )
+    )
+    new_clusters_open, new_clusters_open_percentage = _calc_new_clusters_open_std(
+        tables['clusters_initiated'], total_clusters_initiated, worker
     )
 
     # PREVIOUS RX -> examined_clusters_query
@@ -1222,6 +1220,15 @@ def _build_std_dispositions_output(
             None,
             new_clusters_previously_treated,
             new_clusters_previously_treated_percentage,
+            None,
+        ),
+        (
+            _worker_for_csv(worker),
+            DISPOSITIONS_NEW_PARTNERS_AND_CLUSTERS,
+            'New Clusters Open',
+            None,
+            new_clusters_open,
+            new_clusters_open_percentage,
             None,
         ),
     ]
@@ -1893,7 +1900,7 @@ def _calc_new_clusters_previous_pos(
     return count, _percent_for_csv(count, total_clusters_initiated)
 
 
-def _calc_new_clusters_open(
+def _calc_new_clusters_open_hiv(
     clusters_initiated: Table,
     total_clusters_initiated: int,
     worker: Pa01Worker | None = None,
@@ -2220,6 +2227,17 @@ def _calc_new_clusters_previously_treated(
             row[FL_FUP_DISPOSITION] == 'E - Previously Treated for This Infection'
         ),
     )
+
+    return count, _percent_for_csv(count, total_clusters_initiated)
+
+
+def _calc_new_clusters_open_std(
+    clusters_initiated: Table,
+    total_clusters_initiated: int,
+    worker: Pa01Worker | None = None,
+) -> tuple[int, str]:
+    rows = _rows_for_worker(clusters_initiated, worker)
+    count = _count_distinct_case_ids(rows, lambda row: row[FL_FUP_DISPOSITION] is None)
 
     return count, _percent_for_csv(count, total_clusters_initiated)
 

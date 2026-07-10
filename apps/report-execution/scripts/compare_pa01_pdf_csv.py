@@ -435,21 +435,12 @@ def disposition_entry(
         if normalized == 'PREVIOUS POS':
             return PdfEntry(DISPOSITIONS, 'New Clusters Previous Pos', '', values)
         if normalized == 'OPEN':
-            if is_std_cluster_disposition_context(context):
-                return PdfEntry(DISPOSITIONS, 'New Clusters Previous Open', '', values)
             return PdfEntry(DISPOSITIONS, 'New Clusters Open', '', values)
 
     category_3 = disposition_child_label(normalized)
     if category_3 and context.category_2:
         return PdfEntry(DISPOSITIONS, context.category_2, category_3, values)
     return None
-
-
-def is_std_cluster_disposition_context(context: PdfContext) -> bool:
-    return context.category_2 in {
-        'New Clusters Examined',
-        'New Clusters No Exam',
-    }
 
 
 def speed_entry(
