@@ -9,9 +9,7 @@ type State =
     | { status: 'error'; error: string };
 
 type Action =
-    | { type: 'fetch'; page?: number }
-    | { type: 'complete'; conditions: Condition[] }
-    | { type: 'error'; error: string };
+    { type: 'fetch'; page?: number } | { type: 'complete'; conditions: Condition[] } | { type: 'error'; error: string };
 
 const reducer = (_state: State, action: Action): State => {
     switch (action.type) {
