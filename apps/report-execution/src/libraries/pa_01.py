@@ -51,9 +51,9 @@ def execute(
     * There are some rounding peculiarities between SAS and Python, so for instance
       a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
       SAS it will be 0.08.  In such cases the Python value will be used as is.
-    * There is a quirk in PA01_HIV.sas in which the data point "HIV Tested" output does
-      not include percentages for individual workers, only "ALL WORKERS".  This report
-      includes percentages for individual workers.
+    * There is a quirk in both PA01_HIV.sas and PA01_STD.sas in which the data point
+      "HIV Tested" output does not include percentages for individual workers, only
+      "ALL WORKERS".  This Python output includes percentages for individual workers.
     * There is a bug in PA01_HIV.sas in which the "CASES /W NO CLUSTERS" shows up as
       0 for "ALL WORKERS" even if there is data present.  This is because the SAS
       template for this calculation for "ALL WORKERS" uses a slightly different string:
@@ -66,6 +66,10 @@ def execute(
       for "ALL WORKERS" doesn't use the distinct case id count like most other
       calculations.  I have replicated this behavior in Python but it is likely
       incorrect.
+    * There is a bug in the PA01_HIV.sas in which the "NEW CLUSTERS NOTIFIED" count
+      for "ALL WORKERS" shows 0% for counts that are above 0.  This is due to faulty
+      `find` calls in the SAS file.  The Python version will show the proper
+      percentages.
     * For the HIV variant in the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there
       are 2 occurances of "PREVIOUS POS" and "OPEN" that come at the bottom of each
       column of the report section.  Since these names are identical, and they contain
@@ -89,6 +93,10 @@ def execute(
       "New Clusters Notified" for "ALL WORKERS", the percentages appear as 0.0% even
       if there are counts.  This is due to an issue in the SAS and the Python library
       includes the correct percentages.
+    * There is a bug in PA01_STD.sas for the "TOTAL PERIOD PARTNERS" of the "PARTNERS
+      & CLUSTERS INITIATED" section where the index is not shown for "ALL WORKERS".
+      This is a quirk in the templating code in the SAS file and the Python equivalent
+      will emit the index even though it is missing in the PDF output.
     * There is a bug in PA01_STD.sas for the rightmost "PREVIOUS RX" calculation in the
       "DISPOSITIONS - NEW PARTNERS & CLUSTERS" section.  It erroneously re-uses the
       "PREVIOUS PREV RX" value for each individual workers (ALL WORKERS has the correct

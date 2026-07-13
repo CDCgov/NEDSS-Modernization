@@ -57,8 +57,9 @@ def build_output_for_worker(
     the final CSV.
 
     Args:
-        tables: Query results within a dict
-        worker: The worker the data is being calculated for (None means "ALL")
+        tables: Query results (Table instances) within a dict, keyed by query name
+        worker: The worker the data is being calculated for (a value of None means 
+                "ALL WORKERS")
 
     Returns:
         List of calculated data for a given worker, meant for the final CSV of PA01
