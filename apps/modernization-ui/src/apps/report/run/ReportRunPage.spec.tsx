@@ -5,12 +5,15 @@ import userEvent from '@testing-library/user-event';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Layout } from 'layout';
 import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
-import { ReactNode } from 'react';
 import fileDownload from 'js-file-download';
 import { axe } from 'jest-axe';
 import * as options from 'options/selectableResolver';
 import { ConceptOptions, useConceptOptions } from 'options/concepts';
 import { LoadingBlock } from 'libs/loading/block';
+import { permissions } from 'libs/permission';
+import { UserContextProvider } from 'user';
+import { ErrorPage } from 'pages/error';
+import { PERMISSION_GROUP_MAP } from '../constants';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -29,28 +32,38 @@ vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: vi.fn(),
 }));
 
-// mock identifier to display "Save" button
-vi.mock('user', () => ({
-    useUser: () => ({
-        state: {
-            user: {
-                identifier: 0,
-                name: {
-                    display: 'User Name',
-                },
-            },
-        },
-    }),
-}));
+const BASE_MOCK_PERMISSIONS = [
+    permissions.reports.template.view,
+    permissions.reports.template.selectFilterCriteria,
+    permissions.reports.public.view,
+    permissions.reports.public.selectFilterCriteria,
+    permissions.reports.public.create,
+    permissions.reports.public.edit,
+    permissions.reports.public.delete,
+    permissions.reports.private.view,
+    permissions.reports.private.selectFilterCriteria,
+    permissions.reports.private.create,
+    permissions.reports.private.edit,
+    permissions.reports.private.delete,
+    permissions.reports.reportingFacility.view,
+    permissions.reports.reportingFacility.selectFilterCriteria,
+    permissions.reports.reportingFacility.create,
+    permissions.reports.reportingFacility.edit,
+    permissions.reports.reportingFacility.delete,
 
-vi.mock('libs/permission', async () => {
-    const actual = await vi.importActual<typeof import('libs/permission')>('libs/permission');
-    return {
-        ...actual,
-        Permitted: vi.fn(({ children }: { children: ReactNode }) => <>{children}</>),
-        permitsAll: vi.fn(() => () => true),
-    };
-});
+    permissions.reports.run,
+    permissions.reports.export,
+];
+
+const BASE_MOCK_USER = {
+    permissions: BASE_MOCK_PERMISSIONS,
+    identifier: 123,
+    name: {
+        first: 'Umberto',
+        last: 'User',
+        display: 'Umberto User',
+    },
+};
 
 vi.mock('configuration', () => {
     return {
@@ -62,18 +75,6 @@ vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     __esModule: true,
     default: vi.fn(),
 }));
-
-vi.mock('libs/permission/usePermissions.ts', () => {
-    return {
-        usePermissions: vi.fn(() => ({
-            permissions: [
-                'CREATEREPORTPRIVATE-REPORTING',
-                'CREATEREPORTPUBLIC-REPORTING',
-                'CREATEREPORTREPORTINGFACILITY-REPORTING',
-            ],
-        })),
-    };
-});
 
 vi.mock('options/report', () => ({
     useReportSections: () => [{ label: 'Section 1', value: '1000' }],
@@ -195,12 +196,17 @@ const MOCK_RESULT: generated.ReportExecutionResult = {
     timestamp: '2026-06-17T19:11:35.595501658',
 };
 
-const renderWithRouter = () => {
+const renderWithRouter = (user = BASE_MOCK_USER) => {
     const routes = [
         {
             path: '/:reportUid/:dataSourceUid',
-            element: <Layout />,
+            element: (
+                <UserContextProvider initial={user}>
+                    <Layout />
+                </UserContextProvider>
+            ),
             HydrateFallback: LoadingBlock,
+            ErrorBoundary: ErrorPage,
             children: [{ index: true, element: <ReportRunPage /> }],
         },
     ];
@@ -286,6 +292,143 @@ describe('report run page', () => {
             expect(await findByRole('button', { name: 'Refine report' })).toBeEnabled();
             expect(windowOpen).not.toHaveBeenCalled();
             expect(fileDownload).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('permissions', () => {
+        Object.keys(PERMISSION_GROUP_MAP).forEach((group) => {
+            const permGroup = PERMISSION_GROUP_MAP[group as ReportConfiguration.group];
+            it('404s when select and view not present', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, group });
+                const { findByText, queryByText } = renderWithRouter({
+                    ...BASE_MOCK_USER,
+                    permissions: BASE_MOCK_PERMISSIONS.filter(
+                        (p) => p !== permGroup.view && p !== permGroup.selectFilterCriteria
+                    ),
+                });
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText(/404/)).toBeVisible();
+                expect(await findByText(/Not found/)).toBeVisible();
+                expect(queryByText(MOCK_CONFIG.title)).toBeNull();
+            });
+
+            it('404s when select not present', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, group });
+                const { findByText, queryByText } = renderWithRouter({
+                    ...BASE_MOCK_USER,
+                    permissions: BASE_MOCK_PERMISSIONS.filter((p) => p !== permGroup.selectFilterCriteria),
+                });
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText(/404/)).toBeVisible();
+                expect(await findByText(/Not found/)).toBeVisible();
+                expect(queryByText(MOCK_CONFIG.title)).toBeNull();
+            });
+
+            it('404s when view not present', async () => {
+                const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, group });
+                const { findByText, queryByText } = renderWithRouter({
+                    ...BASE_MOCK_USER,
+                    permissions: BASE_MOCK_PERMISSIONS.filter((p) => p !== permGroup.view),
+                });
+
+                expect(mockApi).toHaveBeenCalled();
+
+                expect(await findByText(/404/)).toBeVisible();
+                expect(await findByText(/Not found/)).toBeVisible();
+                expect(queryByText(MOCK_CONFIG.title)).toBeNull();
+            });
+        });
+
+        it('run button is submit when both permissions', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const mockResultApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
+            const { findByRole } = renderWithRouter();
+
+            expect(mockApi).toHaveBeenCalled();
+
+            const runButton = await findByRole('button', { name: 'Run' });
+            const exportButton = await findByRole('button', { name: 'Export' });
+            expect(runButton).toBeVisible();
+            expect(runButton).toHaveAttribute('type', 'submit');
+            expect(exportButton).toBeVisible();
+            expect(exportButton).not.toHaveAttribute('type', 'submit');
+
+            const user = userEvent.setup();
+
+            // trigger form submit
+            await user.type(await findByRole('textbox', { name: 'Basic Text Filter' }), '{enter}');
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: false,
+                    basicFilters: [{ reportFilterUid: 1001, values: [] }],
+                }),
+            });
+        });
+
+        it('run button is submit when only run permissions', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const mockResultApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
+            const { findByRole, queryByRole } = renderWithRouter({
+                ...BASE_MOCK_USER,
+                permissions: BASE_MOCK_PERMISSIONS.filter((p) => p !== permissions.reports.export),
+            });
+
+            expect(mockApi).toHaveBeenCalled();
+
+            const runButton = await findByRole('button', { name: 'Run' });
+            expect(runButton).toBeVisible();
+            expect(runButton).toHaveAttribute('type', 'submit');
+            expect(queryByRole('button', { name: 'Export' })).toBeNull();
+
+            const user = userEvent.setup();
+
+            // trigger form submit
+            await user.type(await findByRole('textbox', { name: 'Basic Text Filter' }), '{enter}');
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: false,
+                    basicFilters: [{ reportFilterUid: 1001, values: [] }],
+                }),
+            });
+        });
+
+        it('export button is submit when only export permissions', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const mockResultApi = vi
+                .mocked(generated.ReportControllerService.exportReport)
+                .mockResolvedValue(MOCK_RESULT);
+            const { findByRole, queryByRole } = renderWithRouter({
+                ...BASE_MOCK_USER,
+                permissions: BASE_MOCK_PERMISSIONS.filter((p) => p !== permissions.reports.run),
+            });
+
+            expect(mockApi).toHaveBeenCalled();
+
+            const exportButton = await findByRole('button', { name: 'Export' });
+            expect(exportButton).toBeVisible();
+            expect(exportButton).toHaveAttribute('type', 'submit');
+            expect(queryByRole('button', { name: 'Run' })).toBeNull();
+
+            const user = userEvent.setup();
+
+            // trigger form submit
+            await user.type(await findByRole('textbox', { name: 'Basic Text Filter' }), '{enter}');
+            expect(mockResultApi).toHaveBeenCalledWith({
+                requestBody: expect.objectContaining({
+                    isExport: true,
+                    basicFilters: [{ reportFilterUid: 1001, values: [] }],
+                }),
+            });
         });
     });
 
