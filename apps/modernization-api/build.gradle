@@ -23,6 +23,13 @@ bootJar {
 
 dependencies {
 
+    // APP-795: force security-patched BOMs above Spring Boot 3.5.14's managed versions.
+    // Local platform constraints win by conflict resolution (all targets > managed).
+    implementation(platform('com.fasterxml.jackson:jackson-bom:2.21.5'))            // CVE-2026-54512..54518 (Jackson 2)
+    implementation(platform('tools.jackson:jackson-bom:3.1.4'))                     // CVE-2026-54512..54518 (Jackson 3, via elasticsearch-java 9.4)
+    implementation(platform('org.springframework.security:spring-security-bom:6.5.11')) // CVE-2026-47838
+    implementation(platform('io.opentelemetry:opentelemetry-bom:1.62.0'))           // CVE-2026-45292
+
     implementation(project(':audit'))
     implementation(project(':accumulation'))
     implementation(project(':change'))
@@ -77,9 +84,6 @@ dependencies {
     constraints {
         implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.55') {
             because('CVE-2026-43515')
-        }
-        implementation('tools.jackson.core:jackson-core:3.1.1') {
-            because('GHSA-2m67-wjpj-xhg9')
         }
     }
 
