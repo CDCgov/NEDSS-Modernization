@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * the database-entities project.
  */
 @Configuration
-@EnableJpaRepositories("gov.cdc.nbs.repository")
+@EnableJpaRepositories(
+    basePackages = "gov.cdc.nbs.repository",
+    repositoryBaseClass = gov.cdc.nbs.repository.detach.DetachableJpaRepository.class)
 @EntityScan("gov.cdc.nbs.entity")
 class NBSEntityConfiguration {}
