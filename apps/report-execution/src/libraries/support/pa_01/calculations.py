@@ -58,7 +58,7 @@ def build_output_for_worker(
 
     Args:
         tables: Query results (Table instances) within a dict, keyed by query name
-        worker: The worker the data is being calculated for (a value of None means 
+        worker: The worker the data is being calculated for (a value of None means
                 "ALL WORKERS")
 
     Returns:
