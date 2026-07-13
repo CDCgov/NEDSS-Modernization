@@ -2,14 +2,7 @@ import { ReactNode, createContext, useContext } from 'react';
 import { Term } from './terms';
 
 type SearchInteractionStatus =
-    | 'waiting'
-    | 'completed'
-    | 'no-input'
-    | 'error'
-    | 'resetting'
-    | 'initializing'
-    | 'loading'
-    | 'reloading';
+    'waiting' | 'completed' | 'no-input' | 'error' | 'resetting' | 'initializing' | 'loading' | 'reloading';
 
 type SearchResults<R> = {
     total: number;
