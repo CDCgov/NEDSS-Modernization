@@ -96,7 +96,6 @@ spring:
     enabled: true
   jpa:
     properties:
-      show-sql: true
       hibernate:
         default_schema: dbo
         format_sql: true
