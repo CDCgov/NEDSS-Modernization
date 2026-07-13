@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class DisplayColumnTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new DisplayColumn(null, null, null, null))
+    assertThatThrownBy(() -> new DisplayColumn(null, null, null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("dataSourceColumn is marked non-null but is null");
   }

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: odse
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/odse/01_ODSE_NBS_NOTE.sql
+            splitStatements: false
+            endDelimiter: ""

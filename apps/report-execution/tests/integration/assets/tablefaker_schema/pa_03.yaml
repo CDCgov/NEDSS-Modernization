@@ -28,8 +28,11 @@ tables:
         data: row_id
         is_primary_key: true
       - column_name: provider_quick_code
-        data: random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
-        null_percentage: 0.25
+        data: |
+          if row_id in [2, 3, 4, 5]:
+              return "fulton"
+          return random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
+        null_percentage: 0.05
       - column_name: provider_first_name
         data: fake.first_name()
         null_percentage: 0.05
@@ -81,7 +84,8 @@ tables:
       - column_name: d_interview_key
         data: row_id
       - column_name: ix_interviewer_key
-        data: 1
+        data: |
+          return 2 + ((row_id - 1) % 4)
 
   - table_name: "[RDB].[dbo].[STD_HIV_DATAMART]"
     row_count: 60
@@ -122,7 +126,8 @@ tables:
       - column_name: fl_fup_internet_outcome_cd
         data: random.choice(["I1", "I2", "I3", "I4", "I5", "I6", "I7"]) if random.random() < .95 else None
       - column_name: investigator_interview_key
-        data: 1
+        data: |
+          return 2 + ((row_id - 1) % 4)
       - column_name: investigator_interview_qc
         data: fake.random_int(10000000, 99999999)
         null_percentage: 0.05

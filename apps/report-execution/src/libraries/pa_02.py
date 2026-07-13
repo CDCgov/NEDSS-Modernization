@@ -13,7 +13,7 @@ def execute(
 ) -> ReportResult:
     """
     PA02: Field Investigation Outcomes - STD and HIV.
-    
+
     The SAS implementation of this report contains a known precision issue:
     The global min/max datetimes are stored in macro variables using `SELECT ... INTO`.
     When SAS resolves these numeric datetimes into SQL, it writes them in scientific
@@ -414,7 +414,15 @@ def execute(
             provider_rows.append(row)
 
     metric_index = {label: idx for idx, (label, _) in enumerate(metric_labels)}
-    provider_rows.sort(key=lambda r: (r['PROVIDER_QUICK_CODE_new'].lower(), metric_index[r['colname']]))
+    def _quick_code_sort_key(row):
+        quick_code = row['PROVIDER_QUICK_CODE_new']
+        if quick_code is None:
+            return ''
+        return quick_code.lower()
+    provider_rows.sort(key=lambda r: (
+            _quick_code_sort_key(r), metric_index[r['colname']]
+        )
+    )
 
     table_data = []
     for row in provider_rows:
@@ -425,7 +433,7 @@ def execute(
             row['colval2'],
             row['colval3'],
             row['colval4'],
-            row['PROVIDER_QUICK_CODE_new'].lower(),
+            _quick_code_sort_key(row),
             5
         ))
 

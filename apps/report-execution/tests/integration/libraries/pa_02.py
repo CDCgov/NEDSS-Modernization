@@ -231,7 +231,7 @@ class TestIntegrationPa02Library:
         
         # Check providers are sorted alphabetically by pname_l
         providers = [row[0] for row in table.data if row[1] == "Assigned:"]  # First metric for each provider
-        pnames_lower = [p.lower() for p in providers]
+        pnames_lower = [p.lower() if p else "" for p in providers]
         assert pnames_lower == sorted(pnames_lower), "Providers not sorted alphabetically by pname_l"
 
     def test_execute_std_provider_counts(self):
@@ -274,7 +274,11 @@ class TestIntegrationPa02Library:
         
         # Check pname_l is lowercase
         for row in table.data:
-            assert row[6] == row[0].lower()
+            if row[6] == '':
+                assert row[0] is None
+            else:
+                assert row[6] == row[0].lower()
+
         
         # HIV should have 24 metrics (without Dispo E)
         expected_metrics = 24  # HIV has 24 metrics

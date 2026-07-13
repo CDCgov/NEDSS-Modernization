@@ -12,6 +12,9 @@ import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 import { getNumericValue, NumericFilter, numericValidator } from './NumericFilter.tsx';
 import { Checkbox } from 'design-system/checkbox';
+import classNames from 'classnames';
+
+import styles from './basic-filter.module.scss';
 
 export type BasicFilterProps = {
     filter: BasicFilterConfiguration;
@@ -115,9 +118,11 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
         rules.validate = validationRule(filter, label);
     }
 
+    const allowsNulls = filter.filterType.code?.endsWith('_N');
+
     return (
-        <div className="display-flex flex-row">
-            <div className="flex-3">
+        <div className={classNames(styles.row, { [styles.fieldWithNulls]: allowsNulls })}>
+            <div className={styles.field}>
                 <Controller
                     control={control}
                     // add `id_` prefix to make sure the id is treated as an object key and not array index
@@ -141,8 +146,8 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
                     )}
                 />
             </div>
-            {filter.filterType.code?.endsWith('_N') && (
-                <div className="flex-1">
+            {allowsNulls && (
+                <div className={styles.nulls}>
                     <Controller
                         control={control}
                         // add `id_` prefix to make sure the id is treated as an object key and not array index
@@ -150,20 +155,14 @@ const BasicFilter = ({ filter, columns }: { filter: BasicFilterConfiguration; co
                         defaultValue={filter.defaultIncludeNulls ?? null}
                         // ignoring the ref as it does not pass down well and isn't critical
                         render={({ field: { value, onChange } }) => (
-                            <Field
-                                htmlFor={`${id}-include-nulls`}
-                                orientation="horizontal"
-                                sizing="medium"
-                                label="Include Nulls"
-                                className="height-full"
-                            >
-                                <Checkbox
-                                    id={`${id}-include-nulls`}
-                                    aria-label={`Include Nulls for ${label}`}
-                                    selected={value}
-                                    onChange={onChange}
-                                ></Checkbox>
-                            </Field>
+                            <Checkbox
+                                id={`${id}-include-nulls`}
+                                label="Include nulls"
+                                className="padding-right-2"
+                                aria-label={`Include nulls for ${label}`}
+                                selected={value}
+                                onChange={onChange}
+                            ></Checkbox>
                         )}
                     />
                 </div>

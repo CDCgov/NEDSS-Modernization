@@ -39,6 +39,12 @@ dependencies {
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
+    // APP-795: security-patched BOMs above Spring Boot's managed versions.
+    // netty-bom aligns every netty module (handler, codec-*, resolver-dns, transport-native-*,
+    // codec-classes-quic) at once, superseding the earlier per-artifact 4.2.13.Final pins.
+    implementation platform('io.netty:netty-bom:4.2.15.Final')          // CVE-2026-44249/44892/44894/45416/45536/45673/45674/47244/47691/48043/48748/50009/50010/50020/50560
+    implementation platform('com.fasterxml.jackson:jackson-bom:2.21.5') // CVE-2026-54515
+
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.5'
     implementation libs.bundles.security
     implementation libs.bundles.oidc
@@ -51,21 +57,7 @@ dependencies {
             because("CVE-2025-58056")
             because("CVE-2025-55163")
         }
-        implementation("io.netty:netty-transport-native-epoll:4.2.13.Final") {
-            because("CVE-2026-42577")
-        }
-        implementation("io.netty:netty-codec-http3:4.2.13.Final") {
-            because("CVE-2026-42582")
-        }
-        implementation("io.netty:netty-codec-http2:4.2.13.Final") {
-            because("CVE-2026-42587")
-        }
-        implementation("io.netty:netty-codec-http:4.2.13.Final") {
-            because("CVE-2026-42587")
-        }
-        implementation("io.netty:netty-resolver-dns:4.2.13.Final") {
-            because("CVE-2026-42579")
-        }
+        // netty-* pins (CVE-2026-42577/42582/42587/42579) folded into the netty-bom 4.2.15.Final above.
         implementation("org.bouncycastle:bcprov-jdk18on:1.84") {
             because("CVE-2026-5598")
         }

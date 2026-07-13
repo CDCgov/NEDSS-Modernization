@@ -1,0 +1,920 @@
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - null
+  - null
+  - 457
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases Open
+  - null
+  - 22
+  - 4.8%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases Closed
+  - null
+  - 435
+  - 95.2%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases Pending
+  - null
+  - 50
+  - 10.9%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - null
+  - 279
+  - 61.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Clinic IX'S
+  - 8
+  - 2.9%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Field IX'S
+  - 9
+  - 3.2%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 5 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 7 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 14 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Not IX'D
+  - null
+  - null
+  - 99
+  - 21.7%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Not IX'D
+  - Refused
+  - null
+  - 29
+  - 29.3%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Not IX'D
+  - No Locate
+  - null
+  - 38
+  - 38.4%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. Cases Not IX'D
+  - Other
+  - null
+  - 32
+  - 32.3%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. of OI'S
+  - null
+  - null
+  - 30
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Num. of OI'S
+  - OI'S that were NCI
+  - null
+  - 16
+  - 53.3%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. of OI'S
+  - Period Partners
+  - null
+  - 70
+  - null
+  - 2.3
+- !!python/tuple
+  - ALL
+  - Num. of OI'S
+  - Partners Initiated
+  - null
+  - 11
+  - null
+  - 0.4
+- !!python/tuple
+  - ALL
+  - Num. of RI'S
+  - null
+  - null
+  - 13
+  - null
+  - null
+- !!python/tuple
+  - ALL
+  - Num. of RI'S
+  - RI's that were NCI
+  - null
+  - 5
+  - 38.5%
+  - null
+- !!python/tuple
+  - ALL
+  - Num. of RI'S
+  - Partners Initiated
+  - null
+  - 5
+  - null
+  - 0.4
+- !!python/tuple
+  - ALL
+  - Clusters Init. (OI & RI)
+  - null
+  - null
+  - 13
+  - null
+  - 0.4
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - null
+  - null
+  - 105
+  - null
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases Open
+  - null
+  - 4
+  - 3.8%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases Closed
+  - null
+  - 101
+  - 96.2%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases Pending
+  - null
+  - 15
+  - 14.3%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - null
+  - 62
+  - 59.0%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Clinic IX'S
+  - 4
+  - 6.5%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Field IX'S
+  - 5
+  - 8.1%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 5 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 7 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 14 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Not IX'D
+  - null
+  - null
+  - 24
+  - 22.9%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Not IX'D
+  - Refused
+  - null
+  - 3
+  - 12.5%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Not IX'D
+  - No Locate
+  - null
+  - 13
+  - 54.2%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. Cases Not IX'D
+  - Other
+  - null
+  - 8
+  - 33.3%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of OI'S
+  - null
+  - null
+  - 12
+  - null
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of OI'S
+  - OI'S that were NCI
+  - null
+  - 8
+  - 66.7%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of OI'S
+  - Period Partners
+  - null
+  - 32
+  - null
+  - 2.7
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of OI'S
+  - Partners Initiated
+  - null
+  - 3
+  - null
+  - 0.2
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of RI'S
+  - null
+  - null
+  - 2
+  - null
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of RI'S
+  - RI's that were NCI
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_QbmIYkD
+  - Num. of RI'S
+  - Partners Initiated
+  - null
+  - 1
+  - null
+  - 0.5
+- !!python/tuple
+  - test_QbmIYkD
+  - Clusters Init. (OI & RI)
+  - null
+  - null
+  - 4
+  - null
+  - 0.3
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - null
+  - null
+  - 102
+  - null
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases Open
+  - null
+  - 4
+  - 3.9%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases Closed
+  - null
+  - 98
+  - 96.1%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases Pending
+  - null
+  - 11
+  - 10.8%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - null
+  - 59
+  - 57.8%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Clinic IX'S
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Field IX'S
+  - 2
+  - 3.4%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 5 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 7 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 14 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Not IX'D
+  - null
+  - null
+  - 19
+  - 18.6%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Not IX'D
+  - Refused
+  - null
+  - 7
+  - 36.8%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Not IX'D
+  - No Locate
+  - null
+  - 3
+  - 15.8%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. Cases Not IX'D
+  - Other
+  - null
+  - 9
+  - 47.4%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of OI'S
+  - null
+  - null
+  - 5
+  - null
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of OI'S
+  - OI'S that were NCI
+  - null
+  - 1
+  - 20.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of OI'S
+  - Period Partners
+  - null
+  - 0
+  - null
+  - 0.0
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of OI'S
+  - Partners Initiated
+  - null
+  - 5
+  - null
+  - 1.0
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of RI'S
+  - null
+  - null
+  - 5
+  - null
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of RI'S
+  - RI's that were NCI
+  - null
+  - 2
+  - 40.0%
+  - null
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Num. of RI'S
+  - Partners Initiated
+  - null
+  - 1
+  - null
+  - 0.2
+- !!python/tuple
+  - test_ZmkRjwJ
+  - Clusters Init. (OI & RI)
+  - null
+  - null
+  - 3
+  - null
+  - 0.6
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - null
+  - null
+  - 121
+  - null
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases Open
+  - null
+  - 8
+  - 6.6%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases Closed
+  - null
+  - 113
+  - 93.4%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases Pending
+  - null
+  - 11
+  - 9.1%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - null
+  - 81
+  - 66.9%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Clinic IX'S
+  - 3
+  - 3.7%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Field IX'S
+  - 1
+  - 1.2%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 5 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 7 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 14 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Not IX'D
+  - null
+  - null
+  - 24
+  - 19.8%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Not IX'D
+  - Refused
+  - null
+  - 6
+  - 25.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Not IX'D
+  - No Locate
+  - null
+  - 10
+  - 41.7%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. Cases Not IX'D
+  - Other
+  - null
+  - 8
+  - 33.3%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of OI'S
+  - null
+  - null
+  - 8
+  - null
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of OI'S
+  - OI'S that were NCI
+  - null
+  - 4
+  - 50.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of OI'S
+  - Period Partners
+  - null
+  - 32
+  - null
+  - 4.0
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of OI'S
+  - Partners Initiated
+  - null
+  - 1
+  - null
+  - 0.1
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of RI'S
+  - null
+  - null
+  - 2
+  - null
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of RI'S
+  - RI's that were NCI
+  - null
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - test_dhlXzRJ
+  - Num. of RI'S
+  - Partners Initiated
+  - null
+  - 2
+  - null
+  - 1.0
+- !!python/tuple
+  - test_dhlXzRJ
+  - Clusters Init. (OI & RI)
+  - null
+  - null
+  - 5
+  - null
+  - 0.6
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - null
+  - null
+  - 129
+  - null
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases Open
+  - null
+  - 6
+  - 4.7%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases Closed
+  - null
+  - 123
+  - 95.3%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases Pending
+  - null
+  - 13
+  - 10.1%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - null
+  - 77
+  - 59.7%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Clinic IX'S
+  - 1
+  - 1.3%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - Field IX'S
+  - 1
+  - 1.3%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 5 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 7 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Assigned
+  - Num. Cases IX'D
+  - IX'D w/in 14 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Not IX'D
+  - null
+  - null
+  - 32
+  - 24.8%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Not IX'D
+  - Refused
+  - null
+  - 13
+  - 40.6%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Not IX'D
+  - No Locate
+  - null
+  - 12
+  - 37.5%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. Cases Not IX'D
+  - Other
+  - null
+  - 7
+  - 21.9%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of OI'S
+  - null
+  - null
+  - 5
+  - null
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of OI'S
+  - OI'S that were NCI
+  - null
+  - 3
+  - 60.0%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of OI'S
+  - Period Partners
+  - null
+  - 6
+  - null
+  - 1.2
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of OI'S
+  - Partners Initiated
+  - null
+  - 2
+  - null
+  - 0.4
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of RI'S
+  - null
+  - null
+  - 4
+  - null
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of RI'S
+  - RI's that were NCI
+  - null
+  - 2
+  - 50.0%
+  - null
+- !!python/tuple
+  - test_iABMLqu
+  - Num. of RI'S
+  - Partners Initiated
+  - null
+  - 1
+  - null
+  - 0.2
+- !!python/tuple
+  - test_iABMLqu
+  - Clusters Init. (OI & RI)
+  - null
+  - null
+  - 1
+  - null
+  - 0.2

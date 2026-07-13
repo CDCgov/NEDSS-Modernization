@@ -6,6 +6,7 @@ def execute(
     trx: Transaction,
     subset_query: str,
     data_source_name: str,
+    sort_by: str | None,
     **kwargs,
 ):
     """Basic tabular report. Executes the query described by the data
@@ -15,7 +16,8 @@ def execute(
     * Lifted the size check to a global check and refined the env var names
     * Date formatting still needs to be figured out
     """
-    content = trx.query(subset_query)
+    query = subset_query + ' ORDER BY ' + sort_by if sort_by else subset_query
+    content = trx.query(query)
 
     header = f'Custom Report For Table: {data_source_name}'
 
