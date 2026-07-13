@@ -66,6 +66,18 @@ Feature: Run report
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
+    Scenario Outline: I can run a report for library <library>
+        When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
+        And I enter From Month: "1" and From Year: "2025"
+        And I enter To Month: "12" and To Year: "2025"
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+        Examples:
+            | library   | reportUid | dataSourceUid |
+            | nbs_sr_19 | 10066724  | 15            |
+            | nbs_sr_20 | 10066726  | 15            |
+
     Scenario: I can run a report for library nbs_custom
         When I navigate to "Template" report with reportUid: 10066768 and dataSourceUid: 30
         And I enter "04/28/2025" to the From date
@@ -73,6 +85,25 @@ Feature: Run report
         And I select the column "AST Result"
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+    Scenario: I can run a report for library pa_05 (case close date)
+        When I navigate to "Public" report with reportUid: 10066745 and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "950 - AIDS" from the "DIAGNOSIS_CD" dropdown menu
+        And I select "Fulton LocalUser" from the "INVESTIGATOR_INTERVIEW_QC" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+    Scenario: I can run a report for library pa_05 (interview assign date)
+        When I navigate to "Public" report with reportUid: 10066744 and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "950 - AIDS" from the "DIAGNOSIS_CD" dropdown menu
+        And I select "Fulton LocalUser" from the "INVESTIGATOR_INTERVIEW_QC" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
 
     Scenario: I can run a report for library qa_01
         When I navigate to "Public" report with reportUid: 10066751 and dataSourceUid: 23

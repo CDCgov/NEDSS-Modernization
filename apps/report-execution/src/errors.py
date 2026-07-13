@@ -106,3 +106,10 @@ class ConfigurationIntegrityError(BaseReportExecutionError):
 
     def __init__(self, message: str):
         super().__init__(f'NBS_Configuration Data Integrity Error: {message}', 422)
+
+
+class InvalidLibraryParamsError(BaseReportExecutionError):
+    """The provided library parameters are invalid or missing required keys."""
+
+    def __init__(self, message: str):
+        super().__init__(f'Invalid library parameters: {message}', 422)

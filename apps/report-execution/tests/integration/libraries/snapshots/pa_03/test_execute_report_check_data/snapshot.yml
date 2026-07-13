@@ -38,61 +38,61 @@
   - No. Cases w/Internet Follow-up
   - null
   - null
-  - 13
+  - 20
   - null
 - !!python/tuple
   - No. Cases w/Internet Follow-up
   - Total No. Partners
   - null
-  - 3
+  - 4
   - null
 - !!python/tuple
   - No. Cases w/Internet Follow-up
   - Total No. Social Contacts
   - null
-  - 1
+  - 4
   - null
 - !!python/tuple
   - No. Cases w/Internet Follow-up
   - Total No. Associates
   - null
-  - 4
+  - 5
   - null
 - !!python/tuple
   - No. Cases w/Internet Follow-up
   - IPS Contact Index
   - null
   - null
-  - 0.23
+  - 0.2
 - !!python/tuple
   - No. Cases w/Internet Follow-up
   - IPS Cluster Index
   - null
   - null
-  - 0.38
+  - 0.45
 - !!python/tuple
   - Total No. IPS Partners
-  - null
-  - null
-  - 3
-  - null
-- !!python/tuple
-  - Total No. IPS Social
-  - null
-  - null
-  - 1
-  - null
-- !!python/tuple
-  - Total No. IPS Associates
   - null
   - null
   - 4
   - null
 - !!python/tuple
+  - Total No. IPS Social
+  - null
+  - null
+  - 4
+  - null
+- !!python/tuple
+  - Total No. IPS Associates
+  - null
+  - null
+  - 5
+  - null
+- !!python/tuple
   - Outcomes
   - Sexual Contact
   - I1
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
@@ -110,25 +110,25 @@
   - Outcomes
   - Sexual Contact
   - I4
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
   - Sexual Contact
   - I5
-  - 1
+  - 0
   - null
 - !!python/tuple
   - Outcomes
   - Sexual Contact
   - I6
-  - 1
+  - 0
   - null
 - !!python/tuple
   - Outcomes
   - Sexual Contact
   - I7
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
@@ -140,7 +140,7 @@
   - Outcomes
   - Social Contact
   - I2
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
@@ -170,13 +170,13 @@
   - Outcomes
   - Social Contact
   - I7
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
   - Associate
   - I1
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
@@ -194,7 +194,7 @@
   - Outcomes
   - Associate
   - I4
-  - 0
+  - 1
   - null
 - !!python/tuple
   - Outcomes
@@ -206,11 +206,11 @@
   - Outcomes
   - Associate
   - I6
-  - 1
+  - 0
   - null
 - !!python/tuple
   - Outcomes
   - Associate
   - I7
-  - 0
+  - 1
   - null

@@ -6,6 +6,7 @@ import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
@@ -45,11 +46,15 @@ public class PatientBirthDemographicApplier {
   }
 
   void withBirthday(final PatientIdentifier identifier, final LocalDate birthday) {
+    withBirthday(identifier, RandomUtil.dateInPast(), birthday.atStartOfDay());
+  }
+
+  void withBirthday(final PatientIdentifier identifier, final LocalDateTime birthday) {
     withBirthday(identifier, RandomUtil.dateInPast(), birthday);
   }
 
   void withBirthday(
-      final PatientIdentifier identifier, final LocalDate asOf, final LocalDate birthday) {
+      final PatientIdentifier identifier, final LocalDate asOf, final LocalDateTime birthday) {
 
     client
         .sql(
