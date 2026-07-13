@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -19,29 +22,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Report", catalog = "NBS_ODSE")
-@NamedEntityGraph(
-    name = "Report.saveAs",
-    attributeNodes = {
-      @NamedAttributeNode(value = "dataSource", subgraph = "dataSource.dataSourceColumns"),
-      @NamedAttributeNode(value = "reportFilters", subgraph = "reportFilters.details"),
-      @NamedAttributeNode("displayColumns"),
-      @NamedAttributeNode("reportSortColumns"),
-    },
-    subgraphs = {
-      @NamedSubgraph(
-          name = "reportFilters.details",
-          type = ReportFilter.class,
-          attributeNodes = {
-            @NamedAttributeNode("filterCode"),
-            @NamedAttributeNode("filterValues"),
-          }),
-      @NamedSubgraph(
-          name = "dataSource.dataSourceColumns",
-          type = DataSource.class,
-          attributeNodes = {
-            @NamedAttributeNode("dataSourceColumns"),
-          })
-    })
 public class Report {
   @NonNull @EmbeddedId private ReportId id;
 
@@ -60,6 +40,7 @@ public class Report {
   // Report filters are updated/deleted when reports save/delete, so we need to
   // cascade all operations. When a report is no longer referenced, we want
   // to delete it, so set `orphanRemoval` to true
+  @Fetch(FetchMode.SUBSELECT)
   @OneToMany(
       mappedBy = "report",
       fetch = FetchType.LAZY,
@@ -67,6 +48,8 @@ public class Report {
       orphanRemoval = true)
   private List<ReportFilter> reportFilters;
 
+  @Fetch(FetchMode.SUBSELECT)
+  @OrderBy("sequenceNumber")
   @OneToMany(
       mappedBy = "report",
       fetch = FetchType.LAZY,
@@ -76,6 +59,7 @@ public class Report {
 
   // should be 1:1 in practice, but the DB implies there could be
   // more and NBS 6 fetches all then takes the first
+  @Fetch(FetchMode.SUBSELECT)
   @OneToMany(
       mappedBy = "report",
       fetch = FetchType.LAZY,
@@ -132,6 +116,16 @@ public class Report {
   private Long addUserUid;
 
   @Embedded private Status status;
+
+  public void eagerLoadForDetach() {
+    Hibernate.initialize(getDisplayColumns());
+    Hibernate.initialize(getDataSource().getDataSourceColumns());
+    Hibernate.initialize(getReportSortColumns());
+    for (ReportFilter reportFilter : getReportFilters()) {
+      Hibernate.initialize(reportFilter.getFilterValues());
+      Hibernate.initialize(reportFilter.getFilterCode());
+    }
+  }
 
   protected Report() {}
 }

@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,18 +118,11 @@ public class ReportService {
   public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
     Report report =
         reportRepository
-            .findWithGraphById(reportId)
+            .findById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
-    Hibernate.initialize(report.getDisplayColumns());
-    Hibernate.initialize(report.getDataSource().getDataSourceColumns());
-    Hibernate.initialize(report.getReportSortColumns());
-    for (ReportFilter reportFilter : report.getReportFilters()) {
-      Hibernate.initialize(reportFilter.getFilterValues());
-      Hibernate.initialize(reportFilter.getFilterCode());
-    }
-
     // Update values before duplicating otherwise the fk's in the request don't match
+    report.eagerLoadForDetach();
     reportRepository.detach(report);
     updateReportExecutionData(request.executionRequest(), report);
 
