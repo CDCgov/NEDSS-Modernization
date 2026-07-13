@@ -117,6 +117,12 @@ public class Report {
 
   @Embedded private Status status;
 
+  /**
+   * Forcefully and eagerly load all necessary report associations prior to detaching said report.
+   * This exists specifically for the "save as" operation, which involves first duplicating a report
+   * and it's underlying associations, then making a handful of potential changes to the new report,
+   * WITHOUT updating the initial report being duplicated.
+   */
   public void eagerLoadForDetach() {
     Hibernate.initialize(getDisplayColumns());
     Hibernate.initialize(getDataSource().getDataSourceColumns());
