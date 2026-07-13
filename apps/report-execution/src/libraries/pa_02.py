@@ -13,6 +13,21 @@ def execute(
 ) -> ReportResult:
     """
     PA02: Field Investigation Outcomes - STD and HIV.
+    
+    The SAS implementation of this report contains a known precision issue:
+    The global min/max datetimes are stored in macro variables using `SELECT ... INTO`.
+    When SAS resolves these numeric datetimes into SQL, it writes them in scientific
+    notation (e.g., `2.0197E9`). This rounding effectively shifts the date boundaries
+    by several hours and can add or remove a full day from the filter range.
+
+    Only the `Non-assigned Dispos` (`var_ae_p`) metric is affected, as it is the
+    only count filtered using these macro variable boundaries in the `PA02_DISPO` table.
+
+    This Python implementation avoids the rounding by using exact date strings
+    (e.g., `CAST(... AS DATE) >= CAST('YYYY-MM-DD' AS DATE)`) for all date filters.
+    Therefore, the Python output reflects the intended business logic and should be
+    treated as the correct reference. Minor discrepancies in `var_ae_p` between
+    Python and legacy SAS outputs are expected and documented.
     """
     # ------------------------------------------------------------------
     # 1. Validate input
@@ -346,7 +361,7 @@ def execute(
         )
 
     # ------------------------------------------------------------------
-    # 6. Metric labels (SAS order)
+    # 6. Metric labels
     # ------------------------------------------------------------------
     metric_labels = [
         ("Assigned:", "var_g_p"),
