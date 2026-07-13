@@ -27,15 +27,15 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
     useEffect(() => {
         // options have changed and the value is no longer in the option set
         if (value?.length > 0 && options.length > 0 && !value.every((v: string) => options.find((o) => o.value == v))) {
-            onChange(undefined);
+            onChange(null);
         }
     }, [options]);
 
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
             <SelectInput
-                value={value?.[0] ?? undefined}
-                onChange={(event) => onChange(event.target.value ? [event.target.value] : undefined)}
+                value={value?.[0] ?? null}
+                onChange={(event) => onChange(event.target.value ? [event.target.value] : null)}
                 options={options}
                 {...remaining}
             />
