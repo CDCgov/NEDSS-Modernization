@@ -19,6 +19,7 @@ import { ReportExecuteForm } from './ReportRunPage';
 import { FieldErrors, useFormState } from 'react-hook-form';
 import { ValidationErrorBanner, ValidationErrorSection } from 'design-system/errors/ValidationError';
 import { Heading } from 'components/heading';
+import { FullPageBlock } from 'components/FullPageBlock';
 
 const BASIC_SECTIONS = [
     {
@@ -163,7 +164,7 @@ const ReportConfigurationPage = ({
     return (
         <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="reports" actions={actions}>
             {!sectionData.length ? (
-                <div className={layoutStyles.fullPageBlock}>
+                <FullPageBlock>
                     <Heading level={2}>No filters available</Heading>
                     <p className="maxw-mobile-lg text-center">
                         This report will return all available results, which might be a large dataset. If you have{' '}
@@ -172,7 +173,7 @@ const ReportConfigurationPage = ({
                     <div className="display-flex flex-row" style={{ gap: '0.5rem' }}>
                         {actions}
                     </div>
-                </div>
+                </FullPageBlock>
             ) : (
                 <>
                     <aside>
