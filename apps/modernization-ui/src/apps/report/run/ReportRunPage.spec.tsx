@@ -71,6 +71,7 @@ vi.mock('libs/permission/usePermissions.ts', () => {
                 'CREATEREPORTPUBLIC-REPORTING',
                 'CREATEREPORTREPORTINGFACILITY-REPORTING',
             ],
+            allows: vi.fn().mockReturnValue(true),
         })),
     };
 });
@@ -677,8 +678,8 @@ describe('report run page', () => {
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 const fromInput = await findByLabelText('From');
                 const toInput = await findByLabelText('To');
-                await userEvent.selectOptions(fromInput, '2025');
-                await userEvent.selectOptions(toInput, '2026');
+                await user.selectOptions(fromInput, '2025');
+                await user.selectOptions(toInput, '2026');
 
                 expect(fromInput).toHaveValue('2025');
                 expect(toInput).toHaveValue('2026');
@@ -719,8 +720,8 @@ describe('report run page', () => {
                 expect(fromInput).toHaveValue(`${thisYear - 20}`);
                 expect(toInput).toHaveValue(`${thisYear}`);
 
-                await userEvent.selectOptions(fromInput, '');
-                await userEvent.selectOptions(toInput, '');
+                await user.selectOptions(fromInput, '');
+                await user.selectOptions(toInput, '');
 
                 expect(fromInput).toHaveValue('');
                 expect(toInput).toHaveValue('');
@@ -757,7 +758,7 @@ describe('report run page', () => {
                 expect(fromInput).toHaveValue('2024');
                 expect(toInput).toHaveValue('2025');
 
-                await userEvent.selectOptions(fromInput, '2023');
+                await user.selectOptions(fromInput, '2023');
 
                 const exportButton = await findByRole('button', { name: 'Export' });
                 await user.click(exportButton);
@@ -806,13 +807,13 @@ describe('report run page', () => {
 
                 expect(await findByLabelText('Full Name')).toBeVisible();
                 const fromMonthInput = await findByLabelText('From month');
-                await userEvent.selectOptions(fromMonthInput, '1');
+                await user.selectOptions(fromMonthInput, '1');
                 const fromYearInput = await findByLabelText('From year');
-                await userEvent.selectOptions(fromYearInput, '2025');
+                await user.selectOptions(fromYearInput, '2025');
                 const toMonthInput = await findByLabelText('To month');
-                await userEvent.selectOptions(toMonthInput, '1');
+                await user.selectOptions(toMonthInput, '1');
                 const toYearInput = await findByLabelText('To year');
-                await userEvent.selectOptions(toYearInput, '2026');
+                await user.selectOptions(toYearInput, '2026');
 
                 expect(fromMonthInput).toHaveValue('1');
                 expect(fromYearInput).toHaveValue('2025');
@@ -895,7 +896,7 @@ describe('report run page', () => {
                 expect(toMonthInput).toHaveValue('1');
                 expect(toYearInput).toHaveValue('2025');
 
-                await userEvent.selectOptions(fromMonthInput, '3');
+                await user.selectOptions(fromMonthInput, '3');
 
                 const exportButton = await findByRole('button', { name: 'Export' });
                 await user.click(exportButton);
@@ -905,6 +906,85 @@ describe('report run page', () => {
                         advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['03/2024', '01/2025'] }],
                     }),
+                });
+            });
+        });
+
+        describe('OptionSelectFilter', () => {
+            const BASE_MOCK_FILTER: BasicFilterConfiguration = {
+                reportFilterUid: 1001,
+                filterType: {
+                    id: 5,
+                    codeTable: 'nbs_srt..code_value_general',
+                    descTxt: 'Basic Condition Filter',
+                    code: 'C_D01',
+                    codeSetName: 'PHC_TYPE',
+                    type: 'BAS_CON_LIST',
+                    name: 'Diseases',
+                },
+                isRequired: false,
+                selectType: BasicFilterConfiguration.selectType.SINGLE,
+                defaultValues: [],
+                reportColumnUid: 2001,
+                defaultIncludeNulls: false,
+            };
+            describe('single select', () => {
+                const MOCK_FILTER = BASE_MOCK_FILTER;
+
+                it('goes through happy path', async () => {
+                    const user = userEvent.setup();
+
+                    const mockConfigApi = vi
+                        .mocked(useLoaderData)
+                        .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    const mockResultApi = vi
+                        .mocked(generated.ReportControllerService.exportReport)
+                        .mockResolvedValue(MOCK_RESULT);
+                    vi.mocked(options.selectableResolver).mockResolvedValue([
+                        { value: '11065', name: '2019 Novel Coronavirus' },
+                        { value: '10560', name: 'AIDS' },
+                    ]);
+
+                    const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
+
+                    expect(mockConfigApi).toHaveBeenCalled();
+
+                    expect(await findAllByText('Condition')).toHaveLength(2);
+
+                    expect(await findByRole('option', { name: '2019 Novel Coronavirus' })).toBeVisible();
+
+                    expect(await findByLabelText('Full Name')).toBeVisible();
+                    await user.selectOptions(await findByLabelText('Full Name'), '11065');
+
+                    expect(await findByLabelText('Full Name')).toHaveValue('11065');
+
+                    expect(await axe(container)).toHaveNoViolations();
+
+                    await user.click(await findByRole('button', { name: 'Export' }));
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: ['11065'] }],
+                        }),
+                    });
+
+                    // make sure we can un-select after refine
+                    await user.click(await findByRole('button', { name: 'Refine report' }));
+
+                    expect(await findByLabelText('Full Name')).toBeVisible();
+                    await user.selectOptions(await findByLabelText('Full Name'), '- Select -');
+
+                    expect(await findByLabelText('Full Name')).toHaveValue('');
+
+                    await user.click(await findByRole('button', { name: 'Export' }));
+                    expect(mockResultApi).toHaveBeenCalledWith({
+                        requestBody: expect.objectContaining({
+                            isExport: true,
+                            advancedFilter: undefined,
+                            basicFilters: [{ reportFilterUid: 1001, values: [] }],
+                        }),
+                    });
                 });
             });
         });
@@ -953,7 +1033,7 @@ describe('report run page', () => {
                         // component refreshes when options populates, so can't do this earlier
                         const dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
-                        await userEvent.selectOptions(dropDown, '13');
+                        await user.selectOptions(dropDown, '13');
 
                         expect(dropDown).toHaveValue('13');
 
@@ -1031,7 +1111,7 @@ describe('report run page', () => {
                         expect(dropDown).toBeVisible();
                         expect(dropDown).toHaveValue('13');
 
-                        await userEvent.selectOptions(dropDown, '04');
+                        await user.selectOptions(dropDown, '04');
 
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
@@ -1256,7 +1336,7 @@ describe('report run page', () => {
                         // component refreshes when options populates, so can't do this earlier
                         let dropDown = await findByLabelText('Full Name');
                         expect(dropDown).toBeVisible();
-                        await userEvent.selectOptions(dropDown, '13001');
+                        await user.selectOptions(dropDown, '13001');
 
                         expect(dropDown).toHaveValue('13001');
 
@@ -1264,7 +1344,7 @@ describe('report run page', () => {
 
                         // change state to arizona
                         const stateDropDown = await findByLabelText('Date of Birth');
-                        await userEvent.selectOptions(stateDropDown, '04');
+                        await user.selectOptions(stateDropDown, '04');
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1278,7 +1358,7 @@ describe('report run page', () => {
                         expect(await findAllByRole('link', { name: 'Geographic area' })).toHaveLength(2);
 
                         dropDown = await findByLabelText('Full Name');
-                        await userEvent.selectOptions(dropDown, '04001');
+                        await user.selectOptions(dropDown, '04001');
 
                         expect(dropDown).toHaveValue('04001');
 
@@ -1348,7 +1428,7 @@ describe('report run page', () => {
                         expect(dropDown).toBeVisible();
                         expect(dropDown).toHaveValue('13001');
 
-                        await userEvent.selectOptions(dropDown, '13002');
+                        await user.selectOptions(dropDown, '13002');
 
                         const exportButton = await findByRole('button', { name: 'Export' });
                         await user.click(exportButton);
@@ -1416,7 +1496,7 @@ describe('report run page', () => {
 
                         // change state to arizona
                         const stateDropDown = await findByLabelText('Date of Birth');
-                        await userEvent.selectOptions(stateDropDown, '04');
+                        await user.selectOptions(stateDropDown, '04');
 
                         expect(mockConfigApi).toHaveBeenCalled();
 
@@ -1573,7 +1653,7 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.selectOptions(dropDown, '2019 Novel Coronavirus');
+                    await user.selectOptions(dropDown, '2019 Novel Coronavirus');
 
                     expect(dropDown).toHaveValue('11065');
 
@@ -1643,7 +1723,7 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(dropDown).toHaveValue('11065');
 
-                    await userEvent.selectOptions(dropDown, '10560');
+                    await user.selectOptions(dropDown, '10560');
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -1837,7 +1917,7 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.selectOptions(dropDown, '100 - Chancroid');
+                    await user.selectOptions(dropDown, '100 - Chancroid');
 
                     expect(dropDown).toHaveValue('100');
 
@@ -1911,7 +1991,7 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(dropDown).toHaveValue('100');
 
-                    await userEvent.selectOptions(dropDown, '200');
+                    await user.selectOptions(dropDown, '200');
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
@@ -2079,7 +2159,7 @@ describe('report run page', () => {
 
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
-                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
+                    .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, isRequired: false }] });
                 const mockResultApi = vi
                     .mocked(generated.ReportControllerService.exportReport)
                     .mockResolvedValue(MOCK_RESULT);
@@ -2104,6 +2184,23 @@ describe('report run page', () => {
                         isExport: true,
                         advancedFilter: undefined,
                         basicFilters: [{ reportFilterUid: 1001, values: ['5'] }],
+                    }),
+                });
+
+                // make sure we can un-select after refine
+                await user.click(await findByRole('button', { name: 'Refine report' }));
+
+                expect(await findByLabelText('Duplicate Investigations Time Frame')).toBeVisible();
+                await user.type(await findByLabelText('Duplicate Investigations Time Frame'), '{backspace}');
+
+                expect(await findByLabelText('Duplicate Investigations Time Frame')).toHaveValue(null);
+
+                await user.click(await findByRole('button', { name: 'Export' }));
+                expect(mockResultApi).toHaveBeenCalledWith({
+                    requestBody: expect.objectContaining({
+                        isExport: true,
+                        advancedFilter: undefined,
+                        basicFilters: [{ reportFilterUid: 1001, values: [] }],
                     }),
                 });
             });
@@ -2302,7 +2399,7 @@ describe('report run page', () => {
                     // component refreshes when options populates, so can't do this earlier
                     let dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
-                    await userEvent.selectOptions(dropDown, 'Jyn Erso');
+                    await user.selectOptions(dropDown, 'Jyn Erso');
 
                     expect(dropDown).toHaveValue('erso');
 
@@ -2372,7 +2469,7 @@ describe('report run page', () => {
                     expect(dropDown).toBeVisible();
                     expect(dropDown).toHaveValue('erso');
 
-                    await userEvent.selectOptions(dropDown, 'andor');
+                    await user.selectOptions(dropDown, 'andor');
 
                     const exportButton = await findByRole('button', { name: 'Export' });
                     await user.click(exportButton);
