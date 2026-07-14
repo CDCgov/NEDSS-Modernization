@@ -6,9 +6,9 @@ import { SingleSelect } from 'design-system/select';
 import { toSelectable } from './utils';
 import { EnumSelectable } from 'apps/report/utils';
 import { EntryWrapper } from 'components/Entry';
+import { SIZING } from 'apps/report/constants';
 
 import styles from './sort-selector.module.scss';
-import { SIZING } from 'apps/report/constants';
 
 const DIRECTION_OPTIONS: EnumSelectable<SortSpec.direction>[] = [
     { value: SortSpec.direction.ASC, name: 'Ascending' },
