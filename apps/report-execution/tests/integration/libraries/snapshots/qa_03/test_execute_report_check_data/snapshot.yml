@@ -1,5566 +1,5588 @@
 - !!python/tuple
-  - CAS10019514GA01
-  - null
-  - null
-  - '790'
-  - 40 Days
-  - 2022-02-09 00:00:00
-  - Washington County
-  - Liu Medical Center
-  - Jason Daugherty
-  - null
-- !!python/tuple
-  - CAS10026580GA01
-  - null
-  - null
-  - '790'
-  - 63 Months
-  - 2020-10-10 00:00:00
-  - Washington County
-  - White Medical Center
-  - Connie Webb
-  - null
-- !!python/tuple
-  - CAS10026980GA01
-  - null
-  - null
-  - '900'
-  - 45 Days
-  - 2025-04-30 00:00:00
-  - Middlesex County
-  - Jones Medical Center
-  - Stephen Conrad
-  - null
-- !!python/tuple
-  - CAS10035414GA01
-  - null
-  - null
-  - '300'
-  - 69 Years
-  - 2025-01-20 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - John Villanueva
-  - null
-- !!python/tuple
-  - CAS10039036GA01
-  - null
-  - null
-  - '790'
-  - 94 Years
-  - 2024-08-11 00:00:00
-  - Middlesex County
-  - Mccormick Medical Center
-  - Joyce Gonzalez
-  - null
-- !!python/tuple
-  - CAS10048699GA01
+  - CAS10013258GA01
   - null
   - null
   - '710'
-  - 11 Years
-  - 2024-03-09 00:00:00
-  - Washington County
-  - Carter Medical Center
-  - Dana Turner
+  - 43 Days
+  - 2025-03-06 00:00:00
+  - Middlesex County
+  - Moore Medical Center
+  - Nancy Harrison, Sr.
   - null
 - !!python/tuple
-  - CAS10051521GA01
+  - CAS10015727GA01
+  - null
+  - null
+  - '900'
+  - 43 Months
+  - 2022-12-24 00:00:00
+  - Washington County
+  - Adkins Medical Center
+  - Brad Singh
+  - null
+- !!python/tuple
+  - CAS10024416GA01
+  - null
+  - null
+  - '790'
+  - 32 Years
+  - 2023-08-19 00:00:00
+  - Washington County
+  - Torres Medical Center
+  - Brenda Jones
+  - null
+- !!python/tuple
+  - CAS10027945GA01
+  - null
+  - null
+  - '720'
+  - 31 Months
+  - 2023-02-12 00:00:00
+  - Middlesex County
+  - Luna Medical Center
+  - Jamie Edwards
+  - null
+- !!python/tuple
+  - CAS10028295GA01
+  - null
+  - null
+  - '900'
+  - 30 Months
+  - 2025-08-17 00:00:00
+  - Washington County
+  - Morris Medical Center
+  - Brad Singh
+  - null
+- !!python/tuple
+  - CAS10028308GA01
+  - null
+  - null
+  - '900'
+  - 39 Years
+  - 2024-12-27 00:00:00
+  - Middlesex County
+  - Stewart Medical Center
+  - Danielle Greer
+  - null
+- !!python/tuple
+  - CAS10029441GA01
+  - null
+  - null
+  - '720'
+  - 94 Years
+  - 2020-08-26 00:00:00
+  - null
+  - Kelly Medical Center
+  - Allison Coleman
+  - null
+- !!python/tuple
+  - CAS10030375GA01
+  - null
+  - null
+  - null
+  - 95 Days
+  - 2024-08-16 00:00:00
+  - Washington County
+  - Gilmore Medical Center
+  - Anthony White
+  - null
+- !!python/tuple
+  - CAS10030745GA01
+  - null
+  - null
+  - '710'
+  - 66 Days
+  - 2023-07-16 00:00:00
+  - Middlesex County
+  - Woods Medical Center
+  - Gabriel Harris
+  - null
+- !!python/tuple
+  - CAS10031436GA01
+  - null
+  - null
+  - '720'
+  - 32 Days
+  - 2021-12-01 00:00:00
+  - Washington County
+  - Harper Medical Center
+  - Brad Singh
+  - null
+- !!python/tuple
+  - CAS10031870GA01
+  - null
+  - null
+  - '720'
+  - 41 Months
+  - 2020-05-17 00:00:00
+  - Middlesex County
+  - Moyer Medical Center
+  - Gabriel Harris
+  - null
+- !!python/tuple
+  - CAS10036396GA01
+  - null
+  - null
+  - null
+  - 90 Years
+  - 2025-02-12 00:00:00
+  - Washington County
+  - Henderson Medical Center
+  - Cruz
+  - null
+- !!python/tuple
+  - CAS10044070GA01
+  - null
+  - null
+  - '900'
+  - 83 Days
+  - 2024-11-28 00:00:00
+  - Washington County
+  - Miller Medical Center
+  - Hannah Norris
+  - null
+- !!python/tuple
+  - CAS10051705GA01
+  - null
+  - null
+  - null
+  - 67 Months
+  - 2022-10-26 00:00:00
+  - Middlesex County
+  - Kelly Medical Center
+  - Kristin Smith
+  - null
+- !!python/tuple
+  - CAS10053125GA01
+  - null
+  - null
+  - null
+  - 14 Days
+  - 2024-06-30 00:00:00
+  - Washington County
+  - Huber Medical Center
+  - Joseph Lozano
+  - null
+- !!python/tuple
+  - CAS10056674GA01
+  - null
+  - null
+  - '730'
+  - 87 Months
+  - 2023-02-09 00:00:00
+  - Middlesex County
+  - Thomas Medical Center
+  - Lisa Robertson
+  - null
+- !!python/tuple
+  - CAS10057581GA01
+  - null
+  - null
+  - '720'
+  - 34 Years
+  - 2022-06-16 00:00:00
+  - Washington County
+  - Gilmore Medical Center
+  - Lori Flores
+  - null
+- !!python/tuple
+  - CAS10063480GA01
+  - null
+  - null
+  - null
+  - .
+  - 2025-11-06 00:00:00
+  - Middlesex County
+  - Torres Medical Center
+  - Thomas Norman
+  - null
+- !!python/tuple
+  - CAS10068680GA01
   - null
   - null
   - '200'
-  - 69 Months
-  - 2025-08-06 00:00:00
+  - 11 Years
+  - 2021-06-26 00:00:00
   - null
-  - Harris Medical Center
+  - Thomas Medical Center
+  - Kayla Fuller
+  - null
+- !!python/tuple
+  - CAS10071849GA01
+  - null
+  - null
+  - '200'
+  - 86 Days
+  - 2024-01-30 00:00:00
+  - Middlesex County
+  - Moore Medical Center
+  - Matthews
+  - null
+- !!python/tuple
+  - CAS10074277GA01
+  - null
+  - null
+  - '790'
+  - 32 Days
+  - 2024-06-12 00:00:00
+  - Middlesex County
+  - Torres Medical Center
+  - Jennifer Miranda
+  - null
+- !!python/tuple
+  - CAS10076537GA01
+  - null
+  - null
+  - '710'
+  - 58 Years
+  - 2021-05-18 00:00:00
+  - null
+  - Mathis Medical Center
+  - Kimberly Blackwell
+  - null
+- !!python/tuple
+  - CAS10078773GA01
+  - null
+  - null
+  - '200'
+  - 34 Years
+  - 2025-01-31 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
   - Carla Wood
   - null
 - !!python/tuple
-  - CAS10053973GA01
-  - null
-  - null
-  - '200'
-  - 50 Months
-  - 2025-08-26 00:00:00
-  - Middlesex County
-  - Wolf Medical Center
-  - Cynthia Ruiz
-  - null
-- !!python/tuple
-  - CAS10056385GA01
-  - null
-  - null
-  - '710'
-  - .
-  - 2024-06-10 00:00:00
-  - Washington County
-  - Carrillo Medical Center
-  - Jerome
-  - null
-- !!python/tuple
-  - CAS10058041GA01
-  - null
-  - null
-  - '710'
-  - 78 Months
-  - 2023-01-31 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Andrea Greene
-  - null
-- !!python/tuple
-  - CAS10060084GA01
-  - null
-  - null
-  - '200'
-  - 10 Months
-  - 2023-04-26 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Andrea Williams
-  - null
-- !!python/tuple
-  - CAS10063563GA01
-  - null
-  - null
-  - '300'
-  - 72 Months
-  - 2021-05-19 00:00:00
-  - Washington County
-  - Gutierrez Medical Center
-  - Daniel Olson
-  - null
-- !!python/tuple
-  - CAS10066909GA01
-  - null
-  - null
-  - '900'
-  - 96 Months
-  - 2021-02-07 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - James
-  - null
-- !!python/tuple
-  - CAS10067999GA01
-  - null
-  - null
-  - '790'
-  - 67 Years
-  - 2020-07-10 00:00:00
-  - Washington County
-  - Woods Medical Center
-  - Robert Caldwell
-  - null
-- !!python/tuple
-  - CAS10070632GA01
-  - null
-  - null
-  - '720'
-  - 60 Days
-  - 2021-05-31 00:00:00
-  - null
-  - Padilla Medical Center
-  - Gabriella Allison
-  - null
-- !!python/tuple
-  - CAS10072015GA01
-  - null
-  - null
-  - '790'
-  - 3 Months
-  - 2021-10-23 00:00:00
-  - Middlesex County
-  - Mitchell Medical Center
-  - ''
-  - null
-- !!python/tuple
-  - CAS10077976GA01
-  - null
-  - null
-  - '300'
-  - 89 Months
-  - 2020-08-19 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Andrea Johnson
-  - null
-- !!python/tuple
-  - CAS10083675GA01
+  - CAS10079231GA01
   - null
   - null
   - '730'
-  - 73 Months
-  - 2021-03-18 00:00:00
-  - Middlesex County
-  - Arnold Medical Center
-  - Ryan Elliott
-  - null
-- !!python/tuple
-  - CAS10085050GA01
-  - null
-  - null
-  - '730'
-  - 93 Years
+  - 38 Years
   - 2024-08-18 00:00:00
-  - null
-  - Bruce Medical Center
-  - Jerome
-  - null
-- !!python/tuple
-  - CAS10085964GA01
-  - null
-  - null
-  - '200'
-  - 24 Years
-  - 2020-10-14 00:00:00
   - Washington County
-  - Mitchell Medical Center
-  - Julie Aguirre
+  - Escobar Medical Center
+  - Amy Nguyen
   - null
 - !!python/tuple
-  - CAS10088396GA01
-  - null
-  - null
-  - '730'
-  - 7 Days
-  - 2022-11-03 00:00:00
-  - Washington County
-  - Hernandez Medical Center
-  - Richard Martin
-  - null
-- !!python/tuple
-  - CAS10088763GA01
-  - null
-  - null
-  - '300'
-  - 96 Days
-  - 2025-03-08 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Victoria Silva
-  - null
-- !!python/tuple
-  - CAS10089911GA01
+  - CAS10082878GA01
   - null
   - null
   - '720'
-  - 39 Months
-  - 2022-06-01 00:00:00
-  - Washington County
-  - Carter Medical Center
-  - Lauren Miller
-  - null
-- !!python/tuple
-  - CAS10099783GA01
-  - null
-  - null
-  - '710'
-  - 64 Days
-  - 2022-10-24 00:00:00
+  - 56 Years
+  - 2022-07-21 00:00:00
   - Middlesex County
-  - Austin Medical Center
-  - Dustin Harris
-  - null
-- !!python/tuple
-  - CAS10011716GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 76 Months
-  - 2025-01-23 00:00:00
-  - Washington County
-  - Liu Medical Center
-  - Joseph Torres
-  - 10004
-- !!python/tuple
-  - CAS10013077GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '730'
-  - 1 Days
-  - 2020-01-14 00:00:00
-  - Washington County
-  - Bruce Medical Center
-  - Eric Washington
-  - 10004
-- !!python/tuple
-  - CAS10013229GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '710'
-  - .
-  - 2023-03-18 00:00:00
-  - Washington County
-  - Mccormick Medical Center
-  - Jennifer Macias
-  - 10004
-- !!python/tuple
-  - CAS10013990GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '900'
-  - 55 Years
-  - 2020-05-23 00:00:00
-  - Washington County
-  - Austin Medical Center
-  - Tyler
-  - 10004
-- !!python/tuple
-  - CAS10014446GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 88 Months
-  - 2023-06-30 00:00:00
-  - Washington County
-  - Hill Medical Center
-  - Hannah Norris
-  - 10004
-- !!python/tuple
-  - CAS10014970GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 73 Months
-  - 2020-01-16 00:00:00
-  - Middlesex County
-  - Mclaughlin Medical Center
-  - Connie Webb
-  - 10004
-- !!python/tuple
-  - CAS10017001GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - .
-  - 2020-07-31 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Jonathan Gillespie
-  - 10004
-- !!python/tuple
-  - CAS10017962GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 57 Months
-  - 2021-08-26 00:00:00
-  - Washington County
-  - Jones Medical Center
-  - David Smith
-  - 10004
-- !!python/tuple
-  - CAS10019558GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '900'
-  - 17 Days
-  - 2022-05-23 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Dustin Harris
-  - 10004
-- !!python/tuple
-  - CAS10019567GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 93 Months
-  - 2025-11-03 00:00:00
-  - Middlesex County
-  - Davis Medical Center
-  - Jason
-  - 10004
-- !!python/tuple
-  - CAS10020348GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 27 Months
-  - 2022-07-24 00:00:00
-  - Washington County
-  - Jones Medical Center
-  - Jason
-  - 10004
-- !!python/tuple
-  - CAS10022470GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 8 Days
-  - 2023-03-11 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Jon Warner, III
-  - 10004
-- !!python/tuple
-  - CAS10022743GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 85 Days
-  - 2021-07-22 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - Walton
-  - 10004
-- !!python/tuple
-  - CAS10024038GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 67 Months
-  - 2021-07-14 00:00:00
-  - Middlesex County
-  - Merritt Medical Center
-  - Molina
-  - 10004
-- !!python/tuple
-  - CAS10025049GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 61 Years
-  - 2025-05-12 00:00:00
-  - Washington County
-  - Robbins Medical Center
-  - Donald Shea
-  - 10004
-- !!python/tuple
-  - CAS10025541GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 86 Years
-  - 2020-07-18 00:00:00
-  - Middlesex County
-  - Harris Medical Center
-  - Daniel Brown
-  - 10004
-- !!python/tuple
-  - CAS10027555GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 49 Months
-  - 2020-07-29 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Steven Schaefer
-  - 10004
-- !!python/tuple
-  - CAS10028055GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 55 Months
-  - 2020-01-08 00:00:00
-  - Washington County
-  - Hill Medical Center
-  - ''
-  - 10004
-- !!python/tuple
-  - CAS10028266GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 97 Days
-  - 2023-04-05 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - Day
-  - 10004
-- !!python/tuple
-  - CAS10028630GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 24 Months
-  - 2025-07-20 00:00:00
-  - Washington County
   - Torres Medical Center
-  - Tracy Owens
-  - 10004
+  - Joseph Lozano
+  - null
 - !!python/tuple
-  - CAS10030310GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 88 Days
-  - 2022-11-10 00:00:00
-  - Washington County
-  - Carter Medical Center
-  - Kristen Taylor
-  - 10004
-- !!python/tuple
-  - CAS10031711GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 50 Months
-  - 2024-11-13 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Donna Mitchell
-  - 10004
-- !!python/tuple
-  - CAS10032550GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 58 Months
-  - 2025-10-25 00:00:00
+  - CAS10085733GA01
+  - null
+  - null
+  - '730'
+  - 78 Years
+  - 2020-07-12 00:00:00
   - Middlesex County
-  - Bruce Medical Center
-  - Rebekah Brown
-  - 10004
+  - Ingram Medical Center
+  - Tina Watts
+  - null
 - !!python/tuple
-  - CAS10033212GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - .
-  - 2022-03-05 00:00:00
-  - Washington County
-  - Merritt Medical Center
-  - Jeffrey Butler
-  - 10004
-- !!python/tuple
-  - CAS10034227GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 44 Years
-  - 2025-05-03 00:00:00
-  - Washington County
-  - Wilson Medical Center
-  - Peter Crosby
-  - 10004
-- !!python/tuple
-  - CAS10034595GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 35 Days
-  - 2025-10-02 00:00:00
-  - Washington County
-  - Mason Medical Center
-  - Brad Singh
-  - 10004
-- !!python/tuple
-  - CAS10035103GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '900'
-  - 36 Days
-  - 2021-05-11 00:00:00
-  - Middlesex County
-  - Patton Medical Center
-  - Angela Johnson
-  - 10004
-- !!python/tuple
-  - CAS10037730GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 39 Years
-  - 2020-02-03 00:00:00
-  - Washington County
-  - Mason Medical Center
-  - Emily Nielsen
-  - 10004
-- !!python/tuple
-  - CAS10038179GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - .
-  - 2022-09-25 00:00:00
-  - Washington County
-  - Gutierrez Medical Center
-  - Mckenzie Church
-  - 10004
-- !!python/tuple
-  - CAS10039601GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '900'
-  - 92 Months
-  - 2025-10-08 00:00:00
+  - CAS10090908GA01
+  - null
+  - null
+  - '300'
+  - 66 Months
+  - 2024-06-08 00:00:00
   - Middlesex County
   - Woods Medical Center
-  - Daniel Brown
-  - 10004
+  - Linda Simon
+  - null
 - !!python/tuple
-  - CAS10040335GA01
+  - CAS10096726GA01
+  - null
+  - null
+  - '900'
+  - 76 Days
+  - 2021-07-15 00:00:00
+  - Washington County
+  - Young Medical Center
+  - Linda Simon
+  - null
+- !!python/tuple
+  - CAS10097534GA01
+  - null
+  - null
+  - '200'
+  - 81 Months
+  - 2022-07-02 00:00:00
+  - Washington County
+  - Chang Medical Center
+  - Michelle
+  - null
+- !!python/tuple
+  - CAS10097958GA01
+  - null
+  - null
+  - '730'
+  - 58 Years
+  - 2022-04-13 00:00:00
+  - Washington County
+  - Sanchez Medical Center
+  - Jeffrey Reed
+  - null
+- !!python/tuple
+  - CAS10099295GA01
+  - null
+  - null
+  - '730'
+  - .
+  - 2020-10-01 00:00:00
+  - Middlesex County
+  - Harper Medical Center
+  - Kayla Fuller
+  - null
+- !!python/tuple
+  - CAS10010437GA01
   - Brown, Lisa
   - PSN10010004GA01
-  - '200'
-  - 86 Years
-  - 2021-09-11 00:00:00
+  - '710'
+  - 16 Days
+  - 2021-10-10 00:00:00
+  - Middlesex County
+  - Escobar Medical Center
+  - Corey Rivers
+  - 10004
+- !!python/tuple
+  - CAS10011076GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 96 Months
+  - 2024-11-14 00:00:00
+  - Middlesex County
+  - Griffin Medical Center
+  - Travis Cook
+  - 10004
+- !!python/tuple
+  - CAS10011396GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 80 Years
+  - 2025-10-04 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
+  - Jonathan Harris
+  - 10004
+- !!python/tuple
+  - CAS10011616GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 62 Years
+  - 2023-10-27 00:00:00
+  - Washington County
+  - Ramos Medical Center
+  - Amy Nguyen
+  - 10004
+- !!python/tuple
+  - CAS10012026GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 38 Years
+  - 2024-01-04 00:00:00
+  - Washington County
+  - Morgan Medical Center
+  - Greg Montoya
+  - 10004
+- !!python/tuple
+  - CAS10017688GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 31 Months
+  - 2020-04-21 00:00:00
+  - Washington County
+  - White Medical Center
+  - Rachel Walton
+  - 10004
+- !!python/tuple
+  - CAS10018281GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '720'
+  - 4 Days
+  - 2025-11-02 00:00:00
+  - Washington County
+  - Morgan Medical Center
+  - Jeffrey Stokes
+  - 10004
+- !!python/tuple
+  - CAS10018411GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 64 Days
+  - 2022-07-04 00:00:00
+  - Washington County
+  - Morgan Medical Center
+  - Christine Snow
+  - 10004
+- !!python/tuple
+  - CAS10019707GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 99 Days
+  - 2020-07-29 00:00:00
+  - Washington County
+  - Griffin Medical Center
+  - Cindy Drake
+  - 10004
+- !!python/tuple
+  - CAS10020316GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 98 Days
+  - 2021-05-09 00:00:00
+  - Middlesex County
+  - Burns Medical Center
+  - Susan Jefferson
+  - 10004
+- !!python/tuple
+  - CAS10021254GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 39 Years
+  - 2023-08-06 00:00:00
+  - null
+  - Torres Medical Center
+  - Jesse Carter
+  - 10004
+- !!python/tuple
+  - CAS10021361GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 85 Days
+  - 2021-01-30 00:00:00
+  - Middlesex County
+  - Morris Medical Center
+  - John Figueroa
+  - 10004
+- !!python/tuple
+  - CAS10021502GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 92 Years
+  - 2020-09-07 00:00:00
   - Washington County
   - Miller Medical Center
-  - Kaitlin Kennedy
+  - Steven Soto
   - 10004
 - !!python/tuple
-  - CAS10042116GA01
+  - CAS10023792GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '720'
+  - .
+  - 2021-08-25 00:00:00
+  - Middlesex County
+  - Ingram Medical Center
+  - Jamie Edwards
+  - 10004
+- !!python/tuple
+  - CAS10024029GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '710'
-  - 24 Days
-  - 2021-11-19 00:00:00
-  - null
-  - Mitchell Medical Center
-  - Mary Jackson
-  - 10004
-- !!python/tuple
-  - CAS10044455GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '710'
-  - 80 Days
-  - 2022-09-25 00:00:00
+  - 48 Years
+  - 2025-10-28 00:00:00
   - Washington County
-  - Davis Medical Center
+  - Howard Medical Center
+  - Greg Montoya
+  - 10004
+- !!python/tuple
+  - CAS10024188GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 15 Years
+  - 2022-02-28 00:00:00
+  - Washington County
+  - Smith Medical Center
+  - Brenda Jones
+  - 10004
+- !!python/tuple
+  - CAS10025192GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 22 Years
+  - 2024-12-26 00:00:00
+  - Washington County
+  - Ramos Medical Center
+  - Rebecca
+  - 10004
+- !!python/tuple
+  - CAS10025694GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '720'
+  - 45 Months
+  - 2020-05-22 00:00:00
+  - Middlesex County
+  - Smith Medical Center
+  - Jerome
+  - 10004
+- !!python/tuple
+  - CAS10026296GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 91 Months
+  - 2024-07-31 00:00:00
+  - Middlesex County
+  - Woods Medical Center
+  - Wesley Collins
+  - 10004
+- !!python/tuple
+  - CAS10026331GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 96 Years
+  - 2025-02-08 00:00:00
+  - Washington County
+  - Ingram Medical Center
   - Christopher Murphy
   - 10004
 - !!python/tuple
-  - CAS10045064GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 62 Days
-  - 2022-07-24 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - Austin Hull
-  - 10004
-- !!python/tuple
-  - CAS10045681GA01
+  - CAS10027036GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '900'
-  - 68 Months
-  - 2022-01-23 00:00:00
-  - Washington County
-  - Torres Medical Center
-  - Steven Schaefer
+  - 65 Months
+  - 2024-05-09 00:00:00
+  - null
+  - Moyer Medical Center
+  - Erin Horn
   - 10004
 - !!python/tuple
-  - CAS10045776GA01
+  - CAS10028089GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 89 Years
+  - 2022-05-16 00:00:00
+  - Washington County
+  - Morris Medical Center
+  - Jessica Bruce
+  - 10004
+- !!python/tuple
+  - CAS10028945GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 62 Days
+  - 2023-09-25 00:00:00
+  - Middlesex County
+  - Ramos Medical Center
+  - Natalie Kelly
+  - 10004
+- !!python/tuple
+  - CAS10031188GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '730'
-  - 31 Years
-  - 2021-04-01 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Shannon Ellis
+  - .
+  - 2022-04-23 00:00:00
+  - Washington County
+  - Weaver Medical Center
+  - Chris Burns
   - 10004
 - !!python/tuple
-  - CAS10046660GA01
+  - CAS10036905GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 16 Months
+  - 2022-05-16 00:00:00
+  - Washington County
+  - Luna Medical Center
+  - Steve Parker
+  - 10004
+- !!python/tuple
+  - CAS10038593GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 30 Months
+  - 2022-05-02 00:00:00
+  - Washington County
+  - Thomas Medical Center
+  - Jamie Edwards
+  - 10004
+- !!python/tuple
+  - CAS10038672GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 14 Years
+  - 2025-01-24 00:00:00
+  - Middlesex County
+  - Adkins Medical Center
+  - Kristin Skinner
+  - 10004
+- !!python/tuple
+  - CAS10038832GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 38 Months
+  - 2020-04-09 00:00:00
+  - Washington County
+  - Ramos Medical Center
+  - Jesse Brooks, PhD
+  - 10004
+- !!python/tuple
+  - CAS10041448GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 70 Months
+  - 2021-05-05 00:00:00
+  - Washington County
+  - Rasmussen Medical Center
+  - Jessica Murphy
+  - 10004
+- !!python/tuple
+  - CAS10042325GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 11 Years
+  - 2024-08-12 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
+  - Lisa Robertson
+  - 10004
+- !!python/tuple
+  - CAS10043714GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 77 Months
+  - 2024-10-17 00:00:00
+  - Middlesex County
+  - Rasmussen Medical Center
+  - Michelle Osborne
+  - 10004
+- !!python/tuple
+  - CAS10044599GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 52 Years
+  - 2025-12-22 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Linda Garcia
+  - 10004
+- !!python/tuple
+  - CAS10045497GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 71 Months
+  - 2020-08-02 00:00:00
+  - null
+  - Brown Medical Center
+  - Andrea Johnson
+  - 10004
+- !!python/tuple
+  - CAS10045907GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 55 Years
+  - 2022-12-08 00:00:00
+  - Middlesex County
+  - Hernandez Medical Center
+  - Bonnie Molina
+  - 10004
+- !!python/tuple
+  - CAS10046521GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 40 Years
+  - 2020-09-30 00:00:00
+  - Middlesex County
+  - Harper Medical Center
+  - Mary Jackson
+  - 10004
+- !!python/tuple
+  - CAS10050175GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 40 Years
+  - 2023-11-19 00:00:00
+  - Middlesex County
+  - Bowman Medical Center
+  - Danielle Greer
+  - 10004
+- !!python/tuple
+  - CAS10050464GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 38 Months
+  - 2020-02-04 00:00:00
+  - Washington County
+  - Cervantes Medical Center
+  - Don Green
+  - 10004
+- !!python/tuple
+  - CAS10050574GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 38 Days
+  - 2021-11-25 00:00:00
+  - Middlesex County
+  - Miller Medical Center
+  - Kristin Skinner
+  - 10004
+- !!python/tuple
+  - CAS10052429GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 76 Months
+  - 2024-10-08 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Jennifer Brown, Sr.
+  - 10004
+- !!python/tuple
+  - CAS10053014GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 94 Months
+  - 2023-03-16 00:00:00
+  - Washington County
+  - Santiago Medical Center
+  - Daniel Brown
+  - 10004
+- !!python/tuple
+  - CAS10056397GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 69 Years
+  - 2024-12-26 00:00:00
+  - Washington County
+  - Cervantes Medical Center
+  - Heather Oconnor
+  - 10004
+- !!python/tuple
+  - CAS10058689GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 94 Months
+  - 2021-01-28 00:00:00
+  - Middlesex County
+  - Griffin Medical Center
+  - Kristin Skinner
+  - 10004
+- !!python/tuple
+  - CAS10060436GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 91 Years
+  - 2020-09-17 00:00:00
+  - null
+  - Burns Medical Center
+  - Gina Stark
+  - 10004
+- !!python/tuple
+  - CAS10061612GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 99 Days
+  - 2024-05-15 00:00:00
+  - Middlesex County
+  - Tapia Medical Center
+  - Jose Mckee
+  - 10004
+- !!python/tuple
+  - CAS10061850GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 78 Months
+  - 2021-02-01 00:00:00
+  - Middlesex County
+  - Ellis Medical Center
+  - Troy
+  - 10004
+- !!python/tuple
+  - CAS10062337GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '720'
+  - 65 Days
+  - 2020-12-23 00:00:00
+  - Washington County
+  - Ingram Medical Center
+  - Bonnie Molina
+  - 10004
+- !!python/tuple
+  - CAS10062577GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 75 Months
+  - 2024-03-31 00:00:00
+  - Middlesex County
+  - Howard Medical Center
+  - Wendy Harrington
+  - 10004
+- !!python/tuple
+  - CAS10063048GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '300'
   - .
-  - 2021-07-10 00:00:00
+  - 2022-02-12 00:00:00
   - Middlesex County
-  - Keith Medical Center
-  - Johnny Smith
+  - Miller Medical Center
+  - Danielle Greer
   - 10004
 - !!python/tuple
-  - CAS10047404GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 75 Years
-  - 2025-02-05 00:00:00
-  - Middlesex County
-  - Hernandez Medical Center
-  - Brittney Ellis
-  - 10004
-- !!python/tuple
-  - CAS10049210GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 62 Years
-  - 2024-06-12 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Scott Rogers
-  - 10004
-- !!python/tuple
-  - CAS10049567GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '900'
-  - 12 Days
-  - 2024-08-25 00:00:00
-  - Washington County
-  - Williams Medical Center
-  - Michelle Gonzalez, III
-  - 10004
-- !!python/tuple
-  - CAS10050560GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 37 Days
-  - 2025-07-19 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Molina
-  - 10004
-- !!python/tuple
-  - CAS10053122GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 2 Years
-  - 2025-01-22 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Gina Stark
-  - 10004
-- !!python/tuple
-  - CAS10053125GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '900'
-  - 55 Years
-  - 2024-06-30 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Joseph Murphy
-  - 10004
-- !!python/tuple
-  - CAS10053492GA01
+  - CAS10064306GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '720'
-  - 80 Months
-  - 2021-01-30 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Christopher Hamilton
-  - 10004
-- !!python/tuple
-  - CAS10053756GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 83 Months
-  - 2022-10-02 00:00:00
+  - 82 Days
+  - 2022-01-06 00:00:00
   - Middlesex County
-  - Mclaughlin Medical Center
-  - Steven Schaefer
+  - Moore Medical Center
+  - Gabriel Harris
   - 10004
 - !!python/tuple
-  - CAS10054192GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 94 Months
-  - 2021-12-15 00:00:00
-  - Washington County
-  - Carter Medical Center
-  - Carla Wood
-  - 10004
-- !!python/tuple
-  - CAS10055491GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 73 Months
-  - 2024-07-27 00:00:00
-  - Middlesex County
-  - Wolf Medical Center
-  - Terri Walters
-  - 10004
-- !!python/tuple
-  - CAS10055853GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 37 Months
-  - 2025-11-28 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - Gina Wagner
-  - 10004
-- !!python/tuple
-  - CAS10057760GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '710'
-  - 5 Years
-  - 2023-09-28 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Mccann
-  - 10004
-- !!python/tuple
-  - CAS10060709GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 2 Years
-  - 2025-08-23 00:00:00
-  - null
-  - Wolf Medical Center
-  - James
-  - 10004
-- !!python/tuple
-  - CAS10061377GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 21 Years
-  - 2022-07-26 00:00:00
-  - Middlesex County
-  - Hernandez Medical Center
-  - Brian Todd
-  - 10004
-- !!python/tuple
-  - CAS10062883GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 33 Years
-  - 2024-11-01 00:00:00
-  - Middlesex County
-  - Merritt Medical Center
-  - Mary
-  - 10004
-- !!python/tuple
-  - CAS10063218GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 77 Days
-  - 2024-10-26 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Elizabeth Dean
-  - 10004
-- !!python/tuple
-  - CAS10064505GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 81 Months
-  - 2020-02-27 00:00:00
-  - Middlesex County
-  - Gutierrez Medical Center
-  - Terri Obrien
-  - 10004
-- !!python/tuple
-  - CAS10064685GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 7 Months
-  - 2021-03-12 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Mary Jackson
-  - 10004
-- !!python/tuple
-  - CAS10066267GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 30 Years
-  - 2020-09-20 00:00:00
-  - Middlesex County
-  - Robbins Medical Center
-  - Justin Sullivan
-  - 10004
-- !!python/tuple
-  - CAS10070900GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '730'
-  - 2 Days
-  - 2021-12-27 00:00:00
-  - Washington County
-  - Wolf Medical Center
-  - Cindy Jackson
-  - 10004
-- !!python/tuple
-  - CAS10071358GA01
+  - CAS10064766GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '730'
   - 53 Years
-  - 2024-02-14 00:00:00
-  - null
-  - Patton Medical Center
-  - Louis Taylor
-  - 10004
-- !!python/tuple
-  - CAS10071933GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '730'
-  - 3 Months
-  - 2020-04-14 00:00:00
-  - Middlesex County
-  - Wilson Medical Center
-  - Michelle Gonzalez, III
-  - 10004
-- !!python/tuple
-  - CAS10074521GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - 83 Months
-  - 2020-04-26 00:00:00
-  - Middlesex County
-  - Woods Medical Center
-  - Mary Jackson
-  - 10004
-- !!python/tuple
-  - CAS10075388GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 8 Days
-  - 2023-08-16 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Johnny Smith
-  - 10004
-- !!python/tuple
-  - CAS10076970GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '730'
-  - 18 Months
-  - 2024-04-01 00:00:00
+  - 2021-08-20 00:00:00
   - Washington County
-  - Stewart Medical Center
-  - Daniel Brown
-  - 10004
-- !!python/tuple
-  - CAS10079892GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '720'
-  - .
-  - 2025-04-24 00:00:00
-  - null
-  - Mason Medical Center
-  - Jeffrey Reed
-  - 10004
-- !!python/tuple
-  - CAS10080761GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - .
-  - 2024-11-06 00:00:00
-  - Middlesex County
-  - White Medical Center
-  - Cindy Drake
-  - 10004
-- !!python/tuple
-  - CAS10082067GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - .
-  - 2023-12-22 00:00:00
-  - Middlesex County
-  - Gutierrez Medical Center
-  - Patty
-  - 10004
-- !!python/tuple
-  - CAS10083644GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 7 Months
-  - 2025-05-01 00:00:00
-  - null
-  - Bruce Medical Center
+  - Grant Medical Center
   - Richard Garcia
   - 10004
 - !!python/tuple
-  - CAS10084399GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 99 Days
-  - 2024-04-01 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Jason
-  - 10004
-- !!python/tuple
-  - CAS10084498GA01
+  - CAS10065339GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '200'
-  - 94 Years
-  - 2020-11-25 00:00:00
+  - 98 Months
+  - 2020-07-13 00:00:00
   - Washington County
-  - Moon Medical Center
-  - Suzanne
+  - Price Medical Center
+  - Jeffrey Stokes
   - 10004
 - !!python/tuple
-  - CAS10085532GA01
+  - CAS10067155GA01
   - Brown, Lisa
   - PSN10010004GA01
-  - '200'
-  - 61 Days
-  - 2020-10-25 00:00:00
+  - '710'
+  - 61 Months
+  - 2020-12-01 00:00:00
   - Middlesex County
-  - Goodman Medical Center
-  - Scott Sandoval
+  - Harris Medical Center
+  - Terri Obrien
   - 10004
 - !!python/tuple
-  - CAS10087293GA01
+  - CAS10068658GA01
   - Brown, Lisa
   - PSN10010004GA01
-  - '720'
-  - 46 Days
-  - 2021-10-07 00:00:00
-  - null
+  - '730'
+  - 12 Years
+  - 2022-04-23 00:00:00
+  - Washington County
+  - Miller Medical Center
+  - Arthur Day
+  - 10004
+- !!python/tuple
+  - CAS10069250GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '710'
+  - 84 Days
+  - 2020-11-11 00:00:00
+  - Middlesex County
   - Morris Medical Center
-  - Summer Murphy
+  - Nancy Harrison, Sr.
   - 10004
 - !!python/tuple
-  - CAS10088449GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 55 Months
-  - 2024-02-29 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Linda Simon
-  - 10004
-- !!python/tuple
-  - CAS10091082GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 79 Years
-  - 2024-02-26 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Timothy Saunders
-  - 10004
-- !!python/tuple
-  - CAS10091811GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - null
-  - 58 Months
-  - 2024-10-05 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Christina Flores
-  - 10004
-- !!python/tuple
-  - CAS10091902GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '300'
-  - 12 Months
-  - 2024-08-11 00:00:00
-  - Washington County
-  - Hill Medical Center
-  - Christopher Hamilton
-  - 10004
-- !!python/tuple
-  - CAS10093469GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '200'
-  - 14 Months
-  - 2024-04-23 00:00:00
-  - Middlesex County
-  - Kelley Medical Center
-  - Richard Garcia
-  - 10004
-- !!python/tuple
-  - CAS10093886GA01
-  - Brown, Lisa
-  - PSN10010004GA01
-  - '790'
-  - 36 Days
-  - 2021-07-06 00:00:00
-  - Middlesex County
-  - Mcintosh Medical Center
-  - Kayla Martinez
-  - 10004
-- !!python/tuple
-  - CAS10094274GA01
+  - CAS10069660GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '900'
-  - 9 Days
-  - 2024-05-11 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - Zachary Barnes
+  - 70 Years
+  - 2025-11-14 00:00:00
+  - Middlesex County
+  - Young Medical Center
+  - Justin Sullivan
   - 10004
 - !!python/tuple
-  - CAS10094472GA01
+  - CAS10070319GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 55 Months
+  - 2025-12-12 00:00:00
+  - Washington County
+  - Hernandez Medical Center
+  - Jesse Brooks, PhD
+  - 10004
+- !!python/tuple
+  - CAS10071073GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '710'
-  - 25 Days
-  - 2022-07-03 00:00:00
+  - 35 Months
+  - 2025-08-02 00:00:00
   - Washington County
-  - Moon Medical Center
-  - Mary
+  - Morgan Medical Center
+  - Tyler Moore
   - 10004
 - !!python/tuple
-  - CAS10098145GA01
+  - CAS10071500GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 62 Days
+  - 2022-09-09 00:00:00
+  - Middlesex County
+  - Moyer Medical Center
+  - John Villanueva
+  - 10004
+- !!python/tuple
+  - CAS10071730GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '720'
+  - 77 Days
+  - 2024-09-11 00:00:00
+  - Middlesex County
+  - Tapia Medical Center
+  - Rachel Walton
+  - 10004
+- !!python/tuple
+  - CAS10072478GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 13 Days
+  - 2024-03-05 00:00:00
+  - Washington County
+  - Griffin Medical Center
+  - David Hayes
+  - 10004
+- !!python/tuple
+  - CAS10072532GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 22 Years
+  - 2021-12-28 00:00:00
+  - Middlesex County
+  - Stewart Medical Center
+  - Edward Ramirez
+  - 10004
+- !!python/tuple
+  - CAS10072750GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 44 Months
+  - 2020-04-23 00:00:00
+  - Middlesex County
+  - Moore Medical Center
+  - Natalie Kelly
+  - 10004
+- !!python/tuple
+  - CAS10075490GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 34 Years
+  - 2024-11-02 00:00:00
+  - Middlesex County
+  - Sanchez Medical Center
+  - Christopher Smith
+  - 10004
+- !!python/tuple
+  - CAS10077447GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 25 Years
+  - 2020-07-19 00:00:00
+  - Washington County
+  - Ellis Medical Center
+  - Hannah Pierce
+  - 10004
+- !!python/tuple
+  - CAS10078742GA01
   - Brown, Lisa
   - PSN10010004GA01
   - '710'
-  - 63 Days
-  - 2022-05-29 00:00:00
+  - 19 Days
+  - 2023-12-27 00:00:00
   - Washington County
-  - Williams Medical Center
-  - Walters
+  - Jackson Medical Center
+  - Daniel Robertson
   - 10004
 - !!python/tuple
-  - CAS10010175GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 5 Days
-  - 2021-06-28 00:00:00
-  - Washington County
-  - Mcintosh Medical Center
-  - Jessica Murphy
-  - 10005
+  - CAS10079840GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 32 Years
+  - 2023-12-22 00:00:00
+  - Middlesex County
+  - Ramos Medical Center
+  - Johnny Smith
+  - 10004
 - !!python/tuple
-  - CAS10011483GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 6 Years
-  - 2024-11-20 00:00:00
-  - Washington County
-  - Padilla Medical Center
-  - Karen Mann
-  - 10005
+  - CAS10082553GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 44 Years
+  - 2025-10-24 00:00:00
+  - Middlesex County
+  - Chang Medical Center
+  - Kristin Skinner
+  - 10004
 - !!python/tuple
-  - CAS10012973GA01
-  - Davis, Tom
-  - PSN10010005GA01
+  - CAS10082855GA01
+  - Brown, Lisa
+  - PSN10010004GA01
   - '710'
   - 25 Months
-  - 2022-11-08 00:00:00
+  - 2020-11-20 00:00:00
   - Middlesex County
-  - Mcgee Medical Center
-  - Jeffrey Butler
+  - Gilmore Medical Center
+  - Brian Todd
+  - 10004
+- !!python/tuple
+  - CAS10084542GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 51 Months
+  - 2022-08-28 00:00:00
+  - Middlesex County
+  - Brown Medical Center
+  - Chelsey Huff
+  - 10004
+- !!python/tuple
+  - CAS10086332GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '790'
+  - 91 Years
+  - 2025-09-18 00:00:00
+  - Middlesex County
+  - Luna Medical Center
+  - Timothy Saunders
+  - 10004
+- !!python/tuple
+  - CAS10087648GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 86 Years
+  - 2023-06-17 00:00:00
+  - Middlesex County
+  - Turner Medical Center
+  - Richard Martin
+  - 10004
+- !!python/tuple
+  - CAS10089830GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '710'
+  - 98 Days
+  - 2020-07-13 00:00:00
+  - Washington County
+  - Mathis Medical Center
+  - David Smith
+  - 10004
+- !!python/tuple
+  - CAS10092181GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '710'
+  - 20 Years
+  - 2023-01-20 00:00:00
+  - Washington County
+  - Ellis Medical Center
+  - Christopher Rubio
+  - 10004
+- !!python/tuple
+  - CAS10095515GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - null
+  - 2 Days
+  - 2022-08-13 00:00:00
+  - Middlesex County
+  - Brown Medical Center
+  - Brad Singh
+  - 10004
+- !!python/tuple
+  - CAS10096629GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 43 Days
+  - 2025-12-01 00:00:00
+  - Washington County
+  - Huber Medical Center
+  - Mary Jackson
+  - 10004
+- !!python/tuple
+  - CAS10097547GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '200'
+  - 29 Years
+  - 2020-12-23 00:00:00
+  - Middlesex County
+  - Rivera Medical Center
+  - Andrea Williams
+  - 10004
+- !!python/tuple
+  - CAS10099001GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '300'
+  - 30 Days
+  - 2021-10-17 00:00:00
+  - Middlesex County
+  - Adkins Medical Center
+  - Joyce Gonzalez
+  - 10004
+- !!python/tuple
+  - CAS10099283GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '900'
+  - 93 Days
+  - 2025-01-08 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - Carla Wood
+  - 10004
+- !!python/tuple
+  - CAS10099583GA01
+  - Brown, Lisa
+  - PSN10010004GA01
+  - '730'
+  - 78 Days
+  - 2020-05-24 00:00:00
+  - Washington County
+  - Byrd Medical Center
+  - Susan Jefferson
+  - 10004
+- !!python/tuple
+  - CAS10012863GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '730'
+  - 49 Days
+  - 2022-11-22 00:00:00
+  - Washington County
+  - Rasmussen Medical Center
+  - Hull
+  - 10005
+- !!python/tuple
+  - CAS10013949GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - null
+  - 72 Years
+  - 2023-12-26 00:00:00
+  - Middlesex County
+  - Giles Medical Center
+  - Hannah Norris
   - 10005
 - !!python/tuple
   - CAS10014288GA01
   - Davis, Tom
   - PSN10010005GA01
   - '300'
-  - 32 Months
-  - 2024-12-31 00:00:00
+  - 32 Years
+  - 2021-05-10 00:00:00
   - Middlesex County
-  - Patton Medical Center
-  - Richard Martin
+  - Sanchez Medical Center
+  - Travis Cook
   - 10005
 - !!python/tuple
-  - CAS10014517GA01
+  - CAS10015354GA01
   - Davis, Tom
   - PSN10010005GA01
-  - '710'
-  - 53 Days
-  - 2023-07-02 00:00:00
+  - '900'
+  - 50 Days
+  - 2020-03-27 00:00:00
   - Washington County
-  - Wolf Medical Center
-  - Lisa Robertson
-  - 10005
-- !!python/tuple
-  - CAS10015999GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 17 Months
-  - 2020-10-10 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Colleen Wilson
+  - Price Medical Center
+  - Stephen Conrad
   - 10005
 - !!python/tuple
   - CAS10016325GA01
   - Davis, Tom
   - PSN10010005GA01
-  - '790'
+  - '200'
   - 65 Years
-  - 2021-06-27 00:00:00
+  - 2025-11-16 00:00:00
   - Middlesex County
-  - Mills Medical Center
-  - Michael Harris
+  - Price Medical Center
+  - Gabriel Harris
   - 10005
 - !!python/tuple
-  - CAS10017877GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - null
-  - 25 Days
-  - 2025-06-20 00:00:00
-  - Middlesex County
-  - Mcgee Medical Center
-  - Peter Pena
-  - 10005
-- !!python/tuple
-  - CAS10023096GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '790'
-  - 82 Years
-  - 2022-07-07 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Desiree Hammond
-  - 10005
-- !!python/tuple
-  - CAS10023463GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 88 Months
-  - 2025-03-04 00:00:00
-  - Middlesex County
-  - Mcintosh Medical Center
-  - Dustin Harris
-  - 10005
-- !!python/tuple
-  - CAS10025067GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 81 Months
-  - 2022-11-24 00:00:00
-  - Middlesex County
-  - Padilla Medical Center
-  - Jennifer Macias
-  - 10005
-- !!python/tuple
-  - CAS10025769GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 11 Months
-  - 2022-06-22 00:00:00
-  - Middlesex County
-  - Patton Medical Center
-  - Samantha Lopez
-  - 10005
-- !!python/tuple
-  - CAS10026325GA01
+  - CAS10016408GA01
   - Davis, Tom
   - PSN10010005GA01
   - '200'
-  - 71 Months
-  - 2023-10-13 00:00:00
+  - 82 Years
+  - 2022-07-03 00:00:00
   - Middlesex County
-  - Wilson Medical Center
-  - Villa
+  - Weaver Medical Center
+  - Brad Singh
   - 10005
 - !!python/tuple
-  - CAS10028112GA01
+  - CAS10017966GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 58 Years
+  - 2022-02-02 00:00:00
+  - Middlesex County
+  - Rivera Medical Center
+  - Emily Nielsen
+  - 10005
+- !!python/tuple
+  - CAS10019170GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '900'
+  - 82 Days
+  - 2022-01-04 00:00:00
+  - Washington County
+  - Ingram Medical Center
+  - Terry Martin
+  - 10005
+- !!python/tuple
+  - CAS10023038GA01
   - Davis, Tom
   - PSN10010005GA01
   - '730'
-  - 3 Days
-  - 2023-09-26 00:00:00
+  - 47 Months
+  - 2025-04-18 00:00:00
+  - Middlesex County
+  - Moore Medical Center
+  - Brenda Jones
+  - 10005
+- !!python/tuple
+  - CAS10023641GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 53 Months
+  - 2024-03-05 00:00:00
   - Washington County
-  - Castillo Medical Center
-  - Ashley Williams
+  - Price Medical Center
+  - Gregory Byrd
   - 10005
 - !!python/tuple
   - CAS10028944GA01
   - Davis, Tom
   - PSN10010005GA01
-  - '200'
+  - '300'
   - .
-  - 2023-07-11 00:00:00
+  - 2025-02-26 00:00:00
   - Washington County
-  - Wolf Medical Center
-  - Kimberly Ferguson
+  - Harris Medical Center
+  - Jesse Cantrell
   - 10005
 - !!python/tuple
-  - CAS10031755GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - null
-  - 6 Days
-  - 2023-09-14 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Andrew Bryant
-  - 10005
-- !!python/tuple
-  - CAS10031812GA01
+  - CAS10029796GA01
   - Davis, Tom
   - PSN10010005GA01
   - '720'
-  - 14 Days
-  - 2022-07-19 00:00:00
-  - Middlesex County
-  - Woods Medical Center
-  - Brad Singh
-  - 10005
-- !!python/tuple
-  - CAS10032182GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 94 Days
-  - 2022-12-04 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Jacob Hubbard
-  - 10005
-- !!python/tuple
-  - CAS10032254GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 45 Days
-  - 2023-02-17 00:00:00
+  - 60 Days
+  - 2024-08-02 00:00:00
   - Washington County
-  - Smith Medical Center
-  - Jerome
+  - Griffin Medical Center
+  - Chris Burns
   - 10005
 - !!python/tuple
-  - CAS10032725GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '730'
-  - 86 Days
-  - 2024-07-05 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Angela Johnson
-  - 10005
-- !!python/tuple
-  - CAS10035217GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 84 Months
-  - 2025-09-26 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Wayne Craig
-  - 10005
-- !!python/tuple
-  - CAS10035651GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 77 Days
-  - 2024-03-17 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Matthew Sanders
-  - 10005
-- !!python/tuple
-  - CAS10036183GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '730'
-  - 29 Days
-  - 2022-01-23 00:00:00
-  - Middlesex County
-  - Warren Medical Center
-  - Ashley Williams
-  - 10005
-- !!python/tuple
-  - CAS10037203GA01
+  - CAS10030022GA01
   - Davis, Tom
   - PSN10010005GA01
   - '200'
-  - 71 Days
-  - 2023-04-11 00:00:00
-  - null
-  - Padilla Medical Center
-  - Brad Singh
-  - 10005
-- !!python/tuple
-  - CAS10037341GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - null
-  - 38 Days
-  - 2020-03-14 00:00:00
-  - Middlesex County
-  - Hill Medical Center
-  - Amanda Singh
-  - 10005
-- !!python/tuple
-  - CAS10040907GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 20 Years
-  - 2020-09-08 00:00:00
+  - 6 Years
+  - 2024-03-01 00:00:00
   - Washington County
-  - Woods Medical Center
-  - Matthew Sanders
+  - Brown Medical Center
+  - Cheyenne Fernandez
   - 10005
 - !!python/tuple
-  - CAS10041489GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 30 Months
-  - 2023-01-07 00:00:00
-  - Washington County
-  - Ponce Medical Center
-  - Day
-  - 10005
-- !!python/tuple
-  - CAS10046742GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 91 Months
-  - 2024-11-16 00:00:00
-  - Middlesex County
-  - Bruce Medical Center
-  - Victoria Silva
-  - 10005
-- !!python/tuple
-  - CAS10047912GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 52 Years
-  - 2021-04-11 00:00:00
-  - Washington County
-  - Mccormick Medical Center
-  - Christopher Rubio
-  - 10005
-- !!python/tuple
-  - CAS10049345GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - .
-  - 2023-06-15 00:00:00
-  - null
-  - Padilla Medical Center
-  - Emily Nielsen
-  - 10005
-- !!python/tuple
-  - CAS10049444GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 77 Days
-  - 2024-08-17 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Mccann
-  - 10005
-- !!python/tuple
-  - CAS10049696GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '730'
-  - 1 Years
-  - 2024-06-19 00:00:00
-  - Washington County
-  - Moreno Medical Center
-  - Nancy Harrison
-  - 10005
-- !!python/tuple
-  - CAS10051621GA01
+  - CAS10031913GA01
   - Davis, Tom
   - PSN10010005GA01
   - '790'
-  - 44 Days
-  - 2021-10-24 00:00:00
-  - Middlesex County
-  - Soto Medical Center
-  - David Walker
+  - 51 Days
+  - 2025-07-10 00:00:00
+  - Washington County
+  - Burns Medical Center
+  - Christine Snow
   - 10005
 - !!python/tuple
-  - CAS10053014GA01
+  - CAS10031976GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '730'
+  - 26 Months
+  - 2023-09-06 00:00:00
+  - Washington County
+  - Rivera Medical Center
+  - Lori Jones
+  - 10005
+- !!python/tuple
+  - CAS10036873GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '900'
+  - 64 Years
+  - 2025-01-02 00:00:00
+  - Washington County
+  - Price Medical Center
+  - Andrea Greene
+  - 10005
+- !!python/tuple
+  - CAS10038109GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 69 Years
+  - 2021-12-03 00:00:00
+  - Middlesex County
+  - Young Medical Center
+  - Renee Harris
+  - 10005
+- !!python/tuple
+  - CAS10038792GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '300'
+  - 73 Months
+  - 2021-02-17 00:00:00
+  - Washington County
+  - Turner Medical Center
+  - Mackenzie Guzman
+  - 10005
+- !!python/tuple
+  - CAS10039446GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 16 Days
+  - 2024-04-20 00:00:00
+  - Washington County
+  - Giles Medical Center
+  - James Harrison
+  - 10005
+- !!python/tuple
+  - CAS10039464GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 72 Months
+  - 2024-10-25 00:00:00
+  - Washington County
+  - Ramos Medical Center
+  - Jennifer Brown, Sr.
+  - 10005
+- !!python/tuple
+  - CAS10039820GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '900'
+  - 31 Years
+  - 2020-04-03 00:00:00
+  - Middlesex County
+  - Smith Medical Center
+  - Travis Cook
+  - 10005
+- !!python/tuple
+  - CAS10040977GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 4 Years
+  - 2024-09-19 00:00:00
+  - Middlesex County
+  - Kelly Medical Center
+  - Jessica Murphy
+  - 10005
+- !!python/tuple
+  - CAS10041446GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 19 Months
+  - 2023-11-24 00:00:00
+  - Middlesex County
+  - Griffin Medical Center
+  - Mallory Vincent
+  - 10005
+- !!python/tuple
+  - CAS10041601GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 31 Years
+  - 2022-02-01 00:00:00
+  - Washington County
+  - Chavez Medical Center
+  - Matthew Sanders
+  - 10005
+- !!python/tuple
+  - CAS10041870GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 38 Years
+  - 2020-04-29 00:00:00
+  - Washington County
+  - Daniels Medical Center
+  - Johnny Smith
+  - 10005
+- !!python/tuple
+  - CAS10042201GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '730'
+  - 11 Days
+  - 2024-07-22 00:00:00
+  - Washington County
+  - Smith Medical Center
+  - Nicole Nguyen
+  - 10005
+- !!python/tuple
+  - CAS10043960GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 97 Months
+  - 2023-04-06 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Rebecca
+  - 10005
+- !!python/tuple
+  - CAS10045087GA01
   - Davis, Tom
   - PSN10010005GA01
   - null
-  - 61 Months
-  - 2023-03-16 00:00:00
+  - 49 Days
+  - 2025-11-17 00:00:00
+  - Middlesex County
+  - Byrd Medical Center
+  - Louis Taylor
+  - 10005
+- !!python/tuple
+  - CAS10046156GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '300'
+  - 46 Months
+  - 2020-02-09 00:00:00
+  - Middlesex County
+  - Parks Medical Center
+  - Cindy Jackson
+  - 10005
+- !!python/tuple
+  - CAS10046528GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '730'
+  - 67 Months
+  - 2024-06-29 00:00:00
   - Washington County
-  - Warren Medical Center
+  - Tapia Medical Center
+  - Douglas Thomas
+  - 10005
+- !!python/tuple
+  - CAS10046706GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 90 Months
+  - 2021-10-09 00:00:00
+  - Washington County
+  - Thomas Medical Center
+  - Andrea Johnson
+  - 10005
+- !!python/tuple
+  - CAS10047280GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 29 Days
+  - 2021-07-31 00:00:00
+  - Washington County
+  - Griffin Medical Center
+  - Daniel Blackburn
+  - 10005
+- !!python/tuple
+  - CAS10048201GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 4 Months
+  - 2025-05-02 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - Kelly Smith
+  - 10005
+- !!python/tuple
+  - CAS10049069GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 86 Days
+  - 2025-05-24 00:00:00
+  - Middlesex County
+  - Young Medical Center
+  - Brittney Ellis
+  - 10005
+- !!python/tuple
+  - CAS10049327GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 5 Years
+  - 2023-05-06 00:00:00
+  - Washington County
+  - Parks Medical Center
   - Christopher Bentley
   - 10005
 - !!python/tuple
   - CAS10053227GA01
   - Davis, Tom
   - PSN10010005GA01
-  - null
+  - '900'
   - 79 Years
-  - 2023-04-04 00:00:00
+  - 2024-11-25 00:00:00
   - Washington County
-  - Buchanan Medical Center
-  - Rodriguez
+  - Jackson Medical Center
+  - Allison Ramirez
   - 10005
 - !!python/tuple
-  - CAS10053464GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '200'
-  - 12 Months
-  - 2022-03-12 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Jeffrey Nguyen
-  - 10005
-- !!python/tuple
-  - CAS10054301GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '730'
-  - 62 Years
-  - 2025-05-27 00:00:00
-  - Washington County
-  - Soto Medical Center
-  - Jesse Carter
-  - 10005
-- !!python/tuple
-  - CAS10054495GA01
+  - CAS10054246GA01
   - Davis, Tom
   - PSN10010005GA01
   - null
-  - 53 Years
-  - 2020-01-16 00:00:00
-  - Washington County
-  - Austin Medical Center
-  - Cynthia Ruiz
-  - 10005
-- !!python/tuple
-  - CAS10055957GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '200'
-  - 34 Years
-  - 2024-12-14 00:00:00
-  - Washington County
-  - Moon Medical Center
-  - Thomas Grant
-  - 10005
-- !!python/tuple
-  - CAS10057724GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 33 Months
-  - 2021-01-14 00:00:00
+  - 96 Days
+  - 2022-05-22 00:00:00
   - Middlesex County
+  - Henderson Medical Center
+  - Summer Murphy
+  - 10005
+- !!python/tuple
+  - CAS10056152GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 66 Days
+  - 2023-01-19 00:00:00
+  - Washington County
   - Woods Medical Center
-  - James Lopez
+  - Wayne Craig
   - 10005
 - !!python/tuple
-  - CAS10057798GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 95 Days
-  - 2020-05-07 00:00:00
-  - Washington County
-  - Davis Medical Center
-  - Tina Burns
-  - 10005
-- !!python/tuple
-  - CAS10057849GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 23 Years
-  - 2024-04-02 00:00:00
-  - Washington County
-  - Goodman Medical Center
-  - Jennifer Gonzalez
-  - 10005
-- !!python/tuple
-  - CAS10059450GA01
+  - CAS10056328GA01
   - Davis, Tom
   - PSN10010005GA01
   - '790'
-  - 43 Months
-  - 2020-10-06 00:00:00
-  - Washington County
-  - Castillo Medical Center
-  - Susan Jefferson
-  - 10005
-- !!python/tuple
-  - CAS10060772GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 70 Years
-  - 2025-10-06 00:00:00
+  - 39 Days
+  - 2023-10-17 00:00:00
   - Middlesex County
-  - Torres Medical Center
-  - Austin Harris
+  - Harper Medical Center
+  - Tracy Lopez
   - 10005
 - !!python/tuple
-  - CAS10061023GA01
+  - CAS10059441GA01
   - Davis, Tom
   - PSN10010005GA01
-  - '300'
-  - 61 Years
-  - 2023-12-07 00:00:00
-  - Washington County
-  - Mitchell Medical Center
-  - Anthony Young
+  - '710'
+  - 77 Months
+  - 2024-06-26 00:00:00
+  - Middlesex County
+  - Santiago Medical Center
+  - Lori Jones
   - 10005
 - !!python/tuple
-  - CAS10062691GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '790'
-  - 94 Days
-  - 2020-07-30 00:00:00
-  - null
-  - Morris Medical Center
-  - Terri Walters
-  - 10005
-- !!python/tuple
-  - CAS10062751GA01
+  - CAS10061227GA01
   - Davis, Tom
   - PSN10010005GA01
   - '900'
-  - 33 Days
-  - 2020-11-16 00:00:00
+  - 57 Years
+  - 2020-07-28 00:00:00
   - Washington County
-  - Stewart Medical Center
-  - Scott Sandoval
+  - Brown Medical Center
+  - Christopher Dyer
   - 10005
 - !!python/tuple
-  - CAS10063145GA01
+  - CAS10061400GA01
   - Davis, Tom
   - PSN10010005GA01
-  - '720'
-  - 72 Months
-  - 2021-09-14 00:00:00
-  - Washington County
-  - Smith Medical Center
-  - Elizabeth Dean
+  - '710'
+  - 41 Days
+  - 2022-12-28 00:00:00
+  - Middlesex County
+  - Howard Medical Center
+  - Barry Hooper
   - 10005
 - !!python/tuple
-  - CAS10064085GA01
+  - CAS10062721GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '900'
+  - 91 Years
+  - 2025-04-06 00:00:00
+  - Middlesex County
+  - Stewart Medical Center
+  - Corey Rivers
+  - 10005
+- !!python/tuple
+  - CAS10062736GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 65 Days
+  - 2024-12-10 00:00:00
+  - Washington County
+  - Hernandez Medical Center
+  - Julie Aguirre
+  - 10005
+- !!python/tuple
+  - CAS10064967GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 65 Months
+  - 2020-12-21 00:00:00
+  - Washington County
+  - Turner Medical Center
+  - Angela Johnson
+  - 10005
+- !!python/tuple
+  - CAS10066732GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 28 Years
+  - 2020-04-12 00:00:00
+  - Washington County
+  - Thomas Medical Center
+  - Dana Turner
+  - 10005
+- !!python/tuple
+  - CAS10067609GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 21 Months
+  - 2020-12-09 00:00:00
+  - Middlesex County
+  - Jackson Medical Center
+  - Steven Soto
+  - 10005
+- !!python/tuple
+  - CAS10069012GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 2 Months
+  - 2022-08-24 00:00:00
+  - Washington County
+  - Cervantes Medical Center
+  - Terry Martin
+  - 10005
+- !!python/tuple
+  - CAS10069343GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '900'
+  - 39 Years
+  - 2020-01-18 00:00:00
+  - Middlesex County
+  - Rivera Medical Center
+  - Rebekah Brown
+  - 10005
+- !!python/tuple
+  - CAS10069351GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '300'
+  - 44 Years
+  - 2024-02-16 00:00:00
+  - Washington County
+  - Adkins Medical Center
+  - Ashley Frederick
+  - 10005
+- !!python/tuple
+  - CAS10070400GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 67 Days
+  - 2023-12-19 00:00:00
+  - Middlesex County
+  - Griffin Medical Center
+  - Phillip Watkins
+  - 10005
+- !!python/tuple
+  - CAS10072796GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - null
+  - 16 Months
+  - 2025-06-23 00:00:00
+  - Washington County
+  - Torres Medical Center
+  - Peter Pena
+  - 10005
+- !!python/tuple
+  - CAS10073024GA01
   - Davis, Tom
   - PSN10010005GA01
   - '790'
-  - 10 Months
-  - 2024-08-02 00:00:00
-  - Middlesex County
-  - Wilson Medical Center
-  - Jon Warner, III
+  - 62 Years
+  - 2023-04-20 00:00:00
+  - Washington County
+  - Ingram Medical Center
+  - Amanda Farrell
   - 10005
 - !!python/tuple
-  - CAS10065600GA01
+  - CAS10076763GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 49 Months
+  - 2023-09-13 00:00:00
+  - Washington County
+  - Giles Medical Center
+  - Stephen Conrad
+  - 10005
+- !!python/tuple
+  - CAS10077124GA01
   - Davis, Tom
   - PSN10010005GA01
   - '720'
-  - 51 Months
-  - 2023-01-24 00:00:00
+  - 16 Days
+  - 2023-07-10 00:00:00
   - Middlesex County
-  - Mills Medical Center
-  - Jeffrey Nguyen
+  - Morris Medical Center
+  - Michael Fisher
   - 10005
 - !!python/tuple
-  - CAS10067699GA01
+  - CAS10080496GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 25 Days
+  - 2024-02-13 00:00:00
+  - Washington County
+  - Chavez Medical Center
+  - Chelsey Huff
+  - 10005
+- !!python/tuple
+  - CAS10081034GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '300'
+  - 89 Months
+  - 2021-08-09 00:00:00
+  - Middlesex County
+  - Price Medical Center
+  - Jason Daugherty
+  - 10005
+- !!python/tuple
+  - CAS10084102GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 72 Months
+  - 2023-10-07 00:00:00
+  - Middlesex County
+  - Henderson Medical Center
+  - Daniel Brown
+  - 10005
+- !!python/tuple
+  - CAS10087351GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '300'
+  - 98 Months
+  - 2021-06-11 00:00:00
+  - Washington County
+  - Ramos Medical Center
+  - Cruz
+  - 10005
+- !!python/tuple
+  - CAS10089656GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - null
+  - 4 Months
+  - 2022-11-22 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Anthony Cox
+  - 10005
+- !!python/tuple
+  - CAS10091033GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 54 Months
+  - 2021-01-15 00:00:00
+  - Washington County
+  - Mathis Medical Center
+  - Benjamin Taylor
+  - 10005
+- !!python/tuple
+  - CAS10091634GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 1 Months
+  - 2023-09-03 00:00:00
+  - Middlesex County
+  - Moyer Medical Center
+  - Jeffrey Reed
+  - 10005
+- !!python/tuple
+  - CAS10094490GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 75 Years
+  - 2023-08-21 00:00:00
+  - Middlesex County
+  - Stewart Medical Center
+  - Christopher Dyer
+  - 10005
+- !!python/tuple
+  - CAS10096676GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '790'
+  - 37 Years
+  - 2021-03-24 00:00:00
+  - Middlesex County
+  - Sanchez Medical Center
+  - Kristen Taylor
+  - 10005
+- !!python/tuple
+  - CAS10097715GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '720'
+  - 99 Months
+  - 2021-06-29 00:00:00
+  - Middlesex County
+  - Mathis Medical Center
+  - Raymond Stevenson
+  - 10005
+- !!python/tuple
+  - CAS10098784GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '710'
+  - 55 Days
+  - 2024-10-30 00:00:00
+  - Middlesex County
+  - Miller Medical Center
+  - Kayla Martinez
+  - 10005
+- !!python/tuple
+  - CAS10099125GA01
+  - Davis, Tom
+  - PSN10010005GA01
+  - '200'
+  - 7 Years
+  - 2025-11-29 00:00:00
+  - Washington County
+  - Price Medical Center
+  - Bonnie Molina
+  - 10005
+- !!python/tuple
+  - CAS10099900GA01
   - Davis, Tom
   - PSN10010005GA01
   - '720'
   - 98 Months
-  - 2022-03-11 00:00:00
+  - 2023-01-11 00:00:00
   - Washington County
-  - Mccormick Medical Center
-  - Andrea Johnson
+  - Moore Medical Center
+  - Don Green
   - 10005
 - !!python/tuple
-  - CAS10068008GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 59 Days
-  - 2023-11-09 00:00:00
-  - Washington County
-  - Robbins Medical Center
-  - Jessica Garcia
-  - 10005
-- !!python/tuple
-  - CAS10068881GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 99 Months
-  - 2020-08-16 00:00:00
-  - Washington County
-  - Liu Medical Center
-  - Anthony Cox
-  - 10005
-- !!python/tuple
-  - CAS10069270GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 89 Months
-  - 2024-08-12 00:00:00
-  - Washington County
-  - Arnold Medical Center
-  - Anthony Young
-  - 10005
-- !!python/tuple
-  - CAS10071248GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 3 Months
-  - 2023-09-16 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Anthony Young
-  - 10005
-- !!python/tuple
-  - CAS10073235GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 5 Months
-  - 2021-08-19 00:00:00
-  - Middlesex County
-  - Jones Medical Center
-  - ''
-  - 10005
-- !!python/tuple
-  - CAS10073892GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 48 Days
-  - 2023-02-26 00:00:00
-  - Washington County
-  - Smith Medical Center
-  - Regina Peters
-  - 10005
-- !!python/tuple
-  - CAS10076029GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - null
-  - 69 Days
-  - 2023-10-07 00:00:00
-  - null
-  - Moon Medical Center
-  - Robert Caldwell
-  - 10005
-- !!python/tuple
-  - CAS10076858GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 2 Years
-  - 2023-12-13 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Mary Jackson
-  - 10005
-- !!python/tuple
-  - CAS10076942GA01
-  - Davis, Tom
-  - PSN10010005GA01
+  - CAS10011781GA01
+  - Doe, Jane
+  - PSN10010002GA01
   - '790'
-  - 64 Months
-  - 2023-03-03 00:00:00
+  - 42 Years
+  - 2024-11-08 00:00:00
   - Middlesex County
-  - Mccormick Medical Center
-  - Michael Lewis
-  - 10005
-- !!python/tuple
-  - CAS10077262GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 94 Years
-  - 2024-09-11 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Steve Parker
-  - 10005
-- !!python/tuple
-  - CAS10077894GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '200'
-  - 60 Days
-  - 2023-12-01 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Lori Jones
-  - 10005
-- !!python/tuple
-  - CAS10078852GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 30 Years
-  - 2024-11-30 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Stephen Conrad
-  - 10005
-- !!python/tuple
-  - CAS10080104GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '790'
-  - 20 Months
-  - 2025-06-30 00:00:00
-  - Washington County
-  - Robbins Medical Center
-  - Raymond Matthews
-  - 10005
-- !!python/tuple
-  - CAS10085602GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 30 Days
-  - 2022-06-18 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Jason
-  - 10005
-- !!python/tuple
-  - CAS10086451GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 17 Days
-  - 2024-07-29 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Katie Black
-  - 10005
-- !!python/tuple
-  - CAS10088479GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 33 Months
-  - 2025-02-05 00:00:00
-  - null
-  - Warren Medical Center
-  - Leah Torres
-  - 10005
-- !!python/tuple
-  - CAS10088522GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 32 Months
-  - 2021-07-26 00:00:00
-  - Middlesex County
-  - Merritt Medical Center
-  - Kristen Taylor
-  - 10005
-- !!python/tuple
-  - CAS10088949GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - null
-  - 50 Months
-  - 2022-04-27 00:00:00
-  - Middlesex County
-  - Goodman Medical Center
-  - Kelsey Oneill
-  - 10005
-- !!python/tuple
-  - CAS10088993GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '790'
-  - 96 Months
-  - 2023-05-05 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Richard Martin
-  - 10005
-- !!python/tuple
-  - CAS10089456GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '900'
-  - 32 Years
-  - 2021-06-13 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Amy Nguyen
-  - 10005
-- !!python/tuple
-  - CAS10089829GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '790'
-  - 89 Years
-  - 2024-06-10 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Zachary Barnes
-  - 10005
-- !!python/tuple
-  - CAS10090959GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '720'
-  - 14 Days
-  - 2025-08-04 00:00:00
-  - Middlesex County
-  - Woods Medical Center
-  - Timothy Saunders
-  - 10005
-- !!python/tuple
-  - CAS10091850GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '200'
-  - 82 Months
-  - 2025-08-08 00:00:00
-  - Middlesex County
-  - Mclaughlin Medical Center
-  - Lauren Miller
-  - 10005
-- !!python/tuple
-  - CAS10094521GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 45 Days
-  - 2023-04-05 00:00:00
-  - Washington County
-  - Mcintosh Medical Center
-  - Zachary Barnes
-  - 10005
-- !!python/tuple
-  - CAS10096037GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '730'
-  - .
-  - 2025-05-25 00:00:00
-  - Washington County
-  - Ponce Medical Center
-  - Sarah Mcdowell
-  - 10005
-- !!python/tuple
-  - CAS10096783GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 33 Days
-  - 2023-06-12 00:00:00
-  - Middlesex County
-  - Padilla Medical Center
-  - Erin Horn
-  - 10005
-- !!python/tuple
-  - CAS10097136GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '730'
-  - 33 Years
-  - 2025-03-10 00:00:00
-  - null
-  - Mclaughlin Medical Center
-  - Tina Burns
-  - 10005
-- !!python/tuple
-  - CAS10098477GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - null
-  - 46 Years
-  - 2025-03-25 00:00:00
-  - Washington County
-  - Morris Medical Center
-  - Chelsey Huff
-  - 10005
-- !!python/tuple
-  - CAS10098572GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 34 Months
-  - 2023-07-26 00:00:00
-  - Middlesex County
-  - Buchanan Medical Center
-  - Robert Caldwell
-  - 10005
-- !!python/tuple
-  - CAS10098919GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '300'
-  - 82 Years
-  - 2021-04-06 00:00:00
-  - Washington County
-  - Hernandez Medical Center
-  - Jason Schroeder
-  - 10005
-- !!python/tuple
-  - CAS10099421GA01
-  - Davis, Tom
-  - PSN10010005GA01
-  - '710'
-  - 68 Days
-  - 2020-05-11 00:00:00
-  - Washington County
-  - Mason Medical Center
-  - Jennifer Brown
-  - 10005
-- !!python/tuple
-  - CAS10010563GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 58 Months
-  - 2023-06-11 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - William Cooper
+  - Henderson Medical Center
+  - Jon
   - 10002
 - !!python/tuple
-  - CAS10012211GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 98 Years
-  - 2025-05-12 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Christopher Smith
-  - 10002
-- !!python/tuple
-  - CAS10012317GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 34 Months
-  - 2024-05-27 00:00:00
-  - Middlesex County
-  - Robbins Medical Center
-  - Mccann
-  - 10002
-- !!python/tuple
-  - CAS10013316GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - 91 Years
-  - 2023-11-23 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Michael Harris
-  - 10002
-- !!python/tuple
-  - CAS10015706GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 73 Years
-  - 2022-11-19 00:00:00
-  - Washington County
-  - Robbins Medical Center
-  - Brenda Jones
-  - 10002
-- !!python/tuple
-  - CAS10016153GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 98 Years
-  - 2025-08-09 00:00:00
-  - Washington County
-  - Morris Medical Center
-  - Joyce Gonzalez
-  - 10002
-- !!python/tuple
-  - CAS10017659GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 64 Years
-  - 2023-12-31 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Nancy Harrison
-  - 10002
-- !!python/tuple
-  - CAS10017700GA01
+  - CAS10012406GA01
   - Doe, Jane
   - PSN10010002GA01
   - '710'
   - .
-  - 2021-01-09 00:00:00
+  - 2021-07-10 00:00:00
   - Washington County
-  - Ponce Medical Center
-  - Leah Torres
-  - 10002
-- !!python/tuple
-  - CAS10021492GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 87 Months
-  - 2025-08-03 00:00:00
-  - Washington County
-  - Ponce Medical Center
-  - Terri Walters
-  - 10002
-- !!python/tuple
-  - CAS10022861GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '720'
-  - 28 Days
-  - 2020-05-23 00:00:00
-  - Washington County
-  - Castillo Medical Center
-  - Julie Aguirre
-  - 10002
-- !!python/tuple
-  - CAS10024001GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '720'
-  - 61 Years
-  - 2025-10-15 00:00:00
-  - Washington County
-  - Soto Medical Center
+  - Byrd Medical Center
   - Joseph Murphy
   - 10002
 - !!python/tuple
-  - CAS10025892GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 68 Years
-  - 2025-07-18 00:00:00
-  - Washington County
-  - Merritt Medical Center
-  - Greg Montoya
-  - 10002
-- !!python/tuple
-  - CAS10026154GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '730'
-  - 37 Days
-  - 2025-07-25 00:00:00
-  - Washington County
-  - Castillo Medical Center
-  - Jason Schroeder
-  - 10002
-- !!python/tuple
-  - CAS10027789GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 78 Months
-  - 2022-11-30 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - Villa
-  - 10002
-- !!python/tuple
-  - CAS10028110GA01
+  - CAS10015279GA01
   - Doe, Jane
   - PSN10010002GA01
   - '200'
-  - 77 Months
-  - 2023-06-23 00:00:00
+  - 76 Years
+  - 2022-08-04 00:00:00
   - Washington County
-  - Castillo Medical Center
-  - Mary Sullivan
+  - Weaver Medical Center
+  - Christopher Bentley
   - 10002
 - !!python/tuple
-  - CAS10028210GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 9 Years
-  - 2020-08-01 00:00:00
-  - Middlesex County
-  - Mitchell Medical Center
-  - Phillip Ford
-  - 10002
-- !!python/tuple
-  - CAS10028344GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 92 Years
-  - 2020-08-10 00:00:00
-  - Washington County
-  - Mclaughlin Medical Center
-  - Jason Daugherty
-  - 10002
-- !!python/tuple
-  - CAS10028628GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 67 Years
-  - 2021-11-20 00:00:00
-  - Middlesex County
-  - Gutierrez Medical Center
-  - April Vasquez
-  - 10002
-- !!python/tuple
-  - CAS10030479GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 24 Days
-  - 2024-01-22 00:00:00
-  - Washington County
-  - Wilson Medical Center
-  - Tracy Lopez
-  - 10002
-- !!python/tuple
-  - CAS10030745GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - .
-  - 2024-08-03 00:00:00
-  - Middlesex County
-  - Bruce Medical Center
-  - Alexis Stewart
-  - 10002
-- !!python/tuple
-  - CAS10030950GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '730'
-  - 66 Years
-  - 2025-11-30 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Robert Caldwell
-  - 10002
-- !!python/tuple
-  - CAS10035263GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 64 Years
-  - 2023-08-07 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Jessica Garcia
-  - 10002
-- !!python/tuple
-  - CAS10037973GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 98 Days
-  - 2021-01-28 00:00:00
-  - Middlesex County
-  - Castillo Medical Center
-  - Kristen Taylor
-  - 10002
-- !!python/tuple
-  - CAS10039361GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 5 Years
-  - 2023-01-16 00:00:00
-  - Middlesex County
-  - Mclaughlin Medical Center
-  - Day
-  - 10002
-- !!python/tuple
-  - CAS10039391GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 32 Years
-  - 2023-09-02 00:00:00
-  - Middlesex County
-  - Soto Medical Center
-  - Thomas Grant
-  - 10002
-- !!python/tuple
-  - CAS10039820GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 86 Days
-  - 2022-12-13 00:00:00
-  - null
-  - Ponce Medical Center
-  - Kimberly Blackwell
-  - 10002
-- !!python/tuple
-  - CAS10039833GA01
+  - CAS10015495GA01
   - Doe, Jane
   - PSN10010002GA01
   - '720'
-  - 46 Years
-  - 2022-06-21 00:00:00
-  - Middlesex County
-  - Torres Medical Center
-  - Kayla Martinez
-  - 10002
-- !!python/tuple
-  - CAS10042305GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '720'
-  - 20 Years
-  - 2022-05-12 00:00:00
+  - 6 Years
+  - 2024-03-16 00:00:00
   - Washington County
-  - Padilla Medical Center
-  - Jon Warner, III
+  - Mathis Medical Center
+  - Sheryl Collins
   - 10002
 - !!python/tuple
-  - CAS10042867GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - .
-  - 2025-10-30 00:00:00
-  - Middlesex County
-  - Buchanan Medical Center
-  - Michael Bradshaw
-  - 10002
-- !!python/tuple
-  - CAS10043647GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '720'
-  - 53 Months
-  - 2021-08-29 00:00:00
-  - Washington County
-  - Horton Medical Center
-  - Kayla Short
-  - 10002
-- !!python/tuple
-  - CAS10044148GA01
+  - CAS10018672GA01
   - Doe, Jane
   - PSN10010002GA01
   - '790'
-  - 80 Years
-  - 2023-09-01 00:00:00
+  - 91 Years
+  - 2022-05-31 00:00:00
   - Washington County
-  - Hernandez Medical Center
-  - Vanessa Kaufman
+  - Harper Medical Center
+  - Christina Anderson
   - 10002
 - !!python/tuple
-  - CAS10045178GA01
+  - CAS10018734GA01
   - Doe, Jane
   - PSN10010002GA01
   - '710'
-  - 60 Days
-  - 2020-09-30 00:00:00
-  - Middlesex County
-  - Mclaughlin Medical Center
-  - Hunter Perez
-  - 10002
-- !!python/tuple
-  - CAS10045996GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
   - 77 Days
-  - 2020-07-17 00:00:00
+  - 2024-10-13 00:00:00
   - Middlesex County
-  - Davis Medical Center
-  - Simon
-  - 10002
-- !!python/tuple
-  - CAS10046245GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 73 Days
-  - 2021-04-26 00:00:00
-  - Middlesex County
-  - Moon Medical Center
-  - Linda Garcia
-  - 10002
-- !!python/tuple
-  - CAS10049052GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 31 Days
-  - 2020-04-16 00:00:00
-  - Washington County
-  - Robbins Medical Center
-  - Emily Bird
-  - 10002
-- !!python/tuple
-  - CAS10049074GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 22 Months
-  - 2021-09-27 00:00:00
-  - Middlesex County
-  - Carrillo Medical Center
-  - Gina Stark
-  - 10002
-- !!python/tuple
-  - CAS10049681GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 43 Months
-  - 2022-01-27 00:00:00
-  - Middlesex County
-  - Gutierrez Medical Center
-  - Jason Schroeder
-  - 10002
-- !!python/tuple
-  - CAS10052593GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 18 Years
-  - 2025-10-29 00:00:00
-  - Middlesex County
-  - Patton Medical Center
-  - Michael Jones
-  - 10002
-- !!python/tuple
-  - CAS10055480GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 43 Months
-  - 2025-07-02 00:00:00
-  - Washington County
-  - Padilla Medical Center
-  - Allison Ramirez
-  - 10002
-- !!python/tuple
-  - CAS10056909GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 9 Months
-  - 2020-09-02 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Jonathan Harris
-  - 10002
-- !!python/tuple
-  - CAS10059718GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - 83 Days
-  - 2021-01-14 00:00:00
-  - Washington County
-  - Mills Medical Center
-  - Joseph Lozano
-  - 10002
-- !!python/tuple
-  - CAS10060481GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 87 Days
-  - 2020-10-28 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Wayne Craig
-  - 10002
-- !!python/tuple
-  - CAS10061236GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - 80 Years
-  - 2025-09-04 00:00:00
-  - Washington County
-  - Mason Medical Center
-  - Andrew Bryant
-  - 10002
-- !!python/tuple
-  - CAS10062995GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '730'
-  - 86 Years
-  - 2024-11-05 00:00:00
-  - Middlesex County
-  - Mccormick Medical Center
+  - Miller Medical Center
   - Antonio Fleming
   - 10002
 - !!python/tuple
-  - CAS10063013GA01
+  - CAS10019318GA01
   - Doe, Jane
   - PSN10010002GA01
-  - null
-  - 43 Days
-  - 2022-10-30 00:00:00
+  - '710'
+  - 52 Days
+  - 2025-12-28 00:00:00
   - Washington County
-  - Moon Medical Center
-  - Carla Wood
+  - Turner Medical Center
+  - Travis Cook
   - 10002
 - !!python/tuple
-  - CAS10063969GA01
+  - CAS10020783GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 96 Years
+  - 2021-03-16 00:00:00
+  - null
+  - Hopkins Medical Center
+  - Troy
+  - 10002
+- !!python/tuple
+  - CAS10022391GA01
   - Doe, Jane
   - PSN10010002GA01
   - '730'
-  - 42 Months
-  - 2022-12-14 00:00:00
+  - 48 Months
+  - 2021-12-16 00:00:00
   - Middlesex County
-  - Castillo Medical Center
-  - Kayla Short
+  - Price Medical Center
+  - Robert Caldwell
   - 10002
 - !!python/tuple
-  - CAS10066205GA01
+  - CAS10022879GA01
   - Doe, Jane
   - PSN10010002GA01
-  - '900'
-  - 15 Months
-  - 2020-11-29 00:00:00
+  - null
+  - 3 Years
+  - 2021-10-14 00:00:00
   - Washington County
-  - Ponce Medical Center
-  - James Wilkinson
+  - Parks Medical Center
+  - Wayne Craig
   - 10002
 - !!python/tuple
-  - CAS10068812GA01
+  - CAS10023237GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 13 Days
+  - 2024-09-03 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Christopher Bentley
+  - 10002
+- !!python/tuple
+  - CAS10024035GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '790'
+  - 88 Days
+  - 2023-08-18 00:00:00
+  - Middlesex County
+  - Woods Medical Center
+  - Emily Nielsen
+  - 10002
+- !!python/tuple
+  - CAS10024055GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '790'
+  - 6 Years
+  - 2023-08-19 00:00:00
+  - null
+  - Luna Medical Center
+  - Kelly Smith
+  - 10002
+- !!python/tuple
+  - CAS10024747GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 48 Months
+  - 2024-10-12 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - Renee Harris
+  - 10002
+- !!python/tuple
+  - CAS10025800GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 2 Years
+  - 2021-01-15 00:00:00
+  - Washington County
+  - Thomas Medical Center
+  - Lori Flores
+  - 10002
+- !!python/tuple
+  - CAS10026645GA01
   - Doe, Jane
   - PSN10010002GA01
   - '730'
   - 33 Years
-  - 2024-12-30 00:00:00
-  - Middlesex County
-  - Bruce Medical Center
-  - Antonio Fleming
-  - 10002
-- !!python/tuple
-  - CAS10069590GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 86 Months
-  - 2024-10-16 00:00:00
-  - Middlesex County
-  - Goodman Medical Center
-  - Brian Todd
-  - 10002
-- !!python/tuple
-  - CAS10069902GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '730'
-  - 30 Months
-  - 2022-01-08 00:00:00
+  - 2023-07-11 00:00:00
   - Washington County
-  - Merritt Medical Center
-  - Victoria Silva
+  - Jackson Medical Center
+  - Craig Harrison
   - 10002
 - !!python/tuple
-  - CAS10070160GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '720'
-  - 53 Months
-  - 2020-08-18 00:00:00
-  - Washington County
-  - Jones Medical Center
-  - Mckenzie Church
-  - 10002
-- !!python/tuple
-  - CAS10072922GA01
+  - CAS10027936GA01
   - Doe, Jane
   - PSN10010002GA01
   - '710'
-  - 28 Days
-  - 2023-07-28 00:00:00
+  - 37 Days
+  - 2022-12-07 00:00:00
   - Washington County
-  - Mcgee Medical Center
-  - Heather Hall
+  - Stewart Medical Center
+  - Amanda Farrell
   - 10002
 - !!python/tuple
-  - CAS10074401GA01
+  - CAS10030040GA01
   - Doe, Jane
   - PSN10010002GA01
-  - '730'
-  - 3 Years
-  - 2022-07-23 00:00:00
-  - Washington County
-  - Mitchell Medical Center
-  - Ryan Elliott
+  - '900'
+  - 21 Months
+  - 2021-10-23 00:00:00
+  - Middlesex County
+  - Rivera Medical Center
+  - Jason Schroeder
   - 10002
 - !!python/tuple
-  - CAS10074567GA01
+  - CAS10030623GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 25 Days
+  - 2025-12-18 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Johnson
+  - 10002
+- !!python/tuple
+  - CAS10032653GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 92 Years
+  - 2020-01-09 00:00:00
+  - Washington County
+  - Thomas Medical Center
+  - Hunter Perez
+  - 10002
+- !!python/tuple
+  - CAS10034044GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '300'
+  - 31 Days
+  - 2020-09-02 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - David Hayes
+  - 10002
+- !!python/tuple
+  - CAS10035483GA01
   - Doe, Jane
   - PSN10010002GA01
   - '200'
-  - 36 Days
-  - 2025-10-05 00:00:00
+  - 9 Days
+  - 2024-10-18 00:00:00
+  - Washington County
+  - Chavez Medical Center
+  - Andrea Johnson
+  - 10002
+- !!python/tuple
+  - CAS10037479GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 94 Years
+  - 2021-10-04 00:00:00
   - Middlesex County
+  - Sanchez Medical Center
+  - Linda Garcia
+  - 10002
+- !!python/tuple
+  - CAS10037897GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 10 Years
+  - 2024-04-09 00:00:00
+  - Washington County
   - White Medical Center
+  - William Cooper
+  - 10002
+- !!python/tuple
+  - CAS10038404GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 33 Years
+  - 2025-06-08 00:00:00
+  - Middlesex County
+  - Jackson Medical Center
+  - Andrea Johnson
+  - 10002
+- !!python/tuple
+  - CAS10038973GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 78 Months
+  - 2021-10-01 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
+  - Wesley Collins
+  - 10002
+- !!python/tuple
+  - CAS10040291GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '300'
+  - 18 Days
+  - 2024-07-10 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
   - Tina Burns
   - 10002
 - !!python/tuple
-  - CAS10075247GA01
+  - CAS10040519GA01
   - Doe, Jane
   - PSN10010002GA01
   - '790'
-  - 22 Days
-  - 2021-08-22 00:00:00
-  - Middlesex County
-  - Torres Medical Center
-  - Nicole Nguyen
-  - 10002
-- !!python/tuple
-  - CAS10075299GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - 29 Months
-  - 2024-11-24 00:00:00
+  - 42 Months
+  - 2023-07-13 00:00:00
   - null
-  - Ponce Medical Center
-  - Nicole Nguyen
+  - Tapia Medical Center
+  - Jason Schroeder
   - 10002
 - !!python/tuple
-  - CAS10075450GA01
+  - CAS10040684GA01
   - Doe, Jane
   - PSN10010002GA01
-  - '730'
-  - 96 Months
-  - 2025-12-25 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Christina Anderson
+  - '790'
+  - 62 Years
+  - 2023-08-01 00:00:00
+  - Middlesex County
+  - Moore Medical Center
+  - Charles Young
   - 10002
 - !!python/tuple
-  - CAS10075858GA01
+  - CAS10042635GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '900'
+  - 11 Days
+  - 2022-02-06 00:00:00
+  - Middlesex County
+  - Giles Medical Center
+  - Phillip Ford
+  - 10002
+- !!python/tuple
+  - CAS10042755GA01
   - Doe, Jane
   - PSN10010002GA01
   - '720'
-  - 90 Years
-  - 2020-04-11 00:00:00
-  - Washington County
-  - Mcintosh Medical Center
-  - Natalie Kelly, MD
-  - 10002
-- !!python/tuple
-  - CAS10076371GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 78 Years
-  - 2022-11-06 00:00:00
-  - Washington County
-  - Arnold Medical Center
-  - Summer Murphy
-  - 10002
-- !!python/tuple
-  - CAS10076512GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 91 Months
-  - 2024-05-13 00:00:00
-  - null
-  - Wolf Medical Center
-  - Lori Jones
-  - 10002
-- !!python/tuple
-  - CAS10076600GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - null
-  - 25 Years
-  - 2022-05-23 00:00:00
+  - 27 Days
+  - 2020-04-07 00:00:00
   - Middlesex County
-  - Merritt Medical Center
-  - Wesley Collins
+  - Thomas Medical Center
+  - David Hayes
   - 10002
 - !!python/tuple
-  - CAS10078543GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 97 Years
-  - 2023-05-27 00:00:00
-  - null
-  - Carter Medical Center
-  - Christopher Hamilton
-  - 10002
-- !!python/tuple
-  - CAS10078763GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 38 Months
-  - 2020-03-09 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Anthony Young
-  - 10002
-- !!python/tuple
-  - CAS10079141GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 54 Years
-  - 2021-01-20 00:00:00
-  - Washington County
-  - Miller Medical Center
-  - Elizabeth Dean
-  - 10002
-- !!python/tuple
-  - CAS10079973GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 14 Years
-  - 2022-01-20 00:00:00
-  - Washington County
-  - Robbins Medical Center
-  - Chelsey Huff
-  - 10002
-- !!python/tuple
-  - CAS10081476GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 38 Days
-  - 2020-04-17 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Scott Rogers
-  - 10002
-- !!python/tuple
-  - CAS10081823GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '710'
-  - 21 Years
-  - 2025-08-19 00:00:00
-  - Washington County
-  - White Medical Center
-  - Victoria Silva
-  - 10002
-- !!python/tuple
-  - CAS10082947GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '790'
-  - 72 Years
-  - 2023-10-28 00:00:00
-  - Middlesex County
-  - Keith Medical Center
-  - Evelyn Montes
-  - 10002
-- !!python/tuple
-  - CAS10083166GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - 72 Months
-  - 2021-05-18 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Kayla Martinez
-  - 10002
-- !!python/tuple
-  - CAS10083902GA01
+  - CAS10043137GA01
   - Doe, Jane
   - PSN10010002GA01
   - '730'
-  - 67 Months
-  - 2021-12-01 00:00:00
-  - Middlesex County
-  - Goodman Medical Center
-  - Cindy Jackson
+  - 50 Months
+  - 2023-02-12 00:00:00
+  - Washington County
+  - Young Medical Center
+  - Mary Jackson
   - 10002
 - !!python/tuple
-  - CAS10084937GA01
+  - CAS10044798GA01
   - Doe, Jane
   - PSN10010002GA01
-  - '790'
-  - 78 Days
-  - 2020-07-11 00:00:00
-  - Middlesex County
-  - Mason Medical Center
-  - Christina Anderson
+  - '300'
+  - 3 Months
+  - 2023-02-11 00:00:00
+  - Washington County
+  - Daniels Medical Center
+  - Travis Cook
   - 10002
 - !!python/tuple
-  - CAS10086230GA01
+  - CAS10045322GA01
   - Doe, Jane
   - PSN10010002GA01
   - '710'
-  - 93 Months
-  - 2021-01-07 00:00:00
+  - 37 Years
+  - 2021-08-07 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Eric Washington
+  - 10002
+- !!python/tuple
+  - CAS10047364GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 1 Years
+  - 2025-08-20 00:00:00
+  - Middlesex County
+  - Torres Medical Center
+  - Jonathan Brown
+  - 10002
+- !!python/tuple
+  - CAS10048248GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '900'
+  - 72 Years
+  - 2025-04-08 00:00:00
   - Washington County
-  - Davis Medical Center
+  - Byrd Medical Center
+  - Allison Coleman
+  - 10002
+- !!python/tuple
+  - CAS10051545GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 67 Days
+  - 2024-01-02 00:00:00
+  - Washington County
+  - Escobar Medical Center
+  - Jason Daugherty
+  - 10002
+- !!python/tuple
+  - CAS10051780GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 14 Years
+  - 2020-05-20 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Amy Nguyen
+  - 10002
+- !!python/tuple
+  - CAS10055491GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 62 Years
+  - 2024-07-27 00:00:00
+  - Middlesex County
+  - Cervantes Medical Center
+  - Jon
+  - 10002
+- !!python/tuple
+  - CAS10055962GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 39 Days
+  - 2022-06-26 00:00:00
+  - Middlesex County
+  - Ellis Medical Center
+  - Gina Stark
+  - 10002
+- !!python/tuple
+  - CAS10056061GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '900'
+  - .
+  - 2023-05-23 00:00:00
+  - Washington County
+  - Morgan Medical Center
+  - Benjamin Taylor
+  - 10002
+- !!python/tuple
+  - CAS10057755GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - null
+  - 36 Days
+  - 2022-02-07 00:00:00
+  - Middlesex County
+  - Adkins Medical Center
+  - Jerome
+  - 10002
+- !!python/tuple
+  - CAS10059150GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 35 Years
+  - 2020-08-13 00:00:00
+  - Middlesex County
+  - Griffin Medical Center
+  - Troy
+  - 10002
+- !!python/tuple
+  - CAS10059174GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 6 Months
+  - 2023-01-09 00:00:00
+  - Washington County
+  - Rivera Medical Center
+  - Jones
+  - 10002
+- !!python/tuple
+  - CAS10061561GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '300'
+  - 10 Years
+  - 2023-12-07 00:00:00
+  - Middlesex County
+  - Ramos Medical Center
+  - Phillip Watkins
+  - 10002
+- !!python/tuple
+  - CAS10062588GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
+  - 8 Years
+  - 2020-11-28 00:00:00
+  - Washington County
+  - Moore Medical Center
+  - Arthur Day
+  - 10002
+- !!python/tuple
+  - CAS10063351GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 54 Years
+  - 2025-01-01 00:00:00
+  - Middlesex County
+  - Morris Medical Center
+  - Samantha Lopez
+  - 10002
+- !!python/tuple
+  - CAS10064788GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 43 Years
+  - 2021-01-20 00:00:00
+  - null
+  - Griffin Medical Center
+  - Jonathan Brown
+  - 10002
+- !!python/tuple
+  - CAS10064937GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 95 Days
+  - 2025-08-29 00:00:00
+  - Washington County
+  - Miller Medical Center
+  - Michael White
+  - 10002
+- !!python/tuple
+  - CAS10065304GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '300'
+  - 66 Months
+  - 2020-02-06 00:00:00
+  - Washington County
+  - Burns Medical Center
+  - Kelly Smith
+  - 10002
+- !!python/tuple
+  - CAS10066756GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '900'
+  - 65 Months
+  - 2025-12-04 00:00:00
+  - Middlesex County
+  - Jackson Medical Center
   - Walters
   - 10002
 - !!python/tuple
-  - CAS10089172GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '730'
-  - 16 Years
-  - 2022-07-10 00:00:00
-  - null
-  - Stewart Medical Center
-  - Evelyn Montes
-  - 10002
-- !!python/tuple
-  - CAS10090038GA01
+  - CAS10067709GA01
   - Doe, Jane
   - PSN10010002GA01
   - '300'
-  - 14 Years
-  - 2021-10-09 00:00:00
+  - 96 Days
+  - 2022-08-20 00:00:00
   - Middlesex County
-  - Jones Medical Center
-  - Jesse Brooks
+  - Bowman Medical Center
+  - Kayla Fuller
   - 10002
 - !!python/tuple
-  - CAS10092461GA01
+  - CAS10068275GA01
   - Doe, Jane
   - PSN10010002GA01
-  - '720'
-  - 18 Days
-  - 2025-11-20 00:00:00
-  - Washington County
-  - Arnold Medical Center
-  - Jennifer Macias
+  - '300'
+  - 63 Days
+  - 2021-09-23 00:00:00
+  - Middlesex County
+  - Chang Medical Center
+  - Mallory Vincent
   - 10002
 - !!python/tuple
-  - CAS10092618GA01
+  - CAS10069302GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 36 Days
+  - 2022-11-06 00:00:00
+  - Middlesex County
+  - Burns Medical Center
+  - Matthew Martinez
+  - 10002
+- !!python/tuple
+  - CAS10070397GA01
   - Doe, Jane
   - PSN10010002GA01
   - '900'
-  - 90 Years
-  - 2023-05-01 00:00:00
+  - 22 Months
+  - 2023-10-16 00:00:00
+  - Washington County
+  - Tapia Medical Center
+  - Shannon Ellis
+  - 10002
+- !!python/tuple
+  - CAS10072747GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 34 Days
+  - 2024-08-26 00:00:00
+  - Middlesex County
+  - Turner Medical Center
+  - Andrea Greene
+  - 10002
+- !!python/tuple
+  - CAS10073646GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 78 Days
+  - 2024-07-04 00:00:00
+  - Washington County
+  - Burns Medical Center
+  - Justin Sullivan
+  - 10002
+- !!python/tuple
+  - CAS10075538GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '790'
+  - 18 Years
+  - 2024-03-07 00:00:00
   - Washington County
   - Hernandez Medical Center
-  - Andrea Williams
+  - Kelly Smith
   - 10002
 - !!python/tuple
-  - CAS10092715GA01
+  - CAS10076340GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '900'
+  - 17 Years
+  - 2020-05-17 00:00:00
+  - Washington County
+  - Price Medical Center
+  - Jacob Hubbard
+  - 10002
+- !!python/tuple
+  - CAS10076977GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - null
+  - .
+  - 2022-02-28 00:00:00
+  - Middlesex County
+  - Luna Medical Center
+  - Danielle Greer
+  - 10002
+- !!python/tuple
+  - CAS10077130GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 80 Days
+  - 2020-04-06 00:00:00
+  - Washington County
+  - Ingram Medical Center
+  - Courtney Jones
+  - 10002
+- !!python/tuple
+  - CAS10077588GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '300'
+  - 51 Months
+  - 2023-11-15 00:00:00
+  - Middlesex County
+  - Torres Medical Center
+  - Andrea Greene
+  - 10002
+- !!python/tuple
+  - CAS10079417GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '300'
+  - 52 Months
+  - 2022-05-08 00:00:00
+  - Washington County
+  - Rasmussen Medical Center
+  - Allison Ramirez
+  - 10002
+- !!python/tuple
+  - CAS10079569GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 73 Years
+  - 2023-10-09 00:00:00
+  - Washington County
+  - Luna Medical Center
+  - Jonathan Brown
+  - 10002
+- !!python/tuple
+  - CAS10081606GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - null
+  - 19 Months
+  - 2024-11-08 00:00:00
+  - Washington County
+  - Huber Medical Center
+  - Jessica Newman
+  - 10002
+- !!python/tuple
+  - CAS10081992GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - null
+  - 99 Years
+  - 2024-11-21 00:00:00
+  - Middlesex County
+  - Thomas Medical Center
+  - Phillip Watkins
+  - 10002
+- !!python/tuple
+  - CAS10082004GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 66 Months
+  - 2023-11-23 00:00:00
+  - Washington County
+  - Ingram Medical Center
+  - Raymond Stevenson
+  - 10002
+- !!python/tuple
+  - CAS10083185GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '900'
+  - 78 Months
+  - 2024-08-21 00:00:00
+  - Washington County
+  - Santiago Medical Center
+  - Kimberly Blackwell
+  - 10002
+- !!python/tuple
+  - CAS10083629GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '790'
+  - 66 Days
+  - 2022-01-11 00:00:00
+  - Washington County
+  - Weaver Medical Center
+  - Dalton Miller
+  - 10002
+- !!python/tuple
+  - CAS10084380GA01
   - Doe, Jane
   - PSN10010002GA01
   - '730'
-  - 73 Days
-  - 2021-12-24 00:00:00
+  - 34 Months
+  - 2020-08-20 00:00:00
   - Middlesex County
-  - Snow Medical Center
-  - Jessica
+  - Smith Medical Center
+  - Jessica Murphy
   - 10002
 - !!python/tuple
-  - CAS10093664GA01
+  - CAS10084615GA01
   - Doe, Jane
   - PSN10010002GA01
-  - '900'
-  - 92 Days
-  - 2024-04-01 00:00:00
-  - Middlesex County
-  - Torres Medical Center
-  - Matthew Sanders
-  - 10002
-- !!python/tuple
-  - CAS10095074GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '900'
-  - 25 Months
-  - 2024-04-04 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Joseph Lozano
-  - 10002
-- !!python/tuple
-  - CAS10095830GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '200'
-  - 11 Years
-  - 2024-01-25 00:00:00
-  - Washington County
-  - Austin Medical Center
-  - Scott Sandoval
-  - 10002
-- !!python/tuple
-  - CAS10098246GA01
-  - Doe, Jane
-  - PSN10010002GA01
-  - '300'
-  - 34 Years
-  - 2024-03-17 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Jamie Edwards
-  - 10002
-- !!python/tuple
-  - CAS10064881GA01
-  - Duplicates, Test
-  - PSN10010099GA01
-  - '200'
-  - 8 Months
-  - 2021-12-28 00:00:00
-  - null
-  - Moreno Medical Center
-  - Wesley Collins
-  - 10099
-- !!python/tuple
-  - CAS10085721GA01
-  - Duplicates, Test
-  - PSN10010099GA01
-  - '200'
-  - 25 Years
-  - 2020-07-23 00:00:00
-  - Middlesex County
-  - Cox Medical Center
-  - Scott Rogers
-  - 10099
-- !!python/tuple
-  - CAS10098173GA01
-  - Duplicates, Test
-  - PSN10010099GA01
-  - '200'
-  - 50 Months
-  - 2020-08-26 00:00:00
-  - Middlesex County
-  - Wilson Medical Center
-  - Michael Jackson
-  - 10099
-- !!python/tuple
-  - CAS10012313GA01
-  - Johnson, Mike
-  - PSN10010003GA01
   - '720'
-  - 36 Days
-  - 2023-04-17 00:00:00
+  - 69 Years
+  - 2021-10-14 00:00:00
   - Washington County
-  - Davis Medical Center
-  - Edward Ramirez
-  - 10003
+  - Mathis Medical Center
+  - April Vasquez
+  - 10002
 - !!python/tuple
-  - CAS10013490GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '720'
-  - .
-  - 2025-05-18 00:00:00
+  - CAS10086012GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 87 Years
+  - 2024-12-15 00:00:00
   - Washington County
-  - Merritt Medical Center
-  - Linda Garcia
-  - 10003
+  - Jackson Medical Center
+  - Hull
+  - 10002
 - !!python/tuple
-  - CAS10014273GA01
-  - Johnson, Mike
-  - PSN10010003GA01
+  - CAS10087863GA01
+  - Doe, Jane
+  - PSN10010002GA01
   - '710'
-  - .
-  - 2025-03-22 00:00:00
-  - Middlesex County
-  - Miller Medical Center
-  - Troy Davis
-  - 10003
+  - 20 Months
+  - 2020-06-09 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Arthur Day
+  - 10002
 - !!python/tuple
-  - CAS10016303GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '720'
+  - CAS10091087GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 24 Months
+  - 2024-11-06 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Lori Jones
+  - 10002
+- !!python/tuple
+  - CAS10094132GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '200'
+  - 42 Years
+  - 2022-02-09 00:00:00
+  - Washington County
+  - Ellis Medical Center
+  - Troy
+  - 10002
+- !!python/tuple
+  - CAS10094398GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '710'
+  - 47 Days
+  - 2024-05-28 00:00:00
+  - Middlesex County
+  - Price Medical Center
+  - Robinson
+  - 10002
+- !!python/tuple
+  - CAS10094536GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '730'
   - 84 Days
-  - 2022-09-09 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Peter Pena
-  - 10003
+  - 2025-04-28 00:00:00
+  - Middlesex County
+  - Thomas Medical Center
+  - Steven Soto
+  - 10002
 - !!python/tuple
-  - CAS10017243GA01
+  - CAS10094856GA01
+  - Doe, Jane
+  - PSN10010002GA01
+  - '720'
+  - 98 Months
+  - 2021-05-05 00:00:00
+  - Washington County
+  - Moore Medical Center
+  - Danielle Greer
+  - 10002
+- !!python/tuple
+  - CAS10067600GA01
+  - Duplicates, Test
+  - PSN10010099GA01
+  - '200'
+  - 82 Years
+  - 2025-03-20 00:00:00
+  - Washington County
+  - Sanchez Medical Center
+  - William Cooper
+  - 10099
+- !!python/tuple
+  - CAS10067810GA01
+  - Duplicates, Test
+  - PSN10010099GA01
+  - '200'
+  - 82 Days
+  - 2021-08-28 00:00:00
+  - Washington County
+  - Gilmore Medical Center
+  - Rebecca
+  - 10099
+- !!python/tuple
+  - CAS10068269GA01
+  - Duplicates, Test
+  - PSN10010099GA01
+  - '200'
+  - 39 Months
+  - 2021-06-04 00:00:00
+  - null
+  - Chavez Medical Center
+  - Hull
+  - 10099
+- !!python/tuple
+  - CAS10072116GA01
+  - Duplicates, Test
+  - PSN10010099GA01
+  - '200'
+  - 62 Years
+  - 2025-11-27 00:00:00
+  - Washington County
+  - Tapia Medical Center
+  - Michael Johnson
+  - 10099
+- !!python/tuple
+  - CAS10074334GA01
+  - Duplicates, Test
+  - PSN10010099GA01
+  - '200'
+  - 57 Days
+  - 2020-08-06 00:00:00
+  - Washington County
+  - Smith Medical Center
+  - Christopher Hamilton
+  - 10099
+- !!python/tuple
+  - CAS10082180GA01
+  - Duplicates, Test
+  - PSN10010099GA01
+  - '200'
+  - 16 Years
+  - 2025-04-23 00:00:00
+  - Middlesex County
+  - Henderson Medical Center
+  - Paul Howard
+  - 10099
+- !!python/tuple
+  - CAS10011427GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '710'
-  - 70 Days
-  - 2023-11-03 00:00:00
-  - null
-  - Hill Medical Center
-  - Danielle Greer
-  - 10003
-- !!python/tuple
-  - CAS10019862GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '790'
-  - 97 Days
-  - 2021-01-21 00:00:00
-  - Middlesex County
-  - Carrillo Medical Center
-  - Jesse Carter
-  - 10003
-- !!python/tuple
-  - CAS10022670GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 66 Years
-  - 2022-09-09 00:00:00
-  - Middlesex County
-  - Jones Medical Center
-  - Christopher Dyer
-  - 10003
-- !!python/tuple
-  - CAS10024826GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 78 Days
-  - 2025-07-08 00:00:00
+  - .
+  - 2021-06-12 00:00:00
   - Washington County
-  - Jones Medical Center
-  - Gregory Byrd
+  - Morgan Medical Center
+  - Wesley Collins
   - 10003
 - !!python/tuple
-  - CAS10026292GA01
+  - CAS10013944GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - null
-  - 28 Years
-  - 2020-12-05 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Shannon Winters
-  - 10003
-- !!python/tuple
-  - CAS10026819GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '720'
-  - 65 Days
-  - 2025-08-05 00:00:00
+  - '710'
+  - 51 Months
+  - 2025-11-11 00:00:00
   - Washington County
-  - Carter Medical Center
+  - Harris Medical Center
+  - Jennifer Macias, PhD
+  - 10003
+- !!python/tuple
+  - CAS10014000GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 65 Months
+  - 2022-10-19 00:00:00
+  - Middlesex County
+  - Ingram Medical Center
   - Angela Johnson
   - 10003
 - !!python/tuple
-  - CAS10027489GA01
+  - CAS10015387GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '720'
-  - .
-  - 2022-07-05 00:00:00
-  - Middlesex County
-  - Moreno Medical Center
-  - Christopher Murphy
-  - 10003
-- !!python/tuple
-  - CAS10029603GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '900'
+  - '300'
   - 36 Days
-  - 2024-05-27 00:00:00
+  - 2021-02-16 00:00:00
   - Washington County
-  - Jones Medical Center
-  - Michael Lewis
+  - Rasmussen Medical Center
+  - Courtney Jones
   - 10003
 - !!python/tuple
-  - CAS10031637GA01
+  - CAS10016214GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '900'
-  - 83 Days
-  - 2020-02-02 00:00:00
+  - '790'
+  - 88 Months
+  - 2025-07-12 00:00:00
   - Middlesex County
-  - Castillo Medical Center
-  - Ashley Frederick
+  - Giles Medical Center
+  - Silva
   - 10003
 - !!python/tuple
-  - CAS10032373GA01
+  - CAS10016715GA01
   - Johnson, Mike
   - PSN10010003GA01
   - null
-  - 37 Months
-  - 2020-01-13 00:00:00
+  - 86 Months
+  - 2025-10-09 00:00:00
   - Middlesex County
-  - Mcgee Medical Center
-  - Lauren Miller
-  - 10003
-- !!python/tuple
-  - CAS10032429GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 49 Days
-  - 2025-05-26 00:00:00
-  - Middlesex County
-  - Mccormick Medical Center
-  - April Vasquez
-  - 10003
-- !!python/tuple
-  - CAS10033355GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 87 Days
-  - 2022-04-26 00:00:00
-  - Washington County
-  - Snow Medical Center
+  - Parks Medical Center
   - Angela May
   - 10003
 - !!python/tuple
-  - CAS10035473GA01
+  - CAS10016807GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '730'
-  - 2 Years
-  - 2024-03-27 00:00:00
-  - Washington County
-  - Bruce Medical Center
-  - Scott Sandoval
-  - 10003
-- !!python/tuple
-  - CAS10037078GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '790'
-  - .
-  - 2023-11-29 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - Janet Collins
-  - 10003
-- !!python/tuple
-  - CAS10038738GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '710'
-  - 86 Years
-  - 2025-03-20 00:00:00
+  - '300'
+  - 46 Months
+  - 2021-11-30 00:00:00
   - Middlesex County
-  - Woods Medical Center
-  - Michael Johnson
+  - Harper Medical Center
+  - David Hayes
   - 10003
 - !!python/tuple
-  - CAS10039566GA01
+  - CAS10018412GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '720'
-  - 2 Years
-  - 2020-11-19 00:00:00
-  - Washington County
-  - Hernandez Medical Center
-  - James Lopez
+  - 59 Days
+  - 2023-03-08 00:00:00
+  - Middlesex County
+  - Mathis Medical Center
+  - Jessica Bruce
   - 10003
 - !!python/tuple
-  - CAS10040191GA01
+  - CAS10018631GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '200'
-  - 97 Months
-  - 2024-02-21 00:00:00
-  - Middlesex County
-  - Buchanan Medical Center
+  - '790'
+  - 95 Days
+  - 2023-11-21 00:00:00
+  - Washington County
+  - Price Medical Center
+  - Crosby
+  - 10003
+- !!python/tuple
+  - CAS10019132GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 26 Days
+  - 2020-02-16 00:00:00
+  - null
+  - White Medical Center
   - Jose Mckee
   - 10003
 - !!python/tuple
-  - CAS10040296GA01
+  - CAS10020492GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '200'
-  - 90 Months
-  - 2021-03-13 00:00:00
+  - 11 Days
+  - 2020-08-29 00:00:00
   - Washington County
-  - Mason Medical Center
-  - Daniel Brown
+  - Griffin Medical Center
+  - Kimberly Heath
   - 10003
 - !!python/tuple
-  - CAS10040329GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '790'
-  - .
-  - 2025-11-28 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Kristin Smith
-  - 10003
-- !!python/tuple
-  - CAS10040352GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '710'
-  - 28 Days
-  - 2023-08-13 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Hunter Perez
-  - 10003
-- !!python/tuple
-  - CAS10040365GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 71 Months
-  - 2025-02-22 00:00:00
-  - Middlesex County
-  - Buchanan Medical Center
-  - Nicole Nguyen
-  - 10003
-- !!python/tuple
-  - CAS10040367GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '720'
-  - 58 Days
-  - 2021-08-27 00:00:00
-  - Washington County
-  - Moon Medical Center
-  - Scott Sandoval
-  - 10003
-- !!python/tuple
-  - CAS10041009GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 12 Days
-  - 2023-11-19 00:00:00
-  - Washington County
-  - Mitchell Medical Center
-  - Cindy Drake
-  - 10003
-- !!python/tuple
-  - CAS10041806GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - .
-  - 2022-07-06 00:00:00
-  - Middlesex County
-  - Cox Medical Center
-  - Charles Sanchez
-  - 10003
-- !!python/tuple
-  - CAS10042303GA01
+  - CAS10021153GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '730'
-  - 48 Days
-  - 2020-10-19 00:00:00
-  - null
-  - Austin Medical Center
-  - Eric Johnson
-  - 10003
-- !!python/tuple
-  - CAS10045191GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 46 Days
-  - 2022-05-29 00:00:00
-  - Washington County
-  - Hill Medical Center
-  - Jonathan Gillespie
-  - 10003
-- !!python/tuple
-  - CAS10047252GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '900'
-  - 9 Days
-  - 2025-05-11 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - Peter Pena
-  - 10003
-- !!python/tuple
-  - CAS10047281GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '200'
-  - 27 Months
-  - 2022-07-21 00:00:00
-  - Washington County
-  - Morris Medical Center
-  - Emily Nielsen
-  - 10003
-- !!python/tuple
-  - CAS10049403GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '720'
-  - 73 Months
-  - 2022-06-23 00:00:00
-  - Middlesex County
-  - Soto Medical Center
-  - Janet Collins
-  - 10003
-- !!python/tuple
-  - CAS10050921GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '710'
-  - 45 Years
-  - 2021-03-28 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Dustin Harris
-  - 10003
-- !!python/tuple
-  - CAS10053224GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '200'
-  - 47 Months
-  - 2020-05-06 00:00:00
-  - Middlesex County
-  - Soto Medical Center
-  - Andrea Johnson
-  - 10003
-- !!python/tuple
-  - CAS10055285GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 53 Months
-  - 2020-08-26 00:00:00
-  - Middlesex County
-  - Hill Medical Center
-  - Joseph Torres
-  - 10003
-- !!python/tuple
-  - CAS10055859GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 6 Years
-  - 2020-05-16 00:00:00
-  - Washington County
-  - Hernandez Medical Center
-  - Michelle Gonzalez, III
-  - 10003
-- !!python/tuple
-  - CAS10056709GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 86 Days
-  - 2024-03-09 00:00:00
-  - Washington County
-  - Woods Medical Center
-  - Jerome
-  - 10003
-- !!python/tuple
-  - CAS10057827GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 76 Days
-  - 2021-09-09 00:00:00
-  - Washington County
-  - Austin Medical Center
-  - Peter Pena
-  - 10003
-- !!python/tuple
-  - CAS10058099GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 58 Days
-  - 2023-06-25 00:00:00
-  - Middlesex County
-  - Patton Medical Center
-  - Jesse Brooks
-  - 10003
-- !!python/tuple
-  - CAS10059819GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '900'
-  - 87 Days
+  - 59 Months
   - 2021-03-31 00:00:00
-  - Middlesex County
-  - Harris Medical Center
-  - Corey Rivers
+  - Washington County
+  - Ramos Medical Center
+  - Troy
   - 10003
 - !!python/tuple
-  - CAS10060453GA01
+  - CAS10021830GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 2 Months
+  - 2023-10-28 00:00:00
+  - Washington County
+  - Sanchez Medical Center
+  - Charles Young
+  - 10003
+- !!python/tuple
+  - CAS10023999GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 91 Years
+  - 2021-03-17 00:00:00
+  - Washington County
+  - Morris Medical Center
+  - James Wilkinson
+  - 10003
+- !!python/tuple
+  - CAS10025047GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 76 Months
+  - 2021-06-28 00:00:00
+  - Middlesex County
+  - Rivera Medical Center
+  - Kimberly Heath
+  - 10003
+- !!python/tuple
+  - CAS10025364GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 5 Years
+  - 2021-07-22 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Kayla Short
+  - 10003
+- !!python/tuple
+  - CAS10026537GA01
   - Johnson, Mike
   - PSN10010003GA01
   - null
-  - 93 Years
-  - 2020-05-29 00:00:00
+  - 31 Months
+  - 2020-09-12 00:00:00
   - Washington County
-  - Warren Medical Center
-  - Cynthia Ruiz
+  - Ellis Medical Center
+  - Scott Rogers
   - 10003
 - !!python/tuple
-  - CAS10060894GA01
+  - CAS10026556GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '790'
-  - 16 Months
-  - 2020-09-06 00:00:00
+  - '730'
+  - 84 Days
+  - 2024-10-25 00:00:00
   - Washington County
-  - Morris Medical Center
-  - Peter Crosby
-  - 10003
-- !!python/tuple
-  - CAS10061424GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '720'
-  - .
-  - 2025-11-02 00:00:00
-  - Middlesex County
-  - Williams Medical Center
-  - Walton
-  - 10003
-- !!python/tuple
-  - CAS10061708GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '790'
-  - 20 Years
-  - 2021-05-26 00:00:00
-  - Middlesex County
-  - Keith Medical Center
-  - Wendy Harrington
-  - 10003
-- !!python/tuple
-  - CAS10062679GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '200'
-  - 80 Months
-  - 2021-12-04 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Amanda Singh
-  - 10003
-- !!python/tuple
-  - CAS10062721GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '790'
-  - 21 Days
-  - 2025-04-06 00:00:00
-  - Middlesex County
-  - Carter Medical Center
+  - Weaver Medical Center
   - Erin Horn
   - 10003
 - !!python/tuple
-  - CAS10064774GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 6 Months
-  - 2023-09-06 00:00:00
-  - Middlesex County
-  - Mitchell Medical Center
-  - Walton
-  - 10003
-- !!python/tuple
-  - CAS10065241GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 6 Years
-  - 2023-04-19 00:00:00
-  - Washington County
-  - Arnold Medical Center
-  - Jerome
-  - 10003
-- !!python/tuple
-  - CAS10068190GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 43 Days
-  - 2023-07-17 00:00:00
-  - Middlesex County
-  - Moon Medical Center
-  - Vanessa Kaufman
-  - 10003
-- !!python/tuple
-  - CAS10068452GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 33 Days
-  - 2021-05-04 00:00:00
-  - Middlesex County
-  - Warren Medical Center
-  - Cynthia Ruiz
-  - 10003
-- !!python/tuple
-  - CAS10068475GA01
+  - CAS10027300GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '720'
-  - 79 Months
-  - 2025-10-25 00:00:00
-  - Washington County
-  - Smith Medical Center
-  - Matthew Sanders
-  - 10003
-- !!python/tuple
-  - CAS10070835GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 76 Months
-  - 2021-08-27 00:00:00
+  - 51 Months
+  - 2022-04-26 00:00:00
   - Middlesex County
-  - Snow Medical Center
-  - Evelyn Montes
+  - Santiago Medical Center
+  - Michael Harris
   - 10003
 - !!python/tuple
-  - CAS10071891GA01
+  - CAS10027456GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '730'
-  - 89 Days
-  - 2021-05-15 00:00:00
+  - '790'
+  - 20 Months
+  - 2022-03-17 00:00:00
   - Washington County
-  - Garcia Medical Center
-  - Jessica Murphy
+  - Tapia Medical Center
+  - Rachel Walton
   - 10003
 - !!python/tuple
-  - CAS10072629GA01
+  - CAS10029601GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - null
-  - 12 Months
-  - 2022-06-29 00:00:00
+  - '900'
+  - 69 Years
+  - 2023-05-20 00:00:00
   - Washington County
-  - Soto Medical Center
-  - Jonathan Brown
+  - Adkins Medical Center
+  - Deborah Shaw
   - 10003
 - !!python/tuple
-  - CAS10073106GA01
+  - CAS10029656GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '200'
-  - 82 Years
-  - 2023-05-10 00:00:00
-  - Washington County
-  - Wilson Medical Center
-  - Michelle Gonzalez, III
+  - 34 Days
+  - 2025-03-13 00:00:00
+  - null
+  - Griffin Medical Center
+  - Nicholas Simon
   - 10003
 - !!python/tuple
-  - CAS10073814GA01
+  - CAS10030166GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '710'
-  - 21 Months
-  - 2024-07-23 00:00:00
-  - Middlesex County
-  - Goodman Medical Center
-  - Tracy Owens
+  - '300'
+  - 74 Days
+  - 2025-12-03 00:00:00
+  - Washington County
+  - Morgan Medical Center
+  - Lauren Miller
   - 10003
 - !!python/tuple
-  - CAS10074728GA01
+  - CAS10031534GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '720'
-  - 31 Years
-  - 2021-05-27 00:00:00
+  - 50 Days
+  - 2022-09-10 00:00:00
   - Washington County
-  - Liu Medical Center
-  - Charles
+  - Harper Medical Center
+  - Elliott
+  - 10003
+- !!python/tuple
+  - CAS10031850GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 67 Months
+  - 2020-07-30 00:00:00
+  - Middlesex County
+  - Young Medical Center
+  - Jonathan Brown
+  - 10003
+- !!python/tuple
+  - CAS10033039GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - .
+  - 2023-08-18 00:00:00
+  - Washington County
+  - Morris Medical Center
+  - Rachel Walton
+  - 10003
+- !!python/tuple
+  - CAS10033762GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 14 Years
+  - 2022-02-28 00:00:00
+  - Middlesex County
+  - Gilmore Medical Center
+  - Richard Garcia
+  - 10003
+- !!python/tuple
+  - CAS10034434GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 59 Months
+  - 2020-12-13 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - Jessica Murphy
+  - 10003
+- !!python/tuple
+  - CAS10034564GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '720'
+  - 50 Months
+  - 2025-03-26 00:00:00
+  - Washington County
+  - Chavez Medical Center
+  - Craig Harrison
+  - 10003
+- !!python/tuple
+  - CAS10035029GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '720'
+  - 12 Days
+  - 2022-08-23 00:00:00
+  - Washington County
+  - Cervantes Medical Center
+  - Nicole Nguyen
+  - 10003
+- !!python/tuple
+  - CAS10035040GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 15 Days
+  - 2023-06-18 00:00:00
+  - Washington County
+  - Chavez Medical Center
+  - Richard Martin
+  - 10003
+- !!python/tuple
+  - CAS10035051GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 8 Months
+  - 2021-06-13 00:00:00
+  - Middlesex County
+  - Jackson Medical Center
+  - Deborah Shaw
+  - 10003
+- !!python/tuple
+  - CAS10035465GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '720'
+  - 29 Days
+  - 2023-03-03 00:00:00
+  - Washington County
+  - Morris Medical Center
+  - Gabriel Harris
+  - 10003
+- !!python/tuple
+  - CAS10038654GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 52 Months
+  - 2025-08-07 00:00:00
+  - Middlesex County
+  - Smith Medical Center
+  - Allison Ramirez
+  - 10003
+- !!python/tuple
+  - CAS10039187GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 58 Years
+  - 2023-05-15 00:00:00
+  - Washington County
+  - Thomas Medical Center
+  - Troy
+  - 10003
+- !!python/tuple
+  - CAS10040682GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 59 Years
+  - 2024-03-25 00:00:00
+  - null
+  - Hopkins Medical Center
+  - Mallory Vincent
+  - 10003
+- !!python/tuple
+  - CAS10041684GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 58 Months
+  - 2023-12-21 00:00:00
+  - Middlesex County
+  - Byrd Medical Center
+  - Jesse Cantrell
+  - 10003
+- !!python/tuple
+  - CAS10042518GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 66 Months
+  - 2020-12-18 00:00:00
+  - Middlesex County
+  - Kelly Medical Center
+  - James Harrison
+  - 10003
+- !!python/tuple
+  - CAS10042699GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 89 Years
+  - 2021-03-23 00:00:00
+  - Washington County
+  - Turner Medical Center
+  - Robert Caldwell
+  - 10003
+- !!python/tuple
+  - CAS10044909GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 95 Years
+  - 2024-06-02 00:00:00
+  - Washington County
+  - Rasmussen Medical Center
+  - Kaitlin Kennedy
+  - 10003
+- !!python/tuple
+  - CAS10045282GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 29 Days
+  - 2021-09-13 00:00:00
+  - Middlesex County
+  - Hernandez Medical Center
+  - Darryl
+  - 10003
+- !!python/tuple
+  - CAS10045526GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 17 Days
+  - 2020-12-21 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - Janet Collins
+  - 10003
+- !!python/tuple
+  - CAS10047183GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 52 Months
+  - 2021-11-30 00:00:00
+  - null
+  - Parks Medical Center
+  - Steven Soto
+  - 10003
+- !!python/tuple
+  - CAS10047397GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 33 Months
+  - 2025-05-21 00:00:00
+  - null
+  - Rasmussen Medical Center
+  - Shannon Winters
+  - 10003
+- !!python/tuple
+  - CAS10049594GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 49 Months
+  - 2025-06-29 00:00:00
+  - Washington County
+  - Griffin Medical Center
+  - Jack Wilson
+  - 10003
+- !!python/tuple
+  - CAS10049602GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 90 Days
+  - 2025-05-25 00:00:00
+  - Washington County
+  - Tapia Medical Center
+  - Renee Harris
+  - 10003
+- !!python/tuple
+  - CAS10054411GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 42 Days
+  - 2020-10-17 00:00:00
+  - Washington County
+  - Price Medical Center
+  - Thomas Norman
+  - 10003
+- !!python/tuple
+  - CAS10054490GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 23 Months
+  - 2025-09-12 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Don Green
+  - 10003
+- !!python/tuple
+  - CAS10055067GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 74 Years
+  - 2022-10-02 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Thomas Norman
+  - 10003
+- !!python/tuple
+  - CAS10057729GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 92 Months
+  - 2022-05-27 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - Joshua Marshall
+  - 10003
+- !!python/tuple
+  - CAS10058385GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 6 Months
+  - 2020-06-19 00:00:00
+  - Washington County
+  - Morris Medical Center
+  - Michael Jackson
+  - 10003
+- !!python/tuple
+  - CAS10058931GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 21 Months
+  - 2021-07-22 00:00:00
+  - Middlesex County
+  - Chavez Medical Center
+  - Brittney Ellis
+  - 10003
+- !!python/tuple
+  - CAS10059950GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 59 Days
+  - 2025-07-09 00:00:00
+  - Middlesex County
+  - Kelly Medical Center
+  - Luis Santiago
+  - 10003
+- !!python/tuple
+  - CAS10060530GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 66 Months
+  - 2023-06-19 00:00:00
+  - Washington County
+  - Sanchez Medical Center
+  - Jonathan Harris
+  - 10003
+- !!python/tuple
+  - CAS10060954GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 6 Years
+  - 2022-02-27 00:00:00
+  - Middlesex County
+  - Tapia Medical Center
+  - Angela May
+  - 10003
+- !!python/tuple
+  - CAS10061145GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 76 Years
+  - 2022-04-09 00:00:00
+  - Middlesex County
+  - Hopkins Medical Center
+  - Arthur Day
+  - 10003
+- !!python/tuple
+  - CAS10061595GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 12 Years
+  - 2021-08-06 00:00:00
+  - null
+  - Turner Medical Center
+  - Andrea Johnson
+  - 10003
+- !!python/tuple
+  - CAS10062628GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 47 Years
+  - 2020-06-05 00:00:00
+  - Washington County
+  - Rasmussen Medical Center
+  - Elliott
+  - 10003
+- !!python/tuple
+  - CAS10063971GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 50 Days
+  - 2024-04-17 00:00:00
+  - Washington County
+  - Turner Medical Center
+  - Walters
+  - 10003
+- !!python/tuple
+  - CAS10065417GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 63 Months
+  - 2025-01-23 00:00:00
+  - Middlesex County
+  - Gilmore Medical Center
+  - Christopher Smith
+  - 10003
+- !!python/tuple
+  - CAS10068803GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 80 Days
+  - 2021-11-15 00:00:00
+  - Washington County
+  - Burns Medical Center
+  - Douglas Thomas
+  - 10003
+- !!python/tuple
+  - CAS10070295GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 94 Days
+  - 2024-08-15 00:00:00
+  - Middlesex County
+  - Ingram Medical Center
+  - Johnson
+  - 10003
+- !!python/tuple
+  - CAS10071124GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 67 Years
+  - 2024-05-10 00:00:00
+  - Washington County
+  - Weaver Medical Center
+  - Amanda Farrell
+  - 10003
+- !!python/tuple
+  - CAS10071181GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '720'
+  - 33 Years
+  - 2023-09-01 00:00:00
+  - Middlesex County
+  - Bowman Medical Center
+  - Samantha Charles
+  - 10003
+- !!python/tuple
+  - CAS10071450GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 99 Months
+  - 2022-08-04 00:00:00
+  - Middlesex County
+  - Chavez Medical Center
+  - Don Green
+  - 10003
+- !!python/tuple
+  - CAS10073057GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 39 Years
+  - 2025-03-09 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Anthony Cox
+  - 10003
+- !!python/tuple
+  - CAS10073897GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - .
+  - 2021-01-23 00:00:00
+  - Middlesex County
+  - Parks Medical Center
+  - Phillip Ford
+  - 10003
+- !!python/tuple
+  - CAS10074156GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '720'
+  - .
+  - 2020-10-19 00:00:00
+  - Middlesex County
+  - Byrd Medical Center
+  - Jeffrey
+  - 10003
+- !!python/tuple
+  - CAS10075579GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 2 Months
+  - 2021-12-30 00:00:00
+  - Middlesex County
+  - Ellis Medical Center
+  - Luis Santiago
+  - 10003
+- !!python/tuple
+  - CAS10076390GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 47 Days
+  - 2020-09-25 00:00:00
+  - null
+  - Price Medical Center
+  - Jacob Coffey
+  - 10003
+- !!python/tuple
+  - CAS10077427GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '710'
+  - 21 Days
+  - 2025-06-21 00:00:00
+  - Washington County
+  - Stewart Medical Center
+  - Summer Grant
+  - 10003
+- !!python/tuple
+  - CAS10077828GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 9 Years
+  - 2023-07-30 00:00:00
+  - Middlesex County
+  - Hernandez Medical Center
+  - Daniel Cortez
   - 10003
 - !!python/tuple
   - CAS10077868GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '200'
+  - '710'
   - 41 Days
-  - 2025-04-12 00:00:00
+  - 2021-03-30 00:00:00
   - Washington County
-  - Cox Medical Center
-  - Natalie Kelly, MD
+  - Griffin Medical Center
+  - Paul Howard
   - 10003
 - !!python/tuple
-  - CAS10079551GA01
+  - CAS10079559GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 26 Years
+  - 2023-12-06 00:00:00
+  - Washington County
+  - Harper Medical Center
+  - William Cooper
+  - 10003
+- !!python/tuple
+  - CAS10081522GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 70 Months
+  - 2020-08-21 00:00:00
+  - Washington County
+  - Rivera Medical Center
+  - Rebecca
+  - 10003
+- !!python/tuple
+  - CAS10081736GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '710'
-  - 30 Months
-  - 2020-02-06 00:00:00
+  - 9 Years
+  - 2025-10-04 00:00:00
+  - Middlesex County
+  - Morris Medical Center
+  - Hannah Pierce
+  - 10003
+- !!python/tuple
+  - CAS10083975GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '730'
+  - 53 Days
+  - 2022-12-28 00:00:00
+  - Middlesex County
+  - Jackson Medical Center
+  - Christine Snow
+  - 10003
+- !!python/tuple
+  - CAS10085755GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '720'
+  - 19 Years
+  - 2021-04-06 00:00:00
   - Washington County
-  - Mcintosh Medical Center
+  - Giles Medical Center
+  - Christopher Murphy
+  - 10003
+- !!python/tuple
+  - CAS10086042GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '200'
+  - 68 Days
+  - 2023-01-11 00:00:00
+  - Middlesex County
+  - Moyer Medical Center
+  - Brenda Jones
+  - 10003
+- !!python/tuple
+  - CAS10086236GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 33 Days
+  - 2020-06-23 00:00:00
+  - Middlesex County
+  - Kelly Medical Center
+  - Raymond Stevenson
+  - 10003
+- !!python/tuple
+  - CAS10088743GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 52 Months
+  - 2024-12-13 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - Edward Ramirez
+  - 10003
+- !!python/tuple
+  - CAS10088748GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 48 Days
+  - 2022-02-26 00:00:00
+  - Middlesex County
+  - Hernandez Medical Center
+  - Amanda Farrell
+  - 10003
+- !!python/tuple
+  - CAS10090797GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '790'
+  - 90 Days
+  - 2025-10-16 00:00:00
+  - Middlesex County
+  - Weaver Medical Center
   - Gregory Byrd
   - 10003
 - !!python/tuple
-  - CAS10079701GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - 37 Years
-  - 2023-02-21 00:00:00
-  - Middlesex County
-  - Mcintosh Medical Center
-  - Summer Grant
-  - 10003
-- !!python/tuple
-  - CAS10080552GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '200'
-  - 69 Days
-  - 2021-03-14 00:00:00
-  - Middlesex County
-  - Warren Medical Center
-  - Daniel Brown
-  - 10003
-- !!python/tuple
-  - CAS10081778GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '710'
-  - 20 Months
-  - 2021-09-14 00:00:00
-  - Washington County
-  - Mccormick Medical Center
-  - Cynthia Ruiz
-  - 10003
-- !!python/tuple
-  - CAS10083856GA01
+  - CAS10091031GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '730'
-  - 95 Days
-  - 2024-10-13 00:00:00
-  - Middlesex County
-  - Moreno Medical Center
-  - Kimberly Ferguson
+  - 83 Days
+  - 2020-10-14 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Troy
   - 10003
 - !!python/tuple
-  - CAS10089673GA01
+  - CAS10091529GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '790'
+  - null
+  - 1 Months
+  - 2021-08-27 00:00:00
+  - Washington County
+  - Hernandez Medical Center
+  - Joseph Torres
+  - 10003
+- !!python/tuple
+  - CAS10092656GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 84 Months
+  - 2022-05-26 00:00:00
+  - Middlesex County
+  - Price Medical Center
+  - Phillip Ford
+  - 10003
+- !!python/tuple
+  - CAS10093150GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '900'
+  - 60 Months
+  - 2020-05-29 00:00:00
+  - Middlesex County
+  - Daniels Medical Center
+  - Paul Howard
+  - 10003
+- !!python/tuple
+  - CAS10093474GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
+  - 99 Months
+  - 2020-09-19 00:00:00
+  - Washington County
+  - Bowman Medical Center
+  - Jesse Carter
+  - 10003
+- !!python/tuple
+  - CAS10093824GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - null
   - 11 Months
-  - 2022-10-19 00:00:00
-  - Middlesex County
-  - Padilla Medical Center
-  - Ashley Williams
+  - 2025-01-17 00:00:00
+  - Washington County
+  - Gilmore Medical Center
+  - Michael Fisher
   - 10003
 - !!python/tuple
-  - CAS10090209GA01
+  - CAS10094506GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 20 Days
+  - 2020-07-11 00:00:00
+  - Middlesex County
+  - Sanchez Medical Center
+  - Natalie Kelly
+  - 10003
+- !!python/tuple
+  - CAS10095448GA01
+  - Johnson, Mike
+  - PSN10010003GA01
+  - '300'
+  - 64 Years
+  - 2023-10-15 00:00:00
+  - Middlesex County
+  - Giles Medical Center
+  - Chris Burns
+  - 10003
+- !!python/tuple
+  - CAS10097557GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '710'
-  - 71 Years
-  - 2023-11-23 00:00:00
-  - Washington County
-  - Cox Medical Center
-  - Joel Morris
-  - 10003
-- !!python/tuple
-  - CAS10093199GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 56 Years
-  - 2021-11-16 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Figueroa
-  - 10003
-- !!python/tuple
-  - CAS10093633GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - null
-  - .
-  - 2022-11-10 00:00:00
-  - Washington County
-  - Bruce Medical Center
-  - Matthew Martinez
-  - 10003
-- !!python/tuple
-  - CAS10093933GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 42 Months
-  - 2021-01-05 00:00:00
-  - Washington County
-  - Warren Medical Center
-  - Walton
-  - 10003
-- !!python/tuple
-  - CAS10094799GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '200'
-  - 99 Days
-  - 2020-09-27 00:00:00
-  - Washington County
-  - Soto Medical Center
-  - Jeffrey Butler
-  - 10003
-- !!python/tuple
-  - CAS10094935GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '730'
-  - 59 Years
-  - 2022-05-04 00:00:00
+  - 57 Years
+  - 2025-03-13 00:00:00
   - Middlesex County
-  - Morris Medical Center
-  - Tina Burns
+  - Turner Medical Center
+  - Carla Wood
   - 10003
 - !!python/tuple
-  - CAS10095563GA01
+  - CAS10097871GA01
   - Johnson, Mike
   - PSN10010003GA01
   - '790'
-  - 33 Months
-  - 2024-01-01 00:00:00
+  - 23 Years
+  - 2022-02-03 00:00:00
   - Middlesex County
-  - Buchanan Medical Center
-  - Dustin Harris
+  - Burns Medical Center
+  - Kayla Martinez
   - 10003
 - !!python/tuple
-  - CAS10097328GA01
+  - CAS10099021GA01
   - Johnson, Mike
   - PSN10010003GA01
-  - '300'
-  - .
-  - 2025-12-29 00:00:00
+  - '900'
+  - 23 Days
+  - 2020-12-04 00:00:00
   - Middlesex County
-  - Buchanan Medical Center
-  - Brad Singh
+  - Santiago Medical Center
+  - Jennifer Gonzalez
   - 10003
 - !!python/tuple
-  - CAS10097787GA01
+  - CAS10099725GA01
   - Johnson, Mike
   - PSN10010003GA01
+  - '200'
+  - 31 Years
+  - 2025-11-05 00:00:00
+  - Middlesex County
+  - Adkins Medical Center
+  - Brandon Dean
+  - 10003
+- !!python/tuple
+  - CAS10010226GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '710'
-  - 55 Months
-  - 2025-04-24 00:00:00
+  - 72 Years
+  - 2021-04-05 00:00:00
   - Middlesex County
-  - Wolf Medical Center
-  - Charles
-  - 10003
+  - Thomas Medical Center
+  - Greg Montoya
+  - 10006
 - !!python/tuple
-  - CAS10098403GA01
-  - Johnson, Mike
-  - PSN10010003GA01
-  - '300'
-  - 56 Months
-  - 2025-09-04 00:00:00
+  - CAS10010268GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - 71 Years
+  - 2022-07-21 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - Scott Sandoval
+  - 10006
+- !!python/tuple
+  - CAS10010770GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '710'
+  - 61 Months
+  - 2021-03-30 00:00:00
   - Washington County
-  - Warren Medical Center
-  - Rodriguez
-  - 10003
+  - Howard Medical Center
+  - Summer Grant
+  - 10006
 - !!python/tuple
-  - CAS10098952GA01
-  - Johnson, Mike
-  - PSN10010003GA01
+  - CAS10011771GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 80 Days
+  - 2022-02-08 00:00:00
+  - Middlesex County
+  - Price Medical Center
+  - Donna Mitchell
+  - 10006
+- !!python/tuple
+  - CAS10013153GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 61 Months
+  - 2021-09-26 00:00:00
+  - Middlesex County
+  - Byrd Medical Center
+  - Kimberly Blackwell
+  - 10006
+- !!python/tuple
+  - CAS10013373GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 19 Days
+  - 2024-05-15 00:00:00
+  - Middlesex County
+  - Huber Medical Center
+  - Cynthia Ruiz
+  - 10006
+- !!python/tuple
+  - CAS10014794GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 79 Days
+  - 2023-01-03 00:00:00
+  - Washington County
+  - Huber Medical Center
+  - Patty Baker
+  - 10006
+- !!python/tuple
+  - CAS10015321GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '200'
   - 60 Years
-  - 2020-09-16 00:00:00
+  - 2022-11-28 00:00:00
   - Middlesex County
-  - Hernandez Medical Center
-  - Rebekah Brown
-  - 10003
+  - Price Medical Center
+  - Michael Johnson
+  - 10006
 - !!python/tuple
-  - CAS10010082GA01
+  - CAS10016223GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - 90 Months
+  - 2021-10-18 00:00:00
+  - Middlesex County
+  - Tapia Medical Center
+  - William Cooper
+  - 10006
+- !!python/tuple
+  - CAS10017765GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 22 Years
+  - 2020-10-21 00:00:00
+  - Washington County
+  - Price Medical Center
+  - Richard Rodriguez
+  - 10006
+- !!python/tuple
+  - CAS10018433GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 22 Months
+  - 2020-04-01 00:00:00
+  - Middlesex County
+  - Howard Medical Center
+  - Kimberly Heath
+  - 10006
+- !!python/tuple
+  - CAS10023301GA01
   - Miller, Amy
   - PSN10010006GA01
   - '200'
-  - 64 Years
-  - 2024-02-14 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Mary
+  - 45 Years
+  - 2025-07-11 00:00:00
+  - null
+  - Santiago Medical Center
+  - Andrea Williams
   - 10006
 - !!python/tuple
-  - CAS10012678GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 74 Years
-  - 2020-07-01 00:00:00
-  - Washington County
-  - Wolf Medical Center
-  - Richard Martin
-  - 10006
-- !!python/tuple
-  - CAS10014663GA01
+  - CAS10023854GA01
   - Miller, Amy
   - PSN10010006GA01
   - '710'
-  - 29 Years
-  - 2022-06-30 00:00:00
-  - Washington County
-  - Mitchell Medical Center
-  - Rebecca Flynn
+  - 98 Months
+  - 2021-11-28 00:00:00
+  - Middlesex County
+  - Gilmore Medical Center
+  - Jones
   - 10006
 - !!python/tuple
-  - CAS10014713GA01
+  - CAS10026074GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - 44 Days
+  - 2025-06-25 00:00:00
+  - Washington County
+  - Giles Medical Center
+  - Dana Turner
+  - 10006
+- !!python/tuple
+  - CAS10026980GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 18 Years
+  - 2020-02-18 00:00:00
+  - Middlesex County
+  - Chang Medical Center
+  - Mary Sullivan
+  - 10006
+- !!python/tuple
+  - CAS10028561GA01
   - Miller, Amy
   - PSN10010006GA01
   - '730'
-  - 11 Days
-  - 2025-06-23 00:00:00
+  - 36 Months
+  - 2020-03-20 00:00:00
   - Middlesex County
-  - Miller Medical Center
-  - Rebekah Brown
+  - Adkins Medical Center
+  - Lauren Miller
   - 10006
 - !!python/tuple
-  - CAS10015471GA01
+  - CAS10028950GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '900'
-  - 40 Months
-  - 2022-07-25 00:00:00
-  - Washington County
-  - Williams Medical Center
-  - Michael Jones
-  - 10006
-- !!python/tuple
-  - CAS10016176GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '710'
-  - 92 Years
-  - 2022-08-21 00:00:00
-  - Middlesex County
-  - Kelley Medical Center
-  - Michelle Gonzalez, III
-  - 10006
-- !!python/tuple
-  - CAS10017966GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - 34 Days
-  - 2021-06-26 00:00:00
-  - Middlesex County
-  - Carrillo Medical Center
-  - Jacob Hubbard
-  - 10006
-- !!python/tuple
-  - CAS10018605GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '790'
-  - 65 Years
-  - 2024-04-07 00:00:00
-  - Washington County
-  - Buchanan Medical Center
-  - Evelyn Montes
-  - 10006
-- !!python/tuple
-  - CAS10020589GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '790'
-  - 82 Days
-  - 2020-02-25 00:00:00
-  - Middlesex County
-  - Jones Medical Center
-  - Rebekah Brown
-  - 10006
-- !!python/tuple
-  - CAS10021254GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '790'
-  - 50 Months
-  - 2023-08-06 00:00:00
   - null
-  - Garcia Medical Center
-  - Don Green, Jr.
+  - 50 Days
+  - 2021-04-20 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - Christopher Dyer
   - 10006
 - !!python/tuple
-  - CAS10025117GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 57 Years
-  - 2022-03-23 00:00:00
-  - Middlesex County
-  - Miller Medical Center
-  - Barry Hooper
-  - 10006
-- !!python/tuple
-  - CAS10026156GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 55 Years
-  - 2022-03-13 00:00:00
-  - Middlesex County
-  - Mcgee Medical Center
-  - Brian Todd
-  - 10006
-- !!python/tuple
-  - CAS10026748GA01
+  - CAS10029448GA01
   - Miller, Amy
   - PSN10010006GA01
   - '900'
-  - 31 Days
-  - 2025-06-09 00:00:00
-  - Washington County
-  - Mclaughlin Medical Center
-  - Jeffrey Butler
+  - 25 Years
+  - 2023-11-24 00:00:00
+  - Middlesex County
+  - Parks Medical Center
+  - Jones
   - 10006
 - !!python/tuple
-  - CAS10028702GA01
+  - CAS10030028GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '720'
-  - .
-  - 2021-12-04 00:00:00
-  - Middlesex County
-  - Carrillo Medical Center
-  - Thomas Grant
+  - '200'
+  - 63 Months
+  - 2025-06-24 00:00:00
+  - Washington County
+  - Daniels Medical Center
+  - Steven Soto
   - 10006
 - !!python/tuple
-  - CAS10030035GA01
+  - CAS10030289GA01
   - Miller, Amy
   - PSN10010006GA01
   - '790'
-  - 7 Months
-  - 2025-05-18 00:00:00
+  - 96 Days
+  - 2021-08-23 00:00:00
   - Washington County
-  - Moreno Medical Center
-  - Erin Horn
+  - White Medical Center
+  - Terry Martin
   - 10006
 - !!python/tuple
-  - CAS10031819GA01
+  - CAS10030696GA01
   - Miller, Amy
   - PSN10010006GA01
   - '710'
-  - 28 Months
-  - 2025-05-05 00:00:00
-  - Middlesex County
-  - Horton Medical Center
-  - Mccann
-  - 10006
-- !!python/tuple
-  - CAS10033244GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 14 Days
-  - 2023-02-02 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Daniel Olson
-  - 10006
-- !!python/tuple
-  - CAS10034284GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - .
-  - 2022-05-11 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Cynthia Ruiz
-  - 10006
-- !!python/tuple
-  - CAS10038005GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '710'
-  - 57 Years
-  - 2023-12-14 00:00:00
-  - Washington County
-  - Castillo Medical Center
-  - Colleen Wilson
-  - 10006
-- !!python/tuple
-  - CAS10038299GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
-  - 70 Years
-  - 2020-04-09 00:00:00
-  - Washington County
-  - Horton Medical Center
-  - Molina
-  - 10006
-- !!python/tuple
-  - CAS10039473GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 24 Years
-  - 2021-08-20 00:00:00
-  - Washington County
-  - Torres Medical Center
-  - Wayne Craig
-  - 10006
-- !!python/tuple
-  - CAS10039509GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
   - 73 Years
-  - 2023-01-12 00:00:00
-  - Middlesex County
-  - Buchanan Medical Center
-  - Paul Howard
+  - 2021-09-02 00:00:00
+  - Washington County
+  - Kelly Medical Center
+  - Cruz
   - 10006
 - !!python/tuple
-  - CAS10039675GA01
+  - CAS10030988GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '730'
-  - 15 Months
-  - 2021-08-11 00:00:00
-  - null
-  - Woods Medical Center
-  - Gabriella Allison
-  - 10006
-- !!python/tuple
-  - CAS10039838GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '790'
+  - '720'
   - 49 Days
-  - 2020-11-06 00:00:00
-  - Middlesex County
-  - Mcintosh Medical Center
-  - Nicole Nguyen
-  - 10006
-- !!python/tuple
-  - CAS10039974GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '710'
-  - 27 Years
-  - 2020-03-11 00:00:00
-  - Washington County
-  - Mcintosh Medical Center
-  - Linda Garcia
-  - 10006
-- !!python/tuple
-  - CAS10040117GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - .
-  - 2020-11-25 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - Walton
-  - 10006
-- !!python/tuple
-  - CAS10040879GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '710'
-  - 79 Days
-  - 2021-03-20 00:00:00
-  - Middlesex County
-  - Cox Medical Center
-  - Kayla Short
-  - 10006
-- !!python/tuple
-  - CAS10042404GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
-  - 9 Months
-  - 2025-01-10 00:00:00
-  - Middlesex County
-  - Mclaughlin Medical Center
-  - Sarah Mcdowell
-  - 10006
-- !!python/tuple
-  - CAS10044301GA01
-  - Miller, Amy
-  - PSN10010006GA01
+  - 2021-02-02 00:00:00
   - null
-  - 14 Days
-  - 2022-08-31 00:00:00
-  - Washington County
-  - Carrillo Medical Center
-  - Brad Singh
-  - 10006
-- !!python/tuple
-  - CAS10046089GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 64 Years
-  - 2022-05-08 00:00:00
-  - Washington County
   - Morris Medical Center
-  - Dalton Miller
+  - Christopher Rubio
   - 10006
 - !!python/tuple
-  - CAS10047954GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 80 Years
-  - 2024-04-12 00:00:00
-  - Middlesex County
-  - Carter Medical Center
-  - Lisa Robertson
-  - 10006
-- !!python/tuple
-  - CAS10049757GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - 30 Months
-  - 2023-05-21 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Jeffrey Stokes
-  - 10006
-- !!python/tuple
-  - CAS10049786GA01
+  - CAS10031032GA01
   - Miller, Amy
   - PSN10010006GA01
   - '720'
-  - 35 Years
-  - 2022-09-05 00:00:00
-  - Washington County
-  - Gutierrez Medical Center
-  - Heather Oconnor
+  - 23 Days
+  - 2020-03-31 00:00:00
+  - null
+  - Tapia Medical Center
+  - Jessica Newman
   - 10006
 - !!python/tuple
-  - CAS10051641GA01
+  - CAS10031380GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 96 Months
+  - 2020-07-03 00:00:00
+  - Washington County
+  - Bowman Medical Center
+  - Jennifer Macias, PhD
+  - 10006
+- !!python/tuple
+  - CAS10031388GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '710'
+  - 44 Days
+  - 2021-01-18 00:00:00
+  - Washington County
+  - Adkins Medical Center
+  - Jose Mckee
+  - 10006
+- !!python/tuple
+  - CAS10031513GA01
   - Miller, Amy
   - PSN10010006GA01
   - '300'
-  - 79 Days
-  - 2025-03-17 00:00:00
+  - 31 Months
+  - 2025-09-04 00:00:00
+  - null
+  - Harper Medical Center
+  - Jamie Edwards
+  - 10006
+- !!python/tuple
+  - CAS10032718GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '710'
+  - 24 Months
+  - 2025-12-15 00:00:00
   - Middlesex County
-  - Merritt Medical Center
+  - Ingram Medical Center
   - Joseph Torres
   - 10006
 - !!python/tuple
-  - CAS10052077GA01
+  - CAS10034215GA01
   - Miller, Amy
   - PSN10010006GA01
   - '730'
-  - 11 Days
-  - 2023-02-21 00:00:00
+  - 53 Days
+  - 2021-12-19 00:00:00
   - Middlesex County
-  - Mclaughlin Medical Center
-  - Austin Harris
+  - Byrd Medical Center
+  - Cheyenne Fernandez
   - 10006
 - !!python/tuple
-  - CAS10052291GA01
+  - CAS10034638GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '710'
-  - 99 Days
-  - 2024-03-21 00:00:00
+  - '720'
+  - 16 Days
+  - 2023-06-26 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Lisa Robertson
+  - 10006
+- !!python/tuple
+  - CAS10034844GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 39 Days
+  - 2021-04-29 00:00:00
   - Washington County
   - White Medical Center
-  - Hopkins
+  - Jesse Carter
   - 10006
 - !!python/tuple
-  - CAS10053952GA01
+  - CAS10036250GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - null
+  - 18 Months
+  - 2021-05-07 00:00:00
+  - Washington County
+  - Harris Medical Center
+  - Tina Burns
+  - 10006
+- !!python/tuple
+  - CAS10036775GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 92 Days
+  - 2021-03-17 00:00:00
+  - Middlesex County
+  - Byrd Medical Center
+  - Summer Murphy
+  - 10006
+- !!python/tuple
+  - CAS10039266GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 8 Days
+  - 2020-06-12 00:00:00
+  - Washington County
+  - Adkins Medical Center
+  - Natalie Kelly
+  - 10006
+- !!python/tuple
+  - CAS10041568GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - 85 Months
+  - 2023-11-23 00:00:00
+  - Washington County
+  - Tapia Medical Center
+  - Phillip Ford
+  - 10006
+- !!python/tuple
+  - CAS10045375GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - null
+  - 89 Days
+  - 2021-11-17 00:00:00
+  - Washington County
+  - Weaver Medical Center
+  - Dalton Miller
+  - 10006
+- !!python/tuple
+  - CAS10045515GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 57 Years
+  - 2024-03-02 00:00:00
+  - Middlesex County
+  - Sanchez Medical Center
+  - Shannon Winters
+  - 10006
+- !!python/tuple
+  - CAS10046188GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 2 Months
+  - 2020-01-16 00:00:00
+  - Middlesex County
+  - Weaver Medical Center
+  - Ashley Williams
+  - 10006
+- !!python/tuple
+  - CAS10046545GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 3 Days
+  - 2025-03-09 00:00:00
+  - Middlesex County
+  - Torres Medical Center
+  - Thomas Grant
+  - 10006
+- !!python/tuple
+  - CAS10048726GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - 8 Months
+  - 2025-02-07 00:00:00
+  - Middlesex County
+  - Mathis Medical Center
+  - Mary Jackson
+  - 10006
+- !!python/tuple
+  - CAS10049035GA01
   - Miller, Amy
   - PSN10010006GA01
   - '710'
-  - 16 Days
-  - 2020-09-22 00:00:00
+  - 69 Years
+  - 2025-09-08 00:00:00
   - Washington County
-  - Castillo Medical Center
-  - Cindy Drake
+  - Harris Medical Center
+  - Tammy Torres
+  - 10006
+- !!python/tuple
+  - CAS10049608GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 87 Years
+  - 2025-02-27 00:00:00
+  - Middlesex County
+  - Santiago Medical Center
+  - Jennifer Brown, Sr.
+  - 10006
+- !!python/tuple
+  - CAS10050507GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - .
+  - 2021-06-02 00:00:00
+  - Washington County
+  - Ellis Medical Center
+  - Alexis Stewart
+  - 10006
+- !!python/tuple
+  - CAS10050617GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 65 Years
+  - 2025-04-06 00:00:00
+  - Washington County
+  - Daniels Medical Center
+  - George Grant
+  - 10006
+- !!python/tuple
+  - CAS10051177GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 73 Months
+  - 2024-02-27 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - William Cooper
+  - 10006
+- !!python/tuple
+  - CAS10051402GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '710'
+  - 32 Days
+  - 2025-01-19 00:00:00
+  - Middlesex County
+  - Gilmore Medical Center
+  - Crosby
+  - 10006
+- !!python/tuple
+  - CAS10051920GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '710'
+  - 76 Days
+  - 2021-11-04 00:00:00
+  - Middlesex County
+  - Escobar Medical Center
+  - Andrea Johnson
+  - 10006
+- !!python/tuple
+  - CAS10052264GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '730'
+  - .
+  - 2025-01-14 00:00:00
+  - Middlesex County
+  - Hernandez Medical Center
+  - Joseph Murphy
+  - 10006
+- !!python/tuple
+  - CAS10052334GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 61 Years
+  - 2024-01-24 00:00:00
+  - Washington County
+  - Moyer Medical Center
+  - Erin Horn
+  - 10006
+- !!python/tuple
+  - CAS10055488GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 87 Years
+  - 2020-07-23 00:00:00
+  - Middlesex County
+  - Gilmore Medical Center
+  - Christopher Hamilton
   - 10006
 - !!python/tuple
   - CAS10057572GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '300'
-  - 62 Months
-  - 2023-05-16 00:00:00
+  - '200'
+  - 15 Years
+  - 2021-10-26 00:00:00
   - Middlesex County
-  - Carrillo Medical Center
-  - Amy Nguyen
+  - Chavez Medical Center
+  - Andrew Bryant
   - 10006
 - !!python/tuple
-  - CAS10057649GA01
+  - CAS10057642GA01
   - Miller, Amy
   - PSN10010006GA01
   - '200'
-  - 92 Years
-  - 2020-10-31 00:00:00
-  - Middlesex County
-  - Smith Medical Center
-  - Osborne
+  - 95 Days
+  - 2022-10-20 00:00:00
+  - Washington County
+  - Luna Medical Center
+  - Matthew Martinez
   - 10006
 - !!python/tuple
-  - CAS10058578GA01
+  - CAS10059002GA01
   - Miller, Amy
   - PSN10010006GA01
   - '730'
-  - 48 Months
-  - 2023-12-12 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Samantha Charles
+  - 68 Months
+  - 2022-12-05 00:00:00
+  - null
+  - Jackson Medical Center
+  - Michael Harris
   - 10006
 - !!python/tuple
-  - CAS10060697GA01
+  - CAS10059162GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 49 Months
+  - 2021-09-24 00:00:00
+  - Middlesex County
+  - Stewart Medical Center
+  - David Smith
+  - 10006
+- !!python/tuple
+  - CAS10059819GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 62 Days
+  - 2024-01-12 00:00:00
+  - Washington County
+  - Harris Medical Center
+  - Hunter Perez
+  - 10006
+- !!python/tuple
+  - CAS10060048GA01
   - Miller, Amy
   - PSN10010006GA01
   - '720'
   - 46 Days
-  - 2021-03-01 00:00:00
+  - 2023-10-07 00:00:00
   - Washington County
-  - Moon Medical Center
-  - Richard Martin
+  - Grant Medical Center
+  - Steven Soto
   - 10006
 - !!python/tuple
-  - CAS10061257GA01
+  - CAS10060254GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '900'
-  - 67 Days
-  - 2020-07-09 00:00:00
+  - '730'
+  - 98 Days
+  - 2020-04-07 00:00:00
+  - Washington County
+  - Adkins Medical Center
+  - Jeffrey
+  - 10006
+- !!python/tuple
+  - CAS10060667GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - 86 Years
+  - 2020-02-29 00:00:00
   - Middlesex County
-  - Horton Medical Center
-  - Lauren Miller
+  - Turner Medical Center
+  - Amanda Singh
   - 10006
 - !!python/tuple
-  - CAS10061427GA01
+  - CAS10061236GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '300'
-  - 44 Years
-  - 2024-06-10 00:00:00
-  - Washington County
-  - Patton Medical Center
-  - John Villanueva
-  - 10006
-- !!python/tuple
-  - CAS10062249GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 96 Months
-  - 2022-10-04 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Kayla Short
-  - 10006
-- !!python/tuple
-  - CAS10063907GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
-  - 14 Years
-  - 2021-11-11 00:00:00
+  - null
+  - 45 Days
+  - 2020-02-17 00:00:00
   - Middlesex County
-  - Keith Medical Center
-  - Austin Harris
+  - Turner Medical Center
+  - Tammy Torres
   - 10006
 - !!python/tuple
-  - CAS10066153GA01
+  - CAS10061846GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '900'
-  - 66 Years
-  - 2020-07-26 00:00:00
-  - Washington County
-  - Austin Medical Center
-  - Victoria Silva
-  - 10006
-- !!python/tuple
-  - CAS10066375GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 54 Days
-  - 2021-10-14 00:00:00
-  - Middlesex County
-  - Mills Medical Center
-  - Wendy Harrington
-  - 10006
-- !!python/tuple
-  - CAS10067437GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - 97 Months
-  - 2021-01-14 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Jonathan Gillespie
-  - 10006
-- !!python/tuple
-  - CAS10067563GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - 32 Days
-  - 2020-09-15 00:00:00
-  - Middlesex County
-  - Horton Medical Center
-  - Mckenzie Church
-  - 10006
-- !!python/tuple
-  - CAS10068955GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - 77 Years
+  - '730'
+  - 56 Days
   - 2023-06-24 00:00:00
   - Washington County
-  - Warren Medical Center
-  - Daniel Brown
+  - Santiago Medical Center
+  - Joseph Murphy
   - 10006
 - !!python/tuple
-  - CAS10070986GA01
+  - CAS10062302GA01
   - Miller, Amy
   - PSN10010006GA01
   - '730'
-  - 42 Months
-  - 2025-06-16 00:00:00
-  - Middlesex County
-  - Jones Medical Center
-  - Eric Johnson
+  - 79 Days
+  - 2023-12-19 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Gina Wagner
   - 10006
 - !!python/tuple
-  - CAS10071478GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 62 Years
-  - 2023-01-15 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Benjamin Taylor
-  - 10006
-- !!python/tuple
-  - CAS10071771GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 6 Days
-  - 2023-09-13 00:00:00
-  - Middlesex County
-  - Gutierrez Medical Center
-  - Joyce Gonzalez
-  - 10006
-- !!python/tuple
-  - CAS10071975GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '900'
-  - 97 Years
-  - 2025-02-25 00:00:00
-  - Middlesex County
-  - Hill Medical Center
-  - Jonathan Harris
-  - 10006
-- !!python/tuple
-  - CAS10072084GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 5 Days
-  - 2020-10-05 00:00:00
-  - Middlesex County
-  - Torres Medical Center
-  - Don Green, Jr.
-  - 10006
-- !!python/tuple
-  - CAS10072586GA01
+  - CAS10062622GA01
   - Miller, Amy
   - PSN10010006GA01
   - '200'
-  - 20 Months
-  - 2021-06-10 00:00:00
+  - 40 Years
+  - 2022-06-14 00:00:00
   - Middlesex County
-  - Soto Medical Center
-  - Karen Mann
+  - Price Medical Center
+  - Nicholas Simon
   - 10006
 - !!python/tuple
-  - CAS10074727GA01
+  - CAS10064183GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '720'
-  - 67 Days
-  - 2025-12-01 00:00:00
-  - Washington County
-  - Gutierrez Medical Center
-  - John Villanueva
-  - 10006
-- !!python/tuple
-  - CAS10075479GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 8 Months
-  - 2025-09-19 00:00:00
+  - '710'
+  - 60 Months
+  - 2024-09-10 00:00:00
   - Middlesex County
   - Stewart Medical Center
-  - Gabriella Allison
+  - Peter Pena
   - 10006
 - !!python/tuple
-  - CAS10075743GA01
+  - CAS10064827GA01
   - Miller, Amy
   - PSN10010006GA01
-  - '790'
-  - 25 Years
-  - 2023-10-10 00:00:00
-  - Middlesex County
-  - Hernandez Medical Center
-  - Peter Crosby
-  - 10006
-- !!python/tuple
-  - CAS10078376GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - null
+  - '710'
   - 70 Years
-  - 2023-04-30 00:00:00
-  - Washington County
-  - Soto Medical Center
-  - Jennifer Macias
-  - 10006
-- !!python/tuple
-  - CAS10078470GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 49 Years
-  - 2022-10-15 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Lori Flores
-  - 10006
-- !!python/tuple
-  - CAS10078836GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - null
-  - 71 Days
-  - 2024-09-17 00:00:00
+  - 2022-05-18 00:00:00
   - Middlesex County
-  - Cox Medical Center
-  - Jeffrey Nguyen
+  - Hopkins Medical Center
+  - Jason Ryan
   - 10006
 - !!python/tuple
-  - CAS10079380GA01
+  - CAS10064861GA01
   - Miller, Amy
   - PSN10010006GA01
   - '720'
-  - 27 Days
-  - 2020-04-27 00:00:00
+  - 78 Months
+  - 2020-07-16 00:00:00
   - Middlesex County
-  - Arnold Medical Center
-  - Amanda Farrell
+  - Young Medical Center
+  - Mary Gilbert
   - 10006
 - !!python/tuple
-  - CAS10080071GA01
+  - CAS10066790GA01
   - Miller, Amy
   - PSN10010006GA01
   - '300'
-  - 92 Months
-  - 2023-07-09 00:00:00
-  - Washington County
-  - Davis Medical Center
-  - Timothy Saunders
-  - 10006
-- !!python/tuple
-  - CAS10083213GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 72 Years
-  - 2020-04-15 00:00:00
-  - Washington County
-  - Jones Medical Center
-  - Mackenzie Guzman
-  - 10006
-- !!python/tuple
-  - CAS10083936GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
-  - 71 Days
-  - 2020-01-22 00:00:00
-  - Washington County
-  - Mitchell Medical Center
-  - Mckenzie Church
-  - 10006
-- !!python/tuple
-  - CAS10084879GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - null
-  - 87 Years
-  - 2024-06-17 00:00:00
-  - Washington County
-  - Mills Medical Center
-  - Leah Torres
-  - 10006
-- !!python/tuple
-  - CAS10088234GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
-  - 89 Years
-  - 2023-08-20 00:00:00
-  - Middlesex County
-  - Morris Medical Center
-  - Joyce Gonzalez
-  - 10006
-- !!python/tuple
-  - CAS10090094GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - null
-  - 25 Months
-  - 2025-09-04 00:00:00
-  - Washington County
-  - Castillo Medical Center
-  - Walton
-  - 10006
-- !!python/tuple
-  - CAS10093661GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '720'
-  - 9 Years
-  - 2022-08-28 00:00:00
-  - Middlesex County
-  - Mcintosh Medical Center
-  - Gabriella Allison
-  - 10006
-- !!python/tuple
-  - CAS10096152GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '730'
-  - 50 Years
-  - 2024-09-03 00:00:00
-  - Middlesex County
-  - Robbins Medical Center
-  - Vanessa Kaufman
-  - 10006
-- !!python/tuple
-  - CAS10096426GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '200'
-  - 21 Years
-  - 2024-05-19 00:00:00
-  - Washington County
-  - Mills Medical Center
-  - Johnny Smith
-  - 10006
-- !!python/tuple
-  - CAS10096648GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '710'
-  - 8 Months
-  - 2021-05-31 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - Amy Nguyen
-  - 10006
-- !!python/tuple
-  - CAS10097541GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '790'
-  - 71 Days
-  - 2024-03-10 00:00:00
-  - Washington County
-  - Smith Medical Center
-  - Benjamin Taylor
-  - 10006
-- !!python/tuple
-  - CAS10097945GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '790'
-  - 64 Days
-  - 2024-03-24 00:00:00
-  - Washington County
-  - Smith Medical Center
-  - Scott Rogers
-  - 10006
-- !!python/tuple
-  - CAS10098321GA01
-  - Miller, Amy
-  - PSN10010006GA01
-  - '300'
-  - 51 Days
-  - 2023-10-10 00:00:00
-  - Washington County
-  - Carter Medical Center
-  - Brad Singh
-  - 10006
-- !!python/tuple
-  - CAS10010245GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '720'
-  - 87 Months
-  - 2025-10-29 00:00:00
-  - Washington County
-  - Bruce Medical Center
-  - Elizabeth Smith
-  - 10001
-- !!python/tuple
-  - CAS10014066GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 99 Years
-  - 2020-09-15 00:00:00
-  - Washington County
-  - Miller Medical Center
-  - Joseph Murphy
-  - 10001
-- !!python/tuple
-  - CAS10014845GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '300'
-  - 7 Months
-  - 2025-12-15 00:00:00
-  - Middlesex County
-  - Mcintosh Medical Center
-  - Mckenzie Church
-  - 10001
-- !!python/tuple
-  - CAS10015626GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '720'
   - .
-  - 2025-07-27 00:00:00
+  - 2021-01-01 00:00:00
   - Middlesex County
-  - Carrillo Medical Center
-  - Hannah Norris
-  - 10001
+  - Griffin Medical Center
+  - Amanda Singh
+  - 10006
 - !!python/tuple
-  - CAS10015634GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 75 Days
-  - 2021-06-14 00:00:00
-  - Middlesex County
-  - Garcia Medical Center
-  - Richard Martin
-  - 10001
-- !!python/tuple
-  - CAS10017884GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '900'
-  - 90 Days
-  - 2025-02-14 00:00:00
-  - Washington County
-  - Morris Medical Center
-  - Vanessa Kaufman
-  - 10001
-- !!python/tuple
-  - CAS10019536GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 51 Days
-  - 2022-10-13 00:00:00
-  - Middlesex County
-  - Snow Medical Center
-  - Gina Stark
-  - 10001
-- !!python/tuple
-  - CAS10020708GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 65 Months
-  - 2020-02-27 00:00:00
-  - Middlesex County
-  - Padilla Medical Center
-  - Emily Bird
-  - 10001
-- !!python/tuple
-  - CAS10021679GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 58 Days
-  - 2024-10-08 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Kimberly Heath
-  - 10001
-- !!python/tuple
-  - CAS10022199GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '720'
-  - 44 Days
-  - 2021-03-01 00:00:00
-  - Middlesex County
-  - Hill Medical Center
-  - Suzanne
-  - 10001
-- !!python/tuple
-  - CAS10023041GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 20 Days
-  - 2020-11-26 00:00:00
-  - Washington County
-  - Mcgee Medical Center
-  - Stephen Conrad
-  - 10001
-- !!python/tuple
-  - CAS10025194GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 46 Months
-  - 2020-09-05 00:00:00
-  - Middlesex County
-  - Robbins Medical Center
-  - Heather Oconnor
-  - 10001
-- !!python/tuple
-  - CAS10025771GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10066980GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '300'
-  - 63 Months
-  - 2020-12-01 00:00:00
+  - 88 Months
+  - 2024-09-12 00:00:00
   - Middlesex County
-  - Carter Medical Center
-  - Lisa Robertson
-  - 10001
+  - Ellis Medical Center
+  - Vanessa Kaufman
+  - 10006
 - !!python/tuple
-  - CAS10026540GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 34 Days
-  - 2024-03-10 00:00:00
+  - CAS10067760GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 66 Years
+  - 2023-11-25 00:00:00
   - Washington County
-  - Woods Medical Center
-  - Linda Simon
-  - 10001
+  - Ingram Medical Center
+  - Jennifer Miranda
+  - 10006
 - !!python/tuple
-  - CAS10027173GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '720'
+  - CAS10071627GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
   - 50 Days
-  - 2023-06-10 00:00:00
+  - 2025-09-11 00:00:00
   - Washington County
-  - Woods Medical Center
-  - Suzanne
-  - 10001
+  - Rasmussen Medical Center
+  - Edward Ramirez
+  - 10006
 - !!python/tuple
-  - CAS10027478GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '900'
-  - 15 Years
-  - 2023-01-31 00:00:00
-  - Middlesex County
-  - Williams Medical Center
-  - Ashley Williams
-  - 10001
-- !!python/tuple
-  - CAS10027727GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 76 Years
-  - 2020-05-25 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - John Kim
-  - 10001
-- !!python/tuple
-  - CAS10028789GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '790'
-  - 7 Years
-  - 2021-04-14 00:00:00
-  - Washington County
-  - Castillo Medical Center
-  - Jessica Murphy
-  - 10001
-- !!python/tuple
-  - CAS10030539GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10071717GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '300'
-  - 81 Days
-  - 2022-01-27 00:00:00
-  - null
-  - Mcgee Medical Center
-  - Michael Bradshaw
-  - 10001
-- !!python/tuple
-  - CAS10030890GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 24 Years
-  - 2020-07-19 00:00:00
-  - Middlesex County
-  - Mcgee Medical Center
-  - Colleen Wilson
-  - 10001
-- !!python/tuple
-  - CAS10032120GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
   - .
-  - 2023-07-23 00:00:00
-  - Washington County
-  - Mclaughlin Medical Center
-  - Anthony Cox
-  - 10001
-- !!python/tuple
-  - CAS10036566GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 41 Years
-  - 2021-06-25 00:00:00
-  - Washington County
-  - Buchanan Medical Center
-  - Kayla Short
-  - 10001
-- !!python/tuple
-  - CAS10039786GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 14 Days
-  - 2023-09-06 00:00:00
+  - 2023-07-10 00:00:00
   - Middlesex County
-  - Mitchell Medical Center
-  - Kelsey Oneill
-  - 10001
-- !!python/tuple
-  - CAS10040924GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 87 Years
-  - 2022-01-28 00:00:00
-  - Washington County
-  - Merritt Medical Center
-  - Steven Schaefer
-  - 10001
-- !!python/tuple
-  - CAS10041604GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '790'
-  - 4 Years
-  - 2023-10-23 00:00:00
-  - Washington County
-  - Mcintosh Medical Center
-  - Lisa Robertson
-  - 10001
-- !!python/tuple
-  - CAS10041656GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 54 Months
-  - 2022-10-12 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Douglas Jackson
-  - 10001
-- !!python/tuple
-  - CAS10042131GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '300'
-  - 76 Months
-  - 2025-12-02 00:00:00
-  - Washington County
-  - Smith Medical Center
-  - Gabriel Harris
-  - 10001
-- !!python/tuple
-  - CAS10042498GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '300'
-  - 73 Months
-  - 2022-09-25 00:00:00
-  - Washington County
-  - Woods Medical Center
-  - Kristen Taylor
-  - 10001
-- !!python/tuple
-  - CAS10044426GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 41 Years
-  - 2020-09-28 00:00:00
-  - Washington County
-  - Garcia Medical Center
-  - Susan Jefferson
-  - 10001
-- !!python/tuple
-  - CAS10045478GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 78 Years
-  - 2024-09-04 00:00:00
-  - Middlesex County
-  - White Medical Center
-  - Figueroa
-  - 10001
-- !!python/tuple
-  - CAS10046975GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '900'
-  - 71 Years
-  - 2023-10-28 00:00:00
-  - Washington County
-  - Harris Medical Center
-  - Hannah Pierce
-  - 10001
-- !!python/tuple
-  - CAS10047183GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 37 Months
-  - 2022-08-28 00:00:00
-  - Middlesex County
-  - Bruce Medical Center
-  - Alexis Stewart
-  - 10001
-- !!python/tuple
-  - CAS10048007GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '300'
-  - 70 Years
-  - 2022-06-05 00:00:00
-  - Middlesex County
-  - Morris Medical Center
+  - Howard Medical Center
   - Johnny Smith
-  - 10001
+  - 10006
 - !!python/tuple
-  - CAS10048499GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 58 Months
-  - 2025-05-26 00:00:00
-  - Washington County
-  - Torres Medical Center
-  - Austin Hull
-  - 10001
-- !!python/tuple
-  - CAS10048928GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10073505GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '790'
-  - 52 Years
-  - 2020-03-11 00:00:00
+  - 29 Days
+  - 2025-11-01 00:00:00
   - Middlesex County
-  - Mccormick Medical Center
-  - Christopher Rubio
-  - 10001
+  - Gilmore Medical Center
+  - Natalie Kelly
+  - 10006
 - !!python/tuple
-  - CAS10049708GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '720'
-  - 33 Months
-  - 2023-03-16 00:00:00
-  - Washington County
-  - Wilson Medical Center
-  - Christina Flores
-  - 10001
-- !!python/tuple
-  - CAS10049964GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '720'
+  - CAS10073792GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
   - 16 Months
-  - 2022-03-20 00:00:00
+  - 2023-03-19 00:00:00
   - Washington County
-  - Cox Medical Center
-  - Mary Sullivan
-  - 10001
+  - Kelly Medical Center
+  - Robinson
+  - 10006
 - !!python/tuple
-  - CAS10050072GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 60 Days
-  - 2022-01-01 00:00:00
+  - CAS10074436GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - .
+  - 2022-02-14 00:00:00
   - Washington County
-  - Mitchell Medical Center
-  - Jessica Newman
-  - 10001
+  - Price Medical Center
+  - Steven Schaefer
+  - 10006
 - !!python/tuple
-  - CAS10056118GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10075102GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - null
+  - 37 Days
+  - 2024-07-13 00:00:00
+  - Middlesex County
+  - Torres Medical Center
+  - Rebecca Flynn
+  - 10006
+- !!python/tuple
+  - CAS10075236GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 41 Days
+  - 2024-08-02 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Tammy Torres
+  - 10006
+- !!python/tuple
+  - CAS10076923GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - null
+  - 41 Years
+  - 2020-12-02 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - Jerome
+  - 10006
+- !!python/tuple
+  - CAS10078386GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '790'
-  - 33 Days
+  - 4 Days
+  - 2024-05-14 00:00:00
+  - Middlesex County
+  - Sanchez Medical Center
+  - Dana Turner
+  - 10006
+- !!python/tuple
+  - CAS10078452GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 84 Months
+  - 2021-04-20 00:00:00
+  - Washington County
+  - Weaver Medical Center
+  - Christina Anderson
+  - 10006
+- !!python/tuple
+  - CAS10078543GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '730'
+  - 36 Months
   - 2025-02-19 00:00:00
   - Washington County
-  - Warren Medical Center
-  - Michael Jackson
-  - 10001
+  - Gilmore Medical Center
+  - Daniel Blackburn
+  - 10006
 - !!python/tuple
-  - CAS10057066GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10079170GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - null
-  - 88 Days
-  - 2022-07-07 00:00:00
-  - Middlesex County
-  - Padilla Medical Center
-  - Brittney Ellis
-  - 10001
+  - 69 Days
+  - 2025-12-05 00:00:00
+  - Washington County
+  - Rasmussen Medical Center
+  - Charles Young
+  - 10006
 - !!python/tuple
-  - CAS10058322GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10079940GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '200'
-  - 17 Months
-  - 2025-09-22 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Evelyn Montes
-  - 10001
+  - 74 Days
+  - 2022-08-20 00:00:00
+  - Washington County
+  - Rivera Medical Center
+  - Justin Sullivan
+  - 10006
 - !!python/tuple
-  - CAS10060047GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 86 Years
-  - 2023-03-08 00:00:00
+  - CAS10081295GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - null
+  - 59 Days
+  - 2021-02-08 00:00:00
   - Middlesex County
-  - Goodman Medical Center
-  - Suzanne
-  - 10001
+  - Rasmussen Medical Center
+  - Johnny Smith
+  - 10006
 - !!python/tuple
-  - CAS10061211GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '300'
-  - 13 Days
-  - 2023-04-21 00:00:00
+  - CAS10081323GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 20 Years
+  - 2023-09-14 00:00:00
   - Middlesex County
-  - Patton Medical Center
-  - Christine Snow
-  - 10001
+  - Mathis Medical Center
+  - April Vasquez
+  - 10006
 - !!python/tuple
-  - CAS10062068GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10082443GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '720'
-  - 64 Days
-  - 2022-03-06 00:00:00
+  - 26 Months
+  - 2024-03-29 00:00:00
   - Washington County
-  - Moon Medical Center
-  - Carla Wood
-  - 10001
+  - Adkins Medical Center
+  - David Smith
+  - 10006
 - !!python/tuple
-  - CAS10062223GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 24 Years
-  - 2020-06-12 00:00:00
-  - Washington County
-  - Gutierrez Medical Center
-  - Michael Fisher
-  - 10001
-- !!python/tuple
-  - CAS10062534GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10082455GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - null
-  - 20 Months
-  - 2024-06-22 00:00:00
-  - Middlesex County
-  - Ponce Medical Center
-  - Jason Schroeder
-  - 10001
+  - 4 Months
+  - 2024-07-06 00:00:00
+  - Washington County
+  - Harris Medical Center
+  - Hull
+  - 10006
 - !!python/tuple
-  - CAS10065246GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '730'
-  - 33 Years
-  - 2024-01-22 00:00:00
+  - CAS10085400GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 36 Days
+  - 2022-04-12 00:00:00
   - Middlesex County
+  - Rasmussen Medical Center
+  - Justin Sullivan
+  - 10006
+- !!python/tuple
+  - CAS10085661GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 4 Months
+  - 2022-03-25 00:00:00
+  - Washington County
+  - Mathis Medical Center
+  - Kelly Smith
+  - 10006
+- !!python/tuple
+  - CAS10086268GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 39 Months
+  - 2024-03-13 00:00:00
+  - null
   - Miller Medical Center
-  - Gregory Byrd
-  - 10001
+  - David Walker
+  - 10006
 - !!python/tuple
-  - CAS10065339GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 16 Years
-  - 2025-03-16 00:00:00
+  - CAS10086334GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '730'
+  - 90 Months
+  - 2024-06-15 00:00:00
+  - Middlesex County
+  - Young Medical Center
+  - George Grant
+  - 10006
+- !!python/tuple
+  - CAS10089609GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '720'
+  - 24 Days
+  - 2024-04-05 00:00:00
   - Washington County
-  - Moon Medical Center
-  - Joel Morris
-  - 10001
+  - Daniels Medical Center
+  - Robert Caldwell
+  - 10006
 - !!python/tuple
-  - CAS10065730GA01
-  - Smith, John
-  - PSN10010001GA01
+  - CAS10091968GA01
+  - Miller, Amy
+  - PSN10010006GA01
   - '300'
-  - .
-  - 2025-06-06 00:00:00
+  - 95 Months
+  - 2021-04-02 00:00:00
   - Washington County
-  - Mitchell Medical Center
-  - Dana Turner
-  - 10001
+  - Smith Medical Center
+  - Thomas Norman
+  - 10006
 - !!python/tuple
-  - CAS10065753GA01
+  - CAS10093400GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 71 Months
+  - 2020-09-28 00:00:00
+  - Washington County
+  - Miller Medical Center
+  - Kayla Fuller
+  - 10006
+- !!python/tuple
+  - CAS10094690GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 86 Days
+  - 2024-05-05 00:00:00
+  - Washington County
+  - Gilmore Medical Center
+  - Douglas Thomas
+  - 10006
+- !!python/tuple
+  - CAS10095086GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '790'
+  - .
+  - 2021-09-19 00:00:00
+  - Washington County
+  - Bowman Medical Center
+  - Jerome
+  - 10006
+- !!python/tuple
+  - CAS10095548GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 93 Years
+  - 2020-10-20 00:00:00
+  - Washington County
+  - Rivera Medical Center
+  - Kimberly Blackwell
+  - 10006
+- !!python/tuple
+  - CAS10095967GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '200'
+  - 56 Days
+  - 2024-02-13 00:00:00
+  - Washington County
+  - Chavez Medical Center
+  - Julie Aguirre
+  - 10006
+- !!python/tuple
+  - CAS10097243GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '300'
+  - 11 Months
+  - 2020-12-30 00:00:00
+  - Washington County
+  - Harper Medical Center
+  - Krystal Stevenson
+  - 10006
+- !!python/tuple
+  - CAS10098074GA01
+  - Miller, Amy
+  - PSN10010006GA01
+  - '900'
+  - 98 Days
+  - 2020-07-21 00:00:00
+  - Middlesex County
+  - Thomas Medical Center
+  - Dana Turner
+  - 10006
+- !!python/tuple
+  - CAS10011051GA01
   - Smith, John
   - PSN10010001GA01
   - '720'
-  - 73 Months
-  - 2022-04-02 00:00:00
+  - 21 Days
+  - 2021-04-25 00:00:00
   - Middlesex County
-  - Mcgee Medical Center
-  - Jessica Newman
+  - Luna Medical Center
+  - Wayne Craig
   - 10001
 - !!python/tuple
-  - CAS10066344GA01
+  - CAS10014423GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '200'
+  - 10 Days
+  - 2020-05-06 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Jeffrey Reed
+  - 10001
+- !!python/tuple
+  - CAS10016802GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '720'
+  - 4 Months
+  - 2021-01-25 00:00:00
+  - null
+  - Brown Medical Center
+  - Shannon Winters
+  - 10001
+- !!python/tuple
+  - CAS10016963GA01
   - Smith, John
   - PSN10010001GA01
   - '730'
-  - 73 Months
-  - 2025-11-15 00:00:00
+  - 45 Days
+  - 2022-01-10 00:00:00
   - Middlesex County
-  - Soto Medical Center
-  - Heather Oconnor
+  - Hopkins Medical Center
+  - Christopher Dyer
   - 10001
 - !!python/tuple
-  - CAS10067828GA01
+  - CAS10020568GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - 64 Days
+  - 2022-06-14 00:00:00
+  - null
+  - Brown Medical Center
+  - Lori Jones
+  - 10001
+- !!python/tuple
+  - CAS10020743GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - 72 Months
+  - 2020-12-14 00:00:00
+  - Washington County
+  - Ramos Medical Center
+  - Tammy Torres
+  - 10001
+- !!python/tuple
+  - CAS10027257GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - .
+  - 2021-03-03 00:00:00
+  - null
+  - Huber Medical Center
+  - Desiree Hammond
+  - 10001
+- !!python/tuple
+  - CAS10030526GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '790'
+  - 35 Days
+  - 2021-03-18 00:00:00
+  - Washington County
+  - Harper Medical Center
+  - Donna Mitchell
+  - 10001
+- !!python/tuple
+  - CAS10031149GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '900'
+  - 17 Years
+  - 2024-04-26 00:00:00
+  - Washington County
+  - Sanchez Medical Center
+  - Travis Cook
+  - 10001
+- !!python/tuple
+  - CAS10039197GA01
   - Smith, John
   - PSN10010001GA01
   - '200'
-  - 96 Years
-  - 2024-08-15 00:00:00
+  - 20 Years
+  - 2025-09-16 00:00:00
   - Washington County
-  - Stewart Medical Center
-  - Tina Watts
-  - 10001
-- !!python/tuple
-  - CAS10069027GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 90 Days
-  - 2025-01-13 00:00:00
-  - Middlesex County
-  - Liu Medical Center
-  - Tracy Lopez
-  - 10001
-- !!python/tuple
-  - CAS10069075GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 50 Years
-  - 2020-05-26 00:00:00
-  - Washington County
-  - Wolf Medical Center
-  - David Hayes
-  - 10001
-- !!python/tuple
-  - CAS10070189GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '300'
-  - 24 Days
-  - 2024-03-16 00:00:00
-  - Middlesex County
-  - Merritt Medical Center
+  - Byrd Medical Center
   - Jacob Hubbard
   - 10001
 - !!python/tuple
-  - CAS10070915GA01
+  - CAS10039572GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '200'
+  - 94 Days
+  - 2024-02-21 00:00:00
+  - Washington County
+  - Santiago Medical Center
+  - Edward Ramirez
+  - 10001
+- !!python/tuple
+  - CAS10040840GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '900'
+  - 32 Years
+  - 2022-04-05 00:00:00
+  - Washington County
+  - Grant Medical Center
+  - Matthew Martinez
+  - 10001
+- !!python/tuple
+  - CAS10041400GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '730'
+  - 61 Days
+  - 2022-08-01 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
+  - Michael White
+  - 10001
+- !!python/tuple
+  - CAS10043404GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '710'
+  - 27 Years
+  - 2023-06-20 00:00:00
+  - Middlesex County
+  - Byrd Medical Center
+  - Susan Jefferson
+  - 10001
+- !!python/tuple
+  - CAS10045996GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '790'
+  - 27 Years
+  - 2023-09-07 00:00:00
+  - Middlesex County
+  - Ramos Medical Center
+  - Silva
+  - 10001
+- !!python/tuple
+  - CAS10049434GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - 9 Days
+  - 2025-01-22 00:00:00
+  - Washington County
+  - Morgan Medical Center
+  - Robinson
+  - 10001
+- !!python/tuple
+  - CAS10050280GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '720'
+  - 37 Months
+  - 2021-04-08 00:00:00
+  - Washington County
+  - Torres Medical Center
+  - Jason Ryan
+  - 10001
+- !!python/tuple
+  - CAS10051206GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '730'
+  - 99 Years
+  - 2020-06-30 00:00:00
+  - Washington County
+  - Burns Medical Center
+  - Jerome
+  - 10001
+- !!python/tuple
+  - CAS10053022GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '200'
+  - 25 Days
+  - 2023-06-02 00:00:00
+  - Washington County
+  - Howard Medical Center
+  - Terry Martin
+  - 10001
+- !!python/tuple
+  - CAS10055315GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '720'
+  - 38 Months
+  - 2024-01-30 00:00:00
+  - Washington County
+  - White Medical Center
+  - Renee Harris
+  - 10001
+- !!python/tuple
+  - CAS10056822GA01
   - Smith, John
   - PSN10010001GA01
   - '900'
   - 56 Months
-  - 2025-06-29 00:00:00
-  - Middlesex County
-  - Padilla Medical Center
-  - Lori Jones
-  - 10001
-- !!python/tuple
-  - CAS10071068GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 31 Months
-  - 2020-05-08 00:00:00
+  - 2025-08-07 00:00:00
   - Washington County
-  - Harris Medical Center
-  - Kristin Skinner
+  - Weaver Medical Center
+  - Anthony Cox
   - 10001
 - !!python/tuple
-  - CAS10072013GA01
+  - CAS10056955GA01
   - Smith, John
   - PSN10010001GA01
   - '900'
-  - .
-  - 2025-02-15 00:00:00
-  - Washington County
-  - Carrillo Medical Center
-  - Jacob Coffey
-  - 10001
-- !!python/tuple
-  - CAS10074183GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 69 Months
-  - 2021-04-24 00:00:00
+  - 63 Days
+  - 2022-05-12 00:00:00
   - Middlesex County
-  - Buchanan Medical Center
-  - Matthew Martinez
+  - Rivera Medical Center
+  - Silva
   - 10001
 - !!python/tuple
-  - CAS10074716GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '200'
-  - 69 Days
-  - 2022-01-12 00:00:00
-  - Washington County
-  - Merritt Medical Center
-  - Jennifer Gonzalez
-  - 10001
-- !!python/tuple
-  - CAS10075239GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 77 Days
-  - 2022-08-02 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Shannon Winters
-  - 10001
-- !!python/tuple
-  - CAS10075328GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '790'
-  - 20 Years
-  - 2022-05-04 00:00:00
-  - Washington County
-  - Morris Medical Center
-  - Hopkins
-  - 10001
-- !!python/tuple
-  - CAS10076054GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 24 Days
-  - 2023-04-18 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Andrea Greene
-  - 10001
-- !!python/tuple
-  - CAS10080396GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 56 Years
-  - 2022-02-08 00:00:00
-  - Washington County
-  - Keith Medical Center
-  - Cindy Jackson
-  - 10001
-- !!python/tuple
-  - CAS10082608GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '900'
-  - 64 Years
-  - 2023-10-02 00:00:00
-  - Washington County
-  - Hill Medical Center
-  - Kimberly Ferguson
-  - 10001
-- !!python/tuple
-  - CAS10083518GA01
+  - CAS10059032GA01
   - Smith, John
   - PSN10010001GA01
   - '300'
-  - 41 Days
-  - 2024-01-03 00:00:00
-  - Washington County
-  - Mitchell Medical Center
-  - Victoria Silva
-  - 10001
-- !!python/tuple
-  - CAS10085250GA01
-  - Smith, John
-  - PSN10010001GA01
-  - '710'
-  - 1 Months
-  - 2021-12-13 00:00:00
+  - 15 Days
+  - 2025-05-06 00:00:00
   - Middlesex County
-  - Torres Medical Center
-  - Joyce Gonzalez
+  - Cervantes Medical Center
+  - Jacob Hubbard
   - 10001
 - !!python/tuple
-  - CAS10086390GA01
-  - Smith, John
-  - PSN10010001GA01
-  - null
-  - 61 Years
-  - 2022-09-25 00:00:00
-  - Washington County
-  - Snow Medical Center
-  - Walters
-  - 10001
-- !!python/tuple
-  - CAS10086890GA01
+  - CAS10060010GA01
   - Smith, John
   - PSN10010001GA01
   - '790'
-  - 71 Days
-  - 2021-05-07 00:00:00
+  - 70 Years
+  - 2020-01-25 00:00:00
   - Washington County
-  - Hill Medical Center
-  - Krystal Stevenson
+  - Weaver Medical Center
+  - Daniel Olson, III
   - 10001
 - !!python/tuple
-  - CAS10086958GA01
+  - CAS10060318GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '200'
+  - 9 Months
+  - 2021-09-11 00:00:00
+  - Middlesex County
+  - White Medical Center
+  - Chelsey Huff
+  - 10001
+- !!python/tuple
+  - CAS10060762GA01
   - Smith, John
   - PSN10010001GA01
   - '900'
-  - 16 Months
-  - 2021-03-30 00:00:00
+  - 63 Months
+  - 2022-07-18 00:00:00
   - Middlesex County
-  - Harris Medical Center
-  - Danielle Greer
+  - Smith Medical Center
+  - Tyler Moore
   - 10001
 - !!python/tuple
-  - CAS10087206GA01
+  - CAS10063880GA01
   - Smith, John
   - PSN10010001GA01
   - '710'
-  - 56 Years
-  - 2023-11-11 00:00:00
+  - 44 Years
+  - 2025-08-17 00:00:00
   - Middlesex County
-  - Cox Medical Center
-  - Christine Snow
+  - Thomas Medical Center
+  - Brad Singh
   - 10001
 - !!python/tuple
-  - CAS10087222GA01
+  - CAS10065758GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '730'
+  - 98 Days
+  - 2022-03-11 00:00:00
+  - Middlesex County
+  - Henderson Medical Center
+  - Janet Collins
+  - 10001
+- !!python/tuple
+  - CAS10065888GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '730'
+  - 89 Years
+  - 2021-05-01 00:00:00
+  - Washington County
+  - Luna Medical Center
+  - Zachary Barnes
+  - 10001
+- !!python/tuple
+  - CAS10066205GA01
   - Smith, John
   - PSN10010001GA01
   - '720'
-  - 2 Days
-  - 2025-09-25 00:00:00
+  - 60 Days
+  - 2020-06-02 00:00:00
   - Washington County
-  - Austin Medical Center
-  - Corey Rivers
+  - Price Medical Center
+  - Jon Mcgee
   - 10001
 - !!python/tuple
-  - CAS10087664GA01
+  - CAS10066668GA01
   - Smith, John
   - PSN10010001GA01
   - '200'
-  - 57 Days
-  - 2022-05-31 00:00:00
-  - Middlesex County
-  - Smith Medical Center
-  - Summer Grant
+  - 60 Days
+  - 2020-07-15 00:00:00
+  - Washington County
+  - Woods Medical Center
+  - Donald Shea
   - 10001
 - !!python/tuple
-  - CAS10087874GA01
+  - CAS10067886GA01
   - Smith, John
   - PSN10010001GA01
-  - '790'
-  - 49 Months
-  - 2022-05-09 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Summer Murphy
+  - '730'
+  - 50 Days
+  - 2023-01-06 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
+  - Don Green
   - 10001
 - !!python/tuple
-  - CAS10089930GA01
+  - CAS10069773GA01
   - Smith, John
   - PSN10010001GA01
   - '710'
-  - 79 Years
-  - 2023-03-25 00:00:00
-  - null
-  - Warren Medical Center
-  - Mckenzie Church
+  - 71 Years
+  - 2020-07-17 00:00:00
+  - Middlesex County
+  - Ramos Medical Center
+  - Christopher Rubio
   - 10001
 - !!python/tuple
-  - CAS10090160GA01
+  - CAS10070360GA01
   - Smith, John
   - PSN10010001GA01
-  - '900'
-  - 96 Days
-  - 2025-08-31 00:00:00
+  - '710'
+  - 6 Days
+  - 2025-09-25 00:00:00
   - Middlesex County
-  - Mcintosh Medical Center
-  - Antonio Fleming
+  - Grant Medical Center
+  - Tracy Owens
   - 10001
 - !!python/tuple
-  - CAS10091291GA01
+  - CAS10070544GA01
   - Smith, John
   - PSN10010001GA01
   - '730'
-  - 95 Months
-  - 2022-11-12 00:00:00
-  - Washington County
-  - Hernandez Medical Center
-  - Kimberly Heath
+  - 67 Days
+  - 2021-10-10 00:00:00
+  - Middlesex County
+  - Henderson Medical Center
+  - Raymond Stevenson
   - 10001
 - !!python/tuple
-  - CAS10092557GA01
+  - CAS10072042GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - 83 Years
+  - 2023-06-17 00:00:00
+  - Middlesex County
+  - Moyer Medical Center
+  - Tyler Moore
+  - 10001
+- !!python/tuple
+  - CAS10077776GA01
   - Smith, John
   - PSN10010001GA01
   - '790'
-  - 36 Years
-  - 2024-11-21 00:00:00
+  - 82 Years
+  - 2022-02-18 00:00:00
   - Middlesex County
-  - Davis Medical Center
-  - Michelle Obrien
+  - Stewart Medical Center
+  - Samantha Lopez
   - 10001
 - !!python/tuple
-  - CAS10092648GA01
+  - CAS10078219GA01
   - Smith, John
   - PSN10010001GA01
   - '200'
-  - 89 Years
-  - 2025-01-26 00:00:00
-  - Washington County
-  - Kelley Medical Center
-  - Emily Nielsen
+  - 12 Years
+  - 2024-02-18 00:00:00
+  - Middlesex County
+  - Grant Medical Center
+  - Brandon Dean
   - 10001
 - !!python/tuple
-  - CAS10094574GA01
+  - CAS10078407GA01
   - Smith, John
   - PSN10010001GA01
-  - '900'
-  - 84 Months
-  - 2022-09-06 00:00:00
+  - '300'
+  - 56 Years
+  - 2025-03-24 00:00:00
   - Washington County
-  - Carter Medical Center
-  - Tina Burns
+  - Byrd Medical Center
+  - Alexis Stewart
   - 10001
 - !!python/tuple
-  - CAS10095060GA01
+  - CAS10078831GA01
   - Smith, John
   - PSN10010001GA01
   - null
-  - 54 Months
-  - 2024-10-20 00:00:00
-  - Middlesex County
-  - Robbins Medical Center
-  - Dalton Miller
+  - 15 Years
+  - 2024-06-18 00:00:00
+  - Washington County
+  - Santiago Medical Center
+  - Nicole Nguyen
   - 10001
 - !!python/tuple
-  - CAS10095432GA01
+  - CAS10079364GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '710'
+  - 52 Months
+  - 2023-12-26 00:00:00
+  - Washington County
+  - Gilmore Medical Center
+  - Dana Turner
+  - 10001
+- !!python/tuple
+  - CAS10080017GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '790'
+  - 85 Months
+  - 2021-05-24 00:00:00
+  - Washington County
+  - Parks Medical Center
+  - Christine Snow
+  - 10001
+- !!python/tuple
+  - CAS10081578GA01
   - Smith, John
   - PSN10010001GA01
   - '900'
-  - 43 Days
-  - 2023-07-13 00:00:00
+  - 24 Years
+  - 2025-04-11 00:00:00
   - Middlesex County
-  - Hill Medical Center
-  - James Lopez
+  - Ellis Medical Center
+  - Kelsey Oneill
   - 10001
 - !!python/tuple
-  - CAS10096216GA01
+  - CAS10083032GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - 51 Months
+  - 2020-01-01 00:00:00
+  - Middlesex County
+  - Howard Medical Center
+  - Daniel Blackburn
+  - 10001
+- !!python/tuple
+  - CAS10083682GA01
+  - Smith, John
+  - PSN10010001GA01
+  - null
+  - 53 Months
+  - 2022-03-02 00:00:00
+  - Washington County
+  - Griffin Medical Center
+  - Elizabeth Smith
+  - 10001
+- !!python/tuple
+  - CAS10086907GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '730'
+  - 70 Months
+  - 2025-05-02 00:00:00
+  - Washington County
+  - Price Medical Center
+  - James Wilkinson
+  - 10001
+- !!python/tuple
+  - CAS10087255GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '200'
+  - 10 Days
+  - 2024-10-26 00:00:00
+  - Middlesex County
+  - Tapia Medical Center
+  - Lisa Robertson
+  - 10001
+- !!python/tuple
+  - CAS10090978GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '710'
+  - 79 Days
+  - 2023-02-07 00:00:00
+  - Washington County
+  - Weaver Medical Center
+  - Elizabeth Dean
+  - 10001
+- !!python/tuple
+  - CAS10091004GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '300'
+  - 48 Years
+  - 2023-09-12 00:00:00
+  - Middlesex County
+  - Harris Medical Center
+  - Cindy Drake
+  - 10001
+- !!python/tuple
+  - CAS10091069GA01
   - Smith, John
   - PSN10010001GA01
   - '900'
-  - 14 Years
-  - 2021-08-19 00:00:00
+  - 10 Days
+  - 2021-11-27 00:00:00
   - Middlesex County
-  - Castillo Medical Center
-  - Rebecca Tucker
+  - Burns Medical Center
+  - Amy Nguyen
   - 10001
 - !!python/tuple
-  - CAS10096538GA01
+  - CAS10091809GA01
   - Smith, John
   - PSN10010001GA01
-  - '730'
-  - 33 Years
-  - 2024-10-11 00:00:00
-  - Washington County
-  - Woods Medical Center
-  - Jessica Murphy
+  - '710'
+  - 95 Years
+  - 2022-04-27 00:00:00
+  - Middlesex County
+  - Luna Medical Center
+  - Brian Todd
   - 10001
 - !!python/tuple
-  - CAS10096629GA01
+  - CAS10095055GA01
   - Smith, John
   - PSN10010001GA01
-  - '730'
-  - 62 Months
-  - 2025-12-01 00:00:00
-  - Washington County
-  - Stewart Medical Center
-  - Mary Sullivan
+  - null
+  - 85 Months
+  - 2025-11-08 00:00:00
+  - Middlesex County
+  - Morgan Medical Center
+  - Kaitlin Kennedy
+  - 10001
+- !!python/tuple
+  - CAS10095517GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '300'
+  - 83 Days
+  - 2024-05-29 00:00:00
+  - Middlesex County
+  - Weaver Medical Center
+  - Ashley Frederick
+  - 10001
+- !!python/tuple
+  - CAS10099299GA01
+  - Smith, John
+  - PSN10010001GA01
+  - '300'
+  - .
+  - 2020-08-12 00:00:00
+  - Middlesex County
+  - Miller Medical Center
+  - Daniel Robertson
   - 10001

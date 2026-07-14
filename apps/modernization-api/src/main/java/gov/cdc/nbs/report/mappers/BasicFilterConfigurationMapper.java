@@ -21,7 +21,7 @@ public class BasicFilterConfigurationMapper {
 
     FilterType filterType = FilterTypeMapper.fromFilterCode(filter.getFilterCode());
 
-    if (!filterType.type().startsWith(ReportConstants.BASIC_FILTER_PREFIX)) {
+    if (filter.isAdvancedFilter()) {
       throw new IllegalArgumentException("Cannot create basic filter from advanced filter");
     }
 
@@ -38,11 +38,14 @@ public class BasicFilterConfigurationMapper {
     if (filter.getFilterValues() != null) {
       defaultValues =
           filter.getFilterValues().stream()
-              .filter(v -> !"ALLOW_NULLS".equals(v.getOperator()))
+              .filter(
+                  v ->
+                      !ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE.equals(v.getValueType()))
               .map(FilterValue::getValueTxt)
               .toList();
       defaultIncludeNulls =
-          filter.getFilterValues().stream().anyMatch(v -> "ALLOW_NULLS".equals(v.getOperator()));
+          filter.getFilterValues().stream()
+              .anyMatch(v -> ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP.equals(v.getOperator()));
     }
     return new BasicFilterConfiguration(
         filter.getId(),

@@ -7,7 +7,15 @@ import mssql_python
 import pytest
 from pydantic import ValidationError
 
-from src.errors import InvalidResultError, ResultTooBigError
+from src import utils
+from src.config import clear_config_cache
+from src.db_transaction import db_transaction
+from src.errors import (
+    IntConfigurationConversionError,
+    InvalidConfigurationError,
+    InvalidResultError,
+    ResultTooBigError,
+)
 from src.execute_report import execute_report
 from src.models import ReportSpec
 
@@ -16,6 +24,11 @@ from src.models import ReportSpec
 @pytest.mark.integration
 class TestIntegrationExecuteReport:
     """Integration tests for generic report execution."""
+
+    @pytest.fixture(autouse=True)
+    def clear_cache_between_tests(self):
+        """Automatically wipes the configuration cache before each test executes."""
+        clear_config_cache()
 
     def test_execute_report_valid(self):
         report_spec = ReportSpec.model_validate(
@@ -27,7 +40,7 @@ class TestIntegrationExecuteReport:
                 # Filter operator is used here as it is a stable, small table
                 'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
-                'sort_by': 'UPPER([Column Title]) ASC',
+                'sort_by': 'UPPER([filter_operator_code]) ASC',
             }
         )
         result = execute_report(report_spec)
@@ -44,8 +57,11 @@ class TestIntegrationExecuteReport:
             'status_time',
         ]
 
-        assert len(result.content.data) == 11
-        assert len(result.content.data[0]) == len(result.content.columns)
+        data = result.content.data
+        assert len(data) == 11
+        assert len(data[0]) == len(result.content.columns)
+        for i in range(1, len(data)):
+            assert data[i - 1][1] <= data[i][1]
 
     def test_execute_report_invalid_query_syntax(self):
         report_spec = ReportSpec.model_validate(
@@ -65,16 +81,23 @@ class TestIntegrationExecuteReport:
             execute_report(report_spec)
             assert True
 
-    def test_execute_report_too_big_run(self, monkeypatch):
-        with monkeypatch.context() as m:
-            m.setenv('REPORT_MAX_ROW_LIMIT_RUN', '10')
+    def test_execute_report_too_big_run(self):
+        """Should catch execution dataset overflows using limits managed in the DB."""
+        conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+
+        with db_transaction(conn_string, True) as trx:
+            trx.execute(
+                "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE "
+                + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+            )
+
+        try:
             report_spec = ReportSpec.model_validate(
                 {
                     'is_export': False,
                     'is_builtin': True,
                     'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    # Filter operator is used here as it is a stable, small table
                     'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -86,17 +109,30 @@ class TestIntegrationExecuteReport:
                 'Report request resulted in 11 rows. The limit for running reports'
                 ' is 10 rows. Please refine your filter criteria.'
             )
+        finally:
+            with db_transaction(conn_string, True) as trx:
+                trx.execute(
+                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' "
+                    + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+                )
 
-    def test_execute_report_too_big_export(self, monkeypatch):
-        with monkeypatch.context() as m:
-            m.setenv('REPORT_MAX_ROW_LIMIT_EXPORT', '10')
+    def test_execute_report_too_big_export(self):
+        """Should catch export dataset overflows using limits managed in the DB."""
+        conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+
+        with db_transaction(conn_string, True) as trx:
+            trx.execute(
+                "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10' WHERE "
+                + "config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
+            )
+
+        try:
             report_spec = ReportSpec.model_validate(
                 {
                     'is_export': True,
                     'is_builtin': True,
                     'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    # Filter operator is used here as it is a stable, small table
                     'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -108,6 +144,90 @@ class TestIntegrationExecuteReport:
                 'Report request resulted in 11 rows. The limit for exporting reports'
                 ' is 10 rows. Please refine your filter criteria.'
             )
+        finally:
+            with db_transaction(conn_string, True) as trx:
+                trx.execute(
+                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '100000' "
+                    + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'"
+                )
+
+    def test_execute_report_should_raise_invalid_config_error_when_limit_missing(self):
+        """Should cleanly present an InvalidConfigurationError if a row
+        configuration vanishes.
+        """
+        conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+
+        with db_transaction(conn_string, True) as trx:
+            trx.execute(
+                'DELETE FROM NBS_ODSE..NBS_configuration WHERE '
+                + "config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+            )
+
+        try:
+            report_spec = ReportSpec.model_validate(
+                {
+                    'is_export': False,
+                    'is_builtin': True,
+                    'report_title': 'Test Report',
+                    'library_name': 'nbs_custom',
+                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
+                    'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
+                }
+            )
+            with pytest.raises(InvalidConfigurationError) as exc_info:
+                execute_report(report_spec)
+
+            assert (
+                'No qualified mapping found in NBS_Configuration'
+                in exc_info.value.message
+            )
+        finally:
+            with db_transaction(conn_string, True) as trx:
+                trx.execute("""
+                    INSERT INTO NBS_ODSE..NBS_configuration (
+                        config_key, config_value, default_value, version_ctrl_nbr,
+                        add_user_id, add_time, last_chg_user_id, last_chg_time, 
+                        status_cd, status_time
+                    ) VALUES ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000', 1, 1,
+                              GETDATE(), 1, GETDATE(), 'A', GETDATE())
+                    """)
+
+    def test_execute_report_should_raise_conversion_error_on_corrupt_limit_type(self):
+        """Should cleanly present an IntConfigurationConversionError if value
+        payload becomes non-numeric.
+        """
+        conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+
+        with db_transaction(conn_string, True) as trx:
+            trx.execute(
+                "UPDATE NBS_ODSE..NBS_configuration SET config_value = 'NOT_A_NUMBER' "
+                + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+            )
+
+        try:
+            report_spec = ReportSpec.model_validate(
+                {
+                    'is_export': False,
+                    'is_builtin': True,
+                    'report_title': 'Test Report',
+                    'library_name': 'nbs_custom',
+                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
+                    'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
+                }
+            )
+            with pytest.raises(IntConfigurationConversionError) as exc_info:
+                execute_report(report_spec)
+
+            assert (
+                'Unable to convert NBS configuration value to number'
+                in exc_info.value.message
+            )
+        finally:
+            with db_transaction(conn_string, True) as trx:
+                trx.execute(
+                    "UPDATE NBS_ODSE..NBS_configuration SET config_value = '10000' "
+                    + "WHERE config_key = 'REPORT_MAX_ROW_LIMIT_RUN'"
+                )
 
     @pytest.mark.parametrize(
         'missing_prop',

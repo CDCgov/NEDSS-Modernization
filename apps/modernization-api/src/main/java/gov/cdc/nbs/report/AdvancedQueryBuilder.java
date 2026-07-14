@@ -17,10 +17,22 @@ public class AdvancedQueryBuilder {
 
   private final FilterValue firstOpenParen =
       new FilterValue(
-          1L, null, 0, ReportConstants.FilterValueType.OPERATOR.toString(), null, "(", null);
+          1L,
+          null,
+          0,
+          ReportConstants.AdvancedFilterValueType.OPERATOR.toString(),
+          null,
+          "(",
+          null);
   private final FilterValue lastCloseParen =
       new FilterValue(
-          2L, null, 1000, ReportConstants.FilterValueType.OPERATOR.toString(), null, ")", null);
+          2L,
+          null,
+          1000,
+          ReportConstants.AdvancedFilterValueType.OPERATOR.toString(),
+          null,
+          ")",
+          null);
 
   public AdvancedQueryBuilder(List<FilterValue> filterValues, List<DataSourceColumn> columns) {
     this.filterValues =
@@ -38,7 +50,7 @@ public class AdvancedQueryBuilder {
         filterValues.stream()
             .map(
                 f -> {
-                  if (f.getValueTxt() == null) {
+                  if ("OPERATOR".equals(f.getValueType())) {
                     return f.getOperator();
                   } else {
                     DataSourceColumn column =
@@ -57,7 +69,25 @@ public class AdvancedQueryBuilder {
                       columnName = column.getColumnTitle();
                     }
 
-                    return "([%s] %s '%s')".formatted(columnName, f.getOperator(), f.getValueTxt());
+                    String op = f.getOperator();
+                    String value = " '%s'".formatted(f.getValueTxt());
+
+                    // translate more opaque codes and remove value for unary ops
+                    if ("IN".equals(op)) {
+                      op = "IS NULL";
+                      value = "";
+                    } else if ("NN".equals(op)) {
+                      op = "IS NOT NULL";
+                      value = "";
+                    } else if ("BW".equals(op)) {
+                      op = "BETWEEN";
+                    } else if ("CO".equals(op)) {
+                      op = "CONTAINS";
+                    } else if ("SW".equals(op)) {
+                      op = "STARTS WITH";
+                    }
+
+                    return "([%s] %s%s)".formatted(columnName, op, value);
                   }
                 })
             .toList());
@@ -304,11 +334,13 @@ public class AdvancedQueryBuilder {
   }
 
   private boolean isClause(FilterValue fv) {
-    return fv.getValueType().equalsIgnoreCase(ReportConstants.FilterValueType.CLAUSE.toString());
+    return fv.getValueType()
+        .equalsIgnoreCase(ReportConstants.AdvancedFilterValueType.CLAUSE.toString());
   }
 
   private boolean isOperator(FilterValue fv) {
-    return fv.getValueType().equalsIgnoreCase(ReportConstants.FilterValueType.OPERATOR.toString());
+    return fv.getValueType()
+        .equalsIgnoreCase(ReportConstants.AdvancedFilterValueType.OPERATOR.toString());
   }
 
   private boolean isCombinator(FilterValue fv) {

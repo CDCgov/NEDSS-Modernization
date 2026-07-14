@@ -1,28 +1,15 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
+from src.libraries.contact_record import (
+    ASSOCIATE_BASES,
+    PARTNER_BASES,
+    SOCIAL_BASES,
+    VALID_PROCESSING_DECISIONS,
+)
 from src.models import ReportResult, Table
 
 Pa03Row = tuple[str, str | None, str | None, int | None, float | None]
 
-PARTNER_BASES = {
-    'P1 - Partner, Sex',
-    'P2 - Partner, Needle-Sharing',
-    'P3 - Partner, Both',
-}
-SOCIAL_BASES = {
-    'S1 - Social Contact 1',
-    'S2 - Social Contact 2',
-    'S3 - Social Contact 3',
-}
-ASSOCIATE_BASES = {
-    'A1 - Associate 1',
-    'A2 - Associate 2',
-    'A3 - Associate 3',
-}
-VALID_PROCESSING_DECISIONS = {
-    'Field Follow-up',
-    'Secondary Referral',
-    'Record Search Closure',
-}
 OUTCOME_CODES = ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7')
 VALID_REFERRAL_BASES = tuple(sorted(PARTNER_BASES | SOCIAL_BASES | ASSOCIATE_BASES))
 OUTCOME_CATEGORIES = (
@@ -128,6 +115,7 @@ def execute(
         for that particular field.
     """
     valid_referral_bases_sql = _sql_string_list(VALID_REFERRAL_BASES)
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
 
     cases_query = f"""
     WITH shd AS (
@@ -137,7 +125,7 @@ def execute(
         shd.INV_LOCAL_ID,
         shd.INIT_FUP_INTERNET_FOLL_UP_CD
     FROM shd
-    INNER JOIN RDB.DBO.INVESTIGATION i
+    INNER JOIN {nbs_rdb}.DBO.INVESTIGATION i
         ON i.INVESTIGATION_KEY = shd.INVESTIGATION_KEY
     WHERE i.INV_CASE_STATUS IN ('Probable', 'Confirmed');
     """
@@ -149,7 +137,7 @@ def execute(
     cases AS (
         SELECT shd.INVESTIGATION_KEY, shd.INV_LOCAL_ID, shd.INIT_FUP_INTERNET_FOLL_UP_CD
         FROM shd
-        INNER JOIN RDB.DBO.INVESTIGATION i
+        INNER JOIN {nbs_rdb}.DBO.INVESTIGATION i
             ON i.INVESTIGATION_KEY = shd.INVESTIGATION_KEY
         WHERE i.INV_CASE_STATUS IN ('Probable', 'Confirmed')
     )
@@ -163,11 +151,11 @@ def execute(
         dcr.CTT_PROCESSING_DECISION,
         contacts.FL_FUP_INTERNET_OUTCOME_CD
     FROM cases
-    INNER JOIN RDB.DBO.F_CONTACT_RECORD_CASE fcrc
+    INNER JOIN {nbs_rdb}.DBO.F_CONTACT_RECORD_CASE fcrc
         ON cases.INVESTIGATION_KEY = fcrc.SUBJECT_INVESTIGATION_KEY
-    INNER JOIN RDB.DBO.STD_HIV_DATAMART contacts
+    INNER JOIN {nbs_rdb}.DBO.STD_HIV_DATAMART contacts
         ON fcrc.CONTACT_INVESTIGATION_KEY = contacts.INVESTIGATION_KEY
-    INNER JOIN RDB.DBO.D_CONTACT_RECORD dcr
+    INNER JOIN {nbs_rdb}.DBO.D_CONTACT_RECORD dcr
         ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
        AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
     WHERE dcr.CTT_REFERRAL_BASIS IN (

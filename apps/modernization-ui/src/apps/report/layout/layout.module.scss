@@ -60,7 +60,7 @@ $header-height: 6rem;
         display: flex;
         flex-direction: row;
         gap: 1rem;
-        align-items: baseline;
+        align-items: end;
     }
 
     .subtitle {
@@ -91,4 +91,9 @@ $header-height: 6rem;
     margin: 1rem;
     padding: 2rem;
     background-color: colors.$base-white;
+    flex-grow: 1;
+}
+
+.alertMessage {
+    flex-grow: unset;
 }

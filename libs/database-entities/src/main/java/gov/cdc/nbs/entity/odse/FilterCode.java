@@ -49,4 +49,15 @@ public class FilterCode {
   @Embedded private Status status;
 
   protected FilterCode() {}
+
+  public static final String BASIC_FILTER_PREFIX = "BAS_";
+  public static final String ADV_FILTER_TYPE = "ADV_WCB";
+
+  public boolean isAdvancedFilterCode() {
+    return getFilterType() != null && getFilterType().equalsIgnoreCase(ADV_FILTER_TYPE);
+  }
+
+  public boolean isBasicFilterCode() {
+    return getFilterType() != null && getFilterType().startsWith(BASIC_FILTER_PREFIX);
+  }
 }

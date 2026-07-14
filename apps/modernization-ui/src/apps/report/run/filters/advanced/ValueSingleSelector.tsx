@@ -1,16 +1,16 @@
-import React, { useId } from 'react';
-import { FullField, ValueEditorProps } from 'react-querybuilder';
-import { SingleSelect } from '../../../../../design-system/select';
-import { Selectable } from '../../../../../options';
+import { useId } from 'react';
+import { FullOption, ValueSelectorProps } from 'react-querybuilder';
+import { SingleSelect } from 'design-system/select';
+import { Selectable } from 'options';
 
-const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
+const ValueSingleSelector = (props: ValueSelectorProps<FullOption>) => {
     const id = useId();
     const title = props.title ?? '';
-    const options = props.options ?? [];
+    const options: FullOption[] = (props.options as FullOption[]) ?? [];
 
     // adjust the name to the label so it displays the easy-to-read name
     // (e.g. "Investigation ID" instead of "public_health_case_uid" in dropdown)
-    const availableOptions = options.map((opt) => ({
+    const availableOptions: Selectable[] = options.map((opt) => ({
         ...opt,
         name: opt.label,
     }));
@@ -29,9 +29,9 @@ const ValueSingleSelector = (props: ValueEditorProps<FullField>) => {
                 label={title}
                 value={currentSelection}
                 onChange={handleOnChange}
-                orientation={'vertical'}
+                orientation="vertical"
                 required
-                placeholder={''}
+                placeholder=""
                 name={title}
                 options={availableOptions}
             />

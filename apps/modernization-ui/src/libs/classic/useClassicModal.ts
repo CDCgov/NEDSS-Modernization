@@ -27,10 +27,7 @@ type ModalState = {
 };
 
 type Action =
-    | { type: 'open'; location: string }
-    | { type: 'opened' }
-    | { type: 'closed'; action?: string }
-    | { type: 'reset' };
+    { type: 'open'; location: string } | { type: 'opened' } | { type: 'closed'; action?: string } | { type: 'reset' };
 
 const classicModalReducer = (state: ModalState, action: Action) => {
     switch (action.type) {

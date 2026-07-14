@@ -33,7 +33,7 @@ export const permissions = {
             view: 'VIEWREPORTTEMPLATE-REPORTING',
             selectFilterCriteria: 'SELECTFILTERCRITERIATEMPLATE-REPORTING',
             create: '', // only done via report admin
-            edit: '', // only done via report admin
+            edit: '', // there's a loophole with private edit permissions working here, ala NBS 6
             delete: '', // only done via report admin
         },
         public: {

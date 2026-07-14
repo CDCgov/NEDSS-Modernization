@@ -14,7 +14,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity
@@ -34,7 +34,7 @@ public class Report {
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
-  // Report filters are updated/dete when reports save/dete, so we need to
+  // Report filters are updated/deleted when reports save/delete, so we need to
   // cascade all operations. When a report is no longer referenced, we want
   // to delete it, so set `orphanRemoval` to true
   @OneToMany(
@@ -44,12 +44,20 @@ public class Report {
       orphanRemoval = true)
   private List<ReportFilter> reportFilters;
 
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL)
   private List<DisplayColumn> displayColumns;
 
   // should be 1:1 in practice, but the DB implies there could be
   // more and NBS 6 fetches all then takes the first
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL)
   private List<ReportSortColumn> reportSortColumns;
 
   @Column(name = "desc_txt", length = 300)

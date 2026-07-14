@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.audit.Status;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.entity.odse.FilterCode;
+import gov.cdc.nbs.entity.odse.FilterValue;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportFilterValidation;
@@ -13,6 +14,7 @@ import gov.cdc.nbs.repository.DataSourceColumnRepository;
 import gov.cdc.nbs.repository.FilterCodeRepository;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,6 +33,35 @@ public class ReportFilterBuilder {
     this.dataSourceColumnRepository = dataSourceColumnRepository;
     this.filterCodeRepository = filterCodeRepository;
     this.idGenerator = idGenerator;
+  }
+
+  public ReportFilter duplicate(ReportFilter originalFilter) {
+    ReportFilter newFilter =
+        originalFilter.toBuilder().id(generateId()).statusCd(Status.ACTIVE_CODE).build();
+
+    ReportFilterValidation originalValidation = originalFilter.getFilterValidation();
+    if (originalValidation != null) {
+      ReportFilterValidation newValidation =
+          originalValidation.toBuilder()
+              .id(generateId())
+              .reportFilter(newFilter)
+              .statusCd(Status.ACTIVE_CODE)
+              .statusTime(LocalDateTime.now(clock))
+              .build();
+
+      newFilter.setFilterValidation(newValidation);
+    }
+
+    List<FilterValue> originalFilterValues = originalFilter.getFilterValues();
+    if (originalFilter.getFilterValues() != null) {
+      List<FilterValue> newFilterValues =
+          originalFilterValues.stream()
+              .map(f -> f.toBuilder().id(generateId()).reportFilter(newFilter).build())
+              .toList();
+      newFilter.setFilterValues(newFilterValues);
+    }
+
+    return newFilter;
   }
 
   public ReportFilter build(UpsertFilterRequest filterRequest, Report report) {
@@ -60,7 +91,7 @@ public class ReportFilterBuilder {
               .report(report)
               .filterCode(filterCode)
               .statusCd(Status.ACTIVE_CODE)
-              .id(generateReportFilterId())
+              .id(generateId())
               .build();
     } else {
       filter =
@@ -112,7 +143,7 @@ public class ReportFilterBuilder {
     LocalDateTime now = LocalDateTime.now(this.clock);
     ReportFilterValidation validation =
         ReportFilterValidation.builder()
-            .id(generateReportFilterId())
+            .id(generateId())
             .reportFilter(filter)
             .reportFilterInd('Y')
             .statusCd(Status.ACTIVE_CODE)
@@ -121,7 +152,7 @@ public class ReportFilterBuilder {
     filter.setFilterValidation(validation);
   }
 
-  private Long generateReportFilterId() {
+  private Long generateId() {
     var generatedId = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS);
     return generatedId.getId();
   }
