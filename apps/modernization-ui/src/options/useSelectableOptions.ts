@@ -2,13 +2,10 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { Selectable } from './selectable';
 
 type State<C> =
-    | { status: 'idle' | 'loading'; criteria?: C }
-    | { status: 'loaded'; criteria?: C; options: Selectable[] };
+    { status: 'idle' | 'loading'; criteria?: C } | { status: 'loaded'; criteria?: C; options: Selectable[] };
 
 type Action<C> =
-    | { type: 'reset' }
-    | { type: 'load'; criteria?: C }
-    | { type: 'loaded'; criteria?: C; options: Selectable[] };
+    { type: 'reset' } | { type: 'load'; criteria?: C } | { type: 'loaded'; criteria?: C; options: Selectable[] };
 
 const reducer = <C>(current: State<C>, action: Action<C>): State<C> => {
     switch (action.type) {
