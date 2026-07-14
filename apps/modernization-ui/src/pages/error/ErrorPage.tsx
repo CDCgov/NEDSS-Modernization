@@ -42,7 +42,7 @@ const ErrorPage = () => {
                     </>
                 ) : (
                     <>
-                        <Heading level={1}>Unknown Error</Heading>
+                        <Heading level={1}>Unknown error</Heading>
                         <p>{JSON.stringify(error)}</p>
                     </>
                 )}
