@@ -1,9 +1,8 @@
 @use 'styles/modal.scss';
 
 .content {
-    .heading {
-        margin: 0.5rem;
-    }
+    min-width: min-content;
+
     .message {
         #confirmation-description,
         #confirmation-modal-details {
