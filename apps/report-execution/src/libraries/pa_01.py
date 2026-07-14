@@ -11,6 +11,12 @@ from src.libraries.support.pa_01.queries import (
     cases_with_no_partners_query,
     cluster_previous_pos_query,
     clusters_initiated_query,
+    disease_intervention_index_query,
+    examined_clusters_by_speed_query,
+    examined_clusters_query,
+    examined_partners_by_speed_query,
+    examined_partners_query,
+    not_examined_partners_query,
     not_notified_clusters_query,
     not_notified_partners_query,
     notified_clusters_query,
@@ -19,8 +25,10 @@ from src.libraries.support.pa_01.queries import (
     partner_case_dispositions_query,
     partner_notification_query,
     period_partners_query,
+    previously_treated_partners_query,
     testing_index_query,
     timed_interviews_query,
+    treatment_index_query,
 )
 from src.models import ReportResult, Table
 
@@ -43,9 +51,9 @@ def execute(
     * There are some rounding peculiarities between SAS and Python, so for instance
       a value of 0.075 rounded to 2 decimal places in Python will yield 0.07, but in
       SAS it will be 0.08.  In such cases the Python value will be used as is.
-    * There is a quirk in PA01_HIV.sas in which the data point "HIV Tested" output does
-      not include percentages for individual workers, only "ALL WORKERS".  This report
-      includes percentages for individual workers.
+    * There is a quirk in both PA01_HIV.sas and PA01_STD.sas in which the data point
+      "HIV Tested" output does not include percentages for individual workers, only
+      "ALL WORKERS".  This Python output includes percentages for individual workers.
     * There is a bug in PA01_HIV.sas in which the "CASES /W NO CLUSTERS" shows up as
       0 for "ALL WORKERS" even if there is data present.  This is because the SAS
       template for this calculation for "ALL WORKERS" uses a slightly different string:
@@ -58,10 +66,14 @@ def execute(
       for "ALL WORKERS" doesn't use the distinct case id count like most other
       calculations.  I have replicated this behavior in Python but it is likely
       incorrect.
-    * In the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there are 2 occurances of
-      "PREVIOUS POS" and "OPEN" that come at the bottom of each column of the report
-      section.  Since these names are identical, and they contain no other grouping
-      I have labled them as:
+    * There is a bug in the PA01_HIV.sas in which the "NEW CLUSTERS NOTIFIED" count
+      for "ALL WORKERS" shows 0% for counts that are above 0.  This is due to faulty
+      `find` calls in the SAS file.  The Python version will show the proper
+      percentages.
+    * For the HIV variant in the "DISPOSITIONS - PARTNERS & CLUSTERS" section, there
+      are 2 occurances of "PREVIOUS POS" and "OPEN" that come at the bottom of each
+      column of the report section.  Since these names are identical, and they contain
+      no other grouping I have labled them as:
 
       - New Partners Previous Pos
       - New Partners Open
@@ -70,10 +82,26 @@ def execute(
 
       in order to distinguish them in the CSV.  Otherwise if the CSV data were ever
       sorted it would lose its positional meaning.
-    * In the "SPEED OF NOTIFICATION - PARTNERS & CLUSTERS" section, under "New Clusters
-      Notified" for "ALL WORKERS", the percentages appear as 0.0% even if there are
-      counts.  This is due to an issue in the SAS and the Python library includes the
-      correct percentages.
+    * The above changes also apply in a similar fashion to the STD variant, converting
+      "PREVIOUS RX" and "OPEN" to:
+
+      - New Partners Previous RX
+      - New Partners Open
+      - New Clusters Previous RX
+      - New Clusters Open
+    * In the HIV variant section "SPEED OF NOTIFICATION - PARTNERS & CLUSTERS", under
+      "New Clusters Notified" for "ALL WORKERS", the percentages appear as 0.0% even
+      if there are counts.  This is due to an issue in the SAS and the Python library
+      includes the correct percentages.
+    * There is a bug in PA01_STD.sas for the "TOTAL PERIOD PARTNERS" of the "PARTNERS
+      & CLUSTERS INITIATED" section where the index is not shown for "ALL WORKERS".
+      This is a quirk in the templating code in the SAS file and the Python equivalent
+      will emit the index even though it is missing in the PDF output.
+    * There is a bug in PA01_STD.sas for the rightmost "PREVIOUS RX" calculation in the
+      "DISPOSITIONS - NEW PARTNERS & CLUSTERS" section.  It erroneously re-uses the
+      "PREVIOUS PREV RX" value for each individual workers (ALL WORKERS has the correct
+      value).  The Python library will not re-create this bug and instead will give
+      the actual values for each worker.
     """
     if not isinstance(library_params, dict):
         raise ValueError(
@@ -136,6 +164,24 @@ def execute(
     tables['notified_partners_by_speed'] = trx.query(
         notified_partners_by_speed_query(subset_query)
     )
+    tables['disease_intervention_index'] = trx.query(
+        disease_intervention_index_query(subset_query)
+    )
+    tables['treatment_index'] = trx.query(treatment_index_query(subset_query))
+    tables['examined_partners'] = trx.query(examined_partners_query(subset_query))
+    tables['not_examined_partners'] = trx.query(
+        not_examined_partners_query(subset_query)
+    )
+    tables['previously_treated_partners'] = trx.query(
+        previously_treated_partners_query(subset_query)
+    )
+    tables['examined_clusters'] = trx.query(examined_clusters_query(subset_query))
+    tables['examined_partners_by_speed'] = trx.query(
+        examined_partners_by_speed_query(subset_query)
+    )
+    tables['examined_clusters_by_speed'] = trx.query(
+        examined_clusters_by_speed_query(subset_query)
+    )
 
     # get list of workers (nb. None treated as "ALL WORKERS")
     workers: list[Pa01Worker | None] = [None]
@@ -144,7 +190,7 @@ def execute(
     # build output CSV data for each worker
     output_rows: list[Pa01Row] = []
     for worker in workers:
-        output_rows.extend(build_output_for_worker(tables, worker))
+        output_rows.extend(build_output_for_worker(tables, report_variant, worker))
 
     content = Table(
         columns=CSV_COLUMNS,

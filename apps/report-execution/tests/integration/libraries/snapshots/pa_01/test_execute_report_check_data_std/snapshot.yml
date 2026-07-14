@@ -75,8 +75,8 @@
   - Case Assignments & Outcomes
   - HIV Tested
   - null
-  - 208
-  - 72.5%
+  - 178
+  - 62.0%
   - null
 - !!python/tuple
   - ALL
@@ -84,40 +84,48 @@
   - HIV New Positive
   - null
   - 246
-  - 118.3%
+  - 138.2%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
   - HIV Posttest Counsel
   - null
-  - 223
-  - 107.2%
+  - 193
+  - 108.4%
   - null
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.16'
+  - '0.08'
 - !!python/tuple
   - ALL
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.16'
+  - '0.13'
+- !!python/tuple
+  - ALL
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 175
+  - 61.0%
+  - null
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 75
+  - 1447
   - null
-  - '0.3'
+  - '5.0'
 - !!python/tuple
   - ALL
   - Partners & Clusters Initiated
@@ -185,7 +193,55 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
+  - New Partners Examined
+  - null
+  - 9
+  - 5.7%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Preventative RX
+  - 4
+  - 44.4%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Refused Prev. RX
+  - 4
+  - 44.4%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Infected, RX'D
+  - 2
+  - 22.2%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Infected, No RX
+  - 1
+  - 11.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Not Infected
+  - 2
+  - 22.2%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Partners No Exam
   - null
   - 63
   - 39.6%
@@ -193,63 +249,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, New Pos
-  - 24
-  - 38.1%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, No Test
-  - 21
-  - 33.3%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Pos
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Neg
-  - 22
-  - 34.9%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, No Test
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
-  - null
-  - 63
-  - 39.6%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Insufficient Info
   - 7
   - 11.1%
@@ -257,7 +257,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Unable to Locate
   - 10
   - 15.9%
@@ -265,7 +265,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Refused Exam
   - 10
   - 15.9%
@@ -273,7 +273,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - OOJ
   - 10
   - 15.9%
@@ -281,7 +281,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Other
   - 8
   - 12.7%
@@ -289,7 +289,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Domestic Violence Risk
   - 11
   - 17.5%
@@ -297,7 +297,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Patient Deceased
   - 11
   - 17.5%
@@ -305,79 +305,79 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Partners Previous Pos
-  - null
-  - 14
-  - 8.8%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Partners Open
-  - null
-  - 31
-  - 19.5%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 69
-  - 43.1%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, New Pos
-  - 15
-  - 21.7%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, Still Neg
-  - 1
-  - 1.4%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, No Test
-  - 13
-  - 18.8%
-  - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Pos
+  - New Partners No Exam
+  - Previous Prev RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Neg
-  - 14
-  - 20.3%
+  - New Partners Previous RX
   - null
-- !!python/tuple
-  - ALL
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, No Test
   - 1
-  - 1.4%
+  - 0.6%
   - null
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Partners Open
+  - null
+  - 16
+  - 10.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 5
+  - 3.1%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Preventative RX
+  - 2
+  - 40.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 1
+  - 20.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 2
+  - 40.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
   - null
   - 71
   - 44.4%
@@ -385,7 +385,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -393,7 +393,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Unable to Locate
   - 0
   - 0.0%
@@ -401,7 +401,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Refused Exam
   - 0
   - 0.0%
@@ -409,7 +409,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - OOJ
   - 35
   - 49.3%
@@ -417,7 +417,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Other
   - 0
   - 0.0%
@@ -425,7 +425,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Domestic Violence Risk
   - 0
   - 0.0%
@@ -433,7 +433,7 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -441,10 +441,18 @@
 - !!python/tuple
   - ALL
   - Dispositions - New Partners & Clusters
-  - New Clusters Previous Pos
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 36
+  - 50.7%
   - null
-  - 4
-  - 2.5%
+- !!python/tuple
+  - ALL
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 2
+  - 1.2%
   - null
 - !!python/tuple
   - ALL
@@ -456,83 +464,83 @@
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 63
+  - 9
   - null
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 13
-  - 20.6%
+  - 2
+  - 22.2%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 28
-  - 44.4%
+  - 3
+  - 33.3%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 41
-  - 65.1%
+  - 5
+  - 55.6%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 55
-  - 87.3%
+  - 9
+  - 100.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - null
-  - 69
+  - 5
   - null
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 3 Days
-  - 15
-  - 21.7%
+  - 2
+  - 40.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 5 Days
-  - 29
-  - 42.0%
+  - 3
+  - 60.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 7 Days
-  - 42
-  - 60.9%
+  - 4
+  - 80.0%
   - null
 - !!python/tuple
   - ALL
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 14 Days
-  - 55
-  - 79.7%
+  - 5
+  - 100.0%
   - null
 - !!python/tuple
   - adevraj
@@ -633,27 +641,35 @@
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.17'
+  - '0.07'
 - !!python/tuple
   - adevraj
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.17'
+  - '0.1'
+- !!python/tuple
+  - adevraj
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 35
+  - 49.3%
+  - null
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 16
+  - 292
   - null
-  - '0.2'
+  - '4.1'
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
@@ -685,7 +701,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.44'
 - !!python/tuple
   - adevraj
   - Partners & Clusters Initiated
@@ -721,63 +737,55 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
+  - New Partners Examined
   - null
-  - 15
-  - 48.4%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, New Pos
-  - 9
-  - 60.0%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, No Test
   - 3
-  - 20.0%
+  - 9.7%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Pos
+  - New Partners Examined
+  - Preventative RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Refused Prev. RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Infected, RX'D
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Neg
-  - 3
-  - 20.0%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, No Test
+  - New Partners Examined
+  - Infected, No RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners Examined
+  - Not Infected
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners No Exam
   - null
   - 11
   - 35.5%
@@ -785,7 +793,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Insufficient Info
   - 1
   - 9.1%
@@ -793,7 +801,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Unable to Locate
   - 1
   - 9.1%
@@ -801,7 +809,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Refused Exam
   - 3
   - 27.3%
@@ -809,7 +817,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - OOJ
   - 1
   - 9.1%
@@ -817,7 +825,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Other
   - 2
   - 18.2%
@@ -825,7 +833,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Domestic Violence Risk
   - 3
   - 27.3%
@@ -833,7 +841,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -841,7 +849,23 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Previous Pos
+  - New Partners No Exam
+  - Previous Prev RX
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Previous RX
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Partners Open
   - null
   - 2
   - 6.5%
@@ -849,71 +873,55 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Partners Open
+  - New Clusters Examined
   - null
-  - 6
-  - 19.4%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 16
-  - 53.3%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, New Pos
-  - 3
-  - 18.8%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, Still Neg
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, No Test
-  - 2
-  - 12.5%
-  - null
-- !!python/tuple
-  - adevraj
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Pos
+  - New Clusters Examined
+  - Preventative RX
   - 0
-  - 0.0%
+  - 0%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Neg
-  - 4
-  - 25.0%
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, No Test
-  - 1
-  - 6.2%
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
   - null
   - 11
   - 36.7%
@@ -921,7 +929,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -929,7 +937,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Unable to Locate
   - 0
   - 0.0%
@@ -937,7 +945,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Refused Exam
   - 0
   - 0.0%
@@ -945,7 +953,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - OOJ
   - 6
   - 54.5%
@@ -953,7 +961,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Other
   - 0
   - 0.0%
@@ -961,7 +969,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Domestic Violence Risk
   - 0
   - 0.0%
@@ -969,7 +977,7 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -977,10 +985,18 @@
 - !!python/tuple
   - adevraj
   - Dispositions - New Partners & Clusters
-  - New Clusters Previous Pos
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 5
+  - 45.5%
   - null
-  - 0
-  - 0.0%
+- !!python/tuple
+  - adevraj
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 1
+  - 3.3%
   - null
 - !!python/tuple
   - adevraj
@@ -992,83 +1008,83 @@
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 15
+  - 3
   - null
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 2
-  - 13.3%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 4
-  - 26.7%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 7 Days
-  - 5
+  - 1
   - 33.3%
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 14 Days
-  - 11
-  - 73.3%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 16
-  - null
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 3 Days
-  - 5
-  - 31.2%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 5 Days
-  - 7
-  - 43.8%
-  - null
-- !!python/tuple
-  - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 11
-  - 68.8%
+  - 1
+  - 33.3%
   - null
 - !!python/tuple
   - adevraj
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 13
-  - 81.2%
+  - 3
+  - 100.0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 5 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 7 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - adevraj
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 14 Days
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - avance
@@ -1169,27 +1185,35 @@
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.07'
+  - '0.08'
 - !!python/tuple
   - avance
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.07'
+  - '0.12'
+- !!python/tuple
+  - avance
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 39
+  - 53.4%
+  - null
 - !!python/tuple
   - avance
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 12
+  - 360
   - null
-  - '0.2'
+  - '4.9'
 - !!python/tuple
   - avance
   - Partners & Clusters Initiated
@@ -1221,7 +1245,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.41'
 - !!python/tuple
   - avance
   - Partners & Clusters Initiated
@@ -1257,63 +1281,55 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
+  - New Partners Examined
   - null
-  - 9
-  - 30.0%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, New Pos
-  - 2
-  - 22.2%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, No Test
-  - 4
-  - 44.4%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Pos
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Neg
   - 3
+  - 10.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Preventative RX
+  - 1
   - 33.3%
   - null
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, No Test
+  - New Partners Examined
+  - Refused Prev. RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners Examined
+  - Infected, RX'D
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Infected, No RX
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Not Infected
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners No Exam
   - null
   - 15
   - 50.0%
@@ -1321,7 +1337,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -1329,7 +1345,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Unable to Locate
   - 3
   - 20.0%
@@ -1337,7 +1353,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Refused Exam
   - 2
   - 13.3%
@@ -1345,7 +1361,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - OOJ
   - 2
   - 13.3%
@@ -1353,7 +1369,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Other
   - 2
   - 13.3%
@@ -1361,7 +1377,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Domestic Violence Risk
   - 2
   - 13.3%
@@ -1369,7 +1385,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Patient Deceased
   - 4
   - 26.7%
@@ -1377,79 +1393,79 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Partners Previous Pos
+  - New Partners No Exam
+  - Previous Prev RX
+  - 0
+  - 0.0%
   - null
-  - 2
-  - 6.7%
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Partners Previous RX
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
   - New Partners Open
   - null
-  - 9
-  - 30.0%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 12
-  - 46.2%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, New Pos
-  - 2
-  - 16.7%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, No Test
-  - 4
-  - 33.3%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Pos
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - avance
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Neg
   - 3
-  - 25.0%
+  - 10.0%
   - null
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, No Test
+  - New Clusters Examined
+  - null
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters Examined
+  - Preventative RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
   - null
   - 13
   - 50.0%
@@ -1457,7 +1473,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -1465,7 +1481,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Unable to Locate
   - 0
   - 0.0%
@@ -1473,7 +1489,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Refused Exam
   - 0
   - 0.0%
@@ -1481,7 +1497,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - OOJ
   - 5
   - 38.5%
@@ -1489,7 +1505,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Other
   - 0
   - 0.0%
@@ -1497,7 +1513,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Domestic Violence Risk
   - 0
   - 0.0%
@@ -1505,7 +1521,7 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -1513,10 +1529,18 @@
 - !!python/tuple
   - avance
   - Dispositions - New Partners & Clusters
-  - New Clusters Previous Pos
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 8
+  - 61.5%
   - null
-  - 1
-  - 3.8%
+- !!python/tuple
+  - avance
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - avance
@@ -1528,83 +1552,83 @@
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 9
-  - null
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 3 Days
-  - 2
-  - 22.2%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 5 Days
   - 3
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
+  - Within 3 Days
+  - 1
   - 33.3%
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 7 Days
-  - 6
-  - 66.7%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 14 Days
-  - 6
-  - 66.7%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 12
-  - null
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 3 Days
-  - 2
-  - 16.7%
-  - null
-- !!python/tuple
-  - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 7
-  - 58.3%
+  - 1
+  - 33.3%
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 9
-  - 75.0%
+  - 3
+  - 100.0%
   - null
 - !!python/tuple
   - avance
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 10
-  - 83.3%
+  - 3
+  - 100.0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 0
+  - null
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 5 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 7 Days
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - avance
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 14 Days
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - dbowman
@@ -1705,27 +1729,35 @@
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.11'
+  - '0.03'
 - !!python/tuple
   - dbowman
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.11'
+  - '0.06'
+- !!python/tuple
+  - dbowman
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 45
+  - 56.2%
+  - null
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 16
+  - 258
   - null
-  - '0.2'
+  - '3.2'
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
@@ -1757,7 +1789,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.38'
 - !!python/tuple
   - dbowman
   - Partners & Clusters Initiated
@@ -1793,63 +1825,55 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
+  - New Partners Examined
   - null
-  - 14
-  - 46.7%
-  - null
-- !!python/tuple
-  - dbowman
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, New Pos
   - 1
-  - 7.1%
+  - 3.3%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, Still Neg
+  - New Partners Examined
+  - Preventative RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, No Test
-  - 5
-  - 35.7%
-  - null
-- !!python/tuple
-  - dbowman
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Pos
+  - New Partners Examined
+  - Refused Prev. RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Neg
-  - 8
-  - 57.1%
+  - New Partners Examined
+  - Infected, RX'D
+  - 1
+  - 100.0%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, No Test
+  - New Partners Examined
+  - Infected, No RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners No Exam
   - null
   - 8
   - 26.7%
@@ -1857,7 +1881,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Insufficient Info
   - 2
   - 25.0%
@@ -1865,7 +1889,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Unable to Locate
   - 1
   - 12.5%
@@ -1873,7 +1897,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Refused Exam
   - 2
   - 25.0%
@@ -1881,7 +1905,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - OOJ
   - 0
   - 0.0%
@@ -1889,7 +1913,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Other
   - 0
   - 0.0%
@@ -1897,7 +1921,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Domestic Violence Risk
   - 1
   - 12.5%
@@ -1905,7 +1929,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Patient Deceased
   - 2
   - 25.0%
@@ -1913,79 +1937,79 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Partners Previous Pos
+  - New Partners No Exam
+  - Previous Prev RX
+  - 0
+  - 0.0%
   - null
-  - 5
-  - 16.7%
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Partners Previous RX
+  - null
+  - 1
+  - 3.3%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
   - New Partners Open
   - null
-  - 9
-  - 30.0%
+  - 6
+  - 20.0%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
+  - New Clusters Examined
   - null
-  - 12
-  - 30.8%
-  - null
-- !!python/tuple
-  - dbowman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, New Pos
   - 3
-  - 25.0%
+  - 7.7%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, Still Neg
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - dbowman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, No Test
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - dbowman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Pos
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - dbowman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Neg
+  - New Clusters Examined
+  - Preventative RX
   - 1
-  - 8.3%
+  - 33.3%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, No Test
+  - New Clusters Examined
+  - Refused Prev. RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, RX'D
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters Examined
+  - Infected, No RX
+  - 1
+  - 33.3%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
   - null
   - 20
   - 51.3%
@@ -1993,7 +2017,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -2001,7 +2025,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Unable to Locate
   - 0
   - 0.0%
@@ -2009,7 +2033,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Refused Exam
   - 0
   - 0.0%
@@ -2017,7 +2041,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - OOJ
   - 11
   - 55.0%
@@ -2025,7 +2049,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Other
   - 0
   - 0.0%
@@ -2033,7 +2057,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Domestic Violence Risk
   - 0
   - 0.0%
@@ -2041,7 +2065,7 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -2049,10 +2073,18 @@
 - !!python/tuple
   - dbowman
   - Dispositions - New Partners & Clusters
-  - New Clusters Previous Pos
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 9
+  - 45.0%
   - null
-  - 2
-  - 5.1%
+- !!python/tuple
+  - dbowman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
@@ -2064,83 +2096,83 @@
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 14
+  - 1
   - null
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 5
-  - 35.7%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 8
-  - 57.1%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 8
-  - 57.1%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 10
-  - 71.4%
+  - 1
+  - 100.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - null
-  - 12
-  - null
-  - null
-- !!python/tuple
-  - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - Within 3 Days
   - 3
-  - 25.0%
+  - null
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 2
+  - 66.7%
+  - null
+- !!python/tuple
+  - dbowman
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 5 Days
-  - 4
-  - 33.3%
+  - 2
+  - 66.7%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 7 Days
-  - 6
-  - 50.0%
+  - 3
+  - 100.0%
   - null
 - !!python/tuple
   - dbowman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 14 Days
-  - 9
-  - 75.0%
+  - 3
+  - 100.0%
   - null
 - !!python/tuple
   - fpoole
@@ -2241,27 +2273,35 @@
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.12'
+  - '0.09'
 - !!python/tuple
   - fpoole
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.12'
+  - '0.11'
+- !!python/tuple
+  - fpoole
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 44
+  - 55.0%
+  - null
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 17
+  - 239
   - null
-  - '0.2'
+  - '3.0'
 - !!python/tuple
   - fpoole
   - Partners & Clusters Initiated
@@ -2329,63 +2369,55 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
+  - New Partners Examined
   - null
-  - 15
-  - 37.5%
-  - null
-- !!python/tuple
-  - fpoole
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, New Pos
-  - 5
-  - 33.3%
+  - 2
+  - 5.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, Still Neg
+  - New Partners Examined
+  - Preventative RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, No Test
-  - 5
-  - 33.3%
+  - New Partners Examined
+  - Refused Prev. RX
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Pos
+  - New Partners Examined
+  - Infected, RX'D
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Neg
-  - 5
-  - 33.3%
+  - New Partners Examined
+  - Infected, No RX
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, No Test
+  - New Partners Examined
+  - Not Infected
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - null
   - 20
   - 50.0%
@@ -2393,7 +2425,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Insufficient Info
   - 4
   - 20.0%
@@ -2401,7 +2433,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Unable to Locate
   - 3
   - 15.0%
@@ -2409,7 +2441,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Refused Exam
   - 1
   - 5.0%
@@ -2417,7 +2449,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - OOJ
   - 5
   - 25.0%
@@ -2425,7 +2457,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Other
   - 2
   - 10.0%
@@ -2433,7 +2465,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Domestic Violence Risk
   - 2
   - 10.0%
@@ -2441,7 +2473,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Patient Deceased
   - 3
   - 15.0%
@@ -2449,7 +2481,23 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Previous Pos
+  - New Partners No Exam
+  - Previous Prev RX
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Previous RX
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Partners Open
   - null
   - 3
   - 7.5%
@@ -2457,71 +2505,55 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Partners Open
+  - New Clusters Examined
   - null
-  - 5
-  - 12.5%
-  - null
-- !!python/tuple
-  - fpoole
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 15
-  - 41.7%
+  - 2
+  - 5.6%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, New Pos
-  - 4
-  - 26.7%
-  - null
-- !!python/tuple
-  - fpoole
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, Still Neg
+  - New Clusters Examined
+  - Preventative RX
   - 1
-  - 6.7%
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, No Test
-  - 4
-  - 26.7%
-  - null
-- !!python/tuple
-  - fpoole
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Pos
+  - New Clusters Examined
+  - Refused Prev. RX
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Neg
-  - 5
-  - 33.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, No Test
+  - New Clusters Examined
+  - Infected, RX'D
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters Examined
+  - Infected, No RX
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
   - null
   - 14
   - 38.9%
@@ -2529,7 +2561,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -2537,7 +2569,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Unable to Locate
   - 0
   - 0.0%
@@ -2545,7 +2577,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Refused Exam
   - 0
   - 0.0%
@@ -2553,7 +2585,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - OOJ
   - 9
   - 64.3%
@@ -2561,7 +2593,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Other
   - 0
   - 0.0%
@@ -2569,7 +2601,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Domestic Violence Risk
   - 0
   - 0.0%
@@ -2577,7 +2609,7 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -2585,10 +2617,18 @@
 - !!python/tuple
   - fpoole
   - Dispositions - New Partners & Clusters
-  - New Clusters Previous Pos
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 5
+  - 35.7%
   - null
-  - 0
-  - 0.0%
+- !!python/tuple
+  - fpoole
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 1
+  - 2.8%
   - null
 - !!python/tuple
   - fpoole
@@ -2600,83 +2640,83 @@
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 15
-  - null
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 3 Days
   - 2
-  - 13.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 5 Days
-  - 6
-  - 40.0%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 7 Days
-  - 11
-  - 73.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
-  - Within 14 Days
-  - 14
-  - 93.3%
-  - null
-- !!python/tuple
-  - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 15
   - null
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 4
-  - 26.7%
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 8
-  - 53.3%
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 9
-  - 60.0%
+  - 1
+  - 50.0%
   - null
 - !!python/tuple
   - fpoole
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 13
-  - 86.7%
+  - 2
+  - 100.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - null
+  - 2
+  - null
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 3 Days
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 5 Days
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 7 Days
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - fpoole
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
+  - Within 14 Days
+  - 2
+  - 100.0%
   - null
 - !!python/tuple
   - gfreeman
@@ -2777,27 +2817,35 @@
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
-  - Partner Notification Index
+  - Disease Intervention Index
   - null
   - null
   - null
-  - '0.13'
+  - '0.05'
 - !!python/tuple
   - gfreeman
   - Case Assignments & Outcomes
-  - Testing Index
+  - Treatment Index
   - null
   - null
   - null
-  - '0.13'
+  - '0.08'
+- !!python/tuple
+  - gfreeman
+  - Case Assignments & Outcomes
+  - Cases W/ Source Identified
+  - null
+  - 38
+  - 48.1%
+  - null
 - !!python/tuple
   - gfreeman
   - Partners & Clusters Initiated
   - Total Period Partners
   - null
-  - 14
+  - 298
   - null
-  - '0.2'
+  - '3.8'
 - !!python/tuple
   - gfreeman
   - Partners & Clusters Initiated
@@ -2829,7 +2877,7 @@
   - null
   - null
   - null
-  - '0.4'
+  - '0.35'
 - !!python/tuple
   - gfreeman
   - Partners & Clusters Initiated
@@ -2865,63 +2913,55 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
+  - New Partners Examined
   - null
-  - 14
-  - 50.0%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, New Pos
-  - 7
-  - 50.0%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, Still Neg
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - Prev. Neg, No Test
-  - 4
-  - 28.6%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Pos
+  - New Partners Examined
+  - Preventative RX
   - 0
-  - 0.0%
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, New Neg
-  - 3
-  - 21.4%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Partners Notified
-  - No Prev. Test, No Test
+  - New Partners Examined
+  - Refused Prev. RX
   - 0
-  - 0.0%
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners Examined
+  - Infected, RX'D
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners No Exam
   - null
   - 13
   - 46.4%
@@ -2929,7 +2969,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -2937,7 +2977,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Unable to Locate
   - 2
   - 15.4%
@@ -2945,7 +2985,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Refused Exam
   - 2
   - 15.4%
@@ -2953,7 +2993,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - OOJ
   - 2
   - 15.4%
@@ -2961,7 +3001,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Other
   - 2
   - 15.4%
@@ -2969,7 +3009,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Domestic Violence Risk
   - 3
   - 23.1%
@@ -2977,7 +3017,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Not Notified
+  - New Partners No Exam
   - Patient Deceased
   - 2
   - 15.4%
@@ -2985,7 +3025,23 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Previous Pos
+  - New Partners No Exam
+  - Previous Prev RX
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Previous RX
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Partners Open
   - null
   - 2
   - 7.1%
@@ -2993,71 +3049,55 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Partners Open
+  - New Clusters Examined
   - null
-  - 3
-  - 10.7%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - null
-  - 12
-  - 41.4%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, New Pos
-  - 3
-  - 25.0%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, Still Neg
   - 0
   - 0.0%
   - null
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - Prev. Neg, No Test
-  - 5
-  - 41.7%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Pos
+  - New Clusters Examined
+  - Preventative RX
   - 0
-  - 0.0%
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, New Neg
-  - 1
-  - 8.3%
-  - null
-- !!python/tuple
-  - gfreeman
-  - Dispositions - New Partners & Clusters
-  - New Clusters Notified
-  - No Prev. Test, No Test
+  - New Clusters Examined
+  - Refused Prev. RX
   - 0
-  - 0.0%
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters Examined
+  - Infected, RX'D
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Infected, No RX
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Examined
+  - Not Infected
+  - 0
+  - 0%
+  - null
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters No Exam
   - null
   - 13
   - 44.8%
@@ -3065,7 +3105,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Insufficient Info
   - 0
   - 0.0%
@@ -3073,7 +3113,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Unable to Locate
   - 0
   - 0.0%
@@ -3081,7 +3121,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Refused Exam
   - 0
   - 0.0%
@@ -3089,7 +3129,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - OOJ
   - 4
   - 30.8%
@@ -3097,7 +3137,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Other
   - 0
   - 0.0%
@@ -3105,7 +3145,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Domestic Violence Risk
   - 0
   - 0.0%
@@ -3113,7 +3153,7 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Not Notified
+  - New Clusters No Exam
   - Patient Deceased
   - 0
   - 0.0%
@@ -3121,10 +3161,18 @@
 - !!python/tuple
   - gfreeman
   - Dispositions - New Partners & Clusters
-  - New Clusters Previous Pos
+  - New Clusters No Exam
+  - Previous Prev RX
+  - 9
+  - 69.2%
   - null
-  - 1
-  - 3.4%
+- !!python/tuple
+  - gfreeman
+  - Dispositions - New Partners & Clusters
+  - New Clusters Previous RX
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - gfreeman
@@ -3136,81 +3184,81 @@
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - null
-  - 14
+  - 0
   - null
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 3 Days
-  - 2
-  - 14.3%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 5 Days
-  - 7
-  - 50.0%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 7 Days
-  - 11
-  - 78.6%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Partners Notified
+  - Speed of Exam - Partners & Clusters
+  - New Partners Examined
   - Within 14 Days
-  - 14
-  - 100.0%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - null
-  - 12
+  - 0
   - null
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 3 Days
-  - 1
-  - 8.3%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 5 Days
-  - 3
-  - 25.0%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 7 Days
-  - 7
-  - 58.3%
+  - 0
+  - 0%
   - null
 - !!python/tuple
   - gfreeman
-  - Speed of Notification - Partners & Clusters
-  - New Clusters Notified
+  - Speed of Exam - Partners & Clusters
+  - New Clusters Examined
   - Within 14 Days
-  - 10
-  - 83.3%
+  - 0
+  - 0%
   - null
