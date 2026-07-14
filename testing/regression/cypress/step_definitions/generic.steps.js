@@ -20,6 +20,10 @@ When('I type {string} into the {string} field', (value, label) => {
     cy.findByRole('textbox', { name: label }).type(value);
 });
 
+When('I type {int} into the {string} field', (value, label) => {
+    cy.findByRole('spinbutton', { name: label }).type(value);
+});
+
 Then('The {string} {string} should be disabled', (name, role) => {
     cy.findByRole(role, { name }).should('be.disabled');
 });
@@ -29,11 +33,8 @@ When('I click the {string} button', (name) => {
 });
 
 When('I select radio {string} in the {string} field', (value, label) => {
-    cy.findByRole('radiogroup', {name: label})
-      .findByRole('radio', { name: value })
-      .check({ force: true });
+    cy.findByRole('radiogroup', { name: label }).findByRole('radio', { name: value }).check({ force: true });
 });
-
 
 Then('I should see a modal labelled {string}', (name) => {
     const modalHeadingTextMatcher = (elementText, element) => {
@@ -73,16 +74,21 @@ Then('I should see option {string} in the {string} combobox input field', (value
     cy.findByRole('combobox', { name: label }).find('option:selected').should('have.text', value);
 });
 
+Then('I should see option {string} in the {string} multi-select combobox input field', (value, label) => {
+    cy.findByRole('combobox', { name: label })
+        .parentsUntil('.multi-select__control')
+        .contains('.multi-select__multi-value__label', value)
+        .should('be.visible');
+});
+
 Then('I am redirected to {string}', (pathname) => {
     cy.location('pathname').should('eq', pathname);
 });
 
 Then('I should not see the {string} {string}', (label, role) => {
-    cy.findByRole({role}, { name: label }).should('not.exist');
-})
+    cy.findByRole({ role }, { name: label }).should('not.exist');
+});
 
 Then('I should see {string} radio selected in the {string} field', (name, label) => {
-    cy.findByRole('radiogroup', {name: label})
-      .findByRole('radio', { name })
-      .should('be.checked');
+    cy.findByRole('radiogroup', { name: label }).findByRole('radio', { name }).should('be.checked');
 });

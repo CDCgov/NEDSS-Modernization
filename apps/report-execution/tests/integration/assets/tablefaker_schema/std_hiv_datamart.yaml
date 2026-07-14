@@ -13,7 +13,14 @@ tables:
         data: row_id
         is_primary_key: true
       - column_name: inv_case_status
-        data: fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
+        data: |
+          # Rows 1-6 back STD_HIV_DATAMART's controlled duplicate-case test
+          # patient (see std_hiv_datamart's patient_name/fl_fup_exam_dt) --
+          # force Confirmed so joins through INVESTIGATION (e.g. qa_07) don't
+          # depend on a lucky random draw.
+          if row_id <= 6:
+              return "Confirmed"
+          return fake.random_element(["Confirmed", "Probable", "Suspect", "Unknown"])
         null_percentage: 0
       - column_name: record_status_cd
         data: fake.random_element(["ACTIVE", "INACTIVE"])
@@ -23,8 +30,16 @@ tables:
           id_num = fake.unique.random_int(10000, 99999)
           return f"CAS100{id_num}GA01"
       - column_name: CASE_UID
-        data: row_id + 10000000
-        null_percentage: .05
+        data: |
+          # Never null for rows 1-6 (see inv_case_status above) -- handled
+          # in-branch instead of via null_percentage so the controlled test
+          # rows can't have their EVENT_METRIC/USER_PROFILE join broken by an
+          # unlucky null draw.
+          if row_id <= 6:
+              return row_id + 10000000
+          if random.randint(1, 100) <= 5:
+              return None
+          return row_id + 10000000
 
   - table_name: "[RDB].[dbo].[D_PROVIDER]"
     row_count: 250
@@ -32,6 +47,12 @@ tables:
       - column_name: provider_key
         data: row_id
         is_primary_key: true
+      - column_name: provider_quick_code
+        data: |
+          if row_id in [2, 3, 4, 5]:
+              return "fulton"
+          return random.choice(["dekalb", "fulton", "JLJ", "local", "pks", "state"])
+        null_percentage: 0.05
       - column_name: provider_first_name
         data: fake.first_name()
         null_percentage: 0.05
@@ -52,6 +73,28 @@ tables:
         type: string
         data: |
           return f"{fake.last_name()} Medical Center"
+
+  - table_name: "[RDB].[dbo].[D_INTERVIEW]"
+    row_count: 60
+    columns:
+      - column_name: d_interview_key
+        data: row_id
+        is_primary_key: true
+      - column_name: record_status_cd
+        data: random.choice(["ACTIVE", "ACTIVE", "ACTIVE", "LOG_DEL"])
+      - column_name: local_id
+        data: |
+          return f"IX{100000 + row_id}"
+      - column_name: ix_type
+        data: |
+          return random.choices(
+            ["Initial/Original", "Re-Interview", "Cluster", "Field Follow-up"],
+            weights=[70, 20, 5, 5]
+          )[0]
+      - column_name: ix_location
+        data: random.choices(["Clinic", "Field", "Telephone"], weights=[55, 35, 10])[0]
+      - column_name: ix_date
+        data: fake.date_between(start_date=date(2024, 1, 1), end_date=date(2024, 3, 31))
 
   - table_name: "[RDB].[dbo].[LAB_TEST]"
     row_count: 200
@@ -149,8 +192,8 @@ tables:
 
       - column_name: patient_name
         data: |
-          # Use first 50 rows for controlled duplicates (but only 6 of them are the test patient)
-          if row_id < 6:
+          # Use first 6 rows for controlled duplicates (the test patient)
+          if row_id <= 6:
               return "Duplicates, Test"
           else:
               # Fill with realistic names for the rest of the test block
@@ -191,7 +234,7 @@ tables:
       - column_name: diagnosis_cd
         data: |
           # For the controlled test patient (first 6 rows), force diagnosis '200'
-          if row_id < 6:
+          if row_id <= 6:
               return '200'
           else:
               return fake.random_element(['200', '300', '710', '720', '730', '790', '900']) if fake.random_int(1,100) <= 90 else None
@@ -221,7 +264,11 @@ tables:
         null_percentage: 0.05
 
       - column_name: ca_patient_intv_status
-        data: fake.random_element(["I - Interviewed"]) if fake.random_int(1,100) <= 10 else None
+        data: |
+          return random.choices(
+            ["I - Interviewed", "A - Awaiting", "R - Refused Interview", "U - Unable to Locate", "O - Other", None],
+            weights=[65, 10, 7, 7, 6, 5]
+          )[0]
 
       - column_name: program_jurisdiction_oid
         data: fake.random_element(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
@@ -245,7 +292,7 @@ tables:
       - column_name: inv_case_status
         data: |
           # Force the 6 test rows to be 'Confirmed'
-          if row_id < 6:
+          if row_id <= 6:
               return 'Confirmed'
           else:
               return copy_from_fk("[RDB].[dbo].[INVESTIGATION]", "investigation_key", "inv_case_status")
@@ -282,12 +329,16 @@ tables:
           else: return None
 
       - column_name: investigator_interview_key
-        data: fake.random_int(10000000, 99999999)
+        data: |
+          # Ties to D_PROVIDER.provider_key / F_INTERVIEW_CASE.ix_interviewer_key
+          # (both keyed 2-5 for rows 1-60) so PA05's worker-join queries have
+          # matching activity to find.
+          return 2 + ((row_id - 1) % 4)
 
       - column_name: referral_basis
         data: |
           # For test rows, set to NULL to use fl_fup_exam_dt directly
-          if row_id < 6:
+          if row_id <= 6:
               return None
           else:
               return fake.random_element(["T1 - Positive Test", "T2 - Morbidity Report", None])
@@ -297,27 +348,101 @@ tables:
         data: |
           base = date(2023, 1, 1)
 
-          # Controlled test rows: first 6 rows form three clusters of 2 rows each
-          if row_id < 6:
-              cluster = row_id // 2   # 0, 1, 2
-              pos = row_id % 2        # 0 or 1
-              if cluster == 0:
-                  gap = 25
-              elif cluster == 1:
-                  gap = 55
-              else:
-                  gap = 85
+          # Controlled test rows: first 6 rows form three clusters of 2 rows
+          # each (row_id is 1-based, so index from 0). Never null -- handled
+          # in-branch below instead of via null_percentage -- so this
+          # deterministic duplicate-pair scenario (used by qa_07) can't be
+          # broken by an unlucky null draw regardless of what else changes
+          # upstream in the shared random/Faker/numpy streams.
+          if row_id <= 6:
+              idx = row_id - 1        # 0-5
+              cluster = idx // 2      # 0, 1, 2
+              pos = idx % 2           # 0 or 1
+              gap = [25, 55, 85][cluster]
               cluster_offset = cluster * 1000   # separate clusters by 1000 days
               return base + timedelta(days=cluster_offset + pos * gap)
 
           # For all other rows, we want to avoid accidental duplicates within the same patient/diagnosis.
           # Use a wide random spread (0–3650 days) and add a unique increment based on row_id.
-          else:
-              # Ensure that for the same patient_name/diagnosis, the dates are effectively unique.
-              # We'll use a large random offset plus a deterministic per-row factor.
-              offset = (row_id * 31) % 3650
-              return base + timedelta(days=offset)
-        null_percentage: 0.1
+          # ~10% return None directly (in place of null_percentage) for the same reason as above.
+          if random.randint(1, 100) <= 10:
+              return None
+          offset = (row_id * 31) % 3650
+          return base + timedelta(days=offset)
+
+      - column_name: std_prtnrs_prd_trnsgndr_ttl
+        data: str(random.randint(0, 4))
+
+      - column_name: soc_prtnrs_prd_fml_ttl
+        data: str(random.randint(0, 4))
+
+      - column_name: soc_prtnrs_prd_male_ttl
+        data: str(random.randint(0, 4))
+
+  - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
+    row_count: 60
+    columns:
+      - column_name: investigation_key
+        data: row_id
+      - column_name: d_interview_key
+        data: row_id
+      - column_name: ix_interviewer_key
+        data: |
+          return 2 + ((row_id - 1) % 4)
+
+  - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
+    row_count: 40
+    columns:
+      - column_name: d_contact_record_key
+        data: row_id
+        is_primary_key: true
+      - column_name: local_id
+        data: |
+          return f"CTR{row_id:03d}"
+      - column_name: record_status_cd
+        data: random.choice(["ACTIVE", "INACTIVE"])
+      - column_name: record_status_time
+        data: |
+          return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
+      - column_name: ctt_referral_basis
+        data: random.choice(["P1 - Partner, Sex", "S1 - Social Contact 1", "A1 - Associate 1", "P2 - Partner, Needle-Sharing"])
+      - column_name: ctt_processing_decision
+        data: random.choice(["Field Follow-up", "Secondary Referral", "Record Search Closure"])
+      - column_name: add_time
+        data: |
+          return datetime(2024, 1, min(row_id, 28), 9, 0, 0)
+      - column_name: last_chg_time
+        data: |
+          return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
+
+  - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
+    row_count: 40
+    columns:
+      - column_name: d_contact_record_key
+        data: row_id
+      - column_name: subject_investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+      - column_name: contact_investigation_key
+        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+      - column_name: third_party_entity_key
+        data: 1
+      - column_name: contact_key
+        data: |
+          return 1000 + row_id
+      - column_name: subject_key
+        data: |
+          return 2000 + (1 if row_id in (1, 2, 3) else 2)
+      - column_name: third_party_investigation_key
+        data: 1
+      - column_name: contact_interview_key
+        data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "d_interview_key")
+      - column_name: dispositioned_by_key
+        data: 1
+      - column_name: contact_exposure_site_key
+        data: 1
+      - column_name: contact_investigator_key
+        data: foreign_key("[RDB].[dbo].[D_PROVIDER]", "provider_key")
+
   - table_name: "[RDB].[dbo].[LAB_TEST_RESULT]"
     row_count: 200
     columns:
@@ -399,8 +524,16 @@ tables:
         data: row_id + 10000000
         is_primary_key: true
       - column_name: ADD_USER_ID
-        data: row_id + 10000000
-        null_percentage: .05
+        data: |
+          # Never null for rows 1-6 (INVESTIGATION's controlled test rows --
+          # see INVESTIGATION.inv_case_status) so their EVENT_METRIC/
+          # USER_PROFILE join (used by e.g. qa_07) can't be broken by an
+          # unlucky null draw.
+          if row_id <= 6:
+              return row_id + 10000000
+          if random.randint(1, 100) <= 5:
+              return None
+          return row_id + 10000000
   
   - table_name: "[RDB].[dbo].[USER_PROFILE]"
     row_count: 1000

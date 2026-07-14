@@ -91,7 +91,7 @@ const ReportResultPage = ({
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
                         <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading}>
-                            Refine Report
+                            Refine report
                         </Button>
                     </Permitted>
                     <Permitted

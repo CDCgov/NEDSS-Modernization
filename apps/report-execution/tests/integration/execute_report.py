@@ -40,7 +40,7 @@ class TestIntegrationExecuteReport:
                 # Filter operator is used here as it is a stable, small table
                 'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
-                'sort_by': 'UPPER([Column Title]) ASC',
+                'sort_by': 'UPPER([filter_operator_code]) ASC',
             }
         )
         result = execute_report(report_spec)
@@ -57,8 +57,11 @@ class TestIntegrationExecuteReport:
             'status_time',
         ]
 
-        assert len(result.content.data) == 11
-        assert len(result.content.data[0]) == len(result.content.columns)
+        data = result.content.data
+        assert len(data) == 11
+        assert len(data[0]) == len(result.content.columns)
+        for i in range(1, len(data)):
+            assert data[i - 1][1] <= data[i][1]
 
     def test_execute_report_invalid_query_syntax(self):
         report_spec = ReportSpec.model_validate(

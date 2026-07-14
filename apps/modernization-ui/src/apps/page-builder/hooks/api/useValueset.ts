@@ -8,9 +8,7 @@ type State =
     | { status: 'error'; error: string };
 
 type Action =
-    | { type: 'fetch'; name: string }
-    | { type: 'complete'; valueset: Valueset }
-    | { type: 'error'; error: string };
+    { type: 'fetch'; name: string } | { type: 'complete'; valueset: Valueset } | { type: 'error'; error: string };
 
 const reducer = (_state: State, action: Action): State => {
     switch (action.type) {

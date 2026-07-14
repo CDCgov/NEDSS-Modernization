@@ -4,6 +4,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PatientBirthDemographicsSteps {
 
@@ -21,9 +22,18 @@ public class PatientBirthDemographicsSteps {
     this.active.maybeActive().ifPresent(patient -> applier.withBirthday(patient, value));
   }
 
+  @Given("the patient was born exactly at {string}")
+  public void bornOnWithTime(final String timestamp) {
+    LocalDateTime exactBirthday = LocalDateTime.parse(timestamp);
+
+    this.active.maybeActive().ifPresent(patient -> applier.withBirthday(patient, exactBirthday));
+  }
+
   @Given("the patient was born on {localDate} as of {localDate}")
   public void bornOn(final LocalDate value, final LocalDate asOf) {
-    this.active.maybeActive().ifPresent(patient -> applier.withBirthday(patient, asOf, value));
+    this.active
+        .maybeActive()
+        .ifPresent(patient -> applier.withBirthday(patient, asOf, value.atStartOfDay()));
   }
 
   @Given("the patient was born {int} years ago")
