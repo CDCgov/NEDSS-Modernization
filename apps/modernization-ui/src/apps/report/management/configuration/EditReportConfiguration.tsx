@@ -1,4 +1,3 @@
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import { Button, LinkButton } from 'design-system/button';
 import { useState } from 'react';
@@ -6,16 +5,17 @@ import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportC
 import { FormProvider, useForm } from 'react-hook-form';
 import { ReportControllerService, ReportConfiguration } from 'generated';
 import { useLoaderData, useNavigate, useParams } from 'react-router';
+import { LoadingBlock } from 'libs/loading/block';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
 import styles from 'apps/report/layout/layout.module.scss';
-import { LoadingBlock } from 'libs/loading/block';
 
 const EditReportConfiguration = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
     const viewUrl = `/report/management/configuration/${reportUid}/${dataSourceUid}`;
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown | null>(null);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const config = useLoaderData<ReportConfiguration>();
 
@@ -25,29 +25,21 @@ const EditReportConfiguration = () => {
         mode: 'onSubmit',
     });
 
-    const handleSubmit = form.handleSubmit(
-        (data) => {
-            setSubmitting(true);
-            setError('');
+    const handleSubmit = form.handleSubmit((data) => {
+        setSubmitting(true);
+        setError(null);
 
-            ReportControllerService.editReport({
-                reportUid,
-                dataSourceUid,
-                requestBody: formToRequest(data),
+        ReportControllerService.editReport({
+            reportUid,
+            dataSourceUid,
+            requestBody: formToRequest(data),
+        })
+            .then(() => {
+                navigate(viewUrl);
             })
-                .then(() => {
-                    navigate(viewUrl);
-                })
-                .catch((err) => {
-                    setError(JSON.stringify(err));
-                })
-                .finally(() => setSubmitting(false));
-        },
-        (errors) => {
-            // TODO make this gather all errors and nicely format
-            setError(JSON.stringify(errors));
-        }
-    );
+            .catch(setError)
+            .finally(() => setSubmitting(false));
+    });
 
     return !config ? (
         <LoadingBlock />
@@ -66,7 +58,7 @@ const EditReportConfiguration = () => {
             }
         >
             <div className={styles.columnContent}>
-                {error && <AlertBanner type="error">{error}</AlertBanner>}
+                {!!error && <ApiErrorBanner action="editing" item="report" error={error} />}
                 <FormProvider {...form}>
                     <form className={styles.columnContent} onSubmit={handleSubmit}>
                         <ReportConfigurationContent isEditable={true} config={config} />

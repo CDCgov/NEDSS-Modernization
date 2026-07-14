@@ -14,7 +14,7 @@
         "@uswds/uswds": "3.13.0",
         "classnames": "^2.5.1",
         "date-fns": "4.3.0",
-        "dompurify": "^3.4.10",
+        "dompurify": "^3.4.11",
         "globals": "^16.0.0",
         "graphql": "^16.13.0",
         "js-file-download": "^0.4.12",
@@ -77,7 +77,7 @@
         "jest-axe": "^10.0.0",
         "jsdom": "^28.1.0",
         "openapi-typescript-codegen": "^0.29.0",
-        "prettier": "^3.2.5",
+        "prettier": "^3.9.4",
         "prop-types": "^15.8.1",
         "sass": "^1.99.0",
         "storybook": "^10.4.6",
@@ -85,7 +85,7 @@
         "typescript-plugin-css-modules": "^5.0.2",
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.0",
-        "webpack": "^5.105.0"
+        "webpack": "^5.108.3"
     },
     "scripts": {
         "start": "vite",

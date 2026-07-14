@@ -3,17 +3,16 @@ import { Checkbox } from 'design-system/checkbox';
 import { ReportColumn } from 'generated';
 import { Selectable } from 'options';
 import { ReportExecuteForm } from '../ReportRunPage';
-import { validateRequiredRule } from 'validation/entry';
 import { useController } from 'react-hook-form';
 import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Icon } from 'design-system/icon';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { Button } from 'design-system/button';
 import { useState } from 'react';
 import { LiveSearch } from 'components/Search/LiveSearch';
 
 import styles from './column-selector.module.scss';
 import { toSelectable } from './utils';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
@@ -22,7 +21,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
     } = useController<ReportExecuteForm, 'columns'>({
         name: 'columns',
         defaultValue: defaultColumns?.map((c) => c.toString()) ?? [],
-        rules: validateRequiredRule('column selection'),
+        rules: { required: { value: true, message: 'Select at least one column from the Available columns list.' } },
     });
 
     const [searchText, setSearchText] = useState<string>('');
@@ -41,12 +40,15 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
         }
     };
 
-    const handleSelectAll = (checked: boolean) => {
-        if (checked) {
-            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
-        } else {
+    const allSelected = availableOptions.every((o) => value?.includes(o.value));
+    const selectWord = allSelected ? 'Deselect' : 'Select';
+
+    const handleSelectAll = () => {
+        if (allSelected) {
             const optionValues = availableOptions.map((o) => o.value);
             onChange(value!.filter((v) => !optionValues.includes(v)));
+        } else {
+            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
         }
     };
 
@@ -54,7 +56,13 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
 
     return (
         <>
-            {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
+            {error?.message && (
+                <ValidationErrorBanner level={3}>
+                    <ul>
+                        <li>{error.message}</li>
+                    </ul>
+                </ValidationErrorBanner>
+            )}
             <div className={styles.layout}>
                 <div className={styles.grid}>
                     <Card id="available-columns" title="Available columns" collapsible={false}>
@@ -70,8 +78,8 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                             <Checkbox
                                 key="select-all"
                                 className={styles.option}
-                                label={searchText ? 'Select search results' : 'Select all'}
-                                selected={availableOptions.every((o) => value?.includes(o.value))}
+                                label={selectWord + (searchText ? ' search results' : ' all')}
+                                selected={false}
                                 onChange={handleSelectAll}
                             />
                             {availableOptions.map((o) => (

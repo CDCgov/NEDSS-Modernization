@@ -36,7 +36,11 @@ const ResultDataPage = ({
     dataSourceName: string;
 }) => {
     const id = useId();
-    const { data, errors, meta } = Papa.parse<Record<string, string>>(content, { header: true, skipEmptyLines: true });
+    const { data, errors, meta } = Papa.parse<Record<string, string>>(content, {
+        header: true,
+        skipEmptyLines: true,
+        delimiter: ',',
+    });
 
     const formattedTime = formatTimestamp(timestamp);
     const descriptionHtml = description ? DOMPurify.sanitize(marked.parse(description.trim()) as string) : '';
@@ -52,8 +56,8 @@ const ResultDataPage = ({
                 {(errors?.length ?? 0) > 0 && (
                     <AlertMessage type="error" title="There were errors parsing the result:">
                         <ul>
-                            {errors.map((e) => (
-                                <li>{e.message}</li>
+                            {errors.map((e, i) => (
+                                <li key={`error-${i}`}>{e.message}</li>
                             ))}
                         </ul>
                     </AlertMessage>

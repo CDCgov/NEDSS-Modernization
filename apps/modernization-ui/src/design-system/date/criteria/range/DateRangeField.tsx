@@ -1,18 +1,9 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { withoutProperty, withProperty } from 'utils/object';
 import { DatePicker } from 'design-system/date/picker';
 import { Sizing } from 'design-system/field';
-import { DateBetweenCriteria, DateRange } from '../dateCriteria';
+import { DateBetweenCriteria } from '../dateCriteria';
 
 import styles from './date-range-field.module.scss';
-
-import dateRangePicker from '@uswds/uswds/js/usa-date-range-picker';
-
-type Field = keyof DateRange;
-
-const next = (field: Field, value: string | undefined) =>
-    value ? withProperty<DateRange, string>(field, value) : withoutProperty<DateRange>(field);
 
 export type DateRangeFieldProps = {
     id: string;
@@ -25,41 +16,21 @@ export type DateRangeFieldProps = {
 };
 
 const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: DateRangeFieldProps) => {
-    const [range, setRange] = useState<DateRange | undefined>(value?.between);
+    const handleFieldOnChange = (v, type) => {
+        if (type === 'to') {
+            onChange({ between: { to: v, from: value?.between.from } });
+        }
 
-    useEffect(() => {
-        setRange(value?.between);
-    }, [value, setRange]);
-
-    const handleFieldOnChange = useCallback(
-        (field: Field) => (changed: string | undefined) => {
-            const between = next(field, changed)(value?.between);
-            if (between) {
-                onChange({ between });
-            } else {
-                onChange({ between: { from: undefined, to: undefined } });
-            }
-        },
-        [onChange, value?.between]
-    );
-
-    const dateRangePickerRef = useRef<HTMLDivElement>(null);
-
-    useLayoutEffect(() => {
-        const dateRangePickerElement = dateRangePickerRef.current as HTMLDivElement;
-
-        dateRangePicker.on(dateRangePickerElement);
-
-        return () => {
-            dateRangePicker.off(dateRangePickerElement);
-        };
-    });
+        if (type === 'from') {
+            onChange({ between: { to: value?.between.to, from: v } });
+        }
+    };
 
     return (
         <div
             id={id}
+            data-testid="date-range-editor"
             role="group"
-            ref={dateRangePickerRef}
             className={classNames('usa-date-range-picker', styles['date-range-entry'])}
             aria-label={label}
         >
@@ -69,8 +40,8 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
                     sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-from`}
-                    value={range?.from}
-                    onChange={handleFieldOnChange('from')}
+                    value={value?.between?.from}
+                    onChange={(v) => handleFieldOnChange(v, 'from')}
                     required={required}
                 />
             </div>
@@ -80,9 +51,9 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
                     sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-to`}
-                    minDate={range?.from}
-                    value={range?.to}
-                    onChange={handleFieldOnChange('to')}
+                    minDate={value?.between?.from}
+                    value={value?.between?.to}
+                    onChange={(v) => handleFieldOnChange(v, 'to')}
                     required={required}
                 />
             </div>

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +31,11 @@ public class ReportExceptionHandler {
         HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
+  @ExceptionHandler(ForbiddenException.class)
+  public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
+    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage()), HttpStatus.FORBIDDEN);
+  }
+
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponseBody> handleNotFound(NotFoundException ex) {
     return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage()), HttpStatus.NOT_FOUND);
@@ -56,7 +62,10 @@ public class ReportExceptionHandler {
   @ExceptionHandler(RestClientResponseException.class)
   public ResponseEntity<ErrorResponseBody> handleRestClientFailure(RestClientResponseException ex) {
     String err = ex.getResponseBodyAsString();
-    LOGGER.log(System.Logger.Level.ERROR, "Error received from rest client: %s".formatted(err), ex);
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Error received from rest client: %s (Status Code: %s)".formatted(err, ex.getStatusCode()),
+        ex);
     return new ResponseEntity<>(new ErrorResponseBody(err), ex.getStatusCode());
   }
 

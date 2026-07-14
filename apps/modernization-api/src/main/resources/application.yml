@@ -21,12 +21,6 @@ nbs:
       host: localhost
       port: 8001
       url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
-    datasource:
-      mappings:
-        nbs_ods: NBS_ODSE
-        nbs_rdb: RDB
-        nbs_srt: NBS_SRTE
-        nbs_msg: NBS_MSGOUTE
   datasource:
     server: localhost
     port: 1433
@@ -99,8 +93,7 @@ spring:
     deserialization:
       fail-on-unknown-properties: false
   liquibase:
-    enabled: false
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    enabled: true
   jpa:
     properties:
       hibernate:

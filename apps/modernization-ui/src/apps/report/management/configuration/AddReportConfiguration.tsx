@@ -1,4 +1,3 @@
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import { Button, LinkButton } from 'design-system/button';
 import { useState } from 'react';
@@ -9,9 +8,10 @@ import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 import { useNavigate } from 'react-router';
 
 import styles from 'apps/report/layout/layout.module.scss';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
 const AddReportConfiguration = () => {
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown | null>(null);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const navigate = useNavigate();
@@ -20,27 +20,19 @@ const AddReportConfiguration = () => {
         mode: 'onSubmit',
     });
 
-    const handleSubmit = form.handleSubmit(
-        (data) => {
-            setSubmitting(true);
-            setError('');
+    const handleSubmit = form.handleSubmit((data) => {
+        setSubmitting(true);
+        setError(null);
 
-            ReportControllerService.createReport({
-                requestBody: formToRequest(data),
+        ReportControllerService.createReport({
+            requestBody: formToRequest(data),
+        })
+            .then((reportId) => {
+                navigate(`/report/management/configuration/${reportId.reportUid}/${reportId.dataSourceUid}`);
             })
-                .then((reportId) => {
-                    navigate(`/report/management/configuration/${reportId.reportUid}/${reportId.dataSourceUid}`);
-                })
-                .catch((err) => {
-                    setError(JSON.stringify(err));
-                })
-                .finally(() => setSubmitting(false));
-        },
-        (errors) => {
-            // TODO make this gather all errors and nicely format
-            setError(JSON.stringify(errors));
-        }
-    );
+            .catch(setError)
+            .finally(() => setSubmitting(false));
+    });
 
     return (
         <ReportLayout
@@ -57,7 +49,7 @@ const AddReportConfiguration = () => {
             }
         >
             <div className={styles.columnContent}>
-                {error && <AlertBanner type="error">{error}</AlertBanner>}
+                {!!error && <ApiErrorBanner action="adding" item="report" error={error} />}
                 <FormProvider {...form}>
                     <form className={styles.columnContent} onSubmit={handleSubmit}>
                         <ReportConfigurationContent isEditable={true} />

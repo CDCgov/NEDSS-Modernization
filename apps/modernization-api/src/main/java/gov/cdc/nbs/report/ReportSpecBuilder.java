@@ -3,7 +3,6 @@ package gov.cdc.nbs.report;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
@@ -13,9 +12,11 @@ import lombok.Getter;
  * Execution service for subsequent report generation. It assembles report metadata, includes
  * togglable report parameters and (arguably most importantly) compiles a SQL statement to be
  * invoked during report execution, accounting for all supplied parameters as well as relevant
- * permissions for the individual invoking said report.
+ * permissions for the individual invoking that report.
  */
 public class ReportSpecBuilder {
+  private static final System.Logger LOGGER = System.getLogger(ReportSpecBuilder.class.getName());
+
   @Getter private final ReportExecutionRequest reportExecRequest;
   @Getter private final ReportConfiguration reportConfig;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -105,15 +106,15 @@ public class ReportSpecBuilder {
     String fromClause = String.format("FROM %s", dataSourceName);
     String whereClause =
         whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
-    String orderByClause =
-        (!Objects.equals(orderbyCriteria, "")) ? "ORDER BY " + orderbyCriteria : "";
 
     // filter out empty spaces prior to string joining to prevent extra spaces between clauses
     String subsetQuery =
-        java.util.stream.Stream.of(selectClause, fromClause, whereClause, orderByClause)
+        java.util.stream.Stream.of(selectClause, fromClause, whereClause)
             .filter(clause -> clause != null && !clause.isBlank())
             .collect(Collectors.joining(" "))
             .trim();
+
+    LOGGER.log(System.Logger.Level.DEBUG, "Subset Query: %s", subsetQuery);
 
     Integer daysValue = extractDaysValue();
     String libraryParams = reportConfig.library().libraryParams();

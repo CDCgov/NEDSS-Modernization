@@ -16,7 +16,8 @@ class CountyOptionResolver extends SQLBasedOptionResolver {
       from
           [NBS_SRTE].[dbo].state_county_code_value
       where
-          code_desc_txt like :criteria
+          status_cd = 'A'
+          and code_desc_txt like :criteria
           and parent_is_cd =:root
       order by
           indent_level_nbr

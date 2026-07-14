@@ -45,3 +45,18 @@ Feature: County Options REST API
   Scenario: I cannot find specific counties in the wrong state
     When I am trying to find counties that start with "reg" for Missouri state
     Then there aren't any options available
+
+  Scenario: Inactive counties are not listed for a state
+    Given there is a "Sterling County" county for Missouri state
+    And there is an inactive "Surrey Borough" county for Missouri state
+    When I am trying to find counties for Missouri state
+    Then there are options available
+    And the option named "Sterling County" is included
+    And the option named "Surrey Borough" is not included
+
+  Scenario: Inactive counties are excluded from autocomplete
+    Given there is an inactive "regalia" county for New York state
+    When I am trying to find counties that start with "reg" for New York state
+    Then there are options available
+    And the option named "regrate" is included
+    And the option named "regalia" is not included

@@ -14,6 +14,7 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class WhereClauseService {
+  private static final System.Logger LOGGER = System.getLogger(WhereClauseService.class.getName());
 
   private final FieldFormatter fieldFormatter;
   private final PermissionScopeResolver scopeResolver;
@@ -162,8 +164,8 @@ public class WhereClauseService {
    * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1,
    *     2))"}). Returns an empty string {@code ""} if jurisdiction/program area security is not
    *     set.
-   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's
-   *     resolved {@link PermissionScope} contains no assigned identifiers.
+   * @throws ForbiddenException If jurisdiction/progam area security is set but the user's resolved
+   *     {@link PermissionScope} contains no assigned identifiers.
    */
   private String getJurisProgramRestrictionCriteria(
       boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
@@ -174,7 +176,7 @@ public class WhereClauseService {
 
     PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
     if (scope.any().isEmpty()) {
-      throw new IllegalArgumentException(
+      throw new ForbiddenException(
           "No Jurisdiction or Program Area permissions found for user: %s for group: %s"
               .formatted(SecurityUtil.getUserDetails().getUsername(), group));
     }
@@ -245,6 +247,11 @@ public class WhereClauseService {
     StringJoiner basicCriteria = new StringJoiner(SQL_AND);
 
     for (BasicFilterRequest filterRequest : basicFilterRequests) {
+      LOGGER.log(
+          System.Logger.Level.TRACE,
+          "Constructing basic filter criteria for report filter %s"
+              .formatted(filterRequest.reportFilterUid()));
+
       // Find the Filter Configuration
       BasicFilterConfiguration config =
           findBasicFilterConfiguration(reportConfig, filterRequest.reportFilterUid())
@@ -278,9 +285,28 @@ public class WhereClauseService {
                               + config.reportFilterUid()));
 
       if (BAS_TYPES.contains(type)) {
-        basicCriteria.add(buildBasicFilterCriteria(filterRequest, column));
+        LOGGER.log(
+            System.Logger.Level.TRACE, "Building IN criteria for filter type %s".formatted(type));
+
+        String standardCriteria = buildBasicFilterCriteria(filterRequest, column);
+        if (!standardCriteria.isEmpty()) {
+          LOGGER.log(
+              System.Logger.Level.DEBUG,
+              "Adding IN filter criteria to WHERE fragment: %s".formatted(standardCriteria));
+          basicCriteria.add(standardCriteria);
+        }
       } else if (BAS_TIME_RANGE_TYPES.contains(type)) {
-        basicCriteria.add(buildBasicBetweenCriteria(filterRequest, column));
+        LOGGER.log(
+            System.Logger.Level.TRACE,
+            "Building BETWEEN criteria for filter type %s".formatted(type));
+        String betweenCriteria = buildBasicBetweenCriteria(filterRequest, column);
+
+        if (!betweenCriteria.isEmpty()) {
+          LOGGER.log(
+              System.Logger.Level.DEBUG,
+              "Adding BETWEEN filter criteria to WHERE fragment: %s".formatted(betweenCriteria));
+          basicCriteria.add(betweenCriteria);
+        }
       }
     }
 
@@ -322,6 +348,8 @@ public class WhereClauseService {
       for (AdvancedQuery rule : ruleGroup.rules()) {
         String innerRuleSql = buildAdvancedQuery(config, rule);
         if (!innerRuleSql.isEmpty()) {
+          LOGGER.log(
+              System.Logger.Level.DEBUG, "Adding inner rule to joiner: %s".formatted(innerRuleSql));
           joiner.add(innerRuleSql);
         }
       }

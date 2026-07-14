@@ -3,20 +3,15 @@ import { useController } from 'react-hook-form';
 import QueryBuilder, {
     Field,
     formatQuery,
-    isRuleGroupType,
     isRuleType,
     joinWith,
-    Operator,
     QueryValidator,
     RuleGroupType,
-    RuleGroupTypeAny,
-    RuleType,
     splitBy,
     ValidationResult,
 } from 'react-querybuilder';
-import 'react-querybuilder/dist/query-builder.css';
+
 import { ReportExecuteForm } from '../../ReportRunPage';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
 import {
@@ -27,7 +22,18 @@ import {
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
-import { ValueEditor } from './ValueEditor';
+import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
+import { ValueSingleSelector } from './ValueSingleSelector.tsx';
+import { RemoveButton } from '././RemoveButton.tsx';
+import { validateRule } from './validator.ts';
+import { AddButton } from './AddButton.tsx';
+import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { ReactNode } from 'react';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
+import { AlertMessage } from 'design-system/message/index.ts';
+import classNames from 'classnames';
+
+import styles from './advanced-filter.module.scss';
 
 // ============= Constants ============= /
 
@@ -35,120 +41,6 @@ const EMPTY_QUERY: QbRuleGroup = {
     id: crypto.randomUUID(),
     combinator: RuleGroup.combinator.AND,
     rules: [{ id: crypto.randomUUID(), field: '~', operator: '~', value: '' }],
-};
-
-type NbsOperator = Operator & { nbsCd: string };
-
-const EQ_OPERATORS: NbsOperator[] = [
-    {
-        name: '=',
-        nbsCd: 'EQ',
-        label: 'Equals',
-        arity: 'binary',
-    },
-    {
-        name: '!=',
-        nbsCd: 'NE',
-        label: 'Not Equals',
-        arity: 'binary',
-    },
-];
-
-const LIST_OPERATORS: NbsOperator[] = [
-    {
-        name: 'in',
-        nbsCd: 'EQ',
-        label: 'Equals',
-        arity: 'binary',
-    },
-    {
-        name: 'notIn',
-        nbsCd: 'NE',
-        label: 'Not Equals',
-        arity: 'binary',
-    },
-];
-
-const NULL_OPERATORS: NbsOperator[] = [
-    {
-        name: 'null',
-        nbsCd: 'IN',
-        label: 'Is Null',
-        arity: 'unary',
-    },
-    {
-        name: 'notNull',
-        nbsCd: 'NN',
-        label: 'Is Not Null',
-        arity: 'unary',
-    },
-];
-
-const STRING_OPERATORS: NbsOperator[] = [
-    {
-        name: 'contains',
-        nbsCd: 'CO',
-        label: 'Contains',
-        arity: 'binary',
-    },
-    {
-        name: 'beginswith',
-        nbsCd: 'SW',
-        label: 'Starts With',
-        arity: 'binary',
-    },
-];
-
-const NUMERIC_OPERATORS: NbsOperator[] = [
-    {
-        name: 'between',
-        nbsCd: 'BW',
-        label: 'Between',
-        arity: 'ternary',
-    },
-    {
-        name: '<',
-        nbsCd: 'LT',
-        label: 'Less Than',
-        arity: 'binary',
-    },
-    {
-        name: '>',
-        nbsCd: 'GT',
-        label: 'Greater Than',
-        arity: 'binary',
-    },
-
-    {
-        name: '<=',
-        nbsCd: 'LE',
-        label: 'Less Or Equal',
-        arity: 'binary',
-    },
-
-    {
-        name: '>=',
-        nbsCd: 'GE',
-        label: 'Greater Or Equal',
-        arity: 'binary',
-    },
-];
-
-const ALL_OPERATORS = [
-    ...EQ_OPERATORS,
-    ...NULL_OPERATORS,
-    ...LIST_OPERATORS,
-    ...STRING_OPERATORS,
-    ...NUMERIC_OPERATORS,
-];
-const BINARY_OPERATORS = ALL_OPERATORS.filter(({ arity }) => arity === 'binary').map(({ name }) => name);
-
-const OPERATOR_MAP: Record<string, NbsOperator[]> = {
-    STRING: [...EQ_OPERATORS, ...NULL_OPERATORS, ...STRING_OPERATORS],
-    INTEGER: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
-    NUMBER: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
-    DATETIME: [...EQ_OPERATORS, ...NULL_OPERATORS, ...NUMERIC_OPERATORS],
-    CODED: [...LIST_OPERATORS, ...NULL_OPERATORS],
 };
 
 const INPUT_TYPE_MAP: Record<string, string> = {
@@ -164,9 +56,12 @@ const INPUT_TYPE_MAP: Record<string, string> = {
 type NbsQuery = RuleGroup | Rule;
 // to match `RuleType` more closely
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any };
+type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any; label?: string; type?: string };
 export type QbRuleGroup = RuleGroupType<QbRule>;
-type QbQuery = QbRuleGroup | QbRule;
+export type QbQuery = QbRuleGroup | QbRule;
+
+export const isQbRuleType = (rule: QbQuery): rule is QbRule => isRuleType(rule) && 'field' in rule;
+export const isQbRuleGroupType = (rule: QbQuery): rule is QbRuleGroup => !isQbRuleType(rule);
 
 // map rules and remove any extraneous fields
 function mapNbsRules(rule: NbsQuery, mapper: (r: Rule) => QbRule): QbQuery {
@@ -218,13 +113,16 @@ const queryToAdvancedFilterRequest = (query: QbRuleGroup, columns: ReportColumn[
     const nonEmptyQuery = filterQbRules(query, (rule) => !!rule.field && rule.field !== '~') as QbRuleGroup;
     // no non-empty rules means there is functionally no filter
     if (nonEmptyQuery.rules.length === 0) return undefined;
-
     return mapQbRules(nonEmptyQuery, ({ id, operator, field, value }) => {
         return {
             id,
             operator: mapToNbsOp(operator)!,
             columnId: columns.find(({ name }) => field === name)!.id,
-            value: LIST_OPERATORS.find(({ name }) => name === operator) ? joinWith(value, '|') : value.toString(),
+            value: LIST_OPERATORS.find(({ name }) => name === operator)
+                ? joinWith(value, '|')
+                : NULL_OPERATORS.find(({ name }) => name === operator)
+                  ? ''
+                  : value.toString(),
         };
     }) as RuleGroup;
 };
@@ -265,11 +163,38 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
 
 // ============= Validation ============= /
 
-const validateAdvancedFilter = (value?: QbRuleGroup) => {
+// Add another key 'label' to display in error msg
+// Add another key 'type' to support validation
+const addColNameAndTypeToRules = (columns: ReportColumn[], value: QbRuleGroup): QbRuleGroup => {
+    const updatedRules: QbQuery[] = value.rules.map((rule) => {
+        if ('rules' in rule && Array.isArray(rule.rules)) {
+            return addColNameAndTypeToRules(columns, rule);
+        }
+
+        // cast to alternate type branch appease ts
+        const r = rule as QbRule;
+
+        const matchedColumn = columns.find((col) => col.name === r.field);
+
+        return {
+            ...r,
+            type: matchedColumn ? matchedColumn.sourceTypeCode : undefined,
+            label: matchedColumn ? matchedColumn.title : r.field,
+        };
+    });
+
+    return {
+        ...value,
+        rules: updatedRules,
+    };
+};
+
+const validateAdvancedFilter = (columns: ReportColumn[], value?: QbRuleGroup) => {
     if (!value) return true;
+    const updatedRuleGroup = addColNameAndTypeToRules(columns, value);
 
     return (
-        Object.values(validator(value))
+        Object.values(validator(updatedRuleGroup))
             .filter((v) => !v.valid)
             .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '') || true
     );
@@ -280,55 +205,18 @@ type ValidationResultMap = Record<string, ValidationResult>;
 
 const validator: QueryValidator = (q) => {
     const result: ValidationResultMap = {};
-    q.rules.forEach((r) => validateRule(r, result));
+    q.rules.forEach((r) => validateRule(r as QbQuery, result));
     return result;
 };
 
-const isDate = (val: string) => !!val.match(/\d{4}-\d{2}-\d{2}/);
+const parseAdvancedFilterErrors = (message: string): string[] =>
+    message
+        .split('\n')
+        .map((str) => str.trim())
+        .filter(Boolean);
 
-const validateRule = (rule: RuleGroupTypeAny | RuleType | string, result: ValidationResultMap) => {
-    const setInvalid = (id: string, reason: string) => {
-        result[id].valid = false;
-        result[id].reasons = [reason];
-    };
-
-    if (isRuleType(rule)) {
-        const id = rule.id;
-        if (!id) return; // no key for the map, shouldn't happen in practice
-        // default valid
-        result[id] = { valid: true };
-
-        // empty rules are fine
-        if (!rule.field || rule.field === '~') return;
-
-        // check for exceptions
-        if (!rule.operator || rule.operator === '~') {
-            setInvalid(id, 'Must select an operator and value');
-        } else if (rule.operator === 'between') {
-            if (!rule.value || rule.value.includes('~')) {
-                setInvalid(id, 'Both low and high values required');
-            } else {
-                const parts: string[] = rule.value.split(',');
-                if (isDate(parts[0])) {
-                    const [startDt, endDt] = parts.map((v) => new Date(v));
-                    if (startDt > endDt) {
-                        setInvalid(id, 'High value must be greater than or equal to low value');
-                    }
-                } else {
-                    const [startInt, endInt] = parts.map((v) => parseInt(v));
-                    if (startInt > endInt) setInvalid(id, 'High value must be greater than or equal to low value');
-                }
-            }
-        } else if (BINARY_OPERATORS.find((name) => name === rule.operator)) {
-            // 0 is fine, but falsey
-            if ((!rule.value && rule.value !== 0) || !rule.value.length) {
-                setInvalid(id, 'Value cannot be empty');
-            }
-        }
-    } else if (isRuleGroupType(rule)) {
-        rule.rules.forEach((r) => validateRule(r, result));
-    }
-};
+const formatAdvancedFilterErrors = (message: string): ReactNode =>
+    parseAdvancedFilterErrors(message).map((msg, index) => <li key={`adv-filter-error-${index}`}>{msg}</li>);
 
 // ============= Drag And Drop ============= /
 
@@ -339,6 +227,15 @@ const pragmaticDndAdapter = createPragmaticDndAdapter({
     combine,
 });
 
+const translationOverrides = {
+    fields: { placeholderLabel: '- Select -' },
+    operators: {
+        placeholderLabel: '- Select -',
+        title: 'Logic',
+    },
+    addGroup: { title: 'Add rule group' },
+};
+
 // ============= Componentry ============= /
 
 const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfiguration; columns: ReportColumn[] }) => {
@@ -348,14 +245,33 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     } = useController<ReportExecuteForm, 'advancedFilter'>({
         name: 'advancedFilter',
         defaultValue: filter.defaultValue ? advancedFilterConfigToQuery(filter.defaultValue, columns) : EMPTY_QUERY,
-        rules: { validate: validateAdvancedFilter },
+        rules: { validate: (values) => validateAdvancedFilter(columns, values) },
     });
 
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     return (
-        <div>
-            {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
+        <div className={classNames(styles.layout, { [styles.validate]: !!error?.message })}>
+            {filter.exceptionMessage && (
+                <AlertMessage type="warning" title="Saved filter has an error and can't be applied">
+                    <p>
+                        The saved filter contains an error that prevents it from loading. You can still run this report,
+                        but the filter won't be applied to your results. To use this filter, rebuild it and save the
+                        report. If you need help, share the following details with your administrator:
+                    </p>
+                    <p>
+                        <strong>Error:</strong> <span className="font-mono-sm">{filter.exceptionMessage}</span>
+                    </p>
+                    <p>
+                        <strong>Saved filter query:</strong> <span className="font-mono-sm">{filter.query}</span>
+                    </p>
+                </AlertMessage>
+            )}
+            {error?.message && (
+                <ValidationErrorBanner level={3}>
+                    <ul>{formatAdvancedFilterErrors(error.message)}</ul>
+                </ValidationErrorBanner>
+            )}
             <KeyboardDnDProvider>
                 <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
                     <QueryBuilder
@@ -367,7 +283,16 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                         autoSelectField={false}
                         autoSelectOperator={false}
                         autoSelectValue={false}
-                        controlElements={{ dragHandle: ShiftableDragHandle, valueEditor: ValueEditor }}
+                        translations={translationOverrides}
+                        controlElements={{
+                            dragHandle: ShiftableDragHandle,
+                            valueEditor: ValueEditorSwitch,
+                            valueSelector: ValueSingleSelector,
+                            addGroupAction: AddButton,
+                            addRuleAction: AddButton,
+                            removeGroupAction: RemoveButton,
+                            removeRuleAction: RemoveButton,
+                        }}
                     />
                 </QueryBuilderDnD>
             </KeyboardDnDProvider>
@@ -380,19 +305,21 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
     const fallbackExpression = 'No advanced filter selections made';
 
     return (
-        <details>
-            <summary>Preview Where Statement</summary>
-            <p className="font-mono-md">
-                {query
-                    ? formatQuery(query, {
-                          format: 'sql',
-                          preset: 'mssql',
-                          fallbackExpression,
-                      })
-                    : fallbackExpression}
-            </p>
-        </details>
+        <div className="padding-205 border-top border-base-lighter">
+            <h3 className="margin-top-1 margin-bottom-2">Preview of WHERE Clause</h3>
+            <div className="bg-base-lightest padding-105">
+                <p className="font-mono-md">
+                    {query
+                        ? formatQuery(query, {
+                              format: 'sql',
+                              preset: 'mssql',
+                              fallbackExpression,
+                          })
+                        : fallbackExpression}
+                </p>
+            </div>
+        </div>
     );
 };
 
-export { AdvancedFilter, queryToAdvancedFilterRequest };
+export { AdvancedFilter, queryToAdvancedFilterRequest, parseAdvancedFilterErrors };

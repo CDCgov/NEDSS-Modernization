@@ -1,3 +1,4 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -13,13 +14,16 @@ def execute(
     Conversion notes:
     * Matched "export format"
     """
+    # Dynamically look up the correct DB names
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+    nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),
         
         PROG_AREA as (
             SELECT DISTINCT PROG_AREA_CD
-            FROM nbs_srte.dbo.condition_code
+            FROM {nbs_srt}.dbo.condition_code
             WHERE 
                 condition_cd in ('10560', '900')
                 OR nnd_entity_identifier = 'STD_Case_Map_v1.0'
@@ -30,10 +34,11 @@ def execute(
                 count(*) as OOJ_REFF,
                 em.ADD_USER_ID
             FROM v_event_metric em
-            INNER JOIN rdb.dbo.STD_HIV_DATAMART hiv on em.LOCAL_ID = hiv.INV_LOCAL_ID
-            INNER JOIN rdb.dbo.F_STD_PAGE_CASE std 
+            INNER JOIN {nbs_rdb}.dbo.STD_HIV_DATAMART hiv 
+                on em.LOCAL_ID = hiv.INV_LOCAL_ID
+            INNER JOIN {nbs_rdb}.dbo.F_STD_PAGE_CASE std 
                 on hiv.INVESTIGATION_KEY = std.INVESTIGATION_KEY
-            INNER JOIN rdb.dbo.D_INV_ADMINISTRATIVE adm 
+            INNER JOIN {nbs_rdb}.dbo.D_INV_ADMINISTRATIVE adm 
                 on std.D_INV_ADMINISTRATIVE_KEY = adm.D_INV_ADMINISTRATIVE_KEY
             WHERE 
                 em.EVENT_TYPE in ('PHCInvForm')
@@ -96,7 +101,8 @@ def execute(
             RESULT.REACTOR,
             RESULT.PART_CLUS
         FROM RESULT
-        LEFT JOIN rdb.dbo.USER_PROFILE usr on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
+        LEFT JOIN {nbs_rdb}.dbo.USER_PROFILE usr 
+            on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
         ORDER BY user_qc
         """
     )

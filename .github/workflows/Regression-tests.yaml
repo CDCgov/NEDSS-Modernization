@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Run containers
         working-directory: ./cdc-sandbox
         run: ./build_all.sh
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 22.x
 
@@ -39,6 +39,7 @@ jobs:
         with:
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
+          browser: chrome
         env:
           CYPRESS_BASE_URL: 'http://localhost:8000/'
           CYPRESS_LOGIN_USERNAME: 'superuser'

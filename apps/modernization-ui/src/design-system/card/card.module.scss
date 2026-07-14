@@ -2,6 +2,10 @@
 @use 'styles/borders';
 @use 'styles/components';
 
+$content-max-width: (
+    'widescreen': 90rem,
+);
+
 section.card {
     &.disabled {
         background-color: colors.$base-lightest;
@@ -32,5 +36,22 @@ section.card {
 
     .required {
         @include components.required();
+    }
+
+    @each $name, $value in $content-max-width {
+        &--#{$name} {
+            header {
+                div {
+                    span:first-of-type {
+                        padding-bottom: 1rem;
+                    }
+                }
+
+                // target the content div
+                + div {
+                    max-width: $value;
+                }
+            }
+        }
     }
 }

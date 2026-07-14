@@ -32,9 +32,10 @@ class CountyMother {
         code,
         code_desc_txt,
         indent_level_nbr,
-        parent_is_cd
+        parent_is_cd,
+        status_cd
       )
-      values (:identifier, :name, :order, :stateCode)
+      values (:identifier, :name, :order, :stateCode, :status)
       """;
 
   private final NamedParameterJdbcTemplate template;
@@ -62,6 +63,14 @@ class CountyMother {
   }
 
   void create(final String name, final String stateCode) {
+    create(name, stateCode, "A");
+  }
+
+  void createInactive(final String name, final String stateCode) {
+    create(name, stateCode, "I");
+  }
+
+  private void create(final String name, final String stateCode, final String status) {
 
     String code = UUID.randomUUID().toString().replace("-", "").substring(0, 20);
 
@@ -73,7 +82,8 @@ class CountyMother {
             "identifier", code,
             "name", name,
             "stateCode", stateCode,
-            "order", order);
+            "order", order,
+            "status", status);
 
     template.execute(
         CREATE, new MapSqlParameterSource(parameters), PreparedStatement::executeUpdate);

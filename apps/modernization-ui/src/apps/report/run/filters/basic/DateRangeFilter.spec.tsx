@@ -44,7 +44,7 @@ describe('DateRangeFilter', () => {
 
         it('fails when partially empty', () => {
             const validator = dateRangeValidator(MOCK_FILTER, MOCK_LABEL);
-            const errStr = 'Both From and To dates must be populated';
+            const errStr = 'Enter From and To values for Full Name.';
 
             expect(validator(['01/01/2024', ''])).toEqual(errStr);
             expect(validator([undefined, '01/01/2024'])).toEqual(errStr);
@@ -53,7 +53,8 @@ describe('DateRangeFilter', () => {
 
         it('fails invalid From dates', () => {
             const validator = dateRangeValidator(MOCK_FILTER, MOCK_LABEL);
-            const errStr = (val: string) => `From date of "${val}" is not valid mm/dd/yyyy formatted date`;
+            const errStr = (val: string) =>
+                `From date of "${val}" is not valid mm/dd/yyyy formatted date for ${MOCK_LABEL}.`;
 
             expect(validator(['16/01/2024', '01/01/2026'])).toEqual(errStr('16/01/2024'));
             expect(validator(['abc', '01/01/2026'])).toEqual(errStr('abc'));
@@ -61,7 +62,8 @@ describe('DateRangeFilter', () => {
 
         it('fails invalid To dates', () => {
             const validator = dateRangeValidator(MOCK_FILTER, MOCK_LABEL);
-            const errStr = (val: string) => `To date of "${val}" is not valid mm/dd/yyyy formatted date`;
+            const errStr = (val: string) =>
+                `To date of "${val}" is not valid mm/dd/yyyy formatted date for ${MOCK_LABEL}.`;
 
             expect(validator(['01/01/2026', '16/01/2024'])).toEqual(errStr('16/01/2024'));
             expect(validator(['01/01/2026', 'abc'])).toEqual(errStr('abc'));
@@ -70,7 +72,7 @@ describe('DateRangeFilter', () => {
         it('fails out of order dates', () => {
             const validator = dateRangeValidator(MOCK_FILTER, MOCK_LABEL);
 
-            expect(validator(['01/01/2025', '01/01/2024'])).toEqual('From date must be before To date');
+            expect(validator(['01/01/2025', '01/01/2024'])).toEqual('From date must be before To date for Full Name.');
         });
     });
 });
