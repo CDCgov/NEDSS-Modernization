@@ -93,3 +93,6 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/pa_05.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_case_ver.sql
+            splitStatements: false
