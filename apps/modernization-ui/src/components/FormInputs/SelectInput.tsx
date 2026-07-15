@@ -1,4 +1,5 @@
 import { Select } from '@trussworks/react-uswds';
+import classNames from 'classnames';
 
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { useId } from 'react';
@@ -44,6 +45,7 @@ export const SelectInput = ({
     error,
     required,
     onBlur,
+    className,
     ...props
 }: SelectProps) => {
     const defaultId = useId();
@@ -57,6 +59,7 @@ export const SelectInput = ({
             required={required}
             onChange={onChange}
             onBlur={onBlur}
+            className={classNames(className, 'padding-y-05')}
             {...props}
         >
             <Options options={options} />
