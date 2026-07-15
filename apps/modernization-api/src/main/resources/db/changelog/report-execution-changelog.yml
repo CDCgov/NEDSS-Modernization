@@ -94,6 +94,6 @@ databaseChangeLog:
             path: db/report/execution/libraries/pa_05.sql
             splitStatements: false
         - sqlFile:
-            path: db/report/execution/05_ODSE_DROP_REGIONS.sql
+            path: db/report/execution/05_ODSE_Drop_Regions.sql
             splitStatements: false
             endDelimiter: ""
