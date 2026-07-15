@@ -1,0 +1,1 @@
+export { FullPageBlock } from './FullPageBlock';

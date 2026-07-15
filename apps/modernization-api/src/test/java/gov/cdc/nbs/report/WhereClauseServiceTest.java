@@ -229,7 +229,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_disregard_basic_filters_requests_without_values() {
+  void should_disregard_basic_filters_requests_without_values_and_includeNulls_set_to_false() {
     Long filter1 = 101L;
     Long col1 = 1L;
     Long filter2 = 102L;
@@ -257,7 +257,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_handle_allow_nulls_operator() {
+  void should_handle_includeNulls_operator_with_values() {
     Long filterUid = 100L;
     Long columnUid = 1L;
     FilterType filterType = createFilterType("BAS_TXT", "");
@@ -278,7 +278,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_handle_allow_nulls_operator_with_multiple_fields() {
+  void should_handle_includeNulls_operator_with_multiple_fields() {
     Long filterUid = 100L;
     Long columnUid = 1L;
     Long filterUid2 = 101L;
@@ -351,7 +351,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_handle_time_range_with_nulls() {
+  void should_handle_time_range_values_with_includeNulls() {
     Long filterUid = 200L;
     Long columnUid = 5L;
     FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
@@ -370,6 +370,44 @@ class WhereClauseServiceTest {
     assertThat(whereFragment)
         .isEqualTo(
             "(([date_column] BETWEEN '2023-01-01' AND '2023-01-31') OR ([date_column] IS NULL))");
+  }
+
+  @Test
+  void should_handle_empty_time_range_values_with_includeNulls() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request = List.of(new BasicFilterRequest(filterUid, List.of(), true));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEqualTo("([date_column] IS NULL)");
+  }
+
+  @Test
+  void should_handle_empty_time_range_values_for_non_date_field_with_includeNulls() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "non_date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request = List.of(new BasicFilterRequest(filterUid, List.of(), true));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEqualTo("([non_date_column] IS NULL)");
   }
 
   @Test

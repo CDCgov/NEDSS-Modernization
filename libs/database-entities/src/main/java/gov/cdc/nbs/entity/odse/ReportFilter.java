@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -42,6 +44,8 @@ public class ReportFilter {
   private DataSourceColumn dataSourceColumn;
 
   // When a filter is deleted, it's values also need to be removed
+  @OrderBy("id")
+  @Fetch(FetchMode.SUBSELECT)
   @OneToMany(
       mappedBy = "reportFilter",
       fetch = FetchType.LAZY,
@@ -53,7 +57,7 @@ public class ReportFilter {
   // it's detached from its parent ReportFilter (i.e. `filterValidation` is set to null).
   @OneToOne(
       mappedBy = "reportFilter",
-      fetch = FetchType.LAZY,
+      fetch = FetchType.EAGER,
       orphanRemoval = true,
       cascade = CascadeType.ALL)
   private ReportFilterValidation filterValidation;
