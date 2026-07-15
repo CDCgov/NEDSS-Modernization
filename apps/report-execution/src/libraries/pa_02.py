@@ -12,16 +12,14 @@ def execute(
     **kwargs,
 ) -> ReportResult:
     """PA02: Field Investigation Outcomes - STD and HIV.
-
-    The SAS implementation of this report contains a known precision issue:
+    Conversion notes:
+    * The SAS implementation of this report contains a known precision issue:
     The global min/max datetimes are stored in macro variables using `SELECT ... INTO`.
     When SAS resolves these numeric datetimes into SQL, it writes them in scientific
     notation (e.g., `2.0197E9`). This rounding effectively shifts the date boundaries
     by several hours and can add or remove a full day from the filter range.
-
     Only the `Non-assigned Dispos` (`var_ae_p`) metric is affected, as it is the
     only count filtered using these macro variable boundaries in the `PA02_DISPO` table.
-
     This Python implementation avoids the rounding by using exact date strings
     (e.g., `CAST(... AS DATE) >= CAST('YYYY-MM-DD' AS DATE)`) for all date filters.
     Therefore, the Python output reflects the intended business logic and should be
@@ -57,6 +55,8 @@ def execute(
         specific_var_order = constants.HIV_SPECIFIC_VAR_ORDER
 
     referral_groups = constants.REFERRAL_GROUPS
+    not_examined_var_map = constants.NOT_EXAMINED_VAR_MAP
+    not_examined_var_order = constants.NOT_EXAMINED_VAR_ORDER
     
     # ------------------------------------------------------------------
     # 3. Compute global min/max dates from the unfiltered base

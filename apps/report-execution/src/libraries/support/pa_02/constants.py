@@ -13,6 +13,20 @@ REFERRAL_GROUPS = {
     "cohort": ["C1- Cohort"]
 }
 
+NOT_EXAMINED_VAR_MAP = {
+    "var_u_p": "G - Insufficient Info to Begin Investigation",
+    "var_v_p": "H - Unable to Locate",
+    "var_w_p": "J - Located, Not Examined and/or Interviewed",
+    "var_x_p": "K - Sent Out Of Jurisdiction",
+    "var_y_p": "L - Other",
+    "var_z_p": "V - Domestic Violence Risk",
+    "var_aa_p": "X - Patient Deceased",
+    "var_ab_p": "Z - Previous Preventative Treatment"
+}
+NOT_EXAMINED_VAR_ORDER = [
+    "var_u_p", "var_v_p", "var_w_p", "var_x_p", "var_y_p", "var_z_p", "var_aa_p", "var_ab_p"
+]
+
 # STD Constants
 STD_EXAMINED_DISPOS = [
     "A - Preventative Treatment",
