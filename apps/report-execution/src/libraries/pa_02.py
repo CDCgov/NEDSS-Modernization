@@ -1,6 +1,6 @@
 
 from src.db_transaction import Transaction
-from src.libraries.support.pa_02 import queries
+from src.libraries.support.pa_02 import queries, constants
 from src.models import ReportResult, Table
 
 
@@ -46,93 +46,18 @@ def execute(
     # 2. Define disposition sets
     # ------------------------------------------------------------------
     if report_type == 'STD':
-        examined_dispos = [
-            "A - Preventative Treatment",
-            "B - Refused Preventative Treatment",
-            "C - Infected, Brought to Treatment",
-            "D - Infected, Not Treated",
-            "F - Not Infected"
-        ]
-        not_examined_dispos = [
-            "G - Insufficient Info to Begin Investigation",
-            "H - Unable to Locate",
-            "J - Located, Not Examined and/or Interviewed",
-            "K - Sent Out Of Jurisdiction",
-            "L - Other",
-            "V - Domestic Violence Risk",
-            "X - Patient Deceased",
-            "Z - Previous Preventative Treatment"
-        ]
-        specific_var_map = {
-            "var_n_p": "A - Preventative Treatment",
-            "var_o_p": "B - Refused Preventative Treatment",
-            "var_p_p": "C - Infected, Brought to Treatment",
-            "var_q_p": "D - Infected, Not Treated",
-            "var_r_p": "F - Not Infected",
-            "var_ac_p": "E - Previously Treated for This Infection"
-        }
-        specific_var_order = [
-            "var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_ac_p"
-        ]
-    else:  # HIV
-        examined_dispos = [
-            "2 - Prev. Neg, New Pos",
-            "3 - Prev. Neg, Still Neg",
-            "4 - Prev. Neg, No Test",
-            "5 - No Prev Test, New Pos",
-            "6 - No Prev Test, New Neg",
-            "7 - No Prev Test, No Test"
-        ]
-        not_examined_dispos = [
-            "G - Insufficient Info to Begin Investigation",
-            "H - Unable to Locate",
-            "J - Located, Not Examined and/or Interviewed",
-            "K - Sent Out Of Jurisdiction",
-            "L - Other",
-            "V - Domestic Violence Risk",
-            "X - Patient Deceased",
-            "Z - Previous Preventative Treatment"
-        ]
-        specific_var_map = {
-            "var_n_p": "2 - Prev. Neg, New Pos",
-            "var_o_p": "3 - Prev. Neg, Still Neg",
-            "var_p_p": "4 - Prev. Neg, No Test",
-            "var_q_p": "5 - No Prev Test, New Pos",
-            "var_r_p": "6 - No Prev Test, New Neg",
-            "var_s_p": "7 - No Prev Test, No Test"
-        }
-        specific_var_order = [
-            "var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_s_p"
-        ]
+        examined_dispos = constants.STD_EXAMINED_DISPOS
+        not_examined_dispos = constants.STD_NOT_EXAMINED_DISPOS
+        specific_var_map = constants.STD_SPECIFIC_VAR_MAP
+        specific_var_order = constants.STD_SPECIFIC_VAR_ORDER
+    else:
+        examined_dispos = constants.HIV_EXAMINED_DISPOS
+        not_examined_dispos = constants.HIV_NOT_EXAMINED_DISPOS
+        specific_var_map = constants.HIV_SPECIFIC_VAR_MAP
+        specific_var_order = constants.HIV_SPECIFIC_VAR_ORDER
 
-    not_examined_var_map = {
-        "var_u_p": "G - Insufficient Info to Begin Investigation",
-        "var_v_p": "H - Unable to Locate",
-        "var_w_p": "J - Located, Not Examined and/or Interviewed",
-        "var_x_p": "K - Sent Out Of Jurisdiction",
-        "var_y_p": "L - Other",
-        "var_z_p": "V - Domestic Violence Risk",
-        "var_aa_p": "X - Patient Deceased",
-        "var_ab_p": "Z - Previous Preventative Treatment"
-    }
-    not_examined_var_order = [
-        "var_u_p", "var_v_p", "var_w_p", "var_x_p", "var_y_p", "var_z_p", "var_aa_p", "var_ab_p"
-    ]
-
-    referral_groups = {
-        "partners": ["P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "P3 - Partner, Both"],
-        "clus": [
-            "A1 - Associate 1",
-            "A2 - Associate 2",
-            "A3 - Associate 3",
-            "S1 - Social Contact 1",
-            "S2 - Social Contact 2",
-            "S3 - Social Contact 3"
-        ],
-        "reac": ["T1 - Positive Test", "T2 - Morbidity Report"],
-        "cohort": ["C1- Cohort"]
-    }
-
+    referral_groups = constants.REFERRAL_GROUPS
+    
     # ------------------------------------------------------------------
     # 3. Compute global min/max dates from the unfiltered base
     # ------------------------------------------------------------------
@@ -230,41 +155,15 @@ def execute(
         )
 
         # Non‑assigned dispositions – allow NULL dates in the date filters
-        ae_sql = f"""
-        WITH a AS ({subset_query}),
-        base_dispo AS (
-            SELECT DISTINCT
-                a.INV_LOCAL_ID,
-                a.INVESTIGATOR_FL_FUP_KEY,
-                a.INVESTIGATOR_DISP_FL_FUP_KEY,
-                a.FL_FUP_DISPOSITION,
-                c.PROVIDER_QUICK_CODE
-            FROM a
-            INNER JOIN [RDB].[dbo].INVESTIGATION b
-                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-            INNER JOIN [RDB].[dbo].D_PROVIDER c
-                ON a.INVESTIGATOR_DISP_FL_FUP_KEY = c.PROVIDER_KEY
-            WHERE a.INVESTIGATOR_DISP_FL_FUP_KEY != 1
-                AND b.REFERRAL_BASIS IN ({referral_in})
-                AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
-                AND CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
-                AND CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
-                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{
-                    min_assign_str
-                }' AS DATE)
-                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{
-                    max_assign_str
-                }' AS DATE)
-                AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
-                AND a.FL_FUP_DISPOSITION IS NOT NULL
+        ae_sql = queries.ae_sql(
+            subset_query=subset_query,
+            referral_in=referral_in,
+            keys_in=keys_in,
+            min_dispo_str=min_dispo_str,
+            max_dispo_str=max_dispo_str,
+            min_assign_str=min_assign_str,
+            max_assign_str=max_assign_str
         )
-        SELECT
-            INVESTIGATOR_DISP_FL_FUP_KEY AS INVESTIGATOR_FL_FUP_KEY,
-            PROVIDER_QUICK_CODE,
-            COUNT(DISTINCT INV_LOCAL_ID) AS var_ae_p
-        FROM base_dispo
-        GROUP BY INVESTIGATOR_DISP_FL_FUP_KEY, PROVIDER_QUICK_CODE
-        """
 
         return assignment_sql, ae_sql
 
