@@ -121,6 +121,11 @@ public class ReportService {
             .findById(reportId)
             .orElseThrow(() -> new NotFoundException(getReportNotFoundText(reportId)));
 
+    // Fetch all necessary report associations and then detach the report, ensuring
+    // any subsequent changes made to said report (or it's children) are not persisted
+    report.eagerLoadForDetach();
+    reportRepository.detach(report);
+
     // Update values before duplicating otherwise the fk's in the request don't match
     updateReportExecutionData(request.executionRequest(), report);
 
