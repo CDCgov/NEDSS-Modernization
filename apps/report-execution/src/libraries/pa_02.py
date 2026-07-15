@@ -1,6 +1,5 @@
-
 from src.db_transaction import Transaction
-from src.libraries.support.pa_02 import queries, constants
+from src.libraries.support.pa_02 import constants, queries
 from src.models import ReportResult, Table
 
 
@@ -57,7 +56,7 @@ def execute(
     referral_groups = constants.REFERRAL_GROUPS
     not_examined_var_map = constants.NOT_EXAMINED_VAR_MAP
     not_examined_var_order = constants.NOT_EXAMINED_VAR_ORDER
-    
+
     # ------------------------------------------------------------------
     # 3. Compute global min/max dates from the unfiltered base
     # ------------------------------------------------------------------
@@ -66,16 +65,19 @@ def execute(
     if not date_result.data:
         return ReportResult(
             content_type='table',
-            content=Table(columns=[
-                'PROVIDER_QUICK_CODE_new',
-                'colname',
-                'colval',
-                'colval2',
-                'colval3',
-                'colval4',
-                'pname_l',
-                'i'
-            ], data=[])
+            content=Table(
+                columns=[
+                    'PROVIDER_QUICK_CODE_new',
+                    'colname',
+                    'colval',
+                    'colval2',
+                    'colval3',
+                    'colval4',
+                    'pname_l',
+                    'i',
+                ],
+                data=[],
+            ),
         )
 
     min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
@@ -99,25 +101,28 @@ def execute(
     if not disp_keys:
         return ReportResult(
             content_type='table',
-            content=Table(columns=[
-                'PROVIDER_QUICK_CODE_new',
-                'colname',
-                'colval',
-                'colval2',
-                'colval3',
-                'colval4',
-                'pname_l',
-                'i'
-            ], data=[])
+            content=Table(
+                columns=[
+                    'PROVIDER_QUICK_CODE_new',
+                    'colname',
+                    'colval',
+                    'colval2',
+                    'colval3',
+                    'colval4',
+                    'pname_l',
+                    'i',
+                ],
+                data=[],
+            ),
         )
-    keys_in = ", ".join(str(k) for k in disp_keys)
+    keys_in = ', '.join(str(k) for k in disp_keys)
 
     # ------------------------------------------------------------------
     # 4. Helper to build SQL for one referral group
     # ------------------------------------------------------------------
     def build_group_sql(group_name: str, referral_list: list[str]) -> tuple[str, str]:
         def fmt_list(lst):
-            return ", ".join(f"'{item}'" for item in lst)
+            return ', '.join(f"'{item}'" for item in lst)
 
         referral_in = fmt_list(referral_list)
         examined_in = fmt_list(examined_dispos)
@@ -126,22 +131,22 @@ def execute(
         specific_clauses = []
         for var_name, dispo_str in specific_var_map.items():
             specific_clauses.append(
-                f'''
+                f"""
                 COUNT(
                     DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}'
                     THEN base.INV_LOCAL_ID END
                 ) AS {var_name}
-                '''
+                """
             )
         not_examined_clauses = []
         for var_name, dispo_str in not_examined_var_map.items():
             not_examined_clauses.append(
-                f'''
+                f"""
                 COUNT(
                     DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}'
                     THEN base.INV_LOCAL_ID END
                 ) AS {var_name}
-                '''
+                """
             )
 
         # Assignment metrics SQL – unchanged
@@ -151,7 +156,7 @@ def execute(
             examined_in=examined_in,
             not_examined_in=not_examined_in,
             specific_clauses=specific_clauses,
-            not_examined_clauses=not_examined_clauses
+            not_examined_clauses=not_examined_clauses,
         )
 
         # Non‑assigned dispositions – allow NULL dates in the date filters
@@ -162,7 +167,7 @@ def execute(
             min_dispo_str=min_dispo_str,
             max_dispo_str=max_dispo_str,
             min_assign_str=min_assign_str,
-            max_assign_str=max_assign_str
+            max_assign_str=max_assign_str,
         )
 
         return assignment_sql, ae_sql
@@ -193,16 +198,21 @@ def execute(
             if key not in provider_data:
                 provider_data[key] = {'PROVIDER_QUICK_CODE': quick_code}
             provider_data[key][group_name] = {}
-            var_names = [
-                'var_g_p',
-                'var_h_p',
-                'var_i_p',
-                'var_j_p',
-                'var_k_p',
-                'var_l_p',
-                'var_m_p',
-                'var_t_p',
-                'var_ad_p'] + specific_var_order + not_examined_var_order
+            var_names = (
+                [
+                    'var_g_p',
+                    'var_h_p',
+                    'var_i_p',
+                    'var_j_p',
+                    'var_k_p',
+                    'var_l_p',
+                    'var_m_p',
+                    'var_t_p',
+                    'var_ad_p',
+                ]
+                + specific_var_order
+                + not_examined_var_order
+            )
             for var in var_names:
                 if var in assign_col_idx:
                     provider_data[key][group_name][var] = row[assign_col_idx[var]]
@@ -222,48 +232,57 @@ def execute(
     if not provider_data:
         return ReportResult(
             content_type='table',
-            content=Table(columns=[
-                'PROVIDER_QUICK_CODE_new',
-                'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'
-            ], data=[])
+            content=Table(
+                columns=[
+                    'PROVIDER_QUICK_CODE_new',
+                    'colname',
+                    'colval',
+                    'colval2',
+                    'colval3',
+                    'colval4',
+                    'pname_l',
+                    'i',
+                ],
+                data=[],
+            ),
         )
 
     # ------------------------------------------------------------------
     # 6. Metric labels
     # ------------------------------------------------------------------
     metric_labels = [
-        ("Assigned:", "var_g_p"),
-        ("Dispositioned:", "var_h_p"),
-        ("Exam'd:", "var_i_p"),
-        ("Exam'd w/in 3:", "var_j_p"),
-        ("Exam'd w/in 5:", "var_k_p"),
-        ("Exam'd w/in 7:", "var_l_p"),
-        ("Exam'd w/in 14:", "var_m_p"),
+        ('Assigned:', 'var_g_p'),
+        ('Dispositioned:', 'var_h_p'),
+        ("Exam'd:", 'var_i_p'),
+        ("Exam'd w/in 3:", 'var_j_p'),
+        ("Exam'd w/in 5:", 'var_k_p'),
+        ("Exam'd w/in 7:", 'var_l_p'),
+        ("Exam'd w/in 14:", 'var_m_p'),
     ]
 
     if report_type == 'STD':
         std_specific_vars = ['var_n_p', 'var_o_p', 'var_p_p', 'var_q_p', 'var_r_p']
         for var_name in std_specific_vars:
             dispo_str = specific_var_map[var_name]
-            letter = dispo_str.split(" - ")[0]
-            metric_labels.append((f"Dispo {letter}:", var_name))
+            letter = dispo_str.split(' - ')[0]
+            metric_labels.append((f'Dispo {letter}:', var_name))
     else:
         for var_name in specific_var_order:
             dispo_str = specific_var_map[var_name]
-            num = dispo_str.split(" - ")[0]
-            metric_labels.append((f"Dispo {num}:", var_name))
+            num = dispo_str.split(' - ')[0]
+            metric_labels.append((f'Dispo {num}:', var_name))
 
-    metric_labels.append(("Not Examined:", "var_t_p"))
+    metric_labels.append(('Not Examined:', 'var_t_p'))
     for var_name in not_examined_var_order:
         dispo_str = not_examined_var_map[var_name]
-        letter = dispo_str.split(" - ")[0]
-        metric_labels.append((f"Dispo {letter}:", var_name))
+        letter = dispo_str.split(' - ')[0]
+        metric_labels.append((f'Dispo {letter}:', var_name))
 
     if report_type == 'STD':
-        metric_labels.append(("Dispo E:", "var_ac_p"))
+        metric_labels.append(('Dispo E:', 'var_ac_p'))
 
-    metric_labels.append(("Open:", "var_ad_p"))
-    metric_labels.append(("Non-assigned Dispos:", "var_ae_p"))
+    metric_labels.append(('Open:', 'var_ad_p'))
+    metric_labels.append(('Non-assigned Dispos:', 'var_ae_p'))
 
     # ------------------------------------------------------------------
     # 7. Build final table (no ALL rows)
@@ -282,28 +301,31 @@ def execute(
             provider_rows.append(row)
 
     metric_index = {label: idx for idx, (label, _) in enumerate(metric_labels)}
+
     def _quick_code_sort_key(row):
         quick_code = row['PROVIDER_QUICK_CODE_new']
         if quick_code is None:
             return ''
         return quick_code.lower()
-    provider_rows.sort(key=lambda r: (
-            _quick_code_sort_key(r), metric_index[r['colname']]
-        )
+
+    provider_rows.sort(
+        key=lambda r: (_quick_code_sort_key(r), metric_index[r['colname']])
     )
 
     table_data = []
     for row in provider_rows:
-        table_data.append((
-            row['PROVIDER_QUICK_CODE_new'],
-            row['colname'],
-            row['colval'],
-            row['colval2'],
-            row['colval3'],
-            row['colval4'],
-            _quick_code_sort_key(row),
-            5
-        ))
+        table_data.append(
+            (
+                row['PROVIDER_QUICK_CODE_new'],
+                row['colname'],
+                row['colval'],
+                row['colval2'],
+                row['colval3'],
+                row['colval4'],
+                _quick_code_sort_key(row),
+                5,
+            )
+        )
 
     columns = [
         'PROVIDER_QUICK_CODE_new',
@@ -313,10 +335,9 @@ def execute(
         'colval3',
         'colval4',
         'pname_l',
-        'i'
+        'i',
     ]
 
     return ReportResult(
-        content_type='table',
-        content=Table(columns=columns, data=table_data)
+        content_type='table', content=Table(columns=columns, data=table_data)
     )

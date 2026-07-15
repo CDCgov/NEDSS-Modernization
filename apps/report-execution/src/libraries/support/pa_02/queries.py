@@ -1,5 +1,8 @@
-
 def global_date_sql(subset_query: str) -> str:
+    """Returns the global min/max dates for the report. This is used to filter the
+    report to the date range of the data, and to filter the AE subquery to the
+    same date range.
+    """
     return f"""
     WITH a AS ({subset_query}),
     base AS (
@@ -19,7 +22,11 @@ def global_date_sql(subset_query: str) -> str:
     FROM base
     """
 
+
 def disp_keys_sql(subset_query: str) -> str:
+    """Returns the distinct disposition keys for the report. This is used to filter
+    the report to the disposition keys that are present in the data.
+    """
     return f"""
     WITH a AS ({subset_query}),
     base AS (
@@ -33,14 +40,18 @@ def disp_keys_sql(subset_query: str) -> str:
     SELECT INVESTIGATOR_DISP_FL_FUP_KEY FROM base
     """
 
+
 def assignment_sql(
-        subset_query: str,
-        referral_in: str,
-        examined_in: str,
-        not_examined_in: str,
-        specific_clauses: list[str],
-        not_examined_clauses: list[str],
-    ) -> str:
+    subset_query: str,
+    referral_in: str,
+    examined_in: str,
+    not_examined_in: str,
+    specific_clauses: list[str],
+    not_examined_clauses: list[str],
+) -> str:
+    """Returns the assignment-level report data. This is used to generate the
+    assignment-level report table.
+    """
     return f"""
         WITH a AS ({subset_query}),
         base AS (
@@ -94,12 +105,12 @@ def assignment_sql(
                 DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IN ({examined_in})
                 THEN base.INV_LOCAL_ID END
             ) AS var_i_p,
-            {", ".join(specific_clauses)},
+            {', '.join(specific_clauses)},
             COUNT(
                 DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IN ({not_examined_in})
                 THEN base.INV_LOCAL_ID END
             ) AS var_t_p,
-            {", ".join(not_examined_clauses)},
+            {', '.join(not_examined_clauses)},
             COUNT(
                 DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IS NULL
                 THEN base.INV_LOCAL_ID END
@@ -119,15 +130,19 @@ def assignment_sql(
             dt.var_m_p
         """
 
+
 def ae_sql(
-        subset_query: str,
-        referral_in: str,
-        keys_in: str,
-        min_dispo_str: str,
-        max_dispo_str: str,
-        min_assign_str: str,
-        max_assign_str: str
-    ) -> str:
+    subset_query: str,
+    referral_in: str,
+    keys_in: str,
+    min_dispo_str: str,
+    max_dispo_str: str,
+    min_assign_str: str,
+    max_assign_str: str,
+) -> str:
+    """Returns the AE-level report data. This is used to generate the AE-level
+    report table.
+    """
     return f"""
     WITH a AS ({subset_query}),
     base_dispo AS (
@@ -148,11 +163,11 @@ def ae_sql(
             AND CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
             AND CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
             AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{
-                min_assign_str
-            }' AS DATE)
+        min_assign_str
+    }' AS DATE)
             AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{
-                max_assign_str
-            }' AS DATE)
+        max_assign_str
+    }' AS DATE)
             AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
             AND a.FL_FUP_DISPOSITION IS NOT NULL
     )
