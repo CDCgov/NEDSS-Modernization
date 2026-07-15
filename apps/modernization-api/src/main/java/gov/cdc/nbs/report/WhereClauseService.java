@@ -466,16 +466,18 @@ public class WhereClauseService {
     if (values.size() != 2 && !includeNulls) return "";
 
     String colType = column.sourceTypeCode();
-    List<String> formattedValues;
+    List<String> formattedValues = new ArrayList<>();
 
-    if (colType.equals("DATE") || colType.equals("DATETIME")) {
-      formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
-    } else {
-      formattedValues =
-          values.stream()
-              .filter(Objects::nonNull)
-              .map(v -> fieldFormatter.formatField(colType, v))
-              .toList();
+    if (!values.isEmpty()) {
+      if (colType.equals("DATE") || colType.equals("DATETIME")) {
+        formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
+      } else {
+        formattedValues =
+            values.stream()
+                .filter(Objects::nonNull)
+                .map(v -> fieldFormatter.formatField(colType, v))
+                .toList();
+      }
     }
 
     StringBuilder criteria = new StringBuilder();
@@ -483,24 +485,21 @@ public class WhereClauseService {
     String colName = fieldFormatter.convertToSQLColName(column.name(), colType);
 
     if (!formattedValues.isEmpty()) {
-      criteria.append("(")
-              .append(colName)
-              .append(" BETWEEN ")
-              .append(formattedValues.get(0))
-              .append(SQL_AND)
-              .append(formattedValues.get(1))
-              .append(")");
+      criteria
+          .append("(")
+          .append(colName)
+          .append(" BETWEEN ")
+          .append(formattedValues.get(0))
+          .append(SQL_AND)
+          .append(formattedValues.get(1))
+          .append(")");
     }
 
     if (includeNulls) {
       String isNullClause = "(" + buildNullCriteria(column, false) + ")";
 
       if (!criteria.isEmpty()) {
-        criteria
-                .insert(0, "(")
-                .append(" OR ")
-                .append(isNullClause)
-                .append(")");
+        criteria.insert(0, "(").append(" OR ").append(isNullClause).append(")");
       } else {
         criteria.append(isNullClause);
       }
