@@ -17,7 +17,7 @@ Feature: View report configuration
         Then I should see 2 available filters
         When I click the filter 0 "View" button
         Then I should see value "Time Range" in the "Filter" field
-        Then I should see value "---" in the "Type" field
+        Then I should see value "---" in the "Selection type" field
         Then I should see value "REPORT_CREATE_DATE (Report Create Date)" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
         
@@ -45,21 +45,21 @@ Feature: View report configuration
         # == Filters ==
         # Add basic
         When I select value "Diseases" in the "Filter" field
-        When I select value "Multi" in the "Type" field
+        When I select value "Multi-select filter" in the "Selection type" field
         When I select value "PHC_code (Condition Code)" in the "Associated column" field
         When I click the "Add filter" button
         Then I click the filter 0 "View" button
         Then I should see value "Diseases" in the "Filter" field
-        Then I should see value "Multi" in the "Type" field
+        Then I should see value "Multi-select filter" in the "Selection type" field
         Then I should see value "PHC_code (Condition Code)" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
 
         # edit
         Then I click the filter 0 "Edit" button
-        When I select value "Single" in the "Type" field
+        When I select value "Single-select filter" in the "Selection type" field
         When I click the "Update filter" button
         Then I click the filter 0 "View" button
-        Then I should see value "Single" in the "Type" field
+        Then I should see value "Single-select filter" in the "Selection type" field
         Then I click the filter 0 "View" button
 
         # add and delete
@@ -67,7 +67,7 @@ Feature: View report configuration
         When I click the "Add filter" button
         Then I click the filter 1 "View" button
         Then I should see value "Where Clause Builder" in the "Filter" field
-        Then I should see value "---" in the "Type" field
+        Then I should see value "---" in the "Selection type" field
         Then I should see value "---" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
         When I click the filter 1 "Delete" button
@@ -99,7 +99,7 @@ Feature: View report configuration
         Then I should see 4 available filters
         When I click the filter 0 "View" button
         Then I should see value "Diseases" in the "Filter" field
-        Then I should see value "Single" in the "Type" field
+        Then I should see value "Single-select filter" in the "Selection type" field
         Then I should see value "PHC_code (Condition Code)" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
         When I click the filter 2 "View" button
@@ -149,25 +149,25 @@ Feature: View report configuration
         
         When I click the filter 0 "View" button
         Then I should see value "Diseases" in the "Filter" field
-        Then I should see value "Single" in the "Type" field
+        Then I should see value "Single-select filter" in the "Selection type" field
         Then I should see value "PHC_code (Condition Code)" in the "Associated column" field
         Then I should see value "Yes" in the "Required as basic filter?" field
 
         When I click the filter 1 "View" button
         Then I should see value "Time Period" in the "Filter" field
-        Then I should see value "---" in the "Type" field
+        Then I should see value "---" in the "Selection type" field
         Then I should see value "event_date (Event Date)" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
 
         When I click the filter 2 "View" button
         Then I should see value "Duplicate Investigations Time Frame" in the "Filter" field
-        Then I should see value "---" in the "Type" field
+        Then I should see value "---" in the "Selection type" field
         Then I should see value "---" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
 
         When I click the filter 3 "View" button
         Then I should see value "Where Clause Builder" in the "Filter" field
-        Then I should see value "---" in the "Type" field
+        Then I should see value "---" in the "Selection type" field
         Then I should see value "---" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
 
