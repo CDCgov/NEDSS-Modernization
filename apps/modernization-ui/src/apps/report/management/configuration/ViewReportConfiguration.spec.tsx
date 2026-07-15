@@ -183,7 +183,7 @@ describe('view report configuration page', () => {
         expect(await findAllByText('My filter')).toHaveLength(2);
         expect(await findAllByText('Yes')).toHaveLength(2);
         expect(await findAllByText(/FULL_NAME \(Full Name\)/));
-        expect(await findAllByText('Single'));
+        expect(await findAllByText('Single-select filter'));
     });
 
     it('renders no filters', async () => {

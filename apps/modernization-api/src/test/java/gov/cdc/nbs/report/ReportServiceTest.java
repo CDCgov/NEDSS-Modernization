@@ -1044,6 +1044,23 @@ class ReportServiceTest {
     }
 
     @Test
+    void saveAsReport_should_detach_original_report_to_avoid_updating_it() {
+      ReportExecutionRequest reportExecutionRequest =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "Custom Title",
+              "Custom",
+              ReportConstants.ReportGroup.PUBLIC,
+              reportExecutionRequest,
+              "some description text");
+
+      service.saveAsReport(request, mockUser, existingReportId);
+
+      verify(reportRepository).detach(existingReport);
+    }
+
+    @Test
     void saveAsReport_should_duplicate_original_report_and_override_select_fields() {
       ReportExecutionRequest reportExecutionRequest =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
