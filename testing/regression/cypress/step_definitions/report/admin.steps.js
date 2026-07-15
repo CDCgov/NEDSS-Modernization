@@ -43,7 +43,7 @@ When('I add all filters', () => {
                 cy.findAllByRole('combobox').each(($item) => {
                     const name = $item.attr('name')
                     if (name === 'selectType') {
-                        cy.wrap($item).select('Multi')
+                        cy.wrap($item).select('Multi-select filter')
                     } else if (name === 'associatedColumn') {
                         cy.wrap($item).select(1);
                     }
