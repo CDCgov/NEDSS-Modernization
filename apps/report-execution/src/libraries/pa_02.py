@@ -120,7 +120,9 @@ def execute(
     # ------------------------------------------------------------------
     # 4. Helper to build SQL for one referral group
     # ------------------------------------------------------------------
-    def build_group_sql(group_name: str, referral_list: list[str]) -> tuple[str, str]:
+    def build_group_sql(
+        group_name: str, referral_list: list[str]
+    ) -> tuple[str, str | None]:
         def fmt_list(lst):
             return ', '.join(f"'{item}'" for item in lst)
 
@@ -159,16 +161,24 @@ def execute(
             not_examined_clauses=not_examined_clauses,
         )
 
-        # Non‑assigned dispositions – allow NULL dates in the date filters
-        ae_sql = queries.ae_sql(
-            subset_query=subset_query,
-            referral_in=referral_in,
-            keys_in=keys_in,
-            min_dispo_str=min_dispo_str,
-            max_dispo_str=max_dispo_str,
-            min_assign_str=min_assign_str,
-            max_assign_str=max_assign_str,
-        )
+        # Non‑assigned dispositions
+        if (
+            min_dispo_str is not None
+            and max_dispo_str is not None
+            and min_assign_str is not None
+            and max_assign_str is not None
+        ):
+            ae_sql = queries.ae_sql(
+                subset_query=subset_query,
+                referral_in=referral_in,
+                keys_in=keys_in,
+                min_dispo_str=min_dispo_str,
+                max_dispo_str=max_dispo_str,
+                min_assign_str=min_assign_str,
+                max_assign_str=max_assign_str,
+            )
+        else:
+            ae_sql = None
 
         return assignment_sql, ae_sql
 
@@ -181,15 +191,23 @@ def execute(
         assign_sql, ae_sql = build_group_sql(group_name, referral_list)
 
         assign_result = trx.query(assign_sql)
-        ae_result = trx.query(ae_sql)
+        ae_result = trx.query(ae_sql) if ae_sql else None
 
         assign_columns = assign_result.columns
         assign_rows = assign_result.data
-        ae_columns = ae_result.columns
-        ae_rows = ae_result.data
+
+        if ae_result:
+            ae_columns = ae_result.columns
+            ae_rows = ae_result.data
+        else:
+            ae_rows = None
+            ae_columns = None
 
         assign_col_idx = {col: i for i, col in enumerate(assign_columns)}
-        ae_col_idx = {col: i for i, col in enumerate(ae_columns)}
+        if ae_columns:
+            ae_col_idx = {col: i for i, col in enumerate(ae_columns)}
+        else:
+            ae_col_idx = None
 
         for row in assign_rows:
             provider_key = row[assign_col_idx['INVESTIGATOR_FL_FUP_KEY']]
@@ -219,15 +237,16 @@ def execute(
                 else:
                     provider_data[key][group_name][var] = 0
 
-        for row in ae_rows:
-            provider_key = row[ae_col_idx['INVESTIGATOR_FL_FUP_KEY']]
-            quick_code = row[ae_col_idx['PROVIDER_QUICK_CODE']]
-            key = (provider_key, quick_code)
-            if key not in provider_data:
-                provider_data[key] = {'PROVIDER_QUICK_CODE': quick_code}
-            if group_name not in provider_data[key]:
-                provider_data[key][group_name] = {}
-            provider_data[key][group_name]['var_ae_p'] = row[ae_col_idx['var_ae_p']]
+        if ae_rows and ae_col_idx:
+            for row in ae_rows:
+                provider_key = row[ae_col_idx['INVESTIGATOR_FL_FUP_KEY']]
+                quick_code = row[ae_col_idx['PROVIDER_QUICK_CODE']]
+                key = (provider_key, quick_code)
+                if key not in provider_data:
+                    provider_data[key] = {'PROVIDER_QUICK_CODE': quick_code}
+                if group_name not in provider_data[key]:
+                    provider_data[key][group_name] = {}
+                provider_data[key][group_name]['var_ae_p'] = row[ae_col_idx['var_ae_p']]
 
     if not provider_data:
         return ReportResult(
