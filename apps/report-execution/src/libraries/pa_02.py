@@ -1,7 +1,7 @@
+
 from src.db_transaction import Transaction
+from src.libraries.support.pa_02 import queries
 from src.models import ReportResult, Table
-from typing import List, Tuple
-from datetime import date
 
 
 def execute(
@@ -11,8 +11,7 @@ def execute(
     library_params: dict,
     **kwargs,
 ) -> ReportResult:
-    """
-    PA02: Field Investigation Outcomes - STD and HIV.
+    """PA02: Field Investigation Outcomes - STD and HIV.
 
     The SAS implementation of this report contains a known precision issue:
     The global min/max datetimes are stored in macro variables using `SELECT ... INTO`.
@@ -72,7 +71,9 @@ def execute(
             "var_r_p": "F - Not Infected",
             "var_ac_p": "E - Previously Treated for This Infection"
         }
-        specific_var_order = ["var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_ac_p"]
+        specific_var_order = [
+            "var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_ac_p"
+        ]
     else:  # HIV
         examined_dispos = [
             "2 - Prev. Neg, New Pos",
@@ -100,7 +101,9 @@ def execute(
             "var_r_p": "6 - No Prev Test, New Neg",
             "var_s_p": "7 - No Prev Test, No Test"
         }
-        specific_var_order = ["var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_s_p"]
+        specific_var_order = [
+            "var_n_p", "var_o_p", "var_p_p", "var_q_p", "var_r_p", "var_s_p"
+        ]
 
     not_examined_var_map = {
         "var_u_p": "G - Insufficient Info to Begin Investigation",
@@ -112,12 +115,20 @@ def execute(
         "var_aa_p": "X - Patient Deceased",
         "var_ab_p": "Z - Previous Preventative Treatment"
     }
-    not_examined_var_order = ["var_u_p", "var_v_p", "var_w_p", "var_x_p", "var_y_p", "var_z_p", "var_aa_p", "var_ab_p"]
+    not_examined_var_order = [
+        "var_u_p", "var_v_p", "var_w_p", "var_x_p", "var_y_p", "var_z_p", "var_aa_p", "var_ab_p"
+    ]
 
     referral_groups = {
         "partners": ["P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "P3 - Partner, Both"],
-        "clus": ["A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3",
-                 "S1 - Social Contact 1", "S2 - Social Contact 2", "S3 - Social Contact 3"],
+        "clus": [
+            "A1 - Associate 1",
+            "A2 - Associate 2",
+            "A3 - Associate 3",
+            "S1 - Social Contact 1",
+            "S2 - Social Contact 2",
+            "S3 - Social Contact 3"
+        ],
         "reac": ["T1 - Positive Test", "T2 - Morbidity Report"],
         "cohort": ["C1- Cohort"]
     }
@@ -125,29 +136,21 @@ def execute(
     # ------------------------------------------------------------------
     # 3. Compute global min/max dates from the unfiltered base
     # ------------------------------------------------------------------
-    global_date_sql = f"""
-    WITH a AS ({subset_query}),
-    base AS (
-        SELECT
-            a.FL_FUP_INVESTIGATOR_ASSGN_DT,
-            a.FL_FUP_DISPO_DT
-        FROM a
-        INNER JOIN [RDB].[dbo].INVESTIGATION b
-            ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-        WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
-    )
-    SELECT
-        MIN(FL_FUP_DISPO_DT) AS min_dispo,
-        MAX(FL_FUP_DISPO_DT) AS max_dispo,
-        MIN(FL_FUP_INVESTIGATOR_ASSGN_DT) AS min_assign,
-        MAX(FL_FUP_INVESTIGATOR_ASSGN_DT) AS max_assign
-    FROM base
-    """
+    global_date_sql = queries.global_date_sql(subset_query)
     date_result = trx.query(global_date_sql)
     if not date_result.data:
         return ReportResult(
             content_type='table',
-            content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
+            content=Table(columns=[
+                'PROVIDER_QUICK_CODE_new',
+                'colname',
+                'colval',
+                'colval2',
+                'colval3',
+                'colval4',
+                'pname_l',
+                'i'
+            ], data=[])
         )
 
     min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
@@ -165,31 +168,29 @@ def execute(
     max_assign_str = to_date_str(max_assign)
 
     # Get the set of INVESTIGATOR_DISP_FL_FUP_KEY that appear in the base (unfiltered)
-    disp_keys_sql = f"""
-    WITH a AS ({subset_query}),
-    base AS (
-        SELECT DISTINCT a.INVESTIGATOR_DISP_FL_FUP_KEY
-        FROM a
-        INNER JOIN [RDB].[dbo].INVESTIGATION b
-            ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-        WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
-          AND a.INVESTIGATOR_DISP_FL_FUP_KEY IS NOT NULL
-    )
-    SELECT INVESTIGATOR_DISP_FL_FUP_KEY FROM base
-    """
+    disp_keys_sql = queries.disp_keys_sql(subset_query)
     keys_result = trx.query(disp_keys_sql)
     disp_keys = [row[0] for row in keys_result.data]
     if not disp_keys:
         return ReportResult(
             content_type='table',
-            content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
+            content=Table(columns=[
+                'PROVIDER_QUICK_CODE_new',
+                'colname',
+                'colval',
+                'colval2',
+                'colval3',
+                'colval4',
+                'pname_l',
+                'i'
+            ], data=[])
         )
     keys_in = ", ".join(str(k) for k in disp_keys)
 
     # ------------------------------------------------------------------
     # 4. Helper to build SQL for one referral group
     # ------------------------------------------------------------------
-    def build_group_sql(group_name: str, referral_list: List[str]) -> Tuple[str, str]:
+    def build_group_sql(group_name: str, referral_list: list[str]) -> tuple[str, str]:
         def fmt_list(lst):
             return ", ".join(f"'{item}'" for item in lst)
 
@@ -200,80 +201,33 @@ def execute(
         specific_clauses = []
         for var_name, dispo_str in specific_var_map.items():
             specific_clauses.append(
-                f"COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}' THEN base.INV_LOCAL_ID END) AS {var_name}"
+                f'''
+                COUNT(
+                    DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}'
+                    THEN base.INV_LOCAL_ID END
+                ) AS {var_name}
+                '''
             )
         not_examined_clauses = []
         for var_name, dispo_str in not_examined_var_map.items():
             not_examined_clauses.append(
-                f"COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}' THEN base.INV_LOCAL_ID END) AS {var_name}"
+                f'''
+                COUNT(
+                    DISTINCT CASE WHEN base.FL_FUP_DISPOSITION = '{dispo_str}'
+                    THEN base.INV_LOCAL_ID END
+                ) AS {var_name}
+                '''
             )
 
         # Assignment metrics SQL – unchanged
-        assignment_sql = f"""
-        WITH a AS ({subset_query}),
-        base AS (
-            SELECT
-                a.INV_LOCAL_ID,
-                b.REFERRAL_BASIS,
-                a.FL_FUP_INVESTIGATOR_ASSGN_DT,
-                a.FL_FUP_DISPO_DT,
-                a.FL_FUP_DISPOSITION,
-                a.INVESTIGATOR_FL_FUP_KEY,
-                a.INVESTIGATOR_FL_FUP_QC,
-                c.PROVIDER_QUICK_CODE,
-                c.PROVIDER_FIRST_NAME,
-                DATEDIFF(day, a.FL_FUP_INVESTIGATOR_ASSGN_DT, a.FL_FUP_DISPO_DT) AS days
-            FROM a
-            INNER JOIN [RDB].[dbo].INVESTIGATION b
-                ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-            INNER JOIN [RDB].[dbo].D_PROVIDER c
-                ON a.INVESTIGATOR_FL_FUP_KEY = c.PROVIDER_KEY
-            WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
-              AND b.REFERRAL_BASIS IN ({referral_in})
-        ),
-        base_dt AS (
-            SELECT DISTINCT
-                INV_LOCAL_ID,
-                INVESTIGATOR_FL_FUP_KEY,
-                days
-            FROM base
-            WHERE FL_FUP_DISPOSITION IN ({examined_in})
-              AND days >= 0
-        ),
-        dt_agg AS (
-            SELECT
-                INVESTIGATOR_FL_FUP_KEY,
-                COUNT(CASE WHEN days <= 3 THEN 1 END) AS var_j_p,
-                COUNT(CASE WHEN days <= 5 THEN 1 END) AS var_k_p,
-                COUNT(CASE WHEN days <= 7 THEN 1 END) AS var_l_p,
-                COUNT(CASE WHEN days <= 14 THEN 1 END) AS var_m_p
-            FROM base_dt
-            GROUP BY INVESTIGATOR_FL_FUP_KEY
+        assignment_sql = queries.assignment_sql(
+            subset_query=subset_query,
+            referral_in=referral_in,
+            examined_in=examined_in,
+            not_examined_in=not_examined_in,
+            specific_clauses=specific_clauses,
+            not_examined_clauses=not_examined_clauses
         )
-        SELECT
-            base.INVESTIGATOR_FL_FUP_KEY,
-            base.PROVIDER_QUICK_CODE,
-            COUNT(DISTINCT base.INV_LOCAL_ID) AS var_g_p,
-            COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IS NOT NULL THEN base.INV_LOCAL_ID END) AS var_h_p,
-            COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IN ({examined_in}) THEN base.INV_LOCAL_ID END) AS var_i_p,
-            {", ".join(specific_clauses)},
-            COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IN ({not_examined_in}) THEN base.INV_LOCAL_ID END) AS var_t_p,
-            {", ".join(not_examined_clauses)},
-            COUNT(DISTINCT CASE WHEN base.FL_FUP_DISPOSITION IS NULL THEN base.INV_LOCAL_ID END) AS var_ad_p,
-            COALESCE(dt.var_j_p, 0) AS var_j_p,
-            COALESCE(dt.var_k_p, 0) AS var_k_p,
-            COALESCE(dt.var_l_p, 0) AS var_l_p,
-            COALESCE(dt.var_m_p, 0) AS var_m_p
-        FROM base
-        LEFT JOIN dt_agg dt ON base.INVESTIGATOR_FL_FUP_KEY = dt.INVESTIGATOR_FL_FUP_KEY
-        GROUP BY
-            base.INVESTIGATOR_FL_FUP_KEY,
-            base.PROVIDER_QUICK_CODE,
-            dt.var_j_p,
-            dt.var_k_p,
-            dt.var_l_p,
-            dt.var_m_p
-        """
 
         # Non‑assigned dispositions – allow NULL dates in the date filters
         ae_sql = f"""
@@ -295,8 +249,12 @@ def execute(
                 AND a.INVESTIGATOR_DISP_FL_FUP_KEY IN ({keys_in})
                 AND CAST(a.FL_FUP_DISPO_DT AS DATE) >= CAST('{min_dispo_str}' AS DATE)
                 AND CAST(a.FL_FUP_DISPO_DT AS DATE) <= CAST('{max_dispo_str}' AS DATE)
-                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{min_assign_str}' AS DATE)
-                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{max_assign_str}' AS DATE)
+                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) >= CAST('{
+                    min_assign_str
+                }' AS DATE)
+                AND CAST(a.FL_FUP_INVESTIGATOR_ASSGN_DT AS DATE) <= CAST('{
+                    max_assign_str
+                }' AS DATE)
                 AND a.INVESTIGATOR_DISP_FL_FUP_KEY != a.INVESTIGATOR_FL_FUP_KEY
                 AND a.FL_FUP_DISPOSITION IS NOT NULL
         )
@@ -336,8 +294,16 @@ def execute(
             if key not in provider_data:
                 provider_data[key] = {'PROVIDER_QUICK_CODE': quick_code}
             provider_data[key][group_name] = {}
-            var_names = ['var_g_p', 'var_h_p', 'var_i_p', 'var_j_p', 'var_k_p', 'var_l_p', 'var_m_p',
-                         'var_t_p', 'var_ad_p'] + specific_var_order + not_examined_var_order
+            var_names = [
+                'var_g_p',
+                'var_h_p',
+                'var_i_p',
+                'var_j_p',
+                'var_k_p',
+                'var_l_p',
+                'var_m_p',
+                'var_t_p',
+                'var_ad_p'] + specific_var_order + not_examined_var_order
             for var in var_names:
                 if var in assign_col_idx:
                     provider_data[key][group_name][var] = row[assign_col_idx[var]]
@@ -357,7 +323,10 @@ def execute(
     if not provider_data:
         return ReportResult(
             content_type='table',
-            content=Table(columns=['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'], data=[])
+            content=Table(columns=[
+                'PROVIDER_QUICK_CODE_new',
+                'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i'
+            ], data=[])
         )
 
     # ------------------------------------------------------------------
@@ -401,7 +370,7 @@ def execute(
     # 7. Build final table (no ALL rows)
     # ------------------------------------------------------------------
     provider_rows = []
-    for (provider_key, quick_code), data in provider_data.items():
+    for (_provider_key, quick_code), data in provider_data.items():
         for metric_label, var_name in metric_labels:
             row = {
                 'PROVIDER_QUICK_CODE_new': quick_code,
@@ -437,7 +406,16 @@ def execute(
             5
         ))
 
-    columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
+    columns = [
+        'PROVIDER_QUICK_CODE_new',
+        'colname',
+        'colval',
+        'colval2',
+        'colval3',
+        'colval4',
+        'pname_l',
+        'i'
+    ]
 
     return ReportResult(
         content_type='table',

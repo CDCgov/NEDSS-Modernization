@@ -1,6 +1,5 @@
 import pytest
 import yaml
-from mssql_python.exceptions import ProgrammingError
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -36,7 +35,16 @@ class TestIntegrationPa02Library:
         table = result.content
         
         # Check columns match
-        expected_columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
+        expected_columns = [
+            'PROVIDER_QUICK_CODE_new',
+            'colname',
+            'colval',
+            'colval2',
+            'colval3',
+            'colval4',
+            'pname_l',
+            'i'
+        ]
         assert table.columns == expected_columns
         
         # Check there is data
@@ -141,7 +149,9 @@ class TestIntegrationPa02Library:
         table = result.content
         metrics = {row[1] for row in table.data}
         
-        hiv_specific = {"Dispo 2:", "Dispo 3:", "Dispo 4:", "Dispo 5:", "Dispo 6:", "Dispo 7:"}
+        hiv_specific = {
+            "Dispo 2:", "Dispo 3:", "Dispo 4:", "Dispo 5:", "Dispo 6:", "Dispo 7:"
+        }
         for label in hiv_specific:
             assert label not in metrics, f"HIV label '{label}' found in STD report"
 
@@ -152,7 +162,9 @@ class TestIntegrationPa02Library:
         table = result.content
         metrics = {row[1] for row in table.data}
         
-        std_specific = {"Dispo A:", "Dispo B:", "Dispo C:", "Dispo D:", "Dispo F:", "Dispo E:"}
+        std_specific = {
+            "Dispo A:", "Dispo B:", "Dispo C:", "Dispo D:", "Dispo F:", "Dispo E:"
+        }
         for label in std_specific:
             assert label not in metrics, f"STD label '{label}' found in HIV report"
 
@@ -230,9 +242,12 @@ class TestIntegrationPa02Library:
                 f"Provider {current_provider} has metrics in wrong order"
         
         # Check providers are sorted alphabetically by pname_l
-        providers = [row[0] for row in table.data if row[1] == "Assigned:"]  # First metric for each provider
+
+        # First metric for each provider
+        providers = [row[0] for row in table.data if row[1] == "Assigned:"]  
         pnames_lower = [p.lower() if p else "" for p in providers]
-        assert pnames_lower == sorted(pnames_lower), "Providers not sorted alphabetically by pname_l"
+        assert pnames_lower == sorted(pnames_lower), \
+            "Providers not sorted alphabetically by pname_l"
 
     def test_execute_std_provider_counts(self):
         """Verify that each provider has all metrics."""
@@ -255,7 +270,11 @@ class TestIntegrationPa02Library:
         # Each provider should have exactly the expected number of metrics
         for provider, metrics in provider_metrics.items():
             assert len(metrics) == expected_metric_count, \
-                f"Provider {provider} has {len(metrics)} metrics, expected {expected_metric_count}"
+                f"""
+                Provider {
+                    provider
+                } has {len(metrics)} metrics, expected {expected_metric_count}
+                """
 
     def test_execute_hiv_structure(self):
         """Test HIV report structure."""
@@ -265,7 +284,16 @@ class TestIntegrationPa02Library:
         table = result.content
         
         # Check columns
-        expected_columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
+        expected_columns = [
+            'PROVIDER_QUICK_CODE_new',
+            'colname',
+            'colval',
+            'colval2',
+            'colval3',
+            'colval4',
+            'pname_l',
+            'i'
+        ]
         assert table.columns == expected_columns
         
         # Check i column is always 5
@@ -312,7 +340,7 @@ class TestIntegrationPa02Library:
                 'pname_l': row[6],
                 'i': row[7]
             })
-        
+
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
     def test_execute_report_no_data(self):
@@ -326,7 +354,16 @@ class TestIntegrationPa02Library:
         assert result.content_type == 'table'
         
         # Should return empty data but with correct columns
-        expected_columns = ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
+        expected_columns = [
+            'PROVIDER_QUICK_CODE_new',
+            'colname',
+            'colval',
+            'colval2',
+            'colval3',
+            'colval4',
+            'pname_l',
+            'i'
+        ]
         assert result.content.columns == expected_columns
         assert len(result.content.data) == 0
 
@@ -338,10 +375,21 @@ class TestIntegrationPa02Library:
         
         # Basic structure checks
         table = result.content
-        assert table.columns == ['PROVIDER_QUICK_CODE_new', 'colname', 'colval', 'colval2', 'colval3', 'colval4', 'pname_l', 'i']
+        assert table.columns == [
+            'PROVIDER_QUICK_CODE_new',
+            'colname',
+            'colval',
+            'colval2',
+            'colval3',
+            'colval4',
+            'pname_l',
+            'i'
+        ]
         
         # Check that HIV labels are present
-        hiv_labels = {"Dispo 2:", "Dispo 3:", "Dispo 4:", "Dispo 5:", "Dispo 6:", "Dispo 7:"}
+        hiv_labels = {
+            "Dispo 2:", "Dispo 3:", "Dispo 4:", "Dispo 5:", "Dispo 6:", "Dispo 7:"
+        }
         metrics = {row[1] for row in table.data}
         assert hiv_labels.issubset(metrics), "HIV-specific labels not found"
 
