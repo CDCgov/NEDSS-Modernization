@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MultiSelect } from './MultiSelect';
+import { axe } from 'jest-axe';
 
 describe('MultiSelect', () => {
     const options = [
@@ -29,7 +30,7 @@ describe('MultiSelect', () => {
 
     it('should allow selecting multiple options', async () => {
         const onChange = vi.fn();
-        const { getByText, getByRole } = render(
+        const { getByText, getByRole, container } = render(
             <MultiSelect
                 id="test-multi-select"
                 name="test-multi-select"
@@ -46,6 +47,13 @@ describe('MultiSelect', () => {
         await user.click(component).then(() => user.click(getByText('Option One')));
 
         expect(onChange).toHaveBeenCalledWith([expect.objectContaining({ value: '1', label: 'Option One' })]);
+
+        // menu should still be open
+        await user.click(getByText('Option Two'));
+
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({ value: '2', label: 'Option Two' })]);
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 
     it('should allow selecting all', async () => {

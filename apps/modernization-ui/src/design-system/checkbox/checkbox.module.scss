@@ -60,7 +60,7 @@ $border-size: 2px;
             outline-offset: 2px;
         }
 
-        &:has(input:checked)::before {
+        &:has(input:checked)::before, &:has(div[data-dummy-selected="true"])::before {
             box-shadow: 0 0 0 $border-size colors.$primary;
             background-color: colors.$primary;
             background-image:
