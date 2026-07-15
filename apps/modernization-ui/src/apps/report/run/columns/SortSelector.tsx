@@ -6,6 +6,7 @@ import { SingleSelect } from 'design-system/select';
 import { toSelectable } from './utils';
 import { EnumSelectable } from 'apps/report/utils';
 import { EntryWrapper } from 'components/Entry';
+import { SIZING } from 'apps/report/constants';
 
 import styles from './sort-selector.module.scss';
 
@@ -46,7 +47,7 @@ const SortSelector = ({
 
     return (
         <EntryWrapper
-            sizing="medium"
+            sizing={SIZING}
             label="Report data sorting"
             htmlFor={groupId}
             orientation="horizontal"
@@ -54,6 +55,7 @@ const SortSelector = ({
         >
             <div role="group" id={groupId} className={styles.layout}>
                 <SingleSelect
+                    sizing={SIZING}
                     label="Sort by"
                     id={`${groupId}-col`}
                     orientation="vertical"
@@ -66,6 +68,7 @@ const SortSelector = ({
                     defaultValue={defaultSort?.direction ?? DIRECTION_OPTIONS[0].value}
                     render={({ field: { value, onChange } }) => (
                         <SingleSelect
+                            sizing={SIZING}
                             label="Sort order"
                             id={`${groupId}-dir`}
                             orientation="vertical"
