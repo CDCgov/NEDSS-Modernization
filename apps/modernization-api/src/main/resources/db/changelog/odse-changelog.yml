@@ -8,4 +8,3 @@ databaseChangeLog:
             path: db/odse/01_ODSE_NBS_NOTE.sql
             splitStatements: false
             endDelimiter: ""
-
