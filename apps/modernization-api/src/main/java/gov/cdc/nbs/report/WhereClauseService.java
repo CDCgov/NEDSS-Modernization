@@ -482,12 +482,14 @@ public class WhereClauseService {
 
     String colName = fieldFormatter.convertToSQLColName(column.name(), colType);
 
-    criteria
-        .append(colName)
-        .append(" BETWEEN ")
-        .append(formattedValues.get(0))
-        .append(SQL_AND)
-        .append(formattedValues.get(1));
+    if (!formattedValues.isEmpty()) {
+      criteria
+              .append(colName)
+              .append(" BETWEEN ")
+              .append(formattedValues.get(0))
+              .append(SQL_AND)
+              .append(formattedValues.get(1));
+    }
 
     if (includeNulls) {
       criteria.insert(0, "(").append(") OR (").append(buildNullCriteria(column, false)).append(")");
