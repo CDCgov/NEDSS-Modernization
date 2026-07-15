@@ -1,0 +1,20 @@
+config:
+  seed: 5
+  nbs:
+    fk_tables: []
+
+tables:
+  - table_name: "[RDB].[dbo].[DM_INV_TB]"
+    row_count: 500
+    columns:
+      - column_name: INVESTIGATION_KEY
+        data: row_id
+      - column_name: program_jurisdiction_oid
+        data: random.choice(["1300400010", "1300400011", "1300400008", "1300400009", "1300400014", "1300400015", "1300400012"])
+      - column_name: INV_RPT_DT
+        data: fake.date_between(start_date=date(2018, 5, 5), end_date=date(2025, 1, 5))
+      - column_name: PREV_COUNT_CASE
+        data: 'random.choice(["No", "Verified Case: Counted by another US area"])'
+      - column_name: DISEASE_CD
+        data: 102201
+        null_percentage: .5
