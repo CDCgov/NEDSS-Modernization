@@ -84,16 +84,6 @@ $header-height: 6rem;
     }
 }
 
-.fullPageBlock {
-    display: grid;
-    place-items: center;
-    place-content: center;
-    margin: 1rem;
-    padding: 2rem;
-    background-color: colors.$base-white;
-    flex-grow: 1;
-}
-
 .alertMessage {
     flex-grow: unset;
 }
