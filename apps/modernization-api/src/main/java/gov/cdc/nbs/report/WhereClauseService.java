@@ -478,24 +478,35 @@ public class WhereClauseService {
               .toList();
     }
 
-    StringBuilder criteria = new StringBuilder("(");
+    StringBuilder criteria = new StringBuilder();
 
     String colName = fieldFormatter.convertToSQLColName(column.name(), colType);
 
     if (!formattedValues.isEmpty()) {
-      criteria
+      criteria.append("(")
               .append(colName)
               .append(" BETWEEN ")
               .append(formattedValues.get(0))
               .append(SQL_AND)
-              .append(formattedValues.get(1));
+              .append(formattedValues.get(1))
+              .append(")");
     }
 
     if (includeNulls) {
-      criteria.insert(0, "(").append(") OR (").append(buildNullCriteria(column, false)).append(")");
+      String isNullClause = "(" + buildNullCriteria(column, false) + ")";
+
+      if (!criteria.isEmpty()) {
+        criteria
+                .insert(0, "(")
+                .append(" OR ")
+                .append(isNullClause)
+                .append(")");
+      } else {
+        criteria.append(isNullClause);
+      }
     }
 
-    return criteria.append(")").toString();
+    return criteria.toString();
   }
 
   private String buildBasicBetweenCriteria(
