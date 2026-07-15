@@ -9,10 +9,6 @@ databaseChangeLog:
             splitStatements: false
             endDelimiter: ""
         - sqlFile:
-            path: db/odse/02_ODSE_REPORT_FILTER_CASCADE_DELETES.sql
-            splitStatements: false
-            endDelimiter: ""
-        - sqlFile:
-            path: db/odse/03_ODSE_DROP_REGIONS.sql
+            path: db/odse/02_ODSE_DROP_REGIONS.sql
             splitStatements: false
             endDelimiter: ""
