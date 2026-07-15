@@ -1,5 +1,5 @@
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button, LinkButton } from 'design-system/button';
+import { Button, NavLinkButton } from 'design-system/button';
 import { useState } from 'react';
 import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -48,9 +48,9 @@ const EditReportConfiguration = () => {
             title="Edit Report"
             actions={
                 <>
-                    <LinkButton secondary={true} href={viewUrl} disabled={submitting}>
+                    <NavLinkButton secondary={true} to={viewUrl} disabled={submitting}>
                         Cancel
-                    </LinkButton>
+                    </NavLinkButton>
                     <Button onClick={handleSubmit} disabled={submitting}>
                         Submit
                     </Button>
