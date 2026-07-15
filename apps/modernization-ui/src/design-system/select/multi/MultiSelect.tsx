@@ -101,7 +101,6 @@ export const MultiSelect = ({
                 closeMenuOnSelect={false}
                 blurInputOnSelect={false}
                 closeMenuOnScroll={false}
-                menuIsOpen={true}
                 inputValue={searchText}
                 onInputChange={handleInputChange}
                 getOptionValue={asValue}

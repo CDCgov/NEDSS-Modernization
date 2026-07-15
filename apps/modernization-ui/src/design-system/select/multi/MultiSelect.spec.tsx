@@ -30,7 +30,7 @@ describe('MultiSelect', () => {
 
     it('should allow selecting multiple options', async () => {
         const onChange = vi.fn();
-        const { getByText, getByRole, container } = render(
+        const { getByText, getByRole, queryByText, container } = render(
             <MultiSelect
                 id="test-multi-select"
                 name="test-multi-select"
@@ -54,6 +54,10 @@ describe('MultiSelect', () => {
         expect(onChange).toHaveBeenCalledWith([expect.objectContaining({ value: '2', label: 'Option Two' })]);
 
         expect(await axe(container)).toHaveNoViolations();
+
+        // Close menu
+        await user.keyboard('{Escape}');
+        expect(queryByText('Option Three')).toBeNull();
     });
 
     it('should allow selecting all', async () => {

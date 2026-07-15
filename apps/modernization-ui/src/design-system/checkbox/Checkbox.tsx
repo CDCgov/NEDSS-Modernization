@@ -22,12 +22,14 @@ const Checkbox = ({ id, className, sizing, selected = false, onChange, ...remain
                 [styles.medium]: sizing === 'medium',
                 [styles.large]: sizing === 'large',
             })}
-            data-selected={selected}>
+            data-selected={selected}
+        >
             <label
                 className={classNames(styles.label, {
                     [styles.disabled]: remaining.disabled,
                     [styles.labeled]: isLabelVisible(remaining),
-                })}>
+                })}
+            >
                 {isLabelVisible(remaining) && remaining.label}
                 <input
                     id={id}
@@ -45,7 +47,6 @@ const Checkbox = ({ id, className, sizing, selected = false, onChange, ...remain
 // Used in cases (Multiselect) where we want to display a checkbox, but it is controlled externally
 // and the native input behavior causes issues (stealing focus)
 const DummyCheckbox = ({
-    id,
     className,
     sizing,
     label,
@@ -60,15 +61,17 @@ const DummyCheckbox = ({
                 [styles.medium]: sizing === 'medium',
                 [styles.large]: sizing === 'large',
             })}
-            data-selected={selected}>
-            <label
+            data-selected={selected}
+        >
+            <span
                 className={classNames(styles.label, {
                     [styles.disabled]: remaining.disabled,
                     [styles.labeled]: true,
-                })}>
+                })}
+                data-dummy-selected={selected}
+            >
                 {label}
-                <div id={id} data-dummy-selected={selected} {...remaining} />
-            </label>
+            </span>
         </div>
     );
 };
