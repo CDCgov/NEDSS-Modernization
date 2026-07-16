@@ -27,14 +27,14 @@ def execute(
             SELECT 
                 cvg.CODE AS case_summary_code,
                 cvg.CODE_SHORT_DESC_TXT AS case_summary_code_desc
-            FROM {nbs_ods}.NBS_UI_METADATA ui
-            INNER JOIN {nbs_ods}.NBS_RDB_METADATA rdb 
+            FROM {nbs_ods}.dbo.NBS_UI_METADATA ui
+            INNER JOIN {nbs_ods}.dbo.NBS_RDB_METADATA rdb 
                 ON ui.NBS_UI_METADATA_UID = rdb.NBS_UI_METADATA_UID
-            INNER JOIN {nbs_srt}.CONDITION_CODE cc 
+            INNER JOIN {nbs_srt}.dbo.CONDITION_CODE cc 
                 ON cc.INVESTIGATION_FORM_CD = ui.INVESTIGATION_FORM_CD
-            INNER JOIN {nbs_srt}.CODESET cs 
+            INNER JOIN {nbs_srt}.dbo.CODESET cs 
                 ON cs.CODE_SET_GROUP_ID = ui.CODE_SET_GROUP_ID
-            INNER JOIN {nbs_srt}.CODE_VALUE_GENERAL cvg 
+            INNER JOIN {nbs_srt}.dbo.CODE_VALUE_GENERAL cvg 
                 ON cs.CODE_SET_NM = cvg.CODE_SET_NM
             WHERE ui.QUESTION_IDENTIFIER IN ('INV1109')
               AND cc.CONDITION_CD = '102201'
@@ -81,11 +81,13 @@ def execute(
         
         -- Outer join calendar and aggregates to enforce zero-filled timelines
         SELECT 
-            UPPER(FORMAT(c.month_date, 'MMMyyyy')) AS monthYearTxt,
+            LEFT(FORMAT(c.month_date, 'MMMM') + SPACE(15), 15) + FORMAT(c.month_date, 'yyyy') AS monthYearTxt,
+            UPPER(FORMAT(c.month_date, 'MMMyyyy')) AS monthYear,
+            DATEDIFF(day, '1960-01-01', c.month_date) AS sasdate,
             COALESCE(a.counted_cases, 0) AS counted_cases,
             COALESCE(a.non_counted_cases, 0) AS non_counted_cases,
-            COALESCE(a.counted_cases, 0) + COALESCE(a.non_counted_cases, 0) AS total_cases,
-            DATEDIFF(day, '1960-01-01', c.month_date) AS sasdate,
+            COALESCE(a.counted_cases, 0) + COALESCE(a.non_counted_cases, 0) AS total_cases
+            
         FROM calendar c
         LEFT JOIN monthly_aggregates a 
             ON YEAR(c.month_date) = a.case_year 
