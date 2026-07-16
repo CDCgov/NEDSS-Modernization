@@ -11,7 +11,14 @@ def execute(
     **kwargs,
 ) -> ReportResult:
     """PA02: Field Investigation Outcomes - STD and HIV.
+    
     Conversion notes:
+
+    * The SAS implementation outputs the summary data of ALL providers in a 
+    separate table, but the Python implementation combines the ALL rows with the 
+    provider rows in a single table. The ALL rows are sorted first, followed by 
+    the provider rows.
+
     * The SAS implementation of this report contains a known precision issue:
     The global min/max datetimes are stored in macro variables using `SELECT ... INTO`.
     When SAS resolves these numeric datetimes into SQL, it writes them in scientific
