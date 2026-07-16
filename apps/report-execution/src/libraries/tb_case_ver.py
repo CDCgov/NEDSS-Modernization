@@ -1,6 +1,7 @@
 from src.config import get_cached_config_value
 from src.db_transaction import Transaction
-from src.models import ReportResult, Table
+from src.models import ReportResult
+
 
 def execute(
     trx: Transaction,
@@ -47,11 +48,13 @@ def execute(
     if None in [disease_site_desc, case_verification_desc, inv_rpt_dt]:
         raise ValueError('column name metadata missing from initial query')
 
-    # TB_CASE_VER
+    # combines multiple versions of "TB_CASE_VER*" from SAS
     tb_case_ver_query = f"""
-      WITH DM_INV_TB AS (
+      WITH DM_INV_TB AS
+      (
         {subset_query}
       ),
+      -- case verification codes
       CASE_VERIFIC_CODED AS
       (
         SELECT cvg.CODE AS CASE_VERIFICATION_CODE,
@@ -68,6 +71,7 @@ def execute(
         WHERE QUESTION_IDENTIFIER IN ('INV1115')
         AND   CONDITION_CD IN ('102201')
       ),
+      -- disease site codes
       DISEASE_SITE_CODED AS
       (
         SELECT cvg.CODE AS DISEASE_CODE,
@@ -84,6 +88,7 @@ def execute(
         WHERE QUESTION_IDENTIFIER IN ('INV1133')
         AND   CONDITION_CD IN ('102201')
       ),
+      -- filtered DM_INV_TB
       TB_CASE_VER AS (
         SELECT COALESCE(NULLIF({disease_site_desc}, ''), 'Unknown')
                  AS DISEASE_SITE_DESC,
@@ -92,7 +97,71 @@ def execute(
         FROM DM_INV_TB
         WHERE DISEASE_CD = '102201'
         AND   {inv_rpt_dt} IS NOT NULL
+      ),
+      -- TB_CASE_VER with unspooled DISEASE_SITE_DESC
+      -- nb. this particularly nasty CTE is called a 'recursive CTE splitter' and it is
+      --     used here because STRING_SPLIT is, unfortunately, not supported by the
+      --     compatibility level of SQL Server.  It is required to replicate SAS
+      --     functionality that splits on a '|' character and creates new rows from
+      --     the results.
+      TB_CASE_VER_INIT2 AS
+      (
+        SELECT DISEASE_SITE_DESC,
+               CASE_VERIFICATION_DESC,
+               INVESTIGATION_KEY,
+               CAST(
+                   CASE
+                       WHEN CHARINDEX('|', DISEASE_SITE_DESC) > 0
+                           THEN LEFT(
+                                  DISEASE_SITE_DESC,
+                                  CHARINDEX('|', DISEASE_SITE_DESC) - 1
+                                )
+                       ELSE DISEASE_SITE_DESC
+                   END
+                   AS VARCHAR(4000)
+               ) AS DISEASE_SITE_IND,
+               CAST(
+                   CASE
+                       WHEN CHARINDEX('|', DISEASE_SITE_DESC) > 0
+                           THEN SUBSTRING(
+                                  DISEASE_SITE_DESC,
+                                  CHARINDEX('|', DISEASE_SITE_DESC) + 1, 4000
+                                )
+                       ELSE ''
+                   END
+                   AS VARCHAR(4000)
+               ) AS remaining
+        FROM TB_CASE_VER
+
+        UNION ALL
+
+        SELECT
+            DISEASE_SITE_DESC,
+            CASE_VERIFICATION_DESC,
+            INVESTIGATION_KEY,
+            CAST(
+                CASE
+                    WHEN CHARINDEX('|', remaining) > 0
+                        THEN LEFT(remaining, CHARINDEX('|', remaining) - 1)
+                    ELSE remaining
+                END
+                AS VARCHAR(4000)
+            ) AS DISEASE_SITE_IND,
+            CAST(
+                CASE
+                    WHEN CHARINDEX('|', remaining) > 0
+                        THEN SUBSTRING(
+                               remaining,
+                               CHARINDEX('|', remaining) + 1, 4000
+                             )
+                    ELSE ''
+                END
+                AS VARCHAR(4000)
+            ) AS remaining
+        FROM TB_CASE_VER_INIT2
+        WHERE remaining <> ''
       )
+      -- build DISEASE_SITE_VALUE based on DISEASE_CODE
       SELECT dsc.DISEASE_CODE,
              dsc.DISEASE_CODE_DESC,
              cvc.CASE_VERIFICATION_CODE,
@@ -124,15 +193,13 @@ def execute(
                    THEN 'Pulmonary TB'
                  ELSE NULL
              END AS DISEASE_SITE_VALUE
-      FROM TB_CASE_VER tcv
+      FROM TB_CASE_VER_INIT2 tcv
       LEFT JOIN CASE_VERIFIC_CODED cvc
              ON cvc.CASE_VERIFICATION_CODE_DESC = tcv.CASE_VERIFICATION_DESC
       LEFT JOIN DISEASE_SITE_CODED dsc
-             -- nb. STRING_SPLIT not available per SQL Server compatibility level
-             ON CHARINDEX(dsc.DISEASE_CODE_DESC, tcv.DISEASE_SITE_DESC) > 0
+             ON dsc.DISEASE_CODE_DESC = tcv.DISEASE_SITE_IND
       ORDER BY INVESTIGATION_KEY;
     """
     tb_case_ver = trx.query(tb_case_ver_query)
-    breakpoint()
 
     return ReportResult(content_type='table', content=None)

@@ -20,7 +20,16 @@ tables:
 
       # CASE_VERIFICATION_DESC in Case_Verification_Report.sas
       - column_name: CASE_VERIFCTON_CAT
-        data: random.choice(["0 - Not a Verified Case", "1 - Positive Culture", "1A - Positive NAA", "2 - Positive Smear/Tissue", "3 - Clinical Case Definition", "4 - Provider Diagnosis", "5 - Suspect"])
+        data: |
+          random.choice([
+            "0 - Not a Verified Case",
+            "1 - Positive Culture",
+            "1A - Positive NAA",
+            "2 - Positive Smear/Tissue",
+            "3 - Clinical Case Definition",
+            "4 - Provider Diagnosis",
+            "5 - Suspect"
+          ])
 
       # DISEASE_SITE_DESC in Case_Verification_Report.sas
       - column_name: DISEASE_SITE
