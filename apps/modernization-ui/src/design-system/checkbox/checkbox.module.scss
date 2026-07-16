@@ -8,7 +8,7 @@ $border-size: 2px;
 
     box-sizing: border-box;
 
-    label {
+    .label {
         color: colors.$base-darkest;
         cursor: pointer;
         user-select: none;
@@ -60,7 +60,8 @@ $border-size: 2px;
             outline-offset: 2px;
         }
 
-        &:has(input:checked)::before {
+        &:has(input:checked)::before,
+        &[data-dummy-selected='true']::before {
             box-shadow: 0 0 0 $border-size colors.$primary;
             background-color: colors.$primary;
             background-image:

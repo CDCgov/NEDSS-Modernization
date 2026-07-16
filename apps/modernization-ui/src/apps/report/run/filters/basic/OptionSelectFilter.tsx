@@ -34,7 +34,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
             <SelectInput
-                value={value?.[0] ?? null}
+                value={value?.[0] ?? undefined}
                 onChange={(event) => onChange(event.target.value ? [event.target.value] : null)}
                 options={options}
                 {...remaining}
