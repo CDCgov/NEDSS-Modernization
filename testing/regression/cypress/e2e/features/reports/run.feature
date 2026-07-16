@@ -90,17 +90,17 @@ Feature: Run report
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: 23
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
-        And I select "950 - AIDS" from the "DIAGNOSIS_CD" dropdown menu
+        And I select "<diagnosis>" from the "DIAGNOSIS_CD" dropdown menu
         And I select "Fulton LocalUser" from the "INVESTIGATOR_FL_FUP_QC" dropdown menu
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
         Examples:
-            | name                                 | reportUid | 
-            | (Dispositioned Date) HIV             | 10066738  | 
-            | (Dispositioned Date) STD             | 10066736  | 
-            | (Field Follow-up Assigned Date) HIV  | 10066739  | 
-            | (Field Follow-up Assigned Date) STD  | 10066737  | 
+            | name                                 | reportUid | diagnosis        |
+            | (Dispositioned Date) HIV             | 10066738  | 950 - AIDS       |
+            | (Dispositioned Date) STD             | 10066736  | 100 - Chancroid  |
+            | (Field Follow-up Assigned Date) HIV  | 10066739  | 950 - AIDS       |
+            | (Field Follow-up Assigned Date) STD  | 10066737  | 100 - Chancroid  | 
 
 
     Scenario: I can run a report for library pa_05 (case close date)
