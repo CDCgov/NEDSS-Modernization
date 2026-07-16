@@ -8,7 +8,18 @@
   - 10002
   - -6
   - 0
-  - 2
+  - 3
+- !!python/tuple
+  - Doe, Jane
+  - PSN10010002GA01
+  - CAS10068275GA01
+  - 300 - Gonorrhea
+  - 09/23/2021
+  - 10/14/2032
+  - 10002
+  - -8
+  - 8
+  - 3
 - !!python/tuple
   - Doe, Jane
   - PSN10010002GA01
@@ -19,7 +30,7 @@
   - 10002
   - 0
   - 8
-  - 2
+  - 3
 - !!python/tuple
   - Doe, Jane
   - PSN10010002GA01
@@ -41,4 +52,26 @@
   - 10002
   - -23
   - 7
+  - 2
+- !!python/tuple
+  - Johnson, Mike
+  - PSN10010003GA01
+  - CAS10071181GA01
+  - 720 - Syphilis, secondary
+  - 09/01/2023
+  - 03/01/2026
+  - 10003
+  - -24
+  - 0
+  - 2
+- !!python/tuple
+  - Johnson, Mike
+  - PSN10010003GA01
+  - CAS10074156GA01
+  - 720 - Syphilis, secondary
+  - 10/19/2020
+  - 05/13/2031
+  - 10003
+  - 0
+  - 30
   - 2

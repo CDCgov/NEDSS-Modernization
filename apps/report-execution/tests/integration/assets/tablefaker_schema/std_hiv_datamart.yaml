@@ -379,6 +379,40 @@ tables:
       - column_name: soc_prtnrs_prd_male_ttl
         data: str(random.randint(0, 4))
 
+      - column_name: hiv_900_test_ind
+        data: random.choice(["Yes", "No"])
+
+      - column_name: hiv_900_result
+        data: |
+          return random.choices(
+            [
+              "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute",
+              "23-HIV-2 Pos", "24-HIV-Undifferentiated", "12-Prelim Positive",
+              "11-Negative", None,
+            ],
+            weights=[10, 10, 5, 5, 5, 5, 40, 20]
+          )[0]
+
+      - column_name: hiv_post_test_900_counseling
+        data: random.choice(["Yes", "No"])
+
+      - column_name: fl_fup_disposition
+        data: |
+          # PA04's 7 'examined' codes (1-7) and 7 'not examined' codes
+          # (G, H, J, K, L, V, X).
+          return random.choices(
+            [
+              "1 - Prev. Pos", "2 - Prev. Neg, New Pos", "3 - Prev. Neg, Still Neg",
+              "4 - Prev. Neg, No Test", "5 - No Prev Test, New Pos",
+              "6 - No Prev Test, New Neg", "7 - No Prev Test, No Test",
+              "G - Insufficient Info to Begin Investigation", "H - Unable to Locate",
+              "J - Located, Not Examined and/or Interviewed",
+              "K - Sent Out Of Jurisdiction", "L - Other",
+              "V - Domestic Violence Risk", "X - Patient Deceased", None,
+            ],
+            weights=[8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 8]
+          )[0]
+
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
     row_count: 60
     columns:
@@ -405,7 +439,15 @@ tables:
         data: |
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
       - column_name: ctt_referral_basis
-        data: random.choice(["P1 - Partner, Sex", "S1 - Social Contact 1", "A1 - Associate 1", "P2 - Partner, Needle-Sharing"])
+        data: |
+          # Includes 'C1- Cohort', which PA04 folds into its 'Clusters'
+          # bucket alongside Social Contacts and Associates.
+          return random.choice([
+            "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "P3 - Partner, Both",
+            "S1 - Social Contact 1", "S2 - Social Contact 2", "S3 - Social Contact 3",
+            "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3",
+            "C1- Cohort",
+          ])
       - column_name: ctt_processing_decision
         data: random.choice(["Field Follow-up", "Secondary Referral", "Record Search Closure"])
       - column_name: add_time
@@ -423,7 +465,12 @@ tables:
       - column_name: subject_investigation_key
         data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       - column_name: contact_investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+        data: |
+          # 1 is NBS's 'no contact yet' sentinel investigation key --
+          # exercised by PA04's Val_C/Val_E ('Cases NCI') detection.
+          if random.random() < .3:
+              return 1
+          return foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       - column_name: third_party_entity_key
         data: 1
       - column_name: contact_key
