@@ -163,11 +163,11 @@ def execute(
       )
       -- join TB_CASE_VER_INIT2 to the case verification and disease codes, add
       -- DISEASE_SITE_VALUE based on DISEASE_CODE
-      SELECT dsc.DISEASE_CODE,
+      SELECT REPLACE(dsc.DISEASE_CODE, ' ', '') AS DISEASE_CODE,
              cvc.CASE_VERIFICATION_CODE,
              tcv.CASE_VERIFICATION_DESC,
              tcv.DISEASE_SITE_DESC,
-             TRIM(DISEASE_SITE_IND),
+             TRIM(DISEASE_SITE_IND) AS DISEASE_SITE_IND,
              tcv.INVESTIGATION_KEY,
              CASE
                  WHEN dsc.DISEASE_CODE IS NULL OR dsc.DISEASE_CODE = 'PHC5'
@@ -198,10 +198,12 @@ def execute(
       LEFT JOIN CASE_VERIFIC_CODED cvc
              ON cvc.CASE_VERIFICATION_CODE_DESC = tcv.CASE_VERIFICATION_DESC
       LEFT JOIN DISEASE_SITE_CODED dsc
-             ON TRIM(dsc.DISEASE_CODE_DESC) = TRIM(tcv.DISEASE_SITE_IND)
+             ON REPLACE(dsc.DISEASE_CODE_DESC, ' ', '')
+                  = REPLACE(tcv.DISEASE_SITE_IND, ' ', '')
       WHERE TRIM(tcv.DISEASE_SITE_IND) <> ''
       ORDER BY INVESTIGATION_KEY;
     """
     tb_case_ver = trx.query(tb_case_ver_query)
+
 
     return ReportResult(content_type='table', content=None)
