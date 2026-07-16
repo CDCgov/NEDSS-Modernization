@@ -15,9 +15,7 @@ type Selected<V> = { selected: Entry<V> };
 type Waiting<V> = { status: 'adding' } & Data<V>;
 
 type State<V> =
-    | Waiting<V>
-    | ({ status: 'viewing' } & Selected<V> & Data<V>)
-    | ({ status: 'editing' } & Selected<V> & Data<V>);
+    Waiting<V> | ({ status: 'viewing' } & Selected<V> & Data<V>) | ({ status: 'editing' } & Selected<V> & Data<V>);
 
 type Action<V> =
     | { type: 'initialize'; values: V[] }

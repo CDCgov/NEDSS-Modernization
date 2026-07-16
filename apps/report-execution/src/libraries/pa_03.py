@@ -1,29 +1,15 @@
 from src.config import get_cached_config_value
 from src.db_transaction import Transaction
+from src.libraries.contact_record import (
+    ASSOCIATE_BASES,
+    PARTNER_BASES,
+    SOCIAL_BASES,
+    VALID_PROCESSING_DECISIONS,
+)
 from src.models import ReportResult, Table
 
 Pa03Row = tuple[str, str | None, str | None, int | None, float | None]
 
-PARTNER_BASES = {
-    'P1 - Partner, Sex',
-    'P2 - Partner, Needle-Sharing',
-    'P3 - Partner, Both',
-}
-SOCIAL_BASES = {
-    'S1 - Social Contact 1',
-    'S2 - Social Contact 2',
-    'S3 - Social Contact 3',
-}
-ASSOCIATE_BASES = {
-    'A1 - Associate 1',
-    'A2 - Associate 2',
-    'A3 - Associate 3',
-}
-VALID_PROCESSING_DECISIONS = {
-    'Field Follow-up',
-    'Secondary Referral',
-    'Record Search Closure',
-}
 OUTCOME_CODES = ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7')
 VALID_REFERRAL_BASES = tuple(sorted(PARTNER_BASES | SOCIAL_BASES | ASSOCIATE_BASES))
 OUTCOME_CATEGORIES = (

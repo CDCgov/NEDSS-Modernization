@@ -16,8 +16,8 @@ import { Shown } from 'conditional-render';
 import { ToggleField } from 'design-system/toggle/ToggleField';
 
 const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
-    { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single' },
-    { value: BasicFilterConfiguration.selectType.MULTI, name: 'Multi' },
+    { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single-select filter' },
+    { value: BasicFilterConfiguration.selectType.MULTI, name: 'Multi-select filter' },
 ];
 
 export interface FilterConfig {
@@ -40,7 +40,7 @@ type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterC
 
 const filterColumns: FilterColumn[] = [
     { id: 'filter', name: 'Filter', value: (v) => v.filter.name },
-    { id: 'type', name: 'Type', value: (v) => v.selectType?.name },
+    { id: 'type', name: 'Selection type', value: (v) => v.selectType?.name },
     {
         id: 'column',
         name: 'Associated column',
@@ -238,14 +238,15 @@ const FilterConfigForm = ({
             />
             <Controller
                 name="selectType"
-                rules={needsSelectType ? validateRequiredRule('Type') : undefined}
+                rules={needsSelectType ? validateRequiredRule('Selection type') : undefined}
                 // ignoring the ref as it does not pass down well and isn't critical
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
                     <Shown when={needsSelectType}>
                         <SingleSelect
                             id={`filter-${name}`}
-                            label={'Type'}
+                            label="Selection type"
+                            helperText="Allow one or multiple selections"
                             name={name}
                             options={SELECT_OPTIONS}
                             orientation="horizontal"
