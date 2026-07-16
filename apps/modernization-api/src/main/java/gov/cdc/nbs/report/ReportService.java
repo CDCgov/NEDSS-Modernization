@@ -209,7 +209,7 @@ public class ReportService {
                 BasicFilterRequest matchingReq = basicFilterReqsById.get(basicFilter.getId());
 
                 //  Then, if there's a matching request, add the new filter values from the request
-                if (matchingReq != null && !matchingReq.values().isEmpty()) {
+                if (matchingReq != null) {
                   List<FilterValue> basicFilterValues =
                       filterValueMapper.fromBasicFilterRequest(basicFilter, matchingReq);
                   basicFilter.getFilterValues().addAll(basicFilterValues);

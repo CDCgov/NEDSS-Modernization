@@ -14,6 +14,7 @@ import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportMo
 import { redirectToNBS6 } from 'utils';
 import classNames from 'classnames';
 import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
+import { FullPageBlock } from 'components/FullPageBlock';
 
 import layoutStyles from '../layout/layout.module.scss';
 
@@ -174,10 +175,10 @@ const ReportResultPage = ({
 
 const TextCard = ({ loading = false, children }: { loading?: boolean; children: ReactNode }) => {
     return (
-        <div className={layoutStyles.fullPageBlock}>
+        <FullPageBlock>
             {children}
             {loading && <LoadingIndicator />}
-        </div>
+        </FullPageBlock>
     );
 };
 

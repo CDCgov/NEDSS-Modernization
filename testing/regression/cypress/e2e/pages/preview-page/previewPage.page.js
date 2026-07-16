@@ -235,7 +235,7 @@ class PreviewPagePage {
     selectCondition() {
         this.selectEventType()
         cy.get("#conditionIds").click()
-        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click({ force: true })
+        cy.get('#conditionIds .multi-select__option').eq(0).click({ force: true })
     }
 
     selectPageName() {
