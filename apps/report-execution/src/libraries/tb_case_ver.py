@@ -54,11 +54,11 @@ def execute(
       (
         {subset_query}
       ),
-      -- case verification codes
+      -- case verification codes, filtered by QUESTION_IDENTIFIER and CONDITION_CD
       CASE_VERIFIC_CODED AS
       (
-        SELECT cvg.CODE AS CASE_VERIFICATION_CODE,
-               cvg.CODE_SHORT_DESC_TXT AS CASE_VERIFICATION_CODE_DESC
+        SELECT TRIM(cvg.CODE) AS CASE_VERIFICATION_CODE,
+               TRIM(cvg.CODE_SHORT_DESC_TXT) AS CASE_VERIFICATION_CODE_DESC
         FROM {nbs_ods}.dbo.NBS_UI_METADATA num
           INNER JOIN {nbs_ods}.dbo.NBS_RDB_METADATA nrm
                   ON num.NBS_UI_METADATA_UID = nrm.NBS_UI_METADATA_UID
@@ -71,11 +71,11 @@ def execute(
         WHERE QUESTION_IDENTIFIER IN ('INV1115')
         AND   CONDITION_CD IN ('102201')
       ),
-      -- disease site codes
+      -- disease site codes, filtered by QUESTION_IDENTIFIER and CONDITION_CD
       DISEASE_SITE_CODED AS
       (
-        SELECT cvg.CODE AS DISEASE_CODE,
-               cvg.CODE_SHORT_DESC_TXT AS DISEASE_CODE_DESC
+        SELECT TRIM(cvg.CODE) AS DISEASE_CODE,
+               TRIM(cvg.CODE_SHORT_DESC_TXT) AS DISEASE_CODE_DESC
         FROM {nbs_ods}.dbo.NBS_UI_METADATA num
           INNER JOIN {nbs_ods}.dbo.NBS_RDB_METADATA nrm
                   ON num.NBS_UI_METADATA_UID = nrm.NBS_UI_METADATA_UID
@@ -98,7 +98,7 @@ def execute(
         WHERE DISEASE_CD = '102201'
         AND   {inv_rpt_dt} IS NOT NULL
       ),
-      -- TB_CASE_VER with unspooled DISEASE_SITE_DESC
+      -- TB_CASE_VER with DISEASE_SITE_DESC unspooled into DISEASE_SITE_IND
       -- nb. this particularly nasty CTE is called a 'recursive CTE splitter' and it is
       --     used here because STRING_SPLIT is, unfortunately, not supported by the
       --     compatibility level of SQL Server.  It is required to replicate SAS
@@ -110,26 +110,26 @@ def execute(
                CASE_VERIFICATION_DESC,
                INVESTIGATION_KEY,
                CAST(
-                   CASE
-                       WHEN CHARINDEX('|', DISEASE_SITE_DESC) > 0
-                           THEN LEFT(
-                                  DISEASE_SITE_DESC,
-                                  CHARINDEX('|', DISEASE_SITE_DESC) - 1
-                                )
-                       ELSE DISEASE_SITE_DESC
-                   END
-                   AS VARCHAR(4000)
+                 CASE
+                   WHEN CHARINDEX('|', DISEASE_SITE_DESC) > 0
+                     THEN LEFT(
+                            DISEASE_SITE_DESC,
+                            CHARINDEX('|', DISEASE_SITE_DESC) - 1
+                          )
+                   ELSE DISEASE_SITE_DESC
+                 END
+                 AS VARCHAR(4000)
                ) AS DISEASE_SITE_IND,
                CAST(
-                   CASE
-                       WHEN CHARINDEX('|', DISEASE_SITE_DESC) > 0
-                           THEN SUBSTRING(
-                                  DISEASE_SITE_DESC,
-                                  CHARINDEX('|', DISEASE_SITE_DESC) + 1, 4000
-                                )
-                       ELSE ''
-                   END
-                   AS VARCHAR(4000)
+                 CASE
+                   WHEN CHARINDEX('|', DISEASE_SITE_DESC) > 0
+                     THEN SUBSTRING(
+                            DISEASE_SITE_DESC,
+                            CHARINDEX('|', DISEASE_SITE_DESC) + 1, 4000
+                          )
+                   ELSE ''
+                 END
+                 AS VARCHAR(4000)
                ) AS remaining
         FROM TB_CASE_VER
 
@@ -140,33 +140,34 @@ def execute(
             CASE_VERIFICATION_DESC,
             INVESTIGATION_KEY,
             CAST(
-                CASE
-                    WHEN CHARINDEX('|', remaining) > 0
-                        THEN LEFT(remaining, CHARINDEX('|', remaining) - 1)
-                    ELSE remaining
-                END
-                AS VARCHAR(4000)
+              CASE
+                WHEN CHARINDEX('|', remaining) > 0
+                  THEN LEFT(remaining, CHARINDEX('|', remaining) - 1)
+                ELSE remaining
+              END
+              AS VARCHAR(4000)
             ) AS DISEASE_SITE_IND,
             CAST(
-                CASE
-                    WHEN CHARINDEX('|', remaining) > 0
-                        THEN SUBSTRING(
-                               remaining,
-                               CHARINDEX('|', remaining) + 1, 4000
-                             )
-                    ELSE ''
-                END
-                AS VARCHAR(4000)
+              CASE
+                WHEN CHARINDEX('|', remaining) > 0
+                  THEN SUBSTRING(
+                         remaining,
+                         CHARINDEX('|', remaining) + 1, 4000
+                       )
+                ELSE ''
+              END
+              AS VARCHAR(4000)
             ) AS remaining
         FROM TB_CASE_VER_INIT2
         WHERE remaining <> ''
       )
-      -- build DISEASE_SITE_VALUE based on DISEASE_CODE
+      -- join TB_CASE_VER_INIT2 to the case verification and disease codes, add
+      -- DISEASE_SITE_VALUE based on DISEASE_CODE
       SELECT dsc.DISEASE_CODE,
-             dsc.DISEASE_CODE_DESC,
              cvc.CASE_VERIFICATION_CODE,
              tcv.CASE_VERIFICATION_DESC,
              tcv.DISEASE_SITE_DESC,
+             TRIM(DISEASE_SITE_IND),
              tcv.INVESTIGATION_KEY,
              CASE
                  WHEN dsc.DISEASE_CODE IS NULL OR dsc.DISEASE_CODE = 'PHC5'
@@ -197,7 +198,8 @@ def execute(
       LEFT JOIN CASE_VERIFIC_CODED cvc
              ON cvc.CASE_VERIFICATION_CODE_DESC = tcv.CASE_VERIFICATION_DESC
       LEFT JOIN DISEASE_SITE_CODED dsc
-             ON dsc.DISEASE_CODE_DESC = tcv.DISEASE_SITE_IND
+             ON TRIM(dsc.DISEASE_CODE_DESC) = TRIM(tcv.DISEASE_SITE_IND)
+      WHERE TRIM(tcv.DISEASE_SITE_IND) <> ''
       ORDER BY INVESTIGATION_KEY;
     """
     tb_case_ver = trx.query(tb_case_ver_query)
