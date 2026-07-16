@@ -27,6 +27,23 @@ class TestIntegrationPa02Library:
         base.update(overrides)
         return ReportSpec.model_validate(base)
 
+    @staticmethod
+    def reconstruct_colname(row):
+        """Helper to rebuild the original colname from Category 1 and Category 2."""
+        cat1, cat2 = row[1], row[2]  # Category 1 and Category 2 columns
+        if cat2:
+            return cat2  # submetrics already include the full label
+        # Main headers
+        mapping = {
+            'Assigned': 'Assigned:',
+            'Dispositioned': 'Dispositioned:',
+            "Exam'd": "Exam'd:",
+            'Not Examined': 'Not Examined:',
+            'Open': 'Open:',
+            'Non-Assigned': 'Non-assigned Dispos:',
+        }
+        return mapping.get(cat1, cat1 + ':')  # fallback
+
     def test_execute_std_structure_and_columns(self):
         """Test that the STD report has correct columns and structure."""
         spec = self.create_spec(library_params='{"report_type": "STD"}')
@@ -34,29 +51,25 @@ class TestIntegrationPa02Library:
         assert result.content_type == 'table'
         table = result.content
 
-        # Check columns match
         expected_columns = [
-            'PROVIDER_QUICK_CODE_new',
-            'colname',
-            'colval',
-            'colval2',
-            'colval3',
-            'colval4',
-            'pname_l',
-            'i',
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Part.',
+            'Clus.',
+            'Reac.',
+            'Other',
+            'Total',
         ]
         assert table.columns == expected_columns
 
         # Check there is data
         assert len(table.data) > 0
 
-        # Check i column is always 5
+        # Check Total is sum of the four group columns
         for row in table.data:
-            assert row[7] == 5  # i column
-
-        # Check pname_l is lowercase of PROVIDER_QUICK_CODE_new
-        for row in table.data:
-            assert row[6] == row[0].lower()  # pname_l == lowercase(provider)
+            total = row[3] + row[4] + row[5] + row[6]  # Part. + Clus. + Reac. + Other
+            assert row[7] == total
 
     def test_execute_std_metric_labels_sas_order(self):
         """Verify metric labels for STD."""
@@ -64,7 +77,6 @@ class TestIntegrationPa02Library:
         result = execute_report(spec)
         table = result.content
 
-        # Expected STD metric labels
         expected_labels = [
             'Assigned:',
             'Dispositioned:',
@@ -92,14 +104,10 @@ class TestIntegrationPa02Library:
             'Non-assigned Dispos:',
         ]
 
-        # Get all unique metrics from the table
-        metrics = {row[1] for row in table.data}  # colname is at index 1
-
-        # Check all expected labels are present
+        metrics = {self.reconstruct_colname(row) for row in table.data}
         for label in expected_labels:
             assert label in metrics, f"Expected label '{label}' not found in STD report"
 
-        # Check no extra labels
         assert len(metrics) == len(expected_labels), 'STD report has extra metrics'
 
     def test_execute_hiv_metric_labels_sas_order(self):
@@ -108,7 +116,6 @@ class TestIntegrationPa02Library:
         result = execute_report(spec)
         table = result.content
 
-        # Expected HIV metric labels
         expected_labels = [
             'Assigned:',
             'Dispositioned:',
@@ -136,7 +143,7 @@ class TestIntegrationPa02Library:
             'Non-assigned Dispos:',
         ]
 
-        metrics = {row[1] for row in table.data}
+        metrics = {self.reconstruct_colname(row) for row in table.data}
         for label in expected_labels:
             assert label in metrics, f"Expected label '{label}' not found in HIV report"
 
@@ -147,7 +154,7 @@ class TestIntegrationPa02Library:
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
         table = result.content
-        metrics = {row[1] for row in table.data}
+        metrics = {self.reconstruct_colname(row) for row in table.data}
 
         hiv_specific = {
             'Dispo 2:',
@@ -165,7 +172,7 @@ class TestIntegrationPa02Library:
         spec = self.create_spec(library_params='{"report_type": "HIV"}')
         result = execute_report(spec)
         table = result.content
-        metrics = {row[1] for row in table.data}
+        metrics = {self.reconstruct_colname(row) for row in table.data}
 
         std_specific = {
             'Dispo A:',
@@ -184,23 +191,21 @@ class TestIntegrationPa02Library:
         result = execute_report(spec)
         table = result.content
 
-        # For each row, verify the pattern matches SAS
         for row in table.data:
-            provider, colname, colval, colval2, colval3, colval4, pname_l, i = row
-
-            # colval, colval2, colval3, colval4 should be non-negative integers
-            assert colval >= 0
-            assert colval2 >= 0
-            assert colval3 >= 0
-            assert colval4 >= 0
+            # Part., Clus., Reac., Other should be non-negative integers
+            assert row[3] >= 0
+            assert row[4] >= 0
+            assert row[5] >= 0
+            assert row[6] >= 0
 
     def test_execute_std_sort_order(self):
-        """Test that rows are sorted by pname_l then metric order."""
+        """Test that rows are sorted correctly: ALL first, then providers alphabetically,
+        and within each provider metrics follow SAS order."""
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
         table = result.content
 
-        # Expected metric order for STD
+        # Expected metric order (colnames)
         expected_metric_order = [
             'Assigned:',
             'Dispositioned:',
@@ -228,65 +233,68 @@ class TestIntegrationPa02Library:
             'Non-assigned Dispos:',
         ]
 
-        # Check grouping by provider
+        # Extract rows excluding ALL
+        provider_rows = [row for row in table.data if row[0] != 'ALL']
+
+        # Check providers are sorted alphabetically (case-insensitive)
+        # Use the first metric for each provider to get the list
+        first_metric = 'Assigned:'
+        providers = []
+        for i, row in enumerate(provider_rows):
+            if self.reconstruct_colname(row) == first_metric:
+                providers.append(row[0])
+        assert providers == sorted(providers, key=lambda x: x.lower()), (
+            'Providers not sorted alphabetically by worker code'
+        )
+
+        # Check that for each provider, metrics appear in expected order
         current_provider = None
         provider_metrics = []
-
-        for row in table.data:
-            provider = row[0]  # PROVIDER_QUICK_CODE_new
-            metric = row[1]  # colname
-
-            if provider != current_provider:
-                # Check previous provider's metrics are in correct order
+        for row in provider_rows:
+            worker = row[0]
+            colname = self.reconstruct_colname(row)
+            if worker != current_provider:
                 if current_provider is not None:
                     assert provider_metrics == expected_metric_order, (
                         f'Provider {current_provider} has metrics in wrong order'
                     )
-                current_provider = provider
+                current_provider = worker
                 provider_metrics = []
-
-            provider_metrics.append(metric)
+            provider_metrics.append(colname)
 
         # Check last provider
         if provider_metrics:
-            assert provider_metrics == expected_metric_order, (
-                f'Provider {current_provider} has metrics in wrong order'
-            )
+            assert provider_metrics == expected_metric_order
 
-        # Check providers are sorted alphabetically by pname_l
-
-        # First metric for each provider
-        providers = [row[0] for row in table.data if row[1] == 'Assigned:']
-        pnames_lower = [p.lower() if p else '' for p in providers]
-        assert pnames_lower == sorted(pnames_lower), (
-            'Providers not sorted alphabetically by pname_l'
-        )
+        # Ensure ALL rows come first
+        all_rows = [row for row in table.data if row[0] == 'ALL']
+        assert len(all_rows) == len(expected_metric_order)
+        all_metrics = [self.reconstruct_colname(row) for row in all_rows]
+        assert all_metrics == expected_metric_order
 
     def test_execute_std_provider_counts(self):
-        """Verify that each provider has all metrics."""
+        """Verify that each provider has all metrics (including ALL row count)."""
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
         table = result.content
 
-        # Group rows by provider
-        provider_metrics = {}
-        for row in table.data:
-            provider = row[0]
-            metric = row[1]
-            if provider not in provider_metrics:
-                provider_metrics[provider] = set()
-            provider_metrics[provider].add(metric)
-
-        # Expected number of metrics per provider
         expected_metric_count = 24  # STD has 24 metrics
 
-        # Each provider should have exactly the expected number of metrics
-        for provider, metrics in provider_metrics.items():
-            assert len(metrics) == expected_metric_count, f"""
-                Provider {provider} has {len(metrics)} metrics, expected {
-                expected_metric_count
-            }
-                """
+        # Group rows by worker
+        worker_counts = {}
+        for row in table.data:
+            worker = row[0]
+            worker_counts[worker] = worker_counts.get(worker, 0) + 1
+
+        # ALL row should have 24 metrics
+        assert worker_counts.get('ALL', 0) == expected_metric_count
+
+        # Each provider should also have 24 metrics
+        for worker, count in worker_counts.items():
+            if worker != 'ALL':
+                assert count == expected_metric_count, (
+                    f'Provider {worker} has {count} metrics, expected {expected_metric_count}'
+                )
 
     def test_execute_hiv_structure(self):
         """Test HIV report structure."""
@@ -295,67 +303,79 @@ class TestIntegrationPa02Library:
         assert result.content_type == 'table'
         table = result.content
 
-        # Check columns
         expected_columns = [
-            'PROVIDER_QUICK_CODE_new',
-            'colname',
-            'colval',
-            'colval2',
-            'colval3',
-            'colval4',
-            'pname_l',
-            'i',
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Part.',
+            'Clus.',
+            'Reac.',
+            'Other',
+            'Total',
         ]
         assert table.columns == expected_columns
 
-        # Check i column is always 5
+        # Check Total is sum of the four group columns
         for row in table.data:
-            assert row[7] == 5
+            total = row[3] + row[4] + row[5] + row[6]
+            assert row[7] == total
 
-        # Check pname_l is lowercase
+        # HIV should have 24 metrics per provider (including ALL)
+        expected_metric_count = 24
+        worker_counts = {}
         for row in table.data:
-            if row[6] == '':
-                assert row[0] is None
-            else:
-                assert row[6] == row[0].lower()
+            worker = row[0]
+            worker_counts[worker] = worker_counts.get(worker, 0) + 1
 
-        # HIV should have 24 metrics (without Dispo E)
-        expected_metrics = 24  # HIV has 24 metrics
-        metrics_per_provider = {}
-        for row in table.data:
-            provider = row[0]
-            if provider not in metrics_per_provider:
-                metrics_per_provider[provider] = 0
-            metrics_per_provider[provider] += 1
+        assert worker_counts.get('ALL', 0) == expected_metric_count
+        for worker, count in worker_counts.items():
+            if worker != 'ALL':
+                assert count == expected_metric_count, (
+                    f'Provider {worker} has {count} metrics, expected {expected_metric_count}'
+                )
 
-        for provider, count in metrics_per_provider.items():
-            assert count == expected_metrics, (
-                f'Provider {provider} has {count} metrics, expected {expected_metrics}'
-            )
-
-    def test_execute_report_check_data(self, snapshot):
+    def test_execute_report_check_data_std(self, snapshot):
         """Snapshot test for STD report."""
         report_spec = self.create_spec()
         result = execute_report(report_spec)
         assert result.content_type == 'table'
 
-        # Convert to CSV-like format for snapshot comparison
+        # Convert to list of dicts for snapshot
         data = []
         for row in result.content.data:
-            data.append(
-                {
-                    'PROVIDER_QUICK_CODE_new': row[0],
-                    'colname': row[1],
-                    'colval': row[2],
-                    'colval2': row[3],
-                    'colval3': row[4],
-                    'colval4': row[5],
-                    'pname_l': row[6],
-                    'i': row[7],
-                }
-            )
+            data.append({
+                'Worker': row[0],
+                'Category 1': row[1],
+                'Category 2': row[2],
+                'Part.': row[3],
+                'Clus.': row[4],
+                'Reac.': row[5],
+                'Other': row[6],
+                'Total': row[7],
+            })
 
-        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+        snapshot.assert_match(yaml.dump(data), 'std_snapshot.yml')
+
+    def test_execute_report_check_data_hiv(self, snapshot):
+        """Snapshot test for HIV report."""
+        report_spec = self.create_spec(library_params='{"report_type": "HIV"}')
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        data = []
+        for row in result.content.data:
+            data.append({
+                'Worker': row[0],
+                'Category 1': row[1],
+                'Category 2': row[2],
+                'Part.': row[3],
+                'Clus.': row[4],
+                'Reac.': row[5],
+                'Other': row[6],
+                'Total': row[7],
+            })
+
+        snapshot.assert_match(yaml.dump(data), 'hiv_snapshot.yml')
 
     def test_execute_report_no_data(self):
         """Test with no data returns empty table with correct columns."""
@@ -367,16 +387,15 @@ class TestIntegrationPa02Library:
         result = execute_report(report_spec)
         assert result.content_type == 'table'
 
-        # Should return empty data but with correct columns
         expected_columns = [
-            'PROVIDER_QUICK_CODE_new',
-            'colname',
-            'colval',
-            'colval2',
-            'colval3',
-            'colval4',
-            'pname_l',
-            'i',
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Part.',
+            'Clus.',
+            'Reac.',
+            'Other',
+            'Total',
         ]
         assert result.content.columns == expected_columns
         assert len(result.content.data) == 0
@@ -387,17 +406,16 @@ class TestIntegrationPa02Library:
         result = execute_report(spec_hiv)
         assert result.content_type == 'table'
 
-        # Basic structure checks
         table = result.content
         assert table.columns == [
-            'PROVIDER_QUICK_CODE_new',
-            'colname',
-            'colval',
-            'colval2',
-            'colval3',
-            'colval4',
-            'pname_l',
-            'i',
+            'Worker',
+            'Category 1',
+            'Category 2',
+            'Part.',
+            'Clus.',
+            'Reac.',
+            'Other',
+            'Total',
         ]
 
         # Check that HIV labels are present
@@ -409,7 +427,7 @@ class TestIntegrationPa02Library:
             'Dispo 6:',
             'Dispo 7:',
         }
-        metrics = {row[1] for row in table.data}
+        metrics = {self.reconstruct_colname(row) for row in table.data}
         assert hiv_labels.issubset(metrics), 'HIV-specific labels not found'
 
     def test_execute_report_missing_report_type_parameter(self):

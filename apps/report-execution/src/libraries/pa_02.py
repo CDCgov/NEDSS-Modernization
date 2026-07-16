@@ -11,7 +11,7 @@ def execute(
     **kwargs,
 ) -> ReportResult:
     """PA02: Field Investigation Outcomes - STD and HIV.
-    
+
     Conversion notes:
 
     * The SAS implementation outputs the summary data of ALL providers in a 
@@ -377,7 +377,6 @@ def execute(
         totals[label]['colval3'] += row['colval3']
         totals[label]['colval4'] += row['colval4']
 
-    # Create ALL rows with a special provider code
     all_rows = []
     for label, vals in totals.items():
         all_rows.append({
@@ -389,34 +388,90 @@ def execute(
             'colval4': vals['colval4'],
         })
 
-    # Combine ALL rows + provider rows
     combined_rows = all_rows + provider_rows
 
+    # ------------------------------------------------------------------
+    # 9. Define category mapping
+    # ------------------------------------------------------------------
+    def split_label(label: str, report_type: str) -> tuple[str, str]:
+        """Return (Category 1, Category 2) for a given metric label."""
+        # Main headers
+        if label == 'Assigned:':
+            return ('Assigned', '')
+        if label == 'Dispositioned:':
+            return ('Dispositioned', '')
+        if label == "Exam'd:":
+            return ("Exam'd", '')
+        if label == 'Not Examined:':
+            return ('Not Examined', '')
+        if label == 'Open:':
+            return ('Open', '')
+        if label == 'Non-assigned Dispos:':
+            return ('Non-Assigned', '')
+
+        # Exam'd sub‑metrics (timing and specific dispositions)
+        if label.startswith("Exam'd w/in"):
+            return ("Exam'd", label)
+        if report_type == 'STD':
+            if label in ['Dispo A:', 'Dispo B:', 'Dispo C:', 'Dispo D:', 'Dispo F:', 'Dispo E:']:
+                return ("Exam'd", label)
+        else:  # HIV
+            if label.startswith('Dispo ') and label != 'Dispositioned:':
+                # All HIV disposition numbers (2-7) are under Exam'd
+                return ("Exam'd", label)
+
+        # Not Examined sub‑metrics
+        if label.startswith('Dispo ') and label not in ['Dispositioned:'] and not (
+            report_type == 'STD' and label in ['Dispo A:', 'Dispo B:', 'Dispo C:', 'Dispo D:', 'Dispo F:', 'Dispo E:']
+        ):
+            return ("Not Examined", label)
+
+        # Fallback (should not happen)
+        return (label, '')
+
+    # ------------------------------------------------------------------
+    # 10. Build final table with new columns
+    # ------------------------------------------------------------------
     metric_index = {label: idx for idx, (label, _) in enumerate(metric_labels)}
 
     def _sort_key(row):
-        # 'ALL' should sort before any real provider code
-        quick_code = row['PROVIDER_QUICK_CODE_new']
-        if quick_code == 'ALL':
+        # 'ALL' first, then provider code, then metric order
+        worker = row['PROVIDER_QUICK_CODE_new']
+        if worker == 'ALL':
             return ('', metric_index[row['colname']])
-        return (quick_code.lower(), metric_index[row['colname']])
+        return (worker.lower(), metric_index[row['colname']])
 
     combined_rows.sort(key=_sort_key)
 
-    # Build final table data
     table_data = []
     for row in combined_rows:
+        label = row['colname']
+        cat1, cat2 = split_label(label, report_type)
+        total = row['colval'] + row['colval2'] + row['colval3'] + row['colval4']
         table_data.append((
-            row['PROVIDER_QUICK_CODE_new'],
-            row['colname'],
-            row['colval'],
-            row['colval2'],
-            row['colval3'],
-            row['colval4'],
-            row['PROVIDER_QUICK_CODE_new'].lower() if row['PROVIDER_QUICK_CODE_new'] != 'ALL' else 'all',
-            5,
+            row['PROVIDER_QUICK_CODE_new'],  # Worker
+            cat1,                            # Category 1
+            cat2,                            # Category 2
+            row['colval'],                   # Part.
+            row['colval2'],                  # Clus.
+            row['colval3'],                  # Reac.
+            row['colval4'],                  # Other
+            total,                           # Total
         ))
 
+    columns = [
+        'Worker',
+        'Category 1',
+        'Category 2',
+        'Part.',
+        'Clus.',
+        'Reac.',
+        'Other',
+        'Total',
+    ]
+
     return ReportResult(
-        content_type='table', content=Table(columns=columns, data=table_data)
+        content_type='table',
+        content=Table(columns=columns, data=table_data)
     )
+
