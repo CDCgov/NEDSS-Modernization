@@ -357,6 +357,59 @@ def execute(
         'i',
     ]
 
+    # ------------------------------------------------------------------
+    # 8. Compute totals for ALL providers (summary table)
+    # ------------------------------------------------------------------
+    totals = {}
+    for row in provider_rows:
+        label = row['colname']
+        if label not in totals:
+            totals[label] = {'colval': 0, 'colval2': 0, 'colval3': 0, 'colval4': 0}
+        totals[label]['colval'] += row['colval']
+        totals[label]['colval2'] += row['colval2']
+        totals[label]['colval3'] += row['colval3']
+        totals[label]['colval4'] += row['colval4']
+
+    # Create ALL rows with a special provider code
+    all_rows = []
+    for label, vals in totals.items():
+        all_rows.append({
+            'PROVIDER_QUICK_CODE_new': 'ALL',
+            'colname': label,
+            'colval': vals['colval'],
+            'colval2': vals['colval2'],
+            'colval3': vals['colval3'],
+            'colval4': vals['colval4'],
+        })
+
+    # Combine ALL rows + provider rows
+    combined_rows = all_rows + provider_rows
+
+    metric_index = {label: idx for idx, (label, _) in enumerate(metric_labels)}
+
+    def _sort_key(row):
+        # 'ALL' should sort before any real provider code
+        quick_code = row['PROVIDER_QUICK_CODE_new']
+        if quick_code == 'ALL':
+            return ('', metric_index[row['colname']])
+        return (quick_code.lower(), metric_index[row['colname']])
+
+    combined_rows.sort(key=_sort_key)
+
+    # Build final table data
+    table_data = []
+    for row in combined_rows:
+        table_data.append((
+            row['PROVIDER_QUICK_CODE_new'],
+            row['colname'],
+            row['colval'],
+            row['colval2'],
+            row['colval3'],
+            row['colval4'],
+            row['PROVIDER_QUICK_CODE_new'].lower() if row['PROVIDER_QUICK_CODE_new'] != 'ALL' else 'all',
+            5,
+        ))
+
     return ReportResult(
         content_type='table', content=Table(columns=columns, data=table_data)
     )

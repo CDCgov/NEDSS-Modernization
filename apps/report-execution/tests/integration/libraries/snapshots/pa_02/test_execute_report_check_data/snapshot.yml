@@ -1,3 +1,195 @@
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Assigned:'
+  colval: 464
+  colval2: 0
+  colval3: 281
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispositioned:'
+  colval: 419
+  colval2: 0
+  colval3: 255
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Exam''d:'
+  colval: 141
+  colval2: 0
+  colval3: 91
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Exam''d w/in 3:'
+  colval: 0
+  colval2: 0
+  colval3: 1
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Exam''d w/in 5:'
+  colval: 1
+  colval2: 0
+  colval3: 1
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Exam''d w/in 7:'
+  colval: 1
+  colval2: 0
+  colval3: 1
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Exam''d w/in 14:'
+  colval: 1
+  colval2: 0
+  colval3: 1
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo A:'
+  colval: 27
+  colval2: 0
+  colval3: 26
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo B:'
+  colval: 29
+  colval2: 0
+  colval3: 13
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo C:'
+  colval: 27
+  colval2: 0
+  colval3: 12
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo D:'
+  colval: 27
+  colval2: 0
+  colval3: 19
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo F:'
+  colval: 31
+  colval2: 0
+  colval3: 21
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Not Examined:'
+  colval: 146
+  colval2: 0
+  colval3: 101
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo G:'
+  colval: 25
+  colval2: 0
+  colval3: 19
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo H:'
+  colval: 40
+  colval2: 0
+  colval3: 18
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo J:'
+  colval: 28
+  colval2: 0
+  colval3: 22
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo K:'
+  colval: 28
+  colval2: 0
+  colval3: 24
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo L:'
+  colval: 25
+  colval2: 0
+  colval3: 18
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo V:'
+  colval: 0
+  colval2: 0
+  colval3: 0
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo X:'
+  colval: 0
+  colval2: 0
+  colval3: 0
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo Z:'
+  colval: 0
+  colval2: 0
+  colval3: 0
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Dispo E:'
+  colval: 37
+  colval2: 0
+  colval3: 15
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Open:'
+  colval: 45
+  colval2: 0
+  colval3: 26
+  colval4: 0
+  i: 5
+  pname_l: all
+- PROVIDER_QUICK_CODE_new: ALL
+  colname: 'Non-assigned Dispos:'
+  colval: 401
+  colval2: 0
+  colval3: 248
+  colval4: 0
+  i: 5
+  pname_l: all
 - PROVIDER_QUICK_CODE_new: test_ADqZhoK
   colname: 'Assigned:'
   colval: 2
