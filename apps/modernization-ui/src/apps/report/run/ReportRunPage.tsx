@@ -20,7 +20,7 @@ import { usePermissions } from 'libs/permission/usePermissions';
 import { PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
 import { NotFoundError } from 'pages/error/NotFoundError';
-import { permitsAll } from 'libs/permission';
+import { permissions, permitsAll } from 'libs/permission';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
 export type ReportExecuteForm = {
@@ -53,7 +53,8 @@ const ReportRunPage = () => {
     );
     const { openNewTab } = useNewTab();
     const config = useLoaderData<ReportConfiguration>();
-    const { permissions } = usePermissions();
+    const { permissions: userPermissions, allows } = usePermissions();
+    const canRunReport = allows(permissions.reports.run);
 
     // Make sure user can actually use this report
     if (
@@ -61,7 +62,7 @@ const ReportRunPage = () => {
         !permitsAll(
             PERMISSION_GROUP_MAP[config.group].selectFilterCriteria,
             PERMISSION_GROUP_MAP[config.group].view
-        )(permissions)
+        )(userPermissions)
     ) {
         throw new NotFoundError();
     }
@@ -150,7 +151,9 @@ const ReportRunPage = () => {
         </>
     ) : status === 'configuring' ? (
         <FormProvider {...form}>
-            <ReportConfigurationPage config={config} handleSubmit={onSubmit} />
+            <form onSubmit={(e) => onSubmit(e, !canRunReport)}>
+                <ReportConfigurationPage config={config} handleSubmit={onSubmit} />
+            </form>
         </FormProvider>
     ) : (
         <ReportResultPage
