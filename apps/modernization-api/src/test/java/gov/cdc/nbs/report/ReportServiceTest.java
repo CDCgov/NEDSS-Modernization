@@ -674,8 +674,48 @@ class ReportServiceTest {
 
       Report result = service.saveReport(request, existingReport);
 
-      verify(basicFilter).getFilterValues();
+      verify(basicFilter, times(2)).getFilterValues();
       verify(existingFilterValues).clear();
+
+      verify(reportRepository).save(existingReport);
+      assertThat(result).isEqualTo(savedReport);
+    }
+
+    @Test
+    void saveReport_should_save_basic_filters_when_values_empty_but_include_nulls() {
+      Long basicFilterUid = 10L;
+      BasicFilterRequest basicFilterRequest =
+          new BasicFilterRequest(basicFilterUid, List.of(), true);
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(
+              reportUid, dataSourceUid, true, List.of(), null, List.of(basicFilterRequest), null);
+
+      ReportFilter basicFilter = mock(ReportFilter.class);
+      when(basicFilter.isBasicFilter()).thenReturn(true);
+
+      FilterCode filterCode = mock(FilterCode.class);
+
+      Mockito.lenient()
+          .when(filterCode.getFilterType())
+          .thenReturn(FilterCode.BASIC_FILTER_PREFIX + "TEST");
+      Mockito.lenient().when(basicFilter.getId()).thenReturn(basicFilterUid);
+      Mockito.lenient().when(basicFilter.getFilterCode()).thenReturn(filterCode);
+
+      List<FilterValue> newFilterValues = List.of(mock(FilterValue.class));
+      Mockito.lenient()
+          .when(filterValueMapper.fromBasicFilterRequest(basicFilter, basicFilterRequest))
+          .thenReturn(newFilterValues);
+
+      List<FilterValue> existingFilterValues = spy(new ArrayList<>());
+      when(basicFilter.getFilterValues()).thenReturn(existingFilterValues);
+
+      when(existingReport.getReportFilters()).thenReturn(List.of(basicFilter));
+
+      Report result = service.saveReport(request, existingReport);
+
+      verify(basicFilter, times(2)).getFilterValues();
+      verify(existingFilterValues).clear();
+      verify(existingFilterValues).addAll(newFilterValues);
 
       verify(reportRepository).save(existingReport);
       assertThat(result).isEqualTo(savedReport);
@@ -1044,6 +1084,23 @@ class ReportServiceTest {
     }
 
     @Test
+    void saveAsReport_should_detach_original_report_to_avoid_updating_it() {
+      ReportExecutionRequest reportExecutionRequest =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
+      SaveAsReportRequest request =
+          new SaveAsReportRequest(
+              "Custom Title",
+              "Custom",
+              ReportConstants.ReportGroup.PUBLIC,
+              reportExecutionRequest,
+              "some description text");
+
+      service.saveAsReport(request, mockUser, existingReportId);
+
+      verify(reportRepository).detach(existingReport);
+    }
+
+    @Test
     void saveAsReport_should_duplicate_original_report_and_override_select_fields() {
       ReportExecutionRequest reportExecutionRequest =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, null, null);
@@ -1319,7 +1376,7 @@ class ReportServiceTest {
 
       Report result = service.saveAsReport(saveAsRequest, mockUser, existingReportId);
 
-      verify(basicFilter).getFilterValues();
+      verify(basicFilter, times(2)).getFilterValues();
       verify(existingFilterValues).clear();
 
       verify(reportRepository).save(duplicatedReport);

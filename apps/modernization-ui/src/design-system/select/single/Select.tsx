@@ -45,7 +45,7 @@ const Select = ({
     return (
         <select
             id={id}
-            className={classNames('usa-select', className)}
+            className={classNames('usa-select', 'padding-y-05', className)}
             name={inputProps.name ?? id}
             value={value?.value ?? ''}
             onChange={handleChange}

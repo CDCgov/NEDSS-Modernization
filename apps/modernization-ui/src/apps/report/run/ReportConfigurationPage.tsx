@@ -19,6 +19,8 @@ import { ReportExecuteForm } from './ReportRunPage';
 import { FieldErrors, useFormState } from 'react-hook-form';
 import { ValidationErrorBanner, ValidationErrorSection } from 'design-system/errors/ValidationError';
 import { Heading } from 'components/heading';
+import { FullPageBlock } from 'components/FullPageBlock';
+import { usePermissions } from 'libs/permission/usePermissions';
 
 const BASIC_SECTIONS = [
     {
@@ -141,6 +143,8 @@ const ReportConfigurationPage = ({
     error?: ReactNode;
 }) => {
     const { errors } = useFormState<ReportExecuteForm>();
+    const { allows } = usePermissions();
+    const canRunReport = allows(permissions.reports.run);
 
     const sectionData = SECTIONS.filter(({ hasData }) => hasData(config));
     const sectionErrors = SECTIONS.filter(({ hasError }) => hasError(errors, config));
@@ -148,7 +152,11 @@ const ReportConfigurationPage = ({
     const actions = (
         <>
             <Permitted permission={permissions.reports.export}>
-                <Button onClick={(e) => handleSubmit(e, true)} secondary>
+                <Button
+                    type={canRunReport ? 'button' : 'submit'}
+                    onClick={(e) => handleSubmit(e, true)}
+                    secondary={canRunReport}
+                >
                     Export
                 </Button>
             </Permitted>
@@ -163,7 +171,7 @@ const ReportConfigurationPage = ({
     return (
         <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="reports" actions={actions}>
             {!sectionData.length ? (
-                <div className={layoutStyles.fullPageBlock}>
+                <FullPageBlock>
                     <Heading level={2}>No filters available</Heading>
                     <p className="maxw-mobile-lg text-center">
                         This report will return all available results, which might be a large dataset. If you have{' '}
@@ -172,13 +180,13 @@ const ReportConfigurationPage = ({
                     <div className="display-flex flex-row" style={{ gap: '0.5rem' }}>
                         {actions}
                     </div>
-                </div>
+                </FullPageBlock>
             ) : (
                 <>
                     <aside>
                         <InPageNavigation sections={sectionData.map(({ id, title }) => ({ id, label: title }))} />
                     </aside>
-                    <form className={layoutStyles.columnContent}>
+                    <div className={layoutStyles.columnContent}>
                         {!!sectionErrors.length && (
                             <ValidationErrorBanner level={2}>
                                 {sectionErrors.map(({ id, title, getValidationMessages }) => (
@@ -199,7 +207,7 @@ const ReportConfigurationPage = ({
                                 <Component key={id} config={config} id={id} title={title} />
                             ))}
                         </CurrentStateProvider>
-                    </form>
+                    </div>
                 </>
             )}
         </ReportLayout>
