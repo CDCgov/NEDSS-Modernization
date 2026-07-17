@@ -7,8 +7,29 @@ from src.models import ReportSpec
 
 faker_schema = 'std_hiv_datamart.yaml'
 
-EXPECTED_COLUMNS = ['Scope', 'Category 1', 'Category 2', 'Count', 'Percentage', 'Index']
-SCOPES = ('Initial/Original', 'Re-Interview', 'Combined')
+EXPECTED_COLUMNS = [
+    'Category 1',
+    'Category 2',
+    'Category 3',
+    'Count',
+    'Percentage',
+    'Index',
+    'From OI Count',
+    'From OI Percentage',
+    'From OI Index',
+    'From RI Count',
+    'From RI Percentage',
+    'From RI Index',
+    'Total Count',
+    'Total Percentage',
+    'Total Index',
+]
+# (Count, Percentage, Index) column offsets for each scope, within a row.
+SCOPE_COLUMN_OFFSETS = {
+    'Initial/Original': (6, 7, 8),
+    'Re-Interview': (9, 10, 11),
+    'Combined': (12, 13, 14),
+}
 BUCKETS = ('Partners', 'Clusters')
 
 
@@ -39,34 +60,44 @@ class TestIntegrationPa04Library:
         assert result.content.columns == EXPECTED_COLUMNS
 
         data = result.content.data
-        # 10 case-level rows + 2 buckets * 3 scopes * 19 rows/block
-        assert len(data) == 10 + 2 * 3 * 19
+        # 10 case-level rows + 2 buckets * 19 rows/block
+        assert len(data) == 10 + 2 * 19
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
-        row_map = {(row[0], row[1], row[2]): row for row in data}
+        row_map = {(row[0], row[1]): row for row in data}
 
-        cases_closed = row_map[(None, None, 'Cases Closed')]
-        cases_interviewed = row_map[(None, None, 'Cases Interviewed')]
+        cases_closed = row_map[('Cases Closed', None)]
+        cases_interviewed = row_map[('Cases Interviewed', None)]
         assert cases_closed[3] > 0
         # KNOWN SAS QUIRK: Val_A and Val_B are the same query in
         # PA04_HIV.sas, so these are always equal.
         assert cases_closed[3] == cases_interviewed[3]
 
         for bucket in BUCKETS:
-            for scope in SCOPES:
-                notification = row_map[(scope, bucket, 'Notification Index')]
-                testing = row_map[(scope, bucket, 'Testing Index')]
-                # KNOWN SAS QUIRK: pix/testindex are identical datasets in
-                # HIV, so these are always equal.
-                assert notification[5] == testing[5]
+            notification = row_map[(f'{bucket} Examined', 'Notification Index')]
+            testing = row_map[(f'{bucket} Examined', 'Testing Index')]
+            # KNOWN SAS QUIRK: pix/testindex are identical datasets in HIV,
+            # so these are always equal in every scope column.
+            assert notification[6:] == testing[6:]
 
-                initiated = row_map[(scope, bucket, 'Initiated')]
-                examined = row_map[(scope, bucket, 'Examined')]
-                not_examined = row_map[(scope, bucket, 'Not Examined')]
-                assert initiated[3] >= 0
-                assert examined[3] <= initiated[3] or initiated[3] == 0
-                assert not_examined[3] <= initiated[3] or initiated[3] == 0
+            initiated = row_map[(f'{bucket} Initiated', None)]
+            examined = row_map[(f'{bucket} Examined', None)]
+            not_examined = row_map[(f'{bucket} Not Examined', None)]
+            for count_col, percent_col, _index_col in SCOPE_COLUMN_OFFSETS.values():
+                assert initiated[count_col] >= 0
+                # KNOWN SAS QUIRK: PA04_HIV.sas's %fills macro never writes a
+                # percentage for 'Partners/Clusters Initiated' (the
+                # assignment is commented out in the source).
+                assert initiated[percent_col] is None
+                assert (
+                    examined[count_col] <= initiated[count_col]
+                    or initiated[count_col] == 0
+                )
+                assert (
+                    not_examined[count_col] <= initiated[count_col]
+                    or initiated[count_col] == 0
+                )
 
     def test_execute_report_no_data(self):
         report_spec = _spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2')
@@ -75,15 +106,19 @@ class TestIntegrationPa04Library:
         assert result.content_type == 'table'
 
         data = result.content.data
-        assert len(data) == 10 + 2 * 3 * 19
+        assert len(data) == 10 + 2 * 19
 
-        row_map = {(row[0], row[1], row[2]): row for row in data}
-        assert row_map[(None, None, 'Cases Closed')][3] == 0
-        assert row_map[(None, None, 'Cases Interviewed')][3] == 0
+        row_map = {(row[0], row[1]): row for row in data}
+        assert row_map[('Cases Closed', None)][3] == 0
+        assert row_map[('Cases Interviewed', None)][3] == 0
         for bucket in BUCKETS:
-            for scope in SCOPES:
-                assert row_map[(scope, bucket, 'Initiated')][3] == 0
-                assert row_map[(scope, bucket, 'Notification Index')][5] is None
+            initiated = row_map[(f'{bucket} Initiated', None)]
+            notification = row_map[(f'{bucket} Examined', 'Notification Index')]
+            for count_col, _percent_col, index_col in SCOPE_COLUMN_OFFSETS.values():
+                assert initiated[count_col] == 0
+                # KNOWN SAS QUIRK: %SYSEVALF's 0/0 division resolves to '0'
+                # text (confirmed via a real SAS log run), not missing.
+                assert notification[index_col] == 0.0
 
     def test_execute_report_check_metadata(self):
         report_spec = _spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')

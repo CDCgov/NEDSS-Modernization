@@ -77,4 +77,24 @@ HIV_POSITIVE_RESULTS = frozenset(
     }
 )
 
-Pa04Row = tuple[str | None, str | None, str, int | None, str | None, float | None]
+# Wide/pivoted output row: Category 1/2/3, then unscoped Count/Percentage/Index
+# (case-level metrics only), then a (Count, Percentage, Index) triplet per
+# scope -- From OI (Initial/Original), From RI (Re-Interview), Total
+# (Combined) -- for the Partner/Cluster metrics.
+Pa04Row = tuple[
+    str,
+    str | None,
+    str | None,
+    int | None,
+    str | None,
+    float | None,
+    int | None,
+    str | None,
+    float | None,
+    int | None,
+    str | None,
+    float | None,
+    int | None,
+    str | None,
+    float | None,
+]

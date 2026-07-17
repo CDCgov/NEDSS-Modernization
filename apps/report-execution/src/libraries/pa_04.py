@@ -25,9 +25,12 @@ def execute(
     'std' is a deliberate follow-up.
 
     Conversion notes (HIV variant):
-    * Mirrors the PA03/PA05 approach: narrow SQL plus SAS metric math in
-      Python. Returns a long-form table instead of reproducing the SAS PDF
-      layout.
+    * Unlike PA03/PA05, this returns a wide/pivoted table (one row per
+      metric, with From OI / From RI / Total column-triplets for the
+      Partner/Cluster metrics) rather than a long-form table -- matching the
+      shape of the original SAS report's side-by-side OI/RI/Combined layout
+      (PA04_HIV.sas's col1..col6 in templatePA04_HIV) more directly than the
+      long-form convention used elsewhere in this app.
     * KNOWN SAS QUIRK: 'Cases Closed' (Val_A) and 'Cases Interviewed' (Val_B)
       come from the exact same unfiltered query in PA04_HIV.sas (lines
       61-66) and are therefore always equal.
@@ -40,6 +43,10 @@ def execute(
       it can double-count a case present under both Initial/Original and
       Re-Interview -- unlike every other Combined-scope metric. See
       support/pa_04/calculations.py.
+    * KNOWN SAS QUIRK: 'Partners/Clusters Initiated' never has a percentage --
+      PA04_HIV.sas's %fills macro computes PER_PM/PER_CM but the assignment
+      that would write them into the report is commented out (lines 636,
+      656). Preserved as always-None here, not a display bug.
     """
     if not isinstance(library_params, dict) or 'variant' not in library_params:
         raise InvalidLibraryParamsError(
@@ -60,7 +67,23 @@ def execute(
     bucket_rows = build_bucket_metrics(contact_rows, index_rows, totals['B'])
 
     content = Table(
-        columns=['Scope', 'Category 1', 'Category 2', 'Count', 'Percentage', 'Index'],
+        columns=[
+            'Category 1',
+            'Category 2',
+            'Category 3',
+            'Count',
+            'Percentage',
+            'Index',
+            'From OI Count',
+            'From OI Percentage',
+            'From OI Index',
+            'From RI Count',
+            'From RI Percentage',
+            'From RI Index',
+            'Total Count',
+            'Total Percentage',
+            'Total Index',
+        ],
         data=case_metric_rows + bucket_rows,
     )
 
