@@ -29,7 +29,7 @@ def execute(
     share a lot of structure (case-level metrics, the Initiated/Examined/
     Not-Examined shape for the Partner/Cluster blocks) but diverge in real
     business logic (different disposition vocabularies, and different index
-    calculations). This library merges them and dispatches on a required 
+    calculations). This library merges them and dispatches on a required
     'variant' library param.
 
     Conversion notes:
