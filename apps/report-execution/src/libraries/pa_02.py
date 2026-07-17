@@ -360,7 +360,6 @@ def execute(
     # 9. Define category mapping
     # ------------------------------------------------------------------
     def split_label(label: str, report_type: str) -> tuple[str, str]:
-        """Return (Category 1, Category 2) for a given metric label."""
         # Main headers
         if label == 'Assigned:':
             return ('Assigned', '')
@@ -375,42 +374,30 @@ def execute(
         if label == 'Non-assigned Dispos:':
             return ('Non-Assigned', '')
 
-        # Exam'd sub‑metrics (timing and specific dispositions)
+        # Exam'd sub‑metrics: timing
         if label.startswith("Exam'd w/in"):
             return ("Exam'd", label)
-        if report_type == 'STD':
-            if label in [
-                'Dispo A:',
-                'Dispo B:',
-                'Dispo C:',
-                'Dispo D:',
-                'Dispo F:',
-                'Dispo E:',
-            ]:
-                return ("Exam'd", label)
-        else:  # HIV
-            if label.startswith('Dispo ') and label != 'Dispositioned:':
-                # All HIV disposition numbers (2-7) are under Exam'd
-                return ("Exam'd", label)
 
-        # Not Examined sub‑metrics
-        if (
-            label.startswith('Dispo ')
-            and label not in ['Dispositioned:']
-            and not (
-                report_type == 'STD'
-                and label
-                in [
+        # Disposition sub‑metrics
+        if label.startswith('Dispo '):
+            if report_type == 'STD':
+                # STD: A-F and E are Exam'd; G-Z are Not Examined
+                if label in [
                     'Dispo A:',
                     'Dispo B:',
                     'Dispo C:',
                     'Dispo D:',
                     'Dispo F:',
                     'Dispo E:',
-                ]
-            )
-        ):
-            return ('Not Examined', label)
+                ]:
+                    return ("Exam'd", label)
+                return ('Not Examined', label)
+            else:  # HIV
+                # HIV: 2-7 are Exam'd; letters (G-Z) are Not Examined
+                code = label.split(' ')[1].rstrip(':')
+                if code.isdigit() and 2 <= int(code) <= 7:
+                    return ("Exam'd", label)
+                return ('Not Examined', label)
 
         # Fallback (should not happen)
         return (label, '')
