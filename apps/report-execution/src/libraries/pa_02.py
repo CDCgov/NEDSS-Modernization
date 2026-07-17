@@ -14,9 +14,9 @@ def execute(
 
     Conversion notes:
 
-    * The SAS implementation outputs the summary data of ALL providers in a 
-    separate table, but the Python implementation combines the ALL rows with the 
-    provider rows in a single table. The ALL rows are sorted first, followed by 
+    * The SAS implementation outputs the summary data of ALL providers in a
+    separate table, but the Python implementation combines the ALL rows with the
+    provider rows in a single table. The ALL rows are sorted first, followed by
     the provider rows.
 
     * The SAS implementation of this report contains a known precision issue:
@@ -72,12 +72,8 @@ def execute(
     if not date_result.data:
         return ReportResult(
             content_type='table',
-            content=Table(
-                columns=constants.OUTPUT_COLUMNS,
-                data=table_data
-            )
+            content=Table(columns=constants.OUTPUT_COLUMNS, data=[]),
         )
-
 
     min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
 
@@ -327,7 +323,6 @@ def execute(
             )
         )
 
-
     # ------------------------------------------------------------------
     # 8. Compute totals for ALL providers (summary table)
     # ------------------------------------------------------------------
@@ -343,14 +338,16 @@ def execute(
 
     all_rows = []
     for label, vals in totals.items():
-        all_rows.append({
-            'PROVIDER_QUICK_CODE_new': 'ALL',
-            'colname': label,
-            'colval': vals['colval'],
-            'colval2': vals['colval2'],
-            'colval3': vals['colval3'],
-            'colval4': vals['colval4'],
-        })
+        all_rows.append(
+            {
+                'PROVIDER_QUICK_CODE_new': 'ALL',
+                'colname': label,
+                'colval': vals['colval'],
+                'colval2': vals['colval2'],
+                'colval3': vals['colval3'],
+                'colval4': vals['colval4'],
+            }
+        )
 
     combined_rows = all_rows + provider_rows
 
@@ -377,7 +374,14 @@ def execute(
         if label.startswith("Exam'd w/in"):
             return ("Exam'd", label)
         if report_type == 'STD':
-            if label in ['Dispo A:', 'Dispo B:', 'Dispo C:', 'Dispo D:', 'Dispo F:', 'Dispo E:']:
+            if label in [
+                'Dispo A:',
+                'Dispo B:',
+                'Dispo C:',
+                'Dispo D:',
+                'Dispo F:',
+                'Dispo E:',
+            ]:
                 return ("Exam'd", label)
         else:  # HIV
             if label.startswith('Dispo ') and label != 'Dispositioned:':
@@ -385,10 +389,23 @@ def execute(
                 return ("Exam'd", label)
 
         # Not Examined sub‑metrics
-        if label.startswith('Dispo ') and label not in ['Dispositioned:'] and not (
-            report_type == 'STD' and label in ['Dispo A:', 'Dispo B:', 'Dispo C:', 'Dispo D:', 'Dispo F:', 'Dispo E:']
+        if (
+            label.startswith('Dispo ')
+            and label not in ['Dispositioned:']
+            and not (
+                report_type == 'STD'
+                and label
+                in [
+                    'Dispo A:',
+                    'Dispo B:',
+                    'Dispo C:',
+                    'Dispo D:',
+                    'Dispo F:',
+                    'Dispo E:',
+                ]
+            )
         ):
-            return ("Not Examined", label)
+            return ('Not Examined', label)
 
         # Fallback (should not happen)
         return (label, '')
@@ -409,9 +426,10 @@ def execute(
 
     table_data = []
     for row in combined_rows:
-        label = row['colname']
+        label = str(row['colname'])
         cat1, cat2 = split_label(label, report_type)
-        total = row['colval'] + row['colval2'] + row['colval3'] + row['colval4']
+        total = int(row['colval']) + int(row['colval2']) + int(row['colval3']) + \
+            int(row['colval4'])
         table_data.append((
             row['PROVIDER_QUICK_CODE_new'],  # Worker
             cat1,                            # Category 1
@@ -423,9 +441,7 @@ def execute(
             total,                           # Total
         ))
 
-
     return ReportResult(
         content_type='table',
-        content=Table(columns=constants.OUTPUT_COLUMNS, data=table_data)
+        content=Table(columns=constants.OUTPUT_COLUMNS, data=table_data),
     )
-

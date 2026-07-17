@@ -199,8 +199,9 @@ class TestIntegrationPa02Library:
             assert row[6] >= 0
 
     def test_execute_std_sort_order(self):
-        """Test that rows are sorted correctly: ALL first, then providers alphabetically,
-        and within each provider metrics follow SAS order."""
+        """Test that rows are sorted correctly: ALL first, then providers
+        alphabetically, and within each provider metrics.
+        """
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
         table = result.content
@@ -240,7 +241,7 @@ class TestIntegrationPa02Library:
         # Use the first metric for each provider to get the list
         first_metric = 'Assigned:'
         providers = []
-        for i, row in enumerate(provider_rows):
+        for _i, row in enumerate(provider_rows):
             if self.reconstruct_colname(row) == first_metric:
                 providers.append(row[0])
         assert providers == sorted(providers, key=lambda x: x.lower()), (
@@ -292,9 +293,9 @@ class TestIntegrationPa02Library:
         # Each provider should also have 24 metrics
         for worker, count in worker_counts.items():
             if worker != 'ALL':
-                assert count == expected_metric_count, (
-                    f'Provider {worker} has {count} metrics, expected {expected_metric_count}'
-                )
+                assert count == expected_metric_count, f'Provider {worker} has {
+                    count
+                } metrics, expected {expected_metric_count}'
 
     def test_execute_hiv_structure(self):
         """Test HIV report structure."""
@@ -330,9 +331,9 @@ class TestIntegrationPa02Library:
         assert worker_counts.get('ALL', 0) == expected_metric_count
         for worker, count in worker_counts.items():
             if worker != 'ALL':
-                assert count == expected_metric_count, (
-                    f'Provider {worker} has {count} metrics, expected {expected_metric_count}'
-                )
+                assert count == expected_metric_count, f'Provider {worker} has {
+                    count
+                } metrics, expected {expected_metric_count}'
 
     def test_execute_report_check_data_std(self, snapshot):
         """Snapshot test for STD report."""
@@ -343,16 +344,18 @@ class TestIntegrationPa02Library:
         # Convert to list of dicts for snapshot
         data = []
         for row in result.content.data:
-            data.append({
-                'Worker': row[0],
-                'Category 1': row[1],
-                'Category 2': row[2],
-                'Part.': row[3],
-                'Clus.': row[4],
-                'Reac.': row[5],
-                'Other': row[6],
-                'Total': row[7],
-            })
+            data.append(
+                {
+                    'Worker': row[0],
+                    'Category 1': row[1],
+                    'Category 2': row[2],
+                    'Part.': row[3],
+                    'Clus.': row[4],
+                    'Reac.': row[5],
+                    'Other': row[6],
+                    'Total': row[7],
+                }
+            )
 
         snapshot.assert_match(yaml.dump(data), 'std_snapshot.yml')
 
@@ -364,16 +367,18 @@ class TestIntegrationPa02Library:
 
         data = []
         for row in result.content.data:
-            data.append({
-                'Worker': row[0],
-                'Category 1': row[1],
-                'Category 2': row[2],
-                'Part.': row[3],
-                'Clus.': row[4],
-                'Reac.': row[5],
-                'Other': row[6],
-                'Total': row[7],
-            })
+            data.append(
+                {
+                    'Worker': row[0],
+                    'Category 1': row[1],
+                    'Category 2': row[2],
+                    'Part.': row[3],
+                    'Clus.': row[4],
+                    'Reac.': row[5],
+                    'Other': row[6],
+                    'Total': row[7],
+                }
+            )
 
         snapshot.assert_match(yaml.dump(data), 'hiv_snapshot.yml')
 
