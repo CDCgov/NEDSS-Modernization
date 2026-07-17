@@ -76,12 +76,23 @@ When('I fill out all filters with {int}', (index) => {
     cy.get('select').each(($select) => cy.wrap($select).select(index));
 
     // multi-selects
-    cy.get('.multi-select').each(($select) =>
+    cy.get('.multi-select')
+      // reverse the array to select the state first so counties do not get cleared
+      .then(($elements) => $elements.toArray().reverse())
+      .each(($select) => {
         cy
-            .wrap($select)
-            .click()
-            .then(() => cy.get('.multi-select__option').eqOrLast(index).click().then(() => cy.get('body').type('{esc}')))
-    );
+          .wrap($select)
+          .then(($multiselect) => {
+              if ($multiselect.find('.multi-select__clear-indicator').length > 0) {
+                  cy.wrap($multiselect).find('.multi-select__clear-indicator').click({force: true});
+              }
+          })
+
+        cy
+          .wrap($select)
+          .click()
+          .then(() => cy.get('.multi-select__option').eqOrLast(index).click().then(() => cy.get('body').type('{esc}')))
+    });
 
     // finish advanced filter
     cy.findByRole('combobox', { name: 'Logic' }).select('Is Null');
@@ -96,18 +107,32 @@ Then('All filters should be filled out with {int}', (index) => {
     cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('be.checked'));
 
     // select columns (needs to happen for the sort single-selects to be happy)
-    cy.findByRole('checkbox', { name: 'Deselect all' }).should('be.visible');
+    cy.findByRole('checkbox', { name: 'Deselect all' }).should('not.be.checked');
 
     // single selects
     cy.get('select').each(($select) => cy.wrap($select).select(index));
 
     // multi-selects
-    cy.get('.multi-select').each(($select) =>
-        cy
-            .wrap($select)
-            .click()
-            .then(() => cy.get('.multi-select__option').eqOrLast(index).should())
-    );
+    cy.get('.multi-select').each(($select) => {
+      // open dropdown
+      cy.wrap($select).find('input.multi-select__input').click();
+
+      cy.wrap($select)
+        .find('.multi-select__option')
+        .eqOrLast(index)
+        .invoke('text') // get the dropdown's first index value
+        .then((optionText) => {
+          cy.wrap($select)
+            .find('.multi-select__multi-value__label')
+            .invoke('text')
+            .then((displayedText) => {
+              expect(displayedText).to.equal(optionText);
+            });
+        });
+
+      // close dropdown without clearing next input
+      cy.wrap($select).find('input.multi-select__input').blur();
+    });
 
     // finish advanced filter
     cy.findByRole('combobox', { name: 'Logic' }).select('Is Null');

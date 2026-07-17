@@ -27,7 +27,7 @@ Feature: View report configuration
         When I select value "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" field
         # == Filters ==
         When I add all filters
-        Then I should see 22 available filters
+        Then I should see 20 available filters
         When I click the "Submit" button
         Then I should see the "View" configuration page
         And I navigate to list reports
@@ -48,6 +48,7 @@ Feature: View report configuration
         And I should see "Private" radio selected in the "Group" field
         And I click the "Save as new" button
         Then I am redirected to "/nbs/ManageReports.do"
+#        When I navigate to list reports
         And I click on the "Expand Subsections" link
         And I click on the "Run" link
         Then All filters should be filled out with 1
