@@ -398,19 +398,30 @@ tables:
 
       - column_name: fl_fup_disposition
         data: |
-          # PA04's 7 'examined' codes (1-7) and 7 'not examined' codes
-          # (G, H, J, K, L, V, X).
+          # PA04 HIV's 7 'examined' codes (1-7) and 7 'not examined' codes
+          # (G, H, J, K, L, V, X), plus STD's own 6 'examined' codes (A-F)
+          # and its extra 'not examined' code (Z) -- STD and HIV share the
+          # G/H/J/K/L/V/X labels but use disjoint 'examined' vocabularies, so
+          # both variants' rows are exercised from one shared column.
           return random.choices(
             [
               "1 - Prev. Pos", "2 - Prev. Neg, New Pos", "3 - Prev. Neg, Still Neg",
               "4 - Prev. Neg, No Test", "5 - No Prev Test, New Pos",
               "6 - No Prev Test, New Neg", "7 - No Prev Test, No Test",
+              "A - Preventative Treatment", "B - Refused Preventative Treatment",
+              "C - Infected, Brought to Treatment", "D - Infected, Not Treated",
+              "E - Previously Treated for This Infection", "F - Not Infected",
               "G - Insufficient Info to Begin Investigation", "H - Unable to Locate",
               "J - Located, Not Examined and/or Interviewed",
               "K - Sent Out Of Jurisdiction", "L - Other",
-              "V - Domestic Violence Risk", "X - Patient Deceased", None,
+              "V - Domestic Violence Risk", "X - Patient Deceased",
+              "Z - Previous Preventative Treatment", None,
             ],
-            weights=[8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 8]
+            weights=[
+              5, 5, 5, 4, 4, 4, 4,
+              5, 5, 5, 4, 4, 4,
+              4, 4, 4, 3, 3, 3, 3, 3, 8,
+            ]
           )[0]
 
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
@@ -482,7 +493,13 @@ tables:
       - column_name: third_party_investigation_key
         data: 1
       - column_name: contact_interview_key
-        data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "d_interview_key")
+        data: |
+          # 1 is NBS's 'no interview yet' sentinel D_INTERVIEW key -- exercised
+          # by PA04_Std's contact_query, which excludes it (STD-only filter,
+          # not present in the HIV variant's equivalent query).
+          if random.random() < .2:
+              return 1
+          return foreign_key("[RDB].[dbo].[D_INTERVIEW]", "d_interview_key")
       - column_name: dispositioned_by_key
         data: 1
       - column_name: contact_exposure_site_key

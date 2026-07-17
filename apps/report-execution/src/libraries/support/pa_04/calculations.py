@@ -9,6 +9,11 @@ from src.libraries.support.pa_04.models import (
     NOT_EXAMINED_DISPOSITIONS,
     REINTERVIEW,
     SCOPES,
+    STD_EXAMINED_DISPOSITION_LABELS,
+    STD_EXAMINED_DISPOSITIONS,
+    STD_NOT_EXAMINED_DISPOSITION_LABELS,
+    STD_NOT_EXAMINED_DISPOSITIONS,
+    STD_TREATMENT_DISPOSITIONS,
     Pa04Row,
 )
 
@@ -106,13 +111,21 @@ def _scoped_row(
 
 def build_case_metrics(
     case_rows: list[tuple],
+    period_partner_index_ndigits: int = 1,
 ) -> tuple[dict[str, int], list[Pa04Row]]:
-    """Reproduces Val_A through Val_K (PA04_HIV.sas:60-123).
+    """Reproduces Val_A through Val_K (PA04_HIV.sas:60-123, PA04_Std.sas:59-
+    112 -- identical math in both variants).
 
     KNOWN SAS QUIRK: Val_A and Val_B are computed from the exact same
     unfiltered query in the source SAS (lines 61-66) -- 'Cases Closed' and
     'Cases Interviewed' are always equal. Preserved as two rows (not merged)
     so the output shape -- and the quirk -- matches the original report.
+
+    KNOWN SAS QUIRK: Period Partner Index rounds to 0.1 in HIV
+    (PA04_HIV.sas:698: `ROUND("&Val_K",0.1)`) but to 0.01 in STD
+    (PA04_Std.sas:163: `ROUND("&Val_K",0.01)`) -- the only case-level
+    difference between the two variants. Callers pass the variant-appropriate
+    precision via `period_partner_index_ndigits`.
     """
     all_cases: set[str] = set()
     nci_cases: set[str] = set()
@@ -187,11 +200,101 @@ def build_case_metrics(
             'Cases Posttest Counseled', val_i, _percentage(val_i, val_g), None
         ),
         _unscoped_row('Total Period Partners', val_j, None, None),
-        # Val_K, PA04_HIV.sas:123 -- rounded to 0.1, unlike every other index
-        # in this report (which round to 0.01).
-        _unscoped_row('Period Partner Index', None, None, _index(val_j, val_b, 1)),
+        _unscoped_row(
+            'Period Partner Index',
+            None,
+            None,
+            _index(val_j, val_b, period_partner_index_ndigits),
+        ),
     ]
     return totals, rows
+
+
+def _bucket_scope_counts(
+    bucket_contacts: list[tuple],
+    examined_dispositions: frozenset[str],
+    not_examined_dispositions: frozenset[str],
+    examined_disposition_labels: tuple[tuple[str, str], ...],
+    not_examined_disposition_labels: tuple[tuple[str, str], ...],
+) -> tuple[
+    dict[str, int],
+    dict[str, int],
+    dict[str, int],
+    dict[str, dict[str, int]],
+    dict[str, dict[str, int]],
+]:
+    """Per-scope Initiated/Examined/Not-Examined counts and their
+    per-disposition-code breakdowns. Shared by both HIV's and STD's bucket
+    metric builders -- the counting logic itself is identical between the two
+    variants; only the disposition vocabularies differ.
+    """
+    val_m: dict[str, int] = {}
+    val_n: dict[str, int] = {}
+    val_q: dict[str, int] = {}
+    examined_counts: dict[str, dict[str, int]] = {}
+    not_examined_counts: dict[str, dict[str, int]] = {}
+
+    for scope_label, ix_types in SCOPES:
+        scoped = [row for row in bucket_contacts if row[1] in ix_types]
+
+        initiated = {row[0] for row in scoped if row[0] is not None}
+        examined = {
+            row[0]
+            for row in scoped
+            if row[0] is not None and row[3] in examined_dispositions
+        }
+        not_examined = {
+            row[0]
+            for row in scoped
+            if row[0] is not None and row[3] in not_examined_dispositions
+        }
+
+        val_m[scope_label] = len(initiated)
+        val_n[scope_label] = len(examined)
+        val_q[scope_label] = len(not_examined)
+        examined_counts[scope_label] = {
+            code: len(
+                {row[0] for row in scoped if row[0] is not None and row[3] == code}
+            )
+            for code, _ in examined_disposition_labels
+        }
+        not_examined_counts[scope_label] = {
+            code: len(
+                {row[0] for row in scoped if row[0] is not None and row[3] == code}
+            )
+            for code, _ in not_examined_disposition_labels
+        }
+
+    return val_m, val_n, val_q, examined_counts, not_examined_counts
+
+
+def _index_sum_by_scope(index_rows: list[tuple]) -> dict[str, int]:
+    """Per-scope distinct-case counts for an index numerator dataset (HIV's
+    pix/testindex, STD's Val_TWO/three/four/five).
+
+    index_rows: (case_inv_local_id, ix_type, ctt_referral_basis,
+    fl_fup_disposition), already filtered to one bucket.
+
+    KNOWN SAS QUIRK: the Combined scope sums the already-grouped-by-IX_TYPE
+    counts rather than taking a fresh distinct count across both IX_TYPEs, so
+    a case present under both Initial/Original and Re-Interview is
+    double-counted here, unlike every other Combined-scope metric (which
+    re-queries as a single distinct count). Preserved as-is -- see
+    PA04_HIV.sas:1086-1092 and PA04_Std.sas:1110/1128 (the latter counts
+    distinct `inv_local_id||IX_TYPE` pairs directly, which is the same
+    double-counting behavior expressed differently).
+    """
+    index_by_ix_type: dict[str, set[str]] = defaultdict(set)
+    for case_inv_local_id, ix_type, _basis, _disposition in index_rows:
+        if case_inv_local_id is not None and ix_type is not None:
+            index_by_ix_type[ix_type].add(case_inv_local_id)
+
+    return {
+        scope_label: sum(
+            len(index_by_ix_type.get(ix_type, set())) for ix_type in ix_types
+        )
+        for scope_label, ix_types in SCOPES
+    }
 
 
 def build_bucket_metrics(
@@ -216,58 +319,17 @@ def build_bucket_metrics(
         # KNOWN SAS QUIRK: pix/testindex (and pix1/testindex1 for the cluster
         # bucket) are identical datasets in HIV -- see queries.index_query --
         # so Notification Index and Testing Index are always the same value.
-        index_by_ix_type: dict[str, set[str]] = defaultdict(set)
-        for case_inv_local_id, ix_type, _basis, _disposition in bucket_index:
-            if case_inv_local_id is not None and ix_type is not None:
-                index_by_ix_type[ix_type].add(case_inv_local_id)
+        index_sum = _index_sum_by_scope(bucket_index)
 
-        # Per-scope stats, computed once and reused to assemble every row.
-        val_m: dict[str, int] = {}
-        val_n: dict[str, int] = {}
-        val_q: dict[str, int] = {}
-        examined_counts: dict[str, dict[str, int]] = {}
-        not_examined_counts: dict[str, dict[str, int]] = {}
-        index_sum: dict[str, int] = {}
-
-        for scope_label, ix_types in SCOPES:
-            scoped = [row for row in bucket_contacts if row[1] in ix_types]
-
-            initiated = {row[0] for row in scoped if row[0] is not None}
-            examined = {
-                row[0]
-                for row in scoped
-                if row[0] is not None and row[3] in EXAMINED_DISPOSITIONS
-            }
-            not_examined = {
-                row[0]
-                for row in scoped
-                if row[0] is not None and row[3] in NOT_EXAMINED_DISPOSITIONS
-            }
-
-            val_m[scope_label] = len(initiated)
-            val_n[scope_label] = len(examined)
-            val_q[scope_label] = len(not_examined)
-            examined_counts[scope_label] = {
-                code: len(
-                    {row[0] for row in scoped if row[0] is not None and row[3] == code}
-                )
-                for code, _ in EXAMINED_DISPOSITION_LABELS
-            }
-            not_examined_counts[scope_label] = {
-                code: len(
-                    {row[0] for row in scoped if row[0] is not None and row[3] == code}
-                )
-                for code, _ in NOT_EXAMINED_DISPOSITION_LABELS
-            }
-            # KNOWN SAS QUIRK (PA04_HIV.sas:1086-1092): the Combined scope
-            # sums the already-grouped-by-IX_TYPE index counts rather than
-            # taking a fresh distinct count across both IX_TYPEs, so a case
-            # present under both Initial/Original and Re-Interview is
-            # double-counted here, unlike every other Combined metric (which
-            # re-queries as a single distinct count). Preserved as-is.
-            index_sum[scope_label] = sum(
-                len(index_by_ix_type.get(ix_type, set())) for ix_type in ix_types
+        val_m, val_n, val_q, examined_counts, not_examined_counts = (
+            _bucket_scope_counts(
+                bucket_contacts,
+                EXAMINED_DISPOSITIONS,
+                NOT_EXAMINED_DISPOSITIONS,
+                EXAMINED_DISPOSITION_LABELS,
+                NOT_EXAMINED_DISPOSITION_LABELS,
             )
+        )
 
         # KNOWN SAS QUIRK: PA04_HIV.sas's %fills macro has the percentage
         # assignment for 'PARTNERS/CLUSTERS INITIATED' commented out (lines
@@ -330,6 +392,137 @@ def build_bucket_metrics(
             )
         )
         for code, label in NOT_EXAMINED_DISPOSITION_LABELS:
+            rows.append(
+                _scoped_row(
+                    f'{bucket_label} Not Examined',
+                    label,
+                    {
+                        s: (
+                            not_examined_counts[s][code],
+                            _percentage(not_examined_counts[s][code], val_q[s]),
+                            None,
+                        )
+                        for s, _ in SCOPES
+                    },
+                )
+            )
+
+    return rows
+
+
+def build_std_bucket_metrics(
+    contact_rows: list[tuple], treatment_index_rows: list[tuple], val_b: int
+) -> list[Pa04Row]:
+    """STD-variant equivalent of build_bucket_metrics (PA04_Std.sas:197-464,
+    650-893, 995-1240 for the OI/RI/Combined scopes respectively).
+
+    Shares the same Initiated/Examined/Not-Examined counting shape as HIV,
+    but with STD's disposition vocabulary (6 examined codes A-F, 8
+    not-examined codes G/H/J/K/L/V/X/Z), and -- unlike HIV -- computes two
+    genuinely *different* index values instead of one value shown twice:
+
+    * Treatment Index = (sum of the per-contact A/C/E disposition counts
+      already computed for the breakdown rows) / Val_B
+      (PA04_Std.sas:936-937, `VAL_one = Val_PA + Val_PC + Val_PE`).
+    * DI Index = (a separate case-level "has >=1 matching treated contact"
+      distinct count) / Val_B (PA04_Std.sas:335-348, `Val_TWO`) -- see
+      queries.std_index_query.
+
+    contact_rows: (contact_inv_local_id, ix_type, ctt_referral_basis,
+    fl_fup_disposition) -- see queries.contact_query(variant='STD').
+    treatment_index_rows: (case_inv_local_id, ix_type, ctt_referral_basis,
+    fl_fup_disposition) -- see queries.std_index_query.
+    """
+    rows: list[Pa04Row] = []
+
+    for bucket_label, bases in BUCKETS:
+        bucket_contacts = [row for row in contact_rows if row[2] in bases]
+        bucket_treatment_index = [
+            row for row in treatment_index_rows if row[2] in bases
+        ]
+
+        di_index_count = _index_sum_by_scope(bucket_treatment_index)
+
+        val_m, val_n, val_q, examined_counts, not_examined_counts = (
+            _bucket_scope_counts(
+                bucket_contacts,
+                STD_EXAMINED_DISPOSITIONS,
+                STD_NOT_EXAMINED_DISPOSITIONS,
+                STD_EXAMINED_DISPOSITION_LABELS,
+                STD_NOT_EXAMINED_DISPOSITION_LABELS,
+            )
+        )
+        treatment_index_sum = {
+            scope_label: sum(
+                examined_counts[scope_label][code]
+                for code in STD_TREATMENT_DISPOSITIONS
+            )
+            for scope_label, _ in SCOPES
+        }
+
+        # KNOWN SAS QUIRK: same as HIV -- PA04_Std.sas's %fills macro has the
+        # percentage assignment for 'PARTNERS/CLUSTERS INITIATED' commented
+        # out (lines 605, 624). Always None here too.
+        rows.append(
+            _scoped_row(
+                f'{bucket_label} Initiated',
+                None,
+                {s: (val_m[s], None, None) for s, _ in SCOPES},
+            )
+        )
+        rows.append(
+            _scoped_row(
+                f'{bucket_label} Examined',
+                None,
+                {
+                    s: (val_n[s], _percentage(val_n[s], val_m[s]), None)
+                    for s, _ in SCOPES
+                },
+            )
+        )
+        for code, label in STD_EXAMINED_DISPOSITION_LABELS:
+            rows.append(
+                _scoped_row(
+                    f'{bucket_label} Examined',
+                    label,
+                    {
+                        s: (
+                            examined_counts[s][code],
+                            _percentage(examined_counts[s][code], val_n[s]),
+                            None,
+                        )
+                        for s, _ in SCOPES
+                    },
+                )
+            )
+        rows.append(
+            _scoped_row(
+                f'{bucket_label} Examined',
+                'Treatment Index',
+                {
+                    s: (None, None, _index(treatment_index_sum[s], val_b))
+                    for s, _ in SCOPES
+                },
+            )
+        )
+        rows.append(
+            _scoped_row(
+                f'{bucket_label} Examined',
+                'DI Index',
+                {s: (None, None, _index(di_index_count[s], val_b)) for s, _ in SCOPES},
+            )
+        )
+        rows.append(
+            _scoped_row(
+                f'{bucket_label} Not Examined',
+                None,
+                {
+                    s: (val_q[s], _percentage(val_q[s], val_m[s]), None)
+                    for s, _ in SCOPES
+                },
+            )
+        )
+        for code, label in STD_NOT_EXAMINED_DISPOSITION_LABELS:
             rows.append(
                 _scoped_row(
                     f'{bucket_label} Not Examined',

@@ -33,7 +33,7 @@ SCOPE_COLUMN_OFFSETS = {
 BUCKETS = ('Partners', 'Clusters')
 
 
-def _spec(subset_query: str, library_params: str = '{"variant": "hiv"}'):
+def _spec(subset_query: str, library_params: str = '{"variant": "HIV"}'):
     return ReportSpec.model_validate(
         {
             'is_export': True,
@@ -144,7 +144,7 @@ class TestIntegrationPa04Library:
     def test_execute_report_unsupported_variant_raises_error(self):
         report_spec = _spec(
             'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
-            library_params='{"variant": "std"}',
+            library_params='{"variant": "foo"}',
         )
 
         with pytest.raises(
@@ -152,3 +152,91 @@ class TestIntegrationPa04Library:
             match='Unsupported PA04 variant',
         ):
             execute_report(report_spec)
+
+
+STD_EXPECTED_COLUMNS = EXPECTED_COLUMNS
+
+
+def _std_spec(subset_query: str):
+    return _spec(subset_query, library_params='{"variant": "STD"}')
+
+
+@pytest.mark.usefixtures('setup_containers', 'fake_db_table')
+@pytest.mark.integration
+class TestIntegrationPa04LibrarySTD:
+    """Integration tests for the pa_04 library (STD variant)."""
+
+    def test_execute_report_check_data(self, snapshot):
+        report_spec = _std_spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+        assert result.content.columns == STD_EXPECTED_COLUMNS
+
+        data = result.content.data
+        # 10 case-level rows + 2 buckets * 19 rows/block (6 examined + 8
+        # not-examined dispositions, vs. HIV's 7 + 7 -- same total per block).
+        assert len(data) == 10 + 2 * 19
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot_std.yml')
+
+        row_map = {(row[0], row[1]): row for row in data}
+
+        cases_closed = row_map[('Cases Closed', None)]
+        cases_interviewed = row_map[('Cases Interviewed', None)]
+        assert cases_closed[3] > 0
+        # KNOWN SAS QUIRK: Val_A and Val_B are the same query in
+        # PA04_Std.sas too, so these are always equal.
+        assert cases_closed[3] == cases_interviewed[3]
+
+        for bucket in BUCKETS:
+            initiated = row_map[(f'{bucket} Initiated', None)]
+            examined = row_map[(f'{bucket} Examined', None)]
+            not_examined = row_map[(f'{bucket} Not Examined', None)]
+            for count_col, percent_col, _index_col in SCOPE_COLUMN_OFFSETS.values():
+                assert initiated[count_col] >= 0
+                # KNOWN SAS QUIRK: same as HIV -- 'Partners/Clusters
+                # Initiated' never gets a percentage in PA04_Std.sas either.
+                assert initiated[percent_col] is None
+                assert (
+                    examined[count_col] <= initiated[count_col]
+                    or initiated[count_col] == 0
+                )
+                assert (
+                    not_examined[count_col] <= initiated[count_col]
+                    or initiated[count_col] == 0
+                )
+
+    def test_execute_report_no_data(self):
+        report_spec = _std_spec(
+            'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
+        )
+
+        result = execute_report(report_spec)
+        assert result.content_type == 'table'
+
+        data = result.content.data
+        assert len(data) == 10 + 2 * 19
+
+        row_map = {(row[0], row[1]): row for row in data}
+        assert row_map[('Cases Closed', None)][3] == 0
+        assert row_map[('Cases Interviewed', None)][3] == 0
+        for bucket in BUCKETS:
+            initiated = row_map[(f'{bucket} Initiated', None)]
+            treatment_index = row_map[(f'{bucket} Examined', 'Treatment Index')]
+            di_index = row_map[(f'{bucket} Examined', 'DI Index')]
+            for count_col, _percent_col, index_col in SCOPE_COLUMN_OFFSETS.values():
+                assert initiated[count_col] == 0
+                # KNOWN SAS QUIRK: same 0/0-resolves-to-'0' quirk as HIV.
+                assert treatment_index[index_col] == 0.0
+                assert di_index[index_col] == 0.0
+
+    def test_execute_report_check_metadata(self):
+        report_spec = _std_spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')
+
+        result = execute_report(report_spec)
+        assert result.header == 'PA04'
+        assert result.subheader is None
+        assert result.description is None
+        assert result.content_type == 'table'
+        assert result.content.columns == STD_EXPECTED_COLUMNS

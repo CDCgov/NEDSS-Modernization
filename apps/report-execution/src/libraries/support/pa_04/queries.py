@@ -3,7 +3,11 @@ from src.libraries.contact_record import (
     PARTNER_BASES,
     VALID_PROCESSING_DECISIONS,
 )
-from src.libraries.support.pa_04.models import CLUSTER_BASES, INDEX_DISPOSITIONS
+from src.libraries.support.pa_04.models import (
+    CLUSTER_BASES,
+    INDEX_DISPOSITIONS,
+    STD_TREATMENT_DISPOSITIONS,
+)
 
 _ALL_REFERRAL_BASES = PARTNER_BASES | CLUSTER_BASES
 
@@ -75,12 +79,12 @@ def case_query(subset_query: str) -> str:
     """
 
 
-def contact_query(subset_query: str) -> str:
+def contact_query(subset_query: str, variant: str = 'HIV') -> str:
     """Equivalent to the PP04_OI / CLUSTER dataset builds (PA04_HIV.sas:175-
-    245) used for the Partner/Cluster Initiated, Examined, and disposition
-    breakdown metrics. Partner vs. Cluster is just a different
-    CTT_REFERRAL_BASIS set, so both are built from one query here and bucketed
-    in Python (calculations.py) by which basis set the row's
+    245, PA04_Std.sas:176-213) used for the Partner/Cluster Initiated,
+    Examined, and disposition breakdown metrics. Partner vs. Cluster is just a
+    different CTT_REFERRAL_BASIS set, so both are built from one query here
+    and bucketed in Python (calculations.py) by which basis set the row's
     CTT_REFERRAL_BASIS falls into.
 
     Notably requires an interviewer that exists in D_PROVIDER (INNER JOIN, no
@@ -89,10 +93,33 @@ def contact_query(subset_query: str) -> str:
     in the valid set, and does *not* filter D_CONTACT_RECORD on
     RECORD_STATUS_CD (the source's join to d_contact_record here has no such
     filter, unlike index_query below).
+
+    KNOWN SAS QUIRK (STD only): PA04_Std.sas:190/212 adds
+    `g.CONTACT_INTERVIEW_KEY ~=1`, excluding contacts still at the 'no
+    interview yet' sentinel value -- a filter HIV's PP04_OI/CLUSTER queries
+    don't have.
+
+    KNOWN SAS QUIRK (STD only): PA04_Std.sas:180/200 also adds an unfiltered,
+    unselected `inner join nbs_rdb.F_INTERVIEW_CASE b on
+    b.INVESTIGATION_KEY=a.INVESTIGATION_KEY` -- unlike case_query's identically
+    -shaped join (which is a LEFT JOIN and genuinely a no-op), this one is an
+    INNER JOIN, so it silently requires the case to have *at least one*
+    F_INTERVIEW_CASE row to appear in the result at all. HIV's PP04_OI/CLUSTER
+    queries have no such join.
     """
     nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     referral_bases_sql = _sql_string_list(_ALL_REFERRAL_BASES)
     valid_decisions_sql = _sql_string_list(VALID_PROCESSING_DECISIONS)
+    std_only_join = (
+        f"""
+    INNER JOIN {nbs_rdb}.DBO.F_INTERVIEW_CASE fic
+        ON fic.INVESTIGATION_KEY = cases.INVESTIGATION_KEY"""
+        if variant == 'STD'
+        else ''
+    )
+    sentinel_filter = (
+        '\n      AND fcrc.CONTACT_INTERVIEW_KEY <> 1' if variant == 'STD' else ''
+    )
 
     return f"""
     WITH shd AS (
@@ -104,7 +131,7 @@ def contact_query(subset_query: str) -> str:
         di.IX_TYPE,
         dcr.CTT_REFERRAL_BASIS,
         contact_std.FL_FUP_DISPOSITION
-    FROM cases
+    FROM cases{std_only_join}
     INNER JOIN {nbs_rdb}.DBO.D_PROVIDER dp
         ON dp.PROVIDER_KEY = cases.INVESTIGATOR_INTERVIEW_KEY
     INNER JOIN {nbs_rdb}.DBO.F_CONTACT_RECORD_CASE fcrc
@@ -117,7 +144,7 @@ def contact_query(subset_query: str) -> str:
     INNER JOIN {nbs_rdb}.DBO.D_CONTACT_RECORD dcr
         ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
     WHERE dcr.CTT_REFERRAL_BASIS IN ({referral_bases_sql})
-      AND dcr.CTT_PROCESSING_DECISION IN ({valid_decisions_sql});
+      AND dcr.CTT_PROCESSING_DECISION IN ({valid_decisions_sql}){sentinel_filter};
     """
 
 
@@ -162,4 +189,51 @@ def index_query(subset_query: str) -> str:
        AND di.RECORD_STATUS_CD <> 'LOG_DEL'
     WHERE dcr.CTT_REFERRAL_BASIS IN ({referral_bases_sql})
       AND contact_std.FL_FUP_DISPOSITION IN ({index_dispositions_sql});
+    """
+
+
+def std_index_query(subset_query: str) -> str:
+    """Equivalent to the Val_TWO/Val_three/Val_four/Val_five dataset builds
+    (PA04_Std.sas:335-366, 1110-1142), the numerator for the STD variant's DI
+    Index.
+
+    Unlike HIV's index_query, this *does* require a matching D_PROVIDER row
+    and a valid CTT_PROCESSING_DECISION (an INNER JOIN each, same as
+    contact_query), and uses an INNER (not LEFT) join to D_INTERVIEW --
+    matching PA04_Std.sas's differing join structure for this dataset vs. its
+    HIV counterpart. Selects the *case's* own local id (cases.INV_LOCAL_ID),
+    not the contact's, since the DI Index counts cases with at least one
+    matching treated contact, not the contacts themselves.
+    """
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+    referral_bases_sql = _sql_string_list(_ALL_REFERRAL_BASES)
+    valid_decisions_sql = _sql_string_list(VALID_PROCESSING_DECISIONS)
+    treatment_dispositions_sql = _sql_string_list(STD_TREATMENT_DISPOSITIONS)
+
+    return f"""
+    WITH shd AS (
+        {subset_query}
+    ),
+    {_BASE_CASES_CTE.format(nbs_rdb=nbs_rdb)}
+    SELECT DISTINCT
+        cases.INV_LOCAL_ID AS CASE_INV_LOCAL_ID,
+        di.IX_TYPE,
+        dcr.CTT_REFERRAL_BASIS,
+        contact_std.FL_FUP_DISPOSITION
+    FROM cases
+    INNER JOIN {nbs_rdb}.DBO.D_PROVIDER dp
+        ON dp.PROVIDER_KEY = cases.INVESTIGATOR_INTERVIEW_KEY
+    INNER JOIN {nbs_rdb}.DBO.F_CONTACT_RECORD_CASE fcrc
+        ON fcrc.SUBJECT_INVESTIGATION_KEY = cases.INVESTIGATION_KEY
+    INNER JOIN {nbs_rdb}.DBO.STD_HIV_DATAMART contact_std
+        ON contact_std.INVESTIGATION_KEY = fcrc.CONTACT_INVESTIGATION_KEY
+    INNER JOIN {nbs_rdb}.DBO.D_CONTACT_RECORD dcr
+        ON dcr.D_CONTACT_RECORD_KEY = fcrc.D_CONTACT_RECORD_KEY
+       AND dcr.RECORD_STATUS_CD <> 'LOG_DEL'
+    INNER JOIN {nbs_rdb}.DBO.D_INTERVIEW di
+        ON di.D_INTERVIEW_KEY = fcrc.CONTACT_INTERVIEW_KEY
+       AND di.RECORD_STATUS_CD <> 'LOG_DEL'
+    WHERE dcr.CTT_REFERRAL_BASIS IN ({referral_bases_sql})
+      AND dcr.CTT_PROCESSING_DECISION IN ({valid_decisions_sql})
+      AND contact_std.FL_FUP_DISPOSITION IN ({treatment_dispositions_sql});
     """

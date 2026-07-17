@@ -148,7 +148,7 @@
   - null
   - null
   - null
-  - 6.1
+  - 6.07
   - null
   - null
   - null
@@ -165,13 +165,13 @@
   - null
   - null
   - null
-  - 3
+  - 0
   - null
   - null
   - 0
   - null
   - null
-  - 3
+  - 0
   - null
   - null
 - !!python/tuple
@@ -192,7 +192,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 1 - Prev. Pos
+  - Dispo. A - Preventive Tx
   - null
   - null
   - null
@@ -208,7 +208,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 2 - Prev. Neg, New Pos
+  - Dispo. B - Refuse Prev Tx
   - null
   - null
   - null
@@ -224,7 +224,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 3 - Prev. Neg, Still Neg
+  - Dispo. C - Infected, Tx
   - null
   - null
   - null
@@ -240,7 +240,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 4 - Prev. Neg, No Test
+  - Dispo. D - Infected, No Tx
   - null
   - null
   - null
@@ -256,7 +256,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 5 - No Prev Test, New Pos
+  - Dispo. E - Previous Tx
   - null
   - null
   - null
@@ -272,7 +272,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 6 - No Prev Test, New Neg
+  - Dispo. F - Not Infected
   - null
   - null
   - null
@@ -288,23 +288,7 @@
   - null
 - !!python/tuple
   - Partners Examined
-  - Dispo. 7 - No Prev Test, No Test
-  - null
-  - null
-  - null
-  - null
-  - 0
-  - 0.0%
-  - null
-  - 0
-  - 0.0%
-  - null
-  - 0
-  - 0.0%
-  - null
-- !!python/tuple
-  - Partners Examined
-  - Notification Index
+  - Treatment Index
   - null
   - null
   - null
@@ -320,7 +304,7 @@
   - 0.0
 - !!python/tuple
   - Partners Examined
-  - Testing Index
+  - DI Index
   - null
   - null
   - null
@@ -341,14 +325,14 @@
   - null
   - null
   - null
-  - 1
-  - 33.3%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 33.3%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Partners Not Examined
@@ -389,14 +373,14 @@
   - null
   - null
   - null
-  - 1
-  - 100.0%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 100.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Partners Not Examined
@@ -449,6 +433,22 @@
 - !!python/tuple
   - Partners Not Examined
   - Dispo. X - Patient Deceased
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. Z - Previous Preventative Treatment
   - null
   - null
   - null
@@ -469,34 +469,18 @@
   - null
   - null
   - null
-  - 4
+  - 0
   - null
   - null
   - 0
   - null
   - null
-  - 4
-  - null
-  - null
-- !!python/tuple
-  - Clusters Examined
-  - null
-  - null
-  - null
-  - null
-  - null
-  - 1
-  - 25.0%
-  - null
   - 0
-  - 0.0%
   - null
-  - 1
-  - 25.0%
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 1 - Prev. Pos
+  - null
   - null
   - null
   - null
@@ -512,7 +496,7 @@
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 2 - Prev. Neg, New Pos
+  - Dispo. A - Preventive Tx
   - null
   - null
   - null
@@ -528,7 +512,7 @@
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 3 - Prev. Neg, Still Neg
+  - Dispo. B - Refuse Prev Tx
   - null
   - null
   - null
@@ -544,7 +528,7 @@
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 4 - Prev. Neg, No Test
+  - Dispo. C - Infected, Tx
   - null
   - null
   - null
@@ -560,7 +544,7 @@
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 5 - No Prev Test, New Pos
+  - Dispo. D - Infected, No Tx
   - null
   - null
   - null
@@ -576,7 +560,7 @@
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 6 - No Prev Test, New Neg
+  - Dispo. E - Previous Tx
   - null
   - null
   - null
@@ -592,23 +576,23 @@
   - null
 - !!python/tuple
   - Clusters Examined
-  - Dispo. 7 - No Prev Test, No Test
+  - Dispo. F - Not Infected
   - null
   - null
   - null
-  - null
-  - 1
-  - 100.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 100.0%
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Clusters Examined
-  - Notification Index
+  - Treatment Index
   - null
   - null
   - null
@@ -624,7 +608,7 @@
   - 0.0
 - !!python/tuple
   - Clusters Examined
-  - Testing Index
+  - DI Index
   - null
   - null
   - null
@@ -645,14 +629,14 @@
   - null
   - null
   - null
-  - 2
-  - 50.0%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 2
-  - 50.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Clusters Not Examined
@@ -661,14 +645,14 @@
   - null
   - null
   - null
-  - 1
-  - 50.0%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 50.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Clusters Not Examined
@@ -757,12 +741,28 @@
   - null
   - null
   - null
-  - 1
-  - 50.0%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 50.0%
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. Z - Previous Preventative Treatment
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
   - null

@@ -77,6 +77,62 @@ HIV_POSITIVE_RESULTS = frozenset(
     }
 )
 
+# The 6 "examined" disposition codes for the STD variant, in Val_Pa/Val_Pb/
+# Val_Pc/Val_Pd/Val_Pe/Val_Pf order (PA04_Std.sas:237-271) -- note this is a
+# different vocabulary than HIV's 1-7 codes, not a relabeling of the same set.
+STD_EXAMINED_DISPOSITION_LABELS: tuple[tuple[str, str], ...] = (
+    ('A - Preventative Treatment', 'Dispo. A - Preventive Tx'),
+    ('B - Refused Preventative Treatment', 'Dispo. B - Refuse Prev Tx'),
+    ('C - Infected, Brought to Treatment', 'Dispo. C - Infected, Tx'),
+    ('D - Infected, Not Treated', 'Dispo. D - Infected, No Tx'),
+    ('E - Previously Treated for This Infection', 'Dispo. E - Previous Tx'),
+    ('F - Not Infected', 'Dispo. F - Not Infected'),
+)
+STD_EXAMINED_DISPOSITIONS = frozenset(
+    code for code, _ in STD_EXAMINED_DISPOSITION_LABELS
+)
+
+# The 8 "not examined" disposition codes for the STD variant
+# (PA04_Std.sas:286-332) -- same G/H/J/K/L/V/X codes as HIV, plus a Z code
+# ("Previous Preventative Treatment") that HIV's vocabulary doesn't have.
+STD_NOT_EXAMINED_DISPOSITION_LABELS: tuple[tuple[str, str], ...] = (
+    (
+        'G - Insufficient Info to Begin Investigation',
+        'Dispo. G - Insufficient Info to Begin Investigation',
+    ),
+    ('H - Unable to Locate', 'Dispo. H - Unable to Locate'),
+    (
+        'J - Located, Not Examined and/or Interviewed',
+        'Dispo. J - Located, Not Examined and/or Interviewed',
+    ),
+    ('K - Sent Out Of Jurisdiction', 'Dispo. K - Sent Out Of Jurisdiction'),
+    ('L - Other', 'Dispo. L - Other'),
+    ('V - Domestic Violence Risk', 'Dispo. V - Domestic Violence Risk'),
+    ('X - Patient Deceased', 'Dispo. X - Patient Deceased'),
+    (
+        'Z - Previous Preventative Treatment',
+        'Dispo. Z - Previous Preventative Treatment',
+    ),
+)
+STD_NOT_EXAMINED_DISPOSITIONS = frozenset(
+    code for code, _ in STD_NOT_EXAMINED_DISPOSITION_LABELS
+)
+
+# Disposition subset feeding both the Treatment Index and the DI Index
+# numerators for the STD variant (PA04_Std.sas:936, 1119-1120) -- unlike HIV,
+# where Notification Index and Testing Index are always identical, STD's two
+# indices are genuinely different: Treatment Index sums the per-disposition
+# *contact* counts already computed for the breakdown rows, while DI Index is
+# a separate *case*-level "has a matching treated contact" distinct count
+# (PA04_Std.sas:335-348) -- see support/pa_04/queries.py and calculations.py.
+STD_TREATMENT_DISPOSITIONS = frozenset(
+    {
+        'A - Preventative Treatment',
+        'C - Infected, Brought to Treatment',
+        'E - Previously Treated for This Infection',
+    }
+)
+
 # Wide/pivoted output row: Category 1/2/3, then unscoped Count/Percentage/Index
 # (case-level metrics only), then a (Count, Percentage, Index) triplet per
 # scope -- From OI (Initial/Original), From RI (Re-Interview), Total
