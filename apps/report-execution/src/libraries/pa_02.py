@@ -428,18 +428,24 @@ def execute(
     for row in combined_rows:
         label = str(row['colname'])
         cat1, cat2 = split_label(label, report_type)
-        total = int(row['colval']) + int(row['colval2']) + int(row['colval3']) + \
-            int(row['colval4'])
-        table_data.append((
-            row['PROVIDER_QUICK_CODE_new'],  # Worker
-            cat1,                            # Category 1
-            cat2,                            # Category 2
-            row['colval'],                   # Part.
-            row['colval2'],                  # Clus.
-            row['colval3'],                  # Reac.
-            row['colval4'],                  # Other
-            total,                           # Total
-        ))
+        total = (
+            int(row['colval'])
+            + int(row['colval2'])
+            + int(row['colval3'])
+            + int(row['colval4'])
+        )
+        table_data.append(
+            (
+                row['PROVIDER_QUICK_CODE_new'],  # Worker
+                cat1,  # Category 1
+                cat2,  # Category 2
+                row['colval'],  # Part.
+                row['colval2'],  # Clus.
+                row['colval3'],  # Reac.
+                row['colval4'],  # Other
+                total,  # Total
+            )
+        )
 
     return ReportResult(
         content_type='table',
