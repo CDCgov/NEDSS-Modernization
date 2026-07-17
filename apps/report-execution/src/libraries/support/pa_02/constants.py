@@ -37,6 +37,17 @@ NOT_EXAMINED_VAR_ORDER = [
     'var_ab_p',
 ]
 
+OUTPUT_COLUMNS = [
+    'Worker',
+    'Category 1',
+    'Category 2',
+    'Part.',
+    'Clus.',
+    'Reac.',
+    'Other',
+    'Total',
+]
+
 # STD Constants
 STD_EXAMINED_DISPOS = [
     'A - Preventative Treatment',

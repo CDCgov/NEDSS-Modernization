@@ -73,19 +73,11 @@ def execute(
         return ReportResult(
             content_type='table',
             content=Table(
-                columns=[
-                    'PROVIDER_QUICK_CODE_new',
-                    'colname',
-                    'colval',
-                    'colval2',
-                    'colval3',
-                    'colval4',
-                    'pname_l',
-                    'i',
-                ],
-                data=[],
-            ),
+                columns=constants.OUTPUT_COLUMNS,
+                data=table_data
+            )
         )
+
 
     min_dispo, max_dispo, min_assign, max_assign = date_result.data[0]
 
@@ -109,16 +101,7 @@ def execute(
         return ReportResult(
             content_type='table',
             content=Table(
-                columns=[
-                    'PROVIDER_QUICK_CODE_new',
-                    'colname',
-                    'colval',
-                    'colval2',
-                    'colval3',
-                    'colval4',
-                    'pname_l',
-                    'i',
-                ],
+                columns=constants.OUTPUT_COLUMNS,
                 data=[],
             ),
         )
@@ -259,16 +242,7 @@ def execute(
         return ReportResult(
             content_type='table',
             content=Table(
-                columns=[
-                    'PROVIDER_QUICK_CODE_new',
-                    'colname',
-                    'colval',
-                    'colval2',
-                    'colval3',
-                    'colval4',
-                    'pname_l',
-                    'i',
-                ],
+                columns=constants.OUTPUT_COLUMNS,
                 data=[],
             ),
         )
@@ -353,16 +327,6 @@ def execute(
             )
         )
 
-    columns = [
-        'PROVIDER_QUICK_CODE_new',
-        'colname',
-        'colval',
-        'colval2',
-        'colval3',
-        'colval4',
-        'pname_l',
-        'i',
-    ]
 
     # ------------------------------------------------------------------
     # 8. Compute totals for ALL providers (summary table)
@@ -459,19 +423,9 @@ def execute(
             total,                           # Total
         ))
 
-    columns = [
-        'Worker',
-        'Category 1',
-        'Category 2',
-        'Part.',
-        'Clus.',
-        'Reac.',
-        'Other',
-        'Total',
-    ]
 
     return ReportResult(
         content_type='table',
-        content=Table(columns=columns, data=table_data)
+        content=Table(columns=constants.OUTPUT_COLUMNS, data=table_data)
     )
 
