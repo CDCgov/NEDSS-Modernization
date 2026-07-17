@@ -131,8 +131,8 @@
   - Num. of OI'S
   - OI'S that were NCI
   - null
-  - 16
-  - 55.2%
+  - 1
+  - 3.4%
   - null
 - !!python/tuple
   - ALL
@@ -147,9 +147,9 @@
   - Num. of OI'S
   - Partners Initiated
   - null
-  - 9
+  - 25
   - null
-  - 0.3
+  - 0.9
 - !!python/tuple
   - ALL
   - Num. of RI'S
@@ -163,25 +163,25 @@
   - Num. of RI'S
   - RI's that were NCI
   - null
-  - 5
-  - 71.4%
+  - 2
+  - 28.6%
   - null
 - !!python/tuple
   - ALL
   - Num. of RI'S
   - Partners Initiated
   - null
-  - 1
+  - 3
   - null
-  - 0.1
+  - 0.4
 - !!python/tuple
   - ALL
   - Clusters Init. (OI & RI)
   - null
   - null
-  - 12
+  - 76
   - null
-  - 0.4
+  - 2.6
 - !!python/tuple
   - Worker 4
   - Num. Cases Assigned
@@ -315,8 +315,8 @@
   - Num. of OI'S
   - OI'S that were NCI
   - null
-  - 1
-  - 25.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Worker 4
@@ -331,9 +331,9 @@
   - Num. of OI'S
   - Partners Initiated
   - null
-  - 2
+  - 4
   - null
-  - 0.5
+  - 1.0
 - !!python/tuple
   - Worker 4
   - Num. of RI'S
@@ -347,25 +347,25 @@
   - Num. of RI'S
   - RI's that were NCI
   - null
-  - 3
-  - 75.0%
+  - 2
+  - 50.0%
   - null
 - !!python/tuple
   - Worker 4
   - Num. of RI'S
   - Partners Initiated
   - null
-  - 0
+  - 1
   - null
-  - 0.0
+  - 0.2
 - !!python/tuple
   - Worker 4
   - Clusters Init. (OI & RI)
   - null
   - null
-  - 3
+  - 12
   - null
-  - 0.8
+  - 3.0
 - !!python/tuple
   - fulton
   - Num. Cases Assigned
@@ -499,8 +499,8 @@
   - Num. of OI'S
   - OI'S that were NCI
   - null
-  - 7
-  - 70.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - fulton
@@ -515,9 +515,9 @@
   - Num. of OI'S
   - Partners Initiated
   - null
-  - 5
+  - 15
   - null
-  - 0.5
+  - 1.5
 - !!python/tuple
   - fulton
   - Num. of RI'S
@@ -531,25 +531,25 @@
   - Num. of RI'S
   - RI's that were NCI
   - null
-  - 1
-  - 50.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - fulton
   - Num. of RI'S
   - Partners Initiated
   - null
-  - 1
+  - 2
   - null
-  - 0.5
+  - 1.0
 - !!python/tuple
   - fulton
   - Clusters Init. (OI & RI)
   - null
   - null
-  - 3
+  - 34
   - null
-  - 0.3
+  - 3.4
 - !!python/tuple
   - fulton
   - Num. Cases Assigned
@@ -683,8 +683,8 @@
   - Num. of OI'S
   - OI'S that were NCI
   - null
-  - 6
-  - 60.0%
+  - 1
+  - 10.0%
   - null
 - !!python/tuple
   - fulton
@@ -699,9 +699,9 @@
   - Num. of OI'S
   - Partners Initiated
   - null
-  - 1
+  - 4
   - null
-  - 0.1
+  - 0.4
 - !!python/tuple
   - fulton
   - Num. of RI'S
@@ -715,8 +715,8 @@
   - Num. of RI'S
   - RI's that were NCI
   - null
-  - 1
-  - 100.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - fulton
@@ -731,9 +731,9 @@
   - Clusters Init. (OI & RI)
   - null
   - null
-  - 4
+  - 19
   - null
-  - 0.4
+  - 1.9
 - !!python/tuple
   - fulton
   - Num. Cases Assigned
@@ -867,8 +867,8 @@
   - Num. of OI'S
   - OI'S that were NCI
   - null
-  - 2
-  - 40.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - fulton
@@ -883,9 +883,9 @@
   - Num. of OI'S
   - Partners Initiated
   - null
-  - 1
+  - 2
   - null
-  - 0.2
+  - 0.4
 - !!python/tuple
   - fulton
   - Num. of RI'S
@@ -915,6 +915,6 @@
   - Clusters Init. (OI & RI)
   - null
   - null
-  - 2
+  - 11
   - null
-  - 0.4
+  - 2.2

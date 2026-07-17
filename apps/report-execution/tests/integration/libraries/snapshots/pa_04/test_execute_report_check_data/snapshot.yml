@@ -34,8 +34,8 @@
   - Cases NCI
   - null
   - null
-  - 6
-  - 2.1%
+  - 12
+  - 4.2%
   - null
   - null
   - null
@@ -66,8 +66,8 @@
   - Cases NCI with Re-Interview
   - null
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 100.0%
   - null
   - null
   - null
@@ -165,13 +165,13 @@
   - null
   - null
   - null
-  - 3
+  - 4
   - null
   - null
   - 0
   - null
   - null
-  - 3
+  - 4
   - null
   - null
 - !!python/tuple
@@ -181,14 +181,14 @@
   - null
   - null
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 25.0%
   - null
   - 0
   - 0.0%
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 25.0%
   - null
 - !!python/tuple
   - Partners Examined
@@ -213,14 +213,14 @@
   - null
   - null
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 100.0%
   - null
   - 0
   - 0.0%
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 100.0%
   - null
 - !!python/tuple
   - Partners Examined
@@ -341,14 +341,14 @@
   - null
   - null
   - null
-  - 1
-  - 33.3%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 33.3%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Partners Not Examined
@@ -389,14 +389,14 @@
   - null
   - null
   - null
-  - 1
-  - 100.0%
+  - 0
+  - 0.0%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 100.0%
+  - 0
+  - 0.0%
   - null
 - !!python/tuple
   - Partners Not Examined
@@ -469,13 +469,13 @@
   - null
   - null
   - null
-  - 4
+  - 17
   - null
   - null
-  - 0
+  - 2
   - null
   - null
-  - 4
+  - 18
   - null
   - null
 - !!python/tuple
@@ -485,14 +485,14 @@
   - null
   - null
   - null
-  - 1
-  - 25.0%
+  - 5
+  - 29.4%
   - null
   - 0
   - 0.0%
   - null
-  - 1
-  - 25.0%
+  - 5
+  - 27.8%
   - null
 - !!python/tuple
   - Clusters Examined
@@ -517,14 +517,14 @@
   - null
   - null
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 20.0%
   - null
   - 0
   - 0.0%
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 20.0%
   - null
 - !!python/tuple
   - Clusters Examined
@@ -533,14 +533,14 @@
   - null
   - null
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 20.0%
   - null
   - 0
   - 0.0%
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 20.0%
   - null
 - !!python/tuple
   - Clusters Examined
@@ -565,14 +565,14 @@
   - null
   - null
   - null
-  - 0
-  - 0.0%
+  - 2
+  - 40.0%
   - null
   - 0
   - 0.0%
   - null
-  - 0
-  - 0.0%
+  - 2
+  - 40.0%
   - null
 - !!python/tuple
   - Clusters Examined
@@ -598,13 +598,13 @@
   - null
   - null
   - 1
-  - 100.0%
+  - 20.0%
   - null
   - 0
   - 0.0%
   - null
   - 1
-  - 100.0%
+  - 20.0%
   - null
 - !!python/tuple
   - Clusters Examined
@@ -615,13 +615,13 @@
   - null
   - null
   - null
-  - 0.0
+  - 0.01
   - null
   - null
   - 0.0
   - null
   - null
-  - 0.0
+  - 0.01
 - !!python/tuple
   - Clusters Examined
   - Testing Index
@@ -631,13 +631,13 @@
   - null
   - null
   - null
-  - 0.0
+  - 0.01
   - null
   - null
   - 0.0
   - null
   - null
-  - 0.0
+  - 0.01
 - !!python/tuple
   - Clusters Not Examined
   - null
@@ -645,14 +645,14 @@
   - null
   - null
   - null
-  - 2
-  - 50.0%
+  - 3
+  - 17.6%
   - null
   - 0
   - 0.0%
   - null
-  - 2
-  - 50.0%
+  - 3
+  - 16.7%
   - null
 - !!python/tuple
   - Clusters Not Examined
@@ -662,13 +662,13 @@
   - null
   - null
   - 1
-  - 50.0%
+  - 33.3%
   - null
   - 0
   - 0.0%
   - null
   - 1
-  - 50.0%
+  - 33.3%
   - null
 - !!python/tuple
   - Clusters Not Examined
@@ -693,14 +693,14 @@
   - null
   - null
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 33.3%
   - null
   - 0
   - 0.0%
   - null
-  - 0
-  - 0.0%
+  - 1
+  - 33.3%
   - null
 - !!python/tuple
   - Clusters Not Examined
@@ -758,11 +758,11 @@
   - null
   - null
   - 1
-  - 50.0%
+  - 33.3%
   - null
   - 0
   - 0.0%
   - null
   - 1
-  - 50.0%
+  - 33.3%
   - null

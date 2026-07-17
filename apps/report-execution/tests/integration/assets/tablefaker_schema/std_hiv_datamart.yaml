@@ -436,7 +436,7 @@ tables:
           return 2 + ((row_id - 1) % 4)
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
-    row_count: 40
+    row_count: 200
     columns:
       - column_name: d_contact_record_key
         data: row_id
@@ -469,12 +469,21 @@ tables:
           return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
 
   - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
-    row_count: 40
+    row_count: 200
     columns:
       - column_name: d_contact_record_key
         data: row_id
       - column_name: subject_investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+        data: |
+          # F_INTERVIEW_CASE only covers investigation_key 1-60 (its
+          # row_count) -- PA04_Std's contact_query requires the subject case
+          # to have a matching F_INTERVIEW_CASE row (a real INNER JOIN in the
+          # SAS source, not a no-op like case_query's), so most contact
+          # records need a subject in that range or STD's Partner/Cluster
+          # metrics stay at 0. Bias toward it while keeping some variety.
+          if random.random() < .85:
+              return random.randint(1, 60)
+          return foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       - column_name: contact_investigation_key
         data: |
           # 1 is NBS's 'no contact yet' sentinel investigation key --
