@@ -19,6 +19,11 @@ def execute(
     provider rows in a single table. The ALL rows are sorted first, followed by
     the provider rows.
 
+    * Column names are renamed to be more descriptive, from 
+    PROVIDER_QUICK_CODE_new, colname, colval, colval2, colval3,	colval4, pname_l, i
+    in SAS to Worker, Category 1, Category 2, Part., Clus., Reac., Other,
+    Total in Python.
+
     * The SAS implementation of this report contains a known precision issue:
     The global min/max datetimes are stored in macro variables using `SELECT ... INTO`.
     When SAS resolves these numeric datetimes into SQL, it writes them in scientific
