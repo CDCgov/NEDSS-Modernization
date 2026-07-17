@@ -28,16 +28,13 @@ def disp_keys_sql(subset_query: str) -> str:
     the report to the disposition keys that are present in the data.
     """
     return f"""
-    WITH a AS ({subset_query}),
-    base AS (
-        SELECT DISTINCT a.INVESTIGATOR_DISP_FL_FUP_KEY
-        FROM a
-        INNER JOIN [RDB].[dbo].INVESTIGATION b
-            ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
-        WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
-          AND a.INVESTIGATOR_DISP_FL_FUP_KEY IS NOT NULL
-    )
-    SELECT INVESTIGATOR_DISP_FL_FUP_KEY FROM base
+    WITH a AS ({subset_query})
+    SELECT DISTINCT a.INVESTIGATOR_DISP_FL_FUP_KEY
+    FROM a
+    INNER JOIN [RDB].[dbo].INVESTIGATION b
+        ON a.INVESTIGATION_KEY = b.INVESTIGATION_KEY
+    WHERE a.INVESTIGATOR_FL_FUP_KEY != 1
+        AND a.INVESTIGATOR_DISP_FL_FUP_KEY IS NOT NULL
     """
 
 
