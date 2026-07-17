@@ -1,5 +1,4 @@
 import pytest
-import yaml
 
 from src.execute_report import execute_report
 from src.models import ReportSpec
@@ -25,3 +24,5 @@ class TestIntegrationTbCaseVerLibrary:
         )
 
         result = execute_report(report_spec)
+
+        assert result is not None

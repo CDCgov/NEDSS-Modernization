@@ -12,11 +12,104 @@ def execute(
 
     Conversion notes:
     """
+    # pull column names for use later
+    metadata = trx.query(_metadata_query())
+    disease_site_desc_colname: str | None = None
+    case_verification_desc_colname: str | None = None
+    inv_rpt_dt_colname: str | None = None
+
+    for row in metadata.data:
+        if row[0] == 'INV1133':
+            disease_site_desc_colname = row[3]
+        elif row[0] == 'INV1115':
+            case_verification_desc_colname = row[3]
+        elif row[0] == 'INV111':
+            inv_rpt_dt_colname = row[3]
+
+    if None in [
+        disease_site_desc_colname,
+        case_verification_desc_colname,
+        inv_rpt_dt_colname,
+    ]:
+        raise ValueError(
+            (
+                'Column name metadata missing from initial query. Values found: ',
+                f'disease_site_desc_colname "{disease_site_desc_colname}", ',
+                f'case_verification_desc_colname "{case_verification_desc_colname}", ',
+                f'inv_rpt_dt_colname: "{inv_rpt_dt_colname}"',
+            )
+        )
+
+    # Calculate the TB_CASE_VER* tables (up through 3) as defined in SAS
+    tb_case_ver3 = trx.query(
+        _tb_case_ver_query(
+            subset_query,
+            disease_site_desc_colname,
+            case_verification_desc_colname,
+            inv_rpt_dt_colname,
+        )
+    )
+
+    # Column indices for tb_case_ver3:
+    # 0 'DISEASE_CODE'
+    # 1 'CASE_VERIFICATION_CODE'
+    # 2 'CASE_VERIFICATION_DESC'
+    # 3 'DISEASE_SITE_DESC'
+    # 4 'DISEASE_SITE_IND'
+    # 5 'INVESTIGATION_KEY'
+    # 6 'DISEASE_SITE_VALUE'
+
+    # Group all rows in tb_case_ver3 by INVESTIGATION_KEY (col index 5)
+    tb_case_ver3_by_investigation_key = {}
+    for row in tb_case_ver3.data:
+        tb_case_ver3_by_investigation_key.setdefault(row[5], set()).add(row)
+
+    # Equivalent of TB_CASE_VER4 found in SAS.
+    # Go through each group of rows (grouped by INVESTIGATION_KEY), calculate
+    # DISEASE_SITE from the set of DISEASE_SITE_VALUE strings (col index 6), and carry
+    # over the other column values from group of rows (using the last row read in the
+    # group).
+    tb_case_ver4 = []
+    for group in tb_case_ver3_by_investigation_key.values():
+        disease_site_values = set()
+        for row in group:
+            disease_site_values.add(row[6])
+
+        tb_case_ver4.append(row + (_calc_disease_site(disease_site_values),))
+
+    return ReportResult(content_type='table', content=None)
+
+
+def _calc_disease_site(disease_site_values: set) -> str | None:
+    """Calculate a DISEASE_SITE based on the set of DISEASE_SITE_VALUE strings found
+    in rows grouped by INVESTIGATION_KEY.
+    """
+    if {'Pulmonary TB'} == disease_site_values:
+        return 'Pulmonary TB'
+    elif {'Extrapulmonary TB'} == disease_site_values:
+        return 'Extrapulmonary TB'
+    elif {'Extrapulmonary TB', 'Pulmonary TB'} == disease_site_values:
+        return 'Both'
+    elif {'Unknown', 'Extrapulmonary TB'} == disease_site_values:
+        return 'Extrapulmonary TB'
+    elif {'Unknown', 'Pulmonary TB'} == disease_site_values:
+        return 'Pulmonary TB'
+    elif {'Unknown', 'Pulmonary TB', 'Extrapulmonary TB'} == disease_site_values:
+        return 'Both'
+    elif {''} == disease_site_values:
+        return 'Unknown'
+
+    return None
+
+
+def _metadata_query() -> str:
+    """Query which fetches the proper SQL column names for use in later queries.
+    Column names are searched for by the given QUESTION_IDENTIFIER values.
+    """
     nbs_ods = get_cached_config_value('REPORT_DB_NBS_ODS')
     nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
 
-    # pull column names from NBS_UI_METADATA
-    metadata_query = f"""
+    return f"""
       SELECT QUESTION_IDENTIFIER,
              RDB_COLUMN_NM,
              RDB_TABLE_NM,
@@ -32,24 +125,32 @@ def execute(
       WHERE QUESTION_IDENTIFIER IN ('INV1115','INV1133','INV111')
       AND   CONDITION_CD IN ('102201');
     """
-    metadata = trx.query(metadata_query)
-    disease_site_desc = None
-    case_verification_desc = None
-    inv_rpt_dt = None
 
-    for row in metadata.data:
-        if row[0] == 'INV1133':
-            disease_site_desc = row[3]
-        elif row[0] == 'INV1115':
-            case_verification_desc = row[3]
-        elif row[0] == 'INV111':
-            inv_rpt_dt = row[3]
 
-    if None in [disease_site_desc, case_verification_desc, inv_rpt_dt]:
-        raise ValueError('column name metadata missing from initial query')
+def _tb_case_ver_query(
+    subset_query: str,
+    disease_site_desc_colname: str | None,
+    case_verification_desc_colname: str | None,
+    inv_rpt_dt_colname: str | None,
+) -> str:
+    """Query that Builds the equivalent of the TB_CASE_VER sequence of tables from the
+    SAS file up through TB_CASE_VER3, which it returns.  After TB_CASE_VER3 the
+    TB_CASE_VER4 calculations will be done in Python.
+    """
+    # This is checked earlier in the code path but I have to put this here since I have
+    # to label the "*_colname" values as potentitally None to make the type checker
+    # happy.
+    if None in [
+        disease_site_desc_colname,
+        case_verification_desc_colname,
+        inv_rpt_dt_colname,
+    ]:
+        raise ValueError('One or more of the passed in column names is missing.')
 
-    # combines multiple versions of "TB_CASE_VER*" from SAS
-    tb_case_ver_query = f"""
+    nbs_ods = get_cached_config_value('REPORT_DB_NBS_ODS')
+    nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
+
+    return f"""
       WITH DM_INV_TB AS
       (
         {subset_query}
@@ -90,13 +191,13 @@ def execute(
       ),
       -- filtered DM_INV_TB
       TB_CASE_VER AS (
-        SELECT COALESCE(NULLIF({disease_site_desc}, ''), 'Unknown')
+        SELECT COALESCE(NULLIF({disease_site_desc_colname}, ''), 'Unknown')
                  AS DISEASE_SITE_DESC,
-               {case_verification_desc} AS CASE_VERIFICATION_DESC,
+               {case_verification_desc_colname} AS CASE_VERIFICATION_DESC,
                INVESTIGATION_KEY
         FROM DM_INV_TB
         WHERE DISEASE_CD = '102201'
-        AND   {inv_rpt_dt} IS NOT NULL
+        AND   {inv_rpt_dt_colname} IS NOT NULL
       ),
       -- TB_CASE_VER with DISEASE_SITE_DESC unspooled into DISEASE_SITE_IND
       -- nb. this particularly nasty CTE is called a 'recursive CTE splitter' and it is
@@ -203,7 +304,3 @@ def execute(
       WHERE TRIM(tcv.DISEASE_SITE_IND) <> ''
       ORDER BY INVESTIGATION_KEY;
     """
-    tb_case_ver = trx.query(tb_case_ver_query)
-
-
-    return ReportResult(content_type='table', content=None)
