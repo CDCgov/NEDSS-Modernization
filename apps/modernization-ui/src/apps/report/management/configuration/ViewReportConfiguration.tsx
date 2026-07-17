@@ -1,5 +1,5 @@
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button, LinkButton } from 'design-system/button';
+import { Button, NavLinkButton } from 'design-system/button';
 import { useRef, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationContent } from './ReportConfigurationContent';
@@ -34,9 +34,9 @@ const ViewReportConfiguration = () => {
                     <Button secondary={true} onClick={() => confirmDeleteRef.current?.toggleModal()}>
                         Delete
                     </Button>
-                    <LinkButton href={`/report/management/configuration/${reportUid}/${dataSourceUid}/edit`}>
+                    <NavLinkButton to={`/report/management/configuration/${reportUid}/${dataSourceUid}/edit`}>
                         Edit
-                    </LinkButton>
+                    </NavLinkButton>
                 </>
             }
         >
