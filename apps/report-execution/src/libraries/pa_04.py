@@ -29,39 +29,33 @@ def execute(
     share a lot of structure (case-level metrics, the Initiated/Examined/
     Not-Examined shape for the Partner/Cluster blocks) but diverge in real
     business logic (different disposition vocabularies, and different index
-    calculations). This library merges them the way nbs_sr_19 merged SR19/
-    SR20: one module, dispatching on a required 'variant' library param.
+    calculations). This library merges them and dispatches on a required 
+    'variant' library param.
 
-    Conversion notes (shared):
-    * Unlike PA03/PA05, this returns a wide/pivoted table (one row per
-      metric, with From OI / From RI / Total column-triplets for the
-      Partner/Cluster metrics) rather than a long-form table -- matching the
-      shape of the original SAS report's side-by-side OI/RI/Combined layout
-      (col1..col6 in the SAS template) more directly than the long-form
-      convention used elsewhere in this app.
-    * KNOWN SAS QUIRK: 'Cases Closed' (Val_A) and 'Cases Interviewed' (Val_B)
+    Conversion notes:
+    * 'Cases Closed' (Val_A) and 'Cases Interviewed' (Val_B)
       come from the exact same unfiltered query (PA04_HIV.sas:61-66,
       PA04_Std.sas:60-67) and are therefore always equal.
-    * KNOWN SAS QUIRK: 'Partners/Clusters Initiated' never has a percentage --
+    * 'Partners/Clusters Initiated' never has a percentage --
       the %fills macro computes PER_PM/PER_CM but the assignment that would
       write them into the report is commented out in both variants
-      (PA04_HIV.sas:636,656; PA04_Std.sas:605,624). Preserved as always-None
+      (PA04_HIV.sas:636,656; PA04_STD.sas:605,624). Preserved as always-None
       here, not a display bug.
-    * KNOWN SAS QUIRK: Period Partner Index rounds to 0.1 in HIV but 0.01 in
+    * Period Partner Index rounds to 0.1 in HIV but 0.01 in
       STD -- see support/pa_04/calculations.py.
 
-    Conversion notes (HIV variant only):
-    * KNOWN SAS QUIRK: the Notification Index and Testing Index are always
+    Conversion notes (HIV):
+    * The Notification Index and Testing Index are always
       the same value -- their source datasets (pix/testindex,
       PA04_HIV.sas:191-228) differ only by a filter that's already guaranteed
       true by the base case filter. See support/pa_04/queries.py.
-    * KNOWN SAS QUIRK: the Combined-scope Notification/Testing Index sums
+    * The Combined-scope Notification/Testing Index sums
       per-IX_TYPE-group counts rather than taking a fresh distinct count, so
       it can double-count a case present under both Initial/Original and
       Re-Interview -- unlike every other Combined-scope metric. See
       support/pa_04/calculations.py.
 
-    Conversion notes (STD variant only):
+    Conversion notes (STD):
     * Unlike HIV, Treatment Index and DI Index are genuinely different
       values (not two displays of the same number): Treatment Index sums the
       per-contact disposition counts already computed for the breakdown rows,
@@ -69,7 +63,7 @@ def execute(
       matching D_PROVIDER row and valid CTT_PROCESSING_DECISION -- see
       support/pa_04/queries.py's std_index_query and
       support/pa_04/calculations.py's build_std_bucket_metrics.
-    * KNOWN SAS QUIRK: PA04_Std.sas's PP04_OI/CLUSTER queries additionally
+    * PA04_STD.sas's PP04_OI/CLUSTER queries additionally
       exclude contacts still at the 'no interview yet' sentinel value
       (`CONTACT_INTERVIEW_KEY <> 1`), a filter HIV's equivalent queries don't
       have. See support/pa_04/queries.py's contact_query.
