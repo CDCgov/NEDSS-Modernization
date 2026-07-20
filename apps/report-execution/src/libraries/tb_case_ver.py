@@ -1,5 +1,3 @@
-from collections import Counter
-
 from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
@@ -10,11 +8,19 @@ def execute(
     subset_query: str,
     **kwargs,
 ):
-    """TB Case Verification Report.
+    """TB Case Verification Report - 2020 RVCT
 
     Conversion notes:
+    * In the exported CSV from Case_Verification_Report.SAS there is a column named
+      "_TEMA001".  This is a SAS generated column name because no alias was explicitly
+      declared after the "TRIM" method was used on column "DISEASE_SITE_IND".  In the
+      Python generated CSV this column is named "DISEASE_SITE_IND".
+    * Case_Verification_Report.SAS has a number of calculations that are specific for
+      the "Report" ("Run" in the UI) code path.  Since we are only recreating the
+      "Export" code path the Python implementation focuses soley on calculations for
+      "Export" and does not recreate the "Report" calcaulations.
     """
-    # pull column names for use later
+    # Pull column names for use in the main query
     metadata = trx.query(_metadata_query())
     disease_site_desc_colname: str | None = None
     case_verification_desc_colname: str | None = None
@@ -42,7 +48,7 @@ def execute(
             )
         )
 
-    # Equivalent of TB_CASE_VER3 in SAS
+    # Returns the equivalent of TB_CASE_VER3 in SAS
     cases = trx.query(
         _tb_case_ver_query(
             subset_query,
@@ -52,73 +58,7 @@ def execute(
         )
     )
 
-    # Column indices for cases:
-    # 0 'DISEASE_CODE'
-    # 1 'CASE_VERIFICATION_CODE'
-    # 2 'CASE_VERIFICATION_DESC'
-    # 3 'DISEASE_SITE_DESC'
-    # 4 'DISEASE_SITE_IND'
-    # 5 'INVESTIGATION_KEY'
-    # 6 'DISEASE_SITE_VALUE'
-
-    # Group all rows in cases by INVESTIGATION_KEY (col index 5)
-    cases_by_investigation_key = {}
-    for row in cases.data:
-        cases_by_investigation_key.setdefault(row[5], []).append(row)
-
-    # Equivalent of TB_CASE_VER4 found in SAS.
-    # Go through each group of rows (grouped by INVESTIGATION_KEY), calculate
-    # DISEASE_SITE from the set of DISEASE_SITE_VALUE strings (col index 6), and carry
-    # over the other column values from group of rows (using the last row read in the
-    # group).
-    cases_with_disease_site = []
-    for rows in cases_by_investigation_key.values():
-        disease_site_values = {row[6] for row in rows}
-        representative_row = rows[-1]
-        cases_with_disease_site.append(
-            representative_row + (_calc_disease_site(disease_site_values),)
-        )
-
-    # Tally up by CASE_VERIFICATION_CODE + DISEASE_SITE
-    case_counts = Counter(
-        # CASE_VERIFICATION_CODE, DISEASE_SITE
-        (row[1], row[7])
-        for row in cases_with_disease_site
-    )
-
-    # Equivalent of TB_CASE_VER_03 in SAS
-    final_counts = [
-        {
-            'CASE_VERIFICATION_CODE': case_code,
-            'DISEASE_SITE': disease_site,
-            'count': count,
-        }
-        for (case_code, disease_site), count in case_counts.items()
-    ]
-
-    return ReportResult(content_type='table', content=None)
-
-
-def _calc_disease_site(disease_site_values: set) -> str | None:
-    """Calculate a DISEASE_SITE based on the set of DISEASE_SITE_VALUE strings found
-    in rows grouped by INVESTIGATION_KEY.
-    """
-    if {'Pulmonary TB'} == disease_site_values:
-        return 'Pulmonary TB'
-    elif {'Extrapulmonary TB'} == disease_site_values:
-        return 'Extrapulmonary TB'
-    elif {'Extrapulmonary TB', 'Pulmonary TB'} == disease_site_values:
-        return 'Both'
-    elif {'Unknown', 'Extrapulmonary TB'} == disease_site_values:
-        return 'Extrapulmonary TB'
-    elif {'Unknown', 'Pulmonary TB'} == disease_site_values:
-        return 'Pulmonary TB'
-    elif {'Unknown', 'Pulmonary TB', 'Extrapulmonary TB'} == disease_site_values:
-        return 'Both'
-    elif {'Unknown'} == disease_site_values or {''} == disease_site_values:
-        return 'Unknown'
-
-    return None
+    return ReportResult(content_type='table', content=cases)
 
 
 def _metadata_query() -> str:
@@ -154,8 +94,7 @@ def _tb_case_ver_query(
     inv_rpt_dt_colname: str | None,
 ) -> str:
     """Query that Builds the equivalent of the TB_CASE_VER sequence of tables from the
-    SAS file up through TB_CASE_VER3, which it returns.  After TB_CASE_VER3 the
-    TB_CASE_VER4 calculations will be done in Python.
+    SAS file up through TB_CASE_VER3, which it returns.
     """
     # This is checked earlier in the code path but I have to put this here since I have
     # to label the "*_colname" values as potentitally None to make the type checker
