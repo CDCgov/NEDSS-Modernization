@@ -23,14 +23,11 @@ class FieldFormatterTest {
   }
 
   @Test
-  void should_escape_percent_signs_in_strings() {
+  void should_escape_special_characters_in_strings() {
     //  So we can use wildcard characters with LIKE
     assertThat(formatter.formatField("STRING", "%%")).isEqualTo("'[%][%]'");
-  }
 
-  @Test
-  void should_escape_opening_brackets_in_strings() {
-    //  So we can use wildcard characters with LIKE
+    //  So we can put brackets around said wildcard characters
     assertThat(formatter.formatField("STRING", "hello[world")).isEqualTo("'hello[[]world'");
   }
 
