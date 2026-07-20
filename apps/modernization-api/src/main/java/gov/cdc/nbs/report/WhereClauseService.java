@@ -549,8 +549,8 @@ public class WhereClauseService {
    * Builds a SQL criteria using the LIKE operator. Possible result formats:
    *
    * <ul>
-   *   <li>[COLUMN_NAME] IS LIKE 'val%'   (for STARTS WITH)
-   *   <li>[COLUMN_NAME] IS LIKE '%val%'  (for CONTAINS)
+   *   <li>[COLUMN_NAME] IS LIKE 'val%'
+   *   <li>[COLUMN_NAME] IS LIKE '%val%'
    * </ul>
    *
    * @param rule the advanced query rule
