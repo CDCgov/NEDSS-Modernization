@@ -790,12 +790,14 @@ class WhereClauseServiceTest {
         createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "75%");
     AdvancedQuery.Rule singleQuoteRule =
         createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "O'Brien");
+    AdvancedQuery.Rule openingBracketRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "test[");
 
     AdvancedQuery.RuleGroup ruleGroup1 =
         createRuleGroup(
             UUID.randomUUID().toString(),
             ReportConstants.QueryCombinators.AND,
-            List.of(percentRule, singleQuoteRule));
+            List.of(percentRule, singleQuoteRule, openingBracketRule));
 
     ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
     when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup1));
@@ -808,7 +810,7 @@ class WhereClauseServiceTest {
 
     assertThat(result)
         .isEqualTo(
-            "WHERE (([ColumnName] LIKE CONCAT('%', '75[%]', '%')) AND ([ColumnName] LIKE CONCAT('%', 'O''Brien', '%')))");
+            "WHERE (([ColumnName] LIKE CONCAT('%', '75[%]', '%')) AND ([ColumnName] LIKE CONCAT('%', 'O''Brien', '%')) AND ([ColumnName] LIKE CONCAT('%', 'test[[]', '%')))");
   }
 
   @Test
