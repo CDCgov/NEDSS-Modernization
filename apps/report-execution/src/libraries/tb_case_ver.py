@@ -8,7 +8,7 @@ def execute(
     subset_query: str,
     **kwargs,
 ):
-    """TB Case Verification Report - 2020 RVCT
+    """TB Case Verification Report - 2020 RVCT.
 
     Conversion notes:
     * In the exported CSV from Case_Verification_Report.SAS there is a column named
