@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class FieldFormatter {
   public String formatField(String type, String value) {
     return switch (type.toUpperCase()) {
-      case "STRING" -> "'" + value.replace("'", "''") + "'";
+      case "STRING" -> "'" + value.replace("'", "''").replace("%", "[%]") + "'";
       case "DATE", "DATETIME" -> convertToSQLDate(value);
       case "INTEGER", "NUMBER" -> validateNumeric(value);
       default -> throw new IllegalArgumentException("Unexpected Column Type: " + type);
