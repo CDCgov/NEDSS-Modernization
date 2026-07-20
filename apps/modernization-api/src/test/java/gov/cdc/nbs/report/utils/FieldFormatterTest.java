@@ -23,6 +23,12 @@ class FieldFormatterTest {
   }
 
   @Test
+  void should_escape_percent_signs_in_strings() {
+    //  So we can use wildcard characters with LIKE
+    assertThat(formatter.formatField("STRING", "%%")).isEqualTo("'[%][%]'");
+  }
+
+  @Test
   void should_return_numbers_as_is() {
     assertThat(formatter.formatField("INTEGER", "123")).isEqualTo("123");
     assertThat(formatter.formatField("NUMBER", "45.67")).isEqualTo("45.67");

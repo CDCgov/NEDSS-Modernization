@@ -561,14 +561,13 @@ public class WhereClauseService {
     StringBuilder criteria = new StringBuilder("(");
     boolean isContains = getOperator(rule).equals(Operator.CO);
 
-    String field = fieldFormatter.formatField(column.sourceTypeCode(), rule.value());
-    String searchText = isContains ? "%" + field + "%" : field;
-
     return criteria
         .append(fieldFormatter.convertToSQLColName(column.name(), column.sourceTypeCode()))
-        .append(" LIKE ")
-        .append(searchText)
-        .append(")")
+        .append(" LIKE CONCAT(")
+        .append(isContains ? "'%', " : "")
+        .append(fieldFormatter.formatField(column.sourceTypeCode(), rule.value()))
+        .append(isContains ? ", '%'" : "")
+        .append("))")
         .toString();
   }
 
