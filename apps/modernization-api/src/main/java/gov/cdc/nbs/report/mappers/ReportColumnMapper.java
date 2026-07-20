@@ -10,7 +10,7 @@ public class ReportColumnMapper {
   public static ReportColumn fromDataSourceColumn(DataSourceColumn dataSourceColumn) {
     String codeDescCd = null;
     String codesetNm = null;
-    DataSourceCodeset codeset = dataSourceColumn.getCodeset();
+    DataSourceCodeset codeset = dataSourceColumn.getCodesets().stream().findFirst().orElse(null);
     if (codeset != null) {
       codeDescCd = codeset.getCodeDescCd();
       codesetNm = codeset.getCodesetNm();
