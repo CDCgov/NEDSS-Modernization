@@ -20,7 +20,7 @@ class TestIntegrationTbCaseVerLibrary:
         'DISEASE_SITE_DESC',
         'DISEASE_SITE_IND',
         'INVESTIGATION_KEY',
-        'DISEASE_SITE_VALUE'
+        'DISEASE_SITE_VALUE',
     ]
 
     def get_metadata_table(self, data):
