@@ -19,6 +19,9 @@ def execute(
       the "Report" ("Run" in the UI) code path.  Since we are only recreating the
       "Export" code path the Python implementation focuses soley on calculations for
       "Export" and does not recreate the "Report" calcaulations.
+    * In data parity tests the sorting of the result data is  different when comparing
+      the Python and SAS output.  Data parity tests show that all of the data is equal
+      between the two.
     """
     # Pull column names for use in the main query
     metadata = trx.query(_metadata_query())
@@ -261,5 +264,10 @@ def _tb_case_ver_query(
              ON REPLACE(dsc.DISEASE_CODE_DESC, ' ', '')
                   = REPLACE(tcv.DISEASE_SITE_IND, ' ', '')
       WHERE TRIM(tcv.DISEASE_SITE_IND) <> ''
-      ORDER BY INVESTIGATION_KEY;
+      ORDER BY DISEASE_CODE,
+               CASE_VERIFICATION_CODE,
+               CASE_VERIFICATION_DESC,
+               DISEASE_SITE_DESC,
+               DISEASE_SITE_IND,
+               INVESTIGATION_KEY;
     """
