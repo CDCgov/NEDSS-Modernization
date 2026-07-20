@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
@@ -799,10 +800,10 @@ class WhereClauseServiceTest {
             ReportConstants.QueryCombinators.AND,
             List.of(percentRule, singleQuoteRule, openingBracketRule));
 
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup1));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
         whereClauseService.buildWhereClause(
