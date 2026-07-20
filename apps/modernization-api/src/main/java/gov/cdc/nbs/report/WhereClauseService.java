@@ -566,8 +566,8 @@ public class WhereClauseService {
         .append(" LIKE CONCAT(")
         .append(isContains ? "'%', " : "")
         .append(fieldFormatter.formatField(column.sourceTypeCode(), rule.value()))
-        .append(", '%'")
-        .append("))")
+        .append(", '%')")
+        .append(")")
         .toString();
   }
 
