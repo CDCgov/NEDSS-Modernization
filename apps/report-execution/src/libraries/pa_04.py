@@ -67,6 +67,21 @@ def execute(
       exclude contacts still at the 'no interview yet' sentinel value
       (`CONTACT_INTERVIEW_KEY <> 1`), a filter HIV's equivalent queries don't
       have. See support/pa_04/queries.py's contact_query.
+    * There is a bug in PA04_STD.sas's (and PA04_HIV.sas's) %fills macro: the
+      Partners and Clusters disposition-breakdown rows share identical
+      `descrip` text (e.g. 'DISPO. A - PREVENTIVE TX:' appears verbatim in
+      both sections), and the macro assigns values via a sequence of
+      independent `if find(descrip, ...)` statements rather than
+      mutually-exclusive branches. Since the Clusters assignment for each
+      shared disposition code always comes later in the macro body than the
+      matching Partners assignment, it silently overwrites it for every row
+      -- so the SAS report's displayed Partners disposition breakdown (both
+      count and percentage, across every scope) is actually the Clusters
+      breakdown, not the Partners one. Only the aggregate rows ('PARTNERS
+      EXAMINED:' vs 'CLUSTERS EXAMINED:', etc.) are immune, since those
+      strings are genuinely unique per bucket. The Python library will not
+      re-create this bug and instead gives each bucket's true, independently
+      -computed disposition breakdown.
     """
     if not isinstance(library_params, dict) or 'report_variant' not in library_params:
         raise InvalidLibraryParamsError(
