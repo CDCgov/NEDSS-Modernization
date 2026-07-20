@@ -18,7 +18,7 @@ def execute(
     * Case_Verification_Report.SAS has a number of calculations that are specific for
       the "Report" ("Run" in the UI) code path.  Since we are only recreating the
       "Export" code path the Python implementation focuses soley on calculations for
-      "Export" and does not recreate the "Report" calcaulations.
+      "Export" and does not recreate the "Report" calculations.
     * In data parity tests the sorting of the result data is  different when comparing
       the Python and SAS output.  Data parity tests show that all of the data is equal
       between the two.
