@@ -29,6 +29,10 @@ class FieldFormatterTest {
 
     //  So we can put brackets around said wildcard characters
     assertThat(formatter.formatField("STRING", "hello[world")).isEqualTo("'hello[[]world'");
+
+    //  Both combined
+    assertThat(formatter.formatField("STRING", "%%hello%[world"))
+        .isEqualTo("'[%][%]hello[%][[]world'");
   }
 
   @Test
