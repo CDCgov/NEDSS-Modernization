@@ -185,3 +185,39 @@ Feature: Run report
         And I select "Fulton LocalUser" from the "INVESTIGATOR_INTERVIEW_QC" dropdown menu
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+
+    Scenario: I can run a report for library pa_04 (HIV, Interview Assign Date)
+        When I navigate to "Public" report with reportUid: 10066742 and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "950 - AIDS" from the "DIAGNOSIS_CD" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+
+    Scenario: I can run a report for library pa_04 (STD, Interview Assign Date)
+        When I navigate to "Public" report with reportUid: 10066740 and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "100 - Chancroid" from the "DIAGNOSIS_CD" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+
+    Scenario: I can run a report for library pa_04 (HIV, Closed Date)
+        When I navigate to "Public" report with reportUid: 10066743 and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "950 - AIDS" from the "DIAGNOSIS_CD" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+
+    Scenario: I can run a report for library pa_04 (STD, Closed Date)
+        When I navigate to "Public" report with reportUid: 10066741 and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "100 - Chancroid" from the "DIAGNOSIS_CD" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
