@@ -33,7 +33,7 @@ SCOPE_COLUMN_OFFSETS = {
 BUCKETS = ('Partners', 'Clusters')
 
 
-def _spec(subset_query: str, library_params: str = '{"variant": "HIV"}'):
+def _spec(subset_query: str, library_params: str = '{"report_variant": "HIV"}'):
     return ReportSpec.model_validate(
         {
             'is_export': True,
@@ -137,14 +137,14 @@ class TestIntegrationPa04Library:
 
         with pytest.raises(
             InvalidLibraryParamsError,
-            match="'variant' is required",
+            match="'report_variant' is required",
         ):
             execute_report(report_spec)
 
     def test_execute_report_unsupported_variant_raises_error(self):
         report_spec = _spec(
             'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
-            library_params='{"variant": "foo"}',
+            library_params='{"report_variant": "foo"}',
         )
 
         with pytest.raises(
@@ -158,7 +158,7 @@ STD_EXPECTED_COLUMNS = EXPECTED_COLUMNS
 
 
 def _std_spec(subset_query: str):
-    return _spec(subset_query, library_params='{"variant": "STD"}')
+    return _spec(subset_query, library_params='{"report_variant": "STD"}')
 
 
 @pytest.mark.usefixtures('setup_containers', 'fake_db_table')

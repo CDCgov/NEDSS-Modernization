@@ -30,7 +30,7 @@ def execute(
     Not-Examined shape for the Partner/Cluster blocks) but diverge in real
     business logic (different disposition vocabularies, and different index
     calculations). This library merges them and dispatches on a required
-    'variant' library param.
+    'report_variant' library param (matching pa_01's naming convention).
 
     Conversion notes:
     * 'Cases Closed' (Val_A) and 'Cases Interviewed' (Val_B)
@@ -68,20 +68,22 @@ def execute(
       (`CONTACT_INTERVIEW_KEY <> 1`), a filter HIV's equivalent queries don't
       have. See support/pa_04/queries.py's contact_query.
     """
-    if not isinstance(library_params, dict) or 'variant' not in library_params:
-        raise InvalidLibraryParamsError("'variant' is required (one of: 'HIV', 'STD').")
-
-    variant = library_params['variant']
-    if variant not in _SUPPORTED_VARIANTS:
+    if not isinstance(library_params, dict) or 'report_variant' not in library_params:
         raise InvalidLibraryParamsError(
-            f'Unsupported PA04 variant: {variant!r}. '
+            "'report_variant' is required (one of: 'HIV', 'STD')."
+        )
+
+    report_variant = library_params['report_variant']
+    if report_variant not in _SUPPORTED_VARIANTS:
+        raise InvalidLibraryParamsError(
+            f'Unsupported PA04 variant: {report_variant!r}. '
             f'Supported variants: {sorted(_SUPPORTED_VARIANTS)}.'
         )
 
     case_rows = trx.query(case_query(subset_query)).data
-    contact_rows = trx.query(contact_query(subset_query, variant)).data
+    contact_rows = trx.query(contact_query(subset_query, report_variant)).data
 
-    if variant == 'STD':
+    if report_variant == 'STD':
         totals, case_metric_rows = build_case_metrics(
             case_rows, period_partner_index_ndigits=2
         )

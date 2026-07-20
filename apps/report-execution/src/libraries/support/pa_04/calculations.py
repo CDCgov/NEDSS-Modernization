@@ -429,7 +429,7 @@ def build_std_bucket_metrics(
       queries.std_index_query.
 
     contact_rows: (contact_inv_local_id, ix_type, ctt_referral_basis,
-    fl_fup_disposition) -- see queries.contact_query(variant='STD').
+    fl_fup_disposition) -- see queries.contact_query(report_variant='STD').
     treatment_index_rows: (case_inv_local_id, ix_type, ctt_referral_basis,
     fl_fup_disposition) -- see queries.std_index_query.
     """

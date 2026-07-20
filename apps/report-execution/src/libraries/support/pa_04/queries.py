@@ -79,7 +79,7 @@ def case_query(subset_query: str) -> str:
     """
 
 
-def contact_query(subset_query: str, variant: str = 'HIV') -> str:
+def contact_query(subset_query: str, report_variant: str = 'HIV') -> str:
     """Equivalent to the PP04_OI / CLUSTER dataset builds (PA04_HIV.sas:175-
     245, PA04_Std.sas:176-213) used for the Partner/Cluster Initiated,
     Examined, and disposition breakdown metrics. Partner vs. Cluster is just a
@@ -114,11 +114,11 @@ def contact_query(subset_query: str, variant: str = 'HIV') -> str:
         f"""
     INNER JOIN {nbs_rdb}.DBO.F_INTERVIEW_CASE fic
         ON fic.INVESTIGATION_KEY = cases.INVESTIGATION_KEY"""
-        if variant == 'STD'
+        if report_variant == 'STD'
         else ''
     )
     sentinel_filter = (
-        '\n      AND fcrc.CONTACT_INTERVIEW_KEY <> 1' if variant == 'STD' else ''
+        '\n      AND fcrc.CONTACT_INTERVIEW_KEY <> 1' if report_variant == 'STD' else ''
     )
 
     return f"""

@@ -5,7 +5,7 @@ USE [NBS_ODSE]
 DECLARE @pyLib VARCHAR(50) = 'pa_04'
 DECLARE @sasLib VARCHAR(50) = 'PA04_HIV.SAS'
 DECLARE @desc VARCHAR(300) = 'PA04: Program Indicator Report (HIV). Returns a wide-format summary table of case, partner, and cluster follow-up indicator metrics.'
-DECLARE @libraryParams VARCHAR(300) = '{"variant": "HIV"}'
+DECLARE @libraryParams VARCHAR(300) = '{"report_variant": "HIV"}'
 
 IF EXISTS (SELECT * FROM [dbo].[Report_Library] WHERE UPPER(library_name) = @sasLib)
 BEGIN
