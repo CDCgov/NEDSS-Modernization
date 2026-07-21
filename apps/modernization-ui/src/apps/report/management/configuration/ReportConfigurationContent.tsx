@@ -12,7 +12,7 @@ import { SingleSelect } from 'design-system/select';
 import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
-import { useUserProfileOptions } from 'options/users';
+import { useUserOptions } from 'options/users';
 import { ReactComponentLike } from 'prop-types';
 import { ReactNode, useId, useRef, useState } from 'react';
 import { Controller, useFormState, useWatch } from 'react-hook-form';
@@ -96,7 +96,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     label="Owner"
                     defaultValue={config?.ownerUid.toString()}
                     getOptions={() => {
-                        const options = useUserProfileOptions();
+                        const options = useUserOptions();
                         if (options.length === 0) return options;
                         // add system option once loaded (to avoid options appearing loaded when not)
                         return [{ value: '0', name: 'System' }, ...options];
@@ -319,7 +319,7 @@ const Row = ({
             )}
         />
     ) : (
-        <ValueField label={label} helperText={helperText}>
+        <ValueField label={label} helperText={helperText} sizing={SIZING}>
             <Option option={option} />
         </ValueField>
     );
