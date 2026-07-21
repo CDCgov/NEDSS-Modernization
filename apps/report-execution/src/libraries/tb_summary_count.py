@@ -14,9 +14,16 @@ def execute(
     """TB Record Count - Summary Report by Report Date - 2020 RVCT.
 
     Conversion Notes:
+    * total_cases will always be populated with total. Previously the total_cases
+    was left blank when a value was not present in counted or non_counted
     """
     nbs_ods = get_cached_config_value('REPORT_DB_NBS_ODS')
     nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
+
+    if not isinstance(library_params, dict) or 'date_column' not in library_params:
+        raise InvalidLibraryParamsError("'date_column' is required but was absent.")
+
+    date_column = library_params['date_column'] #INV_RPT_DT
     query = f"""
         WITH subset AS (
             {subset_query}
@@ -43,10 +50,10 @@ def execute(
         -- Determine report timeline boundaries strictly filtered by disease code
         boundaries AS (
             SELECT 
-                MIN(DATEFROMPARTS(YEAR(INV_RPT_DT), MONTH(INV_RPT_DT), 1)) AS start_date,
-                MAX(DATEFROMPARTS(YEAR(INV_RPT_DT), MONTH(INV_RPT_DT), 1)) AS end_date
+                MIN(DATEFROMPARTS(YEAR({date_column}), MONTH({date_column}), 1)) AS start_date,
+                MAX(DATEFROMPARTS(YEAR({date_column}), MONTH({date_column}), 1)) AS end_date
             FROM subset
-            WHERE INV_RPT_DT IS NOT NULL 
+            WHERE {date_column} IS NOT NULL 
               AND disease_cd = '102201'
         ),
         
@@ -64,8 +71,8 @@ def execute(
         -- Aggregate data into Counted vs Non-Counted buckets based on metadata code matches
         monthly_aggregates AS (
             SELECT 
-                YEAR(s.INV_RPT_DT) AS case_year,
-                MONTH(s.INV_RPT_DT) AS case_month,
+                YEAR(s.{date_column}) AS case_year,
+                MONTH(s.{date_column}) AS case_month,
                 SUM(CASE WHEN LTRIM(RTRIM(mc.case_summary_code)) = 'N' THEN 1 ELSE 0 END) AS counted_cases,
                 SUM(CASE 
                     WHEN LTRIM(RTRIM(mc.case_summary_code)) IN ('PHC659', 'PHC660') 
@@ -74,9 +81,9 @@ def execute(
             FROM subset s
             LEFT JOIN metadata_codes mc 
                 ON mc.case_summary_code_desc = s.PREV_COUNT_CASE
-            WHERE s.INV_RPT_DT IS NOT NULL 
+            WHERE s.{date_column} IS NOT NULL 
               AND s.disease_cd = '102201'
-            GROUP BY YEAR(s.INV_RPT_DT), MONTH(s.INV_RPT_DT)
+            GROUP BY YEAR(s.{date_column}), MONTH(s.{date_column})
         )
         
         -- Outer join calendar and aggregates to enforce zero-filled timelines
