@@ -1,6 +1,6 @@
 [versions]
 springBoot = '3.5.14'
-spring-security = '6.5.9'
+spring-security = '7.1.0'
 jackson = '2.21.1'
 queryDSL = '5.1.0'
 
