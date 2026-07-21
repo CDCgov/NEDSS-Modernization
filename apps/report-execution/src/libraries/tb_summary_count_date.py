@@ -1,4 +1,3 @@
-from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.libraries.tb_summary_count import execute as execute_tb_summary_count
 from src.models import ReportResult, Table
@@ -13,8 +12,10 @@ def execute(
 ):
     """TB Record Count - Summary Report by Report Date - 2020 RVCT.
 
-    Conversion Notes:
-    CASE_COUNT_DT
+    # Mapping:
+    # row[0] = monthYearTxt
+    # row[1] = sasdate
+    # row[3] = counted_cases
     """
     tb_summary_count_result = execute_tb_summary_count(
         trx, subset_query, data_source_name, library_params, **kwargs

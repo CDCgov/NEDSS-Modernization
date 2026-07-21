@@ -14,8 +14,12 @@ def execute(
     """TB Record Count - Summary Report by Report Date - 2020 RVCT.
 
     Conversion Notes:
-    * total_cases will always be populated with total. Previously the total_cases
-    was left blank when a value was not present in counted or non_counted
+    * Parameterized date column handled safely. This change allowed for the
+        merging of tb_summary_count into tb_summary_count_date as the input date
+        column was the only difference
+    * date_column is a required library_param
+    * total_cases will always be the SUM total. The SAS library did not include
+    the total when one of the count_values was 0.
     """
     nbs_ods = get_cached_config_value('REPORT_DB_NBS_ODS')
     nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
