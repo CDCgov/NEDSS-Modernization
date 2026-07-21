@@ -33,7 +33,7 @@ Feature: View report configuration
         And I navigate to list reports
         And I click on the "Expand Subsections" link
         And I click on the "Expand Subsections" link
-        And I click on the "Run" link
+        And I click the "All filter test" report
         Then I should see a "heading" labelled "All filter test"
         When I fill out all filters with 1
         And I click the "Run" button
@@ -48,7 +48,58 @@ Feature: View report configuration
         And I should see "Private" radio selected in the "Group" field
         And I click the "Save as new" button
         Then I am redirected to "/nbs/ManageReports.do"
-#        When I navigate to list reports
         And I click on the "Expand Subsections" link
-        And I click on the "Run" link
+        And I click the "Test save as all filter report" report
         Then All filters should be filled out with 1
+
+        # Check existing report has not changed
+        When I navigate to list reports
+        And I click on the "Expand Subsections" link
+        And I click on the "Expand Subsections" link
+        And I click the "All filter test" report
+        Then I should see a "heading" labelled "All filter test"
+        And All filters should be empty
+
+        # Runs with only "Include nulls" checked
+        When I click all include nulls
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+        When I click the "Save as new" button
+        And I should see a modal labelled "Save as a new report"
+        And I type "Test include nulls report" into the "Name" field
+        And I type "Testing include nulls report" into the "Description" field
+        And I select value "Default Report Section" in the "Section name" field
+        And I should see "Private" radio selected in the "Group" field
+        And I click the "Save as new" button
+        Then I am redirected to "/nbs/ManageReports.do"
+        And I click on the "Expand Subsections" link
+        And I click the "Test include nulls report" report
+        Then I should see a "heading" labelled "Test include nulls report"
+        And All include nulls checkboxes should be checked
+
+        # Save report
+        When I click all include nulls
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+        When I click the "Save" button
+        And I should see a modal labelled "Overwrite saved report?"
+        And I click the "Save" button
+        Then I am redirected to "/nbs/ManageReports.do"
+        And I click on the "Expand Subsections" link
+        And I click the "Test include nulls report" report
+        Then I should see a "heading" labelled "Test include nulls report"
+        And All filters should be empty
+
+    Scenario Outline: I delete test reports
+        Given I navigate to manage reports
+        When I click on the <reportName> link
+        Then I should see the "View" configuration page
+        When I click the "Delete" button
+        When I click the "Yes, delete" button
+        Then I should see the report list
+
+        Examples:
+            | reportName                       |
+            | "All filter test"                |
+            | "Test save as all filter report" |
+            | "Test include nulls report"      |
