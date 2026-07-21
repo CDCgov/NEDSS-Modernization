@@ -1,6 +1,5 @@
-import React from 'react';
 import { ActionProps } from 'react-querybuilder';
-import { Button } from '../../../../../design-system/button';
+import { Button } from 'design-system/button';
 
 const RemoveButton = (props: ActionProps) => {
     return (
@@ -11,7 +10,7 @@ const RemoveButton = (props: ActionProps) => {
             tertiary
             destructive
             sizing="small"
-            aria-label={props.title}
+            aria-label={props.title!}
             onClick={(e) => props.handleOnClick(e)}
         />
     );

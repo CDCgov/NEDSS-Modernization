@@ -2,6 +2,7 @@ import { useId } from 'react';
 import { FullOption, ValueSelectorProps } from 'react-querybuilder';
 import { SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
+import { SIZING } from 'apps/report/constants';
 
 const ValueSingleSelector = (props: ValueSelectorProps<FullOption>) => {
     const id = useId();
@@ -30,10 +31,11 @@ const ValueSingleSelector = (props: ValueSelectorProps<FullOption>) => {
                 value={currentSelection}
                 onChange={handleOnChange}
                 orientation="vertical"
-                required
+                required={props.className === 'rule-operators'}
                 placeholder=""
                 name={title}
                 options={availableOptions}
+                sizing={SIZING}
             />
         </span>
     );
