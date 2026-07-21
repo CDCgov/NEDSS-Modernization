@@ -99,6 +99,7 @@ export const MultiSelect = ({
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}
+                blurInputOnSelect={false}
                 closeMenuOnScroll={false}
                 inputValue={searchText}
                 onInputChange={handleInputChange}

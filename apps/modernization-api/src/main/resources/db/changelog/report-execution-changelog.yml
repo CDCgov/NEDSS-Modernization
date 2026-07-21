@@ -93,3 +93,13 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/pa_05.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_01_hiv.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_01_std.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/05_ODSE_Drop_Regions.sql
+            splitStatements: false
+            endDelimiter: ""
