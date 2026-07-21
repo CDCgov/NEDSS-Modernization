@@ -21,15 +21,13 @@ $error-border-width: 4px;
 }
 
 .layout {
-    &.validate {
-        :global(.queryBuilder-invalid) {
-            &:global(.rule) {
-                @include highlight(colors.$error-dark);
-            }
-            &:global(.ruleGroup) {
-                border-width: $error-border-width;
-                border-color: colors.$error-dark;
-            }
+    .invalid {
+        :global(.rule) {
+            @include highlight(colors.$error-dark);
+        }
+        :global(.ruleGroup) {
+            border-width: $error-border-width;
+            border-color: colors.$error-dark;
         }
     }
 

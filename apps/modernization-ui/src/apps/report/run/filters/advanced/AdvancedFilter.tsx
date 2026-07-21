@@ -6,9 +6,13 @@ import QueryBuilder, {
     isRuleType,
     joinWith,
     QueryValidator,
+    RuleGroupProps,
     RuleGroupType,
     splitBy,
     ValidationResult,
+    RuleGroup as DefaultRuleGroup,
+    Rule as DefaultRule,
+    RuleProps,
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
@@ -28,7 +32,7 @@ import { RemoveButton } from '././RemoveButton.tsx';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
 import { AlertMessage } from 'design-system/message/index.ts';
 import classNames from 'classnames';
@@ -247,11 +251,25 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         defaultValue: filter.defaultValue ? advancedFilterConfigToQuery(filter.defaultValue, columns) : EMPTY_QUERY,
         rules: { validate: (values) => validateAdvancedFilter(columns, values) },
     });
+    const [errorIds, setErrorIds] = useState<string[]>([]);
 
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
+    // only validate when the form validates
+    useEffect(() => {
+        if (value) {
+            setErrorIds(
+                Object.entries(validator(value))
+                    .filter(([_k, v]) => !v.valid)
+                    .map(([k, _v]) => k)
+            );
+        } else {
+            setErrorIds([]);
+        }
+    }, [error]);
+
     return (
-        <div className={classNames(styles.layout, { [styles.validate]: !!error?.message })}>
+        <div className={classNames(styles.layout)}>
             {filter.exceptionMessage && (
                 <AlertMessage type="warning" title="Saved filter has an error and can't be applied">
                     <p>
@@ -277,7 +295,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                     <QueryBuilder
                         fields={fields}
                         query={value}
-                        validator={validator}
+                        context={{ errorIds }}
                         onQueryChange={onChange}
                         addRuleToNewGroups={true}
                         autoSelectField={false}
@@ -292,6 +310,8 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                             addRuleAction: AddButton,
                             removeGroupAction: RemoveButton,
                             removeRuleAction: RemoveButton,
+                            ruleGroup: RuleGroupWithErrors,
+                            rule: RuleWithErrors,
                         }}
                     />
                 </QueryBuilderDnD>
@@ -318,6 +338,22 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
                         : fallbackExpression}
                 </p>
             </div>
+        </div>
+    );
+};
+
+const RuleGroupWithErrors = (props: RuleGroupProps) => {
+    return (
+        <div className={classNames({ [styles.invalid]: props?.context?.errorIds?.includes(props.id) })}>
+            <DefaultRuleGroup {...props} />
+        </div>
+    );
+};
+
+const RuleWithErrors = (props: RuleProps) => {
+    return (
+        <div className={classNames({ [styles.invalid]: props?.context?.errorIds?.includes(props.id) })}>
+            <DefaultRule {...props} />
         </div>
     );
 };
