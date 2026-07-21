@@ -17,12 +17,12 @@ const ValidationErrorBanner = ({
 );
 
 const ValidationErrorSection = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => (
-    <div>
+    <>
         <p>
             For <a href={`#${id}`}>{title}</a>,
         </p>
         <ul>{children}</ul>
-    </div>
+    </>
 );
 
 // Generates an error message that will contain a link to the section if an id is provided
