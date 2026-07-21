@@ -18,6 +18,14 @@ class MissingLibraryError(BaseReportExecutionError):
         super().__init__(message, 422)
 
 
+class MissingDbObjectError(BaseReportExecutionError):
+    """The queried db object is missing."""
+
+    def __init__(self, object_type: str, name: str):
+        message = f'${object_type} `{name}` not found in the reporting database'
+        super().__init__(message, 422)
+
+
 class MissingColumnError(BaseReportExecutionError):
     """Required columns are missing."""
 
