@@ -1,5 +1,5 @@
 import { ActionProps } from 'react-querybuilder';
-import { Button } from '../../../../../design-system/button';
+import { Button } from 'design-system/button';
 
 const RemoveButton = (props: ActionProps) => {
     return (
