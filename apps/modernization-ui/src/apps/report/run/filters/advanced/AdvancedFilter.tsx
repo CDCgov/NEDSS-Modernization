@@ -5,7 +5,6 @@ import QueryBuilder, {
     formatQuery,
     isRuleType,
     joinWith,
-    QueryValidator,
     RuleGroupProps,
     RuleGroupType,
     splitBy,
@@ -196,21 +195,21 @@ const addColNameAndTypeToRules = (columns: ReportColumn[], value: QbRuleGroup): 
 
 const validateAdvancedFilter = (columns: ReportColumn[], value?: QbRuleGroup) => {
     if (!value) return true;
-    const updatedRuleGroup = addColNameAndTypeToRules(columns, value);
 
     return (
-        Object.values(validator(updatedRuleGroup))
+        Object.values(validator(columns, value))
             .filter((v) => !v.valid)
-            .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '') || true
+            .reduce((acc, cur) => `${acc}\n${cur?.reasons?.[0]}`, '') || true
     );
 };
 
 // tighten the default type so it's just the object version
 type ValidationResultMap = Record<string, ValidationResult>;
 
-const validator: QueryValidator = (q) => {
+const validator = (columns: ReportColumn[], q: QbRuleGroup): ValidationResultMap => {
+    const updatedRuleGroup = addColNameAndTypeToRules(columns, q);
     const result: ValidationResultMap = {};
-    q.rules.forEach((r) => validateRule(r as QbQuery, result));
+    updatedRuleGroup.rules.forEach((r) => validateRule(r, result));
     return result;
 };
 
@@ -252,20 +251,16 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         defaultValue: filter.defaultValue ? advancedFilterConfigToQuery(filter.defaultValue, columns) : EMPTY_QUERY,
         rules: { validate: (values) => validateAdvancedFilter(columns, values) },
     });
-    const [errorIds, setErrorIds] = useState<string[]>([]);
+    const [validationMap, setValidationMap] = useState<ValidationResultMap>({});
 
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
     // only validate when the form validates
     useEffect(() => {
         if (value) {
-            setErrorIds(
-                Object.entries(validator(value))
-                    .filter(([_k, v]) => !v.valid)
-                    .map(([k, _v]) => k)
-            );
+            setValidationMap(validator(columns, value));
         } else {
-            setErrorIds([]);
+            setValidationMap({});
         }
     }, [error]);
 
@@ -296,7 +291,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                     <QueryBuilder
                         fields={fields}
                         query={value}
-                        context={{ errorIds }}
+                        context={{ validationMap }}
                         onQueryChange={onChange}
                         addRuleToNewGroups={true}
                         autoSelectField={false}
@@ -348,7 +343,11 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
 
 const RuleGroupWithErrors = (props: RuleGroupProps) => {
     return (
-        <div className={classNames({ [styles.invalid]: props?.context?.errorIds?.includes(props.id) })}>
+        <div
+            className={classNames({
+                [styles.invalid]: props.id && props?.context?.validationMap?.[props.id]?.valid === false,
+            })}
+        >
             <DefaultRuleGroup {...props} />
         </div>
     );
@@ -356,7 +355,11 @@ const RuleGroupWithErrors = (props: RuleGroupProps) => {
 
 const RuleWithErrors = (props: RuleProps) => {
     return (
-        <div className={classNames({ [styles.invalid]: props?.context?.errorIds?.includes(props.id) })}>
+        <div
+            className={classNames({
+                [styles.invalid]: props.id && props?.context?.validationMap?.[props.id]?.valid === false,
+            })}
+        >
             <DefaultRule {...props} />
         </div>
     );
