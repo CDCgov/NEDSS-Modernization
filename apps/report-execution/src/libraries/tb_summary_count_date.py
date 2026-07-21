@@ -10,7 +10,7 @@ def execute(
         library_params: dict,
         **kwargs,
 ):
-    """TB Record Count - Summary Report by Report Date - 2020 RVCT.
+    """TB Record Count - Summary Report by Count Date - 2020 RVCT.
 
     # Mapping:
     # row[0] = monthYearTxt
