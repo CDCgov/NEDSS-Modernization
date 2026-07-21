@@ -13,6 +13,7 @@ import QueryBuilder, {
     RuleGroup as DefaultRuleGroup,
     Rule as DefaultRule,
     RuleProps,
+    FullField,
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
@@ -32,7 +33,7 @@ import { RemoveButton } from '././RemoveButton.tsx';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
-import { ReactNode, useEffect, useState } from 'react';
+import { ComponentType, ReactNode, useEffect, useState } from 'react';
 import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
 import { AlertMessage } from 'design-system/message/index.ts';
 import classNames from 'classnames';
@@ -310,7 +311,10 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                             addRuleAction: AddButton,
                             removeGroupAction: RemoveButton,
                             removeRuleAction: RemoveButton,
-                            ruleGroup: RuleGroupWithErrors,
+                            // KLUDGE: This is using the literal default component, but ts is very unhappy
+                            ruleGroup: RuleGroupWithErrors as unknown as ComponentType<
+                                RuleGroupProps<ValueSetMetadata & FullField, string>
+                            >,
                             rule: RuleWithErrors,
                         }}
                     />
