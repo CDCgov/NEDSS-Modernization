@@ -11,6 +11,4 @@ def execute(
     """This is a stub custom library just to start to get the interface hooked up."""
     content = trx.query(subset_query)
 
-    return ReportResult(
-        content=content, description='Custom pass through query'
-    )
+    return ReportResult(content=content, description='Custom pass through query')

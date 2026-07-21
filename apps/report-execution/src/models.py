@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any
 
 import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer

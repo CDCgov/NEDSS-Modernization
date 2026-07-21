@@ -32,5 +32,3 @@ class TestMainApp:
 
         response = connection.getresponse()
         assert response.status == 200
-
-        result = json.loads(response.read())

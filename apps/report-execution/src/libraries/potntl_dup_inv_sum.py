@@ -120,6 +120,4 @@ def execute(
 
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
 
-    return ReportResult(
-        content=content, subheader=subheader
-    )
+    return ReportResult(content=content, subheader=subheader)
