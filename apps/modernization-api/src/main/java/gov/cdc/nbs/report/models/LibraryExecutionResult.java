@@ -11,6 +11,5 @@ public record LibraryExecutionResult(
         @JsonProperty("content_type")
         String contentType,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String content,
-    String header,
     String subheader,
     String description) {}

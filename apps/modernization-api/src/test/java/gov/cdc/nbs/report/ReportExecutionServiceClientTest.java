@@ -116,7 +116,6 @@ class ReportExecutionServiceClientTest {
         new LibraryExecutionResult(
             "table",
             "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
-            "result header",
             "result subheader",
             "result description"),
         "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",

@@ -5,7 +5,6 @@
 export type LibraryExecutionResult = {
     content_type: LibraryExecutionResult.content_type;
     content: string;
-    header?: string;
     subheader?: string;
     description?: string;
 };
