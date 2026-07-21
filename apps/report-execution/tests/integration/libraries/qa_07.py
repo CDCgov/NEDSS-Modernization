@@ -1,6 +1,5 @@
 import pytest
 import yaml
-from mssql_python.exceptions import ProgrammingError
 
 from src.errors import InvalidLibraryParamsError
 from src.execute_report import execute_report
@@ -84,12 +83,16 @@ class TestIntegrationQa07Library:
         """Test that missing 'report_days' in library_params raises an error."""
         spec = self.create_spec(library_params='{}')
         with pytest.raises(
-            InvalidLibraryParamsError, match="must contain 'days_value'"
+            InvalidLibraryParamsError,
+            match="must contain positive integer 'days_value'",
         ):
             execute_report(spec)
 
     def test_execute_report_invalid_days_format(self):
         """Test that non‑integer days value raises an error."""
         spec = self.create_spec(library_params='{"days_value": "thirty"}')
-        with pytest.raises(ProgrammingError):
+        with pytest.raises(
+            InvalidLibraryParamsError,
+            match="must contain positive integer 'days_value'",
+        ):
             execute_report(spec)
