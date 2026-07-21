@@ -31,7 +31,7 @@ const ValueSingleSelector = (props: ValueSelectorProps<FullOption>) => {
                 value={currentSelection}
                 onChange={handleOnChange}
                 orientation="vertical"
-                required
+                required={props.className === 'rule-operators'}
                 placeholder=""
                 name={title}
                 options={availableOptions}
