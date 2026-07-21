@@ -13,6 +13,7 @@ import { LiveSearch } from 'components/Search/LiveSearch';
 import styles from './column-selector.module.scss';
 import { toSelectable } from './utils';
 import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
+import { SIZING } from 'apps/report/constants';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
@@ -81,6 +82,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                                 label={selectWord + (searchText ? ' search results' : ' all')}
                                 selected={false}
                                 onChange={handleSelectAll}
+                                sizing={SIZING}
                             />
                             {availableOptions.map((o) => (
                                 <Checkbox
@@ -89,6 +91,7 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                                     label={o.name}
                                     selected={value?.includes(o.value)}
                                     onChange={handleOnAvailableChange(o)}
+                                    sizing={SIZING}
                                 />
                             ))}
                         </div>
@@ -98,7 +101,12 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
                         title="Selected columns"
                         collapsible={false}
                         actions={
-                            <Button disabled={noneSelected} onClick={() => onChange([])}>
+                            <Button
+                                destructive={true}
+                                secondary={true}
+                                disabled={noneSelected}
+                                onClick={() => onChange([])}
+                            >
                                 Clear selections
                             </Button>
                         }
