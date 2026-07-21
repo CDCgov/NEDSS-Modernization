@@ -229,7 +229,6 @@ class TestIntegrationPa03Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'PA03'
         assert result.subheader is None
         assert result.description is None
         assert result.content_type == 'table'

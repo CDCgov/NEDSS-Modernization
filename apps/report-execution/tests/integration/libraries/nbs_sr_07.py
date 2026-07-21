@@ -68,11 +68,6 @@ class TestIntegrationNbsSr07Library:
         )
 
         result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
-            'Time Period'
-        )
         assert len(result.description) > 100
         assert result.content_type == 'table'
 

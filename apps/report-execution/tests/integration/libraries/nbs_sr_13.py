@@ -81,7 +81,6 @@ class TestIntegrationNbsSr13Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR13: Counts of Selected Diseases By Case Status'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 

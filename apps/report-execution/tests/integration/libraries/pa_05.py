@@ -112,7 +112,6 @@ class TestIntegrationPa05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'PA05'
         assert result.subheader is None
         assert result.description is None
         assert result.content_type == 'table'

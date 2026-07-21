@@ -92,7 +92,6 @@ class TestIntegrationNbsQa01Library:
         report_spec = self.create_spec(report_title='QA01 Interview Record List')
 
         result = execute_report(report_spec)
-        assert result.header == 'QA01 Interview Record List'
         assert result.content_type == 'table'
 
         assert result.content.columns == expected_columns

@@ -8,7 +8,7 @@ from .config import load_report_configurations
 from .db_transaction import check_row_limits, db_transaction
 
 
-def execute_report(report_spec: models.ReportSpec):
+def execute_report(report_spec: models.ReportSpec) -> models.ReportResult:
     """Execute a report spec by validating inputs, loading library, handling DB
     connection and transaction,and validating/processing results.
     """
@@ -22,7 +22,7 @@ def execute_report(report_spec: models.ReportSpec):
     with db_transaction(conn_string, report_spec.is_export) as trx:
         load_report_configurations(trx)
 
-        result = library.execute(
+        result: models.ReportResult = library.execute(
             trx,
             subset_query=report_spec.subset_query,
             data_source_name=report_spec.data_source_name,
@@ -33,10 +33,6 @@ def execute_report(report_spec: models.ReportSpec):
         )
 
     check_valid_result(result, report_spec)
-
-    # Most libraries won't have a specific header, so the report title is used
-    if result.header is None:
-        result.header = report_spec.report_title
 
     return result
 

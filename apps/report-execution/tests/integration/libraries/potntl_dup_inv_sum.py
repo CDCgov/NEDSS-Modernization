@@ -59,7 +59,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
         assert 'Duplicate Investigations Time Frame: 3650 Days' in result.subheader
         assert result.subheader is not None
 
@@ -75,7 +74,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
 
         data = result.content.data
         assert len(data) >= 0
@@ -94,7 +92,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
 
         data = result.content.data
         assert len(data) >= 0
@@ -113,7 +110,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
 
         data = result.content.data
         assert len(data) >= 0
@@ -130,7 +126,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
         assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
 
         data = result.content
@@ -180,7 +175,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=365)
 
         result = execute_report(report_spec)
-        assert result.header == 'Potential Duplicate Investigations'
         assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
         assert result.content_type == 'table'
 

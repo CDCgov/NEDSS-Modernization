@@ -76,7 +76,6 @@ class TestIntegrationQa10Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'QA10'
         assert result.subheader is None
         assert result.description is None
         assert result.content_type == 'table'

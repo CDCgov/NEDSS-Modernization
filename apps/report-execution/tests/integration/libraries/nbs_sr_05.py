@@ -213,7 +213,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR5: Cases of Reportable Diseases by State'
         assert len(result.description) > 100
         assert result.content_type == 'table'
 

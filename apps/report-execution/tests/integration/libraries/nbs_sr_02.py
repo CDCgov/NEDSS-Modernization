@@ -92,10 +92,6 @@ class TestIntegrationNbsSr02Library:
         )
 
         result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
-        )
         assert result.subheader == 'Georgia'
         assert len(result.description) > 100
         assert result.content_type == 'table'

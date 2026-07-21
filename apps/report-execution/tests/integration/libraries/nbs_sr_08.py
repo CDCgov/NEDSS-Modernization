@@ -101,7 +101,6 @@ class TestIntegrationNbsSr08Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR8: Report of Disease Cases Over Selected Time Period'
         assert result.subheader == 'Georgia'
         assert len(result.description) > 100
         assert result.content_type == 'table'

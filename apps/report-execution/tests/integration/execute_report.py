@@ -45,10 +45,6 @@ class TestIntegrationExecuteReport:
         )
         result = execute_report(report_spec)
         assert result.content_type == 'table'
-        assert (
-            result.header
-            == 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_operator]'
-        )
         assert result.content.columns == [
             'filter_operator_uid',
             'filter_operator_code',
@@ -342,7 +338,6 @@ class TestIntegrationExecuteReport:
             def execute_method(self, trx, subset_query, data_source_name, **kwargs):
                 return {
                     'content_type': 'table',
-                    'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
                     'content': {
                         'columns': ['filter_operator_uid', 'filter_operator_code'],
                     },
@@ -387,7 +382,6 @@ class TestIntegrationExecuteReport:
             def execute_method(self, trx, subset_query, data_source_name, **kwargs):
                 return {
                     'content_type': 'table',
-                    'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
                     'content': {
                         'data': [
                             (1, 'Code1'),

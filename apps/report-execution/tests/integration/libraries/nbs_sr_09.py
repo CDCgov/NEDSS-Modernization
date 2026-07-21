@@ -166,14 +166,7 @@ class TestIntegrationNbsSr09Library:
 
         result = execute_report(report_spec)
 
-        # Check header
-        assert (
-            result.header
-            == 'SR9: Monthly Cases of Selected Disease by County and State'
-        )
-
         # Check subheader contains expected elements
-
         assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
 
         # Check description contains required sections

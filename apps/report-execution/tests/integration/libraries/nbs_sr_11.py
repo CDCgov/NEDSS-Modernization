@@ -85,7 +85,6 @@ class TestIntegrationNbsSr11Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR11: Cases of Selected Diseases By Year Over Time'
         assert result.subheader == 'Georgia | Measles, Pertussis'
 
         assert len(result.description) > 100

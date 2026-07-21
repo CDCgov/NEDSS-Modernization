@@ -118,9 +118,8 @@ def execute(
 
     content = trx.query(full_query)
 
-    header = 'Potential Duplicate Investigations'
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
 
     return ReportResult(
-        content_type='table', content=content, header=header, subheader=subheader
+        content_type='table', content=content, subheader=subheader
     )

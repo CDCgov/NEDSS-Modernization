@@ -34,7 +34,3 @@ class TestMainApp:
         assert response.status == 200
 
         result = json.loads(response.read())
-        assert (
-            result['header']
-            == 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_code]'
-        )

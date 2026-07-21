@@ -118,6 +118,5 @@ class ReportResult(BaseModel):
 
     content_type: Literal['table']
     content: Annotated[Table, PlainSerializer(serialize_table)]
-    header: str | None = None
     subheader: str | None = None
     description: str | None = None
