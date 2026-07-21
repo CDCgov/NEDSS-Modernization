@@ -34,7 +34,6 @@ class TestIntegrationNbsQa03Library:
         report_spec = self.create_spec()
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) > 500
@@ -61,7 +60,6 @@ class TestIntegrationNbsQa03Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -85,6 +83,5 @@ class TestIntegrationNbsQa03Library:
         report_spec = self.create_spec(report_title='QA03 Interview Record List')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert result.content.columns == expected_columns

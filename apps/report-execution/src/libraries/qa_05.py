@@ -108,6 +108,5 @@ def execute(
     )
 
     return ReportResult(
-        content_type='table',
         content=content,
     )

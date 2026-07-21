@@ -19,4 +19,4 @@ def execute(
     query = subset_query + ' ORDER BY ' + sort_by if sort_by else subset_query
     content = trx.query(query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

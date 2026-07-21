@@ -35,7 +35,6 @@ class TestIntegrationNbsCustomLibrary:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 500
@@ -74,7 +73,6 @@ class TestIntegrationNbsCustomLibrary:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 500
@@ -104,7 +102,6 @@ class TestIntegrationNbsCustomLibrary:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
         assert result.content.columns == [

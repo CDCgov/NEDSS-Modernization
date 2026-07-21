@@ -56,7 +56,6 @@ def execute(
 """  # noqa: E501
 
     return ReportResult(
-        content_type='table',
         content=content,
         subheader=subheader,
         description=description,

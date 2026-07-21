@@ -44,7 +44,6 @@ class TestIntegrationExecuteReport:
             }
         )
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.content.columns == [
             'filter_operator_uid',
             'filter_operator_code',
@@ -337,7 +336,6 @@ class TestIntegrationExecuteReport:
         def get_lib_without_data(library_name: str, is_builtin: bool):
             def execute_method(self, trx, subset_query, data_source_name, **kwargs):
                 return {
-                    'content_type': 'table',
                     'content': {
                         'columns': ['filter_operator_uid', 'filter_operator_code'],
                     },
@@ -381,7 +379,6 @@ class TestIntegrationExecuteReport:
         def get_lib_without_columns(library_name: str, is_builtin: bool):
             def execute_method(self, trx, subset_query, data_source_name, **kwargs):
                 return {
-                    'content_type': 'table',
                     'content': {
                         'data': [
                             (1, 'Code1'),

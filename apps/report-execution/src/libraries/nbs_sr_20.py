@@ -25,4 +25,4 @@ def execute(
         columns=['monthYear', 'sasdate', 'counted_cases'], data=modified_rows
     )
 
-    return ReportResult(content_type='table', content=modified_table)
+    return ReportResult(content=modified_table)

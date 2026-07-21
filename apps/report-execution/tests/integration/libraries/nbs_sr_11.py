@@ -25,7 +25,6 @@ class TestIntegrationNbsSr11Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 144
@@ -61,7 +60,6 @@ class TestIntegrationNbsSr11Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -88,7 +86,6 @@ class TestIntegrationNbsSr11Library:
         assert result.subheader == 'Georgia | Measles, Pertussis'
 
         assert len(result.description) > 100
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'State Code'
         assert result.content.columns[1] == 'State'

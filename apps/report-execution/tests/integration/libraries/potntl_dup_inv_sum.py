@@ -58,7 +58,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec()
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert 'Duplicate Investigations Time Frame: 3650 Days' in result.subheader
         assert result.subheader is not None
 
@@ -73,7 +72,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(sort_by='UPPER([Disease Code]) ASC')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) >= 0
@@ -91,7 +89,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(sort_by='UPPER([Investigation Local Id]) ASC')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) >= 0
@@ -109,7 +106,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(sort_by='[Event Date] ASC')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) >= 0
@@ -125,7 +121,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=365)
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
 
         data = result.content
@@ -137,7 +132,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=3650)
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.subheader == 'Duplicate Investigations Time Frame: 3650 Days'
 
         # Should return more results than the 30-day test
@@ -154,7 +148,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=-3650)
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.subheader == 'Duplicate Investigations Time Frame: -3650 Days'
 
         # Based on current implementation, this should not return any results.
@@ -167,7 +160,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec.subset_query += ' WHERE 1 = 0'
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert len(result.content.data) == 0
 
     def test_execute_report_check_metadata(self):
@@ -176,7 +168,6 @@ class TestIntegrationNbsSrDupInvLibrary:
 
         result = execute_report(report_spec)
         assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
-        assert result.content_type == 'table'
 
     def test_execute_report_verify_no_single_events(self):
         """Verify that patients with only one event are filtered out."""

@@ -189,4 +189,4 @@ def execute(
     ORDER BY f.PATIENT_NAME, f.DIAGNOSIS, f.FL_FUP_EXAM_DT, f.INVESTIGATION_KEY
     """
     content = trx.query(sql)
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

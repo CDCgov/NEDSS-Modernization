@@ -25,7 +25,6 @@ class TestIntegrationPa05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(result.content.columns) == 7
@@ -77,7 +76,6 @@ class TestIntegrationPa05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 23
@@ -114,7 +112,6 @@ class TestIntegrationPa05Library:
         result = execute_report(report_spec)
         assert result.subheader is None
         assert result.description is None
-        assert result.content_type == 'table'
         assert result.content.columns == [
             'Worker',
             'Category 1',

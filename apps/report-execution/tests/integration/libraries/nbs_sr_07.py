@@ -31,7 +31,6 @@ class TestIntegrationNbsSr07Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 6
@@ -69,7 +68,6 @@ class TestIntegrationNbsSr07Library:
 
         result = execute_report(report_spec)
         assert len(result.description) > 100
-        assert result.content_type == 'table'
 
         assert result.content.columns == ['Disease', 'type', 'Number of Cases']
 

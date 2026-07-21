@@ -25,7 +25,6 @@ class TestIntegrationNbsSr02Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 25  # two combinations with no data, zeros not filled
@@ -64,7 +63,6 @@ class TestIntegrationNbsSr02Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -94,7 +92,6 @@ class TestIntegrationNbsSr02Library:
         result = execute_report(report_spec)
         assert result.subheader == 'Georgia'
         assert len(result.description) > 100
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'State'
         assert result.content.columns[1] == 'County'

@@ -60,4 +60,4 @@ def execute(
         CONFIRMATION_DT;
     """
     content = trx.query(full_query)
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

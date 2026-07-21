@@ -116,4 +116,4 @@ def execute(
 
     content = trx.query(query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

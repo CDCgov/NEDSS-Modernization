@@ -32,7 +32,6 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) > 0
@@ -95,7 +94,6 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert len(result.content.data) >= 0
 
     def test_execute_report_empty_subset(self):
@@ -114,7 +112,6 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         # Should return empty dataset but with correct column structure
         assert len(result.content.data) == 0
@@ -174,8 +171,6 @@ class TestIntegrationNbsSr09Library:
         assert 'Report content' in result.description
         assert 'Cases' in result.description
         assert 'Event Date:' in result.description
-
-        assert result.content_type == 'table'
 
     def test_execute_report_month_ordering(self):
         """Verify months are ordered correctly for a single state/county/disease."""

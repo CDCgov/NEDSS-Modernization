@@ -28,7 +28,6 @@ class TestIntegrationQa04Library:
 
         result = execute_report(report_spec)
 
-        assert result.content_type == 'table'
         data = result.content
         assert len(data.data) > 0
         assert len(data.data[0]) == len(data.columns) if data.data else True
@@ -61,7 +60,6 @@ class TestIntegrationQa04Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         data = result.content
         assert data.data == []
 
@@ -80,7 +78,6 @@ class TestIntegrationQa04Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.subheader is None
         assert result.description is None
 

@@ -27,7 +27,6 @@ class TestIntegrationNbsSr13Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 6  # two combinations with no data, zeros not filled
@@ -59,7 +58,6 @@ class TestIntegrationNbsSr13Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
         assert result.content.columns == ['Case Count', 'Condition', 'Case Status']
@@ -82,6 +80,5 @@ class TestIntegrationNbsSr13Library:
 
         result = execute_report(report_spec)
         assert len(result.description) > 100
-        assert result.content_type == 'table'
 
         assert result.content.columns == ['Case Count', 'Condition', 'Case Status']

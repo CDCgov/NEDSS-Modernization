@@ -12,5 +12,5 @@ def execute(
     content = trx.query(subset_query)
 
     return ReportResult(
-        content_type='table', content=content, description='Custom pass through query'
+        content=content, description='Custom pass through query'
     )

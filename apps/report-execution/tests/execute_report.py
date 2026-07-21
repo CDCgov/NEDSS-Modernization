@@ -20,7 +20,6 @@ class TestExecuteReport:
             }
         )
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.subheader is None
         assert result.description is None
         assert result.content.columns == ['id', 'name']
@@ -61,7 +60,6 @@ class TestExecuteReport:
             }
         )
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.content.columns == ['id', 'name']
         assert len(result.content.data) == 4
 

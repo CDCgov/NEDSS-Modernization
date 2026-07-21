@@ -25,7 +25,6 @@ class TestIntegrationQa05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 94
@@ -62,7 +61,6 @@ class TestIntegrationQa05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -84,7 +82,6 @@ class TestIntegrationQa05Library:
         result = execute_report(report_spec)
         assert result.subheader is None
         assert result.description is None
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'user_qc'
         assert result.content.columns[1] == 'OOJ_REFF'

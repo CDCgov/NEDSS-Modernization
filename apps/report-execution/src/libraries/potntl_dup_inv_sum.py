@@ -121,5 +121,5 @@ def execute(
     subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
 
     return ReportResult(
-        content_type='table', content=content, subheader=subheader
+        content=content, subheader=subheader
     )

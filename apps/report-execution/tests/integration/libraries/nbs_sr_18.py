@@ -25,7 +25,6 @@ class TestIntegrationNbsSr18Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
 

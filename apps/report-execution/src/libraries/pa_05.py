@@ -70,4 +70,4 @@ def execute(
         data=rows,
     )
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

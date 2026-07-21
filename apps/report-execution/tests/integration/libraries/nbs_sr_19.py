@@ -27,7 +27,6 @@ class TestIntegrationNbsSr19Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
 
@@ -65,7 +64,6 @@ class TestIntegrationNbsSr19Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
 

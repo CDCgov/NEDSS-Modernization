@@ -28,7 +28,6 @@ class TestIntegrationQa06Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data[0]) == 13
@@ -72,7 +71,6 @@ class TestIntegrationQa06Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -93,7 +91,6 @@ class TestIntegrationQa06Library:
         result = execute_report(report_spec)
         assert result.subheader is None
         assert result.description is None
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'PATIENT_NAME'
         assert result.content.columns[1] == 'PATIENT_LOCAL_ID'

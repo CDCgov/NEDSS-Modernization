@@ -37,7 +37,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 3
@@ -80,7 +79,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == len(result.content.columns)
@@ -118,7 +116,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == len(result.content.columns)
@@ -156,7 +153,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == len(result.content.columns)
@@ -194,7 +190,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
         assert len(result.content.columns) == 8
@@ -214,7 +209,6 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
         assert len(result.description) > 100
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'Percent Change 2024 vs 5 Year Median'
         assert result.content.columns[1] == 'Cumulative for 2023 to Date'
