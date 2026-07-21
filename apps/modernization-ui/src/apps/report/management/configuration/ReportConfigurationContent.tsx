@@ -319,7 +319,7 @@ const Row = ({
             )}
         />
     ) : (
-        <ValueField label={label} helperText={helperText}>
+        <ValueField label={label} helperText={helperText} sizing={SIZING}>
             <Option option={option} />
         </ValueField>
     );
