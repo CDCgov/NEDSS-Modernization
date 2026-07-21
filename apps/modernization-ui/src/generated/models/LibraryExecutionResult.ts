@@ -3,14 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type LibraryExecutionResult = {
-    content_type: LibraryExecutionResult.content_type;
     content: string;
     subheader?: string;
     description?: string;
 };
-export namespace LibraryExecutionResult {
-    export enum content_type {
-        TABLE = 'table',
-    }
-}
 
