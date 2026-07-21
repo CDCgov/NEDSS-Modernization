@@ -3,6 +3,7 @@ package gov.cdc.nbs.report.mappers;
 import gov.cdc.nbs.entity.odse.DataSourceCodeset;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportColumn;
+import java.util.List;
 
 public class ReportColumnMapper {
   private ReportColumnMapper() {}
@@ -10,8 +11,11 @@ public class ReportColumnMapper {
   public static ReportColumn fromDataSourceColumn(DataSourceColumn dataSourceColumn) {
     String codeDescCd = null;
     String codesetNm = null;
-    DataSourceCodeset codeset = dataSourceColumn.getCodesets().stream().findFirst().orElse(null);
-    if (codeset != null) {
+
+    List<DataSourceCodeset> codesets = dataSourceColumn.getCodesets();
+    if (codesets != null && !codesets.isEmpty()) {
+      DataSourceCodeset codeset = codesets.getFirst();
+
       codeDescCd = codeset.getCodeDescCd();
       codesetNm = codeset.getCodesetNm();
     }
