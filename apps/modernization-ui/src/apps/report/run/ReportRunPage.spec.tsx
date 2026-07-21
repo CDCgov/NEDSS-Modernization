@@ -2913,6 +2913,14 @@ describe('report run page', () => {
             await user.click(dropDown);
             await user.click(getByText('Terrible disease'));
 
+            await user.click(dropDown);
+            await user.click(getByText('Select all'));
+            await user.click(getByText('Deselect all'));
+
+            // re-validate
+            await user.click(exportButton);
+            expect(await findAllByText('Enter a value for Condition Code.')).toHaveLength(2);
+
             // dates between
             await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
             expect(getByLabelText('Logic')).toHaveValue('~');
