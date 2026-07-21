@@ -134,6 +134,10 @@ class ReportExecutionRouteLocatorConfiguration {
               .expand(getParamsFromBody(exchange))
               .toUriString();
 
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Querying modernization-api for report metadata: %s".formatted(path));
+
       return resolveBearerToken(exchange, authorizedClientManager)
           .defaultIfEmpty("")
           .flatMap(
@@ -167,6 +171,10 @@ class ReportExecutionRouteLocatorConfiguration {
                 return request
                     .exchangeToMono(
                         response -> {
+                          if (!response.statusCode().is2xxSuccessful()) {
+                            return response.createError();
+                          }
+
                           // If the api response has any set-cookie's, pass them on to overall
                           // response so they are set in the browser. This is important for auth.
                           exchange.getResponse().getCookies().addAll(response.cookies());
