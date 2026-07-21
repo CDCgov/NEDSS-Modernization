@@ -328,7 +328,7 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
         <div className="padding-205 border-top border-base-lighter">
             <h3 className="margin-top-1 margin-bottom-2">Preview of WHERE Clause</h3>
             <div className="bg-base-lightest padding-105">
-                <p className="font-mono-md">
+                <p className="font-mono-xs">
                     {query
                         ? formatQuery(query, {
                               format: 'sql',

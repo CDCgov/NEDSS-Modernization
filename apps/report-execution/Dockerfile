@@ -14,7 +14,7 @@ ENV UV_FROZEN=1
 WORKDIR /usr/report-execution
 
 # Install mssql driver deps
-RUN microdnf update && microdnf install -y libtool-ltdl krb5-libs
+RUN microdnf update -y && microdnf install -y libtool-ltdl krb5-libs
 
 # Copy relevant dependency code
 COPY pyproject.toml pyproject.toml
