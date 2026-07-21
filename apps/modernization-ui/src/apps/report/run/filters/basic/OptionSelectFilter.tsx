@@ -13,7 +13,6 @@ import { validateRequiredRule } from 'validation/entry';
 
 export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
-export const REGION_FILTER_CODE = 'J_R01';
 export const CONDITION_FILTER_CODE = 'C_D01';
 export const DISEASE_FILTER_CODE = 'CVG_CUSTOM_N01';
 export const STD_HIV_WORKERS_FILTER_CODE = 'STD_HIV_WRKR';
@@ -34,7 +33,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
             <SelectInput
-                value={value?.[0] ?? null}
+                value={value?.[0] ?? undefined}
                 onChange={(event) => onChange(event.target.value ? [event.target.value] : null)}
                 options={options}
                 {...remaining}
@@ -64,8 +63,6 @@ const useCurrentStateCountyOptions = () => {
 const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectable[]> = {
     [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
     [STATE_FILTER_CODE]: useStateOptions,
-    // this may be functionally dead code - needs more investigation
-    [REGION_FILTER_CODE]: () => [],
     [CONDITION_FILTER_CODE]: () => {
         return useConditionOptions().options;
     },
