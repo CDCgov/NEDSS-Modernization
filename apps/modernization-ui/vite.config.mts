@@ -13,6 +13,10 @@ export default defineConfig(({ mode }) => {
 
     return {
         appType: 'spa',
+        define: {
+            //  Disable Apollo development mode checks/warnings in production
+            "globalThis.__DEV__": JSON.stringify(mode !== 'production'),
+        },
         plugins: [react(), tsconfigPaths()],
         publicDir: 'public',
         // Only needed for scss imports
