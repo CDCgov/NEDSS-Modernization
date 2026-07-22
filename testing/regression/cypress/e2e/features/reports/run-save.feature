@@ -1,9 +1,9 @@
 Feature: Save report after report run
     Background:
         Given I am logged in as secure user
-        And I navigate to list reports
 
     Scenario: I cannot see the save button after running the report if I am not the owner
+        And I navigate to list reports
         And I navigate to "Public" report with reportUid: 8 and dataSourceUid: 1
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I select "Appling County" from the "County Code" dropdown menu
@@ -12,6 +12,7 @@ Feature: Save report after report run
         And I should not see the "Save" "button"
 
     Scenario: I can save as the report after running the report
+        And I navigate to list reports
         When I navigate to "Public" report with reportUid: 8 and dataSourceUid: 1
         And I select "Anthrax" from the "Condition Code" dropdown menu
         And I select "Fulton County" from the "County Code" dropdown menu
@@ -36,6 +37,7 @@ Feature: Save report after report run
         Then I should see a "link" labelled "Test save as report"
 
     Scenario: I can save the report after running the report if I am the owner
+        And I navigate to list reports
         When I click on the "Expand Subsections" link
         And I click on the "Run" link
         Then I should see option "Anthrax" in the "Condition Code" combobox input field
@@ -60,6 +62,13 @@ Feature: Save report after report run
         Then I should see option "Fulton County" in the "County Code" multi-select combobox input field
         When I click on the "Back to reports" link
         Then I am redirected to "/nbs/ManageReports.do"
-        When I click on the "Expand Subsections" link
-        Then I should see a "link" labelled "Test save as report"
-        And I click on the "Delete" link
+
+    Scenario: I can delete the reports I created
+        And I navigate to manage reports
+        And I click on the "Test save as report" link
+        Then I should see the "View" configuration page
+        And I should see value "Ariella Kent" in the "Owner" field
+        When I click the "Delete" button
+        Then I should see a modal labelled "Delete report: Test save as report"
+        When I click the "Yes, delete" button
+        Then I should see the report list

@@ -5,10 +5,14 @@ import QueryBuilder, {
     formatQuery,
     isRuleType,
     joinWith,
-    QueryValidator,
+    RuleGroupProps,
     RuleGroupType,
     splitBy,
     ValidationResult,
+    RuleGroup as DefaultRuleGroup,
+    Rule as DefaultRule,
+    RuleProps,
+    FullField,
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
@@ -28,7 +32,7 @@ import { RemoveButton } from '././RemoveButton.tsx';
 import { validateRule } from './validator.ts';
 import { AddButton } from './AddButton.tsx';
 import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
-import { ReactNode } from 'react';
+import { ComponentType, ReactNode, useEffect, useState } from 'react';
 import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
 import { AlertMessage } from 'design-system/message/index.ts';
 import classNames from 'classnames';
@@ -191,21 +195,21 @@ const addColNameAndTypeToRules = (columns: ReportColumn[], value: QbRuleGroup): 
 
 const validateAdvancedFilter = (columns: ReportColumn[], value?: QbRuleGroup) => {
     if (!value) return true;
-    const updatedRuleGroup = addColNameAndTypeToRules(columns, value);
 
     return (
-        Object.values(validator(updatedRuleGroup))
+        Object.values(validator(columns, value))
             .filter((v) => !v.valid)
-            .reduce((acc, cur) => `${acc}\n${cur.reasons[0]}`, '') || true
+            .reduce((acc, cur) => `${acc}\n${cur?.reasons?.[0]}`, '') || true
     );
 };
 
 // tighten the default type so it's just the object version
 type ValidationResultMap = Record<string, ValidationResult>;
 
-const validator: QueryValidator = (q) => {
+const validator = (columns: ReportColumn[], q: QbRuleGroup): ValidationResultMap => {
+    const updatedRuleGroup = addColNameAndTypeToRules(columns, q);
     const result: ValidationResultMap = {};
-    q.rules.forEach((r) => validateRule(r as QbQuery, result));
+    updatedRuleGroup.rules.forEach((r) => validateRule(r, result));
     return result;
 };
 
@@ -247,11 +251,21 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
         defaultValue: filter.defaultValue ? advancedFilterConfigToQuery(filter.defaultValue, columns) : EMPTY_QUERY,
         rules: { validate: (values) => validateAdvancedFilter(columns, values) },
     });
+    const [validationMap, setValidationMap] = useState<ValidationResultMap>({});
 
     const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
 
+    // only validate when the form validates
+    useEffect(() => {
+        if (value) {
+            setValidationMap(validator(columns, value));
+        } else {
+            setValidationMap({});
+        }
+    }, [error]);
+
     return (
-        <div className={classNames(styles.layout, { [styles.validate]: !!error?.message })}>
+        <div className={classNames(styles.layout)}>
             {filter.exceptionMessage && (
                 <AlertMessage type="warning" title="Saved filter has an error and can't be applied">
                     <p>
@@ -277,7 +291,7 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                     <QueryBuilder
                         fields={fields}
                         query={value}
-                        validator={validator}
+                        context={{ validationMap }}
                         onQueryChange={onChange}
                         addRuleToNewGroups={true}
                         autoSelectField={false}
@@ -292,6 +306,11 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                             addRuleAction: AddButton,
                             removeGroupAction: RemoveButton,
                             removeRuleAction: RemoveButton,
+                            // KLUDGE: This is using the literal default component, but ts is very unhappy
+                            ruleGroup: RuleGroupWithErrors as unknown as ComponentType<
+                                RuleGroupProps<ValueSetMetadata & FullField, string>
+                            >,
+                            rule: RuleWithErrors,
                         }}
                     />
                 </QueryBuilderDnD>
@@ -308,7 +327,7 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
         <div className="padding-205 border-top border-base-lighter">
             <h3 className="margin-top-1 margin-bottom-2">Preview of WHERE Clause</h3>
             <div className="bg-base-lightest padding-105">
-                <p className="font-mono-md">
+                <p className="font-mono-xs">
                     {query
                         ? formatQuery(query, {
                               format: 'sql',
@@ -318,6 +337,30 @@ const PreviewWhere = ({ query }: { query?: QbRuleGroup }) => {
                         : fallbackExpression}
                 </p>
             </div>
+        </div>
+    );
+};
+
+const RuleGroupWithErrors = (props: RuleGroupProps) => {
+    return (
+        <div
+            className={classNames({
+                [styles.invalid]: props.id && props?.context?.validationMap?.[props.id]?.valid === false,
+            })}
+        >
+            <DefaultRuleGroup {...props} />
+        </div>
+    );
+};
+
+const RuleWithErrors = (props: RuleProps) => {
+    return (
+        <div
+            className={classNames({
+                [styles.invalid]: props.id && props?.context?.validationMap?.[props.id]?.valid === false,
+            })}
+        >
+            <DefaultRule {...props} />
         </div>
     );
 };

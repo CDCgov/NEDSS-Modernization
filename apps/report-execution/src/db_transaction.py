@@ -1,4 +1,5 @@
 import logging
+import re
 from contextlib import contextmanager
 
 import mssql_python
@@ -6,6 +7,9 @@ import mssql_python
 from . import errors
 from .config import get_cached_config_value
 from .models import Table
+
+INVALID_OBJECT_REGEX = re.compile("Invalid object name ('.*').")
+INVALID_COLUMN_REGEX = re.compile("Invalid column name ('.*').")
 
 
 class Transaction:
@@ -24,7 +28,24 @@ class Transaction:
         parameters in a tuple.
         """
         logging.debug(f'Querying: {query}')
-        res = self._cursor.execute(query, parameters)
+
+        try:
+            res = self._cursor.execute(query, parameters)
+        except mssql_python.ProgrammingError as e:
+            datasource_match = INVALID_OBJECT_REGEX.search(e.message)
+            if datasource_match is not None:
+                raise errors.MissingDbObjectError(
+                    'Datasource', datasource_match.group(1)
+                ) from None
+
+            col_match = INVALID_COLUMN_REGEX.search(e.message)
+            if col_match is not None:
+                raise errors.MissingDbObjectError(
+                    'Column', col_match.group(1)
+                ) from None
+
+            # re-raise
+            raise e
 
         # This could be -1 if the driver doesn't know, in which case the re-check
         # after library processing is necessary suspenders for this belt
