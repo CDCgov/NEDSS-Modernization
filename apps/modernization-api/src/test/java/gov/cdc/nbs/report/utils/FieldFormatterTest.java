@@ -23,6 +23,19 @@ class FieldFormatterTest {
   }
 
   @Test
+  void should_escape_special_characters_in_strings() {
+    //  So we can use wildcard characters with LIKE
+    assertThat(formatter.formatField("STRING", "%%")).isEqualTo("'[%][%]'");
+
+    //  So we can put brackets around said wildcard characters
+    assertThat(formatter.formatField("STRING", "hello[world")).isEqualTo("'hello[[]world'");
+
+    //  Both combined
+    assertThat(formatter.formatField("STRING", "%%hello%[world"))
+        .isEqualTo("'[%][%]hello[%][[]world'");
+  }
+
+  @Test
   void should_return_numbers_as_is() {
     assertThat(formatter.formatField("INTEGER", "123")).isEqualTo("123");
     assertThat(formatter.formatField("NUMBER", "45.67")).isEqualTo("45.67");

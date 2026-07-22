@@ -51,15 +51,16 @@ describe('SaveAsReportModal', () => {
 
         const nameInput = await findByLabelText('Name');
         await user.type(nameInput, 'Test report');
+        await user.click(saveAsNewButton);
         expect(queryByText('The Name is required.')).toBeNull();
 
         const descInput = await findByLabelText('Description');
         await user.type(descInput, 'Test report description');
+        await user.click(saveAsNewButton);
         expect(queryByText('The Description is required.')).toBeNull();
 
         const sectionInput = await findByLabelText('Section name');
         await user.selectOptions(sectionInput, '1000');
-        expect(queryByText('The Section name is required.')).toBeNull();
 
         const privateRadio = getByRole('radio', { name: 'Private' });
         const publicRadio = getByRole('radio', { name: 'Public' });

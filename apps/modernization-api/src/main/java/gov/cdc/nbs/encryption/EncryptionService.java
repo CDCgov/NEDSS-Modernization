@@ -20,6 +20,8 @@ public class EncryptionService {
   private final ObjectMapper mapper;
   private final SecureRandom random = new SecureRandom();
 
+  private static final System.Logger LOGGER = System.getLogger(EncryptionService.class.getName());
+
   public EncryptionService(
       @Value("${nbs.security.parameterSecret}") final String secret, final ObjectMapper mapper) {
     this.secret = secret;
@@ -54,6 +56,8 @@ public class EncryptionService {
       // base64 encode
       return Base64.getUrlEncoder().encodeToString(saltAndEncryptedBytes);
     } catch (Exception e) {
+      LOGGER.log(
+          System.Logger.Level.WARNING, "Error received while encrypting: %s".formatted(e), e);
       throw new EncryptionException("Failed to perform encryption");
     }
   }
@@ -84,6 +88,8 @@ public class EncryptionService {
       // deserialize object
       return mapper.readValue(serialized, Object.class);
     } catch (Exception e) {
+      LOGGER.log(
+          System.Logger.Level.WARNING, "Error received while decrypting: %s".formatted(e), e);
       throw new EncryptionException("Failed to decrypt provided string.");
     }
   }

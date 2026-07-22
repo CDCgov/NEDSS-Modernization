@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
@@ -770,6 +771,47 @@ class WhereClauseServiceTest {
                 reportConfig, executionRequest, mockDataSourceNameUtils))
         .isEqualTo(
             "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND ((CAST([COLUMN_DATETIME] AS DATE) IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2))) AND ((program_jurisdiction_oid IN (50)) AND (REPORTING_FACILITY_UID = 54321))");
+  }
+
+  @Test
+  void should_escape_special_characters_for_like_operator_in_where_clause() {
+    Long filterUid = 100L;
+    Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+
+    ReportConfiguration reportConfig =
+        createReportConfig(List.of(config), List.of(reportColumn), ReportGroup.PUBLIC);
+
+    AdvancedQuery.Rule percentRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "75%");
+    AdvancedQuery.Rule singleQuoteRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "O'Brien");
+    AdvancedQuery.Rule openingBracketRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "test[");
+
+    AdvancedQuery.RuleGroup ruleGroup1 =
+        createRuleGroup(
+            UUID.randomUUID().toString(),
+            ReportConstants.QueryCombinators.AND,
+            List.of(percentRule, singleQuoteRule, openingBracketRule));
+
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
+    when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup1));
+
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
+
+    String result =
+        whereClauseService.buildWhereClause(
+            reportConfig, executionRequest, mockDataSourceNameUtils);
+
+    assertThat(result)
+        .isEqualTo(
+            "WHERE (([ColumnName] LIKE CONCAT('%', '75[%]', '%')) AND ([ColumnName] LIKE CONCAT('%', 'O''Brien', '%')) AND ([ColumnName] LIKE CONCAT('%', 'test[[]', '%')))");
   }
 
   @Test
