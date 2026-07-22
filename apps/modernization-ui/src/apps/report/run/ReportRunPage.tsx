@@ -69,6 +69,7 @@ const ReportRunPage = () => {
 
     const form = useForm<ReportExecuteForm>({
         mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
     });
 
     const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
