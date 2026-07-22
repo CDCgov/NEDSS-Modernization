@@ -50,12 +50,12 @@ def execute(
         inv_rpt_dt_colname,
     ]:
         found = {
-            "disease_site_desc_colname": disease_site_desc_colname,
-            "case_verification_desc_colname": case_verification_desc_colname,
-            "inv_rpt_dt_colname": inv_rpt_dt_colname,
+            'disease_site_desc_colname': disease_site_desc_colname,
+            'case_verification_desc_colname': case_verification_desc_colname,
+            'inv_rpt_dt_colname': inv_rpt_dt_colname,
         }
         raise ValueError(
-            f"Column name metadata missing from initial query. Values found: {found}"
+            f'Column name metadata missing from initial query. Values found: {found}'
         )
 
     # Returns the equivalent of TB_CASE_VER3 in SAS

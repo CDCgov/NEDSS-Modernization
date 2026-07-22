@@ -36,7 +36,7 @@ class TestIntegrationTbCaseVerLibrary:
         )
 
     def test_missing_metadata_raises_valueerror(self, mocker):
-        error_re = r"Column name metadata missing from initial query\. Values found: {(?:'\w+': '?\w+'?(?:, )?)+}" # noqa: E501
+        error_re = r"Column name metadata missing from initial query\. Values found: {(?:'\w+': '?\w+'?(?:, )?)+}"  # noqa: E501
         trx = mocker.Mock()
         mocker.patch.object(tb_case_ver, '_metadata_query', return_value='metadata SQL')
 
