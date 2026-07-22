@@ -1,12 +1,11 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
-import { LibraryExecutionResult, ReportExecutionResult } from 'generated';
+import { ReportExecutionResult } from 'generated';
 import { ResultDataPage } from './ResultDataPage';
 
 describe('ResultDataPage', () => {
     it('renders bare bones report result', () => {
         const result: ReportExecutionResult = {
             result: {
-                content_type: LibraryExecutionResult.content_type.TABLE,
                 content: 'a,b,c',
             },
             query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
@@ -32,7 +31,6 @@ describe('ResultDataPage', () => {
     it('renders full report result', () => {
         const result: ReportExecutionResult = {
             result: {
-                content_type: LibraryExecutionResult.content_type.TABLE,
                 content: 'a,b,c\n1,2,3',
                 context_header: 'Georgia | Pertussis, Measles',
                 description: '**bold text**\n\n* a list item',
