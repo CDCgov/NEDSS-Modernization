@@ -2,6 +2,12 @@ from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
+QUESTION_IDENTIFIER = {
+    'INV1133': 'INV1133',
+    'INV1115': 'INV1115',
+    'INV111': 'INV111',
+}
+
 
 def execute(
     trx: Transaction,
@@ -30,11 +36,11 @@ def execute(
     inv_rpt_dt_colname: str | None = None
 
     for row in metadata.data:
-        if row[0] == 'INV1133':
+        if row[0] == QUESTION_IDENTIFIER['INV1133']:
             disease_site_desc_colname = row[3]
-        elif row[0] == 'INV1115':
+        elif row[0] == QUESTION_IDENTIFIER['INV1115']:
             case_verification_desc_colname = row[3]
-        elif row[0] == 'INV111':
+        elif row[0] == QUESTION_IDENTIFIER['INV111']:
             inv_rpt_dt_colname = row[3]
 
     if None in [
@@ -85,7 +91,10 @@ def _metadata_query() -> str:
                 ON cc.INVESTIGATION_FORM_CD = num.INVESTIGATION_FORM_CD
         INNER JOIN {nbs_ods}.dbo.NBS_PAGE np
                 ON np.FORM_CD = cc.INVESTIGATION_FORM_CD
-      WHERE QUESTION_IDENTIFIER IN ('INV1115','INV1133','INV111')
+      WHERE QUESTION_IDENTIFIER IN (
+              '{QUESTION_IDENTIFIER['INV1115']}',
+              '{QUESTION_IDENTIFIER['INV1133']}',
+              '{QUESTION_IDENTIFIER['INV111']}')
       AND   CONDITION_CD IN ('102201');
     """
 
@@ -131,7 +140,7 @@ def _tb_case_ver_query(
                   ON cs.CODE_SET_GROUP_ID = num.CODE_SET_GROUP_ID
           INNER JOIN {nbs_srt}.dbo.CODE_VALUE_GENERAL cvg
                   ON cs.CODE_SET_NM = cvg.CODE_SET_NM
-        WHERE QUESTION_IDENTIFIER IN ('INV1115')
+        WHERE QUESTION_IDENTIFIER IN ('{QUESTION_IDENTIFIER['INV1115']}')
         AND   CONDITION_CD IN ('102201')
       ),
       -- disease site codes, filtered by QUESTION_IDENTIFIER and CONDITION_CD
@@ -148,7 +157,7 @@ def _tb_case_ver_query(
                   ON cs.CODE_SET_GROUP_ID = num.CODE_SET_GROUP_ID
           INNER JOIN {nbs_srt}.dbo.CODE_VALUE_GENERAL cvg
                   ON cs.CODE_SET_NM = cvg.CODE_SET_NM
-        WHERE QUESTION_IDENTIFIER IN ('INV1133')
+        WHERE QUESTION_IDENTIFIER IN ('{QUESTION_IDENTIFIER['INV1133']}')
         AND   CONDITION_CD IN ('102201')
       ),
       -- filtered DM_INV_TB
