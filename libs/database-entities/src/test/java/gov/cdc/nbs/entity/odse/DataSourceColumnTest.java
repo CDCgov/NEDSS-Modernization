@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import gov.cdc.nbs.time.EffectiveTime;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class DataSourceColumnTest {
@@ -42,7 +43,7 @@ class DataSourceColumnTest {
             columnTitle,
             columnSourceTypeCode,
             dataSource,
-            dataSourceCodeset,
+            List.of(dataSourceCodeset),
             descTxt,
             displayable,
             effectiveTime,
