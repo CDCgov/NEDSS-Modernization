@@ -36,7 +36,7 @@ class TestMainApp:
         assert result is not None
 
         for k in ['content', 'context_header', 'description']:
-            assert k in result.keys()
+            assert k in result
 
         assert len(result['content']) > 0
 

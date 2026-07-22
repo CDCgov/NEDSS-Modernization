@@ -76,8 +76,7 @@ class TestReportExecuteEndpoint:
 
     def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""
-        incomplete_spec = {
-        }
+        incomplete_spec = {}
         response = client.post('/report/execute', json=incomplete_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
