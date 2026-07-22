@@ -188,7 +188,6 @@ const MOCK_BASIC_FILTER = {
 
 const MOCK_RESULT: generated.ReportExecutionResult = {
     result: {
-        header: 'Title',
         content: 'I am the result',
     },
     query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
