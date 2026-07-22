@@ -137,7 +137,11 @@ describe('add report configuration page', () => {
 
         // Partially add filter
         await user.selectOptions(await findByLabelText('Filter'), '1');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findAllByText(/The Associated column is required./)).toHaveLength(2);
 
+        // revalidate
+        await user.click(await findByRole('button', { name: 'Submit' }));
         expect(
             await findByText(
                 /Data have been entered in the Available filters section. Please press Add or clear the data and submit again/
@@ -147,6 +151,8 @@ describe('add report configuration page', () => {
 
         // clear the filter and check validation error clears as well
         await user.click(await findByRole('button', { name: 'Clear' }));
+        expect(queryByRole('link', { name: /The Associated column is required./ })).toBeNull();
+        await user.click(await findByRole('button', { name: 'Submit' }));
         expect(queryByRole('link', { name: 'Available filters' })).toBeNull();
     });
 
