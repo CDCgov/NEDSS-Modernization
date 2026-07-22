@@ -36,6 +36,15 @@ def execute(
     Therefore, the Python output reflects the intended business logic and should be
     treated as the correct reference. Minor discrepancies in `var_ae_p` between
     Python and legacy SAS outputs are expected and documented.
+
+    * There is a known behavioral difference in how SAS handles missing (NULL) dates
+    for the timing metrics. SAS includes records with missing assignment or
+    disposition dates in the cumulative counts, treating them as 0 days.
+    This Python implementation correctly excludes records with missing dates
+    from the timing metrics, as they do not represent valid assignment-to-disposition
+    intervals. Therefore, the Python output will show lower counts for these
+    metrics when NULL dates are present in the data. This is intentional and
+    reflects the correct business logic.
     """
     # ------------------------------------------------------------------
     # 1. Validate input
@@ -186,7 +195,7 @@ def execute(
 
         assign_columns = assign_result.columns
         assign_rows = assign_result.data
-
+        
         if ae_result:
             ae_columns = ae_result.columns
             ae_rows = ae_result.data
