@@ -25,9 +25,7 @@ def execute(
     * - context_header
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
-    nbs_sr_05_report_result = execute_nbs_sr_05(
-        trx, subset_query, **kwargs
-    )
+    nbs_sr_05_report_result = execute_nbs_sr_05(trx, subset_query, **kwargs)
     nbs_sr_05_report_result_rows = nbs_sr_05_report_result.content.data
 
     modified_rows = list(
