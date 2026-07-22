@@ -35,9 +35,9 @@ def execute(
             (e.g., 30, 60, 90), got {library_params}
         """)
     days = library_params.get('days_value')
-    if days is None:
+    if days is None or type(days) is not int or days < 0:
         raise InvalidLibraryParamsError(f"""
-            library_params must contain 'days_value' \
+            library_params must contain non-negative integer 'days_value' \
             (e.g., 30, 60, 90), got {library_params}
         """)
 

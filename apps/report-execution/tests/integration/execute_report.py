@@ -14,6 +14,7 @@ from src.errors import (
     IntConfigurationConversionError,
     InvalidConfigurationError,
     InvalidResultError,
+    MissingDbObjectError,
     ResultTooBigError,
 )
 from src.execute_report import execute_report
@@ -394,3 +395,41 @@ class TestIntegrationExecuteReport:
             assert root_error.errors()[0]['type'] == 'missing'
             assert root_error.errors()[0]['loc'] == ('content', 'columns')
             assert root_error.errors()[0]['msg'] == 'Field required'
+
+    def test_execute_report_invalid_datasource(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Test Report',
+                'library_name': 'nbs_custom',
+                'data_source_name': '[NBS_ODSE].[dbo].[I_do_not_exist]',
+                'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[I_do_not_exist]',
+            }
+        )
+
+        with pytest.raises(MissingDbObjectError) as exc_info:
+            execute_report(report_spec)
+            assert exc_info.value.message == (
+                'Datasource `[NBS_ODSE].[dbo].[I_do_not_exist]`'
+                ' not found in the reporting database'
+            )
+
+    def test_execute_report_invalid_column(self):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'report_title': 'Test Report',
+                'library_name': 'nbs_custom',
+                'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
+                'subset_query': 'SELECT nope FROM [NBS_ODSE].[dbo].[Filter_operator]',
+            }
+        )
+
+        with pytest.raises(MissingDbObjectError) as exc_info:
+            execute_report(report_spec)
+            assert (
+                exc_info.value.message
+                == 'Column `nope` not found in the reporting database'
+            )
