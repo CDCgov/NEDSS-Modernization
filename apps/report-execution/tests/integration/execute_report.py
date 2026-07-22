@@ -462,7 +462,6 @@ class TestIntegrationExecuteReport:
             }
         )
 
-        # TODO: error handling for sql issues  # noqa: FIX002
         with pytest.raises(MissingDbObjectError) as exc_info:
             execute_report(report_spec)
             assert (
