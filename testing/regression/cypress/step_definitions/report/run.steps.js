@@ -125,7 +125,7 @@ Then('All filters should be filled out with {int}', (index) => {
       cy.wrap($select)
         .find('.multi-select__option')
         .eqOrLast(index)
-        .invoke('text') // get the dropdown's first index value
+        .invoke('text') // get the dropdown's value at the index
         .then((optionText) => {
           cy.wrap($select)
             .find('.multi-select__multi-value__label')
@@ -140,7 +140,7 @@ Then('All filters should be filled out with {int}', (index) => {
     });
 });
 
-Then('All filters should be empty', () => {
+Then('All filters should be empty or the default value', () => {
     // dates and text filters
     cy.findAllByRole('textbox').each(($input) => cy.wrap($input).should('have.value', ''));
     // number inputs

@@ -58,7 +58,7 @@ Feature: View report configuration
         And I click on the "Expand Subsections" link
         And I click the "All filter test" report
         Then I should see a "heading" labelled "All filter test"
-        And All filters should be empty
+        And All filters should be empty or the default value
 
         # Runs with only "Include nulls" checked
         When I click all include nulls
@@ -88,7 +88,7 @@ Feature: View report configuration
         And I click on the "Expand Subsections" link
         And I click the "Test include nulls report" report
         Then I should see a "heading" labelled "Test include nulls report"
-        And All filters should be empty
+        And All filters should be empty or the default value
 
     Scenario Outline: I delete test reports
         Given I navigate to manage reports
