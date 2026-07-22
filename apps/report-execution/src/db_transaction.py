@@ -44,7 +44,7 @@ class Transaction:
                     'Column', col_match.group(1)
                 ) from None
 
-            # re-reaise
+            # re-raise
             raise e
 
         # This could be -1 if the driver doesn't know, in which case the re-check
