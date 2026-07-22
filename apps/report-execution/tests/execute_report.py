@@ -13,7 +13,6 @@ class TestExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'nbs_custom',
                 'subset_query': 'SELECT * FROM test',
             }
@@ -31,7 +30,6 @@ class TestExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'missing_library',
                 'subset_query': 'SELECT * FROM test',
             }
@@ -50,7 +48,6 @@ class TestExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report with Params',
                 'library_name': 'nbs_custom',
                 'subset_query': 'SELECT * FROM test',
                 'library_params': '{"report_days": 30}',
@@ -67,7 +64,6 @@ class TestExecuteReport:
                 {
                     'is_export': True,
                     'is_builtin': True,
-                    'report_title': 'Invalid Params',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM test',
                     'library_params': 'not a json object',

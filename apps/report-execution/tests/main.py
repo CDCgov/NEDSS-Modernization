@@ -38,7 +38,6 @@ class TestReportExecuteEndpoint:
         report_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
             'subset_query': 'SELECT * FROM test',
         }
@@ -67,7 +66,6 @@ class TestReportExecuteEndpoint:
         report_spec = {
             'is_export': False,
             'is_builtin': True,
-            'report_title': 'Time-based Report',
             'library_name': 'nbs_custom',
             'subset_query': 'SELECT * FROM events WHERE date > ?',
         }
@@ -79,7 +77,6 @@ class TestReportExecuteEndpoint:
     def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""
         incomplete_spec = {
-            'report_title': 'Incomplete Report',
         }
         response = client.post('/report/execute', json=incomplete_spec)
 
@@ -90,7 +87,6 @@ class TestReportExecuteEndpoint:
         invalid_spec = {
             'is_export': 'not_a_boolean',
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
             'subset_query': 'SELECT * FROM test',
         }
@@ -103,7 +99,6 @@ class TestReportExecuteEndpoint:
         invalid_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'missing_library',
             'subset_query': 'SELECT * FROM test',
         }

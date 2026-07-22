@@ -17,7 +17,6 @@ class TestIntegrationNbsSr18Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 18',
                 'library_name': 'nbs_sr_18',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
             }
@@ -46,7 +45,6 @@ class TestIntegrationNbsSr18Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 18',
                 'library_name': 'nbs_sr_18',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART] WHERE 1 = 2',
             }

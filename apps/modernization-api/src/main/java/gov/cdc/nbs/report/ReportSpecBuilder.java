@@ -122,7 +122,6 @@ public class ReportSpecBuilder {
     return new ReportSpec(
         isExport,
         isBuiltin,
-        reportTitle,
         libraryName,
         subsetQuery,
         columnMap,

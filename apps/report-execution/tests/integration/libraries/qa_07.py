@@ -20,7 +20,6 @@ class TestIntegrationQa07Library:
             'version': 1,
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'QA07',
             'library_name': 'qa_07',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"days_value": 30}',

@@ -18,7 +18,6 @@ class TestIntegrationNbsQa01Library:
         base = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'QA 01',
             'library_name': 'qa_01',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
         }
@@ -86,7 +85,7 @@ class TestIntegrationNbsQa01Library:
             'age',
         ]
 
-        report_spec = self.create_spec(report_title='QA01 Interview Record List')
+        report_spec = self.create_spec()
 
         result = execute_report(report_spec)
 

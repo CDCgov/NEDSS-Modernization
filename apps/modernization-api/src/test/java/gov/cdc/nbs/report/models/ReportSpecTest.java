@@ -15,7 +15,6 @@ class ReportSpecTest {
         new ReportSpec(
             true,
             true,
-            "Test Report",
             "nbs_custom",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null,
@@ -25,7 +24,6 @@ class ReportSpecTest {
 
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
-    assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
     assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");

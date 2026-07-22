@@ -29,7 +29,6 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
@@ -67,7 +66,6 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
@@ -103,7 +101,6 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
@@ -139,7 +136,6 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
@@ -176,7 +172,6 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
@@ -195,7 +190,6 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR5: Cases of Reportable Diseases by State',
                 'library_name': 'nbs_sr_05',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }

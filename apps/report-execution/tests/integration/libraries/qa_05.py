@@ -17,7 +17,6 @@ class TestIntegrationQa05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA 5',
                 'library_name': 'qa_05',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC]',
             }
@@ -50,7 +49,6 @@ class TestIntegrationQa05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA 5',
                 'library_name': 'qa_05',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC] WHERE 1 = 2'
@@ -70,7 +68,6 @@ class TestIntegrationQa05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA05 Number of Records Entered by User ID',
                 'library_name': 'qa_05',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC]',
             }

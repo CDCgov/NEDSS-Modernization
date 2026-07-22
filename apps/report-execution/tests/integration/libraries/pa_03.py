@@ -17,7 +17,6 @@ class TestIntegrationPa03Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'PA03',
                 'library_name': 'pa_03',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
@@ -187,7 +186,6 @@ class TestIntegrationPa03Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'PA03',
                 'library_name': 'pa_03',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
@@ -217,7 +215,6 @@ class TestIntegrationPa03Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'PA03',
                 'library_name': 'pa_03',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }

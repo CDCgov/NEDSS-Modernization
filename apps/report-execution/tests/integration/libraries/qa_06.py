@@ -20,7 +20,6 @@ class TestIntegrationQa06Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA06',
                 'library_name': 'qa_06',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
@@ -60,7 +59,6 @@ class TestIntegrationQa06Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA06',
                 'library_name': 'qa_06',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
@@ -79,7 +77,6 @@ class TestIntegrationQa06Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA06',
                 'library_name': 'qa_06',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }

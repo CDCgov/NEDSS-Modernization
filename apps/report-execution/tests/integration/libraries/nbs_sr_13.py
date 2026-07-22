@@ -19,7 +19,6 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 13',
                 'library_name': 'nbs_sr_13',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
@@ -46,7 +45,6 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 3',
                 'library_name': 'nbs_sr_13',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
@@ -66,7 +64,6 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR13: Counts of Selected Diseases By Case Status',
                 'library_name': 'nbs_sr_13',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '

@@ -35,7 +35,6 @@ class TestIntegrationExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'nbs_custom',
                 # Filter operator is used here as it is a stable, small table
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
@@ -62,7 +61,6 @@ class TestIntegrationExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'nbs_custom',
                 # Filter operator is used here as it is a stable, small table
                 'subset_query': 'SELECT *; FROM [NBS_ODSE].[dbo].[Filter_operator]',
@@ -89,7 +87,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -123,7 +120,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': True,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -159,7 +155,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -199,7 +194,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -223,7 +217,6 @@ class TestIntegrationExecuteReport:
         [
             'is_export',
             'is_builtin',
-            'report_title',
             'library_name',
             'subset_query',
         ],
@@ -232,7 +225,6 @@ class TestIntegrationExecuteReport:
         invalid_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
@@ -258,7 +250,6 @@ class TestIntegrationExecuteReport:
     @pytest.mark.parametrize(
         'empty_string_prop',
         [
-            'report_title',
             'library_name',
             'subset_query',
         ],
@@ -267,7 +258,6 @@ class TestIntegrationExecuteReport:
         invalid_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
@@ -309,7 +299,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -343,7 +332,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
@@ -388,7 +376,6 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }

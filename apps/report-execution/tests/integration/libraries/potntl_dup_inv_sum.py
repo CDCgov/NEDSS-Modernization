@@ -36,7 +36,6 @@ class TestIntegrationNbsSrDupInvLibrary:
             'version': 1,
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Potential Duplicate Investigations',
             'library_name': 'potntl_dup_inv_sum',
             'subset_query': '',
             'days_value': None,

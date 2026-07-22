@@ -60,7 +60,6 @@ class ReportExecutionServiceClientTest {
         new ReportSpec(
             true,
             true,
-            "Test Report",
             "nbs_custom",
             "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
             null,

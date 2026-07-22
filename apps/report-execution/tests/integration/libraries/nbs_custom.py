@@ -20,7 +20,6 @@ class TestIntegrationNbsCustomLibrary:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,
@@ -58,7 +57,6 @@ class TestIntegrationNbsCustomLibrary:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,
@@ -86,7 +84,6 @@ class TestIntegrationNbsCustomLibrary:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,

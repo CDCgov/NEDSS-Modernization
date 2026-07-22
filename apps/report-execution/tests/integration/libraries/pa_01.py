@@ -16,9 +16,6 @@ class TestIntegrationPa01Library:
         base = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': (
-                'PA01 Case Management Report (Interview Assign Date) - HIV'
-            ),
             'library_name': 'pa_01',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"report_variant": "HIV"}',
@@ -105,7 +102,6 @@ class TestIntegrationPa01Library:
     def test_execute_report_check_data_std(self, snapshot):
         report_spec = self.create_spec(
             library_params='{"report_variant": "STD"}',
-            report_title='PA01 Case Management Report (Interview Assign Date) - STD',
         )
 
         result = execute_report(report_spec)
@@ -141,7 +137,6 @@ class TestIntegrationPa01Library:
         report_spec = self.create_spec(
             subset_query='SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2',
             library_params='{"report_variant": "STD"}',
-            report_title='PA01 Case Management Report (Interview Assign Date) - STD',
         )
 
         result = execute_report(report_spec)

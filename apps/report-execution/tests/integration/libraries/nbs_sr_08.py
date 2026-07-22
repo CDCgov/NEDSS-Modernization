@@ -19,9 +19,6 @@ class TestIntegrationNbsSr08Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': (
-                    'SR8: Report of Disease Cases Over Selected Time Period'
-                ),
                 'library_name': 'nbs_sr_08',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
@@ -59,9 +56,6 @@ class TestIntegrationNbsSr08Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': (
-                    'SR8: Report of Disease Cases Over Selected Time Period'
-                ),
                 'library_name': 'nbs_sr_08',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
@@ -84,9 +78,6 @@ class TestIntegrationNbsSr08Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': (
-                    'SR8: Report of Disease Cases Over Selected Time Period'
-                ),
                 'library_name': 'nbs_sr_08',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
