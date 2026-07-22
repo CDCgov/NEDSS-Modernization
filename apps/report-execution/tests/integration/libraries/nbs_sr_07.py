@@ -67,7 +67,7 @@ class TestIntegrationNbsSr07Library:
         )
 
         result = execute_report(report_spec)
-        assert len(result.description) > 100
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns == ['Disease', 'type', 'Number of Cases']
 

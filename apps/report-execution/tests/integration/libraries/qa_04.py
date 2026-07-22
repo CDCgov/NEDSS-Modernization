@@ -78,7 +78,7 @@ class TestIntegrationQa04Library:
         )
 
         result = execute_report(report_spec)
-        assert result.subheader is None
+        assert result.context_header is None
         assert result.description is None
 
     def test_execute_report_error_explanations(self):

@@ -163,10 +163,14 @@ class TestIntegrationNbsSr09Library:
 
         result = execute_report(report_spec)
 
-        # Check subheader contains expected elements
-        assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
+        # Check context_header contains expected elements
+        assert result.context_header is not None
+        assert (
+            'Georgia' in result.context_header and 'Tennessee' in result.context_header
+        )
 
         # Check description contains required sections
+        assert result.description is not None
         assert len(result.description) > 100
         assert 'Report content' in result.description
         assert 'Cases' in result.description

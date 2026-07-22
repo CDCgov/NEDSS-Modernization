@@ -227,7 +227,7 @@ class TestIntegrationPa03Library:
         )
 
         result = execute_report(report_spec)
-        assert result.subheader is None
+        assert result.context_header is None
         assert result.description is None
 
         assert result.content.columns[0] == 'Category 1'

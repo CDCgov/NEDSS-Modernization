@@ -58,8 +58,12 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec()
 
         result = execute_report(report_spec)
-        assert 'Duplicate Investigations Time Frame: 3650 Days' in result.subheader
-        assert result.subheader is not None
+        assert (
+            result.context_header is not None
+            and 'Duplicate Investigations Time Frame: 3650 Days'
+            in result.context_header
+        )
+        assert result.context_header is not None
 
         data = result.content
         assert len(data.data) >= 0
@@ -121,7 +125,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=365)
 
         result = execute_report(report_spec)
-        assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
+        assert result.context_header == 'Duplicate Investigations Time Frame: 365 Days'
 
         data = result.content
         assert len(data.data) >= 0
@@ -132,7 +136,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=3650)
 
         result = execute_report(report_spec)
-        assert result.subheader == 'Duplicate Investigations Time Frame: 3650 Days'
+        assert result.context_header == 'Duplicate Investigations Time Frame: 3650 Days'
 
         # Should return more results than the 30-day test
         spec_30 = self.create_spec(days_value=30)
@@ -148,7 +152,9 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=-3650)
 
         result = execute_report(report_spec)
-        assert result.subheader == 'Duplicate Investigations Time Frame: -3650 Days'
+        assert (
+            result.context_header == 'Duplicate Investigations Time Frame: -3650 Days'
+        )
 
         # Based on current implementation, this should not return any results.
         assert len(result.content.data) == 0
@@ -167,7 +173,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=365)
 
         result = execute_report(report_spec)
-        assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
+        assert result.context_header == 'Duplicate Investigations Time Frame: 365 Days'
 
     def test_execute_report_verify_no_single_events(self):
         """Verify that patients with only one event are filtered out."""

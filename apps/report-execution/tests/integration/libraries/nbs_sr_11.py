@@ -83,9 +83,9 @@ class TestIntegrationNbsSr11Library:
         )
 
         result = execute_report(report_spec)
-        assert result.subheader == 'Georgia | Measles, Pertussis'
+        assert result.context_header == 'Georgia | Measles, Pertussis'
 
-        assert len(result.description) > 100
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns[0] == 'State Code'
         assert result.content.columns[1] == 'State'

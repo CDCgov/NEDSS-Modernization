@@ -52,6 +52,6 @@ def execute(
 
     return ReportResult(
         content=content,
-        subheader=None,
+        context_header=None,
         description=description,
     )

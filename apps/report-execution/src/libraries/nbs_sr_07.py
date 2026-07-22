@@ -23,7 +23,7 @@ def execute(
     * Matched "export format"
     * Remove references to "Bar Graph" since export is a table
     * Use results of nbs_sr_05.py for the following:
-    * - subheader
+    * - context_header
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
     nbs_sr_05_report_result = execute_nbs_sr_05(
@@ -65,6 +65,6 @@ def execute(
 
     return ReportResult(
         content=modified_table,
-        subheader=nbs_sr_05_report_result.subheader,
+        context_header=nbs_sr_05_report_result.context_header,
         description=description,
     )

@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type LibraryExecutionResult = {
     content: string;
-    subheader?: string;
+    context_header?: string;
     description?: string;
 };
 

@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import gen_subheader
+from src.utils import gen_context_header
 
 
 def execute(
@@ -33,7 +33,7 @@ def execute(
 
     state_list = content.get_unique_column('State')
     condition_list = content.get_unique_column('Condition')
-    subheader = gen_subheader(
+    context_header = gen_context_header(
         states=state_list,
         diseases=condition_list,
     )
@@ -59,6 +59,6 @@ selected by the user
 
     return ReportResult(
         content=content,
-        subheader=subheader,
+        context_header=context_header,
         description=description,
     )

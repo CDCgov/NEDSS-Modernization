@@ -115,7 +115,7 @@ class ReportExecutionServiceClientTest {
     return new ReportExecutionResult(
         new LibraryExecutionResult(
             "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
-            "result subheader",
+            "result context header",
             "result description"),
         "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
         LocalDateTime.of(2025, Month.MAY, 5, 12, 23));

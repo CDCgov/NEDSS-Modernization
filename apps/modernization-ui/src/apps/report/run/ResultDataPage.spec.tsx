@@ -34,7 +34,7 @@ describe('ResultDataPage', () => {
             result: {
                 content_type: LibraryExecutionResult.content_type.TABLE,
                 content: 'a,b,c\n1,2,3',
-                subheader: 'Georgia | Pertussis, Measles',
+                context_header: 'Georgia | Pertussis, Measles',
                 description: '**bold text**\n\n* a list item',
             },
             query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',

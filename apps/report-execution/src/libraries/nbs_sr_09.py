@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import gen_subheader
+from src.utils import gen_context_header
 
 
 def execute(
@@ -62,7 +62,7 @@ def execute(
     )
 
     state_list = content.get_unique_column('State')
-    subheader = gen_subheader(states=state_list)
+    context_header = gen_context_header(states=state_list)
 
     description = """
 **<u>Report content</u>**
@@ -86,6 +86,6 @@ def execute(
 
     return ReportResult(
         content=content,
-        subheader=subheader,
+        context_header=context_header,
         description=description,
     )

@@ -208,7 +208,7 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert len(result.description) > 100
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns[0] == 'Percent Change 2024 vs 5 Year Median'
         assert result.content.columns[1] == 'Cumulative for 2023 to Date'
