@@ -48,14 +48,11 @@ def execute(
         case_verification_desc_colname,
         inv_rpt_dt_colname,
     ]:
-        raise ValueError(
-            (
-                'Column name metadata missing from initial query. Values found: ',
-                f'disease_site_desc_colname "{disease_site_desc_colname}", ',
-                f'case_verification_desc_colname "{case_verification_desc_colname}", ',
-                f'inv_rpt_dt_colname: "{inv_rpt_dt_colname}"',
-            )
-        )
+        msg = 'Column name metadata missing from initial query. Values found: '
+        msg += f'disease_site_desc_colname "{disease_site_desc_colname}", '
+        msg += f'case_verification_desc_colname "{case_verification_desc_colname}", '
+        msg += f'inv_rpt_dt_colname "{inv_rpt_dt_colname}"'
+        raise ValueError(msg)
 
     # Returns the equivalent of TB_CASE_VER3 in SAS
     cases = trx.query(
@@ -79,11 +76,11 @@ def _metadata_query() -> str:
     nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
 
     return f"""
-      SELECT QUESTION_IDENTIFIER,
-             RDB_COLUMN_NM,
-             RDB_TABLE_NM,
-             USER_DEFINED_COLUMN_NM,
-             DATAMART_NM
+      SELECT num.QUESTION_IDENTIFIER,
+             nrm.RDB_COLUMN_NM,
+             nrm.RDB_TABLE_NM,
+             nrm.USER_DEFINED_COLUMN_NM,
+             np.DATAMART_NM
       FROM {nbs_ods}.dbo.NBS_UI_METADATA num
         INNER JOIN {nbs_ods}.dbo.NBS_RDB_METADATA nrm
                 ON num.NBS_UI_METADATA_UID = nrm.NBS_UI_METADATA_UID
@@ -91,11 +88,11 @@ def _metadata_query() -> str:
                 ON cc.INVESTIGATION_FORM_CD = num.INVESTIGATION_FORM_CD
         INNER JOIN {nbs_ods}.dbo.NBS_PAGE np
                 ON np.FORM_CD = cc.INVESTIGATION_FORM_CD
-      WHERE QUESTION_IDENTIFIER IN (
+      WHERE num.QUESTION_IDENTIFIER IN (
               '{QUESTION_IDENTIFIER['INV1115']}',
               '{QUESTION_IDENTIFIER['INV1133']}',
               '{QUESTION_IDENTIFIER['INV111']}')
-      AND   CONDITION_CD IN ('102201');
+      AND   cc.CONDITION_CD IN ('102201');
     """
 
 

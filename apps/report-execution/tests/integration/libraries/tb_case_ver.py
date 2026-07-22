@@ -36,6 +36,7 @@ class TestIntegrationTbCaseVerLibrary:
         )
 
     def test_missing_metadata_raises_valueerror(self, mocker):
+        error_re = r'Column name metadata missing from initial query\. Values found: disease_site_desc_colname "\w*", case_verification_desc_colname "\w*", inv_rpt_dt_colname "\w*"'  # noqa: E501
         trx = mocker.Mock()
         mocker.patch.object(tb_case_ver, '_metadata_query', return_value='metadata SQL')
 
@@ -48,7 +49,7 @@ class TestIntegrationTbCaseVerLibrary:
         )
         trx.query.return_value = metadata
 
-        with pytest.raises(ValueError, match='Column name metadata missing'):
+        with pytest.raises(ValueError, match=error_re):
             tb_case_ver.execute(trx, 'subset query SQL')
 
         # INV1115 missing
@@ -60,7 +61,7 @@ class TestIntegrationTbCaseVerLibrary:
         )
         trx.query.return_value = metadata
 
-        with pytest.raises(ValueError, match='Column name metadata missing'):
+        with pytest.raises(ValueError, match=error_re):
             tb_case_ver.execute(trx, 'subset query SQL')
 
         # INV1133 missing
@@ -72,7 +73,7 @@ class TestIntegrationTbCaseVerLibrary:
         )
         trx.query.return_value = metadata
 
-        with pytest.raises(ValueError, match='Column name metadata missing'):
+        with pytest.raises(ValueError, match=error_re):
             tb_case_ver.execute(trx, 'subset query SQL')
 
     def test_main_query_no_colnames(self):
