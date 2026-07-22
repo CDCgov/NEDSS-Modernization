@@ -5,11 +5,11 @@ from src.models import ReportResult
 
 
 def execute(
-        trx: Transaction,
-        subset_query: str,
-        data_source_name: str,
-        library_params: dict,
-        **kwargs,
+    trx: Transaction,
+    subset_query: str,
+    data_source_name: str,
+    library_params: dict,
+    **kwargs,
 ):
     """TB Record Count - Summary Report by Report Date - 2020 RVCT.
 
@@ -27,7 +27,7 @@ def execute(
     if not isinstance(library_params, dict) or 'date_column' not in library_params:
         raise InvalidLibraryParamsError("'date_column' is required but was absent.")
 
-    date_column = library_params['date_column'] #INV_RPT_DT
+    date_column = library_params['date_column']  # INV_RPT_DT
     query = f"""
         WITH subset AS (
             {subset_query}
@@ -54,8 +54,14 @@ def execute(
         -- Determine report timeline boundaries strictly filtered by disease code
         boundaries AS (
             SELECT 
-                MIN(DATEFROMPARTS(YEAR({date_column}), MONTH({date_column}), 1)) AS start_date,
-                MAX(DATEFROMPARTS(YEAR({date_column}), MONTH({date_column}), 1)) AS end_date
+                MIN(
+                    DATEFROMPARTS(
+                        YEAR({date_column}), MONTH({date_column}), 1)
+                ) AS start_date,
+                MAX(
+                    DATEFROMPARTS(
+                        YEAR({date_column}), MONTH({date_column}), 1)
+                ) AS end_date
             FROM subset
             WHERE {date_column} IS NOT NULL 
               AND disease_cd = '102201'
@@ -72,16 +78,19 @@ def execute(
             WHERE month_date < end_date
         ),
         
-        -- Aggregate data into Counted vs Non-Counted buckets based on metadata code matches
+        -- Aggregate data into Counted vs Non-Counted buckets
         monthly_aggregates AS (
             SELECT 
                 YEAR(s.{date_column}) AS case_year,
                 MONTH(s.{date_column}) AS case_month,
-                SUM(CASE WHEN LTRIM(RTRIM(mc.case_summary_code)) = 'N' THEN 1 ELSE 0 END) AS counted_cases,
                 SUM(CASE 
-                    WHEN LTRIM(RTRIM(mc.case_summary_code)) IN ('PHC659', 'PHC660') 
+                    WHEN TRIM(mc.case_summary_code) = 'N' THEN 1 
+                    ELSE 0 END) AS counted_cases,
+                SUM(CASE 
+                    WHEN TRIM(mc.case_summary_code) IN ('PHC659', 'PHC660') 
                          OR mc.case_summary_code IS NULL 
-                    THEN 1 ELSE 0 END) AS non_counted_cases
+                    THEN 1 
+                    ELSE 0 END) AS non_counted_cases
             FROM subset s
             LEFT JOIN metadata_codes mc 
                 ON mc.case_summary_code_desc = s.PREV_COUNT_CASE
@@ -92,12 +101,14 @@ def execute(
         
         -- Outer join calendar and aggregates to enforce zero-filled timelines
         SELECT 
-            LEFT(FORMAT(c.month_date, 'MMMM') + SPACE(15), 15) + FORMAT(c.month_date, 'yyyy') AS monthYearTxt,
+            LEFT(FORMAT(c.month_date, 'MMMM') + SPACE(15), 15) 
+                + FORMAT(c.month_date, 'yyyy') AS monthYearTxt,
             UPPER(FORMAT(c.month_date, 'MMMyyyy')) AS monthYear,
             DATEDIFF(day, '1960-01-01', c.month_date) AS sasdate,
             COALESCE(a.counted_cases, 0) AS counted_cases,
             COALESCE(a.non_counted_cases, 0) AS non_counted_cases,
-            COALESCE(a.counted_cases, 0) + COALESCE(a.non_counted_cases, 0) AS total_cases
+            COALESCE(a.counted_cases, 0) 
+                + COALESCE(a.non_counted_cases, 0) AS total_cases
             
         FROM calendar c
         LEFT JOIN monthly_aggregates a 

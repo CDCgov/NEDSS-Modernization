@@ -4,11 +4,11 @@ from src.models import ReportResult, Table
 
 
 def execute(
-        trx: Transaction,
-        subset_query: str,
-        data_source_name: str,
-        library_params: dict,
-        **kwargs,
+    trx: Transaction,
+    subset_query: str,
+    data_source_name: str,
+    library_params: dict,
+    **kwargs,
 ):
     """TB Record Count - Summary Report by Count Date - 2020 RVCT.
 

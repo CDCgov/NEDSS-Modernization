@@ -119,9 +119,9 @@ class TestIntegrationTBSummaryCountDateLibrary:
         )
 
         with pytest.raises(
-                InvalidLibraryParamsError,
-                match='Invalid library parameters: '
-                      "'date_column' is required but was absent",
+            InvalidLibraryParamsError,
+            match='Invalid library parameters: '
+            "'date_column' is required but was absent",
         ):
             execute_report(report_spec_missing)
 
@@ -139,8 +139,8 @@ class TestIntegrationTBSummaryCountDateLibrary:
         )
 
         with pytest.raises(
-                InvalidLibraryParamsError,
-                match='Invalid library parameters: '
-                      "'date_column' is required but was absent",
+            InvalidLibraryParamsError,
+            match='Invalid library parameters: '
+            "'date_column' is required but was absent",
         ):
             execute_report(report_spec_bad_type)

@@ -41,7 +41,7 @@ class TestIntegrationTBSummaryCountLibrary:
             'sasdate',
             'counted_cases',
             'non_counted_cases',
-            'total_cases'
+            'total_cases',
         ]
 
         for d in data:
@@ -81,7 +81,7 @@ class TestIntegrationTBSummaryCountLibrary:
             'sasdate',
             'counted_cases',
             'non_counted_cases',
-            'total_cases'
+            'total_cases',
         ]
 
         for d in data:
@@ -115,7 +115,7 @@ class TestIntegrationTBSummaryCountLibrary:
             'sasdate',
             'counted_cases',
             'non_counted_cases',
-            'total_cases'
+            'total_cases',
         ]
 
     def test_execute_report_invalid_params_raises_error(self):
@@ -134,9 +134,9 @@ class TestIntegrationTBSummaryCountLibrary:
         )
 
         with pytest.raises(
-                InvalidLibraryParamsError,
-                match='Invalid library parameters: '
-                      "'date_column' is required but was absent",
+            InvalidLibraryParamsError,
+            match='Invalid library parameters: '
+            "'date_column' is required but was absent",
         ):
             execute_report(report_spec_missing)
 
@@ -154,8 +154,8 @@ class TestIntegrationTBSummaryCountLibrary:
         )
 
         with pytest.raises(
-                InvalidLibraryParamsError,
-                match='Invalid library parameters: '
-                      "'date_column' is required but was absent",
+            InvalidLibraryParamsError,
+            match='Invalid library parameters: '
+            "'date_column' is required but was absent",
         ):
             execute_report(report_spec_bad_type)
