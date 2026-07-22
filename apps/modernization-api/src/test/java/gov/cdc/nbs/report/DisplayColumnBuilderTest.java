@@ -110,7 +110,7 @@ class DisplayColumnBuilderTest {
         .columnTitle("Random Column Title")
         .columnSourceTypeCode("type code")
         .dataSource(mock(DataSource.class))
-        .codeset(mock(DataSourceCodeset.class))
+        .codesets(List.of(mock(DataSourceCodeset.class)))
         .descTxt("Some description test")
         .displayable('Y')
         .effectiveTime(

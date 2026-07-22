@@ -23,6 +23,7 @@ const EditReportConfiguration = () => {
 
     const form = useForm<ConfigForm>({
         mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
     });
 
     const handleSubmit = form.handleSubmit((data) => {
