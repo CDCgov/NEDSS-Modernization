@@ -18,7 +18,7 @@ class TestIntegrationTbCaseVerLibrary:
         'CASE_VERIFICATION_CODE',
         'CASE_VERIFICATION_DESC',
         'DISEASE_SITE_DESC',
-        'DISEASE_SITE_IND',
+        '_TEMA001',
         'INVESTIGATION_KEY',
         'DISEASE_SITE_VALUE',
     ]
@@ -36,7 +36,7 @@ class TestIntegrationTbCaseVerLibrary:
         )
 
     def test_missing_metadata_raises_valueerror(self, mocker):
-        error_re = r'Column name metadata missing from initial query\. Values found: disease_site_desc_colname "\w*", case_verification_desc_colname "\w*", inv_rpt_dt_colname "\w*"'  # noqa: E501
+        error_re = r"Column name metadata missing from initial query\. Values found: {(?:'\w+': '?\w+'?(?:, )?)+}" # noqa: E501
         trx = mocker.Mock()
         mocker.patch.object(tb_case_ver, '_metadata_query', return_value='metadata SQL')
 

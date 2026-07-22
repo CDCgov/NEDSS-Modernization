@@ -20,7 +20,8 @@ def execute(
     * In the exported CSV from Case_Verification_Report.SAS there is a column named
       "_TEMA001".  This is a SAS generated column name because no alias was explicitly
       declared after the "TRIM" method was used on column "DISEASE_SITE_IND".  In the
-      Python generated CSV this column is named "DISEASE_SITE_IND".
+      Python generated CSV this column will be kept as "_TEMA001" in case of STLTs
+      depending on this column name.
     * Case_Verification_Report.SAS has a number of calculations that are specific for
       the "Report" ("Run" in the UI) code path.  Since we are only recreating the
       "Export" code path the Python implementation focuses soley on calculations for
@@ -48,11 +49,14 @@ def execute(
         case_verification_desc_colname,
         inv_rpt_dt_colname,
     ]:
-        msg = 'Column name metadata missing from initial query. Values found: '
-        msg += f'disease_site_desc_colname "{disease_site_desc_colname}", '
-        msg += f'case_verification_desc_colname "{case_verification_desc_colname}", '
-        msg += f'inv_rpt_dt_colname "{inv_rpt_dt_colname}"'
-        raise ValueError(msg)
+        found = {
+            "disease_site_desc_colname": disease_site_desc_colname,
+            "case_verification_desc_colname": case_verification_desc_colname,
+            "inv_rpt_dt_colname": inv_rpt_dt_colname,
+        }
+        raise ValueError(
+            f"Column name metadata missing from initial query. Values found: {found}"
+        )
 
     # Returns the equivalent of TB_CASE_VER3 in SAS
     cases = trx.query(
@@ -236,7 +240,7 @@ def _tb_case_ver_query(
              cvc.CASE_VERIFICATION_CODE,
              tcv.CASE_VERIFICATION_DESC,
              tcv.DISEASE_SITE_DESC,
-             TRIM(DISEASE_SITE_IND) AS DISEASE_SITE_IND,
+             TRIM(DISEASE_SITE_IND) AS _TEMA001, -- parity with SAS col name
              tcv.INVESTIGATION_KEY,
              CASE
                  WHEN dsc.DISEASE_CODE IS NULL OR dsc.DISEASE_CODE = 'PHC5'
