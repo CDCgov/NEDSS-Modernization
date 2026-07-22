@@ -28,6 +28,8 @@ services:
       - 7001:7001
       - 8787:8787
       - 9990:9990
+    environment:
+      - NEDSS_LOG_LEVEL=${NEDSS_LOG_LEVEL}
 
   sas:
     image: ghcr.io/cdcent/nbs7-sas-linux:v1.0.4
