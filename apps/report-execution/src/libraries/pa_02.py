@@ -195,7 +195,7 @@ def execute(
 
         assign_columns = assign_result.columns
         assign_rows = assign_result.data
-        
+
         if ae_result:
             ae_columns = ae_result.columns
             ae_rows = ae_result.data
