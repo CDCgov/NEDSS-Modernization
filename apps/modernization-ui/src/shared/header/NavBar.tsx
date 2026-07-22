@@ -1,8 +1,24 @@
+import React from 'react';
 import { permitsAny, Permitted, permissions, permitsAll } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
 
 import styles from './NavBar.module.scss';
+import { FeatureToggle } from '../../feature';
+
+const baseSystemManagementPermissions = [
+    'EPILINKADMIN-SYSTEM',
+    'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
+    'SRTADMIN-SYSTEM',
+    'VIEWPHCRACTIVITY-CASEREPORTING',
+    'IMPORTEXPORTADMIN-SYSTEM',
+    'REPORTADMIN-SYSTEM',
+    'ALERTADMIN-SYSTEM',
+    'ADMINISTRATE-SYSTEM',
+    'ADMINISTRATE-SECURITY',
+];
+
+const mergePatientFeaturePermissions = [...baseSystemManagementPermissions, 'MERGE-PATIENT'];
 
 export const NavBar = () => {
     const {
@@ -11,6 +27,13 @@ export const NavBar = () => {
     } = useUser();
 
     const { title } = usePage();
+
+    const SystemManagementLink: React.ReactNode = (
+        <td className={styles.navLink}>
+            <span> | </span>
+            <a href={`/nbs/SystemAdmin.do`}>System Management</a>
+        </td>
+    );
 
     return (
         <nav className={styles.navbar} aria-label="main menu">
@@ -83,25 +106,18 @@ export const NavBar = () => {
                                             </td>
                                         </Permitted>
 
-                                        <Permitted
-                                            permission={permitsAny(
-                                                'EPILINKADMIN-SYSTEM',
-                                                'VIEWELRACTIVITY-OBSERVATIONLABREPORT',
-                                                'SRTADMIN-SYSTEM',
-                                                'VIEWPHCRACTIVITY-CASEREPORTING',
-                                                'IMPORTEXPORTADMIN-SYSTEM',
-                                                'REPORTADMIN-SYSTEM',
-                                                'ALERTADMIN-SYSTEM',
-                                                'ADMINISTRATE-SYSTEM',
-                                                'ADMINISTRATE-SECURITY',
-                                                'MERGE-PATIENT'
-                                            )}
+                                        <FeatureToggle
+                                            guard={(features) => features?.deduplication?.enabled}
+                                            fallback={
+                                                <Permitted permission={permitsAny(...baseSystemManagementPermissions)}>
+                                                    {SystemManagementLink}
+                                                </Permitted>
+                                            }
                                         >
-                                            <td className={styles.navLink}>
-                                                <span> | </span>
-                                                <a href={`/nbs/SystemAdmin.do`}>System Management</a>
-                                            </td>
-                                        </Permitted>
+                                            <Permitted permission={permitsAny(...mergePatientFeaturePermissions)}>
+                                                {SystemManagementLink}
+                                            </Permitted>
+                                        </FeatureToggle>
                                     </tr>
                                 </tbody>
                             </table>
