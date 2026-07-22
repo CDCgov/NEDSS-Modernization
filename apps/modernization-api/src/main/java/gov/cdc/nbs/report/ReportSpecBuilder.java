@@ -124,7 +124,6 @@ public class ReportSpecBuilder {
         isBuiltin,
         reportTitle,
         libraryName,
-        dataSourceName,
         subsetQuery,
         columnMap,
         orderbyCriteria,

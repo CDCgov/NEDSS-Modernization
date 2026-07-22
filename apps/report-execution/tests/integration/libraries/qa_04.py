@@ -21,7 +21,6 @@ class TestIntegrationQa04Library:
                 'is_builtin': True,
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
@@ -52,7 +51,6 @@ class TestIntegrationQa04Library:
                 'is_builtin': True,
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0
                 """,
@@ -72,7 +70,6 @@ class TestIntegrationQa04Library:
                 'is_builtin': True,
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
@@ -90,7 +87,6 @@ class TestIntegrationQa04Library:
                 'is_builtin': True,
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
@@ -114,7 +110,6 @@ class TestIntegrationQa04Library:
                 'is_builtin': True,
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]
                     WHERE INV_CASE_STATUS = 'Suspect'
@@ -138,7 +133,6 @@ class TestIntegrationQa04Library:
                 'is_builtin': True,
                 'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )

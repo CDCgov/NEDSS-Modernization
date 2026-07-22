@@ -22,7 +22,6 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
-                'data_source_name': '[NBS_RDB].[dbo].[DM_INV_STD]',
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,
                                PATIENT_LOCAL_ID,
@@ -61,7 +60,6 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
-                'data_source_name': '[NBS_RDB].[dbo].[DM_INV_STD]',
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,
                                PATIENT_LOCAL_ID,
@@ -90,7 +88,6 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_custom',
-                'data_source_name': '[NBS_RDB].[dbo].[DM_INV_STD]',
                 'subset_query': """
                         SELECT PROGRAM_JURISDICTION_OID,
                                PATIENT_LOCAL_ID,

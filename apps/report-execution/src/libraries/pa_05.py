@@ -7,7 +7,6 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """PA05 Worker Interview Activity Report.

@@ -6,7 +6,6 @@ from src.utils import gen_context_header
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 02: Cases of Reportable Diseases by County for Selected Time

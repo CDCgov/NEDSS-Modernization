@@ -19,7 +19,6 @@ class TestIntegrationPa05Library:
                 'is_builtin': True,
                 'report_title': 'PA05',
                 'library_name': 'pa_05',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
@@ -68,7 +67,6 @@ class TestIntegrationPa05Library:
                 'is_builtin': True,
                 'report_title': 'PA05',
                 'library_name': 'pa_05',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
                 ),
@@ -104,7 +102,6 @@ class TestIntegrationPa05Library:
                 'is_builtin': True,
                 'report_title': 'PA05',
                 'library_name': 'pa_05',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )

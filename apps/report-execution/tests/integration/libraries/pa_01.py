@@ -20,7 +20,6 @@ class TestIntegrationPa01Library:
                 'PA01 Case Management Report (Interview Assign Date) - HIV'
             ),
             'library_name': 'pa_01',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"report_variant": "HIV"}',
         }

@@ -7,7 +7,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 05: Cases of Reportable Diseases for a specific state.

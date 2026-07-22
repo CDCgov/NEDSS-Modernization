@@ -14,7 +14,6 @@ REQUIRED_COL_NAMES = [col['name'] for col in REQUIRED_COLS]
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     days_value: None | int,
     column_map: list[list[str]],
     sort_by: str | None,

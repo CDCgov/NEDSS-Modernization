@@ -96,7 +96,6 @@ def _ratio(numerator: int, denominator: int) -> float | None:
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """PA03 STD Program Report: Internet Partner Services Report.

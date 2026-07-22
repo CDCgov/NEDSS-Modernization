@@ -21,7 +21,6 @@ class TestIntegrationNbsSr13Library:
                 'is_builtin': True,
                 'report_title': 'SR 13',
                 'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
@@ -49,7 +48,6 @@ class TestIntegrationNbsSr13Library:
                 'is_builtin': True,
                 'report_title': 'SR 3',
                 'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
@@ -70,7 +68,6 @@ class TestIntegrationNbsSr13Library:
                 'is_builtin': True,
                 'report_title': 'SR13: Counts of Selected Diseases By Case Status',
                 'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     " WHERE state_cd = '13'"

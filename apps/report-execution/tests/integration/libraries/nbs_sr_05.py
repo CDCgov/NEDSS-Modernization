@@ -31,7 +31,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
@@ -70,7 +69,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) < (2024 - 5)'
@@ -107,7 +105,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) < 2024'
@@ -144,7 +141,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) = 2024'
@@ -182,7 +178,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
                 ),
@@ -202,7 +197,6 @@ class TestIntegrationNbsSr05Library:
                 'is_builtin': True,
                 'report_title': 'SR5: Cases of Reportable Diseases by State',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )

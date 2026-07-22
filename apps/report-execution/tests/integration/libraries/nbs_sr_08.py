@@ -23,7 +23,6 @@ class TestIntegrationNbsSr08Library:
                     'SR8: Report of Disease Cases Over Selected Time Period'
                 ),
                 'library_name': 'nbs_sr_08',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
@@ -64,7 +63,6 @@ class TestIntegrationNbsSr08Library:
                     'SR8: Report of Disease Cases Over Selected Time Period'
                 ),
                 'library_name': 'nbs_sr_08',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
@@ -90,7 +88,6 @@ class TestIntegrationNbsSr08Library:
                     'SR8: Report of Disease Cases Over Selected Time Period'
                 ),
                 'library_name': 'nbs_sr_08',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     " WHERE state_cd = '13'"

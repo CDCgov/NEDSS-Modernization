@@ -22,7 +22,6 @@ class TestIntegrationQa07Library:
             'is_builtin': True,
             'report_title': 'QA07',
             'library_name': 'qa_07',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"days_value": 30}',
         }

@@ -17,7 +17,6 @@ class ReportSpecTest {
             true,
             "Test Report",
             "nbs_custom",
-            "nbs_rdb.investigation",
             "SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]",
             null,
             "UPPER([Column Title]) ASC",
@@ -28,7 +27,6 @@ class ReportSpecTest {
     assertThat(reportSpec.isExport()).isTrue();
     assertThat(reportSpec.reportTitle()).isEqualTo("Test Report");
     assertThat(reportSpec.libraryName()).isEqualTo("nbs_custom");
-    assertThat(reportSpec.dataSourceName()).isEqualTo("nbs_rdb.investigation");
     assertThat(reportSpec.subsetQuery())
         .isEqualTo("SELECT * FROM [NBS_ODSE].[dbo].[NBS_configuration]");
     assertThat(reportSpec.sortBy()).isEqualTo("UPPER([Column Title]) ASC");

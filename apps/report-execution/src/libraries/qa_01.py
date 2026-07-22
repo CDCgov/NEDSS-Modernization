@@ -6,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA01 STD Program Report: Interview Record Listing.

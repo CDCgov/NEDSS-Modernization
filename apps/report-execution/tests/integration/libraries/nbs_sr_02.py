@@ -19,7 +19,6 @@ class TestIntegrationNbsSr02Library:
                 'is_builtin': True,
                 'report_title': 'SR 2',
                 'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
@@ -54,7 +53,6 @@ class TestIntegrationNbsSr02Library:
                 'is_builtin': True,
                 'report_title': 'SR 2',
                 'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
@@ -81,7 +79,6 @@ class TestIntegrationNbsSr02Library:
                     'Time Frame'
                 ),
                 'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     " WHERE state_cd = '13'"

@@ -38,7 +38,6 @@ class TestIntegrationNbsSrDupInvLibrary:
             'is_builtin': True,
             'report_title': 'Potential Duplicate Investigations',
             'library_name': 'potntl_dup_inv_sum',
-            'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
             'subset_query': '',
             'days_value': None,
             'column_map': self.default_column_map,

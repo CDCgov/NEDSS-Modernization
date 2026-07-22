@@ -8,7 +8,6 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 07: Cases of Selected Diseases vs. 5-Year Median for a
@@ -27,7 +26,7 @@ def execute(
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
     nbs_sr_05_report_result = execute_nbs_sr_05(
-        trx, subset_query, data_source_name, **kwargs
+        trx, subset_query, **kwargs
     )
     nbs_sr_05_report_result_rows = nbs_sr_05_report_result.content.data
 

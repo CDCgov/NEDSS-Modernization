@@ -19,7 +19,6 @@ class TestIntegrationQa10Library:
                 'is_builtin': True,
                 'report_title': 'QA10',
                 'library_name': 'qa_10',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
@@ -47,7 +46,6 @@ class TestIntegrationQa10Library:
                 'is_builtin': True,
                 'report_title': 'QA10',
                 'library_name': 'qa_10',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
                 ),
@@ -68,7 +66,6 @@ class TestIntegrationQa10Library:
                 'is_builtin': True,
                 'report_title': 'QA10',
                 'library_name': 'qa_10',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )

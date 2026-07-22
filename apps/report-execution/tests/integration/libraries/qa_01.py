@@ -20,7 +20,6 @@ class TestIntegrationNbsQa01Library:
             'is_builtin': True,
             'report_title': 'QA 01',
             'library_name': 'qa_01',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
         }
         base.update(overrides)

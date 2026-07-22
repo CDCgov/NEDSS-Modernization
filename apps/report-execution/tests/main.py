@@ -40,7 +40,6 @@ class TestReportExecuteEndpoint:
             'is_builtin': True,
             'report_title': 'Test Report',
             'library_name': 'nbs_custom',
-            'data_source_name': 'random_db_table_0',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=report_spec)
@@ -70,7 +69,6 @@ class TestReportExecuteEndpoint:
             'is_builtin': True,
             'report_title': 'Time-based Report',
             'library_name': 'nbs_custom',
-            'data_source_name': 'random_db_table_1',
             'subset_query': 'SELECT * FROM events WHERE date > ?',
         }
         response = client.post('/report/execute', json=report_spec)
@@ -94,7 +92,6 @@ class TestReportExecuteEndpoint:
             'is_builtin': True,
             'report_title': 'Test Report',
             'library_name': 'nbs_custom',
-            'data_source_name': 'random_db_table_3',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=invalid_spec)
@@ -108,7 +105,6 @@ class TestReportExecuteEndpoint:
             'is_builtin': True,
             'report_title': 'Test Report',
             'library_name': 'missing_library',
-            'data_source_name': 'random_db_table_3',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=invalid_spec)
