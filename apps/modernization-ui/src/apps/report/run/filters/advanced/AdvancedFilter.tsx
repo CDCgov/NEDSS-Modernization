@@ -38,6 +38,7 @@ import { AlertMessage } from 'design-system/message/index.ts';
 import classNames from 'classnames';
 
 import styles from './advanced-filter.module.scss';
+import { formatLabelName } from 'apps/report/utils.ts';
 
 // ============= Constants ============= /
 
@@ -153,7 +154,7 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
     return {
         id: c.id.toString(),
         name: c.name,
-        label: c.title,
+        label: formatLabelName(c.title, c.name),
         operators: OPERATOR_MAP[sourceType],
         inputType: INPUT_TYPE_MAP[sourceType],
         valueEditorType,
@@ -253,7 +254,10 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     });
     const [validationMap, setValidationMap] = useState<ValidationResultMap>({});
 
-    const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
+    const fields = columns
+        .filter((c) => c.isFilterable)
+        .map(translateColumnToField)
+        .sort((a, b) => (a.label < b.label ? -1 : 1));
 
     // only validate when the form validates
     useEffect(() => {

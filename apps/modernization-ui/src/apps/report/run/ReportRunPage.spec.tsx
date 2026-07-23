@@ -2774,7 +2774,7 @@ describe('report run page', () => {
             const fieldSelect = getByLabelText('Field');
             expect(fieldSelect).toHaveValue('~');
             const user = userEvent.setup();
-            await user.selectOptions(fieldSelect, 'Full Name');
+            await user.selectOptions(fieldSelect, 'Full Name (FULL_NAME)');
             const opSelect = await findByLabelText('Logic');
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
@@ -2860,7 +2860,7 @@ describe('report run page', () => {
             const fieldSelect = getByLabelText('Field');
             expect(fieldSelect).toHaveValue('~');
             const user = userEvent.setup();
-            await user.selectOptions(fieldSelect, 'Full Name');
+            await user.selectOptions(fieldSelect, 'Full Name (FULL_NAME)');
 
             // trigger validation
             const exportButton = await findByRole('button', { name: 'Export' });
@@ -2896,7 +2896,7 @@ describe('report run page', () => {
             await user.type(numberBox, '0{tab}');
 
             // generally filled in coded list
-            await user.selectOptions(fieldSelect, 'Condition Code');
+            await user.selectOptions(fieldSelect, 'Condition Code (CONDITION)');
             expect(getByLabelText('Logic')).toHaveValue('~');
             await user.selectOptions(getByLabelText('Logic'), 'in');
 
@@ -3490,9 +3490,9 @@ describe('report run page', () => {
             );
             await user.clear(search);
             expect((await options()).filter((o) => (o as HTMLInputElement).checked)).toHaveLength(1);
-            expect(await findByRole('checkbox', { name: 'Full Name' })).toBeChecked();
-            expect(await findByLabelText('Remove Full Name')).toBeVisible(); // in ordering panel
-            await user.click(await findByLabelText('Remove Full Name'));
+            expect(await findByRole('checkbox', { name: 'Full Name (FULL_NAME)' })).toBeChecked();
+            expect(await findByLabelText('Remove Full Name (FULL_NAME)')).toBeVisible(); // in ordering panel
+            await user.click(await findByLabelText('Remove Full Name (FULL_NAME)'));
             await waitFor(async () => (await options()).forEach((option) => expect(option).not.toBeChecked()));
 
             // trigger validation
@@ -3519,13 +3519,13 @@ describe('report run page', () => {
                 });
             };
             await user.click(await findByLabelText('Select all'));
-            const dragHandle = await findByLabelText('Drag handle for Full Name');
+            const dragHandle = await findByLabelText('Drag handle for Date of Birth (DATE_OF_BIRTH)');
             dragHandle.focus();
             fireDnDEvent(32); // space
             fireDnDEvent(40); // down
             fireDnDEvent(40); // down
             fireDnDEvent(32); // space
-            expect(await findByLabelText('Drag handle for Full Name')).toHaveFocus();
+            expect(await findByLabelText('Drag handle for Date of Birth (DATE_OF_BIRTH)')).toHaveFocus();
 
             expect(
                 await findByText(/You have dropped the item\. You have moved the item from position 1 to position 3/)
@@ -3540,7 +3540,7 @@ describe('report run page', () => {
                     isExport: true,
                     advancedFilter: undefined,
                     basicFilters: [],
-                    columnUids: [2002, 2003, 2001],
+                    columnUids: [2003, 2001, 2002],
                 }),
             });
         });
@@ -3559,13 +3559,13 @@ describe('report run page', () => {
             const user = userEvent.setup();
 
             // starts selected
-            expect(await findByLabelText('Days Old')).toBeChecked();
-            expect(await findByLabelText('Date of Birth')).toBeChecked();
-            expect(await findByLabelText('Full Name')).not.toBeChecked();
+            expect(await findByLabelText('Days Old (DAYS_OLD)')).toBeChecked();
+            expect(await findByLabelText('Date of Birth (DATE_OF_BIRTH)')).toBeChecked();
+            expect(await findByLabelText('Full Name (FULL_NAME)')).not.toBeChecked();
 
-            await user.click(await findByLabelText('Full Name'));
-            await user.click(await findByLabelText('Remove Date of Birth'));
-            await user.click(await findByLabelText('Date of Birth')); // make sure adds to the end
+            await user.click(await findByLabelText(/Full Name/));
+            await user.click(await findByLabelText(/Remove Date of Birth/));
+            await user.click(await findByLabelText(/Date of Birth/)); // make sure adds to the end
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
@@ -3634,7 +3634,7 @@ describe('report run page', () => {
 
                 await user.selectOptions(await findByLabelText('Sort by'), '2001');
 
-                await user.click(await findByLabelText('Remove Full Name'));
+                await user.click(await findByLabelText('Remove Full Name (FULL_NAME)'));
 
                 expect(await findByLabelText('Sort by')).not.toHaveValue();
 
