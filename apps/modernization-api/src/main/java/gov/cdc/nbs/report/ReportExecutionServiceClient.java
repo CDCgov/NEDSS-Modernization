@@ -18,6 +18,9 @@ import org.springframework.web.client.RestClientResponseException;
 
 @Service
 public class ReportExecutionServiceClient {
+  private static final System.Logger LOGGER =
+      System.getLogger(ReportExecutionServiceClient.class.getName());
+
   private final Clock clock;
 
   private final RestClient restClient;
@@ -45,6 +48,9 @@ public class ReportExecutionServiceClient {
 
     ReportSpec reportSpec = buildReportSpec(request, reportConfigResponse);
 
+    LOGGER.log(
+        System.Logger.Level.DEBUG, "POSTing report execution request for report " + reportUid);
+
     LibraryExecutionResult result =
         restClient
             .post()
@@ -70,6 +76,10 @@ public class ReportExecutionServiceClient {
       throw new IllegalStateException(
           "No error response and no body parsed from report execution service");
     }
+
+    LOGGER.log(
+        System.Logger.Level.DEBUG,
+        "Report execution POST request succeeded for report " + reportUid);
 
     return new ReportExecutionResult(
         result, reportSpec.subsetQuery(), LocalDateTime.now(this.clock));
