@@ -47,7 +47,8 @@ export const NavBar = () => {
                                                 permissions.place.manage,
                                                 permissions.provider.manage,
                                                 permissions.organization.manage
-                                            )}>
+                                            )}
+                                        >
                                             <NavLink
                                                 url="/nbs/LoadNavbar.do?ContextAction=DataEntry"
                                                 name="Data Entry"
@@ -76,7 +77,8 @@ export const NavBar = () => {
                                                 permissions.reports.public.view,
                                                 permissions.reports.private.view,
                                                 permissions.reports.reportingFacility.view
-                                            )}>
+                                            )}
+                                        >
                                             <NavLink
                                                 url="/nbs/nfc?ObjectType=7&amp;OperationType=116"
                                                 name="Reports"
@@ -94,7 +96,8 @@ export const NavBar = () => {
                                                         includeSeparator={true}
                                                     />
                                                 </Permitted>
-                                            }>
+                                            }
+                                        >
                                             <Permitted permission={permitsAny(...DEDUPE_FEATURE_SYS_MGMT_PERMISSIONS)}>
                                                 <NavLink
                                                     url="/nbs/SystemAdmin.do"

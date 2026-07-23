@@ -9,8 +9,8 @@ type NavLinkProps = {
 export const NavLink = ({ url, name, includeSeparator = false }: NavLinkProps) => {
     return (
         <td className={styles.navLink}>
-            {includeSeparator && <span> | </span> }
-            <a href={url}>{ name }</a>
+            {includeSeparator && <span> | </span>}
+            <a href={url}>{name}</a>
         </td>
     );
 };
