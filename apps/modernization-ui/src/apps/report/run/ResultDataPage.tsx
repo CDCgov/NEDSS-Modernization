@@ -26,7 +26,7 @@ const ResultDataPage = ({
     result: {
         query,
         timestamp,
-        result: { subheader, description, content },
+        result: { context_header, description, content },
     },
     title,
     dataSourceName,
@@ -51,7 +51,7 @@ const ResultDataPage = ({
         .replace(' ORDER BY ', '\nORDER BY ');
 
     return (
-        <ReportLayout title={title} subtitle={subheader} noSkipLink={true}>
+        <ReportLayout title={title} subtitle={context_header} noSkipLink={true}>
             <div className={layoutStyes.columnContent}>
                 {(errors?.length ?? 0) > 0 && (
                     <AlertMessage type="error" title="There were errors parsing the result:">
@@ -75,7 +75,11 @@ const ResultDataPage = ({
                         {formattedTime}
                     </ValueField>
                 </Card>
-                <Card id="report-result" title="Report result">
+                <Card
+                    id="report-result"
+                    title="Report result"
+                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
+                >
                     {meta.fields && (
                         <section className="overflow-auto">
                             <DataTable
@@ -96,7 +100,7 @@ const ResultDataPage = ({
                 <Card id="report-criteria" title="Report criteria">
                     <ValueField sizing={SIZING} label="Base SQL query">
                         {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
-                        <span style={{ whiteSpace: 'pre-line' }} className="font-mono-sm">
+                        <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
                             {styledQuery}
                         </span>
                     </ValueField>

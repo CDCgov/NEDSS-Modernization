@@ -188,7 +188,7 @@ const ReportConfigurationPage = ({
                     </aside>
                     <div className={layoutStyles.columnContent}>
                         {!!sectionErrors.length && (
-                            <ValidationErrorBanner level={2}>
+                            <ValidationErrorBanner level={2} className={layoutStyles.alertMessage}>
                                 {sectionErrors.map(({ id, title, getValidationMessages }) => (
                                     <ValidationErrorSection id={id} key={id} title={title}>
                                         {getValidationMessages(errors, config)!.map((message, i) => (

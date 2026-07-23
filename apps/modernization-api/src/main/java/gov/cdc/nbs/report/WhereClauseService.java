@@ -468,7 +468,7 @@ public class WhereClauseService {
     String colType = column.sourceTypeCode();
     List<String> formattedValues = new ArrayList<>();
 
-    if (!values.isEmpty()) {
+    if (!values.isEmpty() && !values.stream().allMatch(String::isEmpty)) {
       if (colType.equals("DATE") || colType.equals("DATETIME")) {
         formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
       } else {

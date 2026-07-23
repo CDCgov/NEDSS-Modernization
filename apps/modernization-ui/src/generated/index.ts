@@ -41,7 +41,7 @@ export type { GenderDemographic } from './models/GenderDemographic';
 export type { GeneralInformationDemographic } from './models/GeneralInformationDemographic';
 export type { IdentificationDemographic } from './models/IdentificationDemographic';
 export type { Library } from './models/Library';
-export { LibraryExecutionResult } from './models/LibraryExecutionResult';
+export type { LibraryExecutionResult } from './models/LibraryExecutionResult';
 export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
 export type { Me } from './models/Me';

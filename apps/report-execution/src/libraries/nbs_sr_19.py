@@ -6,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     library_params: dict,
     **kwargs,
 ):
@@ -93,4 +92,4 @@ def execute(
 
     content = trx.query(query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)
