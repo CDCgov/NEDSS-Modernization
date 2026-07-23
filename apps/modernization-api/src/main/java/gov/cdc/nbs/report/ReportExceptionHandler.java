@@ -4,6 +4,7 @@ import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import java.util.UUID;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestClientResponseException;
 
-import java.util.UUID;
-
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
 
@@ -23,8 +22,7 @@ public class ReportExceptionHandler {
 
   /** JSON-friendly wrapper for the response bodies of 4XX/5XX HTTP error responses. */
   public record ErrorResponseBody(
-          @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String message,
-          String id) {}
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String message, String id) {}
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponseBody> handleValidationExceptions(
@@ -40,21 +38,24 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
     String errorId = UUID.randomUUID().toString();
 
-    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>(
+        new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponseBody> handleNotFound(NotFoundException ex) {
     String errorId = UUID.randomUUID().toString();
 
-    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(
+        new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(NotImplementedException.class)
   public ResponseEntity<ErrorResponseBody> handleNotImplemented(NotImplementedException ex) {
     String errorId = UUID.randomUUID().toString();
 
-    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_IMPLEMENTED);
+    return new ResponseEntity<>(
+        new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_IMPLEMENTED);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
