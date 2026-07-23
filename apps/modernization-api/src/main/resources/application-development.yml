@@ -1,3 +1,12 @@
+server:
+  tomcat:
+    accesslog:
+      # Log to stdout instead of a file
+      directory: /dev
+      prefix: stdout
+      buffered: false
+      suffix:
+      file-date-format:
 logging:
   level:
     org:

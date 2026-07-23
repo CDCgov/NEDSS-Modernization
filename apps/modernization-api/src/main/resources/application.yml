@@ -114,6 +114,9 @@ springdoc:
 
 server:
   tomcat:
+    accesslog:
+      pattern: "common"
+      enabled: true
     # to accommodate intercepted multipart requests from NBS6.  The value was chosen based on the largest number of
     # questions on a page builder page.  This can vary by STLT depending on the page templates that exist.
     max-part-count: 550
