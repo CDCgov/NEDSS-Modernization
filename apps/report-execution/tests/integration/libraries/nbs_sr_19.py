@@ -18,16 +18,13 @@ class TestIntegrationNbsSr19Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 19',
                 'library_name': 'nbs_sr_19',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
                 'library_params': '{"date_column": "COUNT_DATE"}',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
 
@@ -56,16 +53,13 @@ class TestIntegrationNbsSr19Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 19',
                 'library_name': 'nbs_sr_19',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
                 'library_params': '{"date_column": "DATE_REPORTED"}',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
 
@@ -94,9 +88,7 @@ class TestIntegrationNbsSr19Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 19',
                 'library_name': 'nbs_sr_19',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART] WHERE 1 = 2',
                 'library_params': '{"date_column": "COUNT_DATE"}',
             }
@@ -120,9 +112,7 @@ class TestIntegrationNbsSr19Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 19',
                 'library_name': 'nbs_sr_19',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
                 'library_params': '{}',
             }
@@ -140,9 +130,7 @@ class TestIntegrationNbsSr19Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 19',
                 'library_name': 'nbs_sr_19',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
                 'library_params': '"not_a_dict"',
             }
@@ -172,9 +160,7 @@ class TestIntegrationNbsSr19Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 19',
                 'library_name': 'nbs_sr_19',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': status_query,
                 'library_params': '{"date_column": "COUNT_DATE"}',
             }

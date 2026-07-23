@@ -8,7 +8,6 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 07: Cases of Selected Diseases vs. 5-Year Median for a
@@ -23,12 +22,10 @@ def execute(
     * Matched "export format"
     * Remove references to "Bar Graph" since export is a table
     * Use results of nbs_sr_05.py for the following:
-    * - subheader
+    * - context_header
     * - content (data is modified to fit expected table format of nbs_sr_07.py)
     """
-    nbs_sr_05_report_result = execute_nbs_sr_05(
-        trx, subset_query, data_source_name, **kwargs
-    )
+    nbs_sr_05_report_result = execute_nbs_sr_05(trx, subset_query, **kwargs)
     nbs_sr_05_report_result_rows = nbs_sr_05_report_result.content.data
 
     modified_rows = list(
@@ -64,8 +61,7 @@ def execute(
     """  # noqa: E501
 
     return ReportResult(
-        content_type='table',
         content=modified_table,
-        subheader=nbs_sr_05_report_result.subheader,
+        context_header=nbs_sr_05_report_result.context_header,
         description=description,
     )

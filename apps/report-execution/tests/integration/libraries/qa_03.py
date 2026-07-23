@@ -20,9 +20,7 @@ class TestIntegrationNbsQa03Library:
         base = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'QA 03',
             'library_name': 'qa_03',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
         }
         base.update(overrides)
@@ -34,7 +32,6 @@ class TestIntegrationNbsQa03Library:
         report_spec = self.create_spec()
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) > 500
@@ -61,7 +58,6 @@ class TestIntegrationNbsQa03Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -82,10 +78,8 @@ class TestIntegrationNbsQa03Library:
             'PATIENTID',
         ]
 
-        report_spec = self.create_spec(report_title='QA03 Interview Record List')
+        report_spec = self.create_spec()
 
         result = execute_report(report_spec)
-        assert result.header == 'QA03 Interview Record List'
-        assert result.content_type == 'table'
 
         assert result.content.columns == expected_columns

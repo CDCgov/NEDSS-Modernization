@@ -19,15 +19,12 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 13',
                 'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 6  # two combinations with no data, zeros not filled
@@ -48,9 +45,7 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 3',
                 'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
@@ -59,7 +54,6 @@ class TestIntegrationNbsSr13Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
         assert result.content.columns == ['Case Count', 'Condition', 'Case Status']
@@ -70,9 +64,7 @@ class TestIntegrationNbsSr13Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR13: Counts of Selected Diseases By Case Status',
                 'library_name': 'nbs_sr_13',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     " WHERE state_cd = '13'"
@@ -81,8 +73,6 @@ class TestIntegrationNbsSr13Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR13: Counts of Selected Diseases By Case Status'
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns == ['Case Count', 'Condition', 'Case Status']

@@ -17,15 +17,12 @@ class TestIntegrationQa05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA 5',
                 'library_name': 'qa_05',
-                'data_source_name': '[RDB].[dbo].[V_EVENT_METRIC]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 94
@@ -52,9 +49,7 @@ class TestIntegrationQa05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA 5',
                 'library_name': 'qa_05',
-                'data_source_name': '[RDB].[dbo].[V_EVENT_METRIC]',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC] WHERE 1 = 2'
                 ),
@@ -62,7 +57,6 @@ class TestIntegrationQa05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -74,18 +68,14 @@ class TestIntegrationQa05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA05 Number of Records Entered by User ID',
                 'library_name': 'qa_05',
-                'data_source_name': '[RDB].[dbo].[V_EVENT_METRIC]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[V_EVENT_METRIC]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'QA05 Number of Records Entered by User ID'
-        assert result.subheader is None
+        assert result.context_header is None
         assert result.description is None
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'user_qc'
         assert result.content.columns[1] == 'OOJ_REFF'

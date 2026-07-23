@@ -17,15 +17,12 @@ class TestIntegrationNbsSr02Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 2',
                 'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 25  # two combinations with no data, zeros not filled
@@ -53,9 +50,7 @@ class TestIntegrationNbsSr02Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 2',
                 'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
@@ -64,13 +59,12 @@ class TestIntegrationNbsSr02Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
         assert len(result.content.columns) == 4
 
-        assert result.subheader == ''
+        assert result.context_header == ''
 
     def test_execute_report_check_metadata_one_state(self):
         """Check the metadata and column names are correct."""
@@ -78,12 +72,7 @@ class TestIntegrationNbsSr02Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': (
-                    'SR2: Counts of Reportable Diseases by County for Selected '
-                    'Time Frame'
-                ),
                 'library_name': 'nbs_sr_02',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     " WHERE state_cd = '13'"
@@ -92,13 +81,8 @@ class TestIntegrationNbsSr02Library:
         )
 
         result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR2: Counts of Reportable Diseases by County for Selected Time Frame'
-        )
-        assert result.subheader == 'Georgia'
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
+        assert result.context_header == 'Georgia'
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns[0] == 'State'
         assert result.content.columns[1] == 'County'
