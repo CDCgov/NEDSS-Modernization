@@ -253,7 +253,10 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
     });
     const [validationMap, setValidationMap] = useState<ValidationResultMap>({});
 
-    const fields = columns.filter((c) => c.isFilterable).map(translateColumnToField);
+    const fields = columns
+        .filter((c) => c.isFilterable)
+        .map(translateColumnToField)
+        .sort((a, b) => (a.label < b.label ? -1 : 1));
 
     // only validate when the form validates
     useEffect(() => {
