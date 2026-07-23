@@ -6,13 +6,12 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     library_params: dict,
     **kwargs,
 ):
     """Wrapper report leveraging SR19 core engine with a modified column layout."""
     nbs_sr_19_report_result = execute_nbs_sr_19(
-        trx, subset_query, data_source_name, library_params, **kwargs
+        trx, subset_query, library_params, **kwargs
     )
     nbs_sr_19_report_result_rows = nbs_sr_19_report_result.content.data
 
