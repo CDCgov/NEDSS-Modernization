@@ -20,7 +20,6 @@ class TestIntegrationPa02Library:
             'is_builtin': True,
             'report_title': 'PA02',
             'library_name': 'pa_02',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"report_type": "STD"}',
         }
