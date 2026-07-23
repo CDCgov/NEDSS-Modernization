@@ -36,20 +36,13 @@ class TestIntegrationExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'nbs_custom',
                 # Filter operator is used here as it is a stable, small table
-                'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 'sort_by': 'UPPER([filter_operator_code]) ASC',
             }
         )
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert (
-            result.header
-            == 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_operator]'
-        )
         assert result.content.columns == [
             'filter_operator_uid',
             'filter_operator_code',
@@ -69,10 +62,8 @@ class TestIntegrationExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'nbs_custom',
                 # Filter operator is used here as it is a stable, small table
-                'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                 'subset_query': 'SELECT *; FROM [NBS_ODSE].[dbo].[Filter_operator]',
             }
         )
@@ -97,9 +88,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )
@@ -132,9 +121,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': True,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )
@@ -169,9 +156,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )
@@ -210,9 +195,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )
@@ -235,9 +218,7 @@ class TestIntegrationExecuteReport:
         [
             'is_export',
             'is_builtin',
-            'report_title',
             'library_name',
-            'data_source_name',
             'subset_query',
         ],
     )
@@ -245,9 +226,7 @@ class TestIntegrationExecuteReport:
         invalid_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
-            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
         invalid_spec.pop(missing_prop)
@@ -272,9 +251,7 @@ class TestIntegrationExecuteReport:
     @pytest.mark.parametrize(
         'empty_string_prop',
         [
-            'report_title',
             'library_name',
-            'data_source_name',
             'subset_query',
         ],
     )
@@ -282,9 +259,7 @@ class TestIntegrationExecuteReport:
         invalid_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
-            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
         invalid_spec.pop(empty_string_prop)
@@ -309,7 +284,7 @@ class TestIntegrationExecuteReport:
 
     def test_execute_report_missing_result(self, monkeypatch):
         def get_lib_returning_none(library_name: str, is_builtin: bool, **kwargs):
-            def execute_method(self, trx, subset_query, data_source_name, **kwargs):
+            def execute_method(self, trx, subset_query, **kwargs):
                 return None
 
             mock_library = type(
@@ -325,9 +300,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )
@@ -340,10 +313,8 @@ class TestIntegrationExecuteReport:
 
     def test_execute_report_result_missing_content_data(self, monkeypatch):
         def get_lib_without_data(library_name: str, is_builtin: bool):
-            def execute_method(self, trx, subset_query, data_source_name, **kwargs):
+            def execute_method(self, trx, subset_query, **kwargs):
                 return {
-                    'content_type': 'table',
-                    'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
                     'content': {
                         'columns': ['filter_operator_uid', 'filter_operator_code'],
                     },
@@ -362,9 +333,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )
@@ -385,10 +354,8 @@ class TestIntegrationExecuteReport:
 
     def test_execute_report_result_missing_content_columns(self, monkeypatch):
         def get_lib_without_columns(library_name: str, is_builtin: bool):
-            def execute_method(self, trx, subset_query, data_source_name, **kwargs):
+            def execute_method(self, trx, subset_query, **kwargs):
                 return {
-                    'content_type': 'table',
-                    'header': 'Custom Report: [NBS_ODSE].[dbo].[Filter_operator]',
                     'content': {
                         'data': [
                             (1, 'Code1'),
@@ -410,9 +377,7 @@ class TestIntegrationExecuteReport:
                 {
                     'is_export': False,
                     'is_builtin': True,
-                    'report_title': 'Test Report',
                     'library_name': 'nbs_custom',
-                    'data_source_name': '[NBS_ODSE].[dbo].[Filter_operator]',
                     'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_operator]',
                 }
             )

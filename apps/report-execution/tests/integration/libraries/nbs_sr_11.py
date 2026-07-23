@@ -17,15 +17,12 @@ class TestIntegrationNbsSr11Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 11',
                 'library_name': 'nbs_sr_11',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 144
@@ -50,9 +47,7 @@ class TestIntegrationNbsSr11Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 11',
                 'library_name': 'nbs_sr_11',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Rhode Island'"
@@ -61,7 +56,6 @@ class TestIntegrationNbsSr11Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -73,9 +67,7 @@ class TestIntegrationNbsSr11Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR11: Cases of Selected Diseases By Year Over Time',
                 'library_name': 'nbs_sr_11',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]'
                     "WHERE state = 'Georgia' "
@@ -85,11 +77,9 @@ class TestIntegrationNbsSr11Library:
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR11: Cases of Selected Diseases By Year Over Time'
-        assert result.subheader == 'Georgia | Measles, Pertussis'
+        assert result.context_header == 'Georgia | Measles, Pertussis'
 
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns[0] == 'State Code'
         assert result.content.columns[1] == 'State'

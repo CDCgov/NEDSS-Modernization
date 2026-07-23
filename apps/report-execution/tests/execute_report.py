@@ -13,16 +13,12 @@ class TestExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'nbs_custom',
-                'data_source_name': 'random_db_table_0',
                 'subset_query': 'SELECT * FROM test',
             }
         )
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'Custom Report For Table: random_db_table_0'
-        assert result.subheader is None
+        assert result.context_header is None
         assert result.description is None
         assert result.content.columns == ['id', 'name']
 
@@ -34,9 +30,7 @@ class TestExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report',
                 'library_name': 'missing_library',
-                'data_source_name': 'random_db_table_0',
                 'subset_query': 'SELECT * FROM test',
             }
         )
@@ -54,16 +48,12 @@ class TestExecuteReport:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'Test Report with Params',
                 'library_name': 'nbs_custom',
-                'data_source_name': 'random_db_table_0',
                 'subset_query': 'SELECT * FROM test',
                 'library_params': '{"report_days": 30}',
             }
         )
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'Custom Report For Table: random_db_table_0'
         assert result.content.columns == ['id', 'name']
         assert len(result.content.data) == 4
 
@@ -74,9 +64,7 @@ class TestExecuteReport:
                 {
                     'is_export': True,
                     'is_builtin': True,
-                    'report_title': 'Invalid Params',
                     'library_name': 'nbs_custom',
-                    'data_source_name': 'random_db_table_0',
                     'subset_query': 'SELECT * FROM test',
                     'library_params': 'not a json object',
                 }

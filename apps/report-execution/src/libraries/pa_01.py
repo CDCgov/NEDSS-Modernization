@@ -36,7 +36,6 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     library_params: dict,
     **kwargs,
 ):
@@ -127,7 +126,7 @@ def execute(
             data=[],
         )
 
-        return ReportResult(content_type='table', content=content)
+        return ReportResult(content=content)
 
     # run queries
     tables: dict[str, Table] = {}
@@ -197,7 +196,7 @@ def execute(
         data=output_rows,
     )
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)
 
 
 def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:

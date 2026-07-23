@@ -5,7 +5,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     sort_by: str | None,
     **kwargs,
 ):
@@ -19,6 +18,4 @@ def execute(
     query = subset_query + ' ORDER BY ' + sort_by if sort_by else subset_query
     content = trx.query(query)
 
-    header = f'Custom Report For Table: {data_source_name}'
-
-    return ReportResult(content_type='table', content=content, header=header)
+    return ReportResult(content=content)
