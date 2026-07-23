@@ -102,7 +102,7 @@ class TestIntegrationNbsCustomLibrary:
         assert len(data[0]) == len(result.content.columns)
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
-            'PATIENT_LOCAL_ID',
+            'Patient Local Id',
             'EVENT_DATE',
         ]
 
