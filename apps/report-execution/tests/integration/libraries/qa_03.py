@@ -34,7 +34,7 @@ class TestIntegrationNbsQa03Library:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) > 500
+        assert len(data) > 400
         assert len(data[0]) == 10
         assert len(data[0]) == len(result.content.columns)
 

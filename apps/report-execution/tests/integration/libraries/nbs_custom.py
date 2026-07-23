@@ -22,11 +22,11 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'library_name': 'nbs_custom',
                 'subset_query': """
-                        SELECT PROGRAM_JURISDICTION_OID,
-                               PATIENT_LOCAL_ID,
-                               EVENT_DATE,
-                               INVESTIGATION_KEY
-                        FROM rdb.dbo.DM_INV_STD
+                    SELECT PROGRAM_JURISDICTION_OID,
+                        PATIENT_LOCAL_ID,
+                        EVENT_DATE,
+                        INVESTIGATION_KEY
+                    FROM rdb.dbo.DM_INV_STD
                 """,
                 'sort_by': '[INVESTIGATION_KEY] ASC',
             }
