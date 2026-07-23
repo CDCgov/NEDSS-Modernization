@@ -7,7 +7,6 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """PA05 Worker Interview Activity Report.
@@ -70,4 +69,4 @@ def execute(
         data=rows,
     )
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

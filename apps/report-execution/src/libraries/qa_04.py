@@ -6,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA04 Cases Missing Lab and/or Treatment.
@@ -60,4 +59,4 @@ def execute(
         CONFIRMATION_DT;
     """
     content = trx.query(full_query)
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

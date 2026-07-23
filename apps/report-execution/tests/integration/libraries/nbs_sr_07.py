@@ -23,15 +23,12 @@ class TestIntegrationNbsSr07Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR7',
                 'library_name': 'nbs_sr_07',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 6
@@ -57,24 +54,13 @@ class TestIntegrationNbsSr07Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': (
-                    'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
-                    'Time Period'
-                ),
                 'library_name': 'nbs_sr_07',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert (
-            result.header
-            == 'SR7: Cases of Selected Diseases vs. 5-Year Median for Selected '
-            'Time Period'
-        )
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns == ['Disease', 'type', 'Number of Cases']
 
@@ -83,9 +69,7 @@ class TestIntegrationNbsSr07Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR7',
                 'library_name': 'nbs_sr_07',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 2'
                 ),
