@@ -156,10 +156,7 @@ const ReportConfigurationPage = ({
     const actions = (
         <>
             <Permitted permission={permissions.system.report}>
-                <NavLinkButton
-                    to={`/report/management/configuration/${reportUid}/${dataSourceUid}`}
-                    secondary={true}
-                >
+                <NavLinkButton to={`/report/management/configuration/${reportUid}/${dataSourceUid}`} secondary={true}>
                     Manage report
                 </NavLinkButton>
             </Permitted>

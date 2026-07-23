@@ -428,6 +428,32 @@ describe('report run page', () => {
                 }),
             });
         });
+
+        it('display "Manage report" button when admin', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const { findByRole } = renderWithRouter({
+                ...BASE_MOCK_USER,
+                permissions: [...BASE_MOCK_PERMISSIONS, permissions.system.report],
+            });
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByRole('button', { name: 'Manage report' })).toBeVisible();
+        });
+
+        it('does not display "Manage report" button when not admin', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const { findByRole, queryByRole } = renderWithRouter();
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByRole('button', { name: 'Export' })).toBeVisible();
+            expect(queryByRole('button', { name: 'Manage report' })).toBeNull();
+        });
     });
 
     describe('basic filters', () => {
