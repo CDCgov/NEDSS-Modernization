@@ -38,7 +38,9 @@ def execute_report_api(report_spec: models.ReportSpec):
 @app.exception_handler(errors.BaseReportExecutionError)
 async def api_exception_handler(request: Request, exc: errors.BaseReportExecutionError):
     """Handle application errors."""
+    logging.error(f'Error occurred during report execution (ID: {exc.id}) - {exc.message}')
+
     return JSONResponse(
         status_code=exc.http_code,
-        content={'message': exc.message},
+        content={'message': exc.message, 'id': exc.id},
     )

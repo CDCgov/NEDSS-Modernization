@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 
 class BaseReportExecutionError(Exception):
@@ -7,6 +8,8 @@ class BaseReportExecutionError(Exception):
     def __init__(self, message: str, http_code: int):
         self.message = message
         self.http_code = http_code
+        self.id = str(uuid.uuid4())
+        
         super().__init__(self.message)
 
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestClientResponseException;
 
+import java.util.UUID;
+
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
 
@@ -21,58 +23,77 @@ public class ReportExceptionHandler {
 
   /** JSON-friendly wrapper for the response bodies of 4XX/5XX HTTP error responses. */
   public record ErrorResponseBody(
-      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String message) {}
+          @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String message,
+          String id) {}
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponseBody> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
+    String errorId = UUID.randomUUID().toString();
+
     return new ResponseEntity<>(
-        new ErrorResponseBody(ex.getBindingResult().getAllErrors().toString()),
+        new ErrorResponseBody(ex.getBindingResult().getAllErrors().toString(), errorId),
         HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(ForbiddenException.class)
   public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
-    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage()), HttpStatus.FORBIDDEN);
+    String errorId = UUID.randomUUID().toString();
+
+    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponseBody> handleNotFound(NotFoundException ex) {
-    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage()), HttpStatus.NOT_FOUND);
+    String errorId = UUID.randomUUID().toString();
+
+    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(NotImplementedException.class)
   public ResponseEntity<ErrorResponseBody> handleNotImplemented(NotImplementedException ex) {
-    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage()), HttpStatus.NOT_IMPLEMENTED);
+    String errorId = UUID.randomUUID().toString();
+
+    return new ResponseEntity<>(new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_IMPLEMENTED);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ErrorResponseBody> handleUnprocessableEntity(IllegalArgumentException ex) {
+    String errorId = UUID.randomUUID().toString();
+
     return new ResponseEntity<>(
-        new ErrorResponseBody(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+        new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<ErrorResponseBody> handleFailedSerialization(
       HttpMessageNotReadableException ex) {
+    String errorId = UUID.randomUUID().toString();
+
     return new ResponseEntity<>(
-        new ErrorResponseBody(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+        new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(RestClientResponseException.class)
   public ResponseEntity<ErrorResponseBody> handleRestClientFailure(RestClientResponseException ex) {
-    String err = ex.getResponseBodyAsString();
+    ErrorResponseBody err = ex.getResponseBodyAs(ErrorResponseBody.class);
+
+    String message = err != null && err.message != null ? err.message : "";
+    String errorId = err != null && err.id != null ? err.id : UUID.randomUUID().toString();
+
     LOGGER.log(
         System.Logger.Level.ERROR,
         "Error received from rest client: %s (Status Code: %s)".formatted(err, ex.getStatusCode()),
         ex);
-    return new ResponseEntity<>(new ErrorResponseBody(err), ex.getStatusCode());
+    return new ResponseEntity<>(new ErrorResponseBody(message, errorId), ex.getStatusCode());
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponseBody> handleUnexpectedError(Exception ex) {
-    LOGGER.log(System.Logger.Level.ERROR, ex.getMessage(), ex);
+    String errorId = UUID.randomUUID().toString();
+
+    LOGGER.log(System.Logger.Level.ERROR, errorId, ex.getMessage(), ex);
     return new ResponseEntity<>(
-        new ErrorResponseBody("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        new ErrorResponseBody("Internal Server Error", errorId), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
