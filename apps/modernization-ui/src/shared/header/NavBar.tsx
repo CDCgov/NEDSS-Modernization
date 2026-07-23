@@ -2,9 +2,9 @@ import React from 'react';
 import { permitsAny, Permitted, permissions, permitsAll } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
+import { FeatureToggle } from 'feature';
 
 import styles from './NavBar.module.scss';
-import { FeatureToggle } from '../../feature';
 
 const baseSystemManagementPermissions = [
     'EPILINKADMIN-SYSTEM',

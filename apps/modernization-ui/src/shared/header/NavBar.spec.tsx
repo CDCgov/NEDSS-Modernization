@@ -24,7 +24,7 @@ vi.mock('../../libs/permission/usePermissions', () => ({
     }),
 }));
 
-vi.mock('../../feature', () => ({
+vi.mock('feature', () => ({
     FeatureToggle: ({ guard, fallback, children }: any) => {
         return guard(mockFeatures) ? children : fallback;
     },
