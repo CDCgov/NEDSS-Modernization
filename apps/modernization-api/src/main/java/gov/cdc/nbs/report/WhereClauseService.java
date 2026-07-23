@@ -469,7 +469,7 @@ public class WhereClauseService {
     List<String> formattedValues = new ArrayList<>();
 
     if (!values.isEmpty()) {
-      if (values.stream().allMatch(String::isBlank)) {
+      if (values.stream().allMatch(String::isEmpty)) {
         return "";
       }
       if (colType.equals("DATE") || colType.equals("DATETIME")) {
