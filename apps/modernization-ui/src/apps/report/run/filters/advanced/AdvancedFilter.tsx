@@ -38,7 +38,6 @@ import { AlertMessage } from 'design-system/message/index.ts';
 import classNames from 'classnames';
 
 import styles from './advanced-filter.module.scss';
-import { formatLabelName } from 'apps/report/utils.ts';
 
 // ============= Constants ============= /
 
@@ -154,7 +153,7 @@ const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
     return {
         id: c.id.toString(),
         name: c.name,
-        label: formatLabelName(c.title, c.name),
+        label: c.title,
         operators: OPERATOR_MAP[sourceType],
         inputType: INPUT_TYPE_MAP[sourceType],
         valueEditorType,
