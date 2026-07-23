@@ -103,3 +103,6 @@ databaseChangeLog:
             path: db/report/execution/05_ODSE_Drop_Regions.sql
             splitStatements: false
             endDelimiter: ""
+        - sqlFile:
+            path: db/report/execution/libraries/tb_case_ver.sql
+            splitStatements: false
