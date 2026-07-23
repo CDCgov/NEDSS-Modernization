@@ -75,7 +75,11 @@ const ResultDataPage = ({
                         {formattedTime}
                     </ValueField>
                 </Card>
-                <Card id="report-result" title="Report result">
+                <Card
+                    id="report-result"
+                    title="Report result"
+                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
+                >
                     {meta.fields && (
                         <section className="overflow-auto">
                             <DataTable
