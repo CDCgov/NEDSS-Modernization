@@ -6,7 +6,7 @@ type NavLinkProps = {
     includeSeparator?: boolean;
 };
 
-export const NavLink = ({ url, name, includeSeparator = false }: NavLinkProps) => {
+export const NavBarLink = ({ url, name, includeSeparator = false }: NavLinkProps) => {
     return (
         <td className={styles.navLink}>
             {includeSeparator && <span> | </span>}
