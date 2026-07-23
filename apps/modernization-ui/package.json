@@ -14,7 +14,7 @@
         "@uswds/uswds": "3.13.0",
         "classnames": "^2.5.1",
         "date-fns": "4.3.0",
-        "dompurify": "^3.4.11",
+        "dompurify": "^3.4.12",
         "globals": "^16.0.0",
         "graphql": "^16.13.0",
         "js-file-download": "^0.4.12",
