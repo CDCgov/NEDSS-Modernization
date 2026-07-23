@@ -20,3 +20,44 @@ tables:
       - column_name: DISEASE_CD
         data: 102201
         null_percentage: .5
+
+      # Renamed to CASE_VERIFICATION_DESC in Case_Verification_Report.sas
+      - column_name: CASE_VERIFCTON_CAT
+        data: |
+          random.choice([
+            "0 - Not a Verified Case",
+            "1 - Positive Culture",
+            "1A - Positive NAA",
+            "2 - Positive Smear/Tissue",
+            "3 - Clinical Case Definition",
+            "4 - Provider Diagnosis",
+            "5 - Suspect"
+          ])
+
+      # Renamed to DISEASE_SITE_DESC in Case_Verification_Report.sas
+      - column_name: DISEASE_SITE
+        data: |
+          # comments are the matching calculated DISEASE_SITE_VALUE
+          return random.choice([
+            # Extrapulmonary TB only
+            "Spinal cord",
+            "Nose|Trachea",
+
+            # Pulmonary TB only
+            "Pleural|Lymphatic Intrathoracic",
+            "Pleural",
+
+            # Both Extrapulmonary TB and Pulmonary TB
+            "Stomach|Lymphatic Intrathoracic",
+            "Lymphatic Intrathoracic|Spinal cord",
+
+            # Uknown and either Extrapulmonary or Pulmonary TB
+            "Site not Stated|Spinal cord",
+            "Site not Stated|Pleural",
+
+            # Unknown only
+            "Site not Stated",
+
+            # Missing value
+            None
+          ])

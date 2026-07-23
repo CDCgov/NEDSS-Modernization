@@ -6,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA Report 05: Number of Records Entered by User ID.
@@ -108,6 +107,5 @@ def execute(
     )
 
     return ReportResult(
-        content_type='table',
         content=content,
     )

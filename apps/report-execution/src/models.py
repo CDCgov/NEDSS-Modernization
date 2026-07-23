@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any
 
 import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
@@ -12,9 +12,7 @@ class ReportSpec(BaseModel):
 
     is_export: bool
     is_builtin: bool
-    report_title: str = Field(min_length=1)
     library_name: str = Field(min_length=1)
-    data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
     sort_by: str | None = None
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
@@ -116,8 +114,6 @@ class ReportResult(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content_type: Literal['table']
     content: Annotated[Table, PlainSerializer(serialize_table)]
-    header: str | None = None
-    subheader: str | None = None
+    context_header: str | None = None
     description: str | None = None

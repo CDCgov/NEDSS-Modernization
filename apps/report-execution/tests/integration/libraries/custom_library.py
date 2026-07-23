@@ -13,10 +13,8 @@ class TestCustomLibrary:
         report_spec = {
             'is_export': True,
             'is_builtin': False,
-            'report_title': 'Test Report',
             'library_name': 'custom_library',
             # Filter code is used here as it is a stable, small table
-            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
 

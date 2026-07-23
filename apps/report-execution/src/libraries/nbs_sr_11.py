@@ -1,12 +1,11 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import gen_subheader
+from src.utils import gen_context_header
 
 
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 11: Cases of Selected Diseases By Year Over Time.
@@ -33,7 +32,7 @@ def execute(
 
     state_list = content.get_unique_column('State')
     condition_list = content.get_unique_column('Condition')
-    subheader = gen_subheader(
+    context_header = gen_context_header(
         states=state_list,
         diseases=condition_list,
     )
@@ -58,8 +57,7 @@ selected by the user
 """  # noqa: E501
 
     return ReportResult(
-        content_type='table',
         content=content,
-        subheader=subheader,
+        context_header=context_header,
         description=description,
     )

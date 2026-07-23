@@ -6,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA Report 06: Patients with Multiple Cases. This report generates a list,
@@ -116,4 +115,4 @@ def execute(
 
     content = trx.query(query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

@@ -14,10 +14,8 @@ class TestMainApp:
         report_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
             # Filter code is used here as it is a stable, small table
-            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
 
@@ -34,7 +32,27 @@ class TestMainApp:
         assert response.status == 200
 
         result = json.loads(response.read())
-        assert (
-            result['header']
-            == 'Custom Report For Table: [NBS_ODSE].[dbo].[Filter_code]'
-        )
+
+        assert result is not None
+
+        for k in ['content', 'context_header', 'description']:
+            assert k in result
+
+        assert len(result['content']) > 0
+
+        exepected_cols = [
+            'filter_uid',
+            'code_table',
+            'desc_txt',
+            'effective_from_time',
+            'effective_to_time',
+            'filter_code',
+            'filter_code_set_nm',
+            'filter_type',
+            'filter_name',
+            'status_cd',
+            'status_time',
+        ]
+        found_cols = result['content'].split('\r\n')[0].split(',')
+
+        assert found_cols == exepected_cols
