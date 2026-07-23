@@ -449,6 +449,5 @@ def execute(
         )
 
     return ReportResult(
-        content_type='table',
         content=Table(columns=constants.OUTPUT_COLUMNS, data=table_data),
     )

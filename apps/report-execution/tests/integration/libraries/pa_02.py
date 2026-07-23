@@ -48,7 +48,6 @@ class TestIntegrationPa02Library:
         """Test that the STD report has correct columns and structure."""
         spec = self.create_spec(library_params='{"report_type": "STD"}')
         result = execute_report(spec)
-        assert result.content_type == 'table'
         table = result.content
 
         expected_columns = [
@@ -301,7 +300,6 @@ class TestIntegrationPa02Library:
         """Test HIV report structure."""
         spec = self.create_spec(library_params='{"report_type": "HIV"}')
         result = execute_report(spec)
-        assert result.content_type == 'table'
         table = result.content
 
         expected_columns = [
@@ -339,7 +337,6 @@ class TestIntegrationPa02Library:
         """Snapshot test for STD report."""
         report_spec = self.create_spec()
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         # Convert to list of dicts for snapshot
         data = []
@@ -363,7 +360,6 @@ class TestIntegrationPa02Library:
         """Snapshot test for HIV report."""
         report_spec = self.create_spec(library_params='{"report_type": "HIV"}')
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = []
         for row in result.content.data:
@@ -390,7 +386,6 @@ class TestIntegrationPa02Library:
         """
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         expected_columns = [
             'Worker',
@@ -409,7 +404,6 @@ class TestIntegrationPa02Library:
         """Test HIV report type works."""
         spec_hiv = self.create_spec(library_params='{"report_type": "HIV"}')
         result = execute_report(spec_hiv)
-        assert result.content_type == 'table'
 
         table = result.content
         assert table.columns == [
