@@ -55,11 +55,11 @@ def parse_date(date_str: str, date_format: str) -> datetime | None:
             return None
 
 
-def gen_subheader(
+def gen_context_header(
     states: list[str | None] | None = None,
     diseases: list[str] | None = None,
 ) -> str:
-    """Generate a subheader for reports from various optional components.
+    """Generate a context_header for reports from various optional components.
 
     Note: Caller is responsible for sorting/deduplicating states and diseases.
 
@@ -68,7 +68,7 @@ def gen_subheader(
         diseases: Optional list of disease strings (already sorted and deduplicated)
 
     Returns:
-        Formatted subheader string
+        Formatted context_header string
     """
     parts = []
 

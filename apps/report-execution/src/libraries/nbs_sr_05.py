@@ -7,7 +7,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 05: Cases of Reportable Diseases for a specific state.
@@ -23,9 +22,9 @@ def execute(
     * Matched "export format"
     * Run doesn't include the Year and Cases columns
     * Run has columns in different order
-    * Use pipe separator instead of new line for subheader
+    * Use pipe separator instead of new line for context_header
     * Remove "by county" from the description since this isn't by county
-    * Removed state functionality from the subheader
+    * Removed state functionality from the context_header
     * Negative precentages are displayed with parentheses to match SAS
       output (e.g. -0.12 gets displayed as (12%)).  The SAS script uses
       the `percent9.0` format, meaning the result is always 9 characters
@@ -181,8 +180,7 @@ def execute(
 """  # noqa: E501
 
     return ReportResult(
-        content_type='table',
         content=content,
-        subheader=None,
+        context_header=None,
         description=description,
     )

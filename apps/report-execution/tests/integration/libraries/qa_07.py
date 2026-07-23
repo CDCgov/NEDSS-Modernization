@@ -19,9 +19,7 @@ class TestIntegrationQa07Library:
             'version': 1,
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'QA07',
             'library_name': 'qa_07',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             'library_params': '{"days_value": 30}',
         }
@@ -31,7 +29,6 @@ class TestIntegrationQa07Library:
     def test_execute_report_check_data(self, snapshot):
         report_spec = self.create_spec()
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 4
@@ -56,7 +53,6 @@ class TestIntegrationQa07Library:
         """
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
 
