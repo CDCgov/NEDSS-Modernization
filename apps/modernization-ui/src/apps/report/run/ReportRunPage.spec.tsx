@@ -3545,13 +3545,13 @@ describe('report run page', () => {
                 });
             };
             await user.click(await findByLabelText('Select all'));
-            const dragHandle = await findByLabelText('Drag handle for Full Name');
+            const dragHandle = await findByLabelText('Drag handle for Date of Birth');
             dragHandle.focus();
             fireDnDEvent(32); // space
             fireDnDEvent(40); // down
             fireDnDEvent(40); // down
             fireDnDEvent(32); // space
-            expect(await findByLabelText('Drag handle for Full Name')).toHaveFocus();
+            expect(await findByLabelText('Drag handle for Date of Birth')).toHaveFocus();
 
             expect(
                 await findByText(/You have dropped the item\. You have moved the item from position 1 to position 3/)
@@ -3566,7 +3566,7 @@ describe('report run page', () => {
                     isExport: true,
                     advancedFilter: undefined,
                     basicFilters: [],
-                    columnUids: [2002, 2003, 2001],
+                    columnUids: [2003, 2001, 2002],
                 }),
             });
         });
@@ -3589,9 +3589,9 @@ describe('report run page', () => {
             expect(await findByLabelText('Date of Birth')).toBeChecked();
             expect(await findByLabelText('Full Name')).not.toBeChecked();
 
-            await user.click(await findByLabelText('Full Name'));
-            await user.click(await findByLabelText('Remove Date of Birth'));
-            await user.click(await findByLabelText('Date of Birth')); // make sure adds to the end
+            await user.click(await findByLabelText(/Full Name/));
+            await user.click(await findByLabelText(/Remove Date of Birth/));
+            await user.click(await findByLabelText(/Date of Birth/)); // make sure adds to the end
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);
