@@ -26,7 +26,7 @@ const ViewReportConfiguration = () => {
         <LoadingBlock />
     ) : (
         <ReportLayout
-            title="View Report"
+            title="View report"
             startHref={NBS_LIST_REPORT_CONFIG_PAGE}
             startPage="Manage Reports"
             actions={

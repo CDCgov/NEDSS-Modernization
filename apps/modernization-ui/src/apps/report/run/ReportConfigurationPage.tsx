@@ -181,7 +181,7 @@ const ReportConfigurationPage = ({
     );
 
     return (
-        <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="reports" actions={actions}>
+        <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="Reports" actions={actions}>
             {!sectionData.length ? (
                 <FullPageBlock>
                     <Heading level={2}>No filters available</Heading>
