@@ -118,3 +118,9 @@ databaseChangeLog:
         - sqlFile:
             path: db/report/execution/libraries/tb_case_ver.sql
             splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_summary_count.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_summary_count_date.sql
+            splitStatements: false
