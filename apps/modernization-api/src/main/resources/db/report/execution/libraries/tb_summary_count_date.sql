@@ -1,4 +1,4 @@
--- Migrate the NBSSR00019.SAS library to the nbs_sr_19 python library
+-- Migrate the TB_Summary_Count_Date.SAS library to the tb_summary_count_date python library
 
 USE [NBS_ODSE]
 
