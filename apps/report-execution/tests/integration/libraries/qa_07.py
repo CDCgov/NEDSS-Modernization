@@ -31,7 +31,7 @@ class TestIntegrationQa07Library:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 6
+        assert len(data) == 2
         assert result.content.columns == [
             'PATIENT_NAME',
             'PATIENT_LOCAL_ID',

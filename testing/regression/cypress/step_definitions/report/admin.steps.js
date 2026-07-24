@@ -10,7 +10,7 @@ Then('I should see the report list', () => {
 });
 
 Then('I should see the {string} configuration page', (type) => {
-    cy.contains(`${type} Report`).should('be.visible');
+    cy.contains(`${type} report`).should('be.visible');
 });
 
 Then('I should see {int} available filters', (filterCount) => {
