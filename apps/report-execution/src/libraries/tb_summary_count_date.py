@@ -6,7 +6,6 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     library_params: dict,
     **kwargs,
 ):
@@ -23,7 +22,7 @@ def execute(
       newest dates in the output may not equal the From Date and To Date.
     """
     tb_summary_count_result = execute_tb_summary_count(
-        trx, subset_query, data_source_name, library_params, **kwargs
+        trx, subset_query, library_params, **kwargs
     )
     tb_summary_count_result_rows = tb_summary_count_result.content.data
 
@@ -33,4 +32,4 @@ def execute(
         columns=['monthYearTxt', 'sasdate', 'counted_cases'], data=modified_rows
     )
 
-    return ReportResult(content_type='table', content=modified_table)
+    return ReportResult(content=modified_table)
