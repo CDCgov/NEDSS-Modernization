@@ -94,6 +94,12 @@ databaseChangeLog:
             path: db/report/execution/libraries/pa_05.sql
             splitStatements: false
         - sqlFile:
+            path: db/report/execution/libraries/pa_04_hiv.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_04_std.sql
+            splitStatements: false
+        - sqlFile:
             path: db/report/execution/libraries/pa_01_hiv.sql
             splitStatements: false
         - sqlFile:
@@ -111,4 +117,10 @@ databaseChangeLog:
             splitStatements: false
         - sqlFile:
             path: db/report/execution/libraries/tb_case_ver.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_summary_count.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_summary_count_date.sql
             splitStatements: false
