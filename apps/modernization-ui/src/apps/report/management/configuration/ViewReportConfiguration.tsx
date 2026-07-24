@@ -26,14 +26,17 @@ const ViewReportConfiguration = () => {
         <LoadingBlock />
     ) : (
         <ReportLayout
-            title="View Report"
+            title="View report"
             startHref={NBS_LIST_REPORT_CONFIG_PAGE}
             startPage="Manage Reports"
             actions={
                 <>
-                    <Button secondary={true} onClick={() => confirmDeleteRef.current?.toggleModal()}>
+                    <Button secondary={true} destructive={true} onClick={() => confirmDeleteRef.current?.toggleModal()}>
                         Delete
                     </Button>
+                    <NavLinkButton to={`/report/${reportUid}/${dataSourceUid}/run`} secondary={true}>
+                        Run
+                    </NavLinkButton>
                     <NavLinkButton to={`/report/management/configuration/${reportUid}/${dataSourceUid}/edit`}>
                         Edit
                     </NavLinkButton>
