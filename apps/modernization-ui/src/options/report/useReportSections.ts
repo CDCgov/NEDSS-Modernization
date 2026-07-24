@@ -1,6 +1,6 @@
-import { cachedSelectableResolver, useSelectableOptions } from 'options';
+import { selectableResolver, useSelectableOptions } from 'options';
 
-const resolver = cachedSelectableResolver('report.sections.options', '/nbs/api/options/report/sections');
+const resolver = () => selectableResolver('/nbs/api/options/report/sections');
 
 const useReportSections = () => {
     const { options } = useSelectableOptions({ resolver });
