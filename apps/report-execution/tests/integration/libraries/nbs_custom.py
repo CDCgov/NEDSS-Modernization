@@ -22,11 +22,11 @@ class TestIntegrationNbsCustomLibrary:
                 'is_builtin': True,
                 'library_name': 'nbs_custom',
                 'subset_query': """
-                        SELECT PROGRAM_JURISDICTION_OID,
-                               PATIENT_LOCAL_ID,
-                               EVENT_DATE,
-                               INVESTIGATION_KEY
-                        FROM rdb.dbo.DM_INV_STD
+                    SELECT PROGRAM_JURISDICTION_OID,
+                        PATIENT_LOCAL_ID,
+                        EVENT_DATE,
+                        INVESTIGATION_KEY
+                    FROM rdb.dbo.DM_INV_STD
                 """,
                 'sort_by': '[INVESTIGATION_KEY] ASC',
             }
@@ -76,6 +76,33 @@ class TestIntegrationNbsCustomLibrary:
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'PATIENT_LOCAL_ID',
+            'EVENT_DATE',
+        ]
+
+    def test_execute_report_string_sort(self, snapshot):
+        report_spec = ReportSpec.model_validate(
+            {
+                'is_export': True,
+                'is_builtin': True,
+                'library_name': 'nbs_custom',
+                'subset_query': """
+                        SELECT PROGRAM_JURISDICTION_OID,
+                               PATIENT_LOCAL_ID as [Patient Local Id],
+                               EVENT_DATE
+                        FROM rdb.dbo.DM_INV_STD
+                """,
+                'sort_by': 'UPPER([Patient Local Id])',
+            }
+        )
+
+        result = execute_report(report_spec)
+
+        data = result.content.data
+        assert len(data) == 500
+        assert len(data[0]) == len(result.content.columns)
+        assert result.content.columns == [
+            'PROGRAM_JURISDICTION_OID',
+            'Patient Local Id',
             'EVENT_DATE',
         ]
 

@@ -1,44 +1,66 @@
 - !!python/tuple
-  - Doe, Jane
-  - PSN10010002GA01
-  - CAS10077588GA01
-  - 300 - Gonorrhea
-  - 11/15/2023
-  - 12/10/2023
-  - 10002
-  - -6
+  - Brown, Lisa
+  - PSN10010004GA01
+  - CAS10026506GA01
+  - 200 - Chlamydia
+  - 02/05/2023
+  - 11/07/2023
+  - 10004
+  - -8
   - 0
   - 2
 - !!python/tuple
-  - Doe, Jane
-  - PSN10010002GA01
-  - CAS10061561GA01
-  - 300 - Gonorrhea
-  - 12/07/2023
-  - 10/22/2032
-  - 10002
+  - Brown, Lisa
+  - PSN10010004GA01
+  - CAS10056831GA01
+  - 200 - Chlamydia
+  - 07/04/2021
+  - 05/14/2031
+  - 10004
   - 0
-  - 8
+  - 24
   - 2
 - !!python/tuple
-  - Doe, Jane
-  - PSN10010002GA01
-  - CAS10064788GA01
-  - 720 - Syphilis, secondary
-  - 01/20/2021
-  - 12/30/2026
-  - 10002
-  - -7
-  - 25
+  - Brown, Lisa
+  - PSN10010004GA01
+  - CAS10036865GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 03/12/2023
+  - 07/07/2023
+  - 10004
+  - -15
+  - 0
   - 2
 - !!python/tuple
-  - Doe, Jane
-  - PSN10010002GA01
-  - CAS10084615GA01
-  - 720 - Syphilis, secondary
-  - 10/14/2021
-  - 01/06/2027
-  - 10002
-  - -23
-  - 7
+  - Brown, Lisa
+  - PSN10010004GA01
+  - CAS10084801GA01
+  - 730 - Syphilis, Early Non-Primary, Non-Secondary
+  - 05/29/2025
+  - 07/29/2032
+  - 10004
+  - 0
+  - 16
+  - 2
+- !!python/tuple
+  - Brown, Lisa
+  - PSN10010004GA01
+  - CAS10058160GA01
+  - 790 - Syphilis, Congenital
+  - 06/17/2024
+  - 02/25/2024
+  - 10004
+  - -16
+  - 0
+  - 2
+- !!python/tuple
+  - Brown, Lisa
+  - PSN10010004GA01
+  - CAS10012612GA01
+  - 790 - Syphilis, Congenital
+  - 06/19/2025
+  - 08/26/2027
+  - 10004
+  - 0
+  - 22
   - 2
