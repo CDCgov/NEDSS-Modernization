@@ -18,7 +18,10 @@ def execute(
         column was the only difference
     * date_column is a required library_param
     * total_cases will always be the SUM total. The SAS library did not include
-    the total when one of the count_values was 0.
+        the total when one of the count_values was 0.
+    * The date parameters are not passed into the python. Instead start and end
+      dates are derived from the output data. The outcome is the oldest and
+      newest dates in the output may not equal the From Date and To Date.
     """
     nbs_ods = get_cached_config_value('REPORT_DB_NBS_ODS')
     nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
