@@ -40,7 +40,6 @@ def _spec(subset_query: str, library_params: str = '{"report_variant": "HIV"}'):
             'is_builtin': True,
             'report_title': 'PA04',
             'library_name': 'pa_04',
-            'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
             'subset_query': subset_query,
             'library_params': library_params,
         }
@@ -56,7 +55,6 @@ class TestIntegrationPa04Library:
         report_spec = _spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.content.columns == EXPECTED_COLUMNS
 
         data = result.content.data
@@ -103,7 +101,6 @@ class TestIntegrationPa04Library:
         report_spec = _spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 10 + 2 * 19
@@ -124,10 +121,7 @@ class TestIntegrationPa04Library:
         report_spec = _spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')
 
         result = execute_report(report_spec)
-        assert result.header == 'PA04'
-        assert result.subheader is None
         assert result.description is None
-        assert result.content_type == 'table'
         assert result.content.columns == EXPECTED_COLUMNS
 
     def test_execute_report_missing_variant_raises_error(self):
@@ -170,7 +164,6 @@ class TestIntegrationPa04LibrarySTD:
         report_spec = _std_spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert result.content.columns == STD_EXPECTED_COLUMNS
 
         data = result.content.data
@@ -213,7 +206,6 @@ class TestIntegrationPa04LibrarySTD:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 10 + 2 * 19
@@ -235,8 +227,5 @@ class TestIntegrationPa04LibrarySTD:
         report_spec = _std_spec('SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]')
 
         result = execute_report(report_spec)
-        assert result.header == 'PA04'
-        assert result.subheader is None
         assert result.description is None
-        assert result.content_type == 'table'
         assert result.content.columns == STD_EXPECTED_COLUMNS

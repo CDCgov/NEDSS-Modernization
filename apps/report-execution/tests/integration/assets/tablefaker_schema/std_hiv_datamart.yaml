@@ -236,9 +236,17 @@ tables:
 
       - column_name: diagnosis_cd
         data: |
-          # For the controlled test patient (first 6 rows), force diagnosis '200'
+          # qa_07 groups duplicate-case detection by (PATIENT_LOCAL_ID,
+          # DIAGNOSIS) and uses LAG() window functions that only look at each
+          # row's nearest neighbor by date *within that partition*. Giving all
+          # 3 controlled clusters (see fl_fup_exam_dt below) the same
+          # diagnosis merges them into one partition, so the middle clusters'
+          # rows are no longer adjacent to their own pair -- they're adjacent
+          # to the *other* clusters' far-away dates instead, and never get
+          # flagged. Each cluster needs its own diagnosis so its pair is the
+          # only thing in its partition.
           if row_id <= 6:
-              return '200'
+              return ['200', '200', '300', '300', '710', '710'][row_id - 1]
           else:
               return fake.random_element(['200', '300', '710', '720', '730', '790', '900', '950']) if fake.random_int(1,100) <= 90 else None
       

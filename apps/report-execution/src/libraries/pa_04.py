@@ -19,7 +19,6 @@ _SUPPORTED_VARIANTS = frozenset({'HIV', 'STD'})
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     library_params: dict,
     **kwargs,
 ):
@@ -132,4 +131,4 @@ def execute(
         data=case_metric_rows + bucket_rows,
     )
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)
