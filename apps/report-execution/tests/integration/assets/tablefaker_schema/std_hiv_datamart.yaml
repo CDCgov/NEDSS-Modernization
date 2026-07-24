@@ -236,9 +236,17 @@ tables:
 
       - column_name: diagnosis_cd
         data: |
-          # For the controlled test patient (first 6 rows), force diagnosis '200'
+          # qa_07 groups duplicate-case detection by (PATIENT_LOCAL_ID,
+          # DIAGNOSIS) and uses LAG() window functions that only look at each
+          # row's nearest neighbor by date *within that partition*. Giving all
+          # 3 controlled clusters (see fl_fup_exam_dt below) the same
+          # diagnosis merges them into one partition, so the middle clusters'
+          # rows are no longer adjacent to their own pair -- they're adjacent
+          # to the *other* clusters' far-away dates instead, and never get
+          # flagged. Each cluster needs its own diagnosis so its pair is the
+          # only thing in its partition.
           if row_id <= 6:
-              return '200'
+              return ['200', '200', '300', '300', '710', '710'][row_id - 1]
           else:
               return fake.random_element(['200', '300', '710', '720', '730', '790', '900', '950']) if fake.random_int(1,100) <= 90 else None
       
@@ -415,6 +423,51 @@ tables:
       - column_name: soc_prtnrs_prd_male_ttl
         data: str(random.randint(0, 4))
 
+      - column_name: hiv_900_test_ind
+        data: random.choice(["Yes", "No"])
+
+      - column_name: hiv_900_result
+        data: |
+          return random.choices(
+            [
+              "13-Positive/Reactive", "21-HIV-1 Pos", "22-HIV-1 Pos, Possible Acute",
+              "23-HIV-2 Pos", "24-HIV-Undifferentiated", "12-Prelim Positive",
+              "11-Negative", None,
+            ],
+            weights=[10, 10, 5, 5, 5, 5, 40, 20]
+          )[0]
+
+      - column_name: hiv_post_test_900_counseling
+        data: random.choice(["Yes", "No"])
+
+      - column_name: fl_fup_disposition
+        data: |
+          # PA04 HIV's 7 'examined' codes (1-7) and 7 'not examined' codes
+          # (G, H, J, K, L, V, X), plus STD's own 6 'examined' codes (A-F)
+          # and its extra 'not examined' code (Z) -- STD and HIV share the
+          # G/H/J/K/L/V/X labels but use disjoint 'examined' vocabularies, so
+          # both variants' rows are exercised from one shared column.
+          return random.choices(
+            [
+              "1 - Prev. Pos", "2 - Prev. Neg, New Pos", "3 - Prev. Neg, Still Neg",
+              "4 - Prev. Neg, No Test", "5 - No Prev Test, New Pos",
+              "6 - No Prev Test, New Neg", "7 - No Prev Test, No Test",
+              "A - Preventative Treatment", "B - Refused Preventative Treatment",
+              "C - Infected, Brought to Treatment", "D - Infected, Not Treated",
+              "E - Previously Treated for This Infection", "F - Not Infected",
+              "G - Insufficient Info to Begin Investigation", "H - Unable to Locate",
+              "J - Located, Not Examined and/or Interviewed",
+              "K - Sent Out Of Jurisdiction", "L - Other",
+              "V - Domestic Violence Risk", "X - Patient Deceased",
+              "Z - Previous Preventative Treatment", None,
+            ],
+            weights=[
+              5, 5, 5, 4, 4, 4, 4,
+              5, 5, 5, 4, 4, 4,
+              4, 4, 4, 3, 3, 3, 3, 3, 8,
+            ]
+          )[0]
+
   - table_name: "[RDB].[dbo].[F_INTERVIEW_CASE]"
     row_count: 60
     columns:
@@ -427,7 +480,7 @@ tables:
           return 2 + ((row_id - 1) % 4)
 
   - table_name: "[RDB].[dbo].[D_CONTACT_RECORD]"
-    row_count: 40
+    row_count: 200
     columns:
       - column_name: d_contact_record_key
         data: row_id
@@ -441,7 +494,15 @@ tables:
         data: |
           return datetime(2024, 3, min(row_id, 28), 8, 0, 0)
       - column_name: ctt_referral_basis
-        data: random.choice(["P1 - Partner, Sex", "S1 - Social Contact 1", "A1 - Associate 1", "P2 - Partner, Needle-Sharing"])
+        data: |
+          # Includes 'C1- Cohort', which PA04 folds into its 'Clusters'
+          # bucket alongside Social Contacts and Associates.
+          return random.choice([
+            "P1 - Partner, Sex", "P2 - Partner, Needle-Sharing", "P3 - Partner, Both",
+            "S1 - Social Contact 1", "S2 - Social Contact 2", "S3 - Social Contact 3",
+            "A1 - Associate 1", "A2 - Associate 2", "A3 - Associate 3",
+            "C1- Cohort",
+          ])
       - column_name: ctt_processing_decision
         data: random.choice(["Field Follow-up", "Secondary Referral", "Record Search Closure"])
       - column_name: add_time
@@ -452,14 +513,28 @@ tables:
           return datetime(2024, 2, min(row_id, 28), 9, 0, 0)
 
   - table_name: "[RDB].[dbo].[F_CONTACT_RECORD_CASE]"
-    row_count: 40
+    row_count: 200
     columns:
       - column_name: d_contact_record_key
         data: row_id
       - column_name: subject_investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+        data: |
+          # F_INTERVIEW_CASE only covers investigation_key 1-60 (its
+          # row_count) -- PA04_Std's contact_query requires the subject case
+          # to have a matching F_INTERVIEW_CASE row (a real INNER JOIN in the
+          # SAS source, not a no-op like case_query's), so most contact
+          # records need a subject in that range or STD's Partner/Cluster
+          # metrics stay at 0. Bias toward it while keeping some variety.
+          if random.random() < .85:
+              return random.randint(1, 60)
+          return foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       - column_name: contact_investigation_key
-        data: foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
+        data: |
+          # 1 is NBS's 'no contact yet' sentinel investigation key --
+          # exercised by PA04's Val_C/Val_E ('Cases NCI') detection.
+          if random.random() < .3:
+              return 1
+          return foreign_key("[RDB].[dbo].[INVESTIGATION]", "investigation_key")
       - column_name: third_party_entity_key
         data: 1
       - column_name: contact_key
@@ -471,7 +546,13 @@ tables:
       - column_name: third_party_investigation_key
         data: 1
       - column_name: contact_interview_key
-        data: foreign_key("[RDB].[dbo].[D_INTERVIEW]", "d_interview_key")
+        data: |
+          # 1 is NBS's 'no interview yet' sentinel D_INTERVIEW key -- exercised
+          # by PA04_Std's contact_query, which excludes it (STD-only filter,
+          # not present in the HIV variant's equivalent query).
+          if random.random() < .2:
+              return 1
+          return foreign_key("[RDB].[dbo].[D_INTERVIEW]", "d_interview_key")
       - column_name: dispositioned_by_key
         data: 1
       - column_name: contact_exposure_site_key
