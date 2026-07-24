@@ -25,7 +25,7 @@ class TestIntegrationQa10Library:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 21
+        assert len(data) == 30
         assert len(data[0]) == 20
         assert len(data[0]) == len(result.content.columns)
 

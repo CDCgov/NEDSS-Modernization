@@ -1,0 +1,134 @@
+from src.db_transaction import Transaction
+from src.errors import InvalidLibraryParamsError
+from src.libraries.support.pa_04.calculations import (
+    build_bucket_metrics,
+    build_case_metrics,
+    build_std_bucket_metrics,
+)
+from src.libraries.support.pa_04.queries import (
+    case_query,
+    contact_query,
+    index_query,
+    std_index_query,
+)
+from src.models import ReportResult, Table
+
+_SUPPORTED_VARIANTS = frozenset({'HIV', 'STD'})
+
+
+def execute(
+    trx: Transaction,
+    subset_query: str,
+    library_params: dict,
+    **kwargs,
+):
+    """PA04 Program Indicator Report.
+
+    PA04 is really two SAS programs -- PA04_HIV.sas and PA04_Std.sas -- that
+    share a lot of structure (case-level metrics, the Initiated/Examined/
+    Not-Examined shape for the Partner/Cluster blocks) but diverge in real
+    business logic (different disposition vocabularies, and different index
+    calculations). This library merges them and dispatches on a required
+    'report_variant' library param (matching pa_01's naming convention).
+
+    Conversion notes:
+    * 'Cases Closed' (Val_A) and 'Cases Interviewed' (Val_B)
+      come from the exact same unfiltered query (PA04_HIV.sas:61-66,
+      PA04_Std.sas:60-67) and are therefore always equal.
+    * 'Partners/Clusters Initiated' never has a percentage --
+      the %fills macro computes PER_PM/PER_CM but the assignment that would
+      write them into the report is commented out in both variants
+      (PA04_HIV.sas:636,656; PA04_STD.sas:605,624). Preserved as always-None
+      here, not a display bug.
+    * Period Partner Index rounds to 0.1 in HIV but 0.01 in
+      STD -- see support/pa_04/calculations.py.
+
+    Conversion notes (HIV):
+    * The Notification Index and Testing Index are always
+      the same value -- their source datasets (pix/testindex,
+      PA04_HIV.sas:191-228) differ only by a filter that's already guaranteed
+      true by the base case filter. See support/pa_04/queries.py.
+    * The Combined-scope Notification/Testing Index sums
+      per-IX_TYPE-group counts rather than taking a fresh distinct count, so
+      it can double-count a case present under both Initial/Original and
+      Re-Interview -- unlike every other Combined-scope metric. See
+      support/pa_04/calculations.py.
+
+    Conversion notes (STD):
+    * Unlike HIV, Treatment Index and DI Index are genuinely different
+      values (not two displays of the same number): Treatment Index sums the
+      per-contact disposition counts already computed for the breakdown rows,
+      while DI Index is a separate case-level distinct count requiring a
+      matching D_PROVIDER row and valid CTT_PROCESSING_DECISION -- see
+      support/pa_04/queries.py's std_index_query and
+      support/pa_04/calculations.py's build_std_bucket_metrics.
+    * PA04_STD.sas's PP04_OI/CLUSTER queries additionally
+      exclude contacts still at the 'no interview yet' sentinel value
+      (`CONTACT_INTERVIEW_KEY <> 1`), a filter HIV's equivalent queries don't
+      have. See support/pa_04/queries.py's contact_query.
+    * There is a bug in PA04_STD.sas's (and PA04_HIV.sas's) %fills macro: the
+      Partners and Clusters disposition-breakdown rows share identical
+      `descrip` text (e.g. 'DISPO. A - PREVENTIVE TX:' appears verbatim in
+      both sections), and the macro assigns values via a sequence of
+      independent `if find(descrip, ...)` statements rather than
+      mutually-exclusive branches. Since the Clusters assignment for each
+      shared disposition code always comes later in the macro body than the
+      matching Partners assignment, it silently overwrites it for every row
+      -- so the SAS report's displayed Partners disposition breakdown (both
+      count and percentage, across every scope) is actually the Clusters
+      breakdown, not the Partners one. Only the aggregate rows ('PARTNERS
+      EXAMINED:' vs 'CLUSTERS EXAMINED:', etc.) are immune, since those
+      strings are genuinely unique per bucket. The Python library will not
+      re-create this bug and instead gives each bucket's true, independently
+      -computed disposition breakdown.
+    """
+    if not isinstance(library_params, dict) or 'report_variant' not in library_params:
+        raise InvalidLibraryParamsError(
+            "'report_variant' is required (one of: 'HIV', 'STD')."
+        )
+
+    report_variant = library_params['report_variant']
+    if report_variant not in _SUPPORTED_VARIANTS:
+        raise InvalidLibraryParamsError(
+            f'Unsupported PA04 variant: {report_variant!r}. '
+            f'Supported variants: {sorted(_SUPPORTED_VARIANTS)}.'
+        )
+
+    case_rows = trx.query(case_query(subset_query)).data
+    contact_rows = trx.query(contact_query(subset_query, report_variant)).data
+
+    if report_variant == 'STD':
+        totals, case_metric_rows = build_case_metrics(
+            case_rows, period_partner_index_ndigits=2
+        )
+        treatment_index_rows = trx.query(std_index_query(subset_query)).data
+        bucket_rows = build_std_bucket_metrics(
+            contact_rows, treatment_index_rows, totals['B']
+        )
+    else:
+        totals, case_metric_rows = build_case_metrics(case_rows)
+        index_rows = trx.query(index_query(subset_query)).data
+        bucket_rows = build_bucket_metrics(contact_rows, index_rows, totals['B'])
+
+    content = Table(
+        columns=[
+            'Category 1',
+            'Category 2',
+            'Category 3',
+            'Count',
+            'Percentage',
+            'Index',
+            'From OI Count',
+            'From OI Percentage',
+            'From OI Index',
+            'From RI Count',
+            'From RI Percentage',
+            'From RI Index',
+            'Total Count',
+            'Total Percentage',
+            'Total Index',
+        ],
+        data=case_metric_rows + bucket_rows,
+    )
+
+    return ReportResult(content=content)
