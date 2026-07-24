@@ -60,7 +60,7 @@ Feature: Save report after report run
         And I click on the "Run" link
         Then I should see option "AIDS" in the "Condition Code" combobox input field
         Then I should see option "Fulton County" in the "County Code" multi-select combobox input field
-        When I click on the "Back to reports" link
+        When I click on the "Back to Reports" link
         Then I am redirected to "/nbs/ManageReports.do"
 
     Scenario: I can delete the reports I created
