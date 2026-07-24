@@ -1,14 +1,10 @@
-import { cachedSelectableResolver } from 'options/cache/cachedSelectableResolver';
-import { Selectable } from 'options/selectable';
-import { SelectableOptionsInteraction, useSelectableOptions } from 'options/useSelectableOptions';
+import { selectableResolver, SelectableOptionsInteraction, useSelectableOptions } from 'options';
 
-const resolver = (dataSource?: string | null) => {
-    return dataSource
-        ? cachedSelectableResolver(
-              `report.datasource.columns.filterable.options.${dataSource}`,
-              `/nbs/api/options/report/datasource/${dataSource}/columns/filterable`
-          )()
-        : Promise.resolve<Selectable[]>([]);
+const resolver = async (dataSource?: string | null) => {
+    if (!dataSource) {
+        return [];
+    }
+    return selectableResolver(`/nbs/api/options/report/datasource/${dataSource}/columns/filterable`);
 };
 
 const useReportDataSourceFilterableColumnOptions = (): SelectableOptionsInteraction<string> => {
