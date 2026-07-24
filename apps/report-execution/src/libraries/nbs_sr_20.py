@@ -6,13 +6,10 @@ from src.models import ReportResult, Table
 def execute(
     trx: Transaction,
     subset_query: str,
-    library_params: dict,
     **kwargs,
 ):
     """Wrapper report leveraging SR19 core engine with a modified column layout."""
-    nbs_sr_19_report_result = execute_nbs_sr_19(
-        trx, subset_query, library_params, **kwargs
-    )
+    nbs_sr_19_report_result = execute_nbs_sr_19(trx, subset_query, **kwargs)
     nbs_sr_19_report_result_rows = nbs_sr_19_report_result.content.data
 
     # Mapping:
@@ -25,4 +22,4 @@ def execute(
         columns=['monthYear', 'sasdate', 'counted_cases'], data=modified_rows
     )
 
-    return ReportResult(content_type='table', content=modified_table)
+    return ReportResult(content=modified_table)
