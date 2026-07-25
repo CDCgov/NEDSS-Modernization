@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReportMapper {
+  private static final System.Logger LOGGER = System.getLogger(ReportMapper.class.getName());
+
   private final Clock clock;
   private final IdGeneratorService idGenerator;
   private final ReportFilterBuilder reportFilterBuilder;
@@ -32,6 +34,8 @@ public class ReportMapper {
   }
 
   public Report duplicate(Report existingReport, NbsUserDetails user) {
+    LOGGER.log(System.Logger.Level.TRACE, "Duplicating report " + existingReport.getId());
+
     Report newReport =
         existingReport.toBuilder()
             .id(new ReportId(generateId(), existingReport.getDataSource().getId()))
@@ -41,6 +45,10 @@ public class ReportMapper {
             .build();
 
     if (existingReport.getReportFilters() != null) {
+      LOGGER.log(
+          System.Logger.Level.TRACE,
+          "Duplicating report filters for report " + existingReport.getId());
+
       List<ReportFilter> newFilters =
           existingReport.getReportFilters().stream()
               .map(reportFilterBuilder::duplicate)
@@ -51,6 +59,10 @@ public class ReportMapper {
     }
 
     if (existingReport.getReportSortColumns() != null) {
+      LOGGER.log(
+          System.Logger.Level.TRACE,
+          "Duplicating report sort columns for report " + existingReport.getId());
+
       List<ReportSortColumn> newSortColumns =
           existingReport.getReportSortColumns().stream()
               .map(
@@ -67,6 +79,10 @@ public class ReportMapper {
     }
 
     if (existingReport.getDisplayColumns() != null) {
+      LOGGER.log(
+          System.Logger.Level.TRACE,
+          "Duplicating report display columns for report " + existingReport.getId());
+
       List<DisplayColumn> newDisplayColumns =
           existingReport.getDisplayColumns().stream()
               .map(
@@ -108,6 +124,10 @@ public class ReportMapper {
 
     // adding a SAS library - need to make sure the location and type are set for NBS 6 to use
     if (reportLibrary.getLibraryName().toUpperCase().endsWith(".SAS")) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Setting SAS-specific fields for SAS library: " + reportLibrary.getLibraryName());
+
       report.setLocation(reportLibrary.getLibraryName());
       report.setReportTypeCode(
           reportLibrary.getColumnSelectInd().toString().equals("Y")

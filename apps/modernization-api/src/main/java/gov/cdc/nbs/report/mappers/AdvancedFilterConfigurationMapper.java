@@ -36,6 +36,9 @@ public class AdvancedFilterConfigurationMapper {
         exceptionMsg = e.getMessage();
         LOGGER.log(System.Logger.Level.WARNING, "Unable to parse saved advanced filter query", e);
       }
+    } else {
+      LOGGER.log(
+          System.Logger.Level.DEBUG, "No filter values for advanced filter " + filter.getId());
     }
 
     return new AdvancedFilterConfiguration(filter.getId(), ruleGroup, query, exceptionMsg);

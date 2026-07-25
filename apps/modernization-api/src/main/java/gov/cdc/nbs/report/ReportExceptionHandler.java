@@ -28,6 +28,10 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
     String errorId = UUID.randomUUID().toString();
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getBindingResult().getAllErrors().toString(), errorId),
@@ -37,6 +41,10 @@ public class ReportExceptionHandler {
   @ExceptionHandler(ForbiddenException.class)
   public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
     String errorId = UUID.randomUUID().toString();
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.FORBIDDEN);
@@ -45,6 +53,10 @@ public class ReportExceptionHandler {
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponseBody> handleNotFound(NotFoundException ex) {
     String errorId = UUID.randomUUID().toString();
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_FOUND);
@@ -53,6 +65,10 @@ public class ReportExceptionHandler {
   @ExceptionHandler(NotImplementedException.class)
   public ResponseEntity<ErrorResponseBody> handleNotImplemented(NotImplementedException ex) {
     String errorId = UUID.randomUUID().toString();
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_IMPLEMENTED);
@@ -61,6 +77,10 @@ public class ReportExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ErrorResponseBody> handleUnprocessableEntity(IllegalArgumentException ex) {
     String errorId = UUID.randomUUID().toString();
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -70,6 +90,10 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleFailedSerialization(
       HttpMessageNotReadableException ex) {
     String errorId = UUID.randomUUID().toString();
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -93,7 +117,10 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleUnexpectedError(Exception ex) {
     String errorId = UUID.randomUUID().toString();
 
-    LOGGER.log(System.Logger.Level.ERROR, errorId, ex.getMessage(), ex);
+    LOGGER.log(
+        System.Logger.Level.ERROR,
+        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        ex);
     return new ResponseEntity<>(
         new ErrorResponseBody("Internal Server Error", errorId), HttpStatus.INTERNAL_SERVER_ERROR);
   }
