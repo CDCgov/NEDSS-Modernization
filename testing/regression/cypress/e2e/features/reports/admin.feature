@@ -205,4 +205,15 @@ Feature: Manage report configuration
         When I click the "Cancel" button
         Then I should see the report list
 
+    Scenario Outline: Old path <path> 404's
+        When I navigate to "<path>" path
+        Then I should see a "heading" labelled "Not Found"
+
+        Examples:
+            | path |
+            | /nbs/EditReport.do |
+            | /nbs/NewReportFilter.do |
+            | /nbs/EditReportFilter.do |
+            | /nbs/EditReportFilter.do?filter_uid=123 |
+
         
