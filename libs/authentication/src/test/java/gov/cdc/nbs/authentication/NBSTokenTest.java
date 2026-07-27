@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-public class NBSTokenTest {
+class NBSTokenTest {
 
   @Test
   void should_apply_token_with_security_when_null() {
