@@ -24,8 +24,6 @@ class OIDCAuthenticationConfiguration {
                 authorize
                     .pathMatchers(HttpMethod.GET, "/welcome/**")
                     .permitAll()
-                    .pathMatchers(HttpMethod.GET, "/nbs/login")
-                    .permitAll()
                     //  paths associated with authentication
                     .pathMatchers(HttpMethod.GET, "/nbs/logged-out", "/nbs/timeout", "/nbs/logOut")
                     .permitAll()
