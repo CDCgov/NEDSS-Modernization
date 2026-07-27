@@ -28,6 +28,10 @@ import org.springframework.context.annotation.Configuration;
  *   <li>Request is a GET
  *   <li>Path equal to {@code /nbs/NewReport.do
  * </ul>
+ * <ul>
+ *   <li>Request is a GET
+ *   <li>Path equal to {@code /nbs/EditReport.do} or {@code /nbs/NewReportFilter.do} or {@code /nbs/EditReportFilter.do}
+ * </ul>
  */
 @Configuration
 @ConditionalOnProperty(
@@ -75,6 +79,18 @@ class ReportAdminRouteLocatorConfiguration {
                             filter
                                 .setPath("/nbs/redirect/report/management/configuration/add")
                                 .filters(defaults))
+                    .uri(service.uri()))
+
+        // route unused report routes to mod so they will 404 instead of kind of work, kind of not
+        // in NBS 6
+        .route(
+            "report-config-old-unused",
+            route ->
+                route
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
+                    .path(
+                        "/nbs/EditReport.do", "/nbs/EditReportFilter.do", "/nbs/NewReportFilter.do")
+                    .filters(filter -> filter.filters(defaults))
                     .uri(service.uri()))
         .build();
   }
