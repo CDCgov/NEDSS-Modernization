@@ -14,6 +14,7 @@ export const useNewTab = () => {
         const root = createRoot(div);
         root.render(content);
         if (newWindow) {
+            newWindow.document.documentElement.lang = document.documentElement.lang;
             newWindow.document.body.appendChild(div);
             newWindow.document.title = title;
             copyStyles(document, newWindow.document);
