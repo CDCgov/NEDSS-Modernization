@@ -27,7 +27,7 @@ class NBS6LoginRouteLocatorConfiguration {
             route ->
                 route
                     .path("/nbs/login")
-                    .filters(defaults)
+                    .filters(filter -> filter.filters(defaults))
                     .uri(classic.uri()))
         .route(
             "nbs6-block-nfc-based-login",
