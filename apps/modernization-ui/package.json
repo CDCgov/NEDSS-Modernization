@@ -37,7 +37,8 @@
         "typescript": "6.0.3",
         "prop-types": "^15.8.1",
         "nth-check": "^2.0.1 ",
-        "postcss": "^8.4.31"
+        "postcss": "^8.4.31",
+        "js-yaml": "4.3.0"
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
