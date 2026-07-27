@@ -136,6 +136,14 @@ NBS_GATEWAY_LOG_LEVEL=DEBUG docker compose up -d nbs-gateway
 Authentication is not enabled by default. The `nbs-gateway` has been preconfigured to work as an OIDC Client by
 enabling the `oidc` profile. The profile requires a specific set of configuration values.
 
+In many deployments, the gateway needs two different Keycloak URLs:
+
+- a public URL for browser-facing redirects and discovery metadata, such as `http://localhost:8100/realms/nbs-users`
+- a backend/internal URL for server-to-server calls such as JWKS retrieval, such as `http://keycloak:8080/realms/nbs-users`
+
+This split is important because the browser and the gateway may not be able to reach the identity provider in the same way.
+The public URL is what the user agent sees, while the backend URL is what the gateway container uses internally.
+
 | Name                            | Default                                                                              | Description                                                                          |
 |---------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
 | spring.profiles.include         |                                                                                      | The Spring property to include profiles. Set to `oidc` to enable OIDC authentication |
@@ -145,3 +153,5 @@ enabling the `oidc` profile. The profile requires a specific set of configuratio
 | nbs.security.oidc.uri           | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                          |
 | nbs.security.oidc.client.id     |                                                                                      | The client id used to initiate Authentication                                        |
 | nbs.security.oidc.client.secret |                                                                                      | The client secret used to initiate Authentication                                    |
+| NBS_SECURITY_OIDC_PUBLIC_URI    | `http://localhost:8100/realms/nbs-users`                                             | The browser-facing issuer URL used for OIDC discovery and redirect flows             |
+| NBS_SECURITY_OIDC_BACKEND_URI   | `http://keycloak:8080/realms/nbs-users`                                              | The internal URL used by the gateway container for JWKS and related backend calls   |
