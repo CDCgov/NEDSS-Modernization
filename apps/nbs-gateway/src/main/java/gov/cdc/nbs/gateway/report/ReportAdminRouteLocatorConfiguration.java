@@ -76,6 +76,15 @@ class ReportAdminRouteLocatorConfiguration {
                                 .setPath("/nbs/redirect/report/management/configuration/add")
                                 .filters(defaults))
                     .uri(service.uri()))
+        .route(
+            "report-config-old-unused",
+            route ->
+                route
+                    .order(RouteOrdering.MODERNIZED_SERVICE.order())
+                    .path(
+                        "/nbs/EditReport.do", "/nbs/EditReportFilter.do", "/nbs/NewReportFilter.do")
+                    .filters(filter -> filter.setStatus(404).filters(defaults))
+                    .uri(service.uri()))
         .build();
   }
 }
