@@ -11,6 +11,6 @@ public record SecurityProperties(
   }
 
   public boolean getTokenCookieSecure() {
-    return tokenCookieSecure != false; // null is truthy
+    return tokenCookieSecure == null || tokenCookieSecure == true;
   }
 }
