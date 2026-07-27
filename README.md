@@ -82,6 +82,8 @@ services, including user setup, database containers, HTTP response verification,
 
 The [CDC Sandbox](cdc-sandbox/README.md) provides containers to support local development.
 
+> For local OIDC setup, the gateway may need two different Keycloak URLs: a browser-facing public URL and a container-internal backend URL. In the sandbox, a common example is using http://localhost:8100/realms/nbs-users for the public URL and http://keycloak:8080/realms/nbs-users for the backend URL.
+
 #### Guidelines
 
 - [Package by Feature](documentation/Package-By-Feature.md) to make code easier to find.
