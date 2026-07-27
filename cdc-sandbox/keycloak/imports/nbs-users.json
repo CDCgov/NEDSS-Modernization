@@ -133,9 +133,10 @@
       "secret": "KK092EEXikR0hpubkwZGHbdtZKw99AJi",
       "redirectUris": [
         "/login/oauth2/code/nbs-users",
+        "http://localhost:8000/login/oauth2/code/nbs-users",
         "https://oauth.pstmn.io/v1/callback"
       ],
-      "webOrigins": ["https://oauth.pstmn.io"],
+      "webOrigins": ["http://localhost:8000", "https://oauth.pstmn.io"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
