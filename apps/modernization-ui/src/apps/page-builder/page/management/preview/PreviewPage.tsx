@@ -229,9 +229,6 @@ const PreviewPageContent = () => {
                 onConfirm={() => {
                     handleDeleteDraft();
                 }}
-                onCancel={() => {
-                    deleteDraftRef.current?.toggleModal();
-                }}
             />
             {!isPublishing ? (
                 <ModalComponent
