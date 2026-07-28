@@ -166,9 +166,6 @@ export const SubsectionHeader = ({
                     handleUngroup();
                     ungroupSubsectionModalRef.current?.toggleModal();
                 }}
-                onCancel={() => {
-                    ungroupSubsectionModalRef.current?.toggleModal();
-                }}
             />
             <ModalComponent
                 modalRef={addStaticElementModalRef}
