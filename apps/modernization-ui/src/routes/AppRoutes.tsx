@@ -17,6 +17,7 @@ import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRout
 import { PageProvider } from 'page';
 import { LoadingBlock } from 'libs/loading/block';
 import { ErrorPage } from 'pages/error/ErrorPage';
+import { ResultDataPage } from 'apps/report/run/ResultDataPage';
 
 const routing: RouteObject[] = [
     welcomeRouting,
@@ -47,6 +48,7 @@ const routing: RouteObject[] = [
         ],
     },
     { path: 'expired', element: <Expired /> },
+    { path: '/report/result/:resultId', element: <ResultDataPage /> },
 ];
 
 const router = createBrowserRouter(routing);

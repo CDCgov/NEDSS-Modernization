@@ -1,45 +1,15 @@
-import { ReactNode } from 'react';
-import { createRoot } from 'react-dom/client';
-
 /**
  * Open the provided content in a new tab.
  *
- * The styles are copied over and the title is set.
+ * The path should point to nbs, content will be placed in local storage at the provided key
  */
 export const useNewTab = () => {
-    const openNewTab = (content: ReactNode, title: string) => {
-        let newWindow = window.open('', '_blank', '');
-
-        const div = document.createElement('div');
-        const root = createRoot(div);
-        root.render(content);
-        if (newWindow) {
-            newWindow.document.body.appendChild(div);
-            newWindow.document.title = title;
-            copyStyles(document, newWindow.document);
-        }
+    const openNewTab = (path: string, content?: string, storageKey?: string) => {
+        if (content && storageKey) localStorage.setItem(storageKey, content);
+        window.open(path, '_blank', 'noopener,noreferrer');
     };
 
     return {
         openNewTab,
     };
-};
-
-const copyStyles = (sourceDoc: Document, targetDoc: Document) => {
-    for (const stylesheet of sourceDoc.styleSheets) {
-        // For <link> elements (external stylesheets)
-        if (stylesheet.href) {
-            const el = targetDoc.createElement('link');
-            el.rel = 'stylesheet';
-            el.href = stylesheet.href;
-            targetDoc.head.appendChild(el);
-        }
-
-        // For <style> elements (inline or generated styles)
-        else if (stylesheet.ownerNode && stylesheet.ownerNode.textContent) {
-            const el = targetDoc.createElement('style');
-            el.textContent = stylesheet.ownerNode.textContent;
-            targetDoc.head.appendChild(el);
-        }
-    }
 };

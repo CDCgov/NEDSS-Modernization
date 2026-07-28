@@ -11,7 +11,6 @@ import { useCallback, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { useNewTab } from './useNewTab';
-import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -126,13 +125,15 @@ const ReportRunPage = () => {
                         if (isExport) {
                             fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
                         } else {
+                            const resultId = crypto.randomUUID();
                             openNewTab(
-                                <ResultDataPage
-                                    result={res}
-                                    title={config?.title ?? ''}
-                                    dataSourceName={config?.dataSource.name ?? ''}
-                                />,
-                                `NBS Report: ${config?.title ?? ''}`
+                                `/report/result/${resultId}`,
+                                JSON.stringify({
+                                    result: res,
+                                    title: config?.title ?? '',
+                                    dataSourceName: config?.dataSource.name ?? '',
+                                }),
+                                `reportResult.${resultId}`
                             );
                         }
                     } catch (err) {

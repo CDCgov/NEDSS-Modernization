@@ -3,14 +3,16 @@ import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import Papa from 'papaparse';
-import { useId } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { ReportLayout } from '../layout/ReportLayout';
 import { ReportExecutionResult } from 'generated';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { NoDataRow } from 'design-system/table/NoDataRow';
+import { LoadingBlock } from 'libs/loading/block';
+import { useParams } from 'react-router';
 
 import layoutStyes from '../layout/layout.module.scss';
-import { NoDataRow } from 'design-system/table/NoDataRow';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -22,20 +24,51 @@ const dateFormatter = Intl.DateTimeFormat('en-US', {
 });
 const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
-const ResultDataPage = ({
-    result: {
-        query,
-        timestamp,
-        result: { context_header, description, content },
-    },
-    title,
-    dataSourceName,
-}: {
+type Result = {
     result: ReportExecutionResult;
     title: string;
     dataSourceName: string;
-}) => {
+};
+
+const ResultDataPage = () => {
+    const params = useParams();
+    const resultId = params.resultId ?? '0';
+    const [result, setResult] = useState<Result | undefined | null>(undefined);
+
+    useEffect(() => {
+        const rawData = localStorage.getItem(`reportResult.${resultId}`);
+        if (rawData) {
+            setResult(JSON.parse(rawData));
+            // Optional: Clean it up so it doesn't linger
+            localStorage.removeItem(`reportResult.${resultId}`);
+            // setLoading(false)
+        } else {
+            setResult(null);
+        }
+    }, []);
+
     const id = useId();
+
+    if (result === undefined) {
+        return <LoadingBlock />;
+    } else if (result === null) {
+        return (
+            <AlertMessage type="warning" title="No result found" level={1}>
+                Uh oh
+            </AlertMessage>
+        );
+    }
+
+    const {
+        result: {
+            result: { content, description, context_header },
+            timestamp,
+            query,
+        },
+        title,
+        dataSourceName,
+    } = result;
+
     const { data, errors, meta } = Papa.parse<Record<string, string>>(content, {
         header: true,
         skipEmptyLines: true,
