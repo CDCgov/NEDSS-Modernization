@@ -20,7 +20,7 @@ class TokenCreatorTest {
 
     Clock clock = Clock.fixed(Instant.parse("2020-03-03T10:15:30.00Z"), ZoneOffset.UTC);
 
-    SecurityProperties properties = new SecurityProperties("secret", "test-issuer", 10000);
+    SecurityProperties properties = new SecurityProperties("secret", "test-issuer", 10000, null);
 
     Algorithm algorithm = mock(Algorithm.class);
 

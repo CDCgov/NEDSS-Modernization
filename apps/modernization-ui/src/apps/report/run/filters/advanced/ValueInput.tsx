@@ -7,6 +7,7 @@ import { DateBetweenCriteria } from 'design-system/date/criteria';
 import { NumberBetweenCriteria } from 'design-system/input/range/NumberRangeField.tsx';
 import { BETWEEN_OPERATOR } from './operators.ts';
 import { ReactComponentLike } from 'prop-types';
+import { SIZING } from 'apps/report/constants.ts';
 
 const RANGE_COMPONENTS: Record<string, ReactComponentLike> = {
     date: DatePickerRange,
@@ -75,6 +76,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
                 name={labelName}
                 onChange={isBetween ? handleBetweenOnChange : handleSingleOnChange}
                 required
+                sizing={SIZING}
             />
         </div>
     );

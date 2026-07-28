@@ -35,6 +35,9 @@
     "react-dom": "^19.2.5",
     "vite": "^8.0.16"
   },
+  "overrides" : {
+    "js-yaml": "4.3.0"
+  },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,
     "stepDefinitions": "./cypress/step_definitions/**/*.{js,ts}",

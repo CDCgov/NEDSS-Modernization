@@ -5,6 +5,7 @@ $border-size: 2px;
 
 .checkbox {
     --checkbox-size: 1.125rem;
+    @extend %medium;
 
     box-sizing: border-box;
 

@@ -1,5 +1,9 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
+When('I navigate to {string} path', (url) => {
+    cy.visit(url);
+})
+
 When('I click on the {string} link', (name) => {
     cy.contains('a', name).click();
 });

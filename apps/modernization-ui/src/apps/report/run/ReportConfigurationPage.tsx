@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button } from 'design-system/button';
+import { Button, NavLinkButton } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
 import { ReportLayout } from '../layout/ReportLayout';
 import { ReportConfiguration } from 'generated';
@@ -137,10 +137,14 @@ const SECTIONS = [
 const ReportConfigurationPage = ({
     config,
     handleSubmit,
+    reportUid,
+    dataSourceUid,
 }: {
     config: ReportConfiguration;
     handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
     error?: ReactNode;
+    reportUid: number;
+    dataSourceUid: number;
 }) => {
     const { errors } = useFormState<ReportExecuteForm>();
     const { allows } = usePermissions();
@@ -151,6 +155,11 @@ const ReportConfigurationPage = ({
 
     const actions = (
         <>
+            <Permitted permission={permissions.system.report}>
+                <NavLinkButton to={`/report/management/configuration/${reportUid}/${dataSourceUid}`} secondary={true}>
+                    Manage report
+                </NavLinkButton>
+            </Permitted>
             <Permitted permission={permissions.reports.export}>
                 <Button
                     type={canRunReport ? 'button' : 'submit'}
@@ -169,7 +178,7 @@ const ReportConfigurationPage = ({
     );
 
     return (
-        <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="reports" actions={actions}>
+        <ReportLayout title={config.title} startHref={NBS_MANAGE_REPORT_PAGE} startPage="Reports" actions={actions}>
             {!sectionData.length ? (
                 <FullPageBlock>
                     <Heading level={2}>No filters available</Heading>
@@ -188,7 +197,7 @@ const ReportConfigurationPage = ({
                     </aside>
                     <div className={layoutStyles.columnContent}>
                         {!!sectionErrors.length && (
-                            <ValidationErrorBanner level={2}>
+                            <ValidationErrorBanner level={2} className={layoutStyles.alertMessage}>
                                 {sectionErrors.map(({ id, title, getValidationMessages }) => (
                                     <ValidationErrorSection id={id} key={id} title={title}>
                                         {getValidationMessages(errors, config)!.map((message, i) => (

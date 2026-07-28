@@ -4,6 +4,7 @@
 
 .horizontal {
     --label-area-width: 13rem;
+    @extend %medium;
 
     padding: 0.5rem 1.5rem;
     align-items: flex-start;

@@ -14,7 +14,6 @@ REQUIRED_COL_NAMES = [col['name'] for col in REQUIRED_COLS]
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     days_value: None | int,
     column_map: list[list[str]],
     sort_by: str | None,
@@ -118,9 +117,6 @@ def execute(
 
     content = trx.query(full_query)
 
-    header = 'Potential Duplicate Investigations'
-    subheader = f'Duplicate Investigations Time Frame: {days_value} Days'
+    context_header = f'Duplicate Investigations Time Frame: {days_value} Days'
 
-    return ReportResult(
-        content_type='table', content=content, header=header, subheader=subheader
-    )
+    return ReportResult(content=content, context_header=context_header)

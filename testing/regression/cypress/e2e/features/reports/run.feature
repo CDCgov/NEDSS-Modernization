@@ -74,9 +74,11 @@ Feature: Run report
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
         Examples:
-            | library   | reportUid | dataSourceUid |
-            | nbs_sr_19 | 10066724  | 15            |
-            | nbs_sr_20 | 10066726  | 15            |
+            | library               | reportUid | dataSourceUid |
+            | nbs_sr_19             | 10066724  | 15            |
+            | nbs_sr_20             | 10066726  | 15            |
+            | tb_summary_count      | 10066780  | 40            |
+            | tb_summary_count_date | 10066781  | 40            |
 
     Scenario: I can run a report for library nbs_custom
         When I navigate to "Template" report with reportUid: 10066768 and dataSourceUid: 30
@@ -85,6 +87,23 @@ Feature: Run report
         And I select the column "AST Result"
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+    Scenario: I can run a report for library pa_02 <name>
+        When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: 23
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "<diagnosis>" from the "DIAGNOSIS_CD" dropdown menu
+        And I select "Fulton LocalUser" from the "INVESTIGATOR_FL_FUP_QC" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+        Examples:
+            | name                                 | reportUid | diagnosis        |
+            | (Dispositioned Date) HIV             | 10066738  | 950 - AIDS       |
+            | (Dispositioned Date) STD             | 10066736  | 100 - Chancroid  |
+            | (Field Follow-up Assigned Date) HIV  | 10066739  | 950 - AIDS       |
+            | (Field Follow-up Assigned Date) STD  | 10066737  | 100 - Chancroid  | 
+
 
     Scenario: I can run a report for library pa_05 (case close date)
         When I navigate to "Public" report with reportUid: 10066745 and dataSourceUid: 23
@@ -121,15 +140,31 @@ Feature: Run report
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
         Examples:
-            | name       | reportUid | dataSourceUid |
-            | qa_03      | 10066753  | 23            |
-            | qa_04      | 10066754  | 23            |
-            | qa_06      | 10066755  | 23            |
-            | qa_07 (30) | 10066756  | 23            |
-            | qa_07 (60) | 10066757  | 23            |
-            | qa_07 (90) | 10066758  | 23            |
-            | qa_10      | 10066759  | 23            |
-            | pa_03      | 10066749  | 23            |
+            | name        | reportUid | dataSourceUid |
+            | qa_03       | 10066753  | 23            |
+            | qa_04       | 10066754  | 23            |
+            | qa_06       | 10066755  | 23            |
+            | qa_07 (30)  | 10066756  | 23            |
+            | qa_07 (60)  | 10066757  | 23            |
+            | qa_07 (90)  | 10066758  | 23            |
+            | qa_10       | 10066759  | 23            |
+            | pa_03       | 10066749  | 23            |
+            | pa_04 (iad) | 10066740  | 23            |
+            | pa_04 (cd)  | 10066741  | 23            |
+
+    Scenario Outline: I can run a report for HIV library with date range and diagnosis
+        When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
+        And I select "950 - AIDS" from the "DIAGNOSIS_CD" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+        Examples:
+            | name        | reportUid | dataSourceUid |
+            | pa_04 (cd)  | 10066743  | 23            |
+            | pa_04 (iad) | 10066742  | 23            |
+
 
     Scenario: I can run a report for library qa_05
         When I navigate to "Public" report with reportUid: 10066762 and dataSourceUid: 25
@@ -183,5 +218,12 @@ Feature: Run report
         And I enter "04/28/2026" to the To date
         And I select "100 - Chancroid" from the "DIAGNOSIS_CD" dropdown menu
         And I select "Fulton LocalUser" from the "INVESTIGATOR_INTERVIEW_QC" dropdown menu
+        And I click the "Run" button
+        Then I should see a "heading" labelled "Your report has opened in a new tab."
+
+    Scenario: I can run a report for library tb_case_ver
+        When I navigate to "Public" report with reportUid: 10066779 and dataSourceUid: 40
+        And I enter "04/28/2025" to the From date
+        And I enter "04/28/2026" to the To date
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."

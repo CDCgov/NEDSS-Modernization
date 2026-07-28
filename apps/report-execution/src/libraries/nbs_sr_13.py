@@ -6,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 13: Counts of Selected Diseases By Case Status.
@@ -51,8 +50,7 @@ def execute(
 """  # noqa: E501
 
     return ReportResult(
-        content_type='table',
         content=content,
-        subheader=None,
+        context_header=None,
         description=description,
     )

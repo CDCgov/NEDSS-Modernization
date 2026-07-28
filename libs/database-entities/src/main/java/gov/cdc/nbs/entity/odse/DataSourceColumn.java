@@ -8,9 +8,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,8 +48,9 @@ public class DataSourceColumn {
   @JoinColumn(name = "data_source_uid")
   private DataSource dataSource;
 
-  @OneToOne(mappedBy = "column", fetch = FetchType.LAZY)
-  private DataSourceCodeset codeset;
+  /** Should be 1:1 in practice, but the DB does not enforce this. */
+  @OneToMany(mappedBy = "column", fetch = FetchType.LAZY)
+  private List<DataSourceCodeset> codesets;
 
   @Column(name = "desc_txt", length = 300)
   private String descTxt;

@@ -1,6 +1,6 @@
 import { ReactNode, useId } from 'react';
 import { SkipLink } from 'SkipLink';
-import { ReportHeader, ReportHeaderProps } from './ReporHeader';
+import { ReportHeader, ReportHeaderProps } from './ReportHeader';
 
 import styles from './layout.module.scss';
 
@@ -18,7 +18,7 @@ const ReportLayout = ({ noSkipLink = false, children, ...headerProps }: ReportRu
             <header id={headerId}>
                 <ReportHeader {...headerProps} />
             </header>
-            <main>{children}</main>
+            <main className="overflow-x-auto">{children}</main>
         </div>
     );
 };

@@ -2,19 +2,27 @@ import { HeadingLevel } from 'components/heading';
 import { AlertMessage } from 'design-system/message';
 import { ReactNode } from 'react';
 
-const ValidationErrorBanner = ({ level, children }: { level: HeadingLevel; children: ReactNode }) => (
-    <AlertMessage type="error" title="Fix the following errors:" level={level}>
+const ValidationErrorBanner = ({
+    level,
+    children,
+    className,
+}: {
+    level: HeadingLevel;
+    children: ReactNode;
+    className?: string;
+}) => (
+    <AlertMessage type="error" title="Fix the following errors:" level={level} className={className}>
         {children}
     </AlertMessage>
 );
 
 const ValidationErrorSection = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => (
-    <div className="usa-prose">
+    <>
         <p>
             For <a href={`#${id}`}>{title}</a>,
         </p>
         <ul>{children}</ul>
-    </div>
+    </>
 );
 
 // Generates an error message that will contain a link to the section if an id is provided

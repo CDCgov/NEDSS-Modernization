@@ -66,17 +66,17 @@ class TestUtils:
         res = utils.get_str_env_or_default('CSV_DATE_STRFTIME', 'foobar')
         assert res == 'foobar'
 
-    def test_gen_subheader_with_us(self):
-        result = utils.gen_subheader(states=['Georgia', 'Tennessee'])
+    def test_gen_context_header_with_us(self):
+        result = utils.gen_context_header(states=['Georgia', 'Tennessee'])
         assert result == 'Georgia, Tennessee'
 
-    def test_gen_subheader_with_states_and_diseases(self):
-        result = utils.gen_subheader(
+    def test_gen_context_header_with_states_and_diseases(self):
+        result = utils.gen_context_header(
             states=[None, 'Alabama', 'Georgia'],
             diseases=['Measles'],
         )
         assert result == 'N/A, Alabama, Georgia | Measles'
 
-    def test_gen_subheader_no_args(self):
-        result = utils.gen_subheader()
+    def test_gen_context_header_no_args(self):
+        result = utils.gen_context_header()
         assert result == ''

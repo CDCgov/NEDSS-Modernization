@@ -29,15 +29,12 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 3
@@ -69,9 +66,7 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) < (2024 - 5)'
@@ -80,7 +75,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == len(result.content.columns)
@@ -107,9 +101,7 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) < 2024'
@@ -118,7 +110,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == len(result.content.columns)
@@ -145,9 +136,7 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     'WHERE YEAR(event_date) = 2024'
@@ -156,7 +145,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) >= 1
         assert len(result.content.data[0]) == len(result.content.columns)
@@ -184,9 +172,7 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
                 ),
@@ -194,7 +180,6 @@ class TestIntegrationNbsSr05Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         assert len(result.content.data) == 0
         assert len(result.content.columns) == 8
@@ -205,17 +190,13 @@ class TestIntegrationNbsSr05Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR5: Cases of Reportable Diseases by State',
                 'library_name': 'nbs_sr_05',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'SR5: Cases of Reportable Diseases by State'
-        assert len(result.description) > 100
-        assert result.content_type == 'table'
+        assert result.description is not None and len(result.description) > 100
 
         assert result.content.columns[0] == 'Percent Change 2024 vs 5 Year Median'
         assert result.content.columns[1] == 'Cumulative for 2023 to Date'

@@ -193,7 +193,6 @@ export const EditBusinessRule = () => {
                 detail="Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
                 confirmText="Yes, delete"
                 onConfirm={onDelete}
-                onCancel={() => deleteWarningModal.current?.toggleModal(undefined, false)}
             />
             <div className={styles.breadCrumb}>
                 <Breadcrumb start="../">Business rules</Breadcrumb>

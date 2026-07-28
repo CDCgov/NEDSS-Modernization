@@ -156,9 +156,7 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.library().isBuiltin());
     assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
-    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.title());
     assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.library().name());
-    assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(

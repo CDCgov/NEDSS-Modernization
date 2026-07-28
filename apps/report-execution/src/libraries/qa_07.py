@@ -7,7 +7,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     library_params: dict,
     **kwargs,
 ):
@@ -36,9 +35,9 @@ def execute(
             (e.g., 30, 60, 90), got {library_params}
         """)
     days = library_params.get('days_value')
-    if days is None:
+    if days is None or type(days) is not int or days < 0:
         raise InvalidLibraryParamsError(f"""
-            library_params must contain 'days_value' \
+            library_params must contain non-negative integer 'days_value' \
             (e.g., 30, 60, 90), got {library_params}
         """)
 
@@ -189,4 +188,4 @@ def execute(
     ORDER BY f.PATIENT_NAME, f.DIAGNOSIS, f.FL_FUP_EXAM_DT, f.INVESTIGATION_KEY
     """
     content = trx.query(sql)
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

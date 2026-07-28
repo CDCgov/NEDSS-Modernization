@@ -69,6 +69,7 @@ const ReportRunPage = () => {
 
     const form = useForm<ReportExecuteForm>({
         mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
     });
 
     const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
@@ -152,7 +153,12 @@ const ReportRunPage = () => {
     ) : status === 'configuring' ? (
         <FormProvider {...form}>
             <form onSubmit={(e) => onSubmit(e, !canRunReport)}>
-                <ReportConfigurationPage config={config} handleSubmit={onSubmit} />
+                <ReportConfigurationPage
+                    reportUid={reportUid}
+                    dataSourceUid={dataSourceUid}
+                    config={config}
+                    handleSubmit={onSubmit}
+                />
             </form>
         </FormProvider>
     ) : (

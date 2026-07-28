@@ -41,6 +41,7 @@ type RepeatingBlockProps<V extends FieldValues> = {
     isValid?: (isValid: boolean) => void;
     formRenderer?: (entry?: V, sizing?: Sizing) => ReactNode;
     itemName?: string;
+    reValidateMode?: 'onBlur' | 'onSubmit' | 'onChange';
 } & Pick<CardProps, 'id' | 'title' | 'collapsible' | 'disabled'>;
 
 const RepeatingBlock = <V extends FieldValues>({
@@ -62,10 +63,11 @@ const RepeatingBlock = <V extends FieldValues>({
     isValid,
     formRenderer,
     viewRenderer,
+    reValidateMode = 'onBlur',
 }: RepeatingBlockProps<V>) => {
     const form = useForm<V>({
         mode: 'onSubmit',
-        reValidateMode: 'onBlur',
+        reValidateMode,
         defaultValues: resolveDefaultValues(defaultValues),
     });
 

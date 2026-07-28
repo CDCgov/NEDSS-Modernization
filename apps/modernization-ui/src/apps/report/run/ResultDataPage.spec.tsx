@@ -1,19 +1,18 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
-import { LibraryExecutionResult, ReportExecutionResult } from 'generated';
+import { ReportExecutionResult } from 'generated';
 import { ResultDataPage } from './ResultDataPage';
 
 describe('ResultDataPage', () => {
     it('renders bare bones report result', () => {
         const result: ReportExecutionResult = {
             result: {
-                content_type: LibraryExecutionResult.content_type.TABLE,
                 content: 'a,b,c',
             },
             query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
             timestamp: '2026-06-17T19:11:35.595501658',
         };
 
-        const { getByRole } = render(
+        const { getByRole, getByText } = render(
             <ResultDataPage result={result} title="My report" dataSourceName="nbs_db.My_Table" />
         );
 
@@ -27,21 +26,21 @@ describe('ResultDataPage', () => {
         expect(getByRole('definition', { name: 'Base SQL query' })).toHaveTextContent(
             'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]'
         );
+        expect(getByText('(0 rows)')).toBeVisible();
     });
 
     it('renders full report result', () => {
         const result: ReportExecutionResult = {
             result: {
-                content_type: LibraryExecutionResult.content_type.TABLE,
                 content: 'a,b,c\n1,2,3',
-                subheader: 'Georgia | Pertussis, Measles',
+                context_header: 'Georgia | Pertussis, Measles',
                 description: '**bold text**\n\n* a list item',
             },
             query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
             timestamp: '2026-06-17T19:11:35.595501658',
         };
 
-        const { getByRole } = render(
+        const { getByRole, container } = render(
             <ResultDataPage result={result} title="My report" dataSourceName="nbs_db.My_Table" />
         );
 
@@ -57,5 +56,6 @@ describe('ResultDataPage', () => {
         expect(getByRole('definition', { name: 'Base SQL query' })).toHaveTextContent(
             'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]'
         );
+        expect(getByText(container, '(1 row)')).toBeVisible();
     });
 });

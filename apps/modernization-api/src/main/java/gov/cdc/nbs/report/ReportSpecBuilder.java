@@ -89,7 +89,6 @@ public class ReportSpecBuilder {
 
     boolean isExport = reportExecRequest.isExport();
     boolean isBuiltin = reportLibrary.isBuiltin();
-    String reportTitle = reportConfig.title();
     String libraryName = reportConfig.library().name();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
@@ -122,9 +121,7 @@ public class ReportSpecBuilder {
     return new ReportSpec(
         isExport,
         isBuiltin,
-        reportTitle,
         libraryName,
-        dataSourceName,
         subsetQuery,
         columnMap,
         orderbyCriteria,

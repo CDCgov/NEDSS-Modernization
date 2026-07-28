@@ -2,7 +2,7 @@ import { getYear, isValid, parse } from 'date-fns';
 
 const formats = ['MM/dd/yyyy', 'MM/yyyy', 'yyyy'];
 
-export const validateDateRange = (value, field) => {
+export const validateDateRange = (value: string[], field: string) => {
     if (rangeValuesMissing(value)) return getRangeValErrorMsg(field, false);
 
     const fromDate = new Date(value[0]!); // can't be undefined because of above checks
@@ -21,7 +21,7 @@ export const validateDateRange = (value, field) => {
     return;
 };
 
-export const validateNumericRange = (value, field) => {
+export const validateNumericRange = (value: string[], field: string) => {
     if (rangeValuesMissing(value)) return getRangeValErrorMsg(field, false);
 
     const fromNum = parseFloat(value[0]); // can't be undefined because of above checks
@@ -48,11 +48,11 @@ export const getBeforeErrorMsg = (field: string, isDate: boolean) => {
     return `From ${typeMsg} must be before To ${typeMsg} for ${field}.`;
 };
 
-export const rangeValuesMissing = (value) => {
+export const rangeValuesMissing = (value: string[]) => {
     return (!!value[0] && !value[1]) || (!value[0] && !!value[1]) || value[0] === '' || value[1] === '';
 };
 
-const isNumberFormat = (val) => {
+const isNumberFormat = (val: unknown) => {
     if (typeof val === 'string') {
         return !!val.match(/^-?\d+(\.\d+)?$/);
     }

@@ -57,6 +57,8 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             sectionCode: undefined,
             group: reportGroupOptions[0],
         },
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
     });
 
     const handleOnSaveAs = ({ reportTitle, sectionCode, group, description }: SaveAsForm) => {
@@ -70,6 +72,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
 
     return (
         <ModalComponent
+            forceAction={saving}
             id="save-report-modal"
             className={styles.layout}
             modalRef={saveAsReportModalRef}

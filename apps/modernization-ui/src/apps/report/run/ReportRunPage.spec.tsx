@@ -188,8 +188,6 @@ const MOCK_BASIC_FILTER = {
 
 const MOCK_RESULT: generated.ReportExecutionResult = {
     result: {
-        content_type: generated.LibraryExecutionResult.content_type.TABLE,
-        header: 'Title',
         content: 'I am the result',
     },
     query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
@@ -429,6 +427,32 @@ describe('report run page', () => {
                     basicFilters: [{ reportFilterUid: 1001, values: [] }],
                 }),
             });
+        });
+
+        it('display "Manage report" button when admin', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const { findByRole } = renderWithRouter({
+                ...BASE_MOCK_USER,
+                permissions: [...BASE_MOCK_PERMISSIONS, permissions.system.report],
+            });
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByRole('button', { name: 'Manage report' })).toBeVisible();
+        });
+
+        it('does not display "Manage report" button when not admin', async () => {
+            const mockApi = vi
+                .mocked(useLoaderData)
+                .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
+            const { findByRole, queryByRole } = renderWithRouter();
+
+            expect(mockApi).toHaveBeenCalled();
+
+            expect(await findByRole('button', { name: 'Export' })).toBeVisible();
+            expect(queryByRole('button', { name: 'Manage report' })).toBeNull();
         });
     });
 
@@ -2846,7 +2870,6 @@ describe('report run page', () => {
                 { value: '456', name: 'Not so awful disease' },
             ]);
             const {
-                queryByText,
                 getByText,
                 findAllByRole,
                 findAllByText,
@@ -2877,32 +2900,34 @@ describe('report run page', () => {
             expect(opSelect).toHaveValue('~');
             await user.selectOptions(opSelect, 'contains');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter a value for Full Name.')).toHaveLength(2);
 
             const valueBox = getByLabelText('Value');
             expect(valueBox).toHaveValue('');
             await user.type(valueBox, 'hi');
 
-            expect(queryByText('Enter a value for Full Name.')).toBeNull();
-
             // generally filled in number value
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
-            expect(opSelect).toHaveValue('~');
-            await user.selectOptions(opSelect, '=');
+            expect(getByLabelText('Logic')).toHaveValue('~');
+            await user.selectOptions(getByLabelText('Logic'), '=');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter a value for Days Old.')).toHaveLength(2);
 
             const numberBox = await findByLabelText('Value');
             expect(numberBox).toHaveValue(null);
             await user.type(numberBox, '0{tab}');
 
-            expect(queryByText('Enter a value for Days Old.')).toBeNull();
-
             // generally filled in coded list
             await user.selectOptions(fieldSelect, 'Condition Code');
-            expect(opSelect).toHaveValue('~');
-            await user.selectOptions(opSelect, 'in');
+            expect(getByLabelText('Logic')).toHaveValue('~');
+            await user.selectOptions(getByLabelText('Logic'), 'in');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter a value for Condition Code.')).toHaveLength(2);
 
             await waitFor(() => expect(codedValueGetter).toHaveBeenCalledWith(`/nbs/api/options/races`));
@@ -2912,13 +2937,21 @@ describe('report run page', () => {
             await user.click(dropDown);
             await user.click(getByText('Terrible disease'));
 
-            expect(queryByText('Enter a value for Condition Code.')).toBeNull();
+            await user.click(dropDown);
+            await user.click(getByText('Select all'));
+            await user.click(getByText('Deselect all'));
+
+            // re-validate
+            await user.click(exportButton);
+            expect(await findAllByText('Enter a value for Condition Code.')).toHaveLength(2);
 
             // dates between
             await user.selectOptions(fieldSelect, 'DATE_OF_BIRTH');
-            expect(opSelect).toHaveValue('~');
-            await user.selectOptions(opSelect, 'between');
+            expect(getByLabelText('Logic')).toHaveValue('~');
+            await user.selectOptions(getByLabelText('Logic'), 'between');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter From and To values for Date of Birth.')).toHaveLength(2);
 
             // The date entry will likely need to change once we switch to NBS components
@@ -2927,21 +2960,25 @@ describe('report run page', () => {
             const dtInputTo = await within(dtContainer).findByLabelText('To');
             await user.type(dtInputFrom, '10/18/2022{tab}');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter From and To values for Date of Birth.')).toHaveLength(2);
 
             await user.type(dtInputTo, '10/17/2022{tab}');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('From date must be before To date for Date of Birth.')).toHaveLength(2);
             await user.clear(dtInputTo);
             await user.type(dtInputTo, '10/20/2022{tab}');
 
-            expect(queryByText('From date must be before To date for Date of Birth.')).toBeNull();
-
             // numbers between
             await user.selectOptions(fieldSelect, 'DAYS_OLD');
-            expect(opSelect).toHaveValue('~');
-            await user.selectOptions(opSelect, 'between');
+            expect(getByLabelText('Logic')).toHaveValue('~');
+            await user.selectOptions(getByLabelText('Logic'), 'between');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter From and To values for Days Old.')).toHaveLength(2);
 
             const numContainer = getByTestId('number-range-editor');
@@ -2949,10 +2986,14 @@ describe('report run page', () => {
             const numInputTo = await within(numContainer).findByLabelText('To');
             await user.type(numInputFrom, '10');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('Enter From and To values for Days Old.')).toHaveLength(2);
 
             await user.type(numInputTo, '0');
 
+            // re-validate
+            await user.click(exportButton);
             expect(await findAllByText('From value must be before To value for Days Old.')).toHaveLength(2);
 
             await user.clear(numInputTo);
@@ -3489,7 +3530,8 @@ describe('report run page', () => {
 
             await user.click(await findByLabelText('Select all'));
 
-            expect(queryByText('Select at least one column from the Available columns list.')).toBeNull();
+            // only re-validate on submit
+            expect(await findAllByText('Select at least one column from the Available columns list.')).toHaveLength(2);
 
             await user.click(await findByRole('button', { name: 'Clear selections' }));
 
@@ -3503,13 +3545,13 @@ describe('report run page', () => {
                 });
             };
             await user.click(await findByLabelText('Select all'));
-            const dragHandle = await findByLabelText('Drag handle for Full Name');
+            const dragHandle = await findByLabelText('Drag handle for Date of Birth');
             dragHandle.focus();
             fireDnDEvent(32); // space
             fireDnDEvent(40); // down
             fireDnDEvent(40); // down
             fireDnDEvent(32); // space
-            expect(await findByLabelText('Drag handle for Full Name')).toHaveFocus();
+            expect(await findByLabelText('Drag handle for Date of Birth')).toHaveFocus();
 
             expect(
                 await findByText(/You have dropped the item\. You have moved the item from position 1 to position 3/)
@@ -3524,7 +3566,7 @@ describe('report run page', () => {
                     isExport: true,
                     advancedFilter: undefined,
                     basicFilters: [],
-                    columnUids: [2002, 2003, 2001],
+                    columnUids: [2003, 2001, 2002],
                 }),
             });
         });
@@ -3547,9 +3589,9 @@ describe('report run page', () => {
             expect(await findByLabelText('Date of Birth')).toBeChecked();
             expect(await findByLabelText('Full Name')).not.toBeChecked();
 
-            await user.click(await findByLabelText('Full Name'));
-            await user.click(await findByLabelText('Remove Date of Birth'));
-            await user.click(await findByLabelText('Date of Birth')); // make sure adds to the end
+            await user.click(await findByLabelText(/Full Name/));
+            await user.click(await findByLabelText(/Remove Date of Birth/));
+            await user.click(await findByLabelText(/Date of Birth/)); // make sure adds to the end
 
             const exportButton = await findByRole('button', { name: 'Export' });
             await user.click(exportButton);

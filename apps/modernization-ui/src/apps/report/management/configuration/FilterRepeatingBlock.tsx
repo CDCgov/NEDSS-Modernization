@@ -157,6 +157,7 @@ const FilterRepeatingBlockImpl = ({
             disabled={!dataSourceSelected}
             onChange={onChange}
             isDirty={setFiltersIsDirty}
+            reValidateMode="onSubmit"
             viewRenderer={(entry: FilterConfig) =>
                 filterColumns.map((fc) => (
                     <ValueField key={fc.id} label={fc.name} sizing={SIZING}>

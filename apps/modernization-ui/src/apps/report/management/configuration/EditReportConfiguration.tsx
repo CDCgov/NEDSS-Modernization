@@ -23,6 +23,7 @@ const EditReportConfiguration = () => {
 
     const form = useForm<ConfigForm>({
         mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
     });
 
     const handleSubmit = form.handleSubmit((data) => {
@@ -45,7 +46,7 @@ const EditReportConfiguration = () => {
         <LoadingBlock />
     ) : (
         <ReportLayout
-            title="Edit Report"
+            title="Edit report"
             actions={
                 <>
                     <NavLinkButton secondary={true} to={viewUrl} disabled={submitting}>

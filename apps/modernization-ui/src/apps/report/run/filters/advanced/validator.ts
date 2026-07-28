@@ -64,6 +64,10 @@ export const validateRule = (rule: QbQuery, result: ValidationResultMap) => {
                 if (type === 'DATETIME') {
                     if (!isDateFormat(value)) setInvalid(id, getInvalidDateErrorMsg(label, value));
                 }
+            } else if (Array.isArray(value)) {
+                if (value.length === 0) {
+                    setInvalid(id, getMissingValErrorMsg(label, false));
+                }
             }
         }
     } else if (isQbRuleGroupType(rule)) {

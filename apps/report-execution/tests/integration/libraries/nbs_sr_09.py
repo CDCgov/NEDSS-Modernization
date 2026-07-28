@@ -24,15 +24,12 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) > 0
@@ -83,9 +80,7 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE state = 'Georgia' "
@@ -95,7 +90,6 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert len(result.content.data) >= 0
 
     def test_execute_report_empty_subset(self):
@@ -104,9 +98,7 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] WHERE 1 = 0'
                 ),
@@ -114,7 +106,6 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         # Should return empty dataset but with correct column structure
         assert len(result.content.data) == 0
@@ -127,9 +118,7 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
@@ -155,34 +144,25 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': (
-                    'SR9: Monthly Cases of Selected Disease by County and State'
-                ),
                 'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]',
             }
         )
 
         result = execute_report(report_spec)
 
-        # Check header
+        # Check context_header contains expected elements
+        assert result.context_header is not None
         assert (
-            result.header
-            == 'SR9: Monthly Cases of Selected Disease by County and State'
+            'Georgia' in result.context_header and 'Tennessee' in result.context_header
         )
 
-        # Check subheader contains expected elements
-
-        assert 'Georgia' in result.subheader and 'Tennessee' in result.subheader
-
         # Check description contains required sections
+        assert result.description is not None
         assert len(result.description) > 100
         assert 'Report content' in result.description
         assert 'Cases' in result.description
         assert 'Event Date:' in result.description
-
-        assert result.content_type == 'table'
 
     def test_execute_report_month_ordering(self):
         """Verify months are ordered correctly for a single state/county/disease."""
@@ -190,9 +170,7 @@ class TestIntegrationNbsSr09Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'NBS Custom',
                 'library_name': 'nbs_sr_09',
-                'data_source_name': '[NBS_ODSE].[dbo].[PHCDemographic]',
                 'subset_query': (
                     'SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic] '
                     "WHERE state = 'Georgia' "

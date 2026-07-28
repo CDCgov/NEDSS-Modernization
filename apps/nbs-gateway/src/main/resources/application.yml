@@ -50,7 +50,8 @@ logging:
   level:
     redisratelimiter: ${nbs.gateway.log.level:INFO}
     reactor:
-      netty: INFO
+      netty: ${nbs.gateway.log.level:INFO}
+    gov.cdc.nbs: ${nbs.gateway.log.level:INFO}
     org:
       springframework:
         security: ${nbs.gateway.security.log.level:INFO}
