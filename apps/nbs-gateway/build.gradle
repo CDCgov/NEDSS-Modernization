@@ -42,7 +42,7 @@ dependencies {
     // APP-795: security-patched BOMs above Spring Boot's managed versions.
     // netty-bom aligns every netty module (handler, codec-*, resolver-dns, transport-native-*,
     // codec-classes-quic) at once, superseding the earlier per-artifact 4.2.13.Final pins.
-    implementation platform('io.netty:netty-bom:4.2.15.Final')          // CVE-2026-44249/44892/44894/45416/45536/45673/45674/47244/47691/48043/48748/50009/50010/50020/50560
+    implementation platform('io.netty:netty-bom:4.2.16.Final')          // CVE-2026-44249/44892/44894/45416/45536/45673/45674/47244/47691/48043/48748/50009/50010/50020/50560
     implementation platform('com.fasterxml.jackson:jackson-bom:2.21.5') // CVE-2026-54515
 
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.5'
