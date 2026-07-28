@@ -55,7 +55,8 @@ $header-height: 6rem;
 }
 
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     justify-content: space-between;
     align-items: flex-start;
 
@@ -68,10 +69,18 @@ $header-height: 6rem;
     background-color: colors.$base-white;
 
     .left {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: auto auto;
+        align-content: start;
         align-items: end;
+        gap: 1rem;
+    }
+
+    // it will cut off with ellipsis, need the height to stay relatively stable
+    // so the logic for the "on this page" aside offset is reasonable
+    .title {
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .subtitle {
@@ -81,8 +90,6 @@ $header-height: 6rem;
     }
 
     .actions {
-        flex-shrink: 0;
-
         display: flex;
         align-items: center;
         gap: 0.5rem;
