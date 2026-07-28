@@ -2,8 +2,8 @@
 @use 'styles/colors';
 
 .columnContent {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
 }
@@ -28,6 +28,17 @@ $header-height: 6rem;
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-areas: 'main aside';
+
+        // overflow ruins sticky-ness of aside
+        &:not(:has(aside)) {
+            overflow-x: auto;
+        }
+
+        // assumes that a div will be a primary sibling of the aside
+        // in the layout (<main><aside /><div /></main>
+        &:has(aside) > div {
+            overflow-x: auto;
+        }
 
         h2 {
             scroll-margin-top: $header-height;

@@ -18,7 +18,7 @@ const ReportLayout = ({ noSkipLink = false, children, ...headerProps }: ReportRu
             <header id={headerId}>
                 <ReportHeader {...headerProps} />
             </header>
-            <main className="overflow-x-auto">{children}</main>
+            <main>{children}</main>
         </div>
     );
 };
