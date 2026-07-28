@@ -226,9 +226,6 @@ const DataSourceEditCard = ({
                     setDataSource(dataSource);
                     confirmDataSourceRef.current?.toggleModal();
                 }}
-                onCancel={() => {
-                    confirmDataSourceRef.current?.toggleModal();
-                }}
             />
         </DataSourceCard>
     );

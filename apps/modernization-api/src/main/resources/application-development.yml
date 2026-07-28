@@ -29,6 +29,8 @@ logging:
 nbs:
   primary-language: English
   security:
+    # doesn't play nicely with safari for local dev
+    tokenCookieSecure: false
     oidc:
       enabled: false
   report:
