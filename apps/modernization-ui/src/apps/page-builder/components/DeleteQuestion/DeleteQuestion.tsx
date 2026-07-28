@@ -29,9 +29,6 @@ const DeleteQuestion = ({ onDelete, isStaticElement }: CommonProps) => {
                     handleDeleteQuetions();
                     deleteModalRef.current?.toggleModal();
                 }}
-                onCancel={() => {
-                    deleteModalRef.current?.toggleModal();
-                }}
             />
         </div>
     );

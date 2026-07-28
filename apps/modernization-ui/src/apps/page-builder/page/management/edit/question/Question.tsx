@@ -57,9 +57,6 @@ export const Question = ({
                             modal.current?.toggleModal();
                         }}
                         cancelText="Cancel"
-                        onCancel={() => {
-                            modal.current?.toggleModal();
-                        }}
                     />
                 )}
                 <QuestionContent
