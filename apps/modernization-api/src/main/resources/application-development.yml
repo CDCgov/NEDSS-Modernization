@@ -1,6 +1,8 @@
 server:
   tomcat:
     accesslog:
+      enabled: true
+
       # Log to stdout instead of a file
       directory: /dev
       prefix: stdout

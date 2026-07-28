@@ -115,8 +115,9 @@ springdoc:
 server:
   tomcat:
     accesslog:
+      condition-if: NBS_REQUEST
       pattern: "common"
-      enabled: true
+      enabled: false  # Set to true to enable HTTP logs
     # to accommodate intercepted multipart requests from NBS6.  The value was chosen based on the largest number of
     # questions on a page builder page.  This can vary by STLT depending on the page templates that exist.
     max-part-count: 550
