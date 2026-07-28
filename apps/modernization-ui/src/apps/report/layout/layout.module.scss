@@ -71,7 +71,7 @@ $header-height: 6rem;
     .left {
         display: grid;
         grid-template-columns: auto auto;
-        align-content: start;
+        justify-content: start;
         align-items: end;
         gap: 1rem;
     }
