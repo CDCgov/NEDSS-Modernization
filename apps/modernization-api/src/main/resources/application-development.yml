@@ -20,7 +20,7 @@ logging:
       # Logs SQL statements and bound parameter values when set to TRACE
       - "org.springframework.jdbc.core"
   level:
-    full-sql: TRACE
+    full-sql: INFO
     org:
       elasticsearch:
         # Logs queries passed to elasticsearch
@@ -34,7 +34,7 @@ logging:
       cdc:
         nbs:
           search: INFO
-          report: INFO
+          report: TRACE
 
 nbs:
   primary-language: English
