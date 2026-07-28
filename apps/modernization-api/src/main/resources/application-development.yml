@@ -3,7 +3,7 @@ server:
     accesslog:
       enabled: true
 
-      # Log to stdout instead of a file
+      # Log directly to stdout for local development
       directory: /dev
       prefix: stdout
       buffered: false
