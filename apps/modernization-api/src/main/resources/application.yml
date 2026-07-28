@@ -117,6 +117,7 @@ server:
     accesslog:
       # Only log requests made to NBS API
       condition-if: NBS_REQUEST
+      # 172.24.0.4 - - [28/Jul/2026:19:54:54 +0000] "GET /nbs/api/me HTTP/1.1" 200 2508ms
       pattern: "%h %l %u %t \"%r\" %s %{ms}Tms"
       enabled: false
     # to accommodate intercepted multipart requests from NBS6.  The value was chosen based on the largest number of

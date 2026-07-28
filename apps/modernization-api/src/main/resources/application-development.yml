@@ -16,8 +16,8 @@ logging:
       - "org.hibernate.SQL"
       # Logs SQL Parameters of statements logged by JPA when set to TRACE
       - "org.hibernate.orm.jdbc.bind"
-      - "org.springframework.security"
-      # Logs SQL statements executed through the JdbcTemplate
+      # Logs SQL statements only when set to DEBUG
+      # Logs SQL statements and bound parameter values when set to TRACE
       - "org.springframework.jdbc.core"
   level:
     full-sql: TRACE
@@ -25,6 +25,8 @@ logging:
       elasticsearch:
         # Logs queries passed to elasticsearch
         client: INFO
+      springframework:
+        security: INFO
     nbs:
       classic:
         outgoing: INFO   # Logs any RestTemplate interactions with NBC Classic
@@ -32,6 +34,7 @@ logging:
       cdc:
         nbs:
           search: INFO
+          report: INFO
 
 nbs:
   primary-language: English
