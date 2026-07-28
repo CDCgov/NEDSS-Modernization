@@ -81,7 +81,8 @@ const ResultDataPage = ({
                     flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
                 >
                     {meta.fields && (
-                        <section className="overflow-auto">
+                        // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
+                        <section className="overflow-auto" tabIndex={0}>
                             <DataTable
                                 id={id}
                                 fullWidth={false}
