@@ -12,7 +12,7 @@ const ErrorPage = () => {
     logErrorToUserConsole(error);
 
     return (
-        <main className="display-flex flex-column">
+        <main className="display-flex flex-column overflow-x-auto">
             <FullPageBlock>
                 {isRouteErrorResponse(error) || error instanceof NotFoundError || error instanceof ApiError ? (
                     <>
