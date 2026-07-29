@@ -352,6 +352,26 @@ class WhereClauseServiceTest {
   }
 
   @Test
+  void should_handle_empty_string_time_range_values() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, List.of("", ""), false));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEmpty();
+  }
+
+  @Test
   void should_handle_time_range_values_with_includeNulls() {
     Long filterUid = 200L;
     Long columnUid = 5L;
@@ -386,6 +406,26 @@ class WhereClauseServiceTest {
     ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
 
     List<BasicFilterRequest> request = List.of(new BasicFilterRequest(filterUid, List.of(), true));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEqualTo("([date_column] IS NULL)");
+  }
+
+  @Test
+  void should_handle_empty_string_time_range_values_with_includeNulls() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, List.of("", ""), true));
 
     String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
 

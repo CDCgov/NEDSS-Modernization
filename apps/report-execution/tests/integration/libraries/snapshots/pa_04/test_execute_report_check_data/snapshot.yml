@@ -1,0 +1,768 @@
+- !!python/tuple
+  - Cases Closed
+  - null
+  - null
+  - 279
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases Interviewed
+  - null
+  - null
+  - 279
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases NCI
+  - null
+  - null
+  - 14
+  - 5.0%
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases Re-Interviewed
+  - null
+  - null
+  - 5
+  - 1.8%
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases NCI with Re-Interview
+  - null
+  - null
+  - 4
+  - 80.0%
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases HIV Tested
+  - null
+  - null
+  - 143
+  - 51.3%
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases HIV Seropositive
+  - null
+  - null
+  - 100
+  - 35.8%
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Cases Posttest Counseled
+  - null
+  - null
+  - 131
+  - 91.6%
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Total Period Partners
+  - null
+  - null
+  - 1693
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Period Partner Index
+  - null
+  - null
+  - null
+  - null
+  - 6.1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+- !!python/tuple
+  - Partners Initiated
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 10
+  - null
+  - null
+  - 3
+  - null
+  - null
+  - 12
+  - null
+  - null
+- !!python/tuple
+  - Partners Examined
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 2
+  - 20.0%
+  - null
+  - 1
+  - 33.3%
+  - null
+  - 2
+  - 16.7%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 1 - Prev. Pos
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 2 - Prev. Neg, New Pos
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 3 - Prev. Neg, Still Neg
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 1
+  - 100.0%
+  - null
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 4 - Prev. Neg, No Test
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 50.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 5 - No Prev Test, New Pos
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 6 - No Prev Test, New Neg
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Dispo. 7 - No Prev Test, No Test
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Examined
+  - Notification Index
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 0.01
+  - null
+  - null
+  - 0.01
+  - null
+  - null
+  - 0.02
+- !!python/tuple
+  - Partners Examined
+  - Testing Index
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 0.01
+  - null
+  - null
+  - 0.01
+  - null
+  - null
+  - 0.02
+- !!python/tuple
+  - Partners Not Examined
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 10.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 8.3%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. G - Insufficient Info to Begin Investigation
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. H - Unable to Locate
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 100.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 100.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. J - Located, Not Examined and/or Interviewed
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. K - Sent Out Of Jurisdiction
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. L - Other
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. V - Domestic Violence Risk
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Partners Not Examined
+  - Dispo. X - Patient Deceased
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Initiated
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 15
+  - null
+  - null
+  - 8
+  - null
+  - null
+  - 22
+  - null
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 7
+  - 46.7%
+  - null
+  - 2
+  - 25.0%
+  - null
+  - 8
+  - 36.4%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 1 - Prev. Pos
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 1
+  - 12.5%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 2 - Prev. Neg, New Pos
+  - null
+  - null
+  - null
+  - null
+  - 2
+  - 28.6%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 2
+  - 25.0%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 3 - Prev. Neg, Still Neg
+  - null
+  - null
+  - null
+  - null
+  - 4
+  - 57.1%
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 4
+  - 50.0%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 4 - Prev. Neg, No Test
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 14.3%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 12.5%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 5 - No Prev Test, New Pos
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 6 - No Prev Test, New Neg
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Dispo. 7 - No Prev Test, No Test
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Examined
+  - Notification Index
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 0.04
+  - null
+  - null
+  - 0.01
+  - null
+  - null
+  - 0.05
+- !!python/tuple
+  - Clusters Examined
+  - Testing Index
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 0.04
+  - null
+  - null
+  - 0.01
+  - null
+  - null
+  - 0.05
+- !!python/tuple
+  - Clusters Not Examined
+  - null
+  - null
+  - null
+  - null
+  - null
+  - 2
+  - 13.3%
+  - null
+  - 2
+  - 25.0%
+  - null
+  - 4
+  - 18.2%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. G - Insufficient Info to Begin Investigation
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. H - Unable to Locate
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 2
+  - 50.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. J - Located, Not Examined and/or Interviewed
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 1
+  - 25.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. K - Sent Out Of Jurisdiction
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. L - Other
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. V - Domestic Violence Risk
+  - null
+  - null
+  - null
+  - null
+  - 1
+  - 50.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 1
+  - 25.0%
+  - null
+- !!python/tuple
+  - Clusters Not Examined
+  - Dispo. X - Patient Deceased
+  - null
+  - null
+  - null
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null
+  - 0
+  - 0.0%
+  - null

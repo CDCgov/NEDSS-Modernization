@@ -1,4 +1,4 @@
-Feature: View report configuration
+Feature: Manage report configuration
 
     Background:
         Given I am logged in as secure user
@@ -20,6 +20,11 @@ Feature: View report configuration
         Then I should see value "---" in the "Selection type" field
         Then I should see value "REPORT_CREATE_DATE (Report Create Date)" in the "Associated column" field
         Then I should see value "No" in the "Required as basic filter?" field
+        When I click the "Run" button
+        Then I should see a "heading" labelled "Aggregate Line Listing Report"
+        When I click the "Manage report" button
+        Then I should see the "View" configuration page
+        And I should see value "Aggregate Line Listing Report" in the "Name" field
         
     Scenario: I can Add, Edit, Delete a report configuration
         When I click the "Create button" button
@@ -184,8 +189,9 @@ Feature: View report configuration
         Then I should see a modal labelled "Delete report: My test report"
         When I click the "No, cancel" button
         # make sure page is interactive again after cancel
-        Then I click the "Edit" button
-        Then I click the "Cancel" button
+        When I click the "Edit" button
+        When I click the "Cancel" button
+        Then I should see the "View" configuration page
         # actually delete the report
         When I click the "Delete" button
         Then I should see a modal labelled "Delete report: My test report"
@@ -198,5 +204,16 @@ Feature: View report configuration
         When I select value "nbs_ods.PHCDemographic (Disease Counts by County)" in the "Data source" field
         When I click the "Cancel" button
         Then I should see the report list
+
+    Scenario Outline: Old path <path> 404's
+        When I navigate to "<path>" path
+        Then I should see a "heading" labelled "Not Found"
+
+        Examples:
+            | path |
+            | /nbs/EditReport.do |
+            | /nbs/NewReportFilter.do |
+            | /nbs/EditReportFilter.do |
+            | /nbs/EditReportFilter.do?filter_uid=123 |
 
         

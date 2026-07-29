@@ -23,12 +23,12 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import '@testing-library/cypress/add-commands'
+import '@testing-library/cypress/add-commands';
 
 Cypress.Commands.add('selectDropdownByLabel', (selectIndex, labelText, value) => {
     // Get the ID string instead of holding a live element reference
     cy.findAllByLabelText(labelText)
-      .eq(selectIndex)
+        .eq(selectIndex)
         .invoke('attr', 'id')
         .then((id) => {
             const escapedId = CSS.escape(id);
@@ -40,9 +40,24 @@ Cypress.Commands.add('selectDropdownByLabel', (selectIndex, labelText, value) =>
                 } else {
                     // React Select / Custom Checkbox Input
                     cy.get(`input#${escapedId}`).click({ force: true }).clear({ force: true }).type(value);
-                    cy.contains('[class*="__option"], [class*="-option"]', value).should('be.visible').click({ force: true });
+                    cy.contains('[class*="__option"], [class*="-option"]', value)
+                        .should('be.visible')
+                        .click({ force: true });
                     cy.get(`input#${escapedId}`).type('{esc}');
                 }
             });
         });
 });
+
+Cypress.Commands.add(
+    'eqOrLast',
+    {
+        prevSubject: true,
+    },
+    ($subject, index) => {
+        cy.log($subject, index);
+        const i = index < $subject.length ? index : $subject.length - 1;
+
+        return cy.wrap($subject).eq(i);
+    }
+);
