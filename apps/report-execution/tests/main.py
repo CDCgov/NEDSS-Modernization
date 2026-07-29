@@ -108,5 +108,8 @@ class TestReportExecuteEndpoint:
 
         res_body = json.loads(response.json())
 
-        assert res_body["message"] == 'Library `missing_library` (is_builtin: True) not found'
-        assert res_body["id"] is not None
+        assert (
+            res_body['message']
+            == 'Library `missing_library` (is_builtin: True) not found'
+        )
+        assert res_body['id'] is not None
