@@ -34,7 +34,7 @@ logging:
       cdc:
         nbs:
           search: INFO
-          report: TRACE
+          report: INFO
 
 nbs:
   primary-language: English
