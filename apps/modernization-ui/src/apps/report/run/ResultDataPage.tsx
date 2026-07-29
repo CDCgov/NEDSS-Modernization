@@ -12,7 +12,7 @@ import { LoaderFunction, useLoaderData } from 'react-router';
 
 import layoutStyes from '../layout/layout.module.scss';
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
-import { useId } from 'react';
+import { useEffect, useId } from 'react';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -42,6 +42,19 @@ const loadReportResult: LoaderFunction = async (request): Promise<Result | null>
 const ResultDataPage = () => {
     const id = useId();
     const result = useLoaderData();
+
+    // Display a generic browser warning about losing info before navigating away.
+    // Requires the user to have interacted with the page somewhat for it to trigger.
+    useEffect(() => {
+        const handler = (event: BeforeUnloadEvent) => {
+            event.preventDefault();
+            // Required by Chrome and newer specifications
+            event.returnValue = '';
+        };
+        window.addEventListener('beforeunload', handler);
+
+        return () => window.removeEventListener('beforeunload', handler);
+    });
 
     if (result === null) {
         return (
