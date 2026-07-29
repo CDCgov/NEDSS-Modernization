@@ -1,6 +1,7 @@
 [versions]
 springBoot = '3.5.14'
 spring-security = '6.5.9'
+micrometer = '1.5.11'
 jackson = '2.21.1'
 queryDSL = '5.1.0'
 
