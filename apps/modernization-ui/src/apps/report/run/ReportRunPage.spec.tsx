@@ -2784,6 +2784,13 @@ describe('report run page', () => {
             defaultValue: undefined,
         };
 
+        beforeEach(() => {
+            // Spy on console.error and force it to throw an error
+            vi.spyOn(console, 'error').mockImplementation((message) => {
+                throw new Error(`Test failed due to console.error: ${message}`);
+            });
+        });
+
         it('renders the empty filter builder when no default value', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
             const mockResultApi = vi

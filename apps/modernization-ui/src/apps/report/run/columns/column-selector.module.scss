@@ -47,22 +47,20 @@
                 border-left-color: colors.$clear;
 
                 padding: 0 1.5rem;
-                gap: 2rem;
                 // keeps the checkbox and dnd options about the same height
                 min-height: 2.1rem;
 
                 @extend %thin-bottom;
                 @extend %medium;
 
-                display: flex;
-                flex-direction: row;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
                 align-items: center;
                 gap: 0.5rem;
 
                 .label {
                     color: colors.$base-darkest;
                     line-height: 125%;
-                    flex: 1 1 0%;
                 }
 
                 button {
