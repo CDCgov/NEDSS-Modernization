@@ -16,7 +16,7 @@ import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
 import { FullPageBlock } from 'components/FullPageBlock';
 
 import layoutStyles from '../layout/layout.module.scss';
-import { ConfirmationModal } from '../../../confirmation';
+import { ConfirmationModal } from 'confirmation';
 
 const ReportResultPage = ({
     config,
