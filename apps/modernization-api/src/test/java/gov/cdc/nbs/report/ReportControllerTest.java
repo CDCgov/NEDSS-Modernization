@@ -59,6 +59,13 @@ class ReportControllerTest {
 
   @InjectMocks private ReportController controller;
 
+  private NbsUserDetails user;
+
+  @BeforeEach
+  void setUp() {
+    user = mock(NbsUserDetails.class);
+  }
+
   @Nested
   class CreateReport {
     @Test
@@ -96,7 +103,6 @@ class ReportControllerTest {
               ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Description");
-      NbsUserDetails user = mock(NbsUserDetails.class);
 
       String errorMsg = "No data source found for ID " + request.dataSourceId();
 
@@ -119,7 +125,6 @@ class ReportControllerTest {
               ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Description");
-      NbsUserDetails user = mock(NbsUserDetails.class);
 
       String errorMsg = "No report library found for ID " + request.libraryId();
 
@@ -148,7 +153,6 @@ class ReportControllerTest {
               Collections.emptyList(),
               "Updated Description");
       Report expectedReport = mock(Report.class);
-      NbsUserDetails user = mock(NbsUserDetails.class);
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
       when(service.editReport(request, user, reportId)).thenReturn(expectedReport);
@@ -174,7 +178,6 @@ class ReportControllerTest {
               ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Updated Description");
-      NbsUserDetails user = mock(NbsUserDetails.class);
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
       String errorMsg = "No data source found for ID " + request.dataSourceId();
@@ -201,7 +204,6 @@ class ReportControllerTest {
               ReportConstants.ReportGroup.REPORTING_FACILITY,
               Collections.emptyList(),
               "Updated Description");
-      NbsUserDetails user = mock(NbsUserDetails.class);
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
       String errorMsg = "No report library found for ID " + request.libraryId();
@@ -223,7 +225,7 @@ class ReportControllerTest {
       Long dataSourceUid = 2L;
       ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
-      ResponseEntity<ReportId> response = controller.deleteReport(reportUid, dataSourceUid);
+      ResponseEntity<ReportId> response = controller.deleteReport(reportUid, dataSourceUid, user);
 
       assertEquals(reportId, response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -238,7 +240,7 @@ class ReportControllerTest {
 
       doThrow(new NotFoundException(errorMsg)).when(service).deleteReport(reportId);
 
-      assertThatThrownBy(() -> controller.deleteReport(reportUid, dataSourceUid))
+      assertThatThrownBy(() -> controller.deleteReport(reportUid, dataSourceUid, user))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -252,13 +254,13 @@ class ReportControllerTest {
 
     private final long userId = 48930L;
 
-    private final NbsUserDetails user = mock(NbsUserDetails.class);
     private final Report report = mock(Report.class);
 
     @BeforeEach
     void setUp() {
       when(user.getId()).thenReturn(userId);
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -317,7 +319,8 @@ class ReportControllerTest {
     @Test
     void saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_private_report() {
       when(report.getShared()).thenReturn('P');
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -340,7 +343,8 @@ class ReportControllerTest {
     @Test
     void saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_public_report() {
       when(report.getShared()).thenReturn('S');
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -361,7 +365,8 @@ class ReportControllerTest {
         saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_reporting_facility_report() {
       when(report.getShared()).thenReturn('R');
 
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -386,13 +391,13 @@ class ReportControllerTest {
 
     private final long userId = 48930L;
 
-    private final NbsUserDetails user = mock(NbsUserDetails.class);
     private final Report existingReport = mock(Report.class);
 
     @BeforeEach
     void setUp() {
       when(user.getId()).thenReturn(userId);
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -419,7 +424,8 @@ class ReportControllerTest {
 
     @Test
     void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_private_report() {
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -446,7 +452,8 @@ class ReportControllerTest {
 
     @Test
     void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_public_report() {
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -474,7 +481,8 @@ class ReportControllerTest {
     @Test
     void
         saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_reporting_facility_report() {
-      when(user.getAuthorities())
+      Mockito.lenient()
+          .when(user.getAuthorities())
           .thenReturn(
               Set.of(
                   new SimpleGrantedAuthority(
@@ -551,7 +559,7 @@ class ReportControllerTest {
       when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
       ResponseEntity<ReportConfiguration> response =
-          controller.getReportConfiguration(reportUid, dataSourceUid);
+          controller.getReportConfiguration(reportUid, dataSourceUid, user);
 
       assertEquals(reportConfig, response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -566,7 +574,7 @@ class ReportControllerTest {
       when(reportFetcher.getReport(reportUid, dataSourceUid))
           .thenThrow(new NotFoundException(errorMsg));
 
-      assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid))
+      assertThatThrownBy(() -> controller.getReportConfiguration(reportUid, dataSourceUid, user))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -581,7 +589,7 @@ class ReportControllerTest {
 
       when(reportFetcher.getReportRunner(reportUid, dataSourceUid)).thenReturn("python");
 
-      ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid);
+      ResponseEntity<String> response = controller.getReportRunner(reportUid, dataSourceUid, user);
 
       assertEquals("python", response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -597,7 +605,7 @@ class ReportControllerTest {
       when(reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .thenThrow(new NotFoundException(errorMsg));
 
-      assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
+      assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid, user))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -614,7 +622,7 @@ class ReportControllerTest {
       when(reportFetcher.getReportRunner(reportUid, dataSourceUid))
           .thenThrow(new UnprocessableEntityException(errorMsg));
 
-      assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid))
+      assertThatThrownBy(() -> controller.getReportRunner(reportUid, dataSourceUid, user))
           .isInstanceOf(UnprocessableEntityException.class)
           .hasMessageContaining("No report library exists for report " + reportId);
     }
@@ -648,7 +656,7 @@ class ReportControllerTest {
 
       when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
 
-      ResponseEntity<ReportExecutionResult> response = controller.exportReport(request);
+      ResponseEntity<ReportExecutionResult> response = controller.exportReport(request, user);
       assertEquals(getReportExecutionResponse(), response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -671,7 +679,7 @@ class ReportControllerTest {
 
       when(reportExecutionClient.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
 
-      assertThatThrownBy(() -> controller.exportReport(request))
+      assertThatThrownBy(() -> controller.exportReport(request, user))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -695,7 +703,7 @@ class ReportControllerTest {
       when(reportExecutionClient.executeReport(request))
           .thenThrow(new NotImplementedException(errorMsg));
 
-      assertThatThrownBy(() -> controller.exportReport(request))
+      assertThatThrownBy(() -> controller.exportReport(request, user))
           .isInstanceOf(NotImplementedException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -718,7 +726,7 @@ class ReportControllerTest {
 
       when(reportExecutionClient.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
 
-      assertThatThrownBy(() -> controller.exportReport(request))
+      assertThatThrownBy(() -> controller.exportReport(request, user))
           .isInstanceOf(RuntimeException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -738,7 +746,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      assertThatThrownBy(() -> controller.exportReport(request))
+      assertThatThrownBy(() -> controller.exportReport(request, user))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("isExport must be true when exporting a report");
     }
@@ -770,7 +778,7 @@ class ReportControllerTest {
 
       when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
 
-      ResponseEntity<ReportExecutionResult> response = controller.runReport(request);
+      ResponseEntity<ReportExecutionResult> response = controller.runReport(request, user);
       assertEquals(getReportExecutionResponse(), response.getBody());
       assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -790,7 +798,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      assertThatThrownBy(() -> controller.runReport(request))
+      assertThatThrownBy(() -> controller.runReport(request, user))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("isExport must be false when running a report");
     }
