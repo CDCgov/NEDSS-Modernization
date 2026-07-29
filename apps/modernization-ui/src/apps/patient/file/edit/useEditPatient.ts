@@ -40,7 +40,8 @@ const reducer =
     };
 
 type EditPatientState =
-    { status: 'waiting' | 'requesting' | 'completed' | 'invalid' } | { status: 'error'; reason: string };
+    | { status: 'waiting' | 'requesting' | 'completed' | 'invalid' }
+    | { status: 'error'; reason: string };
 
 type Validator = (demographics: PatientDemographicsEntry) => boolean;
 
