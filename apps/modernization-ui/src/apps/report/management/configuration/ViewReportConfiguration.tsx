@@ -66,9 +66,6 @@ const ViewReportConfiguration = () => {
                         })
                         .finally(() => setDeleting(false));
                 }}
-                onCancel={() => {
-                    confirmDeleteRef.current?.toggleModal();
-                }}
             />
         </ReportLayout>
     );

@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Heading } from 'components/heading';
 
 import styles from './layout.module.scss';
-import { Nbs6Breadcrumb } from 'breadcrumb';
+import { BackToNbs6Link } from 'breadcrumb';
 
 export type ReportHeaderProps = {
     title: string;
@@ -21,7 +21,7 @@ export const ReportHeader = ({ title, subtitle, actions, startHref, startPage }:
                     <Heading level={1}>{title}</Heading>
                     {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
                 </span>
-                {startHref && startPage && <Nbs6Breadcrumb start={startHref}>Back to {startPage}</Nbs6Breadcrumb>}
+                {startHref && startPage && <BackToNbs6Link start={startHref}>Back to {startPage}</BackToNbs6Link>}
             </div>
             <div className={styles.actions}>{actions}</div>
         </div>
