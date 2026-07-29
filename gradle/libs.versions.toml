@@ -16,6 +16,8 @@ springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc'
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }
 springBoot-web = { module = 'org.springframework.boot:spring-boot-starter-web', version.ref = 'springBoot' }
 springBoot-actuator = {module='org.springframework.boot:spring-boot-starter-actuator', version.ref= 'springBoot'}
+micrometer-tracing-bridge-otel = { module = 'io.micrometer:micrometer-tracing-bridge-otel' }
+opentelemetry-exporter-otlp = { module = 'io.opentelemetry:opentelemetry-exporter-otlp' }
 graphql = { module = 'com.graphql-java:graphql-java', version = '26.0' } 
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '9.4.2' }

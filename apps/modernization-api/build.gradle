@@ -58,7 +58,9 @@ dependencies {
     implementation libs.bundles.security
     implementation libs.springBoot.web
     implementation libs.springBoot.actuator
-
+    implementation libs.micrometer.tracing.bridge.otel
+    implementation libs.opentelemetry.exporter.otlp
+    
     // graphql
     implementation libs.bundles.graphql
 

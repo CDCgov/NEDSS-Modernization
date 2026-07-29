@@ -138,7 +138,9 @@ again to apply the changes.
    password:
    ```
 
-4. To stop the containers, use docker compose
+4. View `modernization-api` traces in the [Jaeger UI](http://localhost:16686).
+
+5. To stop the containers, use docker compose
 
 ```sh
 docker compose down
