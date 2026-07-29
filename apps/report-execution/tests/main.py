@@ -1,7 +1,6 @@
 """Unit tests for the entrypoint of the Report Execution service."""
 
 import io
-import json
 
 import pandas as pd
 import pytest
@@ -106,7 +105,7 @@ class TestReportExecuteEndpoint:
 
         assert response.status_code == 422  # Unprocessable Entity
 
-        res_body = json.loads(response.json())
+        res_body = response.json()
 
         assert (
             res_body['message']
