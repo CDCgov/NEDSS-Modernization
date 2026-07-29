@@ -20,6 +20,8 @@ public class ReportExceptionHandler {
   private static final System.Logger LOGGER =
       System.getLogger(ReportExceptionHandler.class.getName());
 
+  private static final String DEFAULT_ERROR_LOG = "Exception encountered (%s): %s";
+
   /** JSON-friendly wrapper for the response bodies of 4XX/5XX HTTP error responses. */
   public record ErrorResponseBody(
       @Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String message, String id) {}
@@ -30,7 +32,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+            DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
 
     return new ResponseEntity<>(
@@ -43,7 +45,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
 
     return new ResponseEntity<>(
@@ -55,7 +57,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
 
     return new ResponseEntity<>(
@@ -67,7 +69,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
 
     return new ResponseEntity<>(
@@ -79,7 +81,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
 
     return new ResponseEntity<>(
@@ -92,7 +94,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
 
     return new ResponseEntity<>(
@@ -131,7 +133,7 @@ public class ReportExceptionHandler {
 
     LOGGER.log(
         System.Logger.Level.ERROR,
-        "Exception encountered (%s): %s".formatted(errorId, ex.getMessage()),
+        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
         ex);
     return new ResponseEntity<>(
         new ErrorResponseBody("Internal Server Error", errorId), HttpStatus.INTERNAL_SERVER_ERROR);
