@@ -1,7 +1,6 @@
 import './ModalComponent.scss';
-import { Modal, ModalHeading, ModalRef, ModalFooter, ModalToggleButton } from '@trussworks/react-uswds';
+import { Modal, ModalHeading, ModalRef, ModalFooter } from '@trussworks/react-uswds';
 import React, { RefObject } from 'react';
-import { Icon } from '@trussworks/react-uswds';
 
 type ModalProps = {
     modalRef?: RefObject<ModalRef> | undefined;
@@ -12,9 +11,9 @@ type ModalProps = {
     size?: string;
     forceAction?: boolean;
     closer?: boolean;
-    onCloseModal?: () => void;
     id?: string;
     className?: string;
+    disabled?: boolean;
 };
 
 export const ModalComponent = ({
@@ -26,29 +25,22 @@ export const ModalComponent = ({
     size,
     className,
     closer,
-    onCloseModal,
     id,
+    disabled = false,
 }: ModalProps) => {
     return (
         <Modal
+            // allow escape to cancel unless interaction is disabled
+            forceAction={disabled}
+            closer={closer || !disabled}
             ref={modalRef}
             isLarge={isLarge}
             id={id}
-            forceAction={true}
             aria-labelledby={`${id}-heading`}
             className={`padding-0 ${size} ${className}`}
             aria-describedby={`${id}-description`}
         >
-            {modalHeading ? (
-                <ModalHeading id={`${id}-heading`}>
-                    {modalHeading}
-                    {closer ? (
-                        <ModalToggleButton unstyled closer modalRef={modalRef!} onClick={onCloseModal}>
-                            <Icon.Close size={4} aria-label={'Close modal'} />
-                        </ModalToggleButton>
-                    ) : null}
-                </ModalHeading>
-            ) : null}
+            {modalHeading ? <ModalHeading id={`${id}-heading`}>{modalHeading}</ModalHeading> : null}
             {modalBody}
             {modalFooter ? <ModalFooter>{modalFooter}</ModalFooter> : null}
         </Modal>
