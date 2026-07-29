@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
+      - mcm/refactor-result-tab
     paths:
       - "!libs/testing/**"
       - "apps/modernization-api/**"
       - "apps/modernization-ui/**"
       - "libs/**"
       - "gradle/libs.versions.toml"
+      - ".github/workflows/Build-and-deploy-modernization-api.yaml"
 
 jobs:
   sonar_scan:
