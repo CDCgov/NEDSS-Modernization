@@ -1,6 +1,32 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
 import { ReportExecutionResult } from 'generated';
 import { ResultDataPage } from './ResultDataPage';
+import { LoadingBlock } from 'libs/loading/block';
+import { ErrorPage } from 'pages/error';
+import { createMemoryRouter, RouterProvider } from 'react-router';
+
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual<typeof import('react-router')>('react-router');
+    return {
+        ...actual,
+        default: actual,
+        useParams: vi.fn(() => ({ resultId: '2' })), // Mock useParams to return a default value
+    };
+});
+
+const renderWithRouter = () => {
+    const routes = [
+        {
+            path: '/:resultId',
+            element: <ResultDataPage />,
+            HydrateFallback: LoadingBlock,
+            ErrorBoundary: ErrorPage,
+        },
+    ];
+
+    const router = createMemoryRouter(routes, { initialEntries: [`/2}`] });
+    return render(<RouterProvider router={router} />);
+};
 
 describe('ResultDataPage', () => {
     it('renders bare bones report result', () => {
@@ -12,9 +38,11 @@ describe('ResultDataPage', () => {
             timestamp: '2026-06-17T19:11:35.595501658',
         };
 
-        const { getByRole, getByText } = render(
-            <ResultDataPage result={result} title="My report" dataSourceName="nbs_db.My_Table" />
+        window.localStorage.setItem(
+            `reportResult.2`,
+            JSON.stringify({ result, title: 'My report', dataSourceName: 'nbs_db.My_Table' })
         );
+        const { getByRole, getByText } = renderWithRouter();
 
         expect(getByRole('table')).toBeVisible();
         expect(getByRole('cell', { name: 'No data found.' })).toBeVisible();
@@ -40,9 +68,11 @@ describe('ResultDataPage', () => {
             timestamp: '2026-06-17T19:11:35.595501658',
         };
 
-        const { getByRole, container } = render(
-            <ResultDataPage result={result} title="My report" dataSourceName="nbs_db.My_Table" />
+        window.localStorage.setItem(
+            `reportResult.2`,
+            JSON.stringify({ result, title: 'My report', dataSourceName: 'nbs_db.My_Table' })
         );
+        const { getByRole, container } = renderWithRouter();
 
         expect(getByRole('table')).toBeVisible();
         expect(getByRole('cell', { name: '1' })).toBeVisible();

@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router';
-import { initializationLoader, ProtectedLayout } from 'authorization';
+import { initializationLoader, ProtectedLayout, ProtectedPageOutlet } from 'authorization';
 
 import { RedirectHome } from './RedirectHome';
 
@@ -47,8 +47,18 @@ const routing: RouteObject[] = [
             ...reportRouting,
         ],
     },
+    // This path is for rendering report results. It opens in a new tab and should be
+    // protected, but we don't want any traditional layout/nav due to the issues around
+    // multiple tabs with NBS 6
+    {
+        path: '/report/result/:resultId',
+        element: <ProtectedPageOutlet />,
+        loader: initializationLoader,
+        HydrateFallback: LoadingBlock,
+        ErrorBoundary: ErrorPage,
+        children: [{ index: true, element: <ResultDataPage /> }],
+    },
     { path: 'expired', element: <Expired /> },
-    { path: '/report/result/:resultId', element: <ResultDataPage /> },
 ];
 
 const router = createBrowserRouter(routing);

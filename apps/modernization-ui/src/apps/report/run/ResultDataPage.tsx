@@ -3,7 +3,7 @@ import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import Papa from 'papaparse';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ReportLayout } from '../layout/ReportLayout';
 import { ReportExecutionResult } from 'generated';
 import { marked } from 'marked';
@@ -39,22 +39,22 @@ const ResultDataPage = () => {
         const rawData = localStorage.getItem(`reportResult.${resultId}`);
         if (rawData) {
             setResult(JSON.parse(rawData));
-            // Optional: Clean it up so it doesn't linger
+            // clean result up from local storage now that it's been viewed
             localStorage.removeItem(`reportResult.${resultId}`);
-            // setLoading(false)
-        } else {
+
+            // double-mount in dev mode can cause wiping out data if don't check defined-ness
+        } else if (rawData === undefined) {
             setResult(null);
         }
     }, []);
-
-    const id = useId();
 
     if (result === undefined) {
         return <LoadingBlock />;
     } else if (result === null) {
         return (
-            <AlertMessage type="warning" title="No result found" level={1}>
-                Uh oh
+            <AlertMessage type="warning" title="No result found" level={1} className="margin-2">
+                <p>This can happen if the page was refreshed. Re-run the report to retrieve a new result.</p>
+                <p>If this persists, contact your system administrator</p>
             </AlertMessage>
         );
     }
@@ -117,7 +117,7 @@ const ResultDataPage = () => {
                         // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
                         <section className="overflow-auto" tabIndex={0}>
                             <DataTable
-                                id={id}
+                                id={resultId}
                                 fullWidth={false}
                                 columns={meta.fields.map((colName) => ({
                                     id: colName,

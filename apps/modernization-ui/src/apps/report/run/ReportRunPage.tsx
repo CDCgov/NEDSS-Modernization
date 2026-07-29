@@ -10,7 +10,7 @@ import {
 import { useCallback, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { useNewTab } from './useNewTab';
+import { openNewTab } from '../utils/openNewTab';
 import fileDownload from 'js-file-download';
 import { ReportResultPage } from './ReportResultPage';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -50,7 +50,6 @@ const ReportRunPage = () => {
     const [lastReportExecutionRequest, setLastReportExecutionRequest] = useState<ReportExecutionRequest | undefined>(
         undefined
     );
-    const { openNewTab } = useNewTab();
     const config = useLoaderData<ReportConfiguration>();
     const { permissions: userPermissions, allows } = usePermissions();
     const canRunReport = allows(permissions.reports.run);

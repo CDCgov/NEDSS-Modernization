@@ -1,5 +1,5 @@
-import { Suspense } from 'react';
-import { Await, Navigate, useLoaderData, useNavigate } from 'react-router';
+import { ReactNode, Suspense } from 'react';
+import { Await, Navigate, Outlet, useLoaderData, useNavigate } from 'react-router';
 import { User, UserContextProvider } from 'providers/UserContext';
 import { currentUser } from 'user';
 import { Configuration, ConfigurationProvider } from 'configuration';
@@ -8,8 +8,9 @@ import { Layout } from 'layout';
 import { Spinner } from 'components/Spinner';
 import { InitializationLoaderResult } from './initializationLoader';
 import IdleTimer from './IdleTimer';
+import { PageProvider } from 'page';
 
-const ProtectedLayout = () => {
+const Protected = ({ children }: { children: ReactNode }) => {
     const data = useLoaderData() as InitializationLoaderResult;
     const navigate = useNavigate();
 
@@ -38,9 +39,7 @@ const ProtectedLayout = () => {
                     timeout={configuration.settings.session.warning}
                     warningTimeout={configuration.settings.session.expiration - configuration.settings.session.warning}
                 />
-                <AnalyticsProvider>
-                    <Layout />
-                </AnalyticsProvider>
+                <AnalyticsProvider>{children}</AnalyticsProvider>
             </ConfigurationProvider>
         );
     };
@@ -54,4 +53,18 @@ const ProtectedLayout = () => {
     );
 };
 
-export { ProtectedLayout };
+const ProtectedPageOutlet = () => (
+    <Protected>
+        <PageProvider>
+            <Outlet />
+        </PageProvider>
+    </Protected>
+);
+
+const ProtectedLayout = () => (
+    <Protected>
+        <Layout />
+    </Protected>
+);
+
+export { ProtectedLayout, ProtectedPageOutlet };
