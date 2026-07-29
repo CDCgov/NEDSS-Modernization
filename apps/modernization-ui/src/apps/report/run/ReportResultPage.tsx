@@ -66,11 +66,11 @@ const ReportResultPage = ({
                 redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
             })
             .catch((err) => {
-                const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
-                modalRef.current?.toggleModal();
                 setSaveError(err);
             })
             .finally(() => {
+                const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
+                modalRef.current?.toggleModal();
                 setSaving(false);
             });
     };
