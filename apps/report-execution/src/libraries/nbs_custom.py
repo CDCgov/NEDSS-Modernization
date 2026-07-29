@@ -15,7 +15,12 @@ def execute(
     * Lifted the size check to a global check and refined the env var names
     * Date formatting still needs to be figured out
     """
-    query = subset_query + ' ORDER BY ' + sort_by if sort_by else subset_query
+    # the order by has the alias, so we need to order after selecting
+    query = (
+        f'WITH subset as ({subset_query}) SELECT * FROM subset ORDER BY ' + sort_by
+        if sort_by
+        else subset_query
+    )
     content = trx.query(query)
 
     return ReportResult(content=content)

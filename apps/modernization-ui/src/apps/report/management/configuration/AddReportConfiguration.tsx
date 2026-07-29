@@ -37,7 +37,7 @@ const AddReportConfiguration = () => {
 
     return (
         <ReportLayout
-            title="Add Report"
+            title="Add report"
             actions={
                 <>
                     <LinkButton secondary={true} href={NBS_LIST_REPORT_CONFIG_PAGE} disabled={submitting}>
