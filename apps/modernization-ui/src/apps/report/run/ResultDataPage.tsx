@@ -3,17 +3,16 @@ import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import Papa from 'papaparse';
-import { useEffect, useState } from 'react';
 import { ReportLayout } from '../layout/ReportLayout';
 import { ReportExecutionResult } from 'generated';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { NoDataRow } from 'design-system/table/NoDataRow';
-import { LoadingBlock } from 'libs/loading/block';
-import { useParams } from 'react-router';
+import { LoaderFunction, useLoaderData } from 'react-router';
 
 import layoutStyes from '../layout/layout.module.scss';
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
+import { useId } from 'react';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -31,28 +30,20 @@ type Result = {
     dataSourceName: string;
 };
 
-const ResultDataPage = () => {
-    const params = useParams();
-    const resultId = params.resultId ?? '0';
+const loadReportResult: LoaderFunction = async (request): Promise<Result | null> => {
+    const { resultId } = request.params;
     const resultKey = `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`;
-    const [result, setResult] = useState<Result | undefined | null>(undefined);
+    const rawData = localStorage.getItem(resultKey);
+    // clean up after the data to make sure it doesn't linger in cache
+    localStorage.removeItem(resultKey);
+    return rawData ? JSON.parse(rawData) : null;
+};
 
-    useEffect(() => {
-        const rawData = localStorage.getItem(resultKey);
-        if (rawData) {
-            setResult(JSON.parse(rawData));
-            // clean result up from local storage now that it's been viewed
-            localStorage.removeItem(resultKey);
+const ResultDataPage = () => {
+    const id = useId();
+    const result = useLoaderData();
 
-            // double-mount in dev mode can cause wiping out data if don't check defined-ness
-        } else if (rawData === undefined) {
-            setResult(null);
-        }
-    }, []);
-
-    if (result === undefined) {
-        return <LoadingBlock />;
-    } else if (result === null) {
+    if (result === null) {
         return (
             <AlertMessage type="warning" title="No result found" level={1} className="margin-2">
                 <p>This can happen if the page was refreshed. Re-run the report to retrieve a new result.</p>
@@ -119,7 +110,7 @@ const ResultDataPage = () => {
                         // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
                         <section className="overflow-auto" tabIndex={0}>
                             <DataTable
-                                id={resultId}
+                                id={id}
                                 fullWidth={false}
                                 columns={meta.fields.map((colName) => ({
                                     id: colName,
@@ -146,4 +137,4 @@ const ResultDataPage = () => {
     );
 };
 
-export { ResultDataPage };
+export { ResultDataPage, loadReportResult };
