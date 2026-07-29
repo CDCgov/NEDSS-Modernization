@@ -235,14 +235,12 @@ const PreviewPageContent = () => {
                     modalRef={publishDraftRef}
                     modalHeading="Publish page"
                     size="wide"
-                    closer
                     modalBody={<PublishPage modalRef={publishDraftRef} onPublishing={setIsPublishing} />}
                 />
             ) : (
                 <ModalComponent
                     modalRef={publishingLoaderRef}
                     size="width"
-                    closer
                     modalBody={
                         <div className={styles.loaderContent}>
                             <Loading center className={styles.loaderIcon} />

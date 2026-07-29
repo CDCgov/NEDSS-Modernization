@@ -10,7 +10,6 @@ type ModalProps = {
     isLarge?: boolean;
     size?: string;
     forceAction?: boolean;
-    closer?: boolean;
     id?: string;
     className?: string;
     disabled?: boolean;
@@ -24,7 +23,6 @@ export const ModalComponent = ({
     isLarge,
     size,
     className,
-    closer,
     id,
     disabled = false,
 }: ModalProps) => {
@@ -32,7 +30,6 @@ export const ModalComponent = ({
         <Modal
             // allow escape to cancel unless interaction is disabled
             forceAction={disabled}
-            closer={closer || !disabled}
             ref={modalRef}
             isLarge={isLarge}
             id={id}
