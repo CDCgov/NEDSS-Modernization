@@ -3,6 +3,8 @@
         min-width: 38rem;
 
         .usa-modal__content {
+            overflow-y: auto;
+
             .usa-modal__heading {
                 button {
                     top: unset !important;
@@ -29,11 +31,9 @@
     margin: 1rem;
 
     :global {
-        .usa-form {
-            max-width: 100%;
-
+        form {
             > span {
-                padding-bottom: 1.25rem;
+                margin-bottom: 1rem;
             }
         }
     }

@@ -1,6 +1,8 @@
 .layout {
     :global {
         .usa-modal__content {
+            overflow-y: auto;
+
             .usa-modal__main {
                 width: 55rem;
                 max-width: 100%;
