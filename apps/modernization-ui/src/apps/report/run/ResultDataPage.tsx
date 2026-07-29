@@ -119,7 +119,8 @@ const ResultDataPage = () => {
                 <Card
                     id="report-result"
                     title="Report result"
-                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}>
+                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
+                >
                     {meta.fields && (
                         // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
                         <section className="overflow-auto" tabIndex={0}>
