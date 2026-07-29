@@ -46,14 +46,16 @@ const ResultDataPage = () => {
     // Display a generic browser warning about losing info before navigating away.
     // Requires the user to have interacted with the page somewhat for it to trigger.
     useEffect(() => {
-        const handler = (event: BeforeUnloadEvent) => {
-            event.preventDefault();
-            // Required by Chrome and newer specifications
-            event.returnValue = '';
-        };
-        window.addEventListener('beforeunload', handler);
+        if (result) {
+            const handler = (event: BeforeUnloadEvent) => {
+                event.preventDefault();
+                // Required by Chrome and newer specifications
+                event.returnValue = '';
+            };
+            window.addEventListener('beforeunload', handler);
 
-        return () => window.removeEventListener('beforeunload', handler);
+            return () => window.removeEventListener('beforeunload', handler);
+        }
     });
 
     if (result === null) {
@@ -117,8 +119,7 @@ const ResultDataPage = () => {
                 <Card
                     id="report-result"
                     title="Report result"
-                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
-                >
+                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}>
                     {meta.fields && (
                         // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
                         <section className="overflow-auto" tabIndex={0}>
