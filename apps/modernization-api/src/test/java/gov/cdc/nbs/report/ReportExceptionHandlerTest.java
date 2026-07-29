@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import gov.cdc.nbs.exception.NotFoundException;
+import java.util.UUID;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,29 @@ class ReportExceptionHandlerTest {
   }
 
   @Test
-  void should_return_error_msg_and_status_code_for_rest_client_exception() {
+  void should_return_error_msg_and_status_code_for_expected_rest_client_exception() {
+    String errorId = UUID.randomUUID().toString();
+
+    ReportExceptionHandler.ErrorResponseBody errorResponseBody =
+        new ReportExceptionHandler.ErrorResponseBody("things did not work", errorId);
+
+    RestClientResponseException exception =
+        new RestClientResponseException(
+            "I failed", 500, "uh oh", null, errorResponseBody.toString().getBytes(), null);
+
+    exception.setBodyConvertFunction(bytes -> errorResponseBody);
+
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleRestClientFailure(exception);
+
+    assertNotNull(responseEntity.getBody());
+    assertEquals("things did not work", responseEntity.getBody().message());
+    assertEquals(errorId, responseEntity.getBody().id());
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+  }
+
+  @Test
+  void should_return_error_msg_and_status_code_for_unexpected_rest_client_exception() {
     RestClientResponseException exception =
         new RestClientResponseException(
             "I failed", 503, "uh oh", null, "it went poorly".getBytes(), null);

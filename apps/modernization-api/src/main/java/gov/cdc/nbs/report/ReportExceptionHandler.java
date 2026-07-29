@@ -99,11 +99,23 @@ public class ReportExceptionHandler {
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
+  //  Currently limited to the ReportExecutionServiceClient
   @ExceptionHandler(RestClientResponseException.class)
   public ResponseEntity<ErrorResponseBody> handleRestClientFailure(RestClientResponseException ex) {
-    ErrorResponseBody err = ex.getResponseBodyAs(ErrorResponseBody.class);
+    ErrorResponseBody err = null;
 
-    String message = err != null && err.message != null ? err.message : "";
+    try {
+      err = ex.getResponseBodyAs(ErrorResponseBody.class);
+    } catch (Exception e) {
+      LOGGER.log(
+          System.Logger.Level.WARNING,
+          "Unexpected error response shape from ReportExecutionServiceClient: %s"
+              .formatted(ex.getResponseBodyAsString()),
+          e);
+    }
+
+    String message =
+        err != null && err.message != null ? err.message : ex.getResponseBodyAsString();
     String errorId = err != null && err.id != null ? err.id : UUID.randomUUID().toString();
 
     LOGGER.log(
