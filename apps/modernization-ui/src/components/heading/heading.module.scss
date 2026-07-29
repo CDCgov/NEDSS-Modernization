@@ -1,3 +1,6 @@
 .heading {
     margin: 0;
+    // so if a call site chooses to no wrap, it will cut off gracefuly
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

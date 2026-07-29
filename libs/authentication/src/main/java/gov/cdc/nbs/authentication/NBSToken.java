@@ -9,7 +9,7 @@ public record NBSToken(String value) {
   private static final String NBS_TOKEN_NAME = "nbs_token";
 
   public void apply(final SecurityProperties properties, final HttpServletResponse response) {
-    Cookie cookie = asCookie();
+    Cookie cookie = asCookie(properties.getTokenCookieSecure());
     cookie.setMaxAge(properties.getTokenExpirationSeconds());
     response.addCookie(cookie);
   }
@@ -27,10 +27,10 @@ public record NBSToken(String value) {
   }
 
   @SuppressWarnings({"squid:S3330"})
-  private Cookie asCookie() {
+  private Cookie asCookie(boolean secure) {
     Cookie cookie = new Cookie(NBS_TOKEN_NAME, value());
     cookie.setPath("/");
-    cookie.setSecure(true);
+    cookie.setSecure(secure);
     return cookie;
   }
 }
