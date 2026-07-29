@@ -72,6 +72,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
 
     return (
         <ModalComponent
+            forceAction={saving}
             id="save-report-modal"
             className={styles.layout}
             modalRef={saveAsReportModalRef}

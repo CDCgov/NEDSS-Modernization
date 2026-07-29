@@ -118,9 +118,6 @@ export const Sections = ({
                     deleteSection();
                     deleteSectionModalRef.current?.toggleModal();
                 }}
-                onCancel={() => {
-                    deleteSectionModalRef.current?.toggleModal();
-                }}
             />
         </div>
     );

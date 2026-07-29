@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router';
 import { initializationLoader, ProtectedLayout } from 'authorization';
 
 import { RedirectHome } from './RedirectHome';
@@ -16,8 +16,9 @@ import { Expired } from 'apps/landing/Expired/Expired';
 import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRouting';
 import { PageProvider } from 'page';
 import { LoadingBlock } from 'libs/loading/block';
+import { ErrorPage } from 'pages/error/ErrorPage';
 
-const routing = [
+const routing: RouteObject[] = [
     welcomeRouting,
     logoutRouting,
     {
@@ -33,6 +34,7 @@ const routing = [
         element: <ProtectedLayout />,
         loader: initializationLoader,
         HydrateFallback: LoadingBlock,
+        ErrorBoundary: ErrorPage,
         children: [
             { index: true, element: <RedirectHome /> },
             ...searchRouting,
@@ -44,7 +46,6 @@ const routing = [
             ...reportRouting,
         ],
     },
-    { path: '*', element: <Navigate to={'/'} /> },
     { path: 'expired', element: <Expired /> },
 ];
 
