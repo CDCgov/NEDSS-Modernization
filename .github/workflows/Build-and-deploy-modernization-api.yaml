@@ -9,6 +9,7 @@ on:
       - "apps/modernization-ui/**"
       - "libs/**"
       - "gradle/libs.versions.toml"
+      - ".github/workflows/Build-and-deploy-modernization-api.yaml"
 
 jobs:
   sonar_scan:
