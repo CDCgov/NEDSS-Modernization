@@ -6,7 +6,7 @@ Feature: Classic Data Entry
   # flaky
   @skip-broken
   Scenario: Create lab report and confirm association
-    And I search by last name as "Singh"
+    When I search by last name as "Singh"
     And I click on patient ID "63000" to view profile
     And Click Events tab on Patient Profile Page
     And I check the Lab Report count
@@ -35,7 +35,7 @@ Feature: Classic Data Entry
   # flaky
   @skip-broken
   Scenario: Create lab report with multiple results and confirm association
-    And I click on Data Entry in the navigation bar
+    When I click on Data Entry in the navigation bar
     And I click on Lab Report
     And I populate the page with patient Surma J Singh's information 
     And I click Next to navigate to the Lab Report tab
@@ -57,7 +57,7 @@ Feature: Classic Data Entry
     And I search by last name as "Singh"
     And I click on patient ID "63000" to view profile
     And Click Events tab on Patient Profile Page
-    And the last Lab Report should have multiple resulted tests associated with it
+    Then the last Lab Report should have multiple resulted tests associated with it
 
  
   Scenario: Adding a Morbidity Report

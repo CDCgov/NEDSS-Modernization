@@ -17,19 +17,19 @@ Feature: User accesses patient profile and can view existing patient data here.
 
     Scenario: User wants to add a new investigation
         Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add investigation" button
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add investigation" button
         And Add a new investigation
 
     Scenario: User wants to add a new lab report
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add lab report" button  
+        When the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add lab report" button  
 
     Scenario: User wants to add a new morbidity report
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add morbidity report" button
+        When the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add morbidity report" button
 
     # record not deleting
     @skip-broken
@@ -41,7 +41,7 @@ Feature: User accesses patient profile and can view existing patient data here.
 
     Scenario: Display all investigations related to the patient in the "Investigations" section
         Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        And user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Investigations" table
             | Select to compare| A check box to compare investigations.                                 |
             | Investigation ID | A link to the selected open investigation screen                       |

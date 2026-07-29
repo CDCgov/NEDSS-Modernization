@@ -60,16 +60,16 @@ Feature: Page Builder - User can view Preview Page here.
     Given user is at Preview page - Page info section with page under Draft or Published with Draft status
     When clicks on Edit Page details in preview page
     Then verify user is navigated to Page details page with prepopulated data
-    Then verify Conditions is required and editable field
-    Then verify user can remove add the conditions
+    And verify Conditions is required and editable field
+    And verify user can remove add the conditions
     And verify Page name is required field and already prefilled
     And verify user can update Page name with max characters 50
-    Then verify Event Type is required and uneditable field
+    And verify Event Type is required and uneditable field
     And verify Reporting Mechanism is required and editable field
-    Then verify user can select another option from reporting mechanism dropdown
+    And verify user can select another option from reporting mechanism dropdown
     And verify Page description is optional field
     And verify maximum allowed characters are 2000 in Page description
-    Then verify Data mart name is optional field and may display exiting data mart name
+    And verify Data mart name is optional field and may display exiting data mart name
     And verify maximum allowed characters are 50 for datamart name
     When click on Cancel in page details page
     Then verify user is brought back to Preview page with correct status on top right
