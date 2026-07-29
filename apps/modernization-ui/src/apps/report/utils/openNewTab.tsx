@@ -1,5 +1,5 @@
 /**
- * Open the provided content in a new tab.
+ * Open a new tab with the provided content available.
  *
  * The path should point to nbs, content will be placed in local storage at the provided key
  */

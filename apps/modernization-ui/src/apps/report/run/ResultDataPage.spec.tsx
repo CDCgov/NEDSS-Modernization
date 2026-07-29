@@ -1,7 +1,7 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
 import { ReportExecutionResult } from 'generated';
-import { ResultDataPage } from './ResultDataPage';
-import { useLoaderData } from 'react-router';
+import { loadReportResult, ResultDataPage } from './ResultDataPage';
+import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -72,5 +72,20 @@ describe('ResultDataPage', () => {
         const { getByRole } = render(<ResultDataPage />);
 
         expect(getByRole('heading', { name: 'No result found' })).toBeVisible();
+    });
+
+    describe('loadReportResult', () => {
+        it('reads data from storage and parses when available', async () => {
+            window.localStorage.setItem('reportResult.1', '{"hi": 2}');
+            const res = await loadReportResult({ params: { resultId: '1' } } as unknown as LoaderFunctionArgs<any>);
+            expect(res).toEqual({ hi: 2 });
+            expect(window.localStorage.getItem('reportResult.1')).toBeNull();
+        });
+        it('returns null when unavailable', async () => {
+            window.localStorage.setItem('reportResult.1', '{"hi": 2}');
+            const res = await loadReportResult({ params: { resultId: '2' } } as unknown as LoaderFunctionArgs<any>);
+            expect(res).toBeNull();
+            expect(window.localStorage.getItem('reportResult.1')).not.toBeNull();
+        });
     });
 });
