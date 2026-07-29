@@ -9,7 +9,7 @@ class BaseReportExecutionError(Exception):
         self.message = message
         self.http_code = http_code
         self.id = str(uuid.uuid4())
-        
+
         super().__init__(self.message)
 
 
