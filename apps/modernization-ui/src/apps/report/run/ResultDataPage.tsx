@@ -13,6 +13,7 @@ import { LoadingBlock } from 'libs/loading/block';
 import { useParams } from 'react-router';
 
 import layoutStyes from '../layout/layout.module.scss';
+import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -33,14 +34,15 @@ type Result = {
 const ResultDataPage = () => {
     const params = useParams();
     const resultId = params.resultId ?? '0';
+    const resultKey = `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`;
     const [result, setResult] = useState<Result | undefined | null>(undefined);
 
     useEffect(() => {
-        const rawData = localStorage.getItem(`reportResult.${resultId}`);
+        const rawData = localStorage.getItem(resultKey);
         if (rawData) {
             setResult(JSON.parse(rawData));
             // clean result up from local storage now that it's been viewed
-            localStorage.removeItem(`reportResult.${resultId}`);
+            localStorage.removeItem(resultKey);
 
             // double-mount in dev mode can cause wiping out data if don't check defined-ness
         } else if (rawData === undefined) {
@@ -54,7 +56,7 @@ const ResultDataPage = () => {
         return (
             <AlertMessage type="warning" title="No result found" level={1} className="margin-2">
                 <p>This can happen if the page was refreshed. Re-run the report to retrieve a new result.</p>
-                <p>If this persists, contact your system administrator</p>
+                <p>If this persists, contact your system administrator.</p>
             </AlertMessage>
         );
     }

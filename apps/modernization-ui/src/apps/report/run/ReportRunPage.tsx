@@ -16,7 +16,7 @@ import { ReportResultPage } from './ReportResultPage';
 import { FormProvider, useForm } from 'react-hook-form';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 import { usePermissions } from 'libs/permission/usePermissions';
-import { PERMISSION_GROUP_MAP } from '../constants';
+import { LOCAL_STORAGE_RESULT_PREFIX, PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
 import { NotFoundError } from 'pages/error/NotFoundError';
 import { permissions, permitsAll } from 'libs/permission';
@@ -127,12 +127,12 @@ const ReportRunPage = () => {
                             const resultId = crypto.randomUUID();
                             openNewTab(
                                 `/report/result/${resultId}`,
-                                JSON.stringify({
+                                {
                                     result: res,
                                     title: config?.title ?? '',
                                     dataSourceName: config?.dataSource.name ?? '',
-                                }),
-                                `reportResult.${resultId}`
+                                },
+                                `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
                             );
                         }
                     } catch (err) {
