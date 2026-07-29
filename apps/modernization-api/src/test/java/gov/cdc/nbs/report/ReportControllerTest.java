@@ -81,7 +81,6 @@ class ReportControllerTest {
               Collections.emptyList(),
               "Description");
       Report expectedReport = mock(Report.class);
-      NbsUserDetails user = mock(NbsUserDetails.class);
 
       when(service.createReport(request, user)).thenReturn(expectedReport);
 

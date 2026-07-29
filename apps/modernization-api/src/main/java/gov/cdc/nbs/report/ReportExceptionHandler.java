@@ -31,9 +31,7 @@ public class ReportExceptionHandler {
       MethodArgumentNotValidException ex) {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
-        System.Logger.Level.ERROR,
-            DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getBindingResult().getAllErrors().toString(), errorId),
@@ -44,9 +42,7 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
-        System.Logger.Level.ERROR,
-        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.FORBIDDEN);
@@ -56,9 +52,7 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleNotFound(NotFoundException ex) {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
-        System.Logger.Level.ERROR,
-        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_FOUND);
@@ -68,9 +62,7 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleNotImplemented(NotImplementedException ex) {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
-        System.Logger.Level.ERROR,
-        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.NOT_IMPLEMENTED);
@@ -80,9 +72,7 @@ public class ReportExceptionHandler {
   public ResponseEntity<ErrorResponseBody> handleUnprocessableEntity(IllegalArgumentException ex) {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
-        System.Logger.Level.ERROR,
-        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -93,9 +83,7 @@ public class ReportExceptionHandler {
       HttpMessageNotReadableException ex) {
     String errorId = UUID.randomUUID().toString();
     LOGGER.log(
-        System.Logger.Level.ERROR,
-        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
 
     return new ResponseEntity<>(
         new ErrorResponseBody(ex.getMessage(), errorId), HttpStatus.UNPROCESSABLE_ENTITY);
@@ -132,9 +120,7 @@ public class ReportExceptionHandler {
     String errorId = UUID.randomUUID().toString();
 
     LOGGER.log(
-        System.Logger.Level.ERROR,
-        DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()),
-        ex);
+        System.Logger.Level.ERROR, DEFAULT_ERROR_LOG.formatted(errorId, ex.getMessage()), ex);
     return new ResponseEntity<>(
         new ErrorResponseBody("Internal Server Error", errorId), HttpStatus.INTERNAL_SERVER_ERROR);
   }
