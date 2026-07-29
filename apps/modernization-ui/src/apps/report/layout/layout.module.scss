@@ -2,8 +2,8 @@
 @use 'styles/colors';
 
 .columnContent {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
 }
@@ -29,6 +29,17 @@ $header-height: 6rem;
         grid-template-columns: 1fr auto;
         grid-template-areas: 'main aside';
 
+        // overflow ruins sticky-ness of aside
+        &:not(:has(aside)) {
+            overflow-x: auto;
+        }
+
+        // assumes that a div will be a primary sibling of the aside
+        // in the layout (<main><aside /><div /></main>
+        &:has(aside) > div {
+            overflow-x: auto;
+        }
+
         h2 {
             scroll-margin-top: $header-height;
         }
@@ -44,7 +55,8 @@ $header-height: 6rem;
 }
 
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     justify-content: space-between;
     align-items: flex-start;
 
@@ -57,10 +69,18 @@ $header-height: 6rem;
     background-color: colors.$base-white;
 
     .left {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: start;
         align-items: end;
+        gap: 1rem;
+    }
+
+    // it will cut off with ellipsis, need the height to stay relatively stable
+    // so the logic for the "on this page" aside offset is reasonable
+    .title {
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .subtitle {
@@ -70,8 +90,6 @@ $header-height: 6rem;
     }
 
     .actions {
-        flex-shrink: 0;
-
         display: flex;
         align-items: center;
         gap: 0.5rem;
