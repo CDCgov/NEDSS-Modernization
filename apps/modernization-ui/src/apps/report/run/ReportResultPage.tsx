@@ -9,7 +9,6 @@ import { Shown } from 'conditional-render';
 import { useUser } from 'user';
 import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
 import { ModalRef } from '@trussworks/react-uswds';
-import { SaveReportModal } from './modals/SaveReportModal.tsx';
 import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
 import classNames from 'classnames';
@@ -17,6 +16,7 @@ import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
 import { FullPageBlock } from 'components/FullPageBlock';
 
 import layoutStyles from '../layout/layout.module.scss';
+import { ConfirmationModal } from '../../../confirmation';
 
 const ReportResultPage = ({
     config,
@@ -134,7 +134,20 @@ const ReportResultPage = ({
                             >
                                 Save
                             </Button>
-                            <SaveReportModal saveReportModalRef={saveReportModalRef} saving={saving} onSave={onSave} />
+                            <ConfirmationModal
+                                modal={saveReportModalRef}
+                                title="Overwrite saved report?"
+                                message={
+                                    <>
+                                        This will replace the saved criteria with your current criteria. This action
+                                        cannot be undone.
+                                    </>
+                                }
+                                confirmText="Save"
+                                cancelText="Cancel"
+                                onConfirm={onSave}
+                                disabled={saving}
+                            />
                         </Permitted>
                     </Shown>
                 </>
