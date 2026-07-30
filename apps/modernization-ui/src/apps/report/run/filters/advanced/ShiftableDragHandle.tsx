@@ -23,6 +23,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
             const thisEl = document.querySelector<HTMLSpanElement>(`#drag-handle-${id}`);
             thisEl?.focus();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleKeyDown: KeyboardEventHandler = (event) => {
@@ -80,8 +81,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
             title={isActive ? 'Active drag handle' : 'Drag Handle'}
             role="button"
             tabIndex={0}
-            onKeyDown={handleKeyDown}
-        >
+            onKeyDown={handleKeyDown}>
             <Icon name="drag" />
         </span>
     );
