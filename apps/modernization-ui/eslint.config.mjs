@@ -8,24 +8,81 @@ import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
 
-export default defineConfig([
-    // Main config
-    {
-        files: ['**/*.{js,jsx,ts,tsx}'],
-        ignores: ['build/**', 'node_modules/**', '**/generated/**', 'src/setupProxy.js', 'src/codegen.ts'],
-        languageOptions: {
-            parser: tsParser,
-            ecmaVersion: 'latest',
-            sourceType: 'module',
-            parserOptions: {
-                ecmaFeatures: { jsx: true },
-            },
-            globals: {
-                ...globals.browser,
-                ...globals.jest,
-                JSX: 'readonly',
+const baseRules = {
+    ...tseslint.configs.recommended.rules,
+    ...js.configs.recommended.rules,
+    'no-console': 'warn',
+    'max-len': ['warn', { code: 120 }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' }],
+    'react/react-in-jsx-scope': 'off',
+    'react/no-unescaped-entities': 'off',
+    'react-hooks/rules-of-hooks': 'warn',
+    'react-hooks/exhaustive-deps': 'warn',
+    'react/jsx-curly-brace-presence': [2, 'never'],
+    'react/jsx-boolean-value': [2, 'always'],
+    'dot-notation': 'error',
+    'object-shorthand': 'error',
+    eqeqeq: 'error',
+    'no-var': 'error',
+    'prefer-const': 'error',
+    'storybook/hierarchy-separator': 'off',
+    'object-shorthand': 'error',
+};
+
+const jsDocRules = {
+    ...jsdoc.configs['flat/requirements-typescript'].rules,
+    'require-jsdoc': 'off',
+    'jsdoc/require-jsdoc': 'off',
+    'jsdoc/require-example': 'off',
+    'jsdoc/require-param': 'off',
+    'jsdoc/require-returns': 'off',
+};
+
+const mainConfig = {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['build/**', 'node_modules/**', '**/generated/**', 'src/setupProxy.js', 'src/codegen.ts'],
+    languageOptions: {
+        parser: tsParser,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        parserOptions: {
+            ecmaFeatures: { jsx: true },
+        },
+        globals: {
+            ...globals.browser,
+            ...globals.jest,
+            JSX: 'readonly',
+        },
+    },
+    plugins: {
+        react,
+        '@typescript-eslint': tseslint,
+        'react-hooks': reactHooks,
+        storybook,
+        jsdoc,
+    },
+    rules: {
+        ...baseRules,
+        ...jsDocRules,
+    },
+    settings: {
+        react: { version: 'detect' },
+        jsdoc: {
+            tagNamePreference: {
+                return: 'return',
             },
         },
+    },
+};
+
+export default defineConfig([
+    // Main config
+    mainConfig,
+    // KLUDGE: strategically ignoring exhaustive deps - too messy
+    {
+        ...mainConfig,
+        files: ['src/apps/search/**/*.{ts,tsx}', 'src/apps/page-builder/**/*.{ts,tsx}', 'src/libs/patient/**'],
         plugins: {
             react,
             '@typescript-eslint': tseslint,
@@ -34,43 +91,8 @@ export default defineConfig([
             jsdoc,
         },
         rules: {
-            ...tseslint.configs.recommended.rules,
-            ...js.configs.recommended.rules,
-            ...jsdoc.configs['flat/requirements-typescript'].rules,
-            'no-console': 'warn',
-            'require-jsdoc': 'off',
-            'jsdoc/require-jsdoc': 'off',
-            'jsdoc/require-example': 'off',
-            'jsdoc/require-param': 'off',
-            'jsdoc/require-returns': 'off',
-            'max-len': ['warn', { code: 120 }],
-            'no-unused-vars': 'off',
-            '@typescript-eslint/no-unused-vars': [
-                'error',
-                { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' },
-            ],
-            'react/react-in-jsx-scope': 'off',
-            'react/no-unescaped-entities': 'off',
-            'react-hooks/rules-of-hooks': 'warn',
-            // KLUDGE: this should be on, but doesn't play well with some of the current patterns
+            ...mainConfig.rules,
             'react-hooks/exhaustive-deps': 'off',
-            'react/jsx-curly-brace-presence': [2, 'never'],
-            'react/jsx-boolean-value': [2, 'always'],
-            'dot-notation': 'error',
-            'object-shorthand': 'error',
-            eqeqeq: 'error',
-            'no-var': 'error',
-            'prefer-const': 'error',
-            'storybook/hierarchy-separator': 'off',
-            'object-shorthand': 'error',
-        },
-        settings: {
-            react: { version: 'detect' },
-            jsdoc: {
-                tagNamePreference: {
-                    return: 'return',
-                },
-            },
         },
     },
     // Test and story files overrides
@@ -87,11 +109,11 @@ export default defineConfig([
             },
         },
         rules: {
-            ...tseslint.configs.recommended.rules,
-            ...js.configs.recommended.rules,
+            ...baseRules,
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
             'react-hooks/rules-of-hooks': 'off',
+            'react-hooks/exhaustive-deps': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
             'no-console': 'off',
