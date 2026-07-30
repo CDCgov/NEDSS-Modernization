@@ -28,6 +28,7 @@ export const ManageSubsectionTile = ({
 
     const deleteHeader = (curSubsection: PagesSubSection) => {
         if (curSubsection.questions.length !== 0) {
+            // eslint-disable-next-line max-len
             return `Subsection cannot be deleted. This subsection contains elements (questions) inside it. Remove the contents first, and then the subsection can be deleted.`;
         } else {
             return `Are you sure you want to delete this subsection?`;
@@ -107,7 +108,9 @@ export const ManageSubsectionTile = ({
                             </div>
                             <div className={styles.label} data-testid={'label'}>
                                 <NbsIcon name="group" size="3" />
-                                <span data-testid="manageSectionTileId">{`${subsection.name} (${subsection.questions.length})`}</span>
+                                <span data-testid="manageSectionTileId">
+                                    {subsection.name} ({subsection.questions.length})
+                                </span>
                             </div>
 
                             <div className={styles.buttons}>
