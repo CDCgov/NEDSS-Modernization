@@ -58,16 +58,6 @@ export default defineConfig([
                 JSX: 'readonly',
             },
         },
-    },
-};
-
-export default defineConfig([
-    // Main config
-    mainConfig,
-    // KLUDGE: strategically ignoring exhaustive deps - too messy
-    {
-        ...mainConfig,
-        files: ['src/apps/search/**/*.{ts,tsx}', 'src/apps/page-builder/**/*.{ts,tsx}', 'src/libs/patient/**'],
         plugins: {
             react,
             '@typescript-eslint': tseslint,
