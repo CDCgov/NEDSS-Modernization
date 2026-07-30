@@ -18,7 +18,7 @@ public class AdvancedFilterConfigurationMapper {
       ReportFilter filter, List<DataSourceColumn> columns) {
     if (!filter.isAdvancedFilter()) {
       throw new IllegalArgumentException(
-          "Cannot create advanced filter from non where clause builder filter");
+          "Cannot create advanced filter from non where clause builder filter %s".formatted(filter.getId()));
     }
 
     AdvancedQuery.RuleGroup ruleGroup = null;
@@ -34,11 +34,11 @@ public class AdvancedFilterConfigurationMapper {
         ruleGroup = advQueryBuilder.build();
       } catch (AdvancedQueryException e) {
         exceptionMsg = e.getMessage();
-        LOGGER.log(System.Logger.Level.WARNING, "Unable to parse saved advanced filter query", e);
+        LOGGER.log(System.Logger.Level.WARNING, "Unable to parse saved advanced filter query for filter %s".formatted(filter.getId()), e);
       }
     } else {
       LOGGER.log(
-          System.Logger.Level.DEBUG, "No filter values for advanced filter " + filter.getId());
+          System.Logger.Level.DEBUG, "No filter values for advanced filter %s".formatted(filter.getId()));
     }
 
     return new AdvancedFilterConfiguration(filter.getId(), ruleGroup, query, exceptionMsg);
