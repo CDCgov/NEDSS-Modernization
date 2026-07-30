@@ -127,7 +127,8 @@ const adjustedForOverflow = (maxPagesShown: number, current: number, total: numb
 
     const previous = current === 1 ? 0 : hasOverflowBefore ? 2 : 1; // first page + prev overflow
     const next = current === total ? 0 : hasOverflowAfter ? 2 : 1; // next overflow + last page
-    const pageCount = maxPagesShown - 1 - (previous + next); // remaining selections to show (minus one for the current page)
+    // remaining selections to show (minus one for the current page)
+    const pageCount = maxPagesShown - 1 - (previous + next);
 
     // Determine how many selections we have before/after the current page
     let before = 0;

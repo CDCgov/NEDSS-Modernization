@@ -25,7 +25,7 @@ type AutocompleteSingleProps<V> = {
     asValue?: ValueConverter<V>;
     asText?: TextConverter<V>;
     asSuggestion?: SuggestionRenderer;
-    onBlur?: any;
+    onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
 const Autocomplete = <V,>({

@@ -6,7 +6,7 @@ import { Selectable } from 'options';
 
 import 'design-system/select/multi/multi-select.scss';
 
-const CheckedOption = (props: any) => {
+const CheckedOption: typeof components.Option = (props) => {
     return (
         <div>
             <components.Option {...props}>
@@ -16,7 +16,7 @@ const CheckedOption = (props: any) => {
     );
 };
 
-const USWDSDropdownIndicator = (props: any) => (
+const USWDSDropdownIndicator: typeof components.DropdownIndicator = (props) => (
     // Replaces the default arrow indicator from react-select with the select indicator from USDWS
     <components.DropdownIndicator {...props}>
         <div className="multi-select select-indicator" />
@@ -37,7 +37,7 @@ type MultiSelectInputProps = {
     complete?: Complete;
     options?: Selectable[];
     value?: Selectable[];
-    onChange?: (value: any) => void;
+    onChange?: (value: string[]) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     asValue?: (selectable: Selectable) => string;
     asDisplay?: (selectable: Selectable) => string;
@@ -70,7 +70,7 @@ const MultiSelectAutocomplete = ({
             onChange(values);
         }
     };
-    const Input = (props: any) => <components.Input {...props} maxLength={50} />;
+    const Input: typeof components.Input = (props) => <components.Input {...props} maxLength={50} />;
 
     return (
         <div className={'multi-select-input'}>
