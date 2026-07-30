@@ -9,7 +9,8 @@ class MemoizedSupplier<V> {
     #value: V | undefined;
 
     /**
-     * Creates a new DataProvider that uses the given supplier to lazily evaluate the value if it is not present.  If an initial value is provided the value is only evaluated after being reset.
+     * Creates a new DataProvider that uses the given supplier to lazily evaluate the value
+     * if it is not present.  If an initial value is provided the value is only evaluated after being reset.
      *
      * @param {Supplier<V>} supplier The supplier used to evaluate the value.
      * @param {V} initial An optional initial value,

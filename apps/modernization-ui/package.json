@@ -99,7 +99,7 @@
         "test:coveragePatient": "vitest --coverage --include=src/apps/patient/**/*.{js,jsx,ts,tsx}",
         "test:coveragePageBuilder": "vitest --coverage --include=src/apps/page-builder/**/*.{js,jsx,ts,tsx}",
         "test:coverageSearch": "vitest --coverage --include=src/apps/search/**/*.{js,jsx,ts,tsx}",
-        "lint": "eslint .",
+        "lint": "eslint . --max-warnings=0",
         "lint:fix": "eslint --fix",
         "format": "prettier --write .",
         "format:check": "prettier --check .",

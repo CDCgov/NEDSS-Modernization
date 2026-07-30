@@ -1,8 +1,18 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import React from 'react';
 import './filter.scss';
+import { ReactNode } from 'react';
 
-export const FilterWrapper = ({ isModalHidden, name, toggleModal, children }: any) => {
+export const FilterWrapper = ({
+    isModalHidden,
+    name,
+    toggleModal,
+    children,
+}: {
+    isModalHidden: boolean;
+    name: ReactNode;
+    toggleModal: () => void;
+    children: ReactNode;
+}) => {
     return (
         <div className="filter-config-panel">
             <div className="filter-bar">

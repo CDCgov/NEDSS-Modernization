@@ -62,13 +62,13 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                                     style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                 >
                                     {questions
-                                        ? questions.map((question: any, i: number) => {
+                                        ? questions.map((question: PagesQuestion, i: number) => {
                                               return (
                                                   <ReorderQuestion
                                                       question={question}
                                                       key={question.id.toString()}
                                                       index={i}
-                                                      visible={question.display}
+                                                      visible={!!question.visible}
                                                   />
                                               );
                                           })

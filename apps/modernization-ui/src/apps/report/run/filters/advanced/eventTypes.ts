@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-len
 // Adapted from https://github.com/hello-pangea/dnd/blob/cd34005527ace937c8e0b6fcaca8be3abab7dfad/src/view/event-bindings/event-types.ts
 
 export interface EventOptions {

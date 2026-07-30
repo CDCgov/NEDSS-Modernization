@@ -12,7 +12,6 @@ type GuardedProps = {
 /**
  * A composition of {@link Permitted} and {@link FeatureToggle} where features are resolved first, then permissions.
  *
- * @param {GuardedProps} props
  * @return {ReactNode} The component displayed when the feature and permission evaluation passes.
  */
 const Guarded = ({ permission, feature, fallback, children }: GuardedProps) => (

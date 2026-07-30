@@ -190,6 +190,7 @@ export const EditBusinessRule = () => {
                 modal={deleteWarningModal}
                 title="Warning"
                 message="Are you sure you want to delete this business rule?"
+                // eslint-disable-next-line max-len
                 detail="Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
                 confirmText="Yes, delete"
                 onConfirm={onDelete}
