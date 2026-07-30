@@ -7,10 +7,6 @@
     border-left-style: solid;
     border-left-width: 8px;
 
-    h1 {
-        overflow: unset;
-    }
-
     &:focus {
         outline: none !important;
     }
@@ -48,7 +44,7 @@
         font-size: 0.875rem;
         font-style: normal;
         font-weight: 400;
-        line-height: 1.3125rem;
+        line-height: 1.1;
     }
 
     .closeButton {
