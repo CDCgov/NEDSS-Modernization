@@ -75,7 +75,7 @@ const Dialog = ({ position, onClose, children }: DialogProps) => {
             ref={dialogRef}
             tabIndex={0}
             aria-label="Overlay modal"
-            open
+            open={true}
             className={classNames({ [styles.right]: position === 'right', [styles.left]: position === 'left' })}
             onKeyDown={handleKeyDown}
         >

@@ -37,7 +37,7 @@ describe('ImportModal', () => {
         expect(getByText('Import file')).toBeInTheDocument();
     });
     it('should allow override of heading', () => {
-        const { getByText } = render(<Fixture title={'Custom title'} />);
+        const { getByText } = render(<Fixture title="Custom title" />);
 
         expect(getByText('Custom title')).toBeInTheDocument();
     });
@@ -50,7 +50,7 @@ describe('ImportModal', () => {
     });
 
     it('should display allow override of label content', () => {
-        const { getByLabelText } = render(<Fixture dropSectionContent={'Updated content'} />);
+        const { getByLabelText } = render(<Fixture dropSectionContent="Updated content" />);
 
         expect(getByLabelText('Updated content')).toBeInTheDocument();
     });

@@ -112,7 +112,7 @@ export const BusinessRulesLibraryTable = ({
                     title: (
                         <div>
                             {rule.targets?.map((target, index) => {
-                                if (rule.targetType == Rule.targetType.SUBSECTION) {
+                                if (rule.targetType === Rule.targetType.SUBSECTION) {
                                     const subsections = getSubsections();
                                     const subsection = subsections?.find(
                                         (sub) => sub.questionIdentifier === target.targetIdentifier
@@ -187,7 +187,7 @@ export const BusinessRulesLibraryTable = ({
     const footerActionBtn = (
         <div className="question-action-btn">
             <ModalToggleButton
-                closer
+                closer={true}
                 className="cancel-btn"
                 type="button"
                 modalRef={qtnModalRef}
@@ -213,7 +213,7 @@ export const BusinessRulesLibraryTable = ({
                 <span className="no-items">No items to display</span>
                 <p>Click 'Add new business rule' to add new rule</p>
                 {page?.status === 'Published' ? (
-                    <Button type="button" disabled>
+                    <Button type="button" disabled={true}>
                         Add new business rule
                     </Button>
                 ) : (
@@ -232,7 +232,7 @@ export const BusinessRulesLibraryTable = ({
                     <h3> {page?.name} | Business rules </h3>
                 </div>
                 {page?.status === 'Published' ? (
-                    <Button type="button" disabled>
+                    <Button type="button" disabled={true}>
                         Add new business rule
                     </Button>
                 ) : (
@@ -250,7 +250,7 @@ export const BusinessRulesLibraryTable = ({
                 tableHeader=""
                 tableHead={tableColumns}
                 tableBody={tableRows}
-                isPagination
+                isPagination={true}
                 pageSize={curPage.pageSize}
                 totalResults={curPage.total}
                 currentPage={curPage.current}

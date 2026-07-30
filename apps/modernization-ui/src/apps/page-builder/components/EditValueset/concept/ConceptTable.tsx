@@ -53,7 +53,7 @@ export const ConceptTable = ({ concepts, loading, onSort, onEditConcept }: Props
                     title: (
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             className={styles.editConceptButton}
                             aria-label={`edit concept: ${concept.localCode}`}
                             onClick={() => onEditConcept(concept)}

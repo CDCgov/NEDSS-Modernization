@@ -66,7 +66,7 @@ const Card = ({
                         <Button
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing={remaining.sizing}
-                            tertiary
+                            tertiary={true}
                             icon="expand_less"
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
                             aria-controls={collapsibleId}

@@ -41,7 +41,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                     label="Is the patient deceased?"
                     display={mortality.deceased}
                     groupType="last"
-                    underlined
+                    underlined={true}
                 />
                 <Controller
                     control={form.control}
@@ -55,7 +55,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                                 formValue: personUid,
                                 ...field,
                             }}
-                            underlined
+                            underlined={true}
                         />
                     )}
                 />
@@ -71,7 +71,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                                 formValue: personUid,
                                 ...field,
                             }}
-                            underlined
+                            underlined={true}
                         />
                     )}
                 />
@@ -90,7 +90,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                         />
                     )}
                 />
-                <MergeDataDisplay label="Death county" display={mortality.deathCounty} groupType="last" underlined />
+                <MergeDataDisplay label="Death county" display={mortality.deathCounty} groupType="last" underlined={true} />
                 <Controller
                     control={form.control}
                     name="mortality.deathCountry"

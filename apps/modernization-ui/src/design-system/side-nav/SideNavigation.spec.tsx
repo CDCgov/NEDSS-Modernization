@@ -8,7 +8,7 @@ describe('SideNavigation', () => {
     const Fixture = () => (
         <MemoryRouter>
             <SideNavigation title="Side navigation test">
-                <NavEntry name="active entry" active />
+                <NavEntry name="active entry" active={true} />
                 <NavEntry name="internal link" path="/internalRoute" />
                 <NavEntry name="external link" href="/nbs/externalRoute" />
             </SideNavigation>

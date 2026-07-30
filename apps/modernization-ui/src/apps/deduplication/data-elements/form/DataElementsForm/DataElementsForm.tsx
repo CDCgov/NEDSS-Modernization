@@ -68,13 +68,13 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                         <tr>
                             <th className={styles.checkbox}>
                                 <Checkbox
-                                    name={'selectAll'}
+                                    name="selectAll"
                                     label=""
-                                    id={'toggle-all-checkbox'}
+                                    id="toggle-all-checkbox"
                                     selected={!hasInactive()}
                                     onChange={handleToggleAll}
-                                    aria-label={'Select All'}
-                                    aria-labelledby={`select-all-checkbox`}
+                                    aria-label="Select All"
+                                    aria-labelledby="select-all-checkbox"
                                 />
                             </th>
                             <th>Field</th>

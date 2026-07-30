@@ -9,7 +9,7 @@ const DataEntryMenu = ({ className }: DataEntryMenuProps) => {
     return (
         <SideNavigation title="Data entry" className={className}>
             <Permitted permission="find-patient">
-                <NavEntry name="New patient" path="/search/patient" active />
+                <NavEntry name="New patient" path="/search/patient" active={true} />
             </Permitted>
             <Permitted permission="manage-organization">
                 <NavEntry name="New organization" href="/nbs/MyTaskList1.do?ContextAction=GlobalOrganization" />

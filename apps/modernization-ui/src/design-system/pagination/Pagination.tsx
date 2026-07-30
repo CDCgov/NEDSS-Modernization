@@ -13,7 +13,7 @@ const PageSelector = ({ page, selected, onSelectPage }: PaginationPageProps) => 
     return (
         <li key={`pagination_page_${page}`} className="usa-pagination__item usa-pagination__page-no">
             <Button
-                tertiary
+                tertiary={true}
                 className={classnames('usa-pagination__button', styles.page, {
                     'usa-current': selected,
                 })}
@@ -79,7 +79,7 @@ const Pagination = ({
                         <Button
                             className="usa-pagination__link usa-pagination__previous-page"
                             aria-label="Previous page"
-                            tertiary
+                            tertiary={true}
                             icon="navigate_before"
                             onClick={onPrevious}
                         >
@@ -106,7 +106,7 @@ const Pagination = ({
                         <Button
                             className="usa-pagination__link usa-pagination__next-page"
                             aria-label="Next page"
-                            tertiary
+                            tertiary={true}
                             icon="navigate_next"
                             labelPosition="left"
                             onClick={onNext}

@@ -25,7 +25,7 @@ export const MatchConfiguration = ({ loading, dataElements, onImportClick }: Pro
             <Shown when={loading || !dataElementsConfigured}>
                 <PersonMatchHeader />
             </Shown>
-            <Shown when={!loading} fallback={<Loading center />}>
+            <Shown when={!loading} fallback={<Loading center={true} />}>
                 <Shown
                     when={dataElementsConfigured}
                     fallback={<AlgorithmNotConfigured onImportClick={onImportClick} />}

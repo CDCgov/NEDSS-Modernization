@@ -69,10 +69,10 @@ export const CollapsibleWithActions: Story = {
         ...Collapsible.args,
         actions: (
             <>
-                <Button tertiary sizing="small">
+                <Button tertiary={true} sizing="small">
                     Tertiary
                 </Button>
-                <Button secondary sizing="small">
+                <Button secondary={true} sizing="small">
                     Secondary
                 </Button>
                 <Button sizing="small">Primary</Button>

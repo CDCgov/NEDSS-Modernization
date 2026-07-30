@@ -43,10 +43,10 @@ export const asTextCriteriaOrString = (
  * @return {string} The string value
  */
 export const asTextCriteriaValue = (value?: string | TextCriteria | null): string | null | undefined => {
-    if (value != null && typeof value === 'object' && Object.keys(value).length >= 1) {
+    if (value !== null && typeof value === 'object' && Object.keys(value).length >= 1) {
         return value[Object.keys(value)[0] as TextOperation] as string;
     }
-    if (value != null && typeof value === 'string') {
+    if (value !== null && typeof value === 'string') {
         return stripLegacyOperators(value);
     }
     return value as string | null | undefined;
@@ -78,10 +78,10 @@ export const asTextCriteria = (
  * Returns the operator string, if no operator then will return undefined
  */
 export const asTextCriteriaOperator = (value?: string | TextCriteria | null): string | undefined => {
-    if (value != null && typeof value === 'string') {
+    if (value !== null && typeof value === 'string') {
         return undefined;
     }
-    if (value != null && typeof value === 'object') {
+    if (value !== null && typeof value === 'object') {
         return transformOperator(Object.keys(value)[0] as TextOperation);
     }
 

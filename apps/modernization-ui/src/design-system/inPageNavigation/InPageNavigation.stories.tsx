@@ -21,6 +21,6 @@ const sections: NavSection[] = [
 export const Default: Story = {
     args: {
         title: 'Fruits',
-        sections: sections,
+        sections,
     },
 };

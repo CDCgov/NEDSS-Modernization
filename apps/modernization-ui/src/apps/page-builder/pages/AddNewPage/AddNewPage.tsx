@@ -109,7 +109,7 @@ export const AddNewPage = () => {
     };
 
     const handleSubmit = () => {
-        if (watch.eventType !== undefined && watch.eventType != '' && watch.eventType !== 'INV') {
+        if (watch.eventType !== undefined && watch.eventType !== '' && watch.eventType !== 'INV') {
             window.location.href = '/nbs/page-builder/api/v1/pages/create';
         } else {
             onSubmit();
@@ -158,13 +158,13 @@ export const AddNewPage = () => {
                                     error={error?.message}
                                     name={name}
                                     id={name}
-                                    required
+                                    required={true}
                                 />
                             )}
                         />
                         {watch.eventType !== undefined && watch.eventType !== '' && (
                             <>
-                                {watch.eventType == 'INV' ? (
+                                {watch.eventType === 'INV' ? (
                                     <FormProvider {...form}>
                                         <AddNewPageFields
                                             conditions={conditions}
@@ -187,7 +187,7 @@ export const AddNewPage = () => {
                     </div>
                 </div>
                 <div className="add-new-page__buttons">
-                    <Button type="button" outline onClick={handleCancel} id="cancelBtn">
+                    <Button type="button" outline={true} onClick={handleCancel} id="cancelBtn">
                         Cancel
                     </Button>
                     <Button
@@ -202,22 +202,22 @@ export const AddNewPage = () => {
             </Form>
 
             <ModalComponent
-                isLarge
+                isLarge={true}
                 modalRef={createConditionModal}
-                modalHeading={'Create new condition'}
+                modalHeading="Create new condition"
                 modalBody={<CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />}
             />
-            <Modal id="import-template-modal" isLarge ref={importTemplateModal}>
+            <Modal id="import-template-modal" isLarge={true} ref={importTemplateModal}>
                 <ImportTemplate
                     onCancel={() => importTemplateModal.current?.toggleModal()}
                     onTemplateCreated={handleTemplateImported}
                 />
             </Modal>
             <Modal
-                forceAction
+                forceAction={true}
                 id="condition-lookup-modal"
                 className="add-condition-modal"
-                isLarge
+                isLarge={true}
                 ref={conditionLookupModal}
             >
                 <ConditionSearch

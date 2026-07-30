@@ -37,10 +37,10 @@ export const TableNumericInput = ({ label, name, value, error, max, min, step, d
                     step={step}
                     disabled={disabled}
                     className={classNames([error ? styles.errorBorder : '', styles.numericInput])}
-                    aria-label={'numericInput'}
+                    aria-label="numericInput"
                 />
                 {error && (
-                    <Tooltip id={`${name}-error-tooltip`} label={error} className={styles.tooltip} position={'top'}>
+                    <Tooltip id={`${name}-error-tooltip`} label={error} className={styles.tooltip} position="top">
                         <Icon.ErrorOutline className={styles.tooltipIcon} />
                     </Tooltip>
                 )}

@@ -91,7 +91,7 @@ const PaginationProvider = ({
 
     const requestFromUrl = useCallback(
         (next: number) => {
-            if (next != page.current) {
+            if (next !== page.current) {
                 // saves the current page to a url param so that it persists
                 // on page refresh or navigating away
                 setSearchParams((current) => {

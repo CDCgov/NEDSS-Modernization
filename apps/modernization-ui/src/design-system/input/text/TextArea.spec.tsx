@@ -49,7 +49,7 @@ describe('text area', () => {
     });
 
     it('should display given value', () => {
-        const { getByRole } = render(<Fixture value={'given value'} />);
+        const { getByRole } = render(<Fixture value="given value" />);
 
         const input = getByRole('textbox', { name: 'Text area test' });
 

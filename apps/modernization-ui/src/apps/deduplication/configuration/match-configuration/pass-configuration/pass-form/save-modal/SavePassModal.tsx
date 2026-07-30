@@ -34,10 +34,10 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
 
     const footer = () => (
         <>
-            <Button secondary onClick={onCancel} data-close-modal>
+            <Button secondary={true} onClick={onCancel} data-close-modal={true}>
                 Cancel
             </Button>
-            <Button disabled={!isValid} onClick={onAccept} data-close-modal>
+            <Button disabled={!isValid} onClick={onAccept} data-close-modal={true}>
                 Save
             </Button>
         </>
@@ -45,7 +45,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
     return (
         <Shown when={visible}>
             <Modal
-                id={`save-pass-modal`}
+                id="save-pass-modal"
                 size="small"
                 title="Save pass configuration"
                 onClose={onCancel}
@@ -59,7 +59,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Pass title"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
@@ -67,7 +67,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                             name={name}
                             id={name}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -77,12 +77,12 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Description"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
-                            multiline
+                            multiline={true}
                             name={name}
                             id={name}
                             error={error?.message}

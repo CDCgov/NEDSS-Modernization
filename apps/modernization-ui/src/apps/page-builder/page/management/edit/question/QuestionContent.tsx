@@ -73,7 +73,7 @@ export const QuestionContent = ({
                         displayComponent === 1031) && (
                         <SelectInput
                             onChange={() => {}}
-                            defaultValue={''}
+                            defaultValue=""
                             options={conceptState}
                             data-testid="dropdown-input"
                         />
@@ -93,17 +93,17 @@ export const QuestionContent = ({
                             defaultValue=""
                             type="text"
                             className={styles.questionInput}
-                            multiline
+                            multiline={true}
                         />
                     )}
                     {displayComponent === 1017 && (
                         <div className={styles.multiElements}>
-                            <Button type="button" className={styles.searchBtn} outline onClick={() => {}}>
+                            <Button type="button" className={styles.searchBtn} outline={true} onClick={() => {}}>
                                 Search
                             </Button>
                             <span className={styles.dividerText}>Or</span>
                             <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
-                            <Button type="button" className={styles.quickCodeLookupBtn} outline onClick={() => {}}>
+                            <Button type="button" className={styles.quickCodeLookupBtn} outline={true} onClick={() => {}}>
                                 Quick code lookup
                             </Button>
                         </div>
@@ -118,7 +118,7 @@ export const QuestionContent = ({
                         className={`${styles.unStyledButton} margin-right-2`}
                         type="button"
                         onClick={() => onEditValueset(valueSet)}
-                        unstyled
+                        unstyled={true}
                     >
                         <Icon.Edit className="margin-right-2px" />
                         <span> Edit value set</span>
@@ -128,7 +128,7 @@ export const QuestionContent = ({
                             className={styles.unStyledButton}
                             type="button"
                             onClick={onChangeValueset}
-                            unstyled
+                            unstyled={true}
                             disabled={isPublished}
                         >
                             <Icon.Edit className="margin-right-2px" />
@@ -142,7 +142,7 @@ export const QuestionContent = ({
     return (
         <div className={styles.question}>
             <div className={styles.reorderIcon}>
-                <NbsIcon name={'drag'} />
+                <NbsIcon name="drag" />
             </div>
             {!staticTypes.includes(displayComponent ?? 0) ? (
                 renderLabelWithComponent

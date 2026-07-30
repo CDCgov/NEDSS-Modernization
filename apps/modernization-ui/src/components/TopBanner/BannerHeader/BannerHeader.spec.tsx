@@ -5,8 +5,8 @@ import { BannerHeader } from './BannerHeader';
 describe('BannerHeader component tests', () => {
     it('should render banner header', () => {
         const { container } = render(
-            <BannerHeader className="custom-class" isOpen flagImg headerText headerActionText>
-                <BannerButton isOpen>Sample Button</BannerButton>
+            <BannerHeader className="custom-class" isOpen={true} flagImg={true} headerText={true} headerActionText={true}>
+                <BannerButton isOpen={true}>Sample Button</BannerButton>
             </BannerHeader>
         );
         expect(container.firstChild).toHaveClass('usa-banner__header usa-banner__header--expanded custom-class');

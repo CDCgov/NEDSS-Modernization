@@ -14,7 +14,7 @@ const LoginForm = () => {
     useEffect(() => {
         if (pending) {
             LoginService.login({
-                requestBody: { username: username },
+                requestBody: { username },
             })
                 .then(() => navigate('/'))
                 .catch((error: ApiError) => {
@@ -37,7 +37,7 @@ const LoginForm = () => {
 
     return (
         <div className="sign-in-wrapper">
-            <Form onSubmit={handleSubmit} large className="sign-in-form">
+            <Form onSubmit={handleSubmit} large={true} className="sign-in-form">
                 <Fieldset legend="Sign In" legendStyle="large">
                     <FormGroup error={error !== undefined}>
                         <Label htmlFor="username">Username or email address</Label>

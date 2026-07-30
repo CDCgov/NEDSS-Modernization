@@ -26,7 +26,7 @@ const BasicInfo = ({ question }: Props) => {
             <Entry heading="Allow for entry of other value" value={question.allowOtherValues ? 'Yes' : 'No'} />
             <Entry heading="Unique ID" value={question.uniqueId} />
             <Entry heading="Subgroup" value={question.subgroupName} />
-            {question.valuesetName != undefined && <Entry heading="Value set" value={question.valuesetName} />}
+            {question.valuesetName !== undefined && <Entry heading="Value set" value={question.valuesetName} />}
             <Entry heading="Unique name" value={question.uniqueName} />
             <Entry heading="Description" value={question.description} />
         </>

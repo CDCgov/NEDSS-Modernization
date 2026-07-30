@@ -25,7 +25,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
 
     useEffect(() => {
         // options have changed and the value is no longer in the option set
-        if (value?.length > 0 && options.length > 0 && !value.every((v: string) => options.find((o) => o.value == v))) {
+        if (value?.length > 0 && options.length > 0 && !value.every((v: string) => options.find((o) => o.value === v))) {
             onChange(null);
         }
     }, [options]);

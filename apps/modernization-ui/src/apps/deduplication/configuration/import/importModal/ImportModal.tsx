@@ -74,10 +74,10 @@ export const ImportModal = ({
 
     const footer = () => (
         <>
-            <Button secondary onClick={handleCancel} data-close-modal>
+            <Button secondary={true} onClick={handleCancel} data-close-modal={true}>
                 Cancel
             </Button>
-            <Button disabled={!selectedFile} onClick={handleAccept} data-close-modal>
+            <Button disabled={!selectedFile} onClick={handleAccept} data-close-modal={true}>
                 Import
             </Button>
         </>

@@ -70,7 +70,7 @@ export type {
 
 const initial = (asOf: string = today()): BasicNewPatientEntry => ({
     administrative: {
-        asOf: asOf,
+        asOf,
     },
     address: {
         country: {

@@ -26,7 +26,7 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
                     <Button
                         disabled={!sorting.enabled}
                         className="usa-button--unstyled"
-                        type={'button'}
+                        type="button"
                         aria-label="sort"
                         onClick={() => sorting.toggleSort(header.name)}
                     >

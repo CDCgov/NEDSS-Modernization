@@ -137,7 +137,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         defaultColumnPreferences={columnPreferences}
         actions={
             <Permitted permission={permissions.labReport.add}>
-                <LinkButton secondary sizing={sizing} icon="add_circle" href={`/nbs/api/profile/${patient}/report/lab`}>
+                <LinkButton secondary={true} sizing={sizing} icon="add_circle" href={`/nbs/api/profile/${patient}/report/lab`}>
                     Add lab report
                 </LinkButton>
             </Permitted>

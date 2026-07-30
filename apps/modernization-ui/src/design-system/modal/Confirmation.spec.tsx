@@ -188,7 +188,7 @@ describe('when a confirmation is displayed', () => {
 
     it('should render a confirmation with the confirm button as destructive', () => {
         const { getByRole } = render(
-            <Confirmation onCancel={() => {}} onConfirm={() => {}} confirmText="Delete" destructive>
+            <Confirmation onCancel={() => {}} onConfirm={() => {}} confirmText="Delete" destructive={true}>
                 confirmation message
             </Confirmation>
         );

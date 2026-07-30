@@ -42,15 +42,15 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
                             {subsectionsOpen ? (
-                                <Icon name={'expand-more'} size={'s'} />
+                                <Icon name="expand-more" size="s" />
                             ) : (
-                                <Icon name={'navigate-next'} size={'s'} />
+                                <Icon name="navigate-next" size="s" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
-                            <Icon name={'drag'} size={'m'} />
+                            <Icon name="drag" size="m" />
                         </div>
-                        <Icon name={'group'} size={'m'} />
+                        <Icon name="group" size="m" />
                         <p>{section.name}</p>
                     </div>
                     <div className={`${styles.subsections} ${subsectionsOpen ? '' : styles.closed}`}>

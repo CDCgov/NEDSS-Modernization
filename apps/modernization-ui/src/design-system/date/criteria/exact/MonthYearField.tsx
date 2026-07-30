@@ -66,7 +66,7 @@ const MonthYearField = ({
 
     return (
         <div role="group" id={id} className={styles['exact-date-entry']} aria-label={label}>
-            <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
+            <div className={classNames(styles['numeric-wrapper'], styles.month)}>
                 <label htmlFor={`${id}-month`}>{label} month</label>
                 <Select
                     id={`${id}-month`}
@@ -78,7 +78,7 @@ const MonthYearField = ({
                     options={months}
                 />
             </div>
-            <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
+            <div className={classNames(styles['numeric-wrapper'], styles.year)}>
                 <label htmlFor={`${id}-year`}>{label} year</label>
                 <Select
                     id={`${id}-year`}

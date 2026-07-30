@@ -42,7 +42,7 @@ const columns = (onClose: () => void): Column<PatientFileVaccinations>[] => [
         value: (value) => value.local,
         render: (value) => (
             <ClassicModalButton
-                tertiary
+                tertiary={true}
                 sizing="small"
                 className={styles['event-id']}
                 url={`/nbs/api/profile/${value.patient}/vaccination/${value.id}`}
@@ -121,7 +121,7 @@ const InternalCard = ({ patient, sizing, data = [], onClose, ...remaining }: Int
                     <ClassicModalButton
                         url={`/nbs/api/profile/${patient}/vaccination`}
                         icon="add_circle"
-                        secondary
+                        secondary={true}
                         sizing={sizing}
                         onClose={onClose}
                     >

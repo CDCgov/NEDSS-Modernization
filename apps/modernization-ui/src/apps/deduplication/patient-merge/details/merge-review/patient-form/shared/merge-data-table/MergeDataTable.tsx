@@ -65,7 +65,7 @@ export const MergeDataTable = <V,>({
             render: (v) => (
                 <div className={styles.action}>
                     <Button
-                        tertiary
+                        tertiary={true}
                         sizing="small"
                         icon="visibility"
                         aria-pressed={isViewed(v)}

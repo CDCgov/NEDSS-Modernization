@@ -6,8 +6,8 @@ import { UserOptionsService } from 'generated';
 
 const resolver = (criteria: string, limit?: number) =>
     UserOptionsService.userAutocomplete({
-        criteria: criteria,
-        limit: limit,
+        criteria,
+        limit,
     }).then((response) => response);
 
 const UserAutocomplete = (props: SelectableAutocompleteSingleProps) => (

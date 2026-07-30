@@ -14,7 +14,7 @@ const ClassicModalProvider = ({ children }: Props) => {
 
     return (
         <>
-            <form id={id} ref={form} aria-hidden className={styles.target} />
+            <form id={id} ref={form} aria-hidden={true} className={styles.target} />
             <ClassicModalContext.Provider value={form}>{children}</ClassicModalContext.Provider>
         </>
     );

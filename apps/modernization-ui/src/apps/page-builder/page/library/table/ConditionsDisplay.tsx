@@ -37,7 +37,7 @@ export const ConditionsDisplay = ({ conditions }: Props) => {
                     aria-label="view fewer conditions"
                     className={styles.expandButton}
                     onClick={() => setShowAll(false)}
-                >{`view less`}</button>
+                >view less</button>
             )}
         </>
     );

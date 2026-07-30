@@ -72,7 +72,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                         <Controller
                             control={control}
                             name="operator"
-                            shouldUnregister
+                            shouldUnregister={true}
                             rules={{ required: { value: true, message: 'An operator is required.' } }}
                             render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
                                 <SelectInput
@@ -94,7 +94,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                 </FormProvider>
             </section>
             <footer>
-                <Button type="button" id="cancel-button" onClick={onCancel} outline>
+                <Button type="button" id="cancel-button" onClick={onCancel} outline={true}>
                     Cancel
                 </Button>
                 <Button type="submit" id="done-button" disabled={!isValid} onClick={handleSubmit(onSubmit)}>

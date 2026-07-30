@@ -41,7 +41,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         id={name}
                         label="Condition(s)"
-                        aria-label={'select the conditions for the page'}
+                        aria-label="select the conditions for the page"
                         options={props.conditions.map((m) => {
                             return {
                                 name: m.name ?? '',
@@ -52,13 +52,13 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 )}
             />
             <p>Can't find the condition you're looking for?</p>
-            <ModalToggleButton modalRef={props.conditionLookupModal} data-testid="advancedConditionSearchBtn" outline>
+            <ModalToggleButton modalRef={props.conditionLookupModal} data-testid="advancedConditionSearchBtn" outline={true}>
                 <p>
                     <Icon.Search size={3} />
                     Advanced condition search
                 </p>
             </ModalToggleButton>
-            <ModalToggleButton modalRef={props.createConditionModal} unstyled data-testid="createNewConditionHereBtn">
+            <ModalToggleButton modalRef={props.createConditionModal} unstyled={true} data-testid="createNewConditionHereBtn">
                 <p>Create a new condition here</p>
             </ModalToggleButton>
             <Controller
@@ -79,12 +79,12 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         htmlFor={name}
                         id={name}
-                        ariaLabel={'enter a name for the page'}
+                        ariaLabel="enter a name for the page"
                         defaultValue={value}
                         className="pageName"
                         type="text"
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -100,7 +100,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         defaultValue={value}
                         id={name}
-                        aria-label={'select a template'}
+                        aria-label="select a template"
                         onChange={onChange}
                         onBlur={onBlur}
                         options={props.templates.map((template) => {
@@ -110,14 +110,14 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                             };
                         })}
                         error={error?.message}
-                        required
+                        required={true}
                     ></SelectInput>
                 )}
             />
             <p>
                 Can't find the template you're looking for?
                 <br />
-                <ModalToggleButton modalRef={props.importTemplateModal} unstyled>
+                <ModalToggleButton modalRef={props.importTemplateModal} unstyled={true}>
                     <p>Import a new template here</p>
                 </ModalToggleButton>
             </p>
@@ -130,13 +130,13 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         label="Reporting mechanism"
                         name={name}
                         id={name}
-                        aria-label={'select a reporting mechanism for the page'}
+                        aria-label="select a reporting mechanism for the page"
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
                         options={props.mmgs}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -162,7 +162,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         htmlFor={name}
                         id={name}
-                        aria-label={'enter a Data mart name for the page'}
+                        aria-label="enter a Data mart name for the page"
                         type="text"
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
