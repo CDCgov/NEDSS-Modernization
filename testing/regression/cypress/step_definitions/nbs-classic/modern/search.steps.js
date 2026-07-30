@@ -38,7 +38,16 @@ Then("I click first patient Search results to view profile", () => {
 });
 
 Then("I click search filter result icon", () => {
-    cy.get('button[aria-label="Filter"]').eq(0).click()    
+    cy.get("div#patient-search-results table.usa-table tbody tr", { timeout: 10000 }).should('have.length.at.least', 1)
+    cy.get('body').then(($body) => {
+        const matchingButton = $body.find('button[aria-label*="Filter"], button[title*="Filter"], button[data-testid*="filter"]').filter((_, el) => Cypress.$(el).is(':visible')).first()
+
+        if (matchingButton.length) {
+            cy.wrap(matchingButton).click({ force: true })
+        } else {
+            cy.contains('button', /filter/i).filter(':visible').first().click({ force: true })
+        }
+    })
 });
 
 Then("I search filter column {string} with {string}", (columnName, string) => {
