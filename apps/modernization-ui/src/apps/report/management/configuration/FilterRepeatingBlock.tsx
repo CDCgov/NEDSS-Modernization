@@ -89,50 +89,29 @@ const FilterRepeatingBlock = ({
             name="filterRequests"
             defaultValue={defaultFilterData}
             rules={{ validate: () => !filtersIsDirty }}
-            render={({ field: { onChange, value } }) => (
-                <EditFilterRepeatingBlockImpl
-                    onChange={onChange}
-                    value={value}
-                    filtersIsDirty={filtersIsDirty}
-                    setFiltersIsDirty={setFiltersIsDirty}
-                    dataSourceSelected={dataSourceSelected}
-                    filterOptions={filterOptions}
-                    columnOptions={columnOptions}
-                />
-            )}
+            render={({ field: { onChange, value } }) => {
+                return (
+                    <FilterRepeatingBlockImpl
+                        onChange={onChange}
+                        isEditable={isEditable}
+                        dataSourceSelected={dataSourceSelected}
+                        filterOptions={filterOptions}
+                        columnOptions={columnOptions}
+                        setFiltersIsDirty={(v: boolean) => {
+                            // force overall form revalidation when dirty state changes
+                            onChange(value);
+                            setFiltersIsDirty(v);
+                        }}
+                        value={value}
+                    />
+                );
+            }}
         />
     ) : (
         <FilterRepeatingBlockImpl
             isEditable={isEditable}
             dataSourceSelected={dataSourceSelected}
             value={defaultFilterData}
-        />
-    );
-};
-
-const EditFilterRepeatingBlockImpl = ({
-    onChange,
-    value,
-    filtersIsDirty,
-    dataSourceSelected,
-    filterOptions,
-    columnOptions,
-    setFiltersIsDirty,
-}: Required<Omit<FilterRepeatingBlockImplProps, 'isEditable'>> & { filtersIsDirty: boolean }) => {
-    // force revalidation when dirty state changes
-    useEffect(() => {
-        onChange(value);
-    }, [filtersIsDirty]);
-
-    return (
-        <FilterRepeatingBlockImpl
-            onChange={onChange}
-            isEditable={true}
-            dataSourceSelected={dataSourceSelected}
-            filterOptions={filterOptions}
-            columnOptions={columnOptions}
-            setFiltersIsDirty={setFiltersIsDirty}
-            value={value}
         />
     );
 };
@@ -147,16 +126,6 @@ const useColumnOptions = (dataSource?: Selectable | string) => {
     return options;
 };
 
-type FilterRepeatingBlockImplProps = {
-    isEditable: boolean;
-    dataSourceSelected: boolean;
-    value: FilterConfig[];
-    filterOptions?: Selectable[];
-    columnOptions?: Selectable[];
-    onChange?: (v: FilterConfig[]) => void;
-    setFiltersIsDirty?: (v: boolean) => void;
-};
-
 const FilterRepeatingBlockImpl = ({
     isEditable,
     dataSourceSelected,
@@ -165,7 +134,15 @@ const FilterRepeatingBlockImpl = ({
     columnOptions,
     onChange,
     setFiltersIsDirty,
-}: FilterRepeatingBlockImplProps) => {
+}: {
+    isEditable: boolean;
+    dataSourceSelected: boolean;
+    value: FilterConfig[];
+    filterOptions?: Selectable[];
+    columnOptions?: Selectable[];
+    onChange?: (v: FilterConfig[]) => void;
+    setFiltersIsDirty?: (v: boolean) => void;
+}) => {
     return (
         <RepeatingBlock<FilterConfig>
             id="filter-config"
