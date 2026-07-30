@@ -1,6 +1,12 @@
 @use 'styles/modal.scss';
 
 .content {
+    :global {
+        .usa-modal__content {
+            overflow-y: auto;
+        }
+    }
+
     min-width: min-content;
 
     .message {

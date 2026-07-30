@@ -22,7 +22,6 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            closer
             size="wide"
             modalHeading="Reorder"
             modalBody={
