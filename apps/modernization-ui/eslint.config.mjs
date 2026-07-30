@@ -57,6 +57,8 @@ export default defineConfig([
             'react/jsx-boolean-value': [2, 'always'],
             'dot-notation': 'error',
             eqeqeq: 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
         },
         settings: {
