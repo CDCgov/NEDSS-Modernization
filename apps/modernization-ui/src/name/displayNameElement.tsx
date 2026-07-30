@@ -5,7 +5,8 @@ import { NameFormat } from './format';
 
 /** Returns the full text + label name element. Example: "Alias Name\nMarty McFly"
  * @param {DisplayableName} name - The name object to display.
- * @param {NameFormat} format - The format to display names in, either 'full', 'short' or 'fullLastFirst'. Default = 'full'.
+ * @param {NameFormat} format - The format to display names in, either 'full', 'short' or
+ * 'fullLastFirst'. Default = 'full'.
  * @return {JSX.Element} The address block as JSX.
  */
 export const displayNameElement = (name: DisplayableName, format: NameFormat = 'fullLastFirst'): JSX.Element => {

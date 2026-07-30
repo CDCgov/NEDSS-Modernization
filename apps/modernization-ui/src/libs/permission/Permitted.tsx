@@ -17,10 +17,6 @@ export type PermittedProps = {
  * the fallback component is displayed when the permission fails.
  *
  * A permission of 'string' is equivalent to using {@link permits}.
- *
- *
- * @param {PermittedProps} props
- * @return {ReactNode}
  */
 const Permitted = ({ permission, children, fallback }: PermittedProps) => {
     const { allows, permissions } = usePermissions();
