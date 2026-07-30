@@ -79,7 +79,8 @@ export const QuestionContent = ({
                         />
                     )}
                     {/* create custom checkbox component */}
-                    {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
+                    {/* need to create an api that grabs the race since it is in another table, 
+                    once that is done a custom component can be created */}
                     {displayComponent === 1001 && <RadioButtons options={conceptState} />}
 
                     {displayComponent === 1008 && (
