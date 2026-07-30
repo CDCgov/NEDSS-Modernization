@@ -43,7 +43,7 @@ const useInPageNavigation = (threshold: number = 0) => {
 
                 const enterOrSpaceEventListener = (event: Event) => {
                     const keyboardEvent = event as KeyboardEvent;
-                    if (keyboardEvent.key == 'Enter' || keyboardEvent.key === ' ') {
+                    if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
                         event.preventDefault();
                         smoothScroll(section as HTMLElement);
                         focusedTarget(`${section.id}-title`);

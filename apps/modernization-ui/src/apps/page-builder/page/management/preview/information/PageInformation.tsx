@@ -65,11 +65,11 @@ const PageInformation = () => {
 
     const renderTabs = (
         <ul className={styles.tabs}>
-            <li className={activeTab == 'Details' ? styles.active : ''} onClick={() => setActiveTab('Details')}>
+            <li className={activeTab === 'Details' ? styles.active : ''} onClick={() => setActiveTab('Details')}>
                 Details
             </li>
             <li
-                className={`${activeTab == 'History' ? styles.active : ''} historyTab`}
+                className={`${activeTab === 'History' ? styles.active : ''} historyTab`}
                 data-testid="historyTab"
                 onClick={() => setActiveTab('History')}
             >
@@ -99,7 +99,7 @@ const PageInformation = () => {
             <nav>
                 <div>{renderTabs}</div>
             </nav>
-            {activeTab == 'Details' ? (
+            {activeTab === 'Details' ? (
                 <div className={styles.content}>
                     <div className={styles.detailsContainer}>
                         <div className={styles.informationBlock}>

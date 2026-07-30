@@ -109,7 +109,7 @@ export const AddNewPage = () => {
     };
 
     const handleSubmit = () => {
-        if (watch.eventType !== undefined && watch.eventType != '' && watch.eventType !== 'INV') {
+        if (watch.eventType !== undefined && watch.eventType !== '' && watch.eventType !== 'INV') {
             window.location.href = '/nbs/page-builder/api/v1/pages/create';
         } else {
             onSubmit();
@@ -164,7 +164,7 @@ export const AddNewPage = () => {
                         />
                         {watch.eventType !== undefined && watch.eventType !== '' && (
                             <>
-                                {watch.eventType == 'INV' ? (
+                                {watch.eventType === 'INV' ? (
                                     <FormProvider {...form}>
                                         <AddNewPageFields
                                             conditions={conditions}

@@ -112,7 +112,7 @@ export const BusinessRulesLibraryTable = ({
                     title: (
                         <div>
                             {rule.targets?.map((target, index) => {
-                                if (rule.targetType == Rule.targetType.SUBSECTION) {
+                                if (rule.targetType === Rule.targetType.SUBSECTION) {
                                     const subsections = getSubsections();
                                     const subsection = subsections?.find(
                                         (sub) => sub.questionIdentifier === target.targetIdentifier

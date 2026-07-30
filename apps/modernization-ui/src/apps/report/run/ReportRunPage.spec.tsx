@@ -3497,7 +3497,7 @@ describe('report run page', () => {
 
             await user.click((await options())[0]); // select all
             (await options()).forEach((option, i) => {
-                if (i == 0) {
+                if (i === 0) {
                     expect(option).not.toBeChecked();
                     expect(option).toHaveAccessibleName('Deselect all');
                 } else {
@@ -3513,7 +3513,7 @@ describe('report run page', () => {
             await user.click(await findByLabelText('Select search results'));
             await waitFor(async () =>
                 (await options()).forEach((option, i) => {
-                    if (i == 0) {
+                    if (i === 0) {
                         expect(option).not.toBeChecked();
                         expect(option).toHaveAccessibleName('Deselect search results');
                     } else {
