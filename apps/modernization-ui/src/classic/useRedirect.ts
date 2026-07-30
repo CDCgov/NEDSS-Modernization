@@ -36,7 +36,7 @@ const useRedirect = ({ destination = 'current' }: Props) => {
                     dispatch({ type: 'redirected', location });
                 }
             });
-        } else if (state.status == 'redirected' && destination != 'none') {
+        } else if (state.status === 'redirected' && destination !== 'none') {
             navigate(destination, state.location);
             dispatch({ type: 'reset' });
         }

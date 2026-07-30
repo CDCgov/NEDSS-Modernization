@@ -50,7 +50,7 @@ const Tooltip = ({ children, message, spanClass, ...remaining }: TooltipProps) =
 
     const targeted = useCallback(
         (element: HTMLElement | null) => {
-            if (visible && element != null) {
+            if (visible && element !== null) {
                 const { top, left, width } = element.getBoundingClientRect();
 
                 setPlacement({

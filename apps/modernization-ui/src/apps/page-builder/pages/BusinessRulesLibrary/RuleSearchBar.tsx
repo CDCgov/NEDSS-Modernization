@@ -23,7 +23,7 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
     };
 
     const handleEnter = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             handleSubmit();
         }
     };

@@ -132,7 +132,7 @@ const RepeatingBlock = <V extends FieldValues>({
         const formErrorMessages = Object.values(form.formState.errors).map((error) => error?.message?.toString());
         const messages: ReactNode[] = [...errors, ...formErrorMessages];
 
-        return messages.filter((a) => a != undefined);
+        return messages.filter((a) => a !== undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
 
     useEffect(() => {

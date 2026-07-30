@@ -19,10 +19,10 @@ const Message = ({ type, children, ...remaining }: MessageProps) => {
         <div aria-label={type} className={styles.message} aria-describedby={id} {...remaining}>
             <div
                 className={classNames(styles.badge, {
-                    [styles.information]: type == 'information',
-                    [styles.success]: type == 'success',
-                    [styles.warning]: type == 'warning',
-                    [styles.error]: type == 'error',
+                    [styles.information]: type === 'information',
+                    [styles.success]: type === 'success',
+                    [styles.warning]: type === 'warning',
+                    [styles.error]: type === 'error',
                 })}
             >
                 {icon && <Icon name={icon} sizing="large" />}

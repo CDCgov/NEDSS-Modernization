@@ -40,7 +40,7 @@ export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
 
     useEffect(() => {
         const oddsRatio = Number(watch[field]?.oddsRatio);
-        if (oddsRatio == undefined || isNaN(oddsRatio) || oddsRatio == 0) {
+        if (oddsRatio === undefined || isNaN(oddsRatio) || oddsRatio === 0) {
             form.setValue(`${field}.logOdds`, undefined);
             return;
         }

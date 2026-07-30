@@ -14,7 +14,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
     const form = useFormContext<PatientMergeForm>();
 
     const parseAge = (date?: string) => {
-        if (date == undefined) {
+        if (date === undefined) {
             return '---';
         }
         return calculateAge(parseISO(date));

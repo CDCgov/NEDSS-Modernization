@@ -69,7 +69,7 @@ const FilterRepeatingBlock = ({
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
             filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: SELECT_OPTIONS.find(({ value }) => value == f.selectType),
+            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType),
             associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()),
             isRequired: f.isRequired,
         })) ?? [];

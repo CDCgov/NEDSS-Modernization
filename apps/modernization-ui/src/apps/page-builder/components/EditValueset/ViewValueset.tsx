@@ -62,7 +62,7 @@ export const ViewValueset = ({
                 <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
-                <Button disabled={concepts.length == 0} onClick={onAccept} type="button">
+                <Button disabled={concepts.length === 0} onClick={onAccept} type="button">
                     Continue
                 </Button>
             </ButtonBar>

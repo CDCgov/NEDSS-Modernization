@@ -47,7 +47,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
     }, [totalLogOdds, matchingCriteria, lowerBound, upperBound]);
 
     const validateLowerBound = (value?: number): string | undefined => {
-        if (value == undefined) {
+        if (value === undefined) {
             return '';
         } else if (value < 0) {
             return 'Must be between 0 and upper bound.';
