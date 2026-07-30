@@ -23,6 +23,7 @@ import styles from './preview-page.module.scss';
 import { StaticTabContent } from './staticTabContent/StaticTabContent';
 import { PreviewTab } from './tab';
 import { PagesTab } from 'apps/page-builder/generated';
+import { logErrorToUserConsole } from 'utils/logging';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -77,15 +78,14 @@ const PreviewPageContent = () => {
                 refresh();
             })
             .catch((error) => {
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -109,15 +109,14 @@ const PreviewPageContent = () => {
                 navigate('/page-builder/pages');
             })
             .catch((error) => {
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -164,7 +163,8 @@ const PreviewPageContent = () => {
                             </LinkButton>
                             {page.status !== 'Published' ? (
                                 <LinkButton
-                                    href={`https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true`}
+                                    // eslint-disable-next-line max-len
+                                    href="https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true"
                                     className={styles.link}
                                     rel="noopener noreferrer"
                                     data-tooltip-position="top"
@@ -235,14 +235,12 @@ const PreviewPageContent = () => {
                     modalRef={publishDraftRef}
                     modalHeading="Publish page"
                     size="wide"
-                    closer
                     modalBody={<PublishPage modalRef={publishDraftRef} onPublishing={setIsPublishing} />}
                 />
             ) : (
                 <ModalComponent
                     modalRef={publishingLoaderRef}
                     size="width"
-                    closer
                     modalBody={
                         <div className={styles.loaderContent}>
                             <Loading center className={styles.loaderIcon} />

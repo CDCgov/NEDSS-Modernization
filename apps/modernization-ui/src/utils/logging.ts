@@ -8,3 +8,14 @@ export const logErrorToUserConsole: typeof console.error = (...args) => {
     // eslint-disable-next-line no-console
     console.error(...args);
 };
+
+/**
+ * Same as `console.warn`, but specifically opting into sending the log to the user so
+ * that linting can differentiate between a true production log statement and leftover
+ * debugging cruft.
+ */
+export const logWarnToUserConsole: typeof console.warn = (...args) => {
+    // This function is used to explicitly opt in to sending logs to the end user
+    // eslint-disable-next-line no-console
+    console.warn(...args);
+};

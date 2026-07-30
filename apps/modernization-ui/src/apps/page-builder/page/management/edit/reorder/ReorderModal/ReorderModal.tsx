@@ -9,6 +9,7 @@ import { Spinner } from 'components/Spinner/Spinner';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { ModalToggleButton } from '@trussworks/react-uswds';
 import { usePageManagement } from '../../../usePageManagement';
+import { PagesTab } from 'apps/page-builder/generated';
 
 type ReorderProps = {
     modalRef: RefObject<ModalRef>;
@@ -22,7 +23,6 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            closer
             size="wide"
             modalHeading="Reorder"
             modalBody={
@@ -43,7 +43,7 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                                         style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                     >
                                         {page.tabs
-                                            ? page.tabs.map((tab: any, i: number) => {
+                                            ? page.tabs.map((tab: PagesTab, i: number) => {
                                                   return (
                                                       <ReorderTab
                                                           key={tab.id.toString()}

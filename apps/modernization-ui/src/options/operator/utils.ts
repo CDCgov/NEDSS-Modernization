@@ -13,7 +13,7 @@ const stripLegacyOperators = (value: string) => (hasLegacyOperators(value) ? val
  * @param {string} value The value of the operator to find
  * @return {Selectable} The selectable object, or the default operator if the value is not found
  */
-export const asSelectableOperator = (value: string | null | undefined) =>
+export const asSelectableOperator = (value: string | null | undefined): Selectable =>
     (value && findByValue(textOperators, defaultTextOperator)(value)) || defaultTextOperator;
 
 /**
@@ -76,8 +76,6 @@ export const asTextCriteria = (
 
 /**
  * Returns the operator string, if no operator then will return undefined
- * @param {string | TextCriteria} value
- * @return {string} or undefined
  */
 export const asTextCriteriaOperator = (value?: string | TextCriteria | null): string | undefined => {
     if (value != null && typeof value === 'string') {

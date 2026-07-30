@@ -1,7 +1,8 @@
 import { Grid } from '@trussworks/react-uswds';
 import './FormCard.scss';
+import { ReactNode } from 'react';
 
-export default function FormCard({ id, title, children }: { id?: string; title?: string; children: any }) {
+export default function FormCard({ id, title, children }: { id?: string; title?: string; children: ReactNode }) {
     return (
         <section id={id}>
             <Grid row className="flex-align-center bg-white border radius-md border-base-lighter margin-bottom-4">

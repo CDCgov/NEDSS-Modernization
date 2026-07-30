@@ -14,6 +14,7 @@ export const SupplementalInfo = () => {
                 />
                 <SubsectionTable
                     title="Associated Morbidity Reports"
+                    // eslint-disable-next-line max-len
                     description="The following contacts named within their investigation and have been associated to the patient's investigation:"
                     columns={['Date Received', 'Condition', 'Report Date', 'Type', 'Observation ID']}
                 />
