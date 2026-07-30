@@ -45,7 +45,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
     return (
         <Shown when={visible}>
             <Modal
-                id={`save-pass-modal`}
+                id="save-pass-modal"
                 size="small"
                 title="Save pass configuration"
                 onClose={onCancel}
@@ -59,7 +59,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Pass title"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
@@ -77,7 +77,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Description"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}

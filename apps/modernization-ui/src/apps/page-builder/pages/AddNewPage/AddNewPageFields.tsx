@@ -41,7 +41,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         id={name}
                         label="Condition(s)"
-                        aria-label={'select the conditions for the page'}
+                        aria-label="select the conditions for the page"
                         options={props.conditions.map((m) => {
                             return {
                                 name: m.name ?? '',
@@ -79,7 +79,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         htmlFor={name}
                         id={name}
-                        ariaLabel={'enter a name for the page'}
+                        ariaLabel="enter a name for the page"
                         defaultValue={value}
                         className="pageName"
                         type="text"
@@ -100,7 +100,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         defaultValue={value}
                         id={name}
-                        aria-label={'select a template'}
+                        aria-label="select a template"
                         onChange={onChange}
                         onBlur={onBlur}
                         options={props.templates.map((template) => {
@@ -130,7 +130,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         label="Reporting mechanism"
                         name={name}
                         id={name}
-                        aria-label={'select a reporting mechanism for the page'}
+                        aria-label="select a reporting mechanism for the page"
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -162,7 +162,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         name={name}
                         htmlFor={name}
                         id={name}
-                        aria-label={'enter a Data mart name for the page'}
+                        aria-label="enter a Data mart name for the page"
                         type="text"
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });

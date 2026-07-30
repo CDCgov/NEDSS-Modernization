@@ -109,7 +109,7 @@ export const TableComponent = ({
                                     <input
                                         key={`selection-${index}`}
                                         id={`selection-${index}`}
-                                        name={'selection'}
+                                        name="selection"
                                         type="radio"
                                         onChange={handleRowSelection(row, handleSelected)}
                                     />
@@ -118,7 +118,7 @@ export const TableComponent = ({
                                         disabled={!row.selectable}
                                         key={`selection-${index}`}
                                         id={`selection-${index}`}
-                                        name={'selection'}
+                                        name="selection"
                                         label=""
                                         onChange={handleRowSelection(row, handleSelected)}
                                     />
@@ -194,7 +194,7 @@ export const TableComponent = ({
                             className={styles.pagination}
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
-                            pathname={'/patient-profile'}
+                            pathname="/patient-profile"
                             onClickNext={() => handleNext?.(currentPage + 1)}
                             onClickPrevious={() => handleNext?.(currentPage - 1)}
                             onClickPageNumber={(_, page) => handleNext?.(page)}

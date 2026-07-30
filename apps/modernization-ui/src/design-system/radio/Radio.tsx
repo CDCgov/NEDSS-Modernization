@@ -23,7 +23,7 @@ const Radio = ({ className, name, checked = false, sizing, onChange, label, valu
                 value={value}
                 checked={checked}
                 onChange={onChange}
-                className={'usa-radio usa-radio__input '}
+                className="usa-radio usa-radio__input "
                 {...inputProps}
             />
             <label className={classNames({ [styles.disabled]: inputProps.disabled }, 'usa-radio__label')} htmlFor={id}>

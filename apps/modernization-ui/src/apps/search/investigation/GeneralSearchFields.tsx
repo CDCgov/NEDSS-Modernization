@@ -135,7 +135,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
 
             <Controller
                 control={form.control}
-                name={'eventDate.type'}
+                name="eventDate.type"
                 render={({ field: { name, value, onChange } }) => (
                     <SingleSelect
                         name={name}

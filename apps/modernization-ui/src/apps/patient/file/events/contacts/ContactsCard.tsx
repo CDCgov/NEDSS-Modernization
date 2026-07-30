@@ -134,7 +134,7 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
                 <Card
-                    id={'patient-file-contact-named'}
+                    id="patient-file-contact-named"
                     title={title}
                     collapsible
                     open={data.length > 0}

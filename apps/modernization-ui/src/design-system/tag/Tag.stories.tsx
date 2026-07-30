@@ -122,7 +122,7 @@ export const TagInTableColumn: Story = {
     render: () => {
         return (
             <div style={{ padding: '1rem' }}>
-                <DataTable<Data> id={'tag-table'} columns={columns} data={data} />
+                <DataTable<Data> id="tag-table" columns={columns} data={data} />
             </div>
         );
     },

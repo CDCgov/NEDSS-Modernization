@@ -73,7 +73,7 @@ const MultiSelectAutocomplete = ({
     const Input: typeof components.Input = (props) => <components.Input {...props} maxLength={50} />;
 
     return (
-        <div className={'multi-select-input'}>
+        <div className="multi-select-input">
             <EntryWrapper
                 orientation={orientation}
                 label={label ?? ''}

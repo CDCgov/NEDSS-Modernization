@@ -106,7 +106,7 @@ export const ManageSubsectionTile = ({
                             <div className={styles.handle} {...provided.dragHandleProps} data-testid="dragAndDropIcon">
                                 <NbsIcon name="drag" size="3" />
                             </div>
-                            <div className={styles.label} data-testid={'label'}>
+                            <div className={styles.label} data-testid="label">
                                 <NbsIcon name="group" size="3" />
                                 <span data-testid="manageSectionTileId">
                                     {subsection.name} ({subsection.questions.length})

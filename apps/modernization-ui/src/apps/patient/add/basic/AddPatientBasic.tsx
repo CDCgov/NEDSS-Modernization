@@ -81,7 +81,7 @@ export const AddPatientBasic = () => {
             <NavigationGuard
                 id="patient.create.basic.cancel"
                 form={form}
-                allowed={'/patient/add/extended'}
+                allowed="/patient/add/extended"
                 activated={interaction.status !== 'created'}
             />
         </>

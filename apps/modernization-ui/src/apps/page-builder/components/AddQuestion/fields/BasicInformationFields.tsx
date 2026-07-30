@@ -78,7 +78,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         <Radio
                             id="codeSet_LOCAL"
                             name="codeSet"
-                            value={'LOCAL'}
+                            value="LOCAL"
                             label="LOCAL"
                             onChange={onChange}
                             checked={value === 'LOCAL'}
@@ -87,7 +87,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         <Radio
                             id="codeSet_PHIN"
                             name="codeSet"
-                            value={'PHIN'}
+                            value="PHIN"
                             label="PHIN"
                             onChange={onChange}
                             checked={value === 'PHIN'}

@@ -102,7 +102,7 @@ const InternalMergeHistoryCard = ({
                                 columns={columns}
                                 data={group}
                                 className={styles.dataTable}
-                                sizing={'small'}
+                                sizing="small"
                             />
                         </Section>
                     );

@@ -259,7 +259,7 @@ export const BusinessRulesForm = ({
                         </div>
                         {isEdit && (
                             <div className={styles.content}>
-                                <Label htmlFor={'ruleFunction'}>
+                                <Label htmlFor="ruleFunction">
                                     {fieldTypeTab.find((tab) => tab.value === form.getValues('ruleFunction'))
                                         ?.display || 'Enable'}
                                 </Label>
@@ -355,9 +355,9 @@ export const BusinessRulesForm = ({
                                             onChange={onChange}
                                             onBlur={onBlur}
                                             checked={value}
-                                            id={'anySourceValue'}
-                                            name={'anySourceValue'}
-                                            label={''}
+                                            id="anySourceValue"
+                                            name="anySourceValue"
+                                            label=""
                                         />
                                     </div>
                                 </div>
@@ -566,7 +566,7 @@ export const BusinessRulesForm = ({
                     />
                 </>
             )}
-            <Modal id={'sourceQuestion'} ref={sourceQuestionModalRef} className={'source-question-modal'} isLarge>
+            <Modal id="sourceQuestion" ref={sourceQuestionModalRef} className="source-question-modal" isLarge>
                 <SourceQuestion
                     ruleFunction={watch.ruleFunction}
                     onSubmit={handleSourceQuestion}
@@ -574,7 +574,7 @@ export const BusinessRulesForm = ({
                 />
             </Modal>
 
-            <Modal id={'targetQuestion'} ref={targetQuestionModalRef} className={'target-question-modal'} isLarge>
+            <Modal id="targetQuestion" ref={targetQuestionModalRef} className="target-question-modal" isLarge>
                 <TargetQuestion
                     ruleFunction={watch.ruleFunction}
                     onCancel={handleCloseTargetQuestion}

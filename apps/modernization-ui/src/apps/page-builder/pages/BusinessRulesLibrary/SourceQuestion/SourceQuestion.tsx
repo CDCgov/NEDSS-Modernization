@@ -107,7 +107,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                 setSourceList([]);
                                             }}
                                         >
-                                            <Icon name={'group'} size={'m'} />
+                                            <Icon name="group" size="m" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -130,7 +130,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name={'group'} size={'m'} />
+                                                    <Icon name="group" size="m" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''

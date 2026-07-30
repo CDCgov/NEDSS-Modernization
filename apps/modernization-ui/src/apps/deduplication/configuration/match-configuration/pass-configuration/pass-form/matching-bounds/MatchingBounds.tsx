@@ -75,7 +75,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                     <div>
                         <Controller
                             control={form.control}
-                            name={'lowerBound'}
+                            name="lowerBound"
                             rules={{
                                 required: { value: true, message: 'Lower bound is required.' },
                                 validate: validateLowerBound,
@@ -105,7 +105,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                     <div>
                         <Controller
                             control={form.control}
-                            name={'upperBound'}
+                            name="upperBound"
                             rules={{
                                 required: { value: true, message: 'Upper bound is required.' },
                                 max: {

@@ -11,16 +11,16 @@ type EthnicityViewProp = {
 const EthnicityView = ({ data, sizing }: EthnicityViewProp) => {
     return (
         <div>
-            <ValueField label={'As of'} sizing={sizing}>
+            <ValueField label="As of" sizing={sizing}>
                 {internalizeDate(data?.asOf)}
             </ValueField>
-            <ValueField label={'Ethnicity'} sizing={sizing}>
+            <ValueField label="Ethnicity" sizing={sizing}>
                 {data?.ethnicGroup?.name}
             </ValueField>
-            <ValueField label={'Spanish origin'} sizing={sizing}>
+            <ValueField label="Spanish origin" sizing={sizing}>
                 {renderSelectables(data?.detailed)}
             </ValueField>
-            <ValueField label={'Reason unknown'} sizing={sizing}>
+            <ValueField label="Reason unknown" sizing={sizing}>
                 {data?.unknownReason?.name}
             </ValueField>
         </div>

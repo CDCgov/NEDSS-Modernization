@@ -116,7 +116,7 @@ export const SubsectionHeader = ({
                                 data-testid="ungroupQuestionsOption"
                                 onClick={() => setCloseOptions(true)}
                             >
-                                <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                                <IconComponent name="group" size="s" /> Ungroup questions
                             </ModalToggleButton>
                         )}
                     {!subsection.isGrouped &&
@@ -133,7 +133,7 @@ export const SubsectionHeader = ({
                                         data-testid="groupQuestionsOption"
                                         onClick={() => closeThenAct(onGroupQuestion)}
                                     >
-                                        <IconComponent name={'group'} size={'s'} /> Group questions
+                                        <IconComponent name="group" size="s" /> Group questions
                                     </Button>
                                 )}
                             </>
@@ -171,7 +171,7 @@ export const SubsectionHeader = ({
             />
             <ModalComponent
                 modalRef={addStaticElementModalRef}
-                modalHeading={'Add static element'}
+                modalHeading="Add static element"
                 modalBody={<AddStaticElement modalRef={addStaticElementModalRef} subsectionId={subsection.id} />}
             />
         </div>

@@ -53,6 +53,7 @@ export default defineConfig([
             'react/no-unescaped-entities': 'off',
             'react-hooks/rules-of-hooks': 'off',
             'react-hooks/exhaustive-deps': 'off',
+            'react/jsx-curly-brace-presence': [2, 'never'],
             'storybook/hierarchy-separator': 'off',
         },
         settings: {

@@ -204,7 +204,7 @@ export const AddNewPage = () => {
             <ModalComponent
                 isLarge
                 modalRef={createConditionModal}
-                modalHeading={'Create new condition'}
+                modalHeading="Create new condition"
                 modalBody={<CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />}
             />
             <Modal id="import-template-modal" isLarge ref={importTemplateModal}>

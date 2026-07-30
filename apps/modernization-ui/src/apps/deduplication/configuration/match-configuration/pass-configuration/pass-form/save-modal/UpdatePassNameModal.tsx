@@ -40,7 +40,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
     return (
         <Shown when={visible}>
             <Modal
-                id={`update-pass-name-modal`}
+                id="update-pass-name-modal"
                 size="small"
                 title="Save pass configuration"
                 onClose={onCancel}
@@ -54,7 +54,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Pass title"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
@@ -72,7 +72,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Description"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}

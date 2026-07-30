@@ -83,7 +83,7 @@ const Fixture = ({
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
-        title={'Test title'}
+        title="Test title"
         defaultValues={defaultValues}
         columns={columns}
         data={data}

@@ -68,7 +68,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     };
 
     return (
-        <div className={'queryBuilder-value'}>
+        <div className="queryBuilder-value">
             <InputComponent
                 id={id}
                 label={isBetween ? '' : labelName}

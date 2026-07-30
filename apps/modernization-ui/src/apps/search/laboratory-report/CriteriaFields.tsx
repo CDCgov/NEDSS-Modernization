@@ -12,7 +12,7 @@ export const CriteriaFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
         <SearchCriteria>
             <Controller
                 control={form.control}
-                name={'resultedTest'}
+                name="resultedTest"
                 render={({ field: { onChange, name, value } }) => (
                     <ResultedTestsAutocomplete
                         value={value}
@@ -26,7 +26,7 @@ export const CriteriaFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
 
             <Controller
                 control={form.control}
-                name={'codedResult'}
+                name="codedResult"
                 render={({ field: { onChange, name, value } }) => (
                     <CodedResultsAutocomplete
                         value={value}

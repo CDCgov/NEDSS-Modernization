@@ -7,7 +7,7 @@ import { Modal } from './Modal';
 describe('when a modal is displayed', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}}>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}}>
                 Contents
             </Modal>
         );
@@ -17,7 +17,7 @@ describe('when a modal is displayed', () => {
 
     it('should render the header', () => {
         const { getByRole } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}}>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}}>
                 Contents
             </Modal>
         );
@@ -29,7 +29,7 @@ describe('when a modal is displayed', () => {
 
     it('should render the contents', () => {
         const { getByText } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}}>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}}>
                 Contents
             </Modal>
         );
@@ -41,7 +41,7 @@ describe('when a modal is displayed', () => {
 
     it('should render close icon', () => {
         const { getByLabelText } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}}>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}}>
                 Contents
             </Modal>
         );
@@ -53,7 +53,7 @@ describe('when a modal is displayed', () => {
 
     it('should not render close icon when action is forced', () => {
         const { queryByLabelText } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}} forceAction>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}} forceAction>
                 Contents
             </Modal>
         );
@@ -68,7 +68,7 @@ describe('when a modal is displayed', () => {
 
         const onClose = vi.fn();
         const { getByRole } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={onClose}>
+            <Modal id="identifier-value" title="Title Value" onClose={onClose}>
                 Contents
             </Modal>
         );
@@ -82,7 +82,7 @@ describe('when a modal is displayed', () => {
 
     it('should render without a footer', () => {
         const { baseElement } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}}>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}}>
                 Contents
             </Modal>
         );
@@ -92,7 +92,7 @@ describe('when a modal is displayed', () => {
 
     it('should render the footer', () => {
         const { baseElement } = render(
-            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}} footer={() => 'The footer'}>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}} footer={() => 'The footer'}>
                 Contents
             </Modal>
         );
@@ -107,7 +107,7 @@ describe('when a modal is displayed', () => {
 
         const { getByRole } = render(
             <Modal
-                id={'identifier-value'}
+                id="identifier-value"
                 title="Title Value"
                 onClose={onClose}
                 footer={(close) => (

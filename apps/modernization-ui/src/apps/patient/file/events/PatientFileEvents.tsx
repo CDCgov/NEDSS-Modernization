@@ -53,13 +53,13 @@ const PatientFileEvents = () => {
                 <PatientFileDocumentsCard id="documents" provider={events.get().documents} sizing={sizing} />
                 <PatientFileContactsNamedCard
                     provider={events.get().contactNamed}
-                    id={'contact-named'}
+                    id="contact-named"
                     patient={patient}
                     sizing={sizing}
                 />
                 <PatientFilePatientsNamedCard
                     provider={events.get().patientNamed}
-                    id={'patient-named'}
+                    id="patient-named"
                     patient={patient}
                     sizing={sizing}
                 />

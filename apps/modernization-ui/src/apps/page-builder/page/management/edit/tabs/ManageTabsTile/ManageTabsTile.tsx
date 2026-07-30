@@ -46,7 +46,7 @@ export const ManageTabsTile = ({
                                 <IconComponent name="drag" />
                             )}
                         </div>
-                        <div className={styles.label} data-testid={'label'}>
+                        <div className={styles.label} data-testid="label">
                             <IconComponent name="folder" />
                             {tab.name}&nbsp;
                             {tab.sections && tab.sections.length ? '(' + tab.sections!.length + ')' : '(0)'}
