@@ -87,7 +87,7 @@ class ToDoError(BaseReportExecutionError):
         todo_message = f'TODO: {message}'
         if orig_exc is not None:
             logging.error(orig_exc)
-        super().__init__(todo_message, 502)
+        super().__init__(todo_message, 501)
 
 
 class InvalidConfigurationError(BaseReportExecutionError):
