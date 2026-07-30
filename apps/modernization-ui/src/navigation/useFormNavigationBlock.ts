@@ -12,7 +12,6 @@ type FormNavigationBlockSettings<V extends FieldValues, C, D extends FieldValues
  *  An adapter hook for {@link useNavigationBlock} that applies the navigation block when form data
  *  has changed however, form submission allows navigation.
  *
- * @param {FormNavigationBlockSettings} props
  * @return {NavigationBlockInteraction} Functions to control navigation.
  */
 const useFormNavigationBlock = <V extends FieldValues, C, D extends FieldValues | undefined = undefined>({

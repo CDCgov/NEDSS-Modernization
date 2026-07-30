@@ -67,7 +67,12 @@ export default defineConfig([
     },
     // Test and story files overrides
     {
-        files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}', '**/*.stories.{js,jsx,ts,tsx}'],
+        files: [
+            '**/*.spec.{js,jsx,ts,tsx}',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/*.stories.{js,jsx,ts,tsx}',
+            'src/setupTests.ts',
+        ],
         languageOptions: {
             globals: {
                 vi: 'readonly',
