@@ -20,7 +20,7 @@ type MultiSelectInputProps = {
     sizing?: Sizing;
     options?: Selectable[];
     value?: string[];
-    onChange?: (value: any) => void;
+    onChange?: (value: string[]) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
     disabled?: boolean;
