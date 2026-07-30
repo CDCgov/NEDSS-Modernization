@@ -27,7 +27,7 @@ Feature: Page Builder - User can view existing question library here.
     And enter message label as Assigning Authority
     And select Code system name as Entity Code from dropdown
     And toggle to required in message
-    And elect HL7 data type from dropdown as CE or any
+    And select HL7 data type from dropdown as CE or any
     Then verify next 2 sections are disabled and has default value as OBX-3.0 and Group 2
     When enter Administrative comments test
     Then verify Create and apply to page button is enabled
