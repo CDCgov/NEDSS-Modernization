@@ -2,18 +2,56 @@ package gov.cdc.nbs.report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
+import java.lang.reflect.Constructor;
 import java.util.UUID;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.client.RestClientResponseException;
 
 class ReportExceptionHandlerTest {
 
   private final ReportExceptionHandler handler = new ReportExceptionHandler();
+
+  @Test
+  void should_return_error_msg_and_status_code_for_method_arg_not_valid() {
+    MethodParameter param = mock(MethodParameter.class);
+    when(param.getExecutable()).thenReturn(mock(Constructor.class));
+
+    BindingResult bindingResult = mock(BindingResult.class);
+
+    MethodArgumentNotValidException exception =
+        new MethodArgumentNotValidException(param, bindingResult);
+
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleValidationExceptions(exception);
+
+    assertNotNull(responseEntity.getBody());
+    assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+  }
+
+  @Test
+  void should_return_error_msg_and_status_code_for_forbidden() {
+    ForbiddenException exception = new ForbiddenException("Nope");
+
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleForbidden(exception);
+
+    assertNotNull(responseEntity.getBody());
+    assertEquals("Nope", responseEntity.getBody().message());
+    assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+  }
 
   @Test
   void should_return_error_msg_and_status_code_for_not_found() {
@@ -48,6 +86,20 @@ class ReportExceptionHandlerTest {
 
     assertNotNull(responseEntity.getBody());
     assertEquals("Illegal Argument", responseEntity.getBody().message());
+    assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+  }
+
+  @Test
+  void should_return_error_msg_and_status_code_for_http_message_not_readable() {
+    HttpInputMessage httpInputMessage = mock(HttpInputMessage.class);
+
+    HttpMessageNotReadableException exception =
+        new HttpMessageNotReadableException("Could not serialize", httpInputMessage);
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleFailedSerialization(exception);
+
+    assertNotNull(responseEntity.getBody());
+    assertEquals("Could not serialize", responseEntity.getBody().message());
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
   }
 
