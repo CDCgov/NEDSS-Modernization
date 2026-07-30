@@ -17,6 +17,7 @@ import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRout
 import { PageProvider } from 'page';
 import { LoadingBlock } from 'libs/loading/block';
 import { ErrorPage } from 'pages/error/ErrorPage';
+import { loadReportResult, ResultDataPage } from 'apps/report/run/ResultDataPage';
 
 const routing: RouteObject[] = [
     welcomeRouting,
@@ -45,6 +46,20 @@ const routing: RouteObject[] = [
             ...systemManagementRouting,
             ...reportRouting,
         ],
+    },
+    // This path is for rendering report results. It opens in a new tab and relies on
+    // being called in sequence from the report configuration page that loads a result
+    // with the ID into local storage and then opens the tab pointing here. That tab
+    // cleans up the stored data, so it does not stay around. It is purposefully
+    // un-protected as of now as the UX of the timeout is annoying, does not match 6,
+    // does not present a true breech opportunity to access any more of the system,
+    // and also loads the "Back to NBS" screen, which would encourage multiple tabs :'(
+    {
+        path: '/report/result/:resultId',
+        element: <ResultDataPage />,
+        loader: loadReportResult,
+        HydrateFallback: LoadingBlock,
+        ErrorBoundary: ErrorPage,
     },
     { path: 'expired', element: <Expired /> },
 ];
