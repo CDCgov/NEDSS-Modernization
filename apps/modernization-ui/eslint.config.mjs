@@ -55,6 +55,7 @@ export default defineConfig([
             'react-hooks/exhaustive-deps': 'off',
             'react/jsx-curly-brace-presence': [2, 'never'],
             'react/jsx-boolean-value': [2, 'always'],
+            'dot-notation': 'error',
             'storybook/hierarchy-separator': 'off',
         },
         settings: {
