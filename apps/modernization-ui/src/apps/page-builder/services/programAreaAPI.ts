@@ -1,3 +1,4 @@
+import { logErrorToUserConsole } from 'utils/logging';
 import { ProgramAreaControllerService } from '../generated';
 
 export const fetchProgramAreaOptions = () => {
@@ -6,6 +7,6 @@ export const fetchProgramAreaOptions = () => {
             return response;
         })
         .catch((error) => {
-            console.error('Error fetching program area options:', error);
+            logErrorToUserConsole('Error fetching program area options:', error);
         });
 };

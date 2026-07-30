@@ -14,7 +14,7 @@ type SelectionMode = 'select' | 'deselect';
 
 type SelectionHandler = (mode: SelectionMode) => void;
 
-type OldSelectionHandler = (event: ChangeEvent<HTMLInputElement>, item: any) => void;
+type OldSelectionHandler = (event: ChangeEvent<HTMLInputElement>, item: TableBody) => void;
 
 export type Cell = {
     id: string | number;
@@ -32,7 +32,7 @@ export type TableBody = {
     radioButton?: boolean;
     id: number | string | undefined | null;
     tableDetails: Cell[];
-    data?: any;
+    data?: unknown;
     expanded?: boolean;
     expandedViewComponent?: ReactNode;
     selectable?: boolean | (() => boolean);

@@ -49,6 +49,7 @@ export const Question = ({
                         modal={modal}
                         title="Warning"
                         message="Are you sure you want to delete element?"
+                        // eslint-disable-next-line max-len
                         detail="You have indicated that you would like to delete element. Select Delete to continue or Cancel to return to Edit Page."
                         confirmText="Delete"
                         onConfirm={() => {

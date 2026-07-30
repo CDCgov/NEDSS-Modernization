@@ -4,7 +4,7 @@ import { Button } from 'design-system/button';
 import { Confirmation } from 'design-system/modal/Confirmation';
 import styles from './CaseReportLaboratorySection.module.scss';
 import { caseReportLinks } from './caseLinks';
-import { Permitted } from '../../../../libs/permission';
+import { Permitted } from 'libs/permission';
 
 type Props = {
     filter: string;
@@ -29,6 +29,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
                 setAlert({
                     type: 'success',
                     message:
+                        // eslint-disable-next-line max-len
                         'Labtest program area mapping cache has been successfully reset. Please restart Wildfly to reflect the changes.',
                 });
             })

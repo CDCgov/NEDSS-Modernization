@@ -33,6 +33,7 @@ export const ManageSectionTile = ({
 }: Props) => {
     const deleteHeader = (section: PagesSection) => {
         if (section.subSections.length !== 0) {
+            // eslint-disable-next-line max-len
             return `Section cannot be deleted. This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted.`;
         } else {
             return `Are you sure you want to delete this section?`;

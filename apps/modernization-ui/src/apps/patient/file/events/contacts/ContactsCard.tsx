@@ -151,6 +151,7 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                                     id={`${contact.condition}-${title}`}
                                     sizing={sizing}
                                     className={styles.card}
+                                    // eslint-disable-next-line max-len
                                     subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}
                                 >
                                     <SortableDataTable

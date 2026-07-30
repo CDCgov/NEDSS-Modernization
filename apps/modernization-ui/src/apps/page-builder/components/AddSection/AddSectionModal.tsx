@@ -1,9 +1,10 @@
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import { SectionControllerService, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import React, { RefObject, useState } from 'react';
+import React, { ChangeEvent, RefObject, useState } from 'react';
 import { ToggleButton } from '../ToggleButton';
 import './AddSectionModal.scss';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
@@ -30,7 +31,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
         setSectionName(e.target.value);
     };
 
-    const handleSectionDescriptionChange = (e: any) => {
+    const handleSectionDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSectionDescription(e.target.value);
     };
 
@@ -50,7 +51,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                 onAddSection();
             }
         } catch (e) {
-            console.error(e);
+            logErrorToUserConsole(e);
         }
     };
 

@@ -13,6 +13,7 @@ export const ContactRecord = () => {
                 />
                 <SubsectionTable
                     title="Patient Named By Contacts"
+                    // eslint-disable-next-line max-len
                     description="The following contacts named within their investigation and have been associated to the patient's investigation: "
                     columns={['Date Named', 'Contact Record ID', 'Name', 'Priority', 'Disposition', 'Investigation ID']}
                 />
