@@ -171,7 +171,12 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                     </div>
                     <div className={styles.buttonBar}>
                         {!addEdit ? (
-                            <ModalToggleButton modalRef={modalRef} onClick={() => resetEditPageTabs()} closer={true} outline={true}>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                onClick={() => resetEditPageTabs()}
+                                closer={true}
+                                outline={true}
+                            >
                                 Close
                             </ModalToggleButton>
                         ) : null}

@@ -28,7 +28,13 @@ const ClosablePanel = ({ title, headingLevel = 2, children, footer, onClose }: C
             </header>
             {children}
             {footer && <footer>{footer({ onClose })}</footer>}
-            <Button icon="close" onClick={onClose} aria-label={`Close ${title}`} tertiary={true} className={styles.closer} />
+            <Button
+                icon="close"
+                onClick={onClose}
+                aria-label={`Close ${title}`}
+                tertiary={true}
+                className={styles.closer}
+            />
         </div>
     );
 };

@@ -61,7 +61,9 @@ describe('when entering text values', () => {
         const onChange = vi.fn();
         const onClear = vi.fn();
 
-        const { getByRole } = render(<Fixture value="given value" clearable={true} onChange={onChange} onClear={onClear} />);
+        const { getByRole } = render(
+            <Fixture value="given value" clearable={true} onChange={onChange} onClear={onClear} />
+        );
 
         const svgIcon = getByRole('button', { hidden: true });
 

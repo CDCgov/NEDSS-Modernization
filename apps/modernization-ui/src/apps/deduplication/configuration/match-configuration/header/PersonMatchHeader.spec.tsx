@@ -23,7 +23,11 @@ describe('PersonMatchHeader', () => {
     it('should trigger callbacks when buttons are clicked', async () => {
         const user = userEvent.setup();
         const { getAllByRole } = render(
-            <PersonMatchHeader showButtons={true} onConfigureDataElementsClick={onNavClick} onImportClick={onImportClick} />
+            <PersonMatchHeader
+                showButtons={true}
+                onConfigureDataElementsClick={onNavClick}
+                onImportClick={onImportClick}
+            />
         );
 
         const buttons = getAllByRole('button');

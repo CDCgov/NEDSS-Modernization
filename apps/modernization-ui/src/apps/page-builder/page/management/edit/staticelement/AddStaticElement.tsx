@@ -174,7 +174,12 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 <div className={styles.footer_buttons}>
                     {modalRef ? (
                         <>
-                            <ModalToggleButton modalRef={modalRef} closer={true} outline={true} onClick={() => form.reset()}>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer={true}
+                                outline={true}
+                                onClick={() => form.reset()}
+                            >
                                 Cancel
                             </ModalToggleButton>
                             <ModalToggleButton

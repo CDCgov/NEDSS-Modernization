@@ -10,6 +10,8 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     const identificationType = useWatch({ control, name: 'identificationType' });
 
+    const conceptOptions = useConceptOptions('EI_TYPE_PAT', { lazy: false }).options;
+
     return (
         <SearchCriteria sizing={sizing}>
             <Controller
@@ -24,7 +26,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                         id={name}
                         sizing={sizing}
                         orientation={orientation}
-                        options={useConceptOptions('EI_TYPE_PAT', { lazy: false }).options}
+                        options={conceptOptions}
                     />
                 )}
             />

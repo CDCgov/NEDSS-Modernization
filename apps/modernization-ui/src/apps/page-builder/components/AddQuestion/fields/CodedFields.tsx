@@ -57,7 +57,12 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
             />
             {!published && !editing && (
                 <>
-                    <Button className={styles.valuesetSearchButton} type="button" outline={true} onClick={onFindValueSet}>
+                    <Button
+                        className={styles.valuesetSearchButton}
+                        type="button"
+                        outline={true}
+                        onClick={onFindValueSet}
+                    >
                         Search value set
                     </Button>
                     <Controller

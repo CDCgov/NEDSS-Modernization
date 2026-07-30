@@ -120,7 +120,12 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
             <div className={styles.buttonBar}>
                 <div>
                     <Shown when={id !== undefined}>
-                        <Button secondary={true} destructive={true} sizing="small" onClick={() => setShowDeleteConfirmation(true)}>
+                        <Button
+                            secondary={true}
+                            destructive={true}
+                            sizing="small"
+                            onClick={() => setShowDeleteConfirmation(true)}
+                        >
                             Delete pass configuration
                         </Button>
                     </Shown>

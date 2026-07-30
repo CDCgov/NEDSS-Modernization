@@ -74,7 +74,12 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                     />
                 )}
             />
-            <MergeDataDisplay label="Unknown reason" display={sexAndBirth.sexUnknown} groupType="last" underlined={true} />
+            <MergeDataDisplay
+                label="Unknown reason"
+                display={sexAndBirth.sexUnknown}
+                groupType="last"
+                underlined={true}
+            />
             <Controller
                 control={form.control}
                 name="sexAndBirth.transgenderInfo"
@@ -170,7 +175,12 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                     />
                 )}
             />
-            <MergeDataDisplay label="Birth county" display={sexAndBirth.birthCounty} groupType="last" underlined={true} />
+            <MergeDataDisplay
+                label="Birth county"
+                display={sexAndBirth.birthCounty}
+                groupType="last"
+                underlined={true}
+            />
             <Controller
                 control={form.control}
                 name="sexAndBirth.birthCountry"

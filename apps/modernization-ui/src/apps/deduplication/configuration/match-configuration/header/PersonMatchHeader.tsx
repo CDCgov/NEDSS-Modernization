@@ -18,7 +18,12 @@ export const PersonMatchHeader = ({ showButtons = false, onImportClick, onConfig
             <Heading level={1}>Person match configuration</Heading>
             <Shown when={showButtons}>
                 <div className={styles.buttons}>
-                    <Button icon="settings" labelPosition="right" secondary={true} onClick={onConfigureDataElementsClick}>
+                    <Button
+                        icon="settings"
+                        labelPosition="right"
+                        secondary={true}
+                        onClick={onConfigureDataElementsClick}
+                    >
                         Configure data elements
                     </Button>
                     <Button

@@ -103,7 +103,12 @@ export const QuestionContent = ({
                             </Button>
                             <span className={styles.dividerText}>Or</span>
                             <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
-                            <Button type="button" className={styles.quickCodeLookupBtn} outline={true} onClick={() => {}}>
+                            <Button
+                                type="button"
+                                className={styles.quickCodeLookupBtn}
+                                outline={true}
+                                onClick={() => {}}
+                            >
                                 Quick code lookup
                             </Button>
                         </div>

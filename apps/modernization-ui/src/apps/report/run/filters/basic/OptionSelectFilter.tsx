@@ -25,10 +25,14 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
 
     useEffect(() => {
         // options have changed and the value is no longer in the option set
-        if (value?.length > 0 && options.length > 0 && !value.every((v: string) => options.find((o) => o.value === v))) {
+        if (
+            value?.length > 0 &&
+            options.length > 0 &&
+            !value.every((v: string) => options.find((o) => o.value === v))
+        ) {
             onChange(null);
         }
-    }, [options]);
+    }, [options, value]);
 
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
@@ -66,12 +70,11 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectabl
     [CONDITION_FILTER_CODE]: () => {
         return useConditionOptions().options;
     },
-    [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName),
+    [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName!),
     [STD_HIV_WORKERS_FILTER_CODE]: useStdHivWorkerNameOptions,
 };
 
-const useDiseaseOptions = (filterCodeSetName?: string) => {
-    if (!filterCodeSetName) return [];
+const useDiseaseOptions = (filterCodeSetName: string) => {
     const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
     return options;
 };

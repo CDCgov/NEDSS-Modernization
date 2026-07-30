@@ -12,6 +12,8 @@ const ID_VALUE_LABEL = 'ID value';
 export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
 
+    const { types, authorities } = useIdentificationCodedValues();
+
     return (
         <>
             <Controller
@@ -27,7 +29,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         sizing={sizing}
                         onChange={onChange}
                         id={`identification-${name}`}
-                        options={useIdentificationCodedValues().types}
+                        options={types}
                         error={error?.message}
                         required={true}
                     />
@@ -45,7 +47,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
-                        options={useIdentificationCodedValues().authorities}
+                        options={authorities}
                     />
                 )}
             />

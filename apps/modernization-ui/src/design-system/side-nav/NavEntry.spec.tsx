@@ -20,7 +20,9 @@ describe('when a navigation menu item', () => {
         });
 
         it('should display a link to a modernized page as active', () => {
-            const { queryByRole, getByText } = render(<Fixture name="internal link" path="/internalRoute" active={true} />);
+            const { queryByRole, getByText } = render(
+                <Fixture name="internal link" path="/internalRoute" active={true} />
+            );
 
             const link = queryByRole('link', { name: 'internal link' });
 

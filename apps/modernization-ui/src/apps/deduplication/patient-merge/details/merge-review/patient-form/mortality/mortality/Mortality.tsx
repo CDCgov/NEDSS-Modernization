@@ -90,7 +90,12 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                         />
                     )}
                 />
-                <MergeDataDisplay label="Death county" display={mortality.deathCounty} groupType="last" underlined={true} />
+                <MergeDataDisplay
+                    label="Death county"
+                    display={mortality.deathCounty}
+                    groupType="last"
+                    underlined={true}
+                />
                 <Controller
                     control={form.control}
                     name="mortality.deathCountry"

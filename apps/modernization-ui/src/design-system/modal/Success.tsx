@@ -16,7 +16,12 @@ const Success = ({ title = 'Success', children, onClose }: Props) => {
             title={title}
             onClose={onClose}
             footer={(close) => (
-                <button type="button" className="usa-button usa-button--outline" onClick={close} data-close-modal={true}>
+                <button
+                    type="button"
+                    className="usa-button usa-button--outline"
+                    onClick={close}
+                    data-close-modal={true}
+                >
                     Go back
                 </button>
             )}

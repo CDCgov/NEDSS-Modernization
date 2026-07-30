@@ -97,7 +97,12 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                     </div>
                     <ModalFooter className="padding-2 margin-left-auto footer">
                         <ButtonGroup className="flex-justify-end">
-                            <ModalToggleButton modalRef={modalRef} closer={true} outline={true} data-testid="condition-cancel-btn">
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer={true}
+                                outline={true}
+                                data-testid="condition-cancel-btn"
+                            >
                                 Cancel
                             </ModalToggleButton>
                             <ModalToggleButton

@@ -59,6 +59,9 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
     const [dataSource, setDataSource] = useState<string | Selectable | undefined>(config?.dataSource.id.toString());
     const dataSourceSelected = !!dataSource;
 
+    const userOptions = useUserOptions();
+    const libOptions = useReportLibraries();
+
     return (
         <>
             {isEditable ? (
@@ -96,10 +99,9 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     label="Owner"
                     defaultValue={config?.ownerUid.toString()}
                     getOptions={() => {
-                        const options = useUserOptions();
-                        if (options.length === 0) return options;
+                        if (userOptions.length === 0) return userOptions;
                         // add system option once loaded (to avoid options appearing loaded when not)
-                        return [{ value: '0', name: 'System' }, ...options];
+                        return [{ value: '0', name: 'System' }, ...userOptions];
                     }}
                     helperText="The user who can edit and delete this report."
                 />
@@ -132,9 +134,8 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     defaultValue={config?.library.id.toString()}
                     getOptions={() => {
                         // move nbs custom to the top of the list
-                        const libs = useReportLibraries();
-                        const nbsCustom = libs.find(({ name }) => name === 'nbs_custom');
-                        const options = libs.filter(({ name }) => name !== 'nbs_custom');
+                        const nbsCustom = libOptions.find(({ name }) => name === 'nbs_custom');
+                        const options = libOptions.filter(({ name }) => name !== 'nbs_custom');
                         if (!nbsCustom) return options;
                         return [nbsCustom, ...options];
                     }}

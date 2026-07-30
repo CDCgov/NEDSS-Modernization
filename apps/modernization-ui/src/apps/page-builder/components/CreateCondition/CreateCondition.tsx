@@ -332,7 +332,13 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     />
                 </div>
                 <div className="create-condition__buttons">
-                    <ModalToggleButton modalRef={modal} type="reset" closer={true} className="cancel-btn" onClick={resetInput}>
+                    <ModalToggleButton
+                        modalRef={modal}
+                        type="reset"
+                        closer={true}
+                        className="cancel-btn"
+                        onClick={resetInput}
+                    >
                         Cancel
                     </ModalToggleButton>
 
