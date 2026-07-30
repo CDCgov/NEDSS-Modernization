@@ -49,7 +49,6 @@ export default defineConfig([
                 'error',
                 { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' },
             ],
-            '@typescript-eslint/no-explicit-any': 'warn',
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
             'react-hooks/rules-of-hooks': 'off',
