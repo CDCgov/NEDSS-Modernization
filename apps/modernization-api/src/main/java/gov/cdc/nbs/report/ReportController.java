@@ -47,7 +47,8 @@ public class ReportController {
       @AuthenticationPrincipal NbsUserDetails user,
       @Valid @RequestBody AdminReportRequest request) {
     LOGGER.log(
-        System.Logger.Level.TRACE, "CREATE report request received from user " + user.getId());
+        System.Logger.Level.TRACE,
+        "CREATE report request received from user %s".formatted(user.getId()));
 
     Report report = reportService.createReport(request, user);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
@@ -60,7 +61,10 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody AdminReportRequest request) {
-    LOGGER.log(System.Logger.Level.TRACE, "EDIT report request received from user " + user.getId());
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "EDIT report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
 
     Report report = reportService.editReport(request, user, new ReportId(reportUid, dataSourceUid));
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
@@ -72,7 +76,10 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody ReportExecutionRequest request) {
-    LOGGER.log(System.Logger.Level.TRACE, "SAVE report request received from user " + user.getId());
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "SAVE report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
 
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
@@ -134,7 +141,9 @@ public class ReportController {
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody SaveAsReportRequest request) {
     LOGGER.log(
-        System.Logger.Level.TRACE, "SAVE AS report request received from user " + user.getId());
+        System.Logger.Level.TRACE,
+        "SAVE AS report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
 
     String authOperationType;
     ReportConstants.ReportGroup reportGroup = request.group();
@@ -170,7 +179,9 @@ public class ReportController {
       @PathVariable Long dataSourceUid,
       @AuthenticationPrincipal NbsUserDetails user) {
     LOGGER.log(
-        System.Logger.Level.TRACE, "GET report config request received from user " + user.getId());
+        System.Logger.Level.TRACE,
+        "GET report config request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
 
     ReportConfiguration reportConfigResponse = reportFetcher.getReport(reportUid, dataSourceUid);
     return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
@@ -183,7 +194,10 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @AuthenticationPrincipal NbsUserDetails user) {
-    LOGGER.log(System.Logger.Level.TRACE, "GET report runner received from user " + user.getId());
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "GET report runner received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
 
     String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
     return new ResponseEntity<>(runner, HttpStatus.OK);
@@ -198,7 +212,9 @@ public class ReportController {
       @PathVariable Long dataSourceUid,
       @AuthenticationPrincipal NbsUserDetails user) {
     LOGGER.log(
-        System.Logger.Level.TRACE, "DELETE report request received from user " + user.getId());
+        System.Logger.Level.TRACE,
+        "DELETE report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
 
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
     reportService.deleteReport(reportId);
@@ -210,7 +226,10 @@ public class ReportController {
   public ResponseEntity<ReportExecutionResult> runReport(
       @Valid @RequestBody ReportExecutionRequest request,
       @AuthenticationPrincipal NbsUserDetails user) {
-    LOGGER.log(System.Logger.Level.TRACE, "RUN report request received from user " + user.getId());
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "RUN report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), request.reportUid(), request.dataSourceUid()));
 
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
@@ -224,7 +243,9 @@ public class ReportController {
       @Valid @RequestBody ReportExecutionRequest request,
       @AuthenticationPrincipal NbsUserDetails user) {
     LOGGER.log(
-        System.Logger.Level.TRACE, "EXPORT report request received from user " + user.getId());
+        System.Logger.Level.TRACE,
+        "EXPORT report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), request.reportUid(), request.dataSourceUid()));
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");

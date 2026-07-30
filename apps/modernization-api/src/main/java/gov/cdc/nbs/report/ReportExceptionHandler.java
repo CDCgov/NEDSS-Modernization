@@ -29,33 +29,36 @@ public class ReportExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponseBody> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
-    return defaultExceptionHandler(ex, HttpStatus.UNPROCESSABLE_ENTITY);
+    return defaultExceptionHandler(
+        ex, HttpStatus.UNPROCESSABLE_ENTITY, System.Logger.Level.WARNING);
   }
 
   @ExceptionHandler(ForbiddenException.class)
   public ResponseEntity<ErrorResponseBody> handleForbidden(ForbiddenException ex) {
-    return defaultExceptionHandler(ex, HttpStatus.FORBIDDEN);
+    return defaultExceptionHandler(ex, HttpStatus.FORBIDDEN, System.Logger.Level.DEBUG);
   }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorResponseBody> handleNotFound(NotFoundException ex) {
-    return defaultExceptionHandler(ex, HttpStatus.NOT_FOUND);
+    return defaultExceptionHandler(ex, HttpStatus.NOT_FOUND, System.Logger.Level.DEBUG);
   }
 
   @ExceptionHandler(NotImplementedException.class)
   public ResponseEntity<ErrorResponseBody> handleNotImplemented(NotImplementedException ex) {
-    return defaultExceptionHandler(ex, HttpStatus.NOT_IMPLEMENTED);
+    return defaultExceptionHandler(ex, HttpStatus.NOT_IMPLEMENTED, System.Logger.Level.DEBUG);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<ErrorResponseBody> handleUnprocessableEntity(IllegalArgumentException ex) {
-    return defaultExceptionHandler(ex, HttpStatus.UNPROCESSABLE_ENTITY);
+    return defaultExceptionHandler(
+        ex, HttpStatus.UNPROCESSABLE_ENTITY, System.Logger.Level.WARNING);
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<ErrorResponseBody> handleFailedSerialization(
       HttpMessageNotReadableException ex) {
-    return defaultExceptionHandler(ex, HttpStatus.UNPROCESSABLE_ENTITY);
+    return defaultExceptionHandler(
+        ex, HttpStatus.UNPROCESSABLE_ENTITY, System.Logger.Level.WARNING);
   }
 
   //  Currently limited to the ReportExecutionServiceClient
@@ -95,10 +98,9 @@ public class ReportExceptionHandler {
   }
 
   private ResponseEntity<ReportExceptionHandler.ErrorResponseBody> defaultExceptionHandler(
-      Exception e, HttpStatus httpStatus) {
+      Exception e, HttpStatus httpStatus, System.Logger.Level logLevel) {
     String errorId = UUID.randomUUID().toString();
-    LOGGER.log(
-        System.Logger.Level.WARNING, DEFAULT_ERROR_LOG.formatted(errorId, e.getMessage()), e);
+    LOGGER.log(logLevel, DEFAULT_ERROR_LOG.formatted(errorId, e.getMessage()), e);
 
     return new ResponseEntity<>(new ErrorResponseBody(e.getMessage(), errorId), httpStatus);
   }
