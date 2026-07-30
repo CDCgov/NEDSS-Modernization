@@ -3,9 +3,10 @@ import { Term } from './terms';
 import { selectField } from 'utils/util';
 import { removeAndTrim } from 'utils';
 
-const isSelectableNotMatching = (value: string) => (item: any) => 'value' in item && item.value !== value;
+const isSelectableNotMatching = (value: string) => (item: unknown) =>
+    !!item && typeof item === 'object' && 'value' in item && item.value !== value;
 
-const doesNotEqual = (value: string) => (item: any) =>
+const doesNotEqual = (value: string) => (item: unknown) =>
     typeof item === 'string' ? value !== item : isSelectableNotMatching(value)(item);
 
 const removeTerm =

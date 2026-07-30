@@ -8,7 +8,7 @@ type Props = {
     onDownloadPdf: () => void;
 };
 export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props) => {
-    const [searchTags, setSearchTags] = useState<any>([]);
+    const [searchTags, setSearchTags] = useState<string[]>([]);
     const [search, setSearch] = useState<string>('');
 
     const handleSearch = ({ target }: ChangeEvent<HTMLInputElement>) => {

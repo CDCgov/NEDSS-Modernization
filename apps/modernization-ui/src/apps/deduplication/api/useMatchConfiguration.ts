@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Pass } from './model/Pass';
 import { Config } from 'config';
 import { AlgorithmExport } from './model/AlgorithmExport';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export const useMatchConfiguration = (lazy = false) => {
     const [passes, setPasses] = useState<Pass[]>([]);
@@ -50,11 +51,11 @@ export const useMatchConfiguration = (lazy = false) => {
                         setPasses(algorithm.passes);
                     })
                     .catch(() => {
-                        console.error('Failed to extract json for pass configuration.');
+                        logErrorToUserConsole('Failed to extract json for pass configuration.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to retrieve pass configuration');
             })
             .finally(() => setLoading(false));
@@ -81,11 +82,11 @@ export const useMatchConfiguration = (lazy = false) => {
                         .json()
                         .then((algorithm) => setPasses(algorithm.passes))
                         .catch(() => {
-                            console.error('Failed to extract json for pass configuration.');
+                            logErrorToUserConsole('Failed to extract json for pass configuration.');
                         });
                 })
                 .catch((error) => {
-                    console.error(error);
+                    logErrorToUserConsole(error);
                     setError('Failed to delete pass');
                 });
 
@@ -143,11 +144,11 @@ export const useMatchConfiguration = (lazy = false) => {
                     .json()
                     .then((algorithm: { passes: Pass[] }) => onResponse(algorithm.passes))
                     .catch(() => {
-                        console.error('Failed to extract json for pass configuration.');
+                        logErrorToUserConsole('Failed to extract json for pass configuration.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to save pass');
             });
     };
@@ -178,11 +179,11 @@ export const useMatchConfiguration = (lazy = false) => {
                     .json()
                     .then((algorithm: { passes: Pass[] }) => onResponse(algorithm.passes))
                     .catch(() => {
-                        console.error('Failed to extract json for pass configuration.');
+                        logErrorToUserConsole('Failed to extract json for pass configuration.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to save pass');
             });
     };

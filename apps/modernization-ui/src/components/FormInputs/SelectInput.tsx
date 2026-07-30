@@ -49,7 +49,8 @@ export const SelectInput = ({
     ...props
 }: SelectProps) => {
     const defaultId = useId();
-    //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
+    //  In order for the defaultValue to be applied the component has to be re-created
+    // when it goes from null to non null.
     const Wrapped = () => (
         <Select
             data-testid={dataTestid || 'dropdown'}

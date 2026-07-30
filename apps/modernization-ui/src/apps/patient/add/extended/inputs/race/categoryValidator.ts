@@ -27,6 +27,7 @@ const categoryValidator = (entries: RaceEntry[]) => (id: number, category: Selec
 
             //  validation fails
             if (resolved) {
+                // eslint-disable-next-line max-len
                 return `Race ${category?.name} has already been added to the repeating block. Please select another race to add.`;
             }
         }

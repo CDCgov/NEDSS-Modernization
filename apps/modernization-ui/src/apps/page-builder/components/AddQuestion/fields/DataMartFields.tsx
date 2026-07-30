@@ -65,6 +65,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
         // check === false to keep undefined from triggering an error
         if (isValidRdbColumn === false) {
             form.setError('dataMartInfo.rdbColumnName', {
+                // eslint-disable-next-line max-len
                 message: `An Rdb column named: ${rdbColumnName} already exists in the system for the specified subgroup`,
             });
         } else {

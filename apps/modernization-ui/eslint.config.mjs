@@ -49,7 +49,6 @@ export default defineConfig([
                 'error',
                 { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' },
             ],
-            '@typescript-eslint/no-explicit-any': 'warn',
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
             'react-hooks/rules-of-hooks': 'off',
@@ -67,7 +66,12 @@ export default defineConfig([
     },
     // Test and story files overrides
     {
-        files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}', '**/*.stories.{js,jsx,ts,tsx}'],
+        files: [
+            '**/*.spec.{js,jsx,ts,tsx}',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/*.stories.{js,jsx,ts,tsx}',
+            'src/setupTests.ts',
+        ],
         languageOptions: {
             globals: {
                 vi: 'readonly',

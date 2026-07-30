@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-len
 // From https://github.com/hello-pangea/dnd/blob/main/src/view/use-sensor-marshal/sensors/util/supported-page-visibility-event-name.ts
 const supportedEventName: string = ((): string => {
     const base = 'visibilitychange';

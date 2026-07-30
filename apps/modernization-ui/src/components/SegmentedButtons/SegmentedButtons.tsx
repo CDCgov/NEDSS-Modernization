@@ -6,7 +6,7 @@ type Props = {
     buttons: Option[];
     onBlur?: () => void;
     onChange?: () => void;
-    onClick?: (button: any) => void;
+    onClick?: (button: Option) => void;
     value: string | number;
     required?: boolean;
 };

@@ -1,4 +1,6 @@
+import { Predicate } from 'utils';
 import styles from './NavBar.module.scss';
+import { Permitted } from 'libs/permission';
 
 type NavLinkProps = {
     url: string;
@@ -12,5 +14,18 @@ export const NavBarLink = ({ url, name, includeSeparator = false }: NavLinkProps
             {includeSeparator && <span> | </span>}
             <a href={url}>{name}</a>
         </td>
+    );
+};
+
+export const PermittedNavBarLink = ({
+    permission,
+    ...props
+}: NavLinkProps & {
+    permission: string | Predicate<string[]>;
+}) => {
+    return (
+        <Permitted permission={permission}>
+            <NavBarLink {...props} />
+        </Permitted>
     );
 };
