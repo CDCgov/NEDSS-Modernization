@@ -1,6 +1,7 @@
 import { Config } from 'config';
 import { useState } from 'react';
 import { MergeCandidate } from './model/MergeCandidate';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export const useMergeDetails = () => {
     const [loading, setLoading] = useState(false);
@@ -23,11 +24,11 @@ export const useMergeDetails = () => {
                         setResponse(response);
                     })
                     .catch(() => {
-                        console.error('Failed to extract json for patient merge details.');
+                        logErrorToUserConsole('Failed to extract json for patient merge details.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to retrieve matches requiring review');
             })
             .finally(() => setLoading(false));
