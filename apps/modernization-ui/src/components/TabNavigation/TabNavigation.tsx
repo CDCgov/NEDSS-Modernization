@@ -40,8 +40,8 @@ const TabNavigation = ({ sizing = 'medium', children = [], className }: TabNavig
         <div
             className={classNames(
                 style['tab-navigation'],
-                sizing === 'large' && style['large'],
-                sizing === 'medium' && style['medium'],
+                sizing === 'large' && style.large,
+                sizing === 'medium' && style.medium,
                 className
             )}
         >
