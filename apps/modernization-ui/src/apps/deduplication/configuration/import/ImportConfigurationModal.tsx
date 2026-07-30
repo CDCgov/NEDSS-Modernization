@@ -3,6 +3,7 @@ import { ImportModal } from './importModal/ImportModal';
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
 
 const ERROR_MESSAGE =
+    // eslint-disable-next-line max-len
     'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.';
 
 type Props = {
