@@ -81,7 +81,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                 </div>
                 <label htmlFor="importTempId">
                     <input
-                        value={''}
+                        value=""
                         onChange={handleFileChange}
                         name="fileInput"
                         type="file"

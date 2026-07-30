@@ -177,7 +177,7 @@ export const TargetQuestion = ({
                                                 setTargetList([]);
                                             }}
                                         >
-                                            <Icon name={'group'} size={'m'} />
+                                            <Icon name="group" size="m" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -200,7 +200,7 @@ export const TargetQuestion = ({
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name={'group'} size={'m'} />
+                                                    <Icon name="group" size="m" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
@@ -221,7 +221,7 @@ export const TargetQuestion = ({
                                 <Checkbox
                                     onChange={(e) => handleSelectAll(targetList, e)}
                                     id="hots1"
-                                    name={'race1'}
+                                    name="race1"
                                     label="Select All"
                                 />
                             </div>

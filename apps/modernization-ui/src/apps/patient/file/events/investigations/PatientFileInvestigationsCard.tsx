@@ -150,7 +150,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
             title="Investigations"
             data={data}
             columns={[selectionColumn, ...columns]}
-            columnPreferencesKey={'patient.file.investigations.preferences'}
+            columnPreferencesKey="patient.file.investigations.preferences"
             defaultColumnPreferences={columnPreferences}
             sizing={sizing}
             className={styles.selectable}

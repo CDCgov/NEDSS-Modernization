@@ -15,7 +15,7 @@ type Props = {
 
 const PatientCreatedPanel = ({ created }: Props) => (
     <Modal
-        id={`patient-creation-success`}
+        id="patient-creation-success"
         title="Success"
         forceAction
         onClose={() => {}}

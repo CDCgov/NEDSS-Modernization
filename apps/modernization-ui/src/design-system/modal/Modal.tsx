@@ -80,7 +80,7 @@ const Component = ({ title, size, forceAction = false, children, className, onCl
                             />
                         )}
                     </header>
-                    <div className={'usa-modal__content'}>
+                    <div className="usa-modal__content">
                         {footer && (
                             <footer className={classNames('usa-modal__footer', styles.footer)}>
                                 {footer(onClose)}

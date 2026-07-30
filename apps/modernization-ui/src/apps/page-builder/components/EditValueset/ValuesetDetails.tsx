@@ -15,7 +15,7 @@ export const ValuesetDetails = ({ valueset, onEdit }: ValuesetDetailsProps) => {
                     type="button"
                     outline
                     className={styles.editValuesetButton}
-                    aria-label={'edit value set details'}
+                    aria-label="edit value set details"
                     onClick={onEdit}
                 >
                     <Icon.Edit size={3} />

@@ -162,7 +162,7 @@ const PageInformation = () => {
                             className="historyPagination"
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
-                            pathname={'/'}
+                            pathname="/"
                             onClickNext={() => handleNext(currentPage + 1)}
                             onClickPrevious={() => handleNext(currentPage - 1)}
                             onClickPageNumber={(_, page) => handleNext(page)}

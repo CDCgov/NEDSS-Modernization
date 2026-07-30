@@ -190,13 +190,13 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 </div>
 
                 <div className={styles.footer_buttons}>
-                    <Button outline onClick={onCancel} type={'button'}>
+                    <Button outline onClick={onCancel} type="button">
                         Cancel
                     </Button>
                     <Button
                         disabled={!form.formState.isDirty || !form.formState.isValid}
                         onClick={handleSubmit}
-                        type={'button'}
+                        type="button"
                         aria-label="submit-btn"
                     >
                         Save changes

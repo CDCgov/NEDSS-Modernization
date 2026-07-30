@@ -66,7 +66,7 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
                         icon="delete"
-                        sizing={'medium'}
+                        sizing="medium"
                         onClick={show}
                     />
                 }

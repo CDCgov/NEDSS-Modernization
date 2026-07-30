@@ -165,7 +165,7 @@ export const Section = ({
                     ))}
                 </div>
             )}
-            <Modal id={'add-section-modal'} ref={editSectionModalRef} className={'add-section-modal'} isLarge>
+            <Modal id="add-section-modal" ref={editSectionModalRef} className="add-section-modal" isLarge>
                 <AddSection
                     pageId={page.id}
                     tabId={selected?.id}
@@ -180,13 +180,7 @@ export const Section = ({
                 />
             </Modal>
 
-            <Modal
-                id={'add-section-modal'}
-                ref={addSubsectionModalRef}
-                className={'add-section-modal'}
-                isLarge
-                forceAction
-            >
+            <Modal id="add-section-modal" ref={addSubsectionModalRef} className="add-section-modal" isLarge forceAction>
                 <AddSubSection
                     sectionId={section.id}
                     pageId={page.id}
@@ -200,9 +194,9 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id={'add-section-modal'}
+                id="add-section-modal"
                 ref={editSubsectionModalRef}
-                className={'add-section-modal'}
+                className="add-section-modal"
                 isLarge
                 forceAction
             >
@@ -221,9 +215,9 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id={'manage-section-modal'}
+                id="manage-section-modal"
                 ref={manageSubsectionModalRef}
-                className={'manage-section-modal'}
+                className="manage-section-modal"
                 forceAction
                 isLarge
             >

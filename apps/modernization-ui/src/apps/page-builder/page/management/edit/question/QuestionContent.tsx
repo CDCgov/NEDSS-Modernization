@@ -73,7 +73,7 @@ export const QuestionContent = ({
                         displayComponent === 1031) && (
                         <SelectInput
                             onChange={() => {}}
-                            defaultValue={''}
+                            defaultValue=""
                             options={conceptState}
                             data-testid="dropdown-input"
                         />
@@ -142,7 +142,7 @@ export const QuestionContent = ({
     return (
         <div className={styles.question}>
             <div className={styles.reorderIcon}>
-                <NbsIcon name={'drag'} />
+                <NbsIcon name="drag" />
             </div>
             {!staticTypes.includes(displayComponent ?? 0) ? (
                 renderLabelWithComponent

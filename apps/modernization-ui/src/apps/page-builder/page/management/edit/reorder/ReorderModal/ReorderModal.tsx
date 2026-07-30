@@ -33,7 +33,7 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                 >
                     {loading ? <Spinner /> : null}
                     <div className={styles.modal}>
-                        {alertMessage ? <AlertBanner type={'prompt'}>{alertMessage}</AlertBanner> : null}
+                        {alertMessage ? <AlertBanner type="prompt">{alertMessage}</AlertBanner> : null}
                         <div className={styles.content}>
                             <Droppable droppableId="all-tabs" type="tab">
                                 {(provided, snapshot) => (

@@ -139,7 +139,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 <Icon.Edit />
                 <h2>Manage tabs</h2>
             </ModalToggleButton>
-            <Modal id={'manage-tab-modal'} ref={modalRef} className={'manage-tab-modal'} isLarge forceAction>
+            <Modal id="manage-tab-modal" ref={modalRef} className="manage-tab-modal" isLarge forceAction>
                 <div className={styles.manageTabModal}>
                     <ManageTabsHeader showAddTab={!addEdit} onAddNew={addNew} />
                     <div className={styles.modalBody}>

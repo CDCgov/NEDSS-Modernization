@@ -225,7 +225,7 @@ const FilterConfigForm = ({
                 render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
                     <SingleSelect
                         id={`filter-${name}`}
-                        label={'Filter'}
+                        label="Filter"
                         disabled={!!entry?.id} // can't change filter type on edit
                         name={name}
                         options={filterOptions}

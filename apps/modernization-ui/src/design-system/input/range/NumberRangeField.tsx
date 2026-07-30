@@ -59,7 +59,7 @@ const NumberRangeField = ({
                 <Field
                     orientation={orientation}
                     sizing={sizing}
-                    label={'From'}
+                    label="From"
                     htmlFor={`${id}-from`}
                     required={required}
                     error={error}
@@ -78,7 +78,7 @@ const NumberRangeField = ({
                 <Field
                     orientation={orientation}
                     sizing={sizing}
-                    label={'To'}
+                    label="To"
                     htmlFor={`${id}-to`}
                     required={required}
                     error={error}

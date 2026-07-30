@@ -69,7 +69,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
     if (currentGroup.links.length) grouped.push(currentGroup);
 
     return (
-        <Permitted permission={'SRTADMIN-SYSTEM'}>
+        <Permitted permission="SRTADMIN-SYSTEM">
             <Card
                 id="case-report-lab"
                 title="Case report & laboratory"

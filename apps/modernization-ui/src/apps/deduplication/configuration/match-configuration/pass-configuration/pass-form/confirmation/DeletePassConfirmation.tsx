@@ -24,7 +24,7 @@ export const DeletePassConfirmation = ({ passName, visible, isLastPass, onAccept
     return (
         <Shown when={visible}>
             <Modal
-                id={`confirmation-delete-pass`}
+                id="confirmation-delete-pass"
                 size="small"
                 title="Delete pass configuration"
                 onClose={onCancel}

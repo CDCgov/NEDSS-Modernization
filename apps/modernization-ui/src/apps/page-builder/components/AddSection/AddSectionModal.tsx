@@ -71,7 +71,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                             type="text"
                             name="sectionName"
                             value={sectionName}
-                            id={'add-section-name'}
+                            id="add-section-name"
                             onChange={handleSectionNameChange}
                         />
                         <Label htmlFor="sectionDescription">Section description</Label>
@@ -80,7 +80,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                             type="text"
                             name="sectionDescription"
                             value={sectionDescription}
-                            id={'add-section-description'}
+                            id="add-section-description"
                             onChange={handleSectionDescriptionChange}
                         />
                         <div className="visible-container">

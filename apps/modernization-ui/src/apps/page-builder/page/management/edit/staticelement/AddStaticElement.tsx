@@ -189,13 +189,13 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                         </>
                     ) : (
                         <>
-                            <Button outline onClick={() => form.reset()} type={'button'}>
+                            <Button outline onClick={() => form.reset()} type="button">
                                 Cancel
                             </Button>
                             <Button
                                 disabled={!form.formState.isValid}
                                 onClick={handleSubmit}
-                                type={'button'}
+                                type="button"
                                 data-testid="submit-btn"
                             >
                                 Save changes

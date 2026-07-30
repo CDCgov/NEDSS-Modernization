@@ -336,7 +336,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         Cancel
                     </ModalToggleButton>
 
-                    <Button disabled={!formState.isValid} type={'submit'}>
+                    <Button disabled={!formState.isValid} type="submit">
                         Create and add to page
                     </Button>
                 </div>

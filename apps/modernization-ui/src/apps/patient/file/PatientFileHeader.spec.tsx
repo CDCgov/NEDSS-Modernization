@@ -66,7 +66,7 @@ describe('when displaying the demographics summary of a patient', () => {
             deletability: 'Deletable',
         };
 
-        render(<PatientFileHeader patient={patient} actions={'actions'} />);
+        render(<PatientFileHeader patient={patient} actions="actions" />);
 
         expect(screen.getByText('actions')).toBeInTheDocument();
     });

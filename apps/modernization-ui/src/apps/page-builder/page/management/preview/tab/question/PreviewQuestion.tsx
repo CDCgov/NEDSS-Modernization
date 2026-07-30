@@ -56,7 +56,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     displayComponent === 1031) && (
                     <SelectInput
                         onChange={() => {}}
-                        defaultValue={''}
+                        defaultValue=""
                         options={conceptState}
                         data-testid="dropdown-input"
                         disabled={!question.enabled}
