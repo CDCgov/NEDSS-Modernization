@@ -177,6 +177,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                                     sizing={sizing}
                                     disabled={!comparison}
                                     aria-describedby="compare-investigations"
+                                    // eslint-disable-next-line max-len
                                     href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}
                                 >
                                     Compare investigations

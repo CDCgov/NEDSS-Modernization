@@ -60,7 +60,8 @@ export const DatePickerInput = (props: DatePickerProps) => {
     };
 
     const _error = error
-        ? 'Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon.'
+        ? // eslint-disable-next-line max-len
+          'Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon.'
         : props.errorMessage;
 
     return (
@@ -105,7 +106,8 @@ const InternalDatePicker = ({
         if (valid && fn) fn(changed);
     };
 
-    //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
+    // In order for the defaultValue to be applied the component has to be re-created
+    // when it goes from null to non null.
     return (
         <DatePicker
             i18n={{ ...EN_US, toggleCalendar }}
