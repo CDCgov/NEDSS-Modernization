@@ -55,7 +55,7 @@ describe('SidePanel', () => {
 
     it('should trigger on close when close button is clicked', async () => {
         // show content
-        let visible = true;
+        const visible = true;
         const { getByRole } = render(
             <SidePanel heading="Some heading" visible={visible} onClose={onClose}>
                 Some content
