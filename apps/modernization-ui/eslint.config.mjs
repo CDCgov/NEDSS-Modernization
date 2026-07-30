@@ -56,6 +56,7 @@ export default defineConfig([
             'react/jsx-curly-brace-presence': [2, 'never'],
             'react/jsx-boolean-value': [2, 'always'],
             'dot-notation': 'error',
+            'object-shorthand': 'error',
             eqeqeq: 'error',
             'no-var': 'error',
             'prefer-const': 'error',

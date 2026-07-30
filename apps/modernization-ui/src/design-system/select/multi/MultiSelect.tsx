@@ -105,7 +105,7 @@ export const MultiSelect = ({
                 onInputChange={handleInputChange}
                 getOptionValue={asValue}
                 getOptionLabel={asDisplay}
-                components={{ Option: CheckboxOption, DropdownIndicator: DropdownIndicator }}
+                components={{ Option: CheckboxOption, DropdownIndicator }}
                 filterOption={(option: FilterOptionOption<Selectable>) =>
                     option.value === SELECT_ALL_VALUE
                         ? true

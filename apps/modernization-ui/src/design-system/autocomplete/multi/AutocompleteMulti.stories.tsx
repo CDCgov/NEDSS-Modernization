@@ -30,7 +30,7 @@ export const Default: Story = {
         name: 'autocomplete-default',
         label: 'Default',
         options: [...options],
-        resolver: resolver,
+        resolver,
         placeholder: 'Select options',
     },
 };
@@ -42,7 +42,7 @@ export const PreselectedOptions: Story = {
         label: 'Default',
         options: [...options],
         value: [banana, mango],
-        resolver: resolver,
+        resolver,
         placeholder: 'Select options',
     },
 };

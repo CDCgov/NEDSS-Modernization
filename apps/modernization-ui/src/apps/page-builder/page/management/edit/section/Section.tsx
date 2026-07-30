@@ -233,7 +233,7 @@ export const Section = ({
                         alert={alert}
                         onResetAlert={() => setAlert(undefined)}
                         onSetAlert={(message, type) => {
-                            setAlert({ message: message, type: type });
+                            setAlert({ message, type });
                         }}
                         onCancel={onCloseManageSubsection}
                     />

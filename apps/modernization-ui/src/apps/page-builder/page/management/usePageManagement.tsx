@@ -53,7 +53,7 @@ const PageManagementProvider = ({ page, children, fetch, refresh, loading }: Pag
     }, [JSON.stringify(page), selected, displayStaticTab]);
 
     const value = useMemo(() => {
-        return { ...base, loading: loading };
+        return { ...base, loading };
     }, [base, loading]);
 
     return <PageManagementContext.Provider value={value}>{children}</PageManagementContext.Provider>;

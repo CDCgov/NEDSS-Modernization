@@ -14,7 +14,7 @@ const LoginForm = () => {
     useEffect(() => {
         if (pending) {
             LoginService.login({
-                requestBody: { username: username },
+                requestBody: { username },
             })
                 .then(() => navigate('/'))
                 .catch((error: ApiError) => {

@@ -31,7 +31,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
                 query,
                 page: page.current - 1,
                 pageSize: page.pageSize,
-                sort: sort,
+                sort,
             });
         }
     }, [page.status]);

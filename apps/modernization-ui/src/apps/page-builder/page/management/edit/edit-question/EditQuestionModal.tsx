@@ -82,7 +82,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
                 ...editableQuestion,
                 questionType: editableQuestion.questionType as 'TEXT' | 'CODED' | 'NUMERIC' | 'DATE',
                 relatedUnits: unitType !== undefined,
-                unitType: unitType,
+                unitType,
             });
         }
     }, [editableQuestion]);

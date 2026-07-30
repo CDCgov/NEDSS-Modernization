@@ -46,7 +46,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
     };
 
     const handleAlert = (message: string) => {
-        showAlert({ message: message, type: 'success' });
+        showAlert({ message, type: 'success' });
     };
 
     const onSubmit = form.handleSubmit((data) => {

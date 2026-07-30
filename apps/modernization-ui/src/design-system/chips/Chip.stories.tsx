@@ -16,7 +16,7 @@ export const Default: Story = {
     args: {
         name: 'Name',
         value: 'Default',
-        handleClose: handleClose,
+        handleClose,
     },
 };
 
@@ -25,6 +25,6 @@ export const Operator: Story = {
         name: 'Name',
         value: 'Operator',
         operator: '!=',
-        handleClose: handleClose,
+        handleClose,
     },
 };

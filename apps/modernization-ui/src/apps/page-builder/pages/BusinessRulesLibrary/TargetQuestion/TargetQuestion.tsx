@@ -42,14 +42,14 @@ export const TargetQuestion = ({
         if (ruleFunction && sourceQuestion) {
             if (editTargetQuestion) {
                 fetch(page?.id ?? 0, {
-                    ruleFunction: ruleFunction,
-                    sourceQuestion: sourceQuestion,
+                    ruleFunction,
+                    sourceQuestion,
                     targetQuestion: editTargetQuestion,
                 });
             } else {
                 fetch(page?.id ?? 0, {
-                    ruleFunction: ruleFunction,
-                    sourceQuestion: sourceQuestion,
+                    ruleFunction,
+                    sourceQuestion,
                 });
                 setSelectedList([]);
             }
