@@ -45,7 +45,8 @@ export const QuestionForm = ({ onFindValueSet }: Props) => {
             <QuestionSpecificFields onFindValueSet={onFindValueSet} />
             <HorizontalRule />
             <UserInterfaceFields />
-            {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
+            {/* hide data mart and messaging if display control = 'Readonly User text, number, or date' */}
+            {displayControl?.toString() !== '1026' && (
                 <>
                     <HorizontalRule />
                     <DataMartFields />

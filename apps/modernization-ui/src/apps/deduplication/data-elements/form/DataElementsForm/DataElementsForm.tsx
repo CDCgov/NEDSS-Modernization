@@ -59,6 +59,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
         <Card
             id="dataElementsCard"
             title="Data elements"
+            // eslint-disable-next-line max-len
             subtext="This table contains all the possible data elements that are available for use as person matching criteria."
         >
             <div className={styles.dataElementsForm}>

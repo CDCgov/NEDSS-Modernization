@@ -7,7 +7,7 @@ import styles from './MergePreviewTableCard.module.scss';
 type SortableTableCardProps<T> = {
     id: string;
     title: string;
-    columns: Column<T, any>[];
+    columns: Column<T>[];
     data: T[];
 };
 
