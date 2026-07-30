@@ -12,6 +12,7 @@ import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 
 const INACTIVE_MESSAGE = 'This patient file is inactive and cannot be deleted.';
 const HAS_ASSOCIATIONS_MESSAGE =
+    // eslint-disable-next-line max-len
     'This patient file has associated event records. The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator.';
 
 type DeleteActionProps = {
