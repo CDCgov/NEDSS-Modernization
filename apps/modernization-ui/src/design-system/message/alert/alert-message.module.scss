@@ -7,6 +7,10 @@
     border-left-style: solid;
     border-left-width: 8px;
 
+    h1 {
+        overflow: unset;
+    }
+
     &:focus {
         outline: none !important;
     }
