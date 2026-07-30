@@ -64,13 +64,13 @@ const useCurrentStateCountyOptions = () => {
     return options;
 };
 
-const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectable[]> = {
+const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable[]> = {
     [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
     [STATE_FILTER_CODE]: useStateOptions,
     [CONDITION_FILTER_CODE]: () => {
         return useConditionOptions().options;
     },
-    [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName!),
+    [DISEASE_FILTER_CODE]: (filterCodeSetName) => useDiseaseOptions(filterCodeSetName),
     [STD_HIV_WORKERS_FILTER_CODE]: useStdHivWorkerNameOptions,
 };
 
