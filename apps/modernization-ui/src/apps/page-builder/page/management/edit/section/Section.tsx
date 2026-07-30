@@ -180,13 +180,7 @@ export const Section = ({
                 />
             </Modal>
 
-            <Modal
-                id="add-section-modal"
-                ref={addSubsectionModalRef}
-                className="add-section-modal"
-                isLarge
-                forceAction
-            >
+            <Modal id="add-section-modal" ref={addSubsectionModalRef} className="add-section-modal" isLarge forceAction>
                 <AddSubSection
                     sectionId={section.id}
                     pageId={page.id}
