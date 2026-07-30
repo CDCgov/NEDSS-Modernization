@@ -86,7 +86,7 @@ export const Sections = ({
             <StatusModal
                 modal={sectionStatusModalRef}
                 messageHeader="Section cannot be deleted."
-                title={'Warning'}
+                title="Warning"
                 // eslint-disable-next-line max-len
                 message="This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted."
                 onConfirm={() => {
@@ -97,7 +97,7 @@ export const Sections = ({
             <StatusModal
                 modal={subSectionStatusModalRef}
                 messageHeader="Subsection cannot be deleted."
-                title={'Warning'}
+                title="Warning"
                 // eslint-disable-next-line max-len
                 message="This subsection contains elements (questions) inside it. Remove the contents first, and then the subsection can be deleted."
                 onConfirm={() => {

@@ -37,7 +37,7 @@ const Hint = ({ id, enabled = true, children, target, position }: HintProps) => 
 
     const targeted = useCallback(
         (element: HTMLElement | null) => {
-            if (enabled && visible && element != null) {
+            if (enabled && visible && element !== null) {
                 const { top, left, width, height } = element.getBoundingClientRect();
 
                 setPlacement({

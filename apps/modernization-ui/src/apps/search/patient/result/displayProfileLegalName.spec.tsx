@@ -21,7 +21,7 @@ const withModernizedPatientProfile = (enabled: boolean) => ({
     patient: {
         ...defaultConfiguration.features.patient,
         file: {
-            enabled: enabled,
+            enabled,
         },
     },
 });

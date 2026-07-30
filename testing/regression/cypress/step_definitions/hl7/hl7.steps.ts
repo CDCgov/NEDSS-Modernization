@@ -343,7 +343,7 @@ Then(
 const getRandomLetters = (count: number): string => {
   let chars = "";
   for (let i = 0; i < count; i++) {
-    // 97 == a, 122 == z
+    // 97 === a, 122 === z
     chars += String.fromCharCode(97 + Math.random() * 25);
   }
   return chars;

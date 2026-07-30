@@ -24,8 +24,8 @@ const EditRaceDemographicsCard = ({ form, defaults, ...remaining }: EditRaceDemo
                     {...remaining}
                     collapsible={false}
                     data={value}
-                    viewable
-                    editable
+                    viewable={true}
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(demographic?: RaceDemographic, sizing?: Sizing) => (
                         <RaceDemographicFields

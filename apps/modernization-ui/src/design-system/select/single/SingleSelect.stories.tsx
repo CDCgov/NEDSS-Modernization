@@ -23,7 +23,7 @@ export const Default: Story = {
     args: {
         id: 'single-select',
         label: 'Single Select',
-        options: options,
+        options,
         onChange: () => {},
     },
 };

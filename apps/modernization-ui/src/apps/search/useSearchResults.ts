@@ -105,7 +105,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                         filteredTotal: filter.filtering ? found.total : undefined,
                         terms: current.terms,
                     },
-                    filter: filter,
+                    filter,
                 };
             }
             break;
@@ -344,7 +344,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (!filter.filtering) {
             setCurrentTotal(resolved.total);
         }
-        dispatch({ type: 'complete', found: { ...resolved }, filter: filter });
+        dispatch({ type: 'complete', found: { ...resolved }, filter });
     };
 
     const handleError = (error: Error) => dispatch({ type: 'error', reason: error.message });

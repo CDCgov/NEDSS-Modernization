@@ -18,7 +18,7 @@ const search = vi.fn();
 const reset = vi.fn();
 
 const mockUsConditionSearch = {
-    search: search,
+    search,
     response: { content: [mockCondition] },
     error: undefined,
     isLoading: false,

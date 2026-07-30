@@ -26,15 +26,15 @@ export const EditPageQuestion = ({ page, question }: Props) => {
     const displayControl = useWatch({ control: form.control, name: 'displayControl', exact: true });
     return (
         <div className={styles.form}>
-            <BasicInformationFields editing />
-            <QuestionSpecificFields editing published={question?.isPublished} />
+            <BasicInformationFields editing={true} />
+            <QuestionSpecificFields editing={true} published={question?.isPublished} />
             <HorizontalRule />
             <UserInterfaceFields published={question?.isPublished} />
             <EditFields />
             {displayControl?.toString() !== '1026' && (
                 <>
                     <HorizontalRule />
-                    <DataMartFields editing page={page} questionId={question?.id} />
+                    <DataMartFields editing={true} page={page} questionId={question?.id} />
                     <HorizontalRule />
                     <MessagingFields />
                 </>

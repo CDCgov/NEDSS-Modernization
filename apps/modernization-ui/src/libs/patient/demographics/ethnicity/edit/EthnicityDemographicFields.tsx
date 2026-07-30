@@ -47,7 +47,7 @@ const EthnicityDemographicsFields = ({
                         onBlur={onBlur}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -75,7 +75,7 @@ const EthnicityDemographicsFields = ({
                 <Controller
                     control={form.control}
                     name="ethnicity.detailed"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <MultiSelect
                             label={labels.detailed}
@@ -95,7 +95,7 @@ const EthnicityDemographicsFields = ({
                 <Controller
                     control={form.control}
                     name="ethnicity.unknownReason"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.unknownReason}

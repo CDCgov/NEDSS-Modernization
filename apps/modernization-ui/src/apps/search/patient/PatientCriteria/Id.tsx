@@ -8,7 +8,7 @@ import { TextInputField } from 'design-system/input/text/TextInputField';
 
 export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
-    const identificationType = useWatch({ control: control, name: 'identificationType' });
+    const identificationType = useWatch({ control, name: 'identificationType' });
 
     return (
         <SearchCriteria sizing={sizing}>
@@ -46,7 +46,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                             onChange={onChange}
                             name={name}
                             label="ID number"
-                            required
+                            required={true}
                             error={error?.message}
                         />
                     )}

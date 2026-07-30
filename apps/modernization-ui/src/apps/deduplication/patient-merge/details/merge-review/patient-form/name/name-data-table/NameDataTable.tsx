@@ -24,7 +24,7 @@ export const NameDataTable = ({ patientData, onViewName, selectedName }: Props) 
     };
 
     const formatName = (name: MergeName) => {
-        if (name.first == undefined && name.last == undefined) {
+        if (name.first === undefined && name.last === undefined) {
             return '---';
         }
         return `${name.last ?? '---'}, ${name.first ?? '---'}`;

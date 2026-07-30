@@ -37,7 +37,7 @@ export const AddSubSection = ({
 
     useEffect(() => {
         if (subsectionEdit && isEdit) {
-            form.reset({ name: subsectionEdit.name, visible: subsectionEdit.visible, sectionId: sectionId });
+            form.reset({ name: subsectionEdit.name, visible: subsectionEdit.visible, sectionId });
         }
     }, [subsectionEdit]);
 
@@ -53,7 +53,7 @@ export const AddSubSection = ({
         } else {
             SubSectionControllerService.createSubsection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, sectionId: sectionId },
+                requestBody: { name: data.name, visible: data.visible, sectionId },
             }).then(() => {
                 onSubSectionTouched?.(data.name ?? '');
                 form.reset();
@@ -94,7 +94,7 @@ export const AddSubSection = ({
                                 label="Subsection Name"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                                 data-testid="subsectionName"
                                 className={styles.inputField}
                             />
@@ -124,7 +124,7 @@ export const AddSubSection = ({
                         <>
                             <Button
                                 type="button"
-                                outline
+                                outline={true}
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();
@@ -145,7 +145,7 @@ export const AddSubSection = ({
                         <>
                             <Button
                                 type="button"
-                                outline
+                                outline={true}
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();

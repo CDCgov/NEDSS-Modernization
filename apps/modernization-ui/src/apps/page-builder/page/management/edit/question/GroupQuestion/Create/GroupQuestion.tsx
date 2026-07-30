@@ -101,7 +101,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button onClick={handleCancel} type="button" outline>
+                <Button onClick={handleCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

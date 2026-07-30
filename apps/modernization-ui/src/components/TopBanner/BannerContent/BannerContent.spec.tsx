@@ -7,7 +7,7 @@ import { BannerContent } from './BannerContent';
 describe('BannerContent component tests', () => {
     it('should render content of the banner', () => {
         const { container } = render(
-            <BannerContent className="custom-class" isOpen>
+            <BannerContent className="custom-class" isOpen={true}>
                 <div>
                     <BannerGuidance>
                         <BannerIcon />

@@ -55,7 +55,7 @@ export const AddPatientExtended = () => {
                         sections={sections}
                         actions={() => (
                             <>
-                                <Button onClick={handleCancel} secondary>
+                                <Button onClick={handleCancel} secondary={true}>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleSave} disabled={working}>

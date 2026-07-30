@@ -157,7 +157,7 @@ export const QuestionSearchTable = ({
                     <Button
                         type="button"
                         className={`${styles.createNewButton} addQuestionCreateNewBtn`}
-                        outline
+                        outline={true}
                         onClick={onCreateNew}
                     >
                         Create new

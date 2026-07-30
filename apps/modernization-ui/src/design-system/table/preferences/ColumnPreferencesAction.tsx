@@ -20,7 +20,7 @@ const ColumnPreferencesAction = ({ sizing, position = 'right' }: ColumnPreferenc
                     aria-label="Settings"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
-                    secondary
+                    secondary={true}
                     icon="settings"
                     onClick={toggle}
                     sizing={sizing}

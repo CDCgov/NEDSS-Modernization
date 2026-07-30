@@ -47,7 +47,7 @@ const ProtectedLayout = () => {
 
     return (
         <Suspense fallback={<Spinner />}>
-            <Await resolve={data?.user} errorElement={<Navigate to={'/login'} />}>
+            <Await resolve={data?.user} errorElement={<Navigate to="/login" />}>
                 {WithUser}
             </Await>
         </Suspense>

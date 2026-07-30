@@ -105,7 +105,7 @@ export const NavBar = () => {
                                 <tbody>
                                     <tr>
                                         <td className={styles.navLink}>
-                                            <a href={`/nbs/UserGuide.do?method=open`} target="_blank" rel="noreferrer">
+                                            <a href="/nbs/UserGuide.do?method=open" target="_blank" rel="noreferrer">
                                                 {' '}
                                                 Help{' '}
                                             </a>

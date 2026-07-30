@@ -53,7 +53,7 @@ const usePageSummarySearch = () => {
     const { sorting } = useSorting();
 
     useEffect(() => {
-        if (page.status == PageStatus.Requested) {
+        if (page.status === PageStatus.Requested) {
             dispatch({ type: 'refresh' });
         }
     }, [page.status, dispatch]);
@@ -73,7 +73,7 @@ const usePageSummarySearch = () => {
     }, [state.status]);
 
     useEffect(() => {
-        if (state.status === 'new-search' && page.current == 1) {
+        if (state.status === 'new-search' && page.current === 1) {
             dispatch({ type: 'fetch', keyword: state.keyword, filters: state.filters });
         }
     }, [page.current]);

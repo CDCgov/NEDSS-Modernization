@@ -41,7 +41,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
         const getValues = async (): Promise<Selectable[]> => {
             const valueSetMap = getValueSetMap(properties.entries.NBS_STATE_CODE);
 
-            let cacheId = `report.valueset.${codesetNm ?? columnUid}`.toLowerCase();
+            const cacheId = `report.valueset.${codesetNm ?? columnUid}`.toLowerCase();
 
             let endpoint = '';
             if (codeDescCd?.toLowerCase() === CODE_DESC_CD.HARD_CODED) {

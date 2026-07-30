@@ -93,7 +93,7 @@ export const WithCounterAndContent: Story = {
         children: (
             <div style={{ padding: '1rem' }}>
                 <p>This is some content inside the collapsible section.</p>
-                <Button secondary>Action</Button>
+                <Button secondary={true}>Action</Button>
             </div>
         ),
     },

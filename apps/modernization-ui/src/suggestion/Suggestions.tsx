@@ -87,7 +87,7 @@ const Suggestions = <T,>({
                     key={idx}
                     role="option"
                     className={classNames('usa-combo-box__list-option', {
-                        'usa-combo-box__list-option--focused': idx == active,
+                        'usa-combo-box__list-option--focused': idx === active,
                     })}
                     aria-posinset={idx + 1}
                     onClick={() => handleClick(suggestion)}

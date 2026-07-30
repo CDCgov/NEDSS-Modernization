@@ -31,7 +31,7 @@ const IdentificationDemographicFields = ({
                         value={value}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -51,7 +51,7 @@ const IdentificationDemographicFields = ({
                         id={name}
                         options={options.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -85,7 +85,7 @@ const IdentificationDemographicFields = ({
                         value={value}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

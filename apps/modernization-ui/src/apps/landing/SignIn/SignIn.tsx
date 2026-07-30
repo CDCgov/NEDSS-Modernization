@@ -22,7 +22,7 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
         <div>
             <h2 className={classNames(styles.heading)}>Login</h2>
             <div className={classNames(styles['alert-banner'])}>
-                <AlertMessage type="information" iconless slim>
+                <AlertMessage type="information" iconless={true} slim={true}>
                     <p>
                         Please be sure to avoid entering any real PHI/PII data on the demo site. All information entered
                         will be viewable by other users.
@@ -34,7 +34,7 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
             </LinkButton>
             <div className={classNames(styles.participation)}>
                 Want to participate?
-                <Button onClick={() => handleWelcomeEvent?.('signUp')} type="button" unstyled>
+                <Button onClick={() => handleWelcomeEvent?.('signUp')} type="button" unstyled={true}>
                     Sign up for demo access
                 </Button>
             </div>

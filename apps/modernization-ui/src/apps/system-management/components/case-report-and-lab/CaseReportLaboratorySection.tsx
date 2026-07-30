@@ -69,7 +69,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
     if (currentGroup.links.length) grouped.push(currentGroup);
 
     return (
-        <Permitted permission={'SRTADMIN-SYSTEM'}>
+        <Permitted permission="SRTADMIN-SYSTEM">
             <Card
                 id="case-report-lab"
                 title="Case report & laboratory"
@@ -107,7 +107,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
                     })}
 
                     {showResetButton && (
-                        <Button secondary sizing="small" onClick={handleResetClick}>
+                        <Button secondary={true} sizing="small" onClick={handleResetClick}>
                             Reset lab mapping cache
                         </Button>
                     )}

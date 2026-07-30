@@ -113,7 +113,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 error={error?.message}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -134,7 +134,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     };
                                 })}
                                 error={error?.message}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -156,7 +156,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 label="Condition Code"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -177,7 +177,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     };
                                 })}
                                 error={error?.message}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -332,11 +332,17 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     />
                 </div>
                 <div className="create-condition__buttons">
-                    <ModalToggleButton modalRef={modal} type="reset" closer className="cancel-btn" onClick={resetInput}>
+                    <ModalToggleButton
+                        modalRef={modal}
+                        type="reset"
+                        closer={true}
+                        className="cancel-btn"
+                        onClick={resetInput}
+                    >
                         Cancel
                     </ModalToggleButton>
 
-                    <Button disabled={!formState.isValid} type={'submit'}>
+                    <Button disabled={!formState.isValid} type="submit">
                         Create and add to page
                     </Button>
                 </div>

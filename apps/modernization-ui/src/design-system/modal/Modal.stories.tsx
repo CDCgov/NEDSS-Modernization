@@ -27,7 +27,7 @@ export const Default: Story = {
         title: 'Modal Title',
         children: <div>This is a modal message</div>,
         footer: (close) => (
-            <button type="button" className="usa-button usa-button--outline" onClick={close} data-close-modal>
+            <button type="button" className="usa-button usa-button--outline" onClick={close} data-close-modal={true}>
                 Close
             </button>
         ),

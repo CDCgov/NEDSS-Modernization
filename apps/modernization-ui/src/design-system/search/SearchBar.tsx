@@ -83,7 +83,7 @@ export const SearchBar = ({
                     <Button
                         type="button"
                         sizing={size}
-                        icon={'close'}
+                        icon="close"
                         onClick={handleClear}
                         className={classNames(styles.clearButton, styles[`size-${size}`])}
                         aria-label="Clear"

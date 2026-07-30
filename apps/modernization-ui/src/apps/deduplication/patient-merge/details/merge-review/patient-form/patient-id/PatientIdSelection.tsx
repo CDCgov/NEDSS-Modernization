@@ -33,8 +33,8 @@ export const PatientIdSelection = ({ mergeCandidates, onRemovePatient }: Props) 
                             />
                             <Shown when={value !== p.personUid && mergeCandidates.length > 2}>
                                 <Button
-                                    secondary
-                                    destructive
+                                    secondary={true}
+                                    destructive={true}
                                     sizing="small"
                                     onClick={() => onRemovePatient(p.personUid)}
                                 >

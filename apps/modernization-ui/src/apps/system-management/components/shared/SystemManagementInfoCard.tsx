@@ -30,7 +30,7 @@ export const SystemManagementInfoCard = ({ id, title, filter, links, useNavigati
     return (
         <>
             {filteredLinks.length > 0 && (
-                <Card id={id} title={title} level={2} collapsible className={styles.card}>
+                <Card id={id} title={title} level={2} collapsible={true} className={styles.card}>
                     <div className={styles.sectionContent}>
                         {filteredLinks.map((link) => (
                             <a key={link.href} href={link.href} onClick={(e) => handleClick(link.href, e)}>

@@ -169,13 +169,13 @@ export const MessagingFields = () => {
             />
             <SelectInput
                 label="HL7 segment"
-                value={'OBX-3.0'}
-                disabled
+                value="OBX-3.0"
+                disabled={true}
                 options={[{ name: 'OBX-3.0', value: 'OBX-3.0' }]}
             />
             <Input
                 label="Group number (Order group ID)"
-                defaultValue={'2'}
+                defaultValue="2"
                 type="text"
                 name="Group number"
                 id="Group number"

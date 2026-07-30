@@ -6,7 +6,7 @@ import { cache } from '../cache/cached';
 
 const expiration = () => addDays(new Date(), 1);
 
-type ConceptOptions = {
+export type ConceptOptions = {
     options: Selectable[];
     load: () => void;
 };
@@ -26,4 +26,4 @@ const useConceptOptions = (valueSet: string, settings?: Settings): ConceptOption
     return useSelectableOptions({ resolver: resolver(valueSet), ...settings });
 };
 
-export { ConceptOptions, useConceptOptions };
+export { useConceptOptions };

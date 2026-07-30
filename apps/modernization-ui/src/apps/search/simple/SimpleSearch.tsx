@@ -15,7 +15,7 @@ const SimpleSearch = () => {
         }
     }, [type, criteria]);
 
-    return <Loading center />;
+    return <Loading center={true} />;
 };
 
 export { SimpleSearch };

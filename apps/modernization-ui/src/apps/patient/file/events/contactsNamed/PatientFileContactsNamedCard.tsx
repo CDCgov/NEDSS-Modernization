@@ -16,7 +16,7 @@ const titleResolver =
 
 const PatientFileContactsNamedCard = ({ patient, ...remaining }: PatientFileContactsNamedProps) => {
     return (
-        <ContactsCard {...remaining} title={'Contacts named by patient'} titleResolver={titleResolver(patient.name)} />
+        <ContactsCard {...remaining} title="Contacts named by patient" titleResolver={titleResolver(patient.name)} />
     );
 };
 

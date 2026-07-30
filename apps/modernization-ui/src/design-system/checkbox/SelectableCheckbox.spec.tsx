@@ -38,7 +38,7 @@ describe('Checkbox testing', () => {
 
     it('should render disabled', () => {
         const { getByRole } = render(
-            <SelectableCheckbox onChange={onChange} selectable={option} selected={true} disabled />
+            <SelectableCheckbox onChange={onChange} selectable={option} selected={true} disabled={true} />
         );
 
         const checkbox = getByRole('checkbox');

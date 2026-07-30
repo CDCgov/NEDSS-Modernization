@@ -151,7 +151,7 @@ const SelectedColumnsList = ({
                 {(droppable) => (
                     <div {...droppable.droppableProps} ref={droppable.innerRef} className={styles.preferences}>
                         {value?.map((id, index) => (
-                            <Draggable key={id} draggableId={id} index={index} disableInteractiveElementBlocking>
+                            <Draggable key={id} draggableId={id} index={index} disableInteractiveElementBlocking={true}>
                                 {(draggable: DraggableProvided) => {
                                     const optionName = options.find(({ value }) => value === id)?.name;
                                     return (

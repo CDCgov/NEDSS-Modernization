@@ -18,7 +18,7 @@ type Props = {
 
 export const EpiLinkSection = ({ filter }: Props) => {
     return (
-        <Permitted permission={'EPILINKADMIN-SYSTEM'}>
+        <Permitted permission="EPILINKADMIN-SYSTEM">
             <SystemManagementInfoCard
                 id="epi-link-lot-number"
                 title="Epi-link (lot number)"

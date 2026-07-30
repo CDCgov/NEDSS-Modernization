@@ -28,7 +28,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     <Button
                         id="filter-button"
                         onClick={() => setOverlayVisible(!overlayVisible)}
-                        secondary
+                        secondary={true}
                         icon="filter_alt"
                         labelPosition="left"
                         className={styles.filterButton}
@@ -70,7 +70,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     onClick={onDownloadPdf}
                     className={styles.icon}
                     icon="print"
-                    secondary
+                    secondary={true}
                 />
 
                 <Button
@@ -78,7 +78,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     aria-label="Download as csv"
                     type="button"
                     className={styles.icon}
-                    secondary
+                    secondary={true}
                     onClick={onDownloadCsv}
                     icon="file_download"
                 />

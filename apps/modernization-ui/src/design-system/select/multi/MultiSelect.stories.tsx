@@ -24,7 +24,7 @@ export const Default: Story = {
         id: 'multi-select',
         name: 'MultiSelect',
         label: 'Multi Select',
-        options: options,
+        options,
         value: [options[0]],
         onChange: (selected) => {
             console.log('Selected options:', selected);
@@ -38,7 +38,7 @@ export const Horizontal: Story = {
         id: 'horizontal-multi-select',
         name: 'HorizontalMultiSelect',
         label: 'Horizontal Multi Select',
-        options: options,
+        options,
         orientation: 'horizontal',
     },
 };

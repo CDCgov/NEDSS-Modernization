@@ -21,11 +21,11 @@ export const CommentsFields = () => {
                         onBlur={onBlur}
                         defaultValue={value}
                         label="Comments text"
-                        required
+                        required={true}
                         type="text"
                         ariaLabel="commentsText"
                         error={error?.message}
-                        multiline
+                        multiline={true}
                     />
                 )}
             />

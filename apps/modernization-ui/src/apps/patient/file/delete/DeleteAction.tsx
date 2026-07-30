@@ -59,14 +59,14 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                 enabled={showHint}
                 target={
                     <Button
-                        secondary
-                        destructive
+                        secondary={true}
+                        destructive={true}
                         disabled={patient.deletability !== 'Deletable'}
                         aria-label="Delete"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
                         icon="delete"
-                        sizing={'medium'}
+                        sizing="medium"
                         onClick={show}
                     />
                 }
@@ -81,8 +81,8 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                     cancelText="Cancel"
                     onCancel={hide}
                     confirmText="Delete"
-                    destructive
-                    forceAction
+                    destructive={true}
+                    forceAction={true}
                     onConfirm={handleDeletePatient}
                 >
                     You have indicated that you would like to delete this patient file. Select Delete to continue or

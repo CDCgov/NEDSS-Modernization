@@ -6,7 +6,7 @@ describe('when rendered', () => {
     it('should display side nav', async () => {
         const { container } = render(
             <BrowserRouter>
-                <PageBuilder nav>Child</PageBuilder>
+                <PageBuilder nav={true}>Child</PageBuilder>
             </BrowserRouter>
         );
 

@@ -40,13 +40,13 @@ export const SectionHeader = ({
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" onClick={onAddSubsection} outline data-testid="addNewSubsection">
+                <Button type="button" onClick={onAddSubsection} outline={true} data-testid="addNewSubsection">
                     Add subsection
                 </Button>
                 <Button
                     type="button"
                     onClick={handleManageSubsection}
-                    outline
+                    outline={true}
                     data-testid={`manageSubsectionGearIcon-${subsectionCount ? 'yes' : 'no'}`}
                     className={styles.settingBtn}
                 >

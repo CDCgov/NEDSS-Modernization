@@ -10,7 +10,7 @@ const CheckedOption: typeof components.Option = (props) => {
     return (
         <div>
             <components.Option {...props}>
-                <input type="checkbox" checked={props.isSelected} readOnly /> <label>{props.label}</label>
+                <input type="checkbox" checked={props.isSelected} readOnly={true} /> <label>{props.label}</label>
             </components.Option>
         </div>
     );
@@ -73,7 +73,7 @@ const MultiSelectAutocomplete = ({
     const Input: typeof components.Input = (props) => <components.Input {...props} maxLength={50} />;
 
     return (
-        <div className={'multi-select-input'}>
+        <div className="multi-select-input">
             <EntryWrapper
                 orientation={orientation}
                 label={label ?? ''}

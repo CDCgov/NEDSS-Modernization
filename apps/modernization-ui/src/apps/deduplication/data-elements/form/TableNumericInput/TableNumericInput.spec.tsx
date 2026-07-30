@@ -32,7 +32,7 @@ describe('TableNumericInput', () => {
     });
 
     it('should be disabled when disabled prop is true', () => {
-        render(<TableNumericInput name="testInput" value="5" disabled onChange={() => {}} onBlur={() => {}} />);
+        render(<TableNumericInput name="testInput" value="5" disabled={true} onChange={() => {}} onBlur={() => {}} />);
 
         const input = screen.getByLabelText('numericInput');
         expect(input).toBeDisabled();

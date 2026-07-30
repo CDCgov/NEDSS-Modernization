@@ -40,7 +40,7 @@ const columns = (onClose: () => void): Column<PatientFileBirthRecord>[] => [
         value: (value) => value.local,
         render: (value) => (
             <ClassicModalButton
-                tertiary
+                tertiary={true}
                 sizing="small"
                 className={styles['event-id']}
                 url={`/nbs/api/patients/${value.patient}/records/birth/${value.id}`}
@@ -112,7 +112,7 @@ const InternalCard = ({ patient, sizing, data = [], onClose, ...remaining }: Int
                     <ClassicModalButton
                         url={`/nbs/api/patients/${patient}/records/birth/add`}
                         icon="add_circle"
-                        secondary
+                        secondary={true}
                         sizing={sizing}
                         onClose={onClose}
                     >

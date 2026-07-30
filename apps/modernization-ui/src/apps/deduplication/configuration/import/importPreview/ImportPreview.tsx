@@ -16,7 +16,7 @@ export const ImportPreview = ({ previewedAlgorithm, onAccept, onCancel }: Props)
             <header className={styles.importPreviewHeading}>
                 <Heading level={1}>Preview configuration</Heading>
                 <div className={styles.buttons}>
-                    <Button secondary onClick={onCancel}>
+                    <Button secondary={true} onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button onClick={onAccept}>Add configuration</Button>

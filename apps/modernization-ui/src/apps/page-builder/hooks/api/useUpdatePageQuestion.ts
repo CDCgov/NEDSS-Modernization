@@ -83,7 +83,7 @@ export const useUpdatePageQuestion = () => {
             }
             request
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => response && dispatch({ type: 'complete', response: response }));
+                .then((response) => response && dispatch({ type: 'complete', response }));
         }
     }, [state.status]);
 

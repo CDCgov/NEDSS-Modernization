@@ -54,7 +54,7 @@ describe('Input component tests', () => {
                     type="text"
                     onChange={onChange}
                     defaultValue="test-input-defaultValue"
-                    required
+                    required={true}
                 />
             );
             const input = getByLabelText('Test Input Label');
@@ -64,7 +64,7 @@ describe('Input component tests', () => {
         it('should set required attribute when required is true', () => {
             const onChange = () => {};
             const { getByLabelText } = render(
-                <Input id="test" name="test" label="Test Input Label" type="text" onChange={onChange} required />
+                <Input id="test" name="test" label="Test Input Label" type="text" onChange={onChange} required={true} />
             );
             const input = getByLabelText('Test Input Label');
             expect(input).toHaveAttribute('required');
@@ -80,7 +80,7 @@ describe('Input component tests', () => {
                     type="text"
                     onChange={onChange}
                     mask="99/99/9999"
-                    required
+                    required={true}
                 />
             );
             const input = getByLabelText('Test Input Label');
@@ -97,8 +97,8 @@ describe('Input component tests', () => {
                     label="Test Input Label"
                     type="text"
                     onChange={onChange}
-                    multiline
-                    required
+                    multiline={true}
+                    required={true}
                 />
             );
             const textarea = getByLabelText('Test Input Label');

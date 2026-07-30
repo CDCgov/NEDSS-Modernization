@@ -43,7 +43,7 @@ export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button disabled={!form.formState.isValid} onClick={handleCreate} type="button">

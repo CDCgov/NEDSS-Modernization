@@ -166,7 +166,7 @@ describe('DatePickerInput component tests', () => {
                     label="Test DP Label"
                     className="test-dp-class-name"
                     defaultValue="12/31/2022"
-                    required
+                    required={true}
                 />
             );
             const label = getByText('Test DP Label');

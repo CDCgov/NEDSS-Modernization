@@ -36,7 +36,7 @@ const PhoneEmailDemographicFields = ({
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -58,7 +58,7 @@ const PhoneEmailDemographicFields = ({
                         name={name}
                         options={options.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -78,7 +78,7 @@ const PhoneEmailDemographicFields = ({
                         name={name}
                         options={options.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

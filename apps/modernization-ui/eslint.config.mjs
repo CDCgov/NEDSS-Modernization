@@ -53,6 +53,13 @@ export default defineConfig([
             'react/no-unescaped-entities': 'off',
             'react-hooks/rules-of-hooks': 'off',
             'react-hooks/exhaustive-deps': 'off',
+            'react/jsx-curly-brace-presence': [2, 'never'],
+            'react/jsx-boolean-value': [2, 'always'],
+            'dot-notation': 'error',
+            'object-shorthand': 'error',
+            eqeqeq: 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
         },
         settings: {

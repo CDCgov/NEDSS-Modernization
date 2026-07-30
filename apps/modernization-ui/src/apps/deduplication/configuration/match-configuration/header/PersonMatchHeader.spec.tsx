@@ -13,7 +13,7 @@ describe('PersonMatchHeader', () => {
     });
 
     it('should render buttons when enabled', () => {
-        const { getAllByRole } = render(<PersonMatchHeader showButtons />);
+        const { getAllByRole } = render(<PersonMatchHeader showButtons={true} />);
 
         const buttons = getAllByRole('button');
         expect(buttons).toHaveLength(3);
@@ -23,7 +23,11 @@ describe('PersonMatchHeader', () => {
     it('should trigger callbacks when buttons are clicked', async () => {
         const user = userEvent.setup();
         const { getAllByRole } = render(
-            <PersonMatchHeader showButtons onConfigureDataElementsClick={onNavClick} onImportClick={onImportClick} />
+            <PersonMatchHeader
+                showButtons={true}
+                onConfigureDataElementsClick={onNavClick}
+                onImportClick={onImportClick}
+            />
         );
 
         const buttons = getAllByRole('button');

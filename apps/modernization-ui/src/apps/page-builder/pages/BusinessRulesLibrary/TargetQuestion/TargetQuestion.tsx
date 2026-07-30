@@ -42,14 +42,14 @@ export const TargetQuestion = ({
         if (ruleFunction && sourceQuestion) {
             if (editTargetQuestion) {
                 fetch(page?.id ?? 0, {
-                    ruleFunction: ruleFunction,
-                    sourceQuestion: sourceQuestion,
+                    ruleFunction,
+                    sourceQuestion,
                     targetQuestion: editTargetQuestion,
                 });
             } else {
                 fetch(page?.id ?? 0, {
-                    ruleFunction: ruleFunction,
-                    sourceQuestion: sourceQuestion,
+                    ruleFunction,
+                    sourceQuestion,
                 });
                 setSelectedList([]);
             }
@@ -177,7 +177,7 @@ export const TargetQuestion = ({
                                                 setTargetList([]);
                                             }}
                                         >
-                                            <Icon name={'group'} size={'m'} />
+                                            <Icon name="group" size="m" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -200,7 +200,7 @@ export const TargetQuestion = ({
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name={'group'} size={'m'} />
+                                                    <Icon name="group" size="m" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
@@ -221,7 +221,7 @@ export const TargetQuestion = ({
                                 <Checkbox
                                     onChange={(e) => handleSelectAll(targetList, e)}
                                     id="hots1"
-                                    name={'race1'}
+                                    name="race1"
                                     label="Select All"
                                 />
                             </div>
@@ -244,7 +244,7 @@ export const TargetQuestion = ({
             <div className={styles.footerBtn}>
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     data-testid="targetQuestionModalCancelBtn"
                     onClick={() => {
                         onReset?.();
