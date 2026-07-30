@@ -121,12 +121,12 @@ export const PassConfiguration = ({ dataElements, onImportClick }: Props) => {
     return (
         <>
             <PersonMatchHeader
-                showButtons
+                showButtons={true}
                 onImportClick={onImportClick}
                 onConfigureDataElementsClick={handleConfigureDataElementsClick}
             />
             <main className={styles.passConfiguration}>
-                <Shown when={!loading} fallback={<Loading center />}>
+                <Shown when={!loading} fallback={<Loading center={true} />}>
                     <UnsavedChangesConfirmation
                         passName={selectedPass?.name ?? ''}
                         onAccept={() => {

@@ -29,7 +29,7 @@ export const MergePreview = ({ onBack, mergeFormData, mergeCandidates, onMerge }
             <header>
                 <Heading level={1}>Merge preview</Heading>
                 <div className={styles.buttons}>
-                    <Button secondary onClick={onBack}>
+                    <Button secondary={true} onClick={onBack}>
                         Back
                     </Button>
                     <Button aria-label="Confirm and merge patient records" onClick={onMerge}>

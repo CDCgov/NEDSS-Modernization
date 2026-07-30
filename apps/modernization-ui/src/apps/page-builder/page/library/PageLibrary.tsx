@@ -69,7 +69,7 @@ const PageLibraryContent = () => {
     return (
         <>
             <CustomFieldAdminBanner />
-            <PageBuilder nav>
+            <PageBuilder nav={true}>
                 <section className={styles.library} id="pageLibrary">
                     <header>
                         <h1 aria-label="Page library">Page library</h1>

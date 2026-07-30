@@ -63,7 +63,7 @@ const AlertMessage = ({
                     type="button"
                     onClick={onClose}
                     icon="close"
-                    tertiary
+                    tertiary={true}
                     sizing="small"
                     aria-label="Close alert"
                     className={styles.closeButton}

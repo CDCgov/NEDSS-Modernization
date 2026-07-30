@@ -53,7 +53,7 @@ describe('when a modal is displayed', () => {
 
     it('should not render close icon when action is forced', () => {
         const { queryByLabelText } = render(
-            <Modal id="identifier-value" title="Title Value" onClose={() => {}} forceAction>
+            <Modal id="identifier-value" title="Title Value" onClose={() => {}} forceAction={true}>
                 Contents
             </Modal>
         );

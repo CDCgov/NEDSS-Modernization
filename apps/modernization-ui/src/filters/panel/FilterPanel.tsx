@@ -71,7 +71,7 @@ const FilterPanel = ({ label, properties, filters, onApply, close }: FilterPanel
                     disabled={displayable.length === 0}
                     className={styles.clearButton}
                     type="button"
-                    outline
+                    outline={true}
                     onClick={handleClear}
                 >
                     Clear filters
@@ -90,7 +90,7 @@ type AddNewFilterProp = {
 
 const AddNewFilter = ({ onAddNew }: AddNewFilterProp) => {
     return (
-        <Button className={styles.addNew} type="button" unstyled onClick={onAddNew} id="add-filter">
+        <Button className={styles.addNew} type="button" unstyled={true} onClick={onAddNew} id="add-filter">
             <Icon.Add />
             Add Filter
         </Button>

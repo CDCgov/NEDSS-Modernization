@@ -91,7 +91,7 @@ export const SubsectionHeader = ({
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" className="add-btn addQuestionBtn" outline onClick={onAddQuestion}>
+                <Button type="button" className="add-btn addQuestionBtn" outline={true} onClick={onAddQuestion}>
                     Add question
                 </Button>
                 <MoreOptions

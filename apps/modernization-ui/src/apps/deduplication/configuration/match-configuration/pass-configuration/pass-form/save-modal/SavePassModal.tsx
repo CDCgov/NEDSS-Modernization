@@ -34,10 +34,10 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
 
     const footer = () => (
         <>
-            <Button secondary onClick={onCancel} data-close-modal>
+            <Button secondary={true} onClick={onCancel} data-close-modal={true}>
                 Cancel
             </Button>
-            <Button disabled={!isValid} onClick={onAccept} data-close-modal>
+            <Button disabled={!isValid} onClick={onAccept} data-close-modal={true}>
                 Save
             </Button>
         </>
@@ -67,7 +67,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                             name={name}
                             id={name}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -82,7 +82,7 @@ export const SavePassModal = ({ visible, onCancel, onAccept }: Props) => {
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
-                            multiline
+                            multiline={true}
                             name={name}
                             id={name}
                             error={error?.message}

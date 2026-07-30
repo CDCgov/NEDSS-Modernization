@@ -65,18 +65,18 @@ const Component = ({ title, size, forceAction = false, children, className, onCl
                         [styles.large]: size === 'large',
                     })}
                     data-force-action={forceAction}
-                    open
+                    open={true}
                 >
                     <header id={header} className={classNames('usa-modal__heading', styles.header)}>
                         <Heading level={2}>{title}</Heading>
                         {!forceAction && (
                             <Button
                                 className={styles.closer}
-                                tertiary
+                                tertiary={true}
                                 aria-label={`Close ${title}`}
                                 icon="close"
                                 onClick={onClose}
-                                data-close-modal
+                                data-close-modal={true}
                             />
                         )}
                     </header>

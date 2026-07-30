@@ -22,10 +22,10 @@ export const SuccessModal = ({
 }: Props) => {
     return (
         <Modal
-            forceAction
+            forceAction={true}
             ref={modal}
             id={id}
-            isLarge
+            isLarge={true}
             aria-labelledby="success-heading"
             className={styles.modal}
             aria-describedby={ariaDescribedBy}

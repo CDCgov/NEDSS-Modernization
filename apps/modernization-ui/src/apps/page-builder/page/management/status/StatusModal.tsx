@@ -22,7 +22,7 @@ export const StatusModal = ({
     id = 'status',
 }: Props) => {
     return (
-        <Modal forceAction ref={modal} className={styles.modal} id={id}>
+        <Modal forceAction={true} ref={modal} className={styles.modal} id={id}>
             <ModalHeading className={styles.title}>
                 <h2>{title}</h2>
             </ModalHeading>

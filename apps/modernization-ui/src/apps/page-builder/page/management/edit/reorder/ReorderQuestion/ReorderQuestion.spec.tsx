@@ -57,7 +57,7 @@ describe('when ReorderQuestion renders', () => {
                 <Droppable droppableId="testId">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__questions">
-                            <ReorderQuestion question={question} index={1} visible />
+                            <ReorderQuestion question={question} index={1} visible={true} />
                         </div>
                     )}
                 </Droppable>

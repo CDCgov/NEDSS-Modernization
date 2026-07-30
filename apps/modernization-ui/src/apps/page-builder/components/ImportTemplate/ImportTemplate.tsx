@@ -87,7 +87,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                         type="file"
                         id="importTempId"
                         accept="text/xml"
-                        hidden
+                        hidden={true}
                     />
 
                     <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>

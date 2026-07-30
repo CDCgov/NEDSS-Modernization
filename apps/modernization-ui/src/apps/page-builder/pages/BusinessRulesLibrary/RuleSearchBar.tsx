@@ -61,7 +61,7 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.downloadButton}
-                    outline
+                    outline={true}
                     data-tooltip-position="top"
                 >
                     <Icon.Print size={3} data-testid="print-icon" />
@@ -70,7 +70,7 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     aria-label="Download as csv"
                     type="button"
                     className={styles.downloadButton}
-                    outline
+                    outline={true}
                     onClick={onDownloadCsv}
                     data-testid="file-download"
                     data-tooltip-position="top"

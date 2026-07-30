@@ -10,7 +10,7 @@ const CheckedOption: typeof components.Option = (props) => {
     return (
         <div>
             <components.Option {...props}>
-                <input type="checkbox" checked={props.isSelected} readOnly /> <label>{props.label}</label>
+                <input type="checkbox" checked={props.isSelected} readOnly={true} /> <label>{props.label}</label>
             </components.Option>
         </div>
     );

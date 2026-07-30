@@ -68,7 +68,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             htmlFor={name}
                             id={name}
                             disabled={isEditing}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -91,7 +91,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />

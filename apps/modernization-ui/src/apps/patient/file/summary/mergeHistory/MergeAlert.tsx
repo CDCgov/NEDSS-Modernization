@@ -24,7 +24,7 @@ const MergeAlertContent = ({ patientId }: MergeAlertProps) => {
 
     return (
         <Permitted permission={permissions.patient.merge}>
-            <AlertMessage type="warning" slim>
+            <AlertMessage type="warning" slim={true}>
                 We found potential duplicates for this patient in system-identified matches.&nbsp;&nbsp;&nbsp;
                 <a
                     href={`/deduplication/merge/${mergeGroup}`}

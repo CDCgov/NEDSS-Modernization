@@ -64,7 +64,7 @@ export const MatchingCriteria = ({ dataElements, onAddAttributes }: Props) => {
                         <Button
                             icon="add"
                             labelPosition="right"
-                            secondary
+                            secondary={true}
                             onClick={onAddAttributes}
                             sizing="small"
                             disabled={disabled}

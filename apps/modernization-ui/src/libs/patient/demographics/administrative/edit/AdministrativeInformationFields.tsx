@@ -30,7 +30,7 @@ const AdministrativeInformationFields = ({
                     orientation={orientation}
                     error={error?.message}
                     sizing={sizing}
-                    required
+                    required={true}
                     aria-description="This field defaults to today's date and can be changed if needed."
                 />
             )}

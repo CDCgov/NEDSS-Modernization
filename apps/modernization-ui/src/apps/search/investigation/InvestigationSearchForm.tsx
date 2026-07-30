@@ -5,7 +5,7 @@ import { Accordion } from 'components/Accordion/Accordion';
 const InvestigationSearchForm = () => {
     return (
         <>
-            <Accordion title="General search" open>
+            <Accordion title="General search" open={true}>
                 <GeneralSearchFields />
             </Accordion>
             <Accordion title="Investigation criteria">

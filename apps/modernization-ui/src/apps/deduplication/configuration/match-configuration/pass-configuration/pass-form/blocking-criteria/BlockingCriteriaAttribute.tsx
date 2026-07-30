@@ -33,9 +33,9 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
                 <div>
                     <Button
                         icon="delete"
-                        secondary
+                        secondary={true}
                         sizing="small"
-                        destructive
+                        destructive={true}
                         aria-label="Remove"
                         onClick={() => onRemove(attribute)}
                     />

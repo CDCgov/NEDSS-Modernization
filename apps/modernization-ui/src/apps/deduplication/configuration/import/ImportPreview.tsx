@@ -10,7 +10,7 @@ export const ImportPreview = ({ onCancel }: Props) => {
         <header className={styles.importPreviewHeading}>
             <Heading level={1}>Preview configuration</Heading>
             <div>
-                <Button secondary onClick={onCancel}>
+                <Button secondary={true} onClick={onCancel}>
                     Cancel
                 </Button>
             </div>

@@ -89,7 +89,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         refresh();
                     }}
                     subsectionEdit={editSubsection}
-                    isEdit
+                    isEdit={true}
                 />
             )}
             {subsectionState === 'manage' && (
@@ -165,7 +165,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             }}
                             type="button"
                             data-testid="manageSubsectionCloseBtn"
-                            outline
+                            outline={true}
                         >
                             Close
                         </Button>

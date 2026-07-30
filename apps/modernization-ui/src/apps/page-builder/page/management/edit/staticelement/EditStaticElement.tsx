@@ -153,10 +153,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                         <SelectInput
                             label="Choose a static element"
                             options={staticType}
-                            required
+                            required={true}
                             defaultValue={checkStaticType(question.displayComponent)}
                             aria-label="staticType"
-                            disabled
+                            disabled={true}
                             className={styles.select_input}
                         ></SelectInput>
                     </div>
@@ -182,7 +182,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                                 label="Administrative Comments"
                                 type="text"
                                 ariaLabel="adminComments"
-                                multiline
+                                multiline={true}
                                 error={error?.message}
                             />
                         )}
@@ -190,7 +190,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 </div>
 
                 <div className={styles.footer_buttons}>
-                    <Button outline onClick={onCancel} type="button">
+                    <Button outline={true} onClick={onCancel} type="button">
                         Cancel
                     </Button>
                     <Button

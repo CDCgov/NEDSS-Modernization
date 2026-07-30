@@ -28,7 +28,7 @@ const MergeLandingContent = () => {
                     <Button
                         icon="print"
                         sizing="medium"
-                        secondary
+                        secondary={true}
                         aria-label="Print"
                         data-tooltip-position="top"
                         onClick={() => exportPDF(sorting)}
@@ -36,7 +36,7 @@ const MergeLandingContent = () => {
                     <Button
                         icon="file_download"
                         sizing="medium"
-                        secondary
+                        secondary={true}
                         aria-label="Download"
                         data-tooltip-position="top"
                         data-tooltip-offset="left"

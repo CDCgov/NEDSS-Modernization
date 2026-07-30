@@ -85,7 +85,7 @@ const InternalMergeHistoryCard = ({
     const patientName = patient?.name ? displayName('short')(patient.name) : '---';
 
     return (
-        <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible>
+        <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible={true}>
             <div className={styles.sectionCard}>
                 {groupKeys.map((timestampKey, index) => {
                     const group = grouped[timestampKey];

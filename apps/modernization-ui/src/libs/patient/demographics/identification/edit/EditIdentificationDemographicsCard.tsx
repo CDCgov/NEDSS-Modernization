@@ -31,7 +31,7 @@ const EditIdentificationDemographicsCard = ({
                     collapsible={false}
                     data={value}
                     onChange={onChange}
-                    editable
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(_?: IdentificationDemographic, sizing?: Sizing) => (
                         <IdentificationDemographicFields sizing={sizing} options={options} />

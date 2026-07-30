@@ -127,7 +127,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                                 <SelectInput
                                     label="Choose a static element"
                                     options={staticType}
-                                    required
+                                    required={true}
                                     defaultValue={value}
                                     onChange={onChange}
                                     onBlur={onBlur}
@@ -162,7 +162,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                                         label="Administrative Comments"
                                         type="text"
                                         data-testid="adminComments"
-                                        multiline
+                                        multiline={true}
                                         error={error?.message}
                                     />
                                 )}
@@ -174,12 +174,17 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                 <div className={styles.footer_buttons}>
                     {modalRef ? (
                         <>
-                            <ModalToggleButton modalRef={modalRef} closer outline onClick={() => form.reset()}>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer={true}
+                                outline={true}
+                                onClick={() => form.reset()}
+                            >
                                 Cancel
                             </ModalToggleButton>
                             <ModalToggleButton
                                 modalRef={modalRef}
-                                closer
+                                closer={true}
                                 disabled={!form.formState.isValid}
                                 onClick={handleSubmit}
                                 data-testid="submit-btn"
@@ -189,7 +194,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                         </>
                     ) : (
                         <>
-                            <Button outline onClick={() => form.reset()} type="button">
+                            <Button outline={true} onClick={() => form.reset()} type="button">
                                 Cancel
                             </Button>
                             <Button

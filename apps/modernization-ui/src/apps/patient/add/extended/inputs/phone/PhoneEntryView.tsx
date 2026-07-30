@@ -9,9 +9,9 @@ type Props = {
 export const PhoneEntryView = ({ entry, sizing }: Props) => {
     return (
         <>
-            <ValueView title="As of" value={entry.asOf} sizing={sizing} required />
-            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required />
-            <ValueView title="Use" value={entry.use?.name} sizing={sizing} required />
+            <ValueView title="As of" value={entry.asOf} sizing={sizing} required={true} />
+            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required={true} />
+            <ValueView title="Use" value={entry.use?.name} sizing={sizing} required={true} />
             <ValueView title="Country code" value={entry.countryCode} sizing={sizing} />
             <ValueView title="Phone number" value={entry.phoneNumber} sizing={sizing} />
             <ValueView title="Extension" value={entry.extension} sizing={sizing} />

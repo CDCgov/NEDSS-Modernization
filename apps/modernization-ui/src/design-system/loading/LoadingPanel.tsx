@@ -17,7 +17,7 @@ const LoadingPanel = ({ loading = false, children, className }: LoadingPanelProp
             <Shown when={loading}>
                 <span className={styles.panel}>
                     <span className={classNames(styles.loader, className)}>
-                        <Loading center />
+                        <Loading center={true} />
                     </span>
                 </span>
             </Shown>

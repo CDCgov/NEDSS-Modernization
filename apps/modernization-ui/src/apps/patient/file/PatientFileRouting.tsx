@@ -10,7 +10,7 @@ const routing: RouteObject[] = [
         },
         errorElement: <RedirectHome />,
         children: [
-            { index: true, element: <Navigate to="summary" replace /> },
+            { index: true, element: <Navigate to="summary" replace={true} /> },
             {
                 path: 'summary',
                 lazy: {

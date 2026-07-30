@@ -33,7 +33,7 @@ const PreviewPage = () => {
             <PreviewPageContent />
         </PageManagementProvider>
     ) : (
-        <Loading center />
+        <Loading center={true} />
     );
 };
 
@@ -134,12 +134,12 @@ const PreviewPageContent = () => {
                         <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
                         </NavLinkButton>
-                        <ModalToggleButton modalRef={saveTemplateRef} outline type="button">
+                        <ModalToggleButton modalRef={saveTemplateRef} outline={true} type="button">
                             Save as template
                         </ModalToggleButton>
                         {page.status !== 'Published' && (
                             <>
-                                <ModalToggleButton modalRef={deleteDraftRef} type="button" outline>
+                                <ModalToggleButton modalRef={deleteDraftRef} type="button" outline={true}>
                                     Delete draft
                                 </ModalToggleButton>
                                 <NavLinkButton
@@ -243,7 +243,7 @@ const PreviewPageContent = () => {
                     size="width"
                     modalBody={
                         <div className={styles.loaderContent}>
-                            <Loading center className={styles.loaderIcon} />
+                            <Loading center={true} className={styles.loaderIcon} />
                             <div className={styles.loaderText}>
                                 <h2>Publishing...</h2>
                             </div>

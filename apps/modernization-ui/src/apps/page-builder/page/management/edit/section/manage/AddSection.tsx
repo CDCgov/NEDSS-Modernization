@@ -91,7 +91,7 @@ export const AddSection = ({
                                 label="Section Name"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                                 className={`${styles.inputField} sectionName`}
                             />
                         )}
@@ -116,7 +116,7 @@ export const AddSection = ({
             </Form>
             <div className={styles.footer}>
                 <div className={styles.footerBtns}>
-                    <Button type="button" outline onClick={onClose}>
+                    <Button type="button" outline={true} onClick={onClose}>
                         Cancel
                     </Button>
                     {isEdit ? (

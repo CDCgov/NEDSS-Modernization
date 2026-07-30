@@ -43,12 +43,18 @@ const ViewActions = (patient: Patient) => {
                 data-tooltip-offset="center"
                 icon="print"
                 sizing="medium"
-                secondary
+                secondary={true}
             />
 
             <Shown when={patient.status === 'ACTIVE'}>
                 <Permitted permission={permissions.patient.update}>
-                    <NavLinkButton icon="edit" secondary sizing="medium" to="../edit" state={{ return: pathname }}>
+                    <NavLinkButton
+                        icon="edit"
+                        secondary={true}
+                        sizing="medium"
+                        to="../edit"
+                        state={{ return: pathname }}
+                    >
                         Edit
                     </NavLinkButton>
                 </Permitted>

@@ -84,11 +84,11 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         type="text"
                         disabled={isEnabled || pageStatus === 'Published with Draft'}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
-            <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled />
+            <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled={true} />
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
@@ -111,7 +111,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                             };
                         })}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />

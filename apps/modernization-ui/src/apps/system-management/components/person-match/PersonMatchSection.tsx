@@ -24,7 +24,7 @@ export const PersonMatchSection = ({ filter }: Props) => {
                 title="Person match"
                 filter={filter}
                 links={personMatchLinks}
-                useNavigation
+                useNavigation={true}
             />
         </Permitted>
     );

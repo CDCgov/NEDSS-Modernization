@@ -76,7 +76,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
                 </div>
             </div>
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

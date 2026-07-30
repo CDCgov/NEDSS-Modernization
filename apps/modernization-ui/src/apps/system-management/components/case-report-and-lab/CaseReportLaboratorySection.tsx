@@ -107,7 +107,7 @@ export const CaseReportLaboratorySection = ({ filter, setAlert }: Props) => {
                     })}
 
                     {showResetButton && (
-                        <Button secondary sizing="small" onClick={handleResetClick}>
+                        <Button secondary={true} sizing="small" onClick={handleResetClick}>
                             Reset lab mapping cache
                         </Button>
                     )}

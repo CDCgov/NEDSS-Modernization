@@ -80,7 +80,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         <Button
                             type="button"
                             className={styles.searchBtn}
-                            outline
+                            outline={true}
                             onClick={() => {}}
                             disabled={!question.enabled}
                         >
@@ -97,7 +97,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         <Button
                             type="button"
                             className={styles.quickCodeLookupBtn}
-                            outline
+                            outline={true}
                             onClick={() => {}}
                             disabled={!question.enabled}
                         >

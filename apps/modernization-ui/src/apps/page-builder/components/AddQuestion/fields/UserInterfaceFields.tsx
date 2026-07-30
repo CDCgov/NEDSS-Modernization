@@ -118,7 +118,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
                         error={error?.message}
                         onChange={onChange}
                         onBlur={onBlur}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -140,7 +140,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
                             id={name}
                             rows={1}
                             className={styles.textaArea}
-                            required
+                            required={true}
                         />
                     </>
                 )}

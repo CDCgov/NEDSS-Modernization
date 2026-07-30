@@ -55,7 +55,7 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
             </div>
             <div className={`${styles.questionButtons} question-header-button`}>
                 <Button
-                    unstyled
+                    unstyled={true}
                     className={`${styles.editButton} questionEditButton`}
                     type="button"
                     onClick={onEditQuestion}

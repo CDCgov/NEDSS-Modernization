@@ -52,13 +52,21 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 )}
             />
             <p>Can't find the condition you're looking for?</p>
-            <ModalToggleButton modalRef={props.conditionLookupModal} data-testid="advancedConditionSearchBtn" outline>
+            <ModalToggleButton
+                modalRef={props.conditionLookupModal}
+                data-testid="advancedConditionSearchBtn"
+                outline={true}
+            >
                 <p>
                     <Icon.Search size={3} />
                     Advanced condition search
                 </p>
             </ModalToggleButton>
-            <ModalToggleButton modalRef={props.createConditionModal} unstyled data-testid="createNewConditionHereBtn">
+            <ModalToggleButton
+                modalRef={props.createConditionModal}
+                unstyled={true}
+                data-testid="createNewConditionHereBtn"
+            >
                 <p>Create a new condition here</p>
             </ModalToggleButton>
             <Controller
@@ -84,7 +92,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         className="pageName"
                         type="text"
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -110,14 +118,14 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                             };
                         })}
                         error={error?.message}
-                        required
+                        required={true}
                     ></SelectInput>
                 )}
             />
             <p>
                 Can't find the template you're looking for?
                 <br />
-                <ModalToggleButton modalRef={props.importTemplateModal} unstyled>
+                <ModalToggleButton modalRef={props.importTemplateModal} unstyled={true}>
                     <p>Import a new template here</p>
                 </ModalToggleButton>
             </p>
@@ -136,7 +144,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         defaultValue={value}
                         options={props.mmgs}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />

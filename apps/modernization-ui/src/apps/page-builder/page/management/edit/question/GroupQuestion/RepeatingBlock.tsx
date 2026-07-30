@@ -88,7 +88,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                                 { name: 'Yes', value: 'Y' },
                                                 { name: 'No', value: 'N' },
                                             ]}
-                                            required
+                                            required={true}
                                             error={error?.message}
                                         />
                                     )}

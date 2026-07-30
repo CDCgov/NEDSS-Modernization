@@ -55,7 +55,7 @@ export const SaveTemplates = ({ modalRef }: { modalRef: RefObject<ModalRef> }) =
             </div>
             <div className="margin-top-1em save-template-footer ds-u-text-align--right ">
                 <ModalToggleButton
-                    closer
+                    closer={true}
                     modalRef={modalRef}
                     className="submit-btn"
                     onClick={handleSubmit}
@@ -64,7 +64,7 @@ export const SaveTemplates = ({ modalRef }: { modalRef: RefObject<ModalRef> }) =
                 >
                     Save
                 </ModalToggleButton>
-                <ModalToggleButton closer modalRef={modalRef} className="cancel-btn" type="button">
+                <ModalToggleButton closer={true} modalRef={modalRef} className="cancel-btn" type="button">
                     Cancel
                 </ModalToggleButton>
             </div>

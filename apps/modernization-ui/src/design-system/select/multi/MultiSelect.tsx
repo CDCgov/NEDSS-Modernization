@@ -81,7 +81,7 @@ export const MultiSelect = ({
             <Select<Selectable, true>
                 theme={theme}
                 styles={styles}
-                isMulti
+                isMulti={true}
                 inputId={id}
                 name={name}
                 options={optionsWithSelectAll}

@@ -15,7 +15,7 @@ const DeleteQuestion = ({ onDelete, isStaticElement }: CommonProps) => {
     };
     return (
         <div className={styles.delete}>
-            <ModalToggleButton modalRef={deleteModalRef} className="delete-btn" unstyled>
+            <ModalToggleButton modalRef={deleteModalRef} className="delete-btn" unstyled={true}>
                 <Icon.Delete style={{ cursor: 'pointer' }} className="primary-color" />
             </ModalToggleButton>
             <ConfirmationModal

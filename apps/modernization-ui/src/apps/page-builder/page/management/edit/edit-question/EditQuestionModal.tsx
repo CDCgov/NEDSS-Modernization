@@ -30,9 +30,9 @@ export const EditQuestionModal = ({ modal, question, onClosed, onUpdated }: Prop
     };
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="edit-question-modal"
             id="edit-question-modal"
             aria-labelledby="edit-question-modal"

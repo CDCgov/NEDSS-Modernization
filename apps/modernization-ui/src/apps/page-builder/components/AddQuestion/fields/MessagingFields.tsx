@@ -170,7 +170,7 @@ export const MessagingFields = () => {
             <SelectInput
                 label="HL7 segment"
                 value="OBX-3.0"
-                disabled
+                disabled={true}
                 options={[{ name: 'OBX-3.0', value: 'OBX-3.0' }]}
             />
             <Input

@@ -85,7 +85,7 @@ describe('when ReorderSubsection renders', () => {
                 <Droppable droppableId="testId">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__subsections">
-                            <ReorderSubsection subsection={subsection} index={1} visible />
+                            <ReorderSubsection subsection={subsection} index={1} visible={true} />
                         </div>
                     )}
                 </Droppable>

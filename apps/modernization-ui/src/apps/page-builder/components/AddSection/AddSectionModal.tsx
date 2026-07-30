@@ -58,12 +58,12 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
     return (
         <ModalComponent
             modalRef={modalRef}
-            isLarge
+            isLarge={true}
             modalHeading={isSubSection ? `'Add Subsection` : 'Manage Sections'}
             modalBody={
                 <>
                     <div style={{ padding: '0 24px' }}>
-                        <Label htmlFor="sectionName" aria-required>
+                        <Label htmlFor="sectionName" aria-required={true}>
                             Section name<span className="required"></span>
                         </Label>
                         <TextInput
@@ -97,12 +97,17 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                     </div>
                     <ModalFooter className="padding-2 margin-left-auto footer">
                         <ButtonGroup className="flex-justify-end">
-                            <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer={true}
+                                outline={true}
+                                data-testid="condition-cancel-btn"
+                            >
                                 Cancel
                             </ModalToggleButton>
                             <ModalToggleButton
                                 modalRef={modalRef}
-                                closer
+                                closer={true}
                                 data-testid="section-add-btn"
                                 onClick={handleSubmit}
                             >

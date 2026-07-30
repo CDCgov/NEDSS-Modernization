@@ -45,7 +45,7 @@ export const ViewValueset = ({
                             concept.
                         </div>
                         <div>
-                            <Button type="button" outline onClick={onAddConcept}>
+                            <Button type="button" outline={true} onClick={onAddConcept}>
                                 Add new concept
                             </Button>
                         </div>
@@ -59,7 +59,7 @@ export const ViewValueset = ({
                 )}
             </div>
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button disabled={concepts.length == 0} onClick={onAccept} type="button">

@@ -63,7 +63,7 @@ export const ConfirmationModal = ({
             </div>
             <ModalFooter id="confirmation-footer">
                 <ButtonGroup className={classNames(style.actionButtonGroup)}>
-                    <ModalToggleButton modalRef={modal} outline data-testid="cancel-btn" disabled={disabled}>
+                    <ModalToggleButton modalRef={modal} outline={true} data-testid="cancel-btn" disabled={disabled}>
                         {cancelText}
                     </ModalToggleButton>
                     <Button
