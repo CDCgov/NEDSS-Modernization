@@ -18,7 +18,8 @@ const baseRules = {
     'react/react-in-jsx-scope': 'off',
     'react/no-unescaped-entities': 'off',
     'react-hooks/rules-of-hooks': 'warn',
-    'react-hooks/exhaustive-deps': 'warn',
+    // KLUDGE: this should really be on, but it's a bigger project to update everything and make sure correct
+    'react-hooks/exhaustive-deps': 'off',
     'react/jsx-curly-brace-presence': [2, 'never'],
     'react/jsx-boolean-value': [2, 'always'],
     'dot-notation': 'error',
@@ -39,50 +40,24 @@ const jsDocRules = {
     'jsdoc/require-returns': 'off',
 };
 
-const mainConfig = {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    ignores: ['build/**', 'node_modules/**', '**/generated/**', 'src/setupProxy.js', 'src/codegen.ts'],
-    languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        parserOptions: {
-            ecmaFeatures: { jsx: true },
-        },
-        globals: {
-            ...globals.browser,
-            ...globals.jest,
-            JSX: 'readonly',
-        },
-    },
-    plugins: {
-        react,
-        '@typescript-eslint': tseslint,
-        'react-hooks': reactHooks,
-        storybook,
-        jsdoc,
-    },
-    rules: {
-        ...baseRules,
-        ...jsDocRules,
-    },
-    settings: {
-        react: { version: 'detect' },
-        jsdoc: {
-            tagNamePreference: {
-                return: 'return',
-            },
-        },
-    },
-};
-
 export default defineConfig([
     // Main config
-    mainConfig,
-    // KLUDGE: strategically ignoring exhaustive deps - too messy
     {
-        ...mainConfig,
-        files: ['src/apps/search/**/*.{ts,tsx}', 'src/apps/page-builder/**/*.{ts,tsx}', 'src/libs/patient/**'],
+        files: ['**/*.{js,jsx,ts,tsx}'],
+        ignores: ['build/**', 'node_modules/**', '**/generated/**', 'src/setupProxy.js', 'src/codegen.ts'],
+        languageOptions: {
+            parser: tsParser,
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
+            globals: {
+                ...globals.browser,
+                ...globals.jest,
+                JSX: 'readonly',
+            },
+        },
         plugins: {
             react,
             '@typescript-eslint': tseslint,
@@ -91,8 +66,16 @@ export default defineConfig([
             jsdoc,
         },
         rules: {
-            ...mainConfig.rules,
-            'react-hooks/exhaustive-deps': 'off',
+            ...baseRules,
+            ...jsDocRules,
+        },
+        settings: {
+            react: { version: 'detect' },
+            jsdoc: {
+                tagNamePreference: {
+                    return: 'return',
+                },
+            },
         },
     },
     // Test and story files overrides

@@ -23,7 +23,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
     const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
     const options = useMemo(
         () => OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [],
-        [filter]
+        [filter?.filterType?.codeSetName, filterCode]
     );
 
     useEffect(() => {
