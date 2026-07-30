@@ -6,7 +6,7 @@ import { useConditionOptions } from 'options/condition';
 import { useConceptOptions } from 'options/concepts';
 import { useStdHivWorkerNameOptions } from 'options/person';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useCurrentState } from './useCurrentState';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
@@ -21,10 +21,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
     const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
     // ignore include nulls indicator here
     const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
-    const options = useMemo(
-        () => OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [],
-        [filter?.filterType?.codeSetName, filterCode]
-    );
+    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [];
 
     useEffect(() => {
         // options have changed and the value is no longer in the option set
