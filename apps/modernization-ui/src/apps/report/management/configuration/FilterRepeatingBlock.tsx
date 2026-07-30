@@ -121,7 +121,7 @@ const useColumnOptions = (dataSource?: Selectable | string) => {
 
     useEffect(() => {
         load(typeof dataSource === 'string' ? dataSource : dataSource?.value);
-    }, [dataSource]);
+    }, [dataSource, load]);
 
     return options;
 };
