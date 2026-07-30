@@ -7,6 +7,7 @@ import { usePageManagement } from '../../usePageManagement';
 import { useAlert } from 'libs/alert';
 import { maxLengthRule } from 'validation/entry';
 import styles from './save-tempate.module.scss';
+import { logErrorToUserConsole } from 'utils/logging';
 
 const initSave = {
     name: undefined,
@@ -46,15 +47,14 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                 });
             } catch (error: unknown) {
                 modalRef.current?.toggleModal();
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',

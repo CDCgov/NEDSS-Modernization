@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './page-information.module.scss';
+import { logErrorToUserConsole } from 'utils/logging';
 
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
@@ -40,7 +41,7 @@ const PageInformation = () => {
             .then((data: InfoType) => {
                 setPageInfo(data);
             })
-            .catch((err) => console.error(err));
+            .catch(logErrorToUserConsole);
     };
     useEffect(() => {
         fetchPageInfo();

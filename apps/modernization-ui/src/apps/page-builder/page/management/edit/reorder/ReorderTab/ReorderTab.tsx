@@ -62,7 +62,7 @@ export const ReorderTab = ({ tab, index, visible }: Props) => {
                                     style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                 >
                                     {sections
-                                        ? sections.map((section: any, i: number) => {
+                                        ? sections.map((section: PagesSection, i: number) => {
                                               return (
                                                   <ReorderSection
                                                       section={section}

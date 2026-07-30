@@ -134,7 +134,8 @@ export const BusinessRulesForm = ({
     };
 
     const handleSourceValueChange = (data: string[]) => {
-        // create a new array by comparing data and sourceValueList, for each item in data, find the corresponding item in sourceValueList and return it
+        // create a new array by comparing data and sourceValueList, for each item in data,
+        // find the corresponding item in sourceValueList and return it
         const matchedValues = data.map((value) => sourceValues.find((val) => val.value === value));
         const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
         form.setValue('sourceValues', newValues);
@@ -274,9 +275,9 @@ export const BusinessRulesForm = ({
                                     }))}
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    onClick={(button: any): void => {
+                                    onClick={(button): void => {
                                         form.reset({
-                                            ruleFunction: button.value,
+                                            ruleFunction: button.value as Rule.ruleFunction,
                                             targetType: Rule.targetType.QUESTION,
                                             anySourceValue: false,
                                             targetIdentifiers: [],
@@ -477,6 +478,7 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
+                                                {/* eslint-disable-next-line max-len */}
                                                 {`${checkForSemicolon(removeNumericAndSymbols(question.name ?? question.componentName))} (${
                                                     question.question
                                                 })`}

@@ -9,6 +9,7 @@ import './ManageTabModal.scss';
 import { ManageTabsHeader } from './header/ManageTabsHeader';
 import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
 import styles from './manageTabs.module.scss';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type Props = {
     pageId: number;
@@ -50,9 +51,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
 
     const handleAdd = form.handleSubmit((data) => {
         addTab(pageId, { name: data.name!, visible: data.visible ?? true })
-            .catch((e) => {
-                console.error(e);
-            })
+            .catch(logErrorToUserConsole)
             .then(() => {
                 setMessage({
                     type: 'success',
@@ -73,9 +72,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const handleSave = form.handleSubmit((data) => {
         if (selectedForEdit) {
             updateTab(pageId, { name: data.name ?? '', visible: data.visible ?? true }, selectedForEdit.id)
-                .catch((e) => {
-                    console.error(e);
-                })
+                .catch(logErrorToUserConsole)
                 .then(() => {
                     setMessage({
                         type: 'success',
