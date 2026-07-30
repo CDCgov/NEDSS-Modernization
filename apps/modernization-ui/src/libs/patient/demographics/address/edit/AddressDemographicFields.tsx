@@ -53,7 +53,7 @@ const AddressDemographicFields = ({
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -74,7 +74,7 @@ const AddressDemographicFields = ({
                         name={name}
                         options={options.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -95,7 +95,7 @@ const AddressDemographicFields = ({
                         name={name}
                         options={options.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

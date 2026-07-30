@@ -10,13 +10,13 @@ describe('when entering text values for a field', () => {
     });
 
     it('should set aria-required="true" when required is true', () => {
-        const { getByRole } = render(<ToggleField id="testing-input" label="Toggle Input test" required />);
+        const { getByRole } = render(<ToggleField id="testing-input" label="Toggle Input test" required={true} />);
         const input = getByRole('checkbox', { name: 'Toggle Input test' });
         expect(input).toHaveAttribute('aria-required', 'true');
     });
 
     it('should set required attribute when required is true', () => {
-        const { getByRole } = render(<ToggleField id="test" label="Toggle Input test" required />);
+        const { getByRole } = render(<ToggleField id="test" label="Toggle Input test" required={true} />);
         const input = getByRole('checkbox', { name: 'Toggle Input test' });
         expect(input).toHaveAttribute('required');
     });

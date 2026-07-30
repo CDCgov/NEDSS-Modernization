@@ -78,10 +78,10 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
             onClose={close}
             footer={() => (
                 <div className={styles.footer}>
-                    <Button tertiary sizing={sizing} onClick={handleReset}>
+                    <Button tertiary={true} sizing={sizing} onClick={handleReset}>
                         Reset
                     </Button>
-                    <Button type="button" secondary sizing={sizing} onClick={handleSave}>
+                    <Button type="button" secondary={true} sizing={sizing} onClick={handleSave}>
                         Save columns
                     </Button>
                 </div>
@@ -96,7 +96,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                                     key={preference.id}
                                     draggableId={preference.id}
                                     index={index}
-                                    disableInteractiveElementBlocking
+                                    disableInteractiveElementBlocking={true}
                                     isDragDisabled={
                                         isLabeled(preference) || (isNamed(preference) && !preference.moveable)
                                     }

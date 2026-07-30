@@ -144,7 +144,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         disabled={editing}
                     />
                 )}
@@ -168,7 +168,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         disabled={editing}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -191,7 +191,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             id={name}
                             rows={1}
                             className={styles.textaArea}
-                            required
+                            required={true}
                         />
                     </>
                 )}
@@ -214,7 +214,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                                 onChange(field.value);
                             }}
                             value={value}
-                            required
+                            required={true}
                         />
                     </>
                 )}

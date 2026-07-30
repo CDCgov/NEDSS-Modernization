@@ -203,7 +203,7 @@ export const MergeDetails = () => {
 
     return (
         <div className={styles.mergeDetails}>
-            <Shown when={loading === false} fallback={<Loading center />}>
+            <Shown when={loading === false} fallback={<Loading center={true} />}>
                 <FormProvider {...form}>
                     <Shown when={pageState === 'review'}>
                         <MergeReview

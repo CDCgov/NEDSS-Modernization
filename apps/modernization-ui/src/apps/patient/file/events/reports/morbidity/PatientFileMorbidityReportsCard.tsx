@@ -149,7 +149,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
         actions={
             <Permitted permission={permissions.morbidityReport.add}>
                 <LinkButton
-                    secondary
+                    secondary={true}
                     sizing={sizing}
                     icon="add_circle"
                     href={`/nbs/api/profile/${patient}/report/morbidity`}

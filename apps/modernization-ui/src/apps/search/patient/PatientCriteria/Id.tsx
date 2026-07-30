@@ -46,7 +46,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                             onChange={onChange}
                             name={name}
                             label="ID number"
-                            required
+                            required={true}
                             error={error?.message}
                         />
                     )}

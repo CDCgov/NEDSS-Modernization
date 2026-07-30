@@ -93,7 +93,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     onChange={onChange}
                                     value={value}
                                     type="text"
-                                    required
+                                    required={true}
                                     error={error?.message}
                                     maxLength={100}
                                 />
@@ -112,7 +112,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     onChange={onChange}
                                     value={value}
                                     error={error?.message}
-                                    required
+                                    required={true}
                                     maxLength={300}
                                 />
                             )}
@@ -130,7 +130,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     onChange={onChange}
                                     name={name}
                                     error={error?.message}
-                                    required
+                                    required={true}
                                     options={useReportSections()}
                                     helperText="The heading under which the report appears."
                                 />
@@ -151,7 +151,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     error={error?.message}
                                     value={value}
                                     orientation="vertical"
-                                    required
+                                    required={true}
                                     helperText="The level of visibility for the report."
                                 />
                             )}
@@ -161,7 +161,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             }
             modalFooter={
                 <ButtonGroup>
-                    <ModalToggleButton modalRef={saveAsReportModalRef} outline disabled={saving}>
+                    <ModalToggleButton modalRef={saveAsReportModalRef} outline={true} disabled={saving}>
                         Cancel
                     </ModalToggleButton>
                     <Button onClick={handleSubmit(handleOnSaveAs)} disabled={saving}>

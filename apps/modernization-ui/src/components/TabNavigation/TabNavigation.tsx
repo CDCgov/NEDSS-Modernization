@@ -16,8 +16,8 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
     return (
         <div className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
             <NavLinkButton
-                secondary
-                tertiary
+                secondary={true}
+                tertiary={true}
                 to={path}
                 className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}
             >

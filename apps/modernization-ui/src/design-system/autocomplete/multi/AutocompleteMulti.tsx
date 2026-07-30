@@ -63,7 +63,7 @@ const AutocompleteMulti = ({
             <AsyncSelect<Selectable, true>
                 theme={theme}
                 styles={styles}
-                isMulti
+                isMulti={true}
                 id={id}
                 name={name}
                 value={selected}

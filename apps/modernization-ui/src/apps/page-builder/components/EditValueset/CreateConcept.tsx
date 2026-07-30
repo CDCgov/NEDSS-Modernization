@@ -45,7 +45,7 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button type="button" outline onClick={onCancel}>
+                <Button type="button" outline={true} onClick={onCancel}>
                     Cancel
                 </Button>
                 <Button disabled={!form.formState.isValid} type="button" onClick={handleCreate}>

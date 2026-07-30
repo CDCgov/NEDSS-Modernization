@@ -50,7 +50,7 @@ const RaceDemographicFields = ({
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />

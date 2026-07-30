@@ -13,8 +13,8 @@ type Props = {
 export const RaceEntryView = ({ entry, sizing }: Props) => {
     return (
         <>
-            <ValueView title="As of" value={entry.asOf} sizing={sizing} required />
-            <ValueView title="Race" value={entry.race?.name} sizing={sizing} required />
+            <ValueView title="As of" value={entry.asOf} sizing={sizing} required={true} />
+            <ValueView title="Race" value={entry.race?.name} sizing={sizing} required={true} />
             <ValueView title="Detailed race" value={renderDetails(entry.detailed).join(', ')} sizing={sizing} />
         </>
     );

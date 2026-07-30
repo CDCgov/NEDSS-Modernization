@@ -29,7 +29,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         id={`identification-${name}`}
                         options={useIdentificationCodedValues().types}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -65,7 +65,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />

@@ -83,7 +83,7 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                             defaultValue={value}
                             onChange={onChange}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -99,13 +99,13 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                             defaultValue={value}
                             onChange={onChange}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
             </div>
             <div className={styles.footer}>
-                <ModalToggleButton type="button" closer outline modalRef={modalRef}>
+                <ModalToggleButton type="button" closer={true} outline={true} modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
                 <Button type="submit" disabled={!saveForm.formState.isValid}>

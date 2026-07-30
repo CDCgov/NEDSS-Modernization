@@ -127,7 +127,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                             id={name}
                             sizing={sizing}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -152,7 +152,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             {selectedEventType && (
                 <>
                     <Controller
-                        shouldUnregister
+                        shouldUnregister={true}
                         control={form.control}
                         name="eventDate.from"
                         rules={{
@@ -166,7 +166,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                                 onChange={onChange}
                                 label="From"
                                 sizing={sizing}
-                                required
+                                required={true}
                                 name={name}
                                 errorMessage={error?.message}
                             />
@@ -174,7 +174,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                     />
 
                     <Controller
-                        shouldUnregister
+                        shouldUnregister={true}
                         control={form.control}
                         name="eventDate.to"
                         rules={{
@@ -189,7 +189,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                                 name={name}
                                 label="To"
                                 sizing={sizing}
-                                required
+                                required={true}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -225,7 +225,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             />
 
             <Controller
-                shouldUnregister
+                shouldUnregister={true}
                 control={form.control}
                 name="reportingProviderId"
                 render={({ field: { onBlur, onChange, name, value } }) => (
@@ -241,7 +241,7 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             />
 
             <Controller
-                shouldUnregister
+                shouldUnregister={true}
                 control={form.control}
                 name="reportingFacilityId"
                 render={({ field: { onBlur, onChange, name, value } }) => (

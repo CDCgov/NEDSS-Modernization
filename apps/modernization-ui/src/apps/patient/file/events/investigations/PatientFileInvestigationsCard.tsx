@@ -158,7 +158,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                 <>
                     <Permitted permission={permissions.investigation.add}>
                         <LinkButton
-                            secondary
+                            secondary={true}
                             sizing={sizing}
                             icon="add_circle"
                             href={`/nbs/api/profile/${patient}/investigation`}
@@ -173,7 +173,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                             enabled={!comparison}
                             target={
                                 <LinkButton
-                                    secondary
+                                    secondary={true}
                                     sizing={sizing}
                                     disabled={!comparison}
                                     aria-describedby="compare-investigations"

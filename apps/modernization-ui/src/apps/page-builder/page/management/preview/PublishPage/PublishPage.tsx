@@ -128,7 +128,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 </div>
             </div>
             <div className={styles.footer}>
-                <ModalToggleButton type="button" closer outline modalRef={modalRef}>
+                <ModalToggleButton type="button" closer={true} outline={true} modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
                 <Button

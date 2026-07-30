@@ -121,7 +121,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                     aria-label="Cancel"
                     onClick={handleCancel}
                     type="button"
-                    outline
+                    outline={true}
                     data-testid="advancedConditionSearchCancelBtn"
                 >
                     Cancel

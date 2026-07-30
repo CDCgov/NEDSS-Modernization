@@ -18,7 +18,7 @@ export const TabbedButtonBar = ({ entries, onChange }: Props) => {
             {entries.map((entry, key) => (
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     key={key}
                     className={classNames([active === entry ? styles.active : '', styles.button])}
                     onClick={() => handleChange(entry)}

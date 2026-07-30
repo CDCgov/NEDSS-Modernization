@@ -131,7 +131,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         <FormProvider {...form}>
             <ModalToggleButton
                 className={styles.manageButton}
-                unstyled
+                unstyled={true}
                 type="button"
                 modalRef={modalRef}
                 data-testid="openManageTabs"
@@ -139,7 +139,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 <Icon.Edit />
                 <h2>Manage tabs</h2>
             </ModalToggleButton>
-            <Modal id="manage-tab-modal" ref={modalRef} className="manage-tab-modal" isLarge forceAction>
+            <Modal id="manage-tab-modal" ref={modalRef} className="manage-tab-modal" isLarge={true} forceAction={true}>
                 <div className={styles.manageTabModal}>
                     <ManageTabsHeader showAddTab={!addEdit} onAddNew={addNew} />
                     <div className={styles.modalBody}>
@@ -171,13 +171,18 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                     </div>
                     <div className={styles.buttonBar}>
                         {!addEdit ? (
-                            <ModalToggleButton modalRef={modalRef} onClick={() => resetEditPageTabs()} closer outline>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                onClick={() => resetEditPageTabs()}
+                                closer={true}
+                                outline={true}
+                            >
                                 Close
                             </ModalToggleButton>
                         ) : null}
                         {addEdit && !selectedForEdit ? (
                             <>
-                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
+                                <Button type="button" outline={true} onClick={() => resetEditPageTabs()}>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleAdd} type="button" disabled={!form.formState.isValid}>
@@ -187,7 +192,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                         ) : null}
                         {addEdit && selectedForEdit ? (
                             <>
-                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
+                                <Button type="button" outline={true} onClick={() => resetEditPageTabs()}>
                                     Cancel
                                 </Button>
                                 <Button type="button" onClick={handleSave}>

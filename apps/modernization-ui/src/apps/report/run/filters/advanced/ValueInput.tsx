@@ -75,7 +75,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
                 value={convertedValue}
                 name={labelName}
                 onChange={isBetween ? handleBetweenOnChange : handleSingleOnChange}
-                required
+                required={true}
                 sizing={SIZING}
             />
         </div>

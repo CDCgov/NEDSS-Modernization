@@ -18,7 +18,12 @@ export const PersonMatchHeader = ({ showButtons = false, onImportClick, onConfig
             <Heading level={1}>Person match configuration</Heading>
             <Shown when={showButtons}>
                 <div className={styles.buttons}>
-                    <Button icon="settings" labelPosition="right" secondary onClick={onConfigureDataElementsClick}>
+                    <Button
+                        icon="settings"
+                        labelPosition="right"
+                        secondary={true}
+                        onClick={onConfigureDataElementsClick}
+                    >
                         Configure data elements
                     </Button>
                     <Button
@@ -27,7 +32,7 @@ export const PersonMatchHeader = ({ showButtons = false, onImportClick, onConfig
                         sizing="medium"
                         data-tooltip-position="top"
                         aria-label="Import configuration"
-                        secondary
+                        secondary={true}
                     />
                     <Button
                         onClick={exportAlgorithm}
@@ -36,7 +41,7 @@ export const PersonMatchHeader = ({ showButtons = false, onImportClick, onConfig
                         data-tooltip-position="top"
                         data-tooltip-offset="left"
                         aria-label="Export configuration"
-                        secondary
+                        secondary={true}
                     />
                 </div>
             </Shown>

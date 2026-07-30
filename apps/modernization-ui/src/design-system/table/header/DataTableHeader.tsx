@@ -37,7 +37,7 @@ const DataTableHeader = <T,>({ columns, sizing, sorting, filtering, sticky = fal
                         </ColumnHeader>
                     ))}
                 </tr>
-                <tr className={styles.border} aria-hidden>
+                <tr className={styles.border} aria-hidden={true}>
                     <th colSpan={columns.length} />
                 </tr>
             </thead>

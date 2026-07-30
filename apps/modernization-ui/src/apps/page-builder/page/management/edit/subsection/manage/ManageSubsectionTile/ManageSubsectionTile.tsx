@@ -119,7 +119,7 @@ export const ManageSubsectionTile = ({
                                     onClick={() => {
                                         setEdit(subsection);
                                     }}
-                                    outline
+                                    outline={true}
                                     disabled={action}
                                     data-testid="subsectionTileEditIcon"
                                     className={styles.iconBtn}
@@ -130,7 +130,7 @@ export const ManageSubsectionTile = ({
                                     type="button"
                                     data-testid="subsectionTileDeleteIcon"
                                     className={styles.iconBtn}
-                                    outline
+                                    outline={true}
                                     disabled={action}
                                     onClick={() => {
                                         setDeleteWarning(subsection);
@@ -142,7 +142,7 @@ export const ManageSubsectionTile = ({
                                 {subsection.visible ? (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         data-testid="subsectionTileVisibilityIcon-on"
                                         className={styles.iconBtn}
                                         disabled={action}
@@ -155,7 +155,7 @@ export const ManageSubsectionTile = ({
                                 ) : (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         data-testid="subsectionTileVisibilityIcon-off"
                                         className={`${styles.iconBtn} ${styles.offVisibility}`}
                                         disabled={action}

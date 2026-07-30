@@ -27,8 +27,8 @@ const EditAddressDemographicsCard = ({ form, defaults, ...remaining }: EditAddre
                     {...remaining}
                     collapsible={false}
                     data={value}
-                    viewable
-                    editable
+                    viewable={true}
+                    editable={true}
                     defaultValues={defaultValues}
                     formRenderer={(entry?: AddressDemographic, sizing?: Sizing) => (
                         <AddressDemographicFields sizing={sizing} options={options} entry={entry} />

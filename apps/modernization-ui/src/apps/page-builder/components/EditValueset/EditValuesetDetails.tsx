@@ -51,7 +51,7 @@ export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpd
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button type="button" onClick={onCancel} outline>
+                <Button type="button" onClick={onCancel} outline={true}>
                     Cancel
                 </Button>
                 <Button

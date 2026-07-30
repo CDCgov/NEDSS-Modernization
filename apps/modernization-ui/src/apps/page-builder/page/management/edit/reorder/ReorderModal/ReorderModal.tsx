@@ -63,7 +63,7 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                 </DragDropContext>
             }
             modalFooter={
-                <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                <ModalToggleButton modalRef={modalRef} closer={true} outline={true} data-testid="condition-cancel-btn">
                     Close
                 </ModalToggleButton>
             }

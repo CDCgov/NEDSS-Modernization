@@ -94,7 +94,7 @@ export const AddSubSection = ({
                                 label="Subsection Name"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                                 data-testid="subsectionName"
                                 className={styles.inputField}
                             />
@@ -124,7 +124,7 @@ export const AddSubSection = ({
                         <>
                             <Button
                                 type="button"
-                                outline
+                                outline={true}
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();
@@ -145,7 +145,7 @@ export const AddSubSection = ({
                         <>
                             <Button
                                 type="button"
-                                outline
+                                outline={true}
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();

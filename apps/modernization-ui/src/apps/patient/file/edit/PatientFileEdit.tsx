@@ -118,7 +118,7 @@ const ReadyPatientFileEdit = ({ patient, entry }: ReadyPatientFileEditProps) => 
             patient={patient}
             actions={() => (
                 <>
-                    <Button secondary onClick={goBack}>
+                    <Button secondary={true} onClick={goBack}>
                         Cancel
                     </Button>
                     <Button onClick={handleSave} disabled={disabled}>

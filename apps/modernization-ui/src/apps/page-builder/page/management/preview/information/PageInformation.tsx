@@ -91,7 +91,7 @@ const PageInformation = () => {
         <section className={styles.information}>
             <header>
                 <h3>Page information</h3>
-                <Button type="button" outline onClick={handleDownloadMetadata} className={styles.icon}>
+                <Button type="button" outline={true} onClick={handleDownloadMetadata} className={styles.icon}>
                     <Icon.FileDownload />
                     Metadata
                 </Button>
@@ -132,7 +132,7 @@ const PageInformation = () => {
                         <footer>
                             <Button
                                 type="button"
-                                outline
+                                outline={true}
                                 onClick={handleViewPage}
                                 className={`${styles.icon} EditViewPageDetails`}
                                 data-testid="EditViewPageDetails"

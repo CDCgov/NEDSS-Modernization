@@ -25,13 +25,13 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
 
     const footer = () => (
         <>
-            <Button secondary onClick={onCancel} data-close-modal>
+            <Button secondary={true} onClick={onCancel} data-close-modal={true}>
                 Cancel
             </Button>
             <Button
                 disabled={!form.formState.isValid}
                 onClick={() => onAccept(form.getValues().name, form.getValues().description)}
-                data-close-modal
+                data-close-modal={true}
             >
                 Save
             </Button>
@@ -62,7 +62,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                             name={name}
                             id={name}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -77,7 +77,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
-                            multiline
+                            multiline={true}
                             name={name}
                             id={name}
                             error={error?.message}

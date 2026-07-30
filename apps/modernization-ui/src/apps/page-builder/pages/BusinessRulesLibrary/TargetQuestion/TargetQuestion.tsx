@@ -244,7 +244,7 @@ export const TargetQuestion = ({
             <div className={styles.footerBtn}>
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     data-testid="targetQuestionModalCancelBtn"
                     onClick={() => {
                         onReset?.();

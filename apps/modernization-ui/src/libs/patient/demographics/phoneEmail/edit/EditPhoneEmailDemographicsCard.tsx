@@ -24,8 +24,8 @@ const EditPhoneEmailDemographicsCard = ({ form, defaults, ...remaining }: EditPh
                     {...remaining}
                     collapsible={false}
                     data={value}
-                    viewable
-                    editable
+                    viewable={true}
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(_?: PhoneEmailDemographic, sizing?: Sizing) => (
                         <PhoneEmailDemographicFields sizing={sizing} options={options} />

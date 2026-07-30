@@ -117,8 +117,8 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                     <Button
                         icon="delete"
                         sizing="small"
-                        secondary
-                        destructive
+                        secondary={true}
+                        destructive={true}
                         aria-label="Remove"
                         onClick={() => onRemove(index)}
                     />

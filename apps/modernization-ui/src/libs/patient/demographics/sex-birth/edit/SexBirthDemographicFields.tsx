@@ -77,7 +77,7 @@ const SexBirthDemographicFields = ({
                         onBlur={onBlur}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -124,7 +124,7 @@ const SexBirthDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="sexBirth.unknownReason"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.unknownReason}
@@ -214,7 +214,7 @@ const SexBirthDemographicFields = ({
                 <Controller
                     control={form.control}
                     name="sexBirth.order"
-                    shouldUnregister
+                    shouldUnregister={true}
                     rules={numericRangeRule(0, 9999)}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <NumericInput

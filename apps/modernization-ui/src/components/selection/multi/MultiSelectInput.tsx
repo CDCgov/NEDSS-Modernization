@@ -76,7 +76,7 @@ export const MultiSelectInput = ({
             <ReactSelect<Selectable, true>
                 theme={theme}
                 styles={styles}
-                isMulti
+                isMulti={true}
                 id={id}
                 name={name}
                 value={selectedOptions}

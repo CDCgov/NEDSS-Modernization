@@ -23,9 +23,9 @@ export const GroupQuestionModal = ({ modal, subsection }: Props) => {
     };
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="group-question-modal"
             id="group-question-modal"
             aria-labelledby="group-question-modal"

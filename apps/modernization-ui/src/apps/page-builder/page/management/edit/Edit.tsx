@@ -37,7 +37,7 @@ export const Edit = () => {
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
-                <Loading center />
+                <Loading center={true} />
             )}
         </>
     );

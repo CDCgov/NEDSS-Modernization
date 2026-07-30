@@ -189,7 +189,7 @@ export const ManageSection = ({
                                 setConfirmDelete(undefined);
                             }}
                             type="button"
-                            outline
+                            outline={true}
                             className="manageSectionsCloseBtn"
                         >
                             Close

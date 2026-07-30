@@ -37,7 +37,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         onBlur={onBlur}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -58,7 +58,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         name={`phone-${name}`}
                         options={coded.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -78,7 +78,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         name={`phone-${name}`}
                         options={coded.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

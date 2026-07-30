@@ -123,7 +123,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                             label="Include records that are"
                             sizing={sizing}
                             orientation={orientation}
-                            required
+                            required={true}
                             options={statusOptions}
                             value={value}
                             onChange={onChange}

@@ -158,7 +158,7 @@ export const TableComponent = ({
             <>
                 <Table
                     bordered={false}
-                    fullWidth
+                    fullWidth={true}
                     className={classNames(
                         {
                             [styles.standard]: display === 'standard',
@@ -242,7 +242,7 @@ type LoadingProps = {
 const LoadingRow = ({ columns }: LoadingProps) => (
     <tr>
         <td colSpan={columns}>
-            <Loading center />
+            <Loading center={true} />
         </td>
     </tr>
 );

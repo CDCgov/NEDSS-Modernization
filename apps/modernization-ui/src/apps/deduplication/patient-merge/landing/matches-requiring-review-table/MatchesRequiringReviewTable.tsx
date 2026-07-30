@@ -106,7 +106,7 @@ export const MatchesRequiringReviewTable = () => {
         <div className={styles.matchesRequiringReviewTable}>
             <Shown when={loading}>
                 <div className={styles.loadingContainer}>
-                    <Loading center />
+                    <Loading center={true} />
                 </div>
             </Shown>
             <div className={styles.tableWrapper}>

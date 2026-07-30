@@ -84,7 +84,7 @@ export const Actions: Story = {
     args: {
         ...Default.args,
         actions: (
-            <Button sizing="small" secondary icon="add_circle">
+            <Button sizing="small" secondary={true} icon="add_circle">
                 Add Person
             </Button>
         ),

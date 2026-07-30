@@ -75,7 +75,7 @@ const SearchLayout = <R,>({
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled} sizing={sizing}>
                             Search
                         </Button>
-                        <Button type="button" secondary onClick={onClear} sizing={sizing}>
+                        <Button type="button" secondary={true} onClick={onClear} sizing={sizing}>
                             Clear all
                         </Button>
                     </div>
@@ -86,7 +86,7 @@ const SearchLayout = <R,>({
                         <SearchLanding />
                     </Shown>
                     <Shown when={status === 'loading'}>
-                        <Loading center />
+                        <Loading center={true} />
                     </Shown>
                     <Shown when={status === 'completed' || status === 'reloading'}>
                         <SearchResults

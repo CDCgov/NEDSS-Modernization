@@ -208,7 +208,7 @@ export const EditBusinessRule = () => {
                         <div className={styles.content}>
                             <FormProvider {...form}>
                                 <BusinessRulesForm
-                                    isEdit
+                                    isEdit={true}
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
                                     editSourceQuestion={findSourceQuestion(initialSourceIdentifiers)}
@@ -223,7 +223,7 @@ export const EditBusinessRule = () => {
                     <div className={styles.deleteBtn}>
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             data-testid="deleteBtnEditBusinessRulesPage"
                             onClick={() => deleteWarningModal.current?.toggleModal(undefined, true)}
                             className={styles.button}
@@ -235,7 +235,7 @@ export const EditBusinessRule = () => {
                     <div className={styles.submitBtns}>
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             data-testid="cancelEditBusinessRulesModel"
                             onClick={() => {
                                 form.reset();

@@ -105,7 +105,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal', sizing 
                 <Controller
                     control={control}
                     name="personalDetails.deceasedOn"
-                    shouldUnregister
+                    shouldUnregister={true}
                     rules={validDateRule(DECEASED_ON_LABEL)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <DatePickerInput

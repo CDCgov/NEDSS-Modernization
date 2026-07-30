@@ -52,7 +52,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -80,7 +80,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.deceasedOn"
-                        shouldUnregister
+                        shouldUnregister={true}
                         rules={validDateRule(DECEASED_ON_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
@@ -98,7 +98,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.city"
-                        shouldUnregister
+                        shouldUnregister={true}
                         rules={maxLengthRule(100, DEATH_CITY_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Input
@@ -119,7 +119,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.state"
-                        shouldUnregister
+                        shouldUnregister={true}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death state"
@@ -137,7 +137,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.county"
-                        shouldUnregister
+                        shouldUnregister={true}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death county"
@@ -156,7 +156,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.country"
-                        shouldUnregister
+                        shouldUnregister={true}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death country"
