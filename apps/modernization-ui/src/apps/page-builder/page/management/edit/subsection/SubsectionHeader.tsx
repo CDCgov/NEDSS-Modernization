@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './subsection.module.scss';
 import { staticElementTypes } from '../staticelement/EditStaticElement';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type Props = {
     subsection: PagesSubSection;
@@ -50,15 +51,14 @@ export const SubsectionHeader = ({
                 refresh();
             })
             .catch((error) => {
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -96,6 +96,7 @@ export const SubsectionHeader = ({
                 </Button>
                 <MoreOptions
                     header={<Icon.MoreVert role="menu" size={4} onClick={() => setCloseOptions(false)} />}
+                    // eslint-disable-next-line max-len
                     className={`subsectionOptionsWithGrouped-${subsection.isGrouped ? 'grouped' : subsection.questions.length > 2 ? 'ungrouped' : ''}`}
                     close={closeOptions}
                 >
@@ -159,6 +160,7 @@ export const SubsectionHeader = ({
             <ConfirmationModal
                 modal={ungroupSubsectionModalRef}
                 title="Warning"
+                // eslint-disable-next-line max-len
                 message="You have indicated that you would like to ungroup the repeating block questions in the Tribal Affiliation Repeating Block questions."
                 detail="Select Ungroup or Cancel to return to Edit Page."
                 confirmText="Ungroup"
