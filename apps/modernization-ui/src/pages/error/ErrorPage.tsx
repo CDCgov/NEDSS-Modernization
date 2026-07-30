@@ -30,7 +30,11 @@ const ErrorPage = () => {
                                 </p>
                             </>
                         ) : (
-                            <p>{'data' in error ? JSON.stringify(error.data) : error?.body?.message}</p>
+                            <p>
+                                {'data' in error
+                                    ? JSON.stringify(error.data)
+                                    : error?.body?.message + (error?.body?.id ? ` (ID: ${error.body.id})` : '')}
+                            </p>
                         )}
                     </>
                 ) : error instanceof Error ? (
