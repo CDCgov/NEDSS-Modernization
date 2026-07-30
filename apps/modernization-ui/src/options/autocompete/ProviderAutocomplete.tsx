@@ -6,8 +6,8 @@ import { ProviderOptionsService } from 'generated';
 
 const resolver = (criteria: string, limit?: number) =>
     ProviderOptionsService.providerAutocomplete({
-        criteria: criteria,
-        limit: limit,
+        criteria,
+        limit,
     }).then((response) => response);
 
 const ProviderAutocomplete = ({

@@ -40,7 +40,7 @@ export const Subsection = ({
     const { setRequired, response } = useSetPageQuestionRequired();
 
     const handleAlert = (message: string) => {
-        showAlert({ message: message, type: 'success' });
+        showAlert({ message, type: 'success' });
     };
 
     const handleExpandedChange = (expanded: boolean) => {

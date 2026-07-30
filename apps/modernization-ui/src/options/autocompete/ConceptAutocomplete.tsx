@@ -10,8 +10,8 @@ const resolver =
     (criteria: string, limit?: number) =>
         ConceptOptionsService.conceptSearch({
             name: valueSet,
-            criteria: criteria,
-            limit: limit,
+            criteria,
+            limit,
         }).then((response) => response.options);
 
 type Props = {

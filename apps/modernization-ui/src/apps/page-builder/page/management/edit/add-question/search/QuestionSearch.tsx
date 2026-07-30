@@ -29,7 +29,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
             setSelectedQuestions([]);
             search({
                 searchText: query,
-                pageId: pageId,
+                pageId,
                 page: page.current - 1,
                 pageSize: page.pageSize,
                 sort,

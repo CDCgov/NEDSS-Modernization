@@ -34,8 +34,8 @@ const Internal = () => {
                 pageId: page.id,
                 page: curPage.current - 1,
                 pageSize: curPage.pageSize,
-                sort: sort,
-                query: query,
+                sort,
+                query,
             });
         }
     }, [curPage.status, page?.id]);

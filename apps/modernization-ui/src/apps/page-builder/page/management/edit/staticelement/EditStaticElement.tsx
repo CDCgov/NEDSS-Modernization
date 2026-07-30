@@ -60,7 +60,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
     };
 
     const handleAlert = (message: string) => {
-        showAlert({ message: message, type: 'success' });
+        showAlert({ message, type: 'success' });
     };
 
     const onSubmit = form.handleSubmit((data) => {

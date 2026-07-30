@@ -37,7 +37,7 @@ export const AddSubSection = ({
 
     useEffect(() => {
         if (subsectionEdit && isEdit) {
-            form.reset({ name: subsectionEdit.name, visible: subsectionEdit.visible, sectionId: sectionId });
+            form.reset({ name: subsectionEdit.name, visible: subsectionEdit.visible, sectionId });
         }
     }, [subsectionEdit]);
 
@@ -53,7 +53,7 @@ export const AddSubSection = ({
         } else {
             SubSectionControllerService.createSubsection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, sectionId: sectionId },
+                requestBody: { name: data.name, visible: data.visible, sectionId },
             }).then(() => {
                 onSubSectionTouched?.(data.name ?? '');
                 form.reset();

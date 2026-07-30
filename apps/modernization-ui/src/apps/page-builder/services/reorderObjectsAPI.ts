@@ -3,9 +3,9 @@ import { ReorderControllerService } from '../generated';
 
 export const reorderObjects = (after: number, component: number, page: number): Promise<unknown> => {
     return ReorderControllerService.orderComponentAfter({
-        after: after,
-        component: component,
-        page: page,
+        after,
+        component,
+        page,
     })
         .then((response) => {
             return response;

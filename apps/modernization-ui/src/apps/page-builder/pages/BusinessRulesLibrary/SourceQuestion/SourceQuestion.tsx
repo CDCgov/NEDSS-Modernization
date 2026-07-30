@@ -41,7 +41,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
 
     useEffect(() => {
         if (ruleFunction && page) {
-            fetch(page.id, { ruleFunction: ruleFunction });
+            fetch(page.id, { ruleFunction });
         }
     }, [ruleFunction, page]);
 

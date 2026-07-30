@@ -51,7 +51,7 @@ export const useUpdatePageQuestionValueset = () => {
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
                     if (response) {
-                        dispatch({ type: 'complete', response: response });
+                        dispatch({ type: 'complete', response });
                     }
                 });
         }

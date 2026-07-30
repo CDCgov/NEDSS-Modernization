@@ -67,7 +67,7 @@ export const Default: Story = {
             { id: '3', name: 'Sam Wilson', age: 23 },
             { id: '4', name: 'Cassandra Jones', age: 24 },
         ],
-        columns: columns,
+        columns,
         columnPreferencesKey: 'storybook.tablecard',
         defaultColumnPreferences: columnPreferences,
     },

@@ -194,7 +194,7 @@ const GeneralInformationDemographicFields = ({
                         label={labels.stateHIVCase}
                         orientation={orientation}
                         onBlur={onBlur}
-                        onChange={(value) => onChange({ value: value })}
+                        onChange={(value) => onChange({ value })}
                         maxLength={16}
                         value={isAllowed(value) ? value.value : undefined}
                         id={name}

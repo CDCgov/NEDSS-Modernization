@@ -39,7 +39,7 @@ export const AddSection = ({
 
     useEffect(() => {
         if (section && isEdit) {
-            form.reset({ name: section.name, tabId: tabId, visible: section.visible });
+            form.reset({ name: section.name, tabId, visible: section.visible });
         }
     }, [section]);
     const onSubmit = form.handleSubmit((data) => {
@@ -55,7 +55,7 @@ export const AddSection = ({
         } else {
             SectionControllerService.createSection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, tabId: tabId },
+                requestBody: { name: data.name, visible: data.visible, tabId },
             }).then(() => {
                 form.reset();
                 onAddSection?.(data.name ?? '');

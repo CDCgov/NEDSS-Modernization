@@ -19,13 +19,13 @@ export const fetchPageSummaries = (
 
 export const fetchPageDetails = (id: number) => {
     return PagesService.details({
-        id: id,
+        id,
     });
 };
 
 export const savePageAsDraft = (id: number) => {
     return PageControllerService.savePageDraft({
-        id: id,
+        id,
     }).then((response) => {
         return response;
     });
