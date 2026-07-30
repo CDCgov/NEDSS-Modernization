@@ -65,11 +65,12 @@ const routing: RouteObject[] = [
                                     {
                                         path: ':ruleId',
                                         lazy: {
-                                            Component: async () =>
-                                                // eslint-disable-next-line max-len
-                                                (
-                                                    await import('./pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule')
-                                                ).ViewBusinessRule,
+                                            Component: async () => {
+                                                const { ViewBusinessRule } =
+                                                    // eslint-disable-next-line max-len
+                                                    await import('./pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule');
+                                                return ViewBusinessRule;
+                                            },
                                         },
                                     },
                                     {
