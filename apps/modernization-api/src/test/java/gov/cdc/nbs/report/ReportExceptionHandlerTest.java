@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.util.UUID;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,8 @@ class ReportExceptionHandlerTest {
   @Test
   void should_return_error_msg_and_status_code_for_method_arg_not_valid() {
     MethodParameter param = mock(MethodParameter.class);
-    when(param.getExecutable()).thenReturn(mock(Constructor.class));
+    Executable constructor = mock(Constructor.class);
+    when(param.getExecutable()).thenReturn(constructor);
 
     BindingResult bindingResult = mock(BindingResult.class);
 
