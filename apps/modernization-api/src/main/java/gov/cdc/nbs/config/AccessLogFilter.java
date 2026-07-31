@@ -33,6 +33,11 @@ public class AccessLogFilter implements Filter {
           || FILE_EXTENSIONS.stream().anyMatch(suffix -> req.getRequestURI().endsWith(suffix))) {
         request.setAttribute("STATIC_ASSET", "true");
       }
+
+      //  Tag all reports requests
+      if (req.getRequestURI().startsWith("/nbs/api/reports")) {
+        request.setAttribute("NBS_REPORTS", "true");
+      }
     }
     chain.doFilter(request, response);
   }
