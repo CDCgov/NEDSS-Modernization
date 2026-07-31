@@ -44,7 +44,7 @@ async def api_exception_handler(request: Request, exc: errors.BaseReportExecutio
         )
     else:
         logging.warning(
-            f'Client error ({exc.id}) encountered during report execution: {exc.message}'
+            f'Client error ({exc.id}) thrown during report execution: {exc.message}'
         )
 
     return JSONResponse(
