@@ -44,6 +44,20 @@ describe('ApiError', () => {
         expect(getByText('I am details')).toBeVisible();
     });
 
+    it('handles ApiError with json body with id', () => {
+        const error = new ApiError(
+            { method: 'GET', url: '/test' },
+            { url: '/test', status: 500, statusText: 'SERVER ERROR', ok: false, body: { id: '1234-1245' } },
+            'Uh oh'
+        );
+
+        const { getByText } = render(<ApiErrorBanner action="doing" item="thing" error={error} />);
+
+        expect(console.error).toHaveBeenCalledTimes(1);
+        expect(getByText(/500 SERVER ERROR/)).toBeVisible();
+        expect(getByText('ID: 1234-1245')).toBeVisible();
+    });
+
     it('handles ApiError with json body with no message', () => {
         const error = new ApiError(
             { method: 'GET', url: '/test' },
