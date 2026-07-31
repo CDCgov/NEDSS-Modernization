@@ -59,9 +59,9 @@ class InternalServerError(BaseReportExecutionError):
     def __init__(self, message, orig_exc=None):
         super().__init__('Internal Server Error', 500)
         
-        logging.error(f'Internal Server Error (ID: {self.id}) - {message}')
+        logging.error(f'(Error ID: {self.id}) - {message}')
         if orig_exc is not None:
-            logging.error(f'Original exception (ID: {self.id}): {orig_exc}')
+            logging.error(f'(Error ID: {self.id}) - {orig_exc}')
 
 
 class InvalidReportSpecError(BaseReportExecutionError):
