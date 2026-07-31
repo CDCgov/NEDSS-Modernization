@@ -115,8 +115,8 @@ springdoc:
 server:
   tomcat:
     accesslog:
-      # Only log requests made to NBS API
-      condition-if: NBS_REQUEST
+      # Exclude requests for static assets (e.g. JS, CSS, GIFs)
+      condition-unless: STATIC_ASSET
       # 172.24.0.4 - - [28/Jul/2026:19:54:54 +0000] "GET /nbs/api/me HTTP/1.1" 200 2508ms
       pattern: "%h %l %u %t \"%r\" %s %{ms}Tms"
       enabled: false
