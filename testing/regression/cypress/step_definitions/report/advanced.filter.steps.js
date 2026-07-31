@@ -55,6 +55,7 @@ When('I add incomplete or incorrect advanced filters', () => {
       }
       cy.get('select[name="Field"]').last().select(advFilter.field);
       if (index !== 0) {
+        // leave some logic values intentionally blank to trigger error
         cy.get('select[name="Logic"]').last().select(logicVal);
       }
 
@@ -82,32 +83,13 @@ When('I add incomplete or incorrect advanced filters', () => {
     fields.forEach((field) => {
       cy.get('select[name="Field"] option:selected')
         .filter((index, optionElement) => {
-          return optionElement.innerText.trim() === field.field;
+          return optionElement.innerText === field.field;
         }).each(($select, index) => {
           cy.wrap($select).closest('[data-testid="rule"]')
             .within(() => {
-              cy.get('select[name="Field"]').select(field.field);
-              const logic = field.logic[index];
-              cy.get('select[name="Logic"]').select(logic);
-
-              if (field.type !== 'multiselect') {
-                if (['Equals', 'Not Equals', 'Contains', 'Starts With', 'Less Than', 'Greater Than', 'Less Or Equal', 'Greater Or Equal'].includes(logic)) {
-                  cy.get('input[name="Value"]').clear().type(field.firstVal);
-                }
-
-                if (logic === 'Between') {
-                  enterBetweenInput(field.firstVal, field.secondVal);
-                }
-              } else {
-                if (logic === 'Equals' || logic === 'Not Equals') {
-                  cy.get('.multi-select')
-                    .click()
-                    .then(() => cy.get('.multi-select__option').eqOrLast(field.firstVal).click())
-                  cy.get('input.multi-select__input').blur();
-                }
-              }
+              enterFilterValue(field, index)
             })
-      })
+        })
     })
     cy.findByRole('checkbox', { name: 'Select all' }).click({ force: true });
   })
@@ -154,6 +136,28 @@ When('I remove a rule group', () => {
 })
 
 // Helpers
+const enterFilterValue = (field, index) => {
+  cy.get('select[name="Field"]').select(field.field);
+  const logic = field.logic[index];
+  cy.get('select[name="Logic"]').select(logic);
+
+  if (field.type !== 'multiselect') {
+    if (['Equals', 'Not Equals', 'Contains', 'Starts With', 'Less Than', 'Greater Than', 'Less Or Equal', 'Greater Or Equal'].includes(logic)) {
+      cy.get('input[name="Value"]').clear().type(field.firstVal);
+    }
+
+    if (logic === 'Between') {
+      enterBetweenInput(field.firstVal, field.secondVal);
+    }
+  } else {
+    if (logic === 'Equals' || logic === 'Not Equals') {
+      cy.get('.multi-select')
+        .click()
+        .then(() => cy.get('.multi-select__option').eqOrLast(field.firstVal).click())
+      cy.get('input.multi-select__input').blur();
+    }
+  }
+}
 
 const enterBetweenInput = (from, to) => {
   cy.get('input[id$="-from"]').last().clear().type(from);
