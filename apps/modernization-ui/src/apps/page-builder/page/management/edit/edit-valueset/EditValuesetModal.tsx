@@ -37,9 +37,9 @@ export const EditValuesetModal = ({ modal, valuesetName, onValuesetChanged }: Pr
 
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="edit-valueset-modal"
             id="edit-valueset-modal"
             aria-labelledby="edit-valueset-modal"

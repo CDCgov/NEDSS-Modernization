@@ -107,7 +107,7 @@ export const AddBusinessRule = () => {
                 </Form>
                 <div className={styles.footerBtns}>
                     <Button
-                        outline
+                        outline={true}
                         onClick={() => {
                             form.reset();
                             redirectToLibrary();

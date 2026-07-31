@@ -76,7 +76,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -102,7 +102,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -119,7 +119,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                                 label="Effective from time"
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                required
+                                required={true}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -214,7 +214,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -237,7 +237,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -260,7 +260,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -282,7 +282,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             options={codeSystems}
                             name={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />

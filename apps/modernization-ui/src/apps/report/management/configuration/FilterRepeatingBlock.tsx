@@ -69,7 +69,7 @@ const FilterRepeatingBlock = ({
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
             filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: SELECT_OPTIONS.find(({ value }) => value == f.selectType),
+            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType),
             associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()),
             isRequired: f.isRequired,
         })) ?? [];
@@ -90,11 +90,6 @@ const FilterRepeatingBlock = ({
             defaultValue={defaultFilterData}
             rules={{ validate: () => !filtersIsDirty }}
             render={({ field: { onChange, value } }) => {
-                // force revalidation when dirty state changes
-                useEffect(() => {
-                    onChange(value);
-                }, [filtersIsDirty]);
-
                 return (
                     <FilterRepeatingBlockImpl
                         onChange={onChange}
@@ -102,7 +97,11 @@ const FilterRepeatingBlock = ({
                         dataSourceSelected={dataSourceSelected}
                         filterOptions={filterOptions}
                         columnOptions={columnOptions}
-                        setFiltersIsDirty={setFiltersIsDirty}
+                        setFiltersIsDirty={(v: boolean) => {
+                            // force overall form revalidation when dirty state changes
+                            onChange(value);
+                            setFiltersIsDirty(v);
+                        }}
                         value={value}
                     />
                 );
@@ -225,13 +224,13 @@ const FilterConfigForm = ({
                 render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
                     <SingleSelect
                         id={`filter-${name}`}
-                        label={'Filter'}
+                        label="Filter"
                         disabled={!!entry?.id} // can't change filter type on edit
                         name={name}
                         options={filterOptions}
                         orientation="horizontal"
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={SIZING}
                         {...remaining}
                     />
@@ -252,7 +251,7 @@ const FilterConfigForm = ({
                             options={SELECT_OPTIONS}
                             orientation="horizontal"
                             error={error?.message}
-                            required
+                            required={true}
                             sizing={SIZING}
                             {...remaining}
                         />
@@ -273,7 +272,7 @@ const FilterConfigForm = ({
                             options={columnOptions}
                             orientation="horizontal"
                             error={error?.message}
-                            required
+                            required={true}
                             sizing={SIZING}
                             {...remaining}
                         />

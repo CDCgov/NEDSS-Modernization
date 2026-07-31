@@ -16,7 +16,7 @@ export const FilterWrapper = ({
     return (
         <div className="filter-config-panel">
             <div className="filter-bar">
-                <Button type="submit" id="filter-model-btn" className="filter-btn" onClick={toggleModal} outline>
+                <Button type="submit" id="filter-model-btn" className="filter-btn" onClick={toggleModal} outline={true}>
                     <Icon.FilterAlt />
                     <label className="filter-label"></label>
                     {name}

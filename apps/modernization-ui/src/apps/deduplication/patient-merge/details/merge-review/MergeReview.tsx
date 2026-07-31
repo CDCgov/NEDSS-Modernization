@@ -69,7 +69,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
                 <Heading level={1}>Patient matches requiring review</Heading>
                 <div className={styles.buttons}>
                     <Button
-                        secondary
+                        secondary={true}
                         onClick={() =>
                             fromPatientFileSummary
                                 ? nav(`/patient/${fromPatientId}/summary`)
@@ -78,7 +78,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
                     >
                         Back
                     </Button>
-                    <Button secondary onClick={onPreview}>
+                    <Button secondary={true} onClick={onPreview}>
                         Preview merge
                     </Button>
                     <Button onClick={handleKeepAllSeparate}>Keep all separate</Button>

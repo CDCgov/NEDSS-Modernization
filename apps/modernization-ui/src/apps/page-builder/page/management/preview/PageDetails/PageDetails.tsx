@@ -111,7 +111,7 @@ export const PageDetails = () => {
                     </div>
                 </div>
                 <div className="page-details__buttons">
-                    <Button type="button" outline onClick={handleCancel}>
+                    <Button type="button" outline={true} onClick={handleCancel}>
                         {isEnabled ? 'Cancel' : 'Close'}
                     </Button>
                     {isEnabled && (

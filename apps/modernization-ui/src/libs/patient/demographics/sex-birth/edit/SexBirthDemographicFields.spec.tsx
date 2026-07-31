@@ -20,7 +20,7 @@ const location: LocationOptions = {
 };
 
 const mockSexBirthCodedValues: SexBirthOptions = {
-    genders: genders,
+    genders,
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
     multipleBirth: indicators,

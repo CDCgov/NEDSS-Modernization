@@ -30,7 +30,7 @@ const SearchTerms = ({ total, filteredTotal, terms }: Props) => {
 
     return (
         <div tabIndex={0} id="resultsCount" className={styles.terms} aria-label={ariaLabel}>
-            <SkipLink id="resultsCount" autoFocus />
+            <SkipLink id="resultsCount" autoFocus={true} />
             <div className={styles.term}>
                 <h2>
                     {filteredTotal !== undefined

@@ -25,7 +25,7 @@ const reducer = (_state: State, action: Action): State => {
 };
 
 export const useFindConditionsNotInUse = (page?: number) => {
-    const [state, dispatch] = useReducer(reducer, { status: 'fetching', page: page });
+    const [state, dispatch] = useReducer(reducer, { status: 'fetching', page });
 
     useEffect(() => {
         if (state.status === 'fetching') {

@@ -11,7 +11,7 @@ type EthnicityEntry = EffectiveDated & {
 export type { EthnicityEntry };
 
 const initial = (asOf: string = today()): EthnicityEntry => ({
-    asOf: asOf,
+    asOf,
     ethnicGroup: null,
     detailed: [],
 });

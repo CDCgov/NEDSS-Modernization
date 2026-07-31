@@ -51,7 +51,7 @@ describe('ConditionDisplay', () => {
     });
 
     it('should display n more if more than 5 conditions are provided', () => {
-        let moreConditions = [...conditions, { name: 'condition6', id: '6' }];
+        const moreConditions = [...conditions, { name: 'condition6', id: '6' }];
         expect(moreConditions).toHaveLength(6);
 
         const { getAllByRole, queryByText } = render(<ConditionsDisplay conditions={moreConditions} />);
@@ -64,7 +64,7 @@ describe('ConditionDisplay', () => {
     it('should show all conditions on clicking n more', async () => {
         const user = userEvent.setup();
 
-        let moreConditions = [...conditions, { name: 'condition6', id: '6' }];
+        const moreConditions = [...conditions, { name: 'condition6', id: '6' }];
         expect(moreConditions).toHaveLength(6);
 
         const { getAllByRole, getByText, queryByText } = render(<ConditionsDisplay conditions={moreConditions} />);
@@ -85,7 +85,7 @@ describe('ConditionDisplay', () => {
     it('should hide conditions on clicking view less', async () => {
         const user = userEvent.setup();
 
-        let moreConditions = [...conditions, { name: 'condition6', id: '6' }];
+        const moreConditions = [...conditions, { name: 'condition6', id: '6' }];
         expect(moreConditions).toHaveLength(6);
 
         const { getAllByRole, getByText, queryByText } = render(<ConditionsDisplay conditions={moreConditions} />);

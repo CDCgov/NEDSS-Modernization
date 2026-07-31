@@ -24,7 +24,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (files == null) {
+        if (files === null) {
             setFile(undefined);
         } else {
             setFile(files[0]);
@@ -32,7 +32,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
     };
 
     const handleSubmit = () => {
-        if (file == undefined) {
+        if (file === undefined) {
             return;
         }
         importTemplate(file);
@@ -81,13 +81,13 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                 </div>
                 <label htmlFor="importTempId">
                     <input
-                        value={''}
+                        value=""
                         onChange={handleFileChange}
                         name="fileInput"
                         type="file"
                         id="importTempId"
                         accept="text/xml"
-                        hidden
+                        hidden={true}
                     />
 
                     <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>

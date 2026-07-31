@@ -103,7 +103,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required
+                        required={true}
                     />
                 )}
             />

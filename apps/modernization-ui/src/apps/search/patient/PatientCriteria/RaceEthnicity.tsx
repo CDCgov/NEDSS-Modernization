@@ -10,6 +10,7 @@ export const RaceEthnicity = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     const categories = useRaceCategoryOptions();
+    const conceptOptions = useConceptOptions('PHVS_ETHNICITYGROUP_CDC_UNK', { lazy: false }).options;
 
     return (
         <SearchCriteria sizing={sizing}>
@@ -25,7 +26,7 @@ export const RaceEthnicity = ({ sizing, orientation }: EntryFieldsProps) => {
                         id={name}
                         sizing={sizing}
                         orientation={orientation}
-                        options={useConceptOptions('PHVS_ETHNICITYGROUP_CDC_UNK', { lazy: false }).options}
+                        options={conceptOptions}
                     />
                 )}
             />

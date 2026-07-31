@@ -49,7 +49,7 @@ const SampleForm = ({ sizing, orientation = 'horizontal' }: { sizing?: Sizing; o
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -85,7 +85,7 @@ const SampleForm = ({ sizing, orientation = 'horizontal' }: { sizing?: Sizing; o
                         options={options}
                         error={error?.message}
                         placeholder="Select a veggie"
-                        required
+                        required={true}
                     />
                 )}
             />

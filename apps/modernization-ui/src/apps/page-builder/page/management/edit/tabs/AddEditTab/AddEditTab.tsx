@@ -32,7 +32,7 @@ export const AddEditTab = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />

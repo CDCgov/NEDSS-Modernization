@@ -43,10 +43,10 @@ const AlertMessage = ({
             className={classNames(
                 styles.alertMessage,
                 {
-                    [styles.information]: type == 'information',
-                    [styles.success]: type == 'success',
-                    [styles.warning]: type == 'warning',
-                    [styles.error]: type == 'error',
+                    [styles.information]: type === 'information',
+                    [styles.success]: type === 'success',
+                    [styles.warning]: type === 'warning',
+                    [styles.error]: type === 'error',
                     [styles.slim]: slim,
                 },
                 className
@@ -63,7 +63,7 @@ const AlertMessage = ({
                     type="button"
                     onClick={onClose}
                     icon="close"
-                    tertiary
+                    tertiary={true}
                     sizing="small"
                     aria-label="Close alert"
                     className={styles.closeButton}

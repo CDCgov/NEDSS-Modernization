@@ -143,7 +143,7 @@ export const ManageSection = ({
                         )}
                         <div className={styles.tab}>
                             <div className={styles.folderIcon}>
-                                <NbsIcon name={'folder'} />
+                                <NbsIcon name="folder" />
                             </div>
                             <p className={styles.tabName}>{tab?.name}</p>
                         </div>
@@ -188,8 +188,8 @@ export const ManageSection = ({
                                 onCancel?.();
                                 setConfirmDelete(undefined);
                             }}
-                            type={'button'}
-                            outline
+                            type="button"
+                            outline={true}
                             className="manageSectionsCloseBtn"
                         >
                             Close

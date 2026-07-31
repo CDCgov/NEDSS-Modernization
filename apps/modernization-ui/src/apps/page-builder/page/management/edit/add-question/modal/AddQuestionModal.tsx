@@ -27,9 +27,9 @@ export const AddQuestionModal = ({ modal, onAddQuestion }: Props) => {
     };
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="add-question-modal"
             id="add-question-modal"
             aria-labelledby="modal-1-heading"

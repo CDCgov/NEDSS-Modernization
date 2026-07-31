@@ -23,9 +23,9 @@ const WelcomeLayout = () => {
                     <div className={style.welcome}>
                         <main>
                             <div className={style.information}>
-                                <TabNavigation className={style.tabs} sizing={'large'}>
-                                    <TabNavigationEntry path={'about'}>About</TabNavigationEntry>
-                                    <TabNavigationEntry path={'learn'}>Learn more</TabNavigationEntry>
+                                <TabNavigation className={style.tabs} sizing="large">
+                                    <TabNavigationEntry path="about">About</TabNavigationEntry>
+                                    <TabNavigationEntry path="learn">Learn more</TabNavigationEntry>
                                 </TabNavigation>
                                 <div className={style['tab-content']}>
                                     <Outlet />

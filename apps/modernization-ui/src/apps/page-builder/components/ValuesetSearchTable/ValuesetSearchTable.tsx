@@ -130,7 +130,7 @@ export const ValuesetSearchTable = ({
                         value={query}
                     />
                     {onCreateNew && (
-                        <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
+                        <Button type="button" className={styles.createNewButton} outline={true} onClick={onCreateNew}>
                             Create new value set
                         </Button>
                     )}

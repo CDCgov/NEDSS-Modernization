@@ -24,7 +24,7 @@ const EditNameDemographicsCard = ({ form, defaults, ...remaining }: EditNameDemo
                     collapsible={false}
                     data={value}
                     onChange={onChange}
-                    editable
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(_?: NameDemographic, sizing?: Sizing) => (
                         <NameDemographicFields sizing={sizing} options={options} />

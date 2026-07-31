@@ -51,7 +51,7 @@ const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undef
                 title="Discard unsaved data?"
                 confirmText="Yes, cancel"
                 cancelText="No, back to form"
-                forceAction
+                forceAction={true}
                 onConfirm={handleConfirm}
                 onCancel={blocker.reset}
             >

@@ -57,7 +57,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -78,7 +78,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={`address-${name}`}
                         options={coded.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -98,7 +98,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={`address-${name}`}
                         options={coded.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

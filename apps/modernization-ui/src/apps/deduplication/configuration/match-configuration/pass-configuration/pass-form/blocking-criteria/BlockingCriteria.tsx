@@ -19,7 +19,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         const value = [...(blockingCriteria ?? [])].filter((a) => a !== attribute);
 
         registeredBlockingCriteria.onChange({
-            target: { name: 'blockingCriteria', value: value },
+            target: { name: 'blockingCriteria', value },
         });
         form.trigger('blockingCriteria');
     };
@@ -55,7 +55,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     <Button
                         icon="add"
                         labelPosition="right"
-                        secondary
+                        secondary={true}
                         onClick={onShowAttributes}
                         sizing="small"
                         className={styles.addButton}

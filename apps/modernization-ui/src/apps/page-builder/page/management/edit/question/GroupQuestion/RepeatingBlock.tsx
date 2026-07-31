@@ -20,7 +20,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
         name: 'batches',
     });
 
-    const batches = useWatch({ control: control, name: 'batches' });
+    const batches = useWatch({ control, name: 'batches' });
     const calcTotal = (batches: Batch[]): number => {
         return batches
             .filter((batch) => batch.appearsInTable)
@@ -88,7 +88,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                                 { name: 'Yes', value: 'Y' },
                                                 { name: 'No', value: 'N' },
                                             ]}
-                                            required
+                                            required={true}
                                             error={error?.message}
                                         />
                                     )}

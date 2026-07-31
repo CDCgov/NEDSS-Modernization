@@ -18,13 +18,13 @@ type Props = {
 
 export const PersonMatchSection = ({ filter }: Props) => {
     return (
-        <Permitted permission={'MERGE-PATIENT'}>
+        <Permitted permission="MERGE-PATIENT">
             <SystemManagementInfoCard
                 id="person-match"
                 title="Person match"
                 filter={filter}
                 links={personMatchLinks}
-                useNavigation
+                useNavigation={true}
             />
         </Permitted>
     );

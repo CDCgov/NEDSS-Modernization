@@ -63,10 +63,10 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     actions={() => (
                         <>
-                            <Button type="button" onClick={handleExtended} secondary disabled={working}>
+                            <Button type="button" onClick={handleExtended} secondary={true} disabled={working}>
                                 Add extended data
                             </Button>
-                            <Button onClick={backToSearch} secondary>
+                            <Button onClick={backToSearch} secondary={true}>
                                 Cancel
                             </Button>
                             <Button type="submit" onClick={handleSave} disabled={working}>
@@ -81,7 +81,7 @@ export const AddPatientBasic = () => {
             <NavigationGuard
                 id="patient.create.basic.cancel"
                 form={form}
-                allowed={'/patient/add/extended'}
+                allowed="/patient/add/extended"
                 activated={interaction.status !== 'created'}
             />
         </>

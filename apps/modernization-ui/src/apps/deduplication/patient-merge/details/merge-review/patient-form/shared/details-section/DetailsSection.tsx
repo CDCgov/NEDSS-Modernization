@@ -5,7 +5,7 @@ type Props = {
 };
 export const DetailsSection = ({ details }: Props) => {
     const toDisplay = (value?: string): string => {
-        if (value == undefined || value.trim().length === 0) {
+        if (value === undefined || value.trim().length === 0) {
             return '---';
         } else {
             return value;
