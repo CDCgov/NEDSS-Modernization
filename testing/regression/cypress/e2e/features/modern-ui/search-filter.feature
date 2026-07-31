@@ -27,7 +27,7 @@ Feature: Classic NBS - Modern Search - User can search and filter for patients
   Scenario: Search patient by partial Patient Name    
     When Click on Search in classic Patient Search pane
     And I click search filter result icon
-    And I search filter column "text-filter-name" with "Singh"
+    And I search filter column "text-filter-name" with "Sin"
     Then I verify unique search row contains "Singh, Surma"
 
   Scenario: Search patient by exact Patient exact Last Name    
