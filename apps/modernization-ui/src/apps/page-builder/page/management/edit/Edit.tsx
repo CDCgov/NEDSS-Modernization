@@ -37,7 +37,7 @@ export const Edit = () => {
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
-                <Loading center />
+                <Loading center={true} />
             )}
         </>
     );
@@ -67,7 +67,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
                         <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
                         </NavLinkButton>
-                        <NavLinkButton data-testid="previewBtn" to={'..'}>
+                        <NavLinkButton data-testid="previewBtn" to="..">
                             Preview
                         </NavLinkButton>
                     </PageManagementMenu>

@@ -33,7 +33,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />

@@ -22,7 +22,7 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(true);
+        expect(mockResult['rule-1'].valid).toBe(true);
     });
 
     it('should be valid for an empty ruleGroup and rule', () => {
@@ -43,7 +43,7 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(true);
+        expect(mockResult['rule-1'].valid).toBe(true);
     });
 
     it('should be invalid when no operator is selected', () => {
@@ -65,8 +65,8 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter a logic value for Investigation ID.');
+        expect(mockResult['rule-1'].valid).toBe(false);
+        expect(mockResult['rule-1'].reasons).toContain('Enter a logic value for Investigation ID.');
     });
 
     it('should be invalid when the between value is not a string', () => {
@@ -88,8 +88,8 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter valid From and To values for Investigation ID.');
+        expect(mockResult['rule-1'].valid).toBe(false);
+        expect(mockResult['rule-1'].reasons).toContain('Enter valid From and To values for Investigation ID.');
     });
 
     it('should be invalid when the between value is empty', () => {
@@ -118,10 +118,10 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter From and To values for Investigation ID.');
-        expect(mockResult['rule-2']['valid']).toBe(false);
-        expect(mockResult['rule-2']['reasons']).toContain('Enter From and To values for Investigation ID.');
+        expect(mockResult['rule-1'].valid).toBe(false);
+        expect(mockResult['rule-1'].reasons).toContain('Enter From and To values for Investigation ID.');
+        expect(mockResult['rule-2'].valid).toBe(false);
+        expect(mockResult['rule-2'].reasons).toContain('Enter From and To values for Investigation ID.');
     });
 
     it('should be invalid when the between value is invalid', () => {
@@ -152,12 +152,12 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain(
+        expect(mockResult['rule-1'].valid).toBe(false);
+        expect(mockResult['rule-1'].reasons).toContain(
             'To value of "foobar" is not a valid number for Investigation ID.'
         );
-        expect(mockResult['rule-2']['valid']).toBe(false);
-        expect(mockResult['rule-2']['reasons']).toContain(
+        expect(mockResult['rule-2'].valid).toBe(false);
+        expect(mockResult['rule-2'].reasons).toContain(
             'From date of "10/3/" is not valid mm/dd/yyyy formatted date for Diagnosis Date.'
         );
     });
@@ -190,10 +190,10 @@ describe('validateRule', () => {
             mockResult
         );
 
-        expect(mockResult['rule-1']['valid']).toBe(false);
-        expect(mockResult['rule-1']['reasons']).toContain('Enter a value for Investigation ID.');
-        expect(mockResult['rule-2']['valid']).toBe(false);
-        expect(mockResult['rule-2']['reasons']).toContain('Enter a value for Diagnosis Date.');
+        expect(mockResult['rule-1'].valid).toBe(false);
+        expect(mockResult['rule-1'].reasons).toContain('Enter a value for Investigation ID.');
+        expect(mockResult['rule-2'].valid).toBe(false);
+        expect(mockResult['rule-2'].reasons).toContain('Enter a value for Diagnosis Date.');
     });
 
     it('should be invalid for empty Rule Groups', () => {
@@ -223,8 +223,8 @@ describe('validateRule', () => {
 
         ['ruleGroup-1', 'ruleGroup-2', 'ruleGroup-3'].forEach((groupId) => {
             const group = mockResult[groupId];
-            expect(group['valid']).toBe(false);
-            expect(group['reasons']).toContain('Remove or add rules to the empty rule group.');
+            expect(group.valid).toBe(false);
+            expect(group.reasons).toContain('Remove or add rules to the empty rule group.');
         });
     });
 });

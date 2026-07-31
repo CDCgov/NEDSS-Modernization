@@ -26,7 +26,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
             <FeatureToggle guard={(features) => features.patient.search.filters.enabled}>
                 <div className={styles.filter}>
                     {filter && (
-                        <Button tertiary onClick={handleFilterSortReset} sizing={sizing}>
+                        <Button tertiary={true} onClick={handleFilterSortReset} sizing={sizing}>
                             Reset sort/filters
                         </Button>
                     )}

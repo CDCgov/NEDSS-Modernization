@@ -15,8 +15,8 @@ const CodedResultsAutocomplete = ({
 
     const resolver = (criteria: string, limit?: number) =>
         CodedResultOptionsService.codedResultAutocomplete({
-            criteria: criteria,
-            limit: limit,
+            criteria,
+            limit,
         }).then((response) => response as Selectable[]);
 
     return (

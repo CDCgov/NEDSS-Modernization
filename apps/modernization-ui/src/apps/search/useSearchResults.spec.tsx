@@ -69,7 +69,7 @@ let mockFilterActive: boolean = false;
 let mockFilterObject: Filter | undefined = undefined;
 
 vi.mock('design-system/filter', () => ({
-    maybeUseFilter: () => ({
+    useFilterMaybe: () => ({
         active: mockFilterActive,
         filter: mockFilterObject,
         show: vi.fn(),

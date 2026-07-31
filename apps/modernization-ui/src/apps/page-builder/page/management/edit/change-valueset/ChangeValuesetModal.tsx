@@ -40,9 +40,9 @@ export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }
 
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="change-valueset-modal"
             id="change-valueset-modal"
             aria-labelledby="change-valueset-modal"

@@ -41,15 +41,15 @@ export const ReorderTab = ({ tab, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSectionsOpen(!sectionsOpen)}>
                             {sectionsOpen ? (
-                                <Icon name={'expand-more'} size={'s'} />
+                                <Icon name="expand-more" size="s" />
                             ) : (
-                                <Icon name={'navigate-next'} size={'s'} />
+                                <Icon name="navigate-next" size="s" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
-                            <Icon name={'drag'} size={'m'} />
+                            <Icon name="drag" size="m" />
                         </div>
-                        <Icon name={'folder'} size={'m'} />
+                        <Icon name="folder" size="m" />
                         <p>{tab.name}</p>
                     </div>
                     <div className={`${styles.sections} ${sectionsOpen ? '' : styles.closed}`}>
@@ -62,7 +62,7 @@ export const ReorderTab = ({ tab, index, visible }: Props) => {
                                     style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                 >
                                     {sections
-                                        ? sections.map((section: any, i: number) => {
+                                        ? sections.map((section: PagesSection, i: number) => {
                                               return (
                                                   <ReorderSection
                                                       section={section}

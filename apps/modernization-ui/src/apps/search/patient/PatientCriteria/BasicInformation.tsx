@@ -106,7 +106,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
-                        aria-description={'Separate IDs by commas, semicolons, or spaces'}
+                        aria-description="Separate IDs by commas, semicolons, or spaces"
                     />
                 )}
             />
@@ -120,10 +120,10 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <CheckboxGroup
                             name={name}
-                            label={'Include records that are'}
+                            label="Include records that are"
                             sizing={sizing}
                             orientation={orientation}
-                            required
+                            required={true}
                             options={statusOptions}
                             value={value}
                             onChange={onChange}

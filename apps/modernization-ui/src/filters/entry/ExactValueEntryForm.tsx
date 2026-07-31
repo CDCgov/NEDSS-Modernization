@@ -19,7 +19,7 @@ const ExactValueEntryForm = ({ property }: ExactValueEntryFormProps) => {
         <Controller
             control={control}
             name="values"
-            shouldUnregister
+            shouldUnregister={true}
             rules={{
                 required: { value: true, message: 'At least one value is required.' },
             }}

@@ -19,7 +19,7 @@ const NoPatientResults = () => {
                         <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
                             <span className={styles.noResultsSubHeading}>
                                 Try refining your search, or{' '}
-                                <Button className={styles.link} onClick={add} tertiary>
+                                <Button className={styles.link} onClick={add} tertiary={true}>
                                     add a new patient.
                                 </Button>
                             </span>

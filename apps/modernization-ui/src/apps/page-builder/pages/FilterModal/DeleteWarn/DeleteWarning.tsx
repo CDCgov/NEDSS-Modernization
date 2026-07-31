@@ -1,11 +1,10 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import React from 'react';
 import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
 
-export const DeleteWarning = ({ handleAction }: any) => {
+export const DeleteWarning = ({ handleAction }: { handleAction: () => void }) => {
     const renderAction = (
         <>
-            <Button type="submit" className="filter-btn" onClick={handleAction} outline>
+            <Button type="submit" className="filter-btn" onClick={handleAction} outline={true}>
                 No, Go Back
             </Button>
             <Button type="submit" className="filter-btn" onClick={handleAction}>

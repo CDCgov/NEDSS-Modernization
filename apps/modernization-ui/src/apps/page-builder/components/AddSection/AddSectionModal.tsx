@@ -1,9 +1,10 @@
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import { SectionControllerService, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import React, { RefObject, useState } from 'react';
+import React, { ChangeEvent, RefObject, useState } from 'react';
 import { ToggleButton } from '../ToggleButton';
 import './AddSectionModal.scss';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
@@ -30,7 +31,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
         setSectionName(e.target.value);
     };
 
-    const handleSectionDescriptionChange = (e: any) => {
+    const handleSectionDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSectionDescription(e.target.value);
     };
 
@@ -50,19 +51,19 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                 onAddSection();
             }
         } catch (e) {
-            console.error(e);
+            logErrorToUserConsole(e);
         }
     };
 
     return (
         <ModalComponent
             modalRef={modalRef}
-            isLarge
+            isLarge={true}
             modalHeading={isSubSection ? `'Add Subsection` : 'Manage Sections'}
             modalBody={
                 <>
                     <div style={{ padding: '0 24px' }}>
-                        <Label htmlFor="sectionName" aria-required>
+                        <Label htmlFor="sectionName" aria-required={true}>
                             Section name<span className="required"></span>
                         </Label>
                         <TextInput
@@ -70,7 +71,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                             type="text"
                             name="sectionName"
                             value={sectionName}
-                            id={'add-section-name'}
+                            id="add-section-name"
                             onChange={handleSectionNameChange}
                         />
                         <Label htmlFor="sectionDescription">Section description</Label>
@@ -79,7 +80,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                             type="text"
                             name="sectionDescription"
                             value={sectionDescription}
-                            id={'add-section-description'}
+                            id="add-section-description"
                             onChange={handleSectionDescriptionChange}
                         />
                         <div className="visible-container">
@@ -96,12 +97,17 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
                     </div>
                     <ModalFooter className="padding-2 margin-left-auto footer">
                         <ButtonGroup className="flex-justify-end">
-                            <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                closer={true}
+                                outline={true}
+                                data-testid="condition-cancel-btn"
+                            >
                                 Cancel
                             </ModalToggleButton>
                             <ModalToggleButton
                                 modalRef={modalRef}
-                                closer
+                                closer={true}
                                 data-testid="section-add-btn"
                                 onClick={handleSubmit}
                             >

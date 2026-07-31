@@ -62,7 +62,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -109,7 +109,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                 <Controller
                     control={control}
                     name="birthAndSex.unknownReason"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label="Unknown reason"
@@ -202,7 +202,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                 <Controller
                     control={control}
                     name="birthAndSex.order"
-                    shouldUnregister
+                    shouldUnregister={true}
                     rules={{ min: { value: 0, message: 'Must be a positive number.' } }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input

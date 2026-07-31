@@ -1,5 +1,6 @@
 import { Config } from 'config';
 import { PatientMergeForm } from '../patient-merge/details/merge-review/model/PatientMergeForm';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export const usePatientMerge = () => {
     const mergePatients = (
@@ -24,7 +25,7 @@ export const usePatientMerge = () => {
                 }
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 onError();
             });
     };

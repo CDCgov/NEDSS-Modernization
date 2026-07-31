@@ -80,7 +80,7 @@ describe('AlertMessage', () => {
 
     it('should render the small icon if slim is specified', () => {
         const { container } = render(
-            <AlertMessage type="information" slim>
+            <AlertMessage type="information" slim={true}>
                 Content
             </AlertMessage>
         );
@@ -91,7 +91,7 @@ describe('AlertMessage', () => {
 
     it('should not render the icon if iconless is specified', () => {
         const { container } = render(
-            <AlertMessage type="information" iconless>
+            <AlertMessage type="information" iconless={true}>
                 Content
             </AlertMessage>
         );

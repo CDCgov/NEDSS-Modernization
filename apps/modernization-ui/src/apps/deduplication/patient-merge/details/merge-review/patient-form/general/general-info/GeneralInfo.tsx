@@ -26,7 +26,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -42,7 +42,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -58,7 +58,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -74,7 +74,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -90,7 +90,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -106,7 +106,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -122,7 +122,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -138,7 +138,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -154,7 +154,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />

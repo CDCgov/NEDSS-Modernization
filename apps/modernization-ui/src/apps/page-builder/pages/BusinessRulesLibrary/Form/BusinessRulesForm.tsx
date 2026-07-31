@@ -134,7 +134,8 @@ export const BusinessRulesForm = ({
     };
 
     const handleSourceValueChange = (data: string[]) => {
-        // create a new array by comparing data and sourceValueList, for each item in data, find the corresponding item in sourceValueList and return it
+        // create a new array by comparing data and sourceValueList, for each item in data,
+        // find the corresponding item in sourceValueList and return it
         const matchedValues = data.map((value) => sourceValues.find((val) => val.value === value));
         const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
         form.setValue('sourceValues', newValues);
@@ -252,13 +253,13 @@ export const BusinessRulesForm = ({
                 render={({ field: { onChange, onBlur, value } }) => (
                     <div className={styles.ruleFunction}>
                         <div className={styles.title}>
-                            <Label htmlFor="ruleFunction" requiredMarker>
+                            <Label htmlFor="ruleFunction" requiredMarker={true}>
                                 Function
                             </Label>
                         </div>
                         {isEdit && (
                             <div className={styles.content}>
-                                <Label htmlFor={'ruleFunction'}>
+                                <Label htmlFor="ruleFunction">
                                     {fieldTypeTab.find((tab) => tab.value === form.getValues('ruleFunction'))
                                         ?.display || 'Enable'}
                                 </Label>
@@ -274,9 +275,9 @@ export const BusinessRulesForm = ({
                                     }))}
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    onClick={(button: any): void => {
+                                    onClick={(button): void => {
                                         form.reset({
-                                            ruleFunction: button.value,
+                                            ruleFunction: button.value as Rule.ruleFunction,
                                             targetType: Rule.targetType.QUESTION,
                                             anySourceValue: false,
                                             targetIdentifiers: [],
@@ -300,7 +301,7 @@ export const BusinessRulesForm = ({
                 <>
                     <div className={styles.sourceQuestion}>
                         <div className={styles.title}>
-                            <Label htmlFor="sourceQuestion" requiredMarker>
+                            <Label htmlFor="sourceQuestion" requiredMarker={true}>
                                 Source question
                             </Label>
                         </div>
@@ -308,7 +309,7 @@ export const BusinessRulesForm = ({
                             {sourceQuestion === undefined ? (
                                 <Button
                                     type="button"
-                                    outline
+                                    outline={true}
                                     onClick={handleOpenSourceQuestion}
                                     data-testid="searchSourceQuestionBtn"
                                     className={styles.sourceBtn}
@@ -354,9 +355,9 @@ export const BusinessRulesForm = ({
                                             onChange={onChange}
                                             onBlur={onBlur}
                                             checked={value}
-                                            id={'anySourceValue'}
-                                            name={'anySourceValue'}
-                                            label={''}
+                                            id="anySourceValue"
+                                            name="anySourceValue"
+                                            label=""
                                         />
                                     </div>
                                 </div>
@@ -373,7 +374,7 @@ export const BusinessRulesForm = ({
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <div className={styles.comparator}>
                                 <div className={styles.title}>
-                                    <Label htmlFor="logic" requiredMarker>
+                                    <Label htmlFor="logic" requiredMarker={true}>
                                         Logic
                                     </Label>
                                 </div>
@@ -407,7 +408,7 @@ export const BusinessRulesForm = ({
                                 render={() => (
                                     <div className={styles.sourceValues}>
                                         <div className={styles.title}>
-                                            <Label htmlFor="sourceValues" requiredMarker>
+                                            <Label htmlFor="sourceValues" requiredMarker={true}>
                                                 Source value(s)
                                             </Label>
                                         </div>
@@ -433,7 +434,7 @@ export const BusinessRulesForm = ({
                                 render={({ field: { value } }) => (
                                     <div className={styles.targetType}>
                                         <div className={styles.title}>
-                                            <Label htmlFor="targetType" requiredMarker>
+                                            <Label htmlFor="targetType" requiredMarker={true}>
                                                 Target type
                                             </Label>
                                         </div>
@@ -466,7 +467,7 @@ export const BusinessRulesForm = ({
 
                     <div className={styles.targets}>
                         <div className={styles.title}>
-                            <Label htmlFor="targetQuestionTitle" requiredMarker>
+                            <Label htmlFor="targetQuestionTitle" requiredMarker={true}>
                                 Target(s)
                             </Label>
                         </div>
@@ -477,6 +478,7 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
+                                                {/* eslint-disable-next-line max-len */}
                                                 {`${checkForSemicolon(removeNumericAndSymbols(question.name ?? question.componentName))} (${
                                                     question.question
                                                 })`}
@@ -486,7 +488,7 @@ export const BusinessRulesForm = ({
                                     <div className={styles.edit}>
                                         <Button
                                             type="button"
-                                            outline
+                                            outline={true}
                                             data-testid="targetQuestionEditBtn"
                                             onClick={handleOpenTargetQuestion}
                                             className={styles.btn}
@@ -502,7 +504,7 @@ export const BusinessRulesForm = ({
                                     className={styles.targetBtn}
                                     data-testid="searchTargetQuestionBtn"
                                     type="button"
-                                    outline
+                                    outline={true}
                                     onClick={handleOpenTargetQuestion}
                                     disabled={sourceQuestion === undefined}
                                 >
@@ -534,7 +536,7 @@ export const BusinessRulesForm = ({
                                         <Input
                                             onChange={onChange}
                                             type="text"
-                                            multiline
+                                            multiline={true}
                                             defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
                                             value={checkForSemicolon(removeNumericAndSymbols(value))}
                                             onBlur={onBlur}
@@ -544,14 +546,14 @@ export const BusinessRulesForm = ({
                                 {isEdit && watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && (
                                     <div className={styles.errorMessage}>
                                         <div className={styles.title}>
-                                            <Label htmlFor="errorMessage" requiredMarker>
+                                            <Label htmlFor="errorMessage" requiredMarker={true}>
                                                 Error message
                                             </Label>
                                         </div>
                                         <div className={styles.content}>
                                             <Input
                                                 type="text"
-                                                multiline
+                                                multiline={true}
                                                 defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
                                                 onChange={onChange}
                                                 onBlur={onBlur}
@@ -564,7 +566,7 @@ export const BusinessRulesForm = ({
                     />
                 </>
             )}
-            <Modal id={'sourceQuestion'} ref={sourceQuestionModalRef} className={'source-question-modal'} isLarge>
+            <Modal id="sourceQuestion" ref={sourceQuestionModalRef} className="source-question-modal" isLarge={true}>
                 <SourceQuestion
                     ruleFunction={watch.ruleFunction}
                     onSubmit={handleSourceQuestion}
@@ -572,7 +574,7 @@ export const BusinessRulesForm = ({
                 />
             </Modal>
 
-            <Modal id={'targetQuestion'} ref={targetQuestionModalRef} className={'target-question-modal'} isLarge>
+            <Modal id="targetQuestion" ref={targetQuestionModalRef} className="target-question-modal" isLarge={true}>
                 <TargetQuestion
                     ruleFunction={watch.ruleFunction}
                     onCancel={handleCloseTargetQuestion}

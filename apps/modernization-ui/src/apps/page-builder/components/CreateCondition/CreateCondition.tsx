@@ -9,12 +9,13 @@ import {
 } from 'apps/page-builder/services/valueSetAPI';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { RefObject, useEffect, useState } from 'react';
+import { ChangeEvent, RefObject, useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
 import { Concept } from '../../generated/models/Concept';
 import './CreateCondition.scss';
 import { useConfiguration } from 'configuration';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -55,8 +56,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                 }
                 modal?.current?.toggleModal(undefined, false);
             })
-            .catch((error: any) => {
-                console.log(error.body);
+            .catch((error) => {
+                logErrorToUserConsole(error.body);
                 showAlert({ type: 'error', title: 'Error', message: error.body.message });
             });
     });
@@ -112,7 +113,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 error={error?.message}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -133,7 +134,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     };
                                 })}
                                 error={error?.message}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -155,7 +156,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 label="Condition Code"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -176,7 +177,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     };
                                 })}
                                 error={error?.message}
-                                required
+                                required={true}
                             />
                         )}
                     />
@@ -231,7 +232,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="reportableCondition"
                                     value="Y"
                                     label="Yes"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'Y'}
                                 />
                                 <Radio
@@ -239,7 +240,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="reportableCondition"
                                     value="N"
                                     label="No"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'N'}
                                 />
                             </div>
@@ -259,7 +260,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="mobilityReports"
                                     value="Y"
                                     label="Yes"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'Y'}
                                 />
                                 <Radio
@@ -267,7 +268,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="mobilityReports"
                                     value="N"
                                     label="No"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'N'}
                                 />
                             </div>
@@ -287,7 +288,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="reportableAggregate"
                                     value="Y"
                                     label="Yes"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'Y'}
                                 />
                                 <Radio
@@ -295,7 +296,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="reportableAggregate"
                                     value="N"
                                     label="No"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'N'}
                                 />
                             </div>
@@ -315,7 +316,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="tracingModule"
                                     value="Y"
                                     label="Yes"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'Y'}
                                 />
                                 <Radio
@@ -323,7 +324,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                     name="tracingModule"
                                     value="N"
                                     label="No"
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
                                     checked={value === 'N'}
                                 />
                             </div>
@@ -331,11 +332,17 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     />
                 </div>
                 <div className="create-condition__buttons">
-                    <ModalToggleButton modalRef={modal} type="reset" closer className="cancel-btn" onClick={resetInput}>
+                    <ModalToggleButton
+                        modalRef={modal}
+                        type="reset"
+                        closer={true}
+                        className="cancel-btn"
+                        onClick={resetInput}
+                    >
                         Cancel
                     </ModalToggleButton>
 
-                    <Button disabled={!formState.isValid} type={'submit'}>
+                    <Button disabled={!formState.isValid} type="submit">
                         Create and add to page
                     </Button>
                 </div>

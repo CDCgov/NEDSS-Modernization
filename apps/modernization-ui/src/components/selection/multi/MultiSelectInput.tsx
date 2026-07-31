@@ -20,7 +20,7 @@ type MultiSelectInputProps = {
     sizing?: Sizing;
     options?: Selectable[];
     value?: string[];
-    onChange?: (value: any) => void;
+    onChange?: (value: string[]) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
     disabled?: boolean;
@@ -76,12 +76,12 @@ export const MultiSelectInput = ({
             <ReactSelect<Selectable, true>
                 theme={theme}
                 styles={styles}
-                isMulti
+                isMulti={true}
                 id={id}
                 name={name}
                 value={selectedOptions}
                 placeholder={placeholder}
-                className={'multi-select'}
+                className="multi-select"
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}

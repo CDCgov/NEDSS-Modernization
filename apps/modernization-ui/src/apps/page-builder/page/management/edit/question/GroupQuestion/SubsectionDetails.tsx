@@ -36,7 +36,7 @@ export const SubsectionDetails = () => {
                                 data-testid="editSubsectionModalSubsectionName"
                                 defaultValue={value}
                                 onChange={onChange}
-                                required
+                                required={true}
                                 error={error?.message}
                             />
                         )}
@@ -93,7 +93,7 @@ export const SubsectionDetails = () => {
                                 data-testid="editSubsectionModalBlockName"
                                 defaultValue={value}
                                 onChange={onChange}
-                                required
+                                required={true}
                                 error={error?.message}
                                 className="text-uppercase"
                             />
@@ -122,7 +122,7 @@ export const SubsectionDetails = () => {
                                 defaultValue={value?.toString()}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                required
+                                required={true}
                                 min={0}
                                 max={5}
                                 error={error?.message}

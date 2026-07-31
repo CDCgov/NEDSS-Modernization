@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { ModalToggleButton, TextInput } from '@trussworks/react-uswds';
+import React, { RefObject, useState } from 'react';
+import { ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import './SavetTemplate.scss';
 
-export const SaveTemplates = ({ modalRef }: any) => {
+export const SaveTemplates = ({ modalRef }: { modalRef: RefObject<ModalRef> }) => {
     const init = { name: '', desc: '' };
     const [details, setDetails] = useState(init);
 
     const [validateName, setValidateName] = useState(false);
-    const handleTabInput = ({ target }: any) => {
+    const handleTabInput = ({ target }: { target: HTMLInputElement }) => {
         setDetails({
             ...details,
             [target.name]: target?.type === 'checkbox' ? target?.checked : target.value,
@@ -18,12 +18,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
         setValidateName(!pattern.test(target?.value) || target?.value === '');
     };
 
-    const handleSubmit = () => {
-        const { name, desc } = details;
-        // This file appears to be dead code
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const request = { name, desc };
-    };
+    const handleSubmit = () => {};
     const validateBtn = !details.name || validateName || !details.desc;
     const renderTemplateForm = (
         <div className="form-container save-template margin-top-1em">
@@ -60,7 +55,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
             </div>
             <div className="margin-top-1em save-template-footer ds-u-text-align--right ">
                 <ModalToggleButton
-                    closer
+                    closer={true}
                     modalRef={modalRef}
                     className="submit-btn"
                     onClick={handleSubmit}
@@ -69,7 +64,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
                 >
                     Save
                 </ModalToggleButton>
-                <ModalToggleButton closer modalRef={modalRef} className="cancel-btn" type="button">
+                <ModalToggleButton closer={true} modalRef={modalRef} className="cancel-btn" type="button">
                     Cancel
                 </ModalToggleButton>
             </div>

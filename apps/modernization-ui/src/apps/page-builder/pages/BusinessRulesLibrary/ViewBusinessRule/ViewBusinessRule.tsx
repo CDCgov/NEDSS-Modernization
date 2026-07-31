@@ -28,12 +28,12 @@ export const ViewBusinessRule = () => {
     useEffect(() => {
         const targetIdentifiers = rule?.targets.map((target) => target.targetIdentifier ?? '') ?? [];
 
-        if (rule?.targetType == QUESTION) {
+        if (rule?.targetType === QUESTION) {
             const targetSearch = findTargetQuestion(targetIdentifiers, page);
             setTargetQuestions(targetSearch);
         }
 
-        if (rule?.targetType == SUBSECTION) {
+        if (rule?.targetType === SUBSECTION) {
             const targetSearch = findTargetSubsection(targetIdentifiers, page);
             setTargetSubSections(targetSearch);
         }
@@ -113,14 +113,14 @@ export const ViewBusinessRule = () => {
                             <tr>
                                 <td>Target(s)</td>
                                 <td>
-                                    {rule?.targetType == QUESTION &&
+                                    {rule?.targetType === QUESTION &&
                                         targetQuestions.map((target, key) => (
                                             <span key={key}>
                                                 {target.name} ({target.question})
                                             </span>
                                         ))}
 
-                                    {rule?.targetType == SUBSECTION &&
+                                    {rule?.targetType === SUBSECTION &&
                                         targetSubSections.map((target, key) => (
                                             <span key={key}>
                                                 {target.name} ({target.questionIdentifier})

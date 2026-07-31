@@ -3,6 +3,7 @@ import merge from 'lodash.merge';
 import { Configuration } from './configuration';
 import { defaultConfiguration } from './defaults';
 import { currentConfiguration } from './currentConfiguration';
+import { logWarnToUserConsole } from 'utils/logging';
 
 type InternalState =
     | { status: 'default'; configuration: Configuration }
@@ -81,8 +82,8 @@ const useConfiguration = (): Interaction => {
     const interaction = useContext(ConfigurationContext);
 
     if (interaction === undefined) {
-        console.warn(
-            'useConfiguration used without a ConfigurationProvider.   Only the default configuration  will be provided.'
+        logWarnToUserConsole(
+            'useConfiguration used without a ConfigurationProvider. Only the default configuration  will be provided.'
         );
     }
 

@@ -100,7 +100,7 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button onClick={handleCancel} type="button" outline>
+                <Button onClick={handleCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

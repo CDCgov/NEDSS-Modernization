@@ -34,7 +34,7 @@ const GeneralInformationDemographicFields = ({
                     onChange={onChange}
                     onBlur={onBlur}
                     error={error?.message}
-                    required
+                    required={true}
                     sizing={sizing}
                     aria-description="This field defaults to today's date and can be changed if needed."
                 />
@@ -188,13 +188,13 @@ const GeneralInformationDemographicFields = ({
                 control={form.control}
                 name="general.stateHIVCase"
                 rules={maxLengthRule(16, labels.stateHIVCase)}
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                     <TextInputField
                         label={labels.stateHIVCase}
                         orientation={orientation}
                         onBlur={onBlur}
-                        onChange={(value) => onChange({ value: value })}
+                        onChange={(value) => onChange({ value })}
                         maxLength={16}
                         value={isAllowed(value) ? value.value : undefined}
                         id={name}

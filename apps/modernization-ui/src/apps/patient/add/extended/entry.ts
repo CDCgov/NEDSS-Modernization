@@ -27,17 +27,17 @@ export type { ExtendedNewPatientEntry };
 
 const initial = (asOf: string = today()) => ({
     administrative: {
-        asOf: asOf,
+        asOf,
     },
     birthAndSex: {
-        asOf: asOf,
+        asOf,
     },
     ethnicity: initialEthnicity(asOf),
     mortality: {
-        asOf: asOf,
+        asOf,
     },
     general: {
-        asOf: asOf,
+        asOf,
     },
     names: [],
     addresses: [],

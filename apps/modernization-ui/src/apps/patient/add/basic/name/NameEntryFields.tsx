@@ -8,6 +8,8 @@ import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 
 export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<{ name: NameInformationEntry }>();
+    const { suffixes } = useNameCodedValues();
+
     return (
         <>
             <Controller
@@ -80,7 +82,7 @@ export const NameEntryFields = ({ orientation = 'horizontal', sizing = 'medium' 
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        options={useNameCodedValues().suffixes}
+                        options={suffixes}
                     />
                 )}
             />

@@ -49,7 +49,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         render: (value) => (
             <>
                 <ClassicModalButton
-                    tertiary
+                    tertiary={true}
                     sizing="small"
                     className={styles['event-id']}
                     url={`/nbs/api/profile/${value.patient}/contact/${value.identifier}?condition=${value.condition}`}
@@ -134,9 +134,9 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
                 <Card
-                    id={'patient-file-contact-named'}
+                    id="patient-file-contact-named"
                     title={title}
-                    collapsible
+                    collapsible={true}
                     open={data.length > 0}
                     flair={<Tag size={sizing}>{total}</Tag>}
                     className={styles.card}
@@ -151,6 +151,7 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                                     id={`${contact.condition}-${title}`}
                                     sizing={sizing}
                                     className={styles.card}
+                                    // eslint-disable-next-line max-len
                                     subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}
                                 >
                                     <SortableDataTable

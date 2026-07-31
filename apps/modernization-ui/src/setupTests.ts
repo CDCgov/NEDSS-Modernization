@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/vitest';
 import 'jest-axe/extend-expect';
 
 // All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
-// eslint-disable-next-line no-undef
+
 process.env.TZ = 'America/New_York';
 
 // Global fetch mock to prevent live network calls in all tests
@@ -41,10 +41,7 @@ class MockRequest {
 globalThis.Request = MockRequest as any;
 
 globalThis.ResizeObserver = class {
-    private callback: (...args: any[]) => void;
-    constructor(callback: (...args: any[]) => void) {
-        this.callback = callback;
-    }
+    constructor(_callback: (...args: any[]) => void) {}
     observe() {}
     unobserve() {}
     disconnect() {}
@@ -63,7 +60,6 @@ async function mock(mockedUri: string, stub: unknown) {
 }
 
 vi.hoisted(async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const tabbable: { tabbable: any; focusable: any; isTabbable: any; isFocusable: any } =
         await vi.importActual('tabbable');
     return mock('tabbable', {

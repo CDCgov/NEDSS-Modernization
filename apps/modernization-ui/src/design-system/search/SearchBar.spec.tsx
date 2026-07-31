@@ -28,7 +28,7 @@ describe('SearchBar', () => {
     });
 
     it('applies tall class when tall is true', () => {
-        const { container } = render(<SearchBar tall />);
+        const { container } = render(<SearchBar tall={true} />);
         const tallElement = container.querySelector(`.${'tall'}`);
         expect(tallElement).toBeInTheDocument();
     });

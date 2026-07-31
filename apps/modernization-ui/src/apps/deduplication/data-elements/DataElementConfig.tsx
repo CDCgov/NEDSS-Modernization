@@ -98,7 +98,7 @@ export const DataElementConfig = () => {
             <div className={styles.content}>
                 <DataElementValidationError validationError={validationError} />
                 <main>
-                    <Shown when={!loading} fallback={<Loading center />}>
+                    <Shown when={!loading} fallback={<Loading center={true} />}>
                         <FormProvider {...form}>
                             <DataElementsForm dataElements={dataElements} />
                         </FormProvider>
@@ -106,7 +106,7 @@ export const DataElementConfig = () => {
                 </main>
             </div>
             <div className={styles.buttonBar}>
-                <Button secondary onClick={handleCancel}>
+                <Button secondary={true} onClick={handleCancel}>
                     Cancel
                 </Button>
                 <Button onClick={handleSubmit} disabled={isSaveDisabled}>

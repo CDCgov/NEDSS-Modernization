@@ -9,7 +9,7 @@ const RedirectHome = () => {
 
     const path = search.view.enabled ? '/search' : '/advanced-search';
 
-    return <Navigate to={path} replace />;
+    return <Navigate to={path} replace={true} />;
 };
 
 export { RedirectHome };

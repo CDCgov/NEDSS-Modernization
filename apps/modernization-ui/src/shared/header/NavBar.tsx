@@ -1,8 +1,8 @@
-import { permitsAny, Permitted, permissions, permitsAll } from 'libs/permission';
+import { permitsAny, permissions, permitsAll } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
 import { FeatureToggle } from 'feature';
-import { NavBarLink } from './NavBarLink';
+import { NavBarLink, PermittedNavBarLink } from './NavBarLink';
 
 import styles from './NavBar.module.scss';
 
@@ -38,7 +38,7 @@ export const NavBar = () => {
                                 <tbody>
                                     <tr>
                                         <NavBarLink url="/nbs/HomePage.do?method=loadHomePage" name="Home" />
-                                        <Permitted
+                                        <PermittedNavBarLink
                                             permission={permitsAny(
                                                 permissions.morbidityReport.add,
                                                 permissions.labReport.add,
@@ -48,63 +48,53 @@ export const NavBar = () => {
                                                 permissions.provider.manage,
                                                 permissions.organization.manage
                                             )}
-                                        >
-                                            <NavBarLink
-                                                url="/nbs/LoadNavbar.do?ContextAction=DataEntry"
-                                                name="Data Entry"
-                                                includeSeparator={true}
-                                            />
-                                        </Permitted>
-                                        <Permitted permission={permitsAll(permissions.patient.merge)}>
-                                            <NavBarLink
-                                                url="/nbs/LoadNavbar1.do?ContextAction=MergePerson"
-                                                name="Merge Patients"
-                                                includeSeparator={true}
-                                            />
-                                        </Permitted>
+                                            url="/nbs/LoadNavbar.do?ContextAction=DataEntry"
+                                            name="Data Entry"
+                                            includeSeparator={true}
+                                        />
+                                        <PermittedNavBarLink
+                                            permission={permitsAll(permissions.patient.merge)}
+                                            url="/nbs/LoadNavbar1.do?ContextAction=MergePerson"
+                                            name="Merge Patients"
+                                            includeSeparator={true}
+                                        />
 
-                                        <Permitted permission={permitsAll(permissions.investigation.view)}>
-                                            <NavBarLink
-                                                url="/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true"
-                                                name="Open Investigations"
-                                                includeSeparator={true}
-                                            />
-                                        </Permitted>
+                                        <PermittedNavBarLink
+                                            permission={permitsAll(permissions.investigation.view)}
+                                            url="/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true"
+                                            name="Open Investigations"
+                                            includeSeparator={true}
+                                        />
 
-                                        <Permitted
+                                        <PermittedNavBarLink
                                             permission={permitsAny(
                                                 permissions.reports.template.view,
                                                 permissions.reports.public.view,
                                                 permissions.reports.private.view,
                                                 permissions.reports.reportingFacility.view
                                             )}
-                                        >
-                                            <NavBarLink
-                                                url="/nbs/nfc?ObjectType=7&amp;OperationType=116"
-                                                name="Reports"
-                                                includeSeparator={true}
-                                            />
-                                        </Permitted>
+                                            url="/nbs/nfc?ObjectType=7&amp;OperationType=116"
+                                            name="Reports"
+                                            includeSeparator={true}
+                                        />
 
                                         <FeatureToggle
                                             guard={(features) => features?.deduplication?.enabled}
                                             fallback={
-                                                <Permitted permission={permitsAny(...BASE_SYS_MGMT_PERMISSIONS)}>
-                                                    <NavBarLink
-                                                        url="/nbs/SystemAdmin.do"
-                                                        name="System Management"
-                                                        includeSeparator={true}
-                                                    />
-                                                </Permitted>
-                                            }
-                                        >
-                                            <Permitted permission={permitsAny(...DEDUPE_FEATURE_SYS_MGMT_PERMISSIONS)}>
-                                                <NavBarLink
+                                                <PermittedNavBarLink
+                                                    permission={permitsAny(...BASE_SYS_MGMT_PERMISSIONS)}
                                                     url="/nbs/SystemAdmin.do"
                                                     name="System Management"
                                                     includeSeparator={true}
                                                 />
-                                            </Permitted>
+                                            }
+                                        >
+                                            <PermittedNavBarLink
+                                                permission={permitsAny(...DEDUPE_FEATURE_SYS_MGMT_PERMISSIONS)}
+                                                url="/nbs/SystemAdmin.do"
+                                                name="System Management"
+                                                includeSeparator={true}
+                                            />
                                         </FeatureToggle>
                                     </tr>
                                 </tbody>
@@ -115,7 +105,7 @@ export const NavBar = () => {
                                 <tbody>
                                     <tr>
                                         <td className={styles.navLink}>
-                                            <a href={`/nbs/UserGuide.do?method=open`} target="_blank" rel="noreferrer">
+                                            <a href="/nbs/UserGuide.do?method=open" target="_blank" rel="noreferrer">
                                                 {' '}
                                                 Help{' '}
                                             </a>

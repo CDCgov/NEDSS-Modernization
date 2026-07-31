@@ -1,12 +1,10 @@
 import { Button, TextInput, Radio } from '@trussworks/react-uswds';
-import React from 'react';
 import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
-// import { TextArea } from 'components/FormInputs/TextArea';
 
-export const SaveFilter = ({ handleAction }: any) => {
+export const SaveFilter = ({ handleAction }: { handleAction: () => void }) => {
     const renderAction = (
         <>
-            <Button type="submit" className="filter-btn" onClick={handleAction} outline>
+            <Button type="submit" className="filter-btn" onClick={handleAction} outline={true}>
                 Cancel
             </Button>
             <Button type="submit" className="filter-btn" onClick={handleAction}>

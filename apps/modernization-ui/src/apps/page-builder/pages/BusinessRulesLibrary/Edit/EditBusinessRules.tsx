@@ -190,6 +190,7 @@ export const EditBusinessRule = () => {
                 modal={deleteWarningModal}
                 title="Warning"
                 message="Are you sure you want to delete this business rule?"
+                // eslint-disable-next-line max-len
                 detail="Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
                 confirmText="Yes, delete"
                 onConfirm={onDelete}
@@ -207,7 +208,7 @@ export const EditBusinessRule = () => {
                         <div className={styles.content}>
                             <FormProvider {...form}>
                                 <BusinessRulesForm
-                                    isEdit
+                                    isEdit={true}
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
                                     editSourceQuestion={findSourceQuestion(initialSourceIdentifiers)}
@@ -222,7 +223,7 @@ export const EditBusinessRule = () => {
                     <div className={styles.deleteBtn}>
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             data-testid="deleteBtnEditBusinessRulesPage"
                             onClick={() => deleteWarningModal.current?.toggleModal(undefined, true)}
                             className={styles.button}
@@ -234,7 +235,7 @@ export const EditBusinessRule = () => {
                     <div className={styles.submitBtns}>
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             data-testid="cancelEditBusinessRulesModel"
                             onClick={() => {
                                 form.reset();

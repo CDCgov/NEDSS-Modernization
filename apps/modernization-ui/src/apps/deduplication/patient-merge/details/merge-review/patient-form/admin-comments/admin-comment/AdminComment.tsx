@@ -15,7 +15,7 @@ export const AdminComment = ({ personUid, adminComments }: Props) => {
     const form = useFormContext<PatientMergeForm>();
 
     const parseDate = (date?: string) => {
-        if (date == undefined) {
+        if (date === undefined) {
             return;
         }
         return toDateDisplay(date);

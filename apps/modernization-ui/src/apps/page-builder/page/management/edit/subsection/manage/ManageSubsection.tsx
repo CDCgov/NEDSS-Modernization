@@ -89,7 +89,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         refresh();
                     }}
                     subsectionEdit={editSubsection}
-                    isEdit
+                    isEdit={true}
                 />
             )}
             {subsectionState === 'manage' && (
@@ -128,7 +128,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         )}
                         <div className={styles.section}>
                             <div className={styles.folderIcon}>
-                                <NbsIcon name={'folder'} />
+                                <NbsIcon name="folder" />
                             </div>
                             <p className={styles.sectionName}>{section?.name}</p>
                         </div>
@@ -163,9 +163,9 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             onClick={() => {
                                 onCancel?.();
                             }}
-                            type={'button'}
+                            type="button"
                             data-testid="manageSubsectionCloseBtn"
-                            outline
+                            outline={true}
                         >
                             Close
                         </Button>

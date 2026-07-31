@@ -64,11 +64,11 @@ const SystemManagementPage = () => {
                 <div className={styles.titleBar}>
                     <Heading level={1}>System Management</Heading>
                     <SearchBar
-                        placeholder={'Filter by keyword'}
+                        placeholder="Filter by keyword"
                         aria-label="Search"
                         value={filter}
                         onChange={setFilter}
-                        iconName={'filter_alt'}
+                        iconName="filter_alt"
                     />
                 </div>
             </header>

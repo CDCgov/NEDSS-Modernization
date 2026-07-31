@@ -12,6 +12,7 @@ import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 
 const INACTIVE_MESSAGE = 'This patient file is inactive and cannot be deleted.';
 const HAS_ASSOCIATIONS_MESSAGE =
+    // eslint-disable-next-line max-len
     'This patient file has associated event records. The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator.';
 
 type DeleteActionProps = {
@@ -58,14 +59,14 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                 enabled={showHint}
                 target={
                     <Button
-                        secondary
-                        destructive
+                        secondary={true}
+                        destructive={true}
                         disabled={patient.deletability !== 'Deletable'}
                         aria-label="Delete"
                         data-tooltip-position="top"
                         data-tooltip-offset="center"
                         icon="delete"
-                        sizing={'medium'}
+                        sizing="medium"
                         onClick={show}
                     />
                 }
@@ -80,8 +81,8 @@ const DeleteAction = ({ patient }: DeleteActionProps) => {
                     cancelText="Cancel"
                     onCancel={hide}
                     confirmText="Delete"
-                    destructive
-                    forceAction
+                    destructive={true}
+                    forceAction={true}
                     onConfirm={handleDeletePatient}
                 >
                     You have indicated that you would like to delete this patient file. Select Delete to continue or

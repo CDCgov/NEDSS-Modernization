@@ -15,24 +15,24 @@ type Props = {
 
 const PatientCreatedPanel = ({ created }: Props) => (
     <Modal
-        id={`patient-creation-success`}
+        id="patient-creation-success"
         title="Success"
-        forceAction
+        forceAction={true}
         onClose={() => {}}
         footer={() => (
             <>
                 <Permitted permission={permissions.morbidityReport.add}>
-                    <LinkButton secondary href={`/nbs/api/profile/${created.id}/report/morbidity`}>
+                    <LinkButton secondary={true} href={`/nbs/api/profile/${created.id}/report/morbidity`}>
                         Add morbidity report
                     </LinkButton>
                 </Permitted>
                 <Permitted permission={permissions.labReport.add}>
-                    <LinkButton secondary href={`/nbs/api/profile/${created.id}/report/lab`}>
+                    <LinkButton secondary={true} href={`/nbs/api/profile/${created.id}/report/lab`}>
                         Add lab report
                     </LinkButton>
                 </Permitted>
                 <Permitted permission={permissions.investigation.add}>
-                    <LinkButton secondary href={`/nbs/api/profile/${created.id}/investigation`}>
+                    <LinkButton secondary={true} href={`/nbs/api/profile/${created.id}/investigation`}>
                         Add investigation
                     </LinkButton>
                 </Permitted>

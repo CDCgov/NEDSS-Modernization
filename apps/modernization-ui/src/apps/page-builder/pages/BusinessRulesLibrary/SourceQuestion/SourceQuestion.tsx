@@ -41,7 +41,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
 
     useEffect(() => {
         if (ruleFunction && page) {
-            fetch(page.id, { ruleFunction: ruleFunction });
+            fetch(page.id, { ruleFunction });
         }
     }, [ruleFunction, page]);
 
@@ -107,7 +107,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                 setSourceList([]);
                                             }}
                                         >
-                                            <Icon name={'group'} size={'m'} />
+                                            <Icon name="group" size="m" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -130,7 +130,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name={'group'} size={'m'} />
+                                                    <Icon name="group" size="m" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
@@ -164,7 +164,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
             <div className={styles.footerBtn}>
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     data-testid="sourceQuestionModalCancelBtn"
                     onClick={() => {
                         onReset();

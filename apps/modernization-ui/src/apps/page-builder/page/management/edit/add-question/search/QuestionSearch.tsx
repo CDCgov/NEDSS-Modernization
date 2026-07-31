@@ -29,7 +29,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
             setSelectedQuestions([]);
             search({
                 searchText: query,
-                pageId: pageId,
+                pageId,
                 page: page.current - 1,
                 pageSize: page.pageSize,
                 sort,
@@ -93,20 +93,20 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
                 {response?.content?.length === 0 && (
                     <div className={styles.createNewNotification}>
                         <div className={styles.message}>Can't find what you're looking for?</div>
-                        <Button type="button" outline onClick={onCreateNew} className="addQuestionCreateNewBtn">
+                        <Button type="button" outline={true} onClick={onCreateNew} className="addQuestionCreateNewBtn">
                             Create new
                         </Button>
                     </div>
                 )}
             </div>
             <ButtonBar>
-                <Button onClick={handleClose} type="button" outline>
+                <Button onClick={handleClose} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button
                     onClick={handleAccept}
                     type="button"
-                    disabled={selectedQuestions == undefined || selectedQuestions.length === 0}
+                    disabled={selectedQuestions === undefined || selectedQuestions.length === 0}
                 >
                     Apply to page
                 </Button>

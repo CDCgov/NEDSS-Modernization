@@ -48,7 +48,7 @@ const RaceEntryFields = ({
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={`races-${name}`}
-                        required
+                        required={true}
                         label={RACE_AS_OF_LABEL}
                         value={value}
                         onBlur={onBlur}
@@ -71,7 +71,7 @@ const RaceEntryFields = ({
                     <SingleSelect
                         label={RACE_CATEGORY_LABEL}
                         orientation={orientation}
-                        required
+                        required={true}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}

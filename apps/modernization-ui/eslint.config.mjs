@@ -49,12 +49,20 @@ export default defineConfig([
                 'error',
                 { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' },
             ],
-            '@typescript-eslint/no-explicit-any': 'warn',
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
-            'react-hooks/rules-of-hooks': 'off',
+            'react-hooks/rules-of-hooks': 'warn',
+            // KLUDGE: this should be on, but doesn't play well with some of the current patterns
             'react-hooks/exhaustive-deps': 'off',
+            'react/jsx-curly-brace-presence': [2, 'never'],
+            'react/jsx-boolean-value': [2, 'always'],
+            'dot-notation': 'error',
+            'object-shorthand': 'error',
+            eqeqeq: 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
+            'object-shorthand': 'error',
         },
         settings: {
             react: { version: 'detect' },
@@ -67,7 +75,12 @@ export default defineConfig([
     },
     // Test and story files overrides
     {
-        files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}', '**/*.stories.{js,jsx,ts,tsx}'],
+        files: [
+            '**/*.spec.{js,jsx,ts,tsx}',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/*.stories.{js,jsx,ts,tsx}',
+            'src/setupTests.ts',
+        ],
         languageOptions: {
             globals: {
                 vi: 'readonly',
@@ -78,6 +91,7 @@ export default defineConfig([
             ...js.configs.recommended.rules,
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
+            'react-hooks/rules-of-hooks': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
             'no-console': 'off',

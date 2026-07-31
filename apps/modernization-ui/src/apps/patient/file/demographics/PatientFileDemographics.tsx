@@ -48,7 +48,7 @@ const PatientFileDemographics = () => {
                     provider={demographics.get().identifications}
                 />
                 <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
-                <span data-half>
+                <span data-half={true}>
                     <PatientFileEthnicityCard
                         id="patient-file-ethnicity"
                         sizing={sizing}
@@ -60,7 +60,7 @@ const PatientFileDemographics = () => {
                         sizing={sizing}
                     />
                 </span>
-                <span data-half>
+                <span data-half={true}>
                     <PatientFileMortalityCard
                         id="patient-file-mortality"
                         provider={demographics.get().mortality}

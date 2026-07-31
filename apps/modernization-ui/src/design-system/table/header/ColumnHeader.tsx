@@ -107,7 +107,7 @@ const SortableHeader = <V,>({ sorting, filtering, column, sizing, ...remaining }
                 <div className={styles.sortable}>
                     {column.name}
                     <Button
-                        tertiary
+                        tertiary={true}
                         icon={icon}
                         aria-label={`Sort ${column.name}`}
                         onClick={() => sorting.toggle(column.id)}

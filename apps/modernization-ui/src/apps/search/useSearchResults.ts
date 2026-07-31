@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { usePagination, Status as PageStatus } from 'pagination';
 import { useSorting } from 'libs/sorting';
 import { Predicate } from 'utils';
-import { Filter, maybeUseFilter } from 'design-system/filter';
+import { Filter, useFilterMaybe } from 'design-system/filter';
 import { useSearchCriteria } from './useSearchCriteria';
 import { SearchInteractionStatus, SearchResults } from './useSearchInteraction';
 import { Term } from './terms';
@@ -105,7 +105,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
                         filteredTotal: filter.filtering ? found.total : undefined,
                         terms: current.terms,
                     },
-                    filter: filter,
+                    filter,
                 };
             }
             break;
@@ -205,7 +205,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
 }: SearchResultSettings<C, A, R>): SearchResultsInteraction<C, R> => {
     const { page, ready, reset: pageReset } = usePagination();
     const { property, direction } = useSorting();
-    const filtering = maybeUseFilter();
+    const filtering = useFilterMaybe();
     const [currentTotal, setCurrentTotal] = useState<number>(0);
 
     const sort = useMemo(() => {
@@ -344,7 +344,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         if (!filter.filtering) {
             setCurrentTotal(resolved.total);
         }
-        dispatch({ type: 'complete', found: { ...resolved }, filter: filter });
+        dispatch({ type: 'complete', found: { ...resolved }, filter });
     };
 
     const handleError = (error: Error) => dispatch({ type: 'error', reason: error.message });

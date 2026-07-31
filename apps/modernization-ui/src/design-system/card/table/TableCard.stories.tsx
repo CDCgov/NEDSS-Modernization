@@ -67,7 +67,7 @@ export const Default: Story = {
             { id: '3', name: 'Sam Wilson', age: 23 },
             { id: '4', name: 'Cassandra Jones', age: 24 },
         ],
-        columns: columns,
+        columns,
         columnPreferencesKey: 'storybook.tablecard',
         defaultColumnPreferences: columnPreferences,
     },
@@ -84,7 +84,7 @@ export const Actions: Story = {
     args: {
         ...Default.args,
         actions: (
-            <Button sizing="small" secondary icon="add_circle">
+            <Button sizing="small" secondary={true} icon="add_circle">
                 Add Person
             </Button>
         ),

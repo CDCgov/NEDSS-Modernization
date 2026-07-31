@@ -15,7 +15,7 @@ const DeleteQuestion = ({ onDelete, isStaticElement }: CommonProps) => {
     };
     return (
         <div className={styles.delete}>
-            <ModalToggleButton modalRef={deleteModalRef} className="delete-btn" unstyled>
+            <ModalToggleButton modalRef={deleteModalRef} className="delete-btn" unstyled={true}>
                 <Icon.Delete style={{ cursor: 'pointer' }} className="primary-color" />
             </ModalToggleButton>
             <ConfirmationModal
@@ -23,6 +23,7 @@ const DeleteQuestion = ({ onDelete, isStaticElement }: CommonProps) => {
                 confirmBtnClassName="questionDeleteConfirmBtn"
                 title="Warning"
                 message={`Are you sure you want to delete the ${isStaticElement ? 'static element' : 'question'}?`}
+                // eslint-disable-next-line max-len
                 detail={`Deleting this ${isStaticElement ? 'static element' : 'question'} cannot be undone. Are you sure you want to continue?`}
                 confirmText="Yes, delete"
                 onConfirm={() => {

@@ -17,7 +17,7 @@ export const EditStaticElementModal = ({ modal, question, onClosed }: Props) => 
     return (
         <ModalComponent
             modalRef={modal}
-            modalHeading={'Edit static elements'}
+            modalHeading="Edit static elements"
             modalBody={question && <EditStaticElement question={question} onCloseModal={handleClose} />}
         />
     );

@@ -43,7 +43,7 @@ export const DateFields = ({ maskOptions, published }: Props) => {
                         error={error?.message}
                         name={name}
                         id={name}
-                        disabled
+                        disabled={true}
                     />
                 )}
             />

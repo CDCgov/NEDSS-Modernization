@@ -41,15 +41,15 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setQuestionsOpen(!questionsOpen)}>
                             {!questionsOpen ? (
-                                <Icon name={'navigate-next'} size="s" />
+                                <Icon name="navigate-next" size="s" />
                             ) : (
-                                <Icon name={'expand-more'} size="s" />
+                                <Icon name="expand-more" size="s" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
-                            <Icon name={'drag'} size={'m'} />
+                            <Icon name="drag" size="m" />
                         </div>
-                        <Icon name={'subsection'} size={'m'} />
+                        <Icon name="subsection" size="m" />
                         {subsection.name}
                     </div>
                     <div className={`${styles.questions} ${!questionsOpen ? styles.closed : ''}`}>
@@ -62,13 +62,13 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                                     style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                 >
                                     {questions
-                                        ? questions.map((question: any, i: number) => {
+                                        ? questions.map((question: PagesQuestion, i: number) => {
                                               return (
                                                   <ReorderQuestion
                                                       question={question}
                                                       key={question.id.toString()}
                                                       index={i}
-                                                      visible={question.display}
+                                                      visible={!!question.visible}
                                                   />
                                               );
                                           })

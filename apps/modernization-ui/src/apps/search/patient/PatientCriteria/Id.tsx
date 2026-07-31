@@ -8,7 +8,9 @@ import { TextInputField } from 'design-system/input/text/TextInputField';
 
 export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
-    const identificationType = useWatch({ control: control, name: 'identificationType' });
+    const identificationType = useWatch({ control, name: 'identificationType' });
+
+    const conceptOptions = useConceptOptions('EI_TYPE_PAT', { lazy: false }).options;
 
     return (
         <SearchCriteria sizing={sizing}>
@@ -24,7 +26,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                         id={name}
                         sizing={sizing}
                         orientation={orientation}
-                        options={useConceptOptions('EI_TYPE_PAT', { lazy: false }).options}
+                        options={conceptOptions}
                     />
                 )}
             />
@@ -46,7 +48,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                             onChange={onChange}
                             name={name}
                             label="ID number"
-                            required
+                            required={true}
                             error={error?.message}
                         />
                     )}

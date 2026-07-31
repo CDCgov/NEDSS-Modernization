@@ -16,11 +16,13 @@ type Props<V> = {
 };
 /**
  *
- * Provides a table component for the Patient merge details page. Since these tables all have a Checkbox in the first column and a
- * View icon in the last column, this component handles adding those columns as well as the styling for those columns.
+ * Provides a table component for the Patient merge details page. Since these tables all have a Checkbox
+ * in the first column and a View icon in the last column, this component handles adding those columns
+ * as well as the styling for those columns.
  *
  *  @param {string} props.id a unique identifier for the DataTable
- *  @param {Object[]} props.columns the column definition and how to render the provided data. The Checkbox and View icon columns are added by default and do not need to be provided
+ *  @param {Object[]} props.columns the column definition and how to render the provided data. The Checkbox
+ * and View icon columns are added by default and do not need to be provided
  *  @param {Object[]} props.data the data to display in the table
  *  @param {function} props.rowId a unique identifier for each row. used by the Checkbox
  *  @param {function} props.isSelected the Checkbox state
@@ -63,7 +65,7 @@ export const MergeDataTable = <V,>({
             render: (v) => (
                 <div className={styles.action}>
                     <Button
-                        tertiary
+                        tertiary={true}
                         sizing="small"
                         icon="visibility"
                         aria-pressed={isViewed(v)}

@@ -22,10 +22,10 @@ type SearchInteraction<R> = {
     clear: () => void;
 };
 
-const SearchInteractionContext = createContext<SearchInteraction<any> | undefined>(undefined);
+const SearchInteractionContext = createContext<SearchInteraction<unknown> | undefined>(undefined);
 
 type Props = {
-    interaction: SearchInteraction<any>;
+    interaction: SearchInteraction<unknown>;
     children: ReactNode;
 };
 

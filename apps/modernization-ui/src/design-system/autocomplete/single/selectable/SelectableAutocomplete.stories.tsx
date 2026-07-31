@@ -28,7 +28,7 @@ export const Default: Story = {
         id: 'selectautocomplete-default',
         name: 'selectautocomplete-default',
         label: 'Default',
-        resolver: resolver,
+        resolver,
         placeholder: 'Select text',
     },
 };

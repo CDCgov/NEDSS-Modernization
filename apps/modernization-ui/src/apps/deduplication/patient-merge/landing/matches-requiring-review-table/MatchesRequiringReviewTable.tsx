@@ -106,7 +106,7 @@ export const MatchesRequiringReviewTable = () => {
         <div className={styles.matchesRequiringReviewTable}>
             <Shown when={loading}>
                 <div className={styles.loadingContainer}>
-                    <Loading center />
+                    <Loading center={true} />
                 </div>
             </Shown>
             <div className={styles.tableWrapper}>
@@ -121,7 +121,7 @@ export const MatchesRequiringReviewTable = () => {
             <Shown when={page.total > 0}>
                 <div className={styles.pagination}>
                     <SearchResultPageSizeSelect
-                        id={`page-size-select`}
+                        id="page-size-select"
                         value={page.pageSize}
                         selections={[20, 30, 50, 100]}
                         onPageSizeChanged={resize}

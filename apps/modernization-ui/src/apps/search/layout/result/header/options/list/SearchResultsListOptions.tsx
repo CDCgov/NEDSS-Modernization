@@ -21,7 +21,7 @@ const SearchResultsListOptions = ({ disabled = false, sizing }: Props) => {
                     aria-label="Sort list by"
                     data-tooltip-position="top"
                     data-tooltip-offset="left"
-                    secondary
+                    secondary={true}
                     disabled={disabled}
                     icon="sort_arrow"
                     onClick={toggle}

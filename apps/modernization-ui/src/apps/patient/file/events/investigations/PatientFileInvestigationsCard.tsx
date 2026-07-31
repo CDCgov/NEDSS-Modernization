@@ -150,7 +150,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
             title="Investigations"
             data={data}
             columns={[selectionColumn, ...columns]}
-            columnPreferencesKey={'patient.file.investigations.preferences'}
+            columnPreferencesKey="patient.file.investigations.preferences"
             defaultColumnPreferences={columnPreferences}
             sizing={sizing}
             className={styles.selectable}
@@ -158,7 +158,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                 <>
                     <Permitted permission={permissions.investigation.add}>
                         <LinkButton
-                            secondary
+                            secondary={true}
                             sizing={sizing}
                             icon="add_circle"
                             href={`/nbs/api/profile/${patient}/investigation`}
@@ -173,10 +173,11 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                             enabled={!comparison}
                             target={
                                 <LinkButton
-                                    secondary
+                                    secondary={true}
                                     sizing={sizing}
                                     disabled={!comparison}
                                     aria-describedby="compare-investigations"
+                                    // eslint-disable-next-line max-len
                                     href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}
                                 >
                                     Compare investigations

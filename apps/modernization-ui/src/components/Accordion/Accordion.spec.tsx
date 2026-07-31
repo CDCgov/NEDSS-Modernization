@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 describe('when Accordion renders', () => {
     it('should properly link button and panel with matching ids', () => {
         const { container } = render(
-            <Accordion title="test" open>
+            <Accordion title="test" open={true}>
                 <h1>Content</h1>
             </Accordion>
         );
@@ -18,7 +18,7 @@ describe('when Accordion renders', () => {
 
     it('should have role region for accessibility announcement', () => {
         const { container } = render(
-            <Accordion title="test" open>
+            <Accordion title="test" open={true}>
                 <h1>Content</h1>
             </Accordion>
         );

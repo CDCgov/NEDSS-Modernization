@@ -9,7 +9,7 @@ const PartialValueEntryForm = () => {
         <Controller
             control={control}
             name="value"
-            shouldUnregister
+            shouldUnregister={true}
             rules={{
                 required: { value: true, message: 'A value is required.' },
             }}

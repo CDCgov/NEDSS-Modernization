@@ -53,12 +53,12 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
             <CloseableHeader title={<div className={styles.addValuesetHeader}>Edit concept</div>} onClose={onClose} />
             <div className={styles.content}>
                 <FormProvider {...form}>
-                    <ConceptForm isEditing />
+                    <ConceptForm isEditing={true} />
                 </FormProvider>
             </div>
 
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button disabled={!isDirty || !isValid} type="button" onClick={handleSave}>

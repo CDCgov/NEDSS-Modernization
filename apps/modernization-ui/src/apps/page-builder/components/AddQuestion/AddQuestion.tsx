@@ -108,7 +108,7 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
                 </div>
             </div>
             <ButtonBar>
-                <Button onClick={onClose} type="button" outline>
+                <Button onClick={onClose} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

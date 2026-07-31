@@ -24,7 +24,7 @@ export const HyperlinkFields = () => {
                         type="text"
                         ariaLabel="hyperlinkLabel"
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -45,7 +45,7 @@ export const HyperlinkFields = () => {
                         type="text"
                         ariaLabel="linkUrl"
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />

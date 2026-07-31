@@ -50,7 +50,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         id={name}
                         disabled={isEnabled}
                         label="Condition(s)"
-                        aria-label={'select the conditions for the page'}
+                        aria-label="select the conditions for the page"
                         options={conditions.map((m) => {
                             return {
                                 name: m.name ?? '',
@@ -78,17 +78,17 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         name={name}
                         htmlFor={name}
                         id={name}
-                        ariaLabel={'enter a name for the page'}
+                        ariaLabel="enter a name for the page"
                         defaultValue={value}
                         className="pageName"
                         type="text"
                         disabled={isEnabled || pageStatus === 'Published with Draft'}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
-            <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled />
+            <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled={true} />
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
@@ -98,7 +98,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         label="Reporting mechanism"
                         name={name}
                         id={name}
-                        aria-label={'select a reporting mechanism for the page'}
+                        aria-label="select a reporting mechanism for the page"
                         onChange={onChange}
                         className="margin-bottom-10"
                         onBlur={onBlur}
@@ -111,7 +111,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                             };
                         })}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -144,7 +144,7 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         name={name}
                         htmlFor={name}
                         id={name}
-                        aria-label={'enter a Data mart name for the page'}
+                        aria-label="enter a Data mart name for the page"
                         type="text"
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });

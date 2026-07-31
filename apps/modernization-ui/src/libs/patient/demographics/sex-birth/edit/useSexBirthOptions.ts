@@ -18,7 +18,7 @@ const useSexBirthOptions = (): SexBirthOptions => {
     const location = useLocationOptions();
 
     return {
-        genders: genders,
+        genders,
         preferredGenders: preferredGenders.options,
         genderUnknownReasons: genderUnknownReasons.options,
         multipleBirth: indicators,

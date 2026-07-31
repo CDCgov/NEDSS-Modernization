@@ -16,6 +16,7 @@ import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/Pa
 import { useGetPageDetails } from 'apps/page-builder/page/management/useGetPageDetails';
 import './PageDetails.scss';
 import { PageDetailsField } from './PageDetailsField';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export const PageDetails = () => {
     const { pageId } = useParams();
@@ -38,7 +39,7 @@ export const PageDetails = () => {
                 setMmgs(data);
             })
             .catch((error) => {
-                console.log('Error', error);
+                logErrorToUserConsole('Error', error);
             });
     }, []);
     useEffect(() => {
@@ -110,7 +111,7 @@ export const PageDetails = () => {
                     </div>
                 </div>
                 <div className="page-details__buttons">
-                    <Button type="button" outline onClick={handleCancel}>
+                    <Button type="button" outline={true} onClick={handleCancel}>
                         {isEnabled ? 'Cancel' : 'Close'}
                     </Button>
                     {isEnabled && (
