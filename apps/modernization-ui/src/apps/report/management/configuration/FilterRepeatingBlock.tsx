@@ -90,11 +90,6 @@ const FilterRepeatingBlock = ({
             defaultValue={defaultFilterData}
             rules={{ validate: () => !filtersIsDirty }}
             render={({ field: { onChange, value } }) => {
-                // force revalidation when dirty state changes
-                useEffect(() => {
-                    onChange(value);
-                }, [filtersIsDirty]);
-
                 return (
                     <FilterRepeatingBlockImpl
                         onChange={onChange}
@@ -102,7 +97,11 @@ const FilterRepeatingBlock = ({
                         dataSourceSelected={dataSourceSelected}
                         filterOptions={filterOptions}
                         columnOptions={columnOptions}
-                        setFiltersIsDirty={setFiltersIsDirty}
+                        setFiltersIsDirty={(v: boolean) => {
+                            // force overall form revalidation when dirty state changes
+                            onChange(value);
+                            setFiltersIsDirty(v);
+                        }}
                         value={value}
                     />
                 );

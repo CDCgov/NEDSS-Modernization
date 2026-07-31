@@ -32,7 +32,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
         ) {
             onChange(null);
         }
-    }, [options]);
+    }, [options, value]);
 
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
@@ -64,7 +64,7 @@ const useCurrentStateCountyOptions = () => {
     return options;
 };
 
-const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectable[]> = {
+const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable[]> = {
     [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
     [STATE_FILTER_CODE]: useStateOptions,
     [CONDITION_FILTER_CODE]: () => {
@@ -74,8 +74,7 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName?: string) => Selectabl
     [STD_HIV_WORKERS_FILTER_CODE]: useStdHivWorkerNameOptions,
 };
 
-const useDiseaseOptions = (filterCodeSetName?: string) => {
-    if (!filterCodeSetName) return [];
+const useDiseaseOptions = (filterCodeSetName: string) => {
     const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
     return options;
 };

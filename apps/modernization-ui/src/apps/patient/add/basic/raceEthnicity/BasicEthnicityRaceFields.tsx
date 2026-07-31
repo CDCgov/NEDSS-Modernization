@@ -13,6 +13,8 @@ export const BasicRaceEthnicityFields = ({ orientation = 'horizontal', sizing = 
     const categories = useRaceCategoryOptions({ filter: categoryFilter });
     const { control } = useFormContext<{ ethnicityRace: BasicEthnicityRace }>();
 
+    const { ethnicGroups } = useEthnicityCodedValues();
+
     return (
         <>
             <Controller
@@ -28,7 +30,7 @@ export const BasicRaceEthnicityFields = ({ orientation = 'horizontal', sizing = 
                         id={name}
                         name={name}
                         value={value}
-                        options={useEthnicityCodedValues().ethnicGroups}
+                        options={ethnicGroups}
                     />
                 )}
             />

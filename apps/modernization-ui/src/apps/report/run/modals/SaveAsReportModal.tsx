@@ -49,6 +49,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
     const permissions = usePermissions();
 
     const reportGroupOptions = getUserReportCreatePermissionsOptions(permissions.permissions);
+    const reportSectionOptions = useReportSections();
 
     const { control, handleSubmit } = useForm<SaveAsForm>({
         defaultValues: {
@@ -131,7 +132,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     name={name}
                                     error={error?.message}
                                     required={true}
-                                    options={useReportSections()}
+                                    options={reportSectionOptions}
                                     helperText="The heading under which the report appears."
                                 />
                             )}

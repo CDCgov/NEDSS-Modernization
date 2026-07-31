@@ -51,7 +51,8 @@ export default defineConfig([
             ],
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
-            'react-hooks/rules-of-hooks': 'off',
+            'react-hooks/rules-of-hooks': 'warn',
+            // KLUDGE: this should be on, but doesn't play well with some of the current patterns
             'react-hooks/exhaustive-deps': 'off',
             'react/jsx-curly-brace-presence': [2, 'never'],
             'react/jsx-boolean-value': [2, 'always'],
@@ -61,6 +62,7 @@ export default defineConfig([
             'no-var': 'error',
             'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
+            'object-shorthand': 'error',
         },
         settings: {
             react: { version: 'detect' },
@@ -89,6 +91,7 @@ export default defineConfig([
             ...js.configs.recommended.rules,
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
+            'react-hooks/rules-of-hooks': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
             'no-console': 'off',

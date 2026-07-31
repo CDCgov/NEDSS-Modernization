@@ -111,7 +111,7 @@ const useFilter = () => {
     return context;
 };
 
-const maybeUseFilter = () => useContext(FilterableContext);
+const useFilterMaybe = () => useContext(FilterableContext);
 
-export { useFilter, maybeUseFilter, FilterProvider };
+export { useFilter, useFilterMaybe, FilterProvider };
 export type { FilterInteraction };
