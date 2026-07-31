@@ -57,6 +57,11 @@ When('I add incomplete or incorrect advanced filters', () => {
       if (index !== 0) {
         // leave some logic values intentionally blank to trigger error
         cy.get('select[name="Logic"]').last().select(logicVal);
+
+        // enter invalid date
+        if (advFilter.field === 'Confirmation Method Time' && logicVal === 'Not Equals') {
+          cy.get('input[name="Value"]').last().clear().type('2');
+        }
       }
 
       if (logicVal === 'Between') {
@@ -107,6 +112,7 @@ const BASE_ERROR_MESSAGE = [
   'Enter a value for Investigator Name.',
   'Enter a logic value for Outcome Code.',
   'Enter a value for Outcome Code.',
+  'Date of "2" is not a valid mm/dd/yyyy formatted date for Confirmation Method Time.'
 ]
 
 Then('I see errors related to incomplete or incorrect advanced filters', () => {
