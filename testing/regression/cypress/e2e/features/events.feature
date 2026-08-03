@@ -11,8 +11,8 @@ Feature: User accesses patient profile and can view existing patient data here.
     # Not multiple investigations available
     @skip-broken
     Scenario: User compares investigations
-        Then user clicks on a patient's profile "Events" tab
-        When the user has selected multiple investigations
+        When user clicks on a patient's profile "Events" tab
+        And the user has selected multiple investigations
         And user clicks on the "Compare investigations" button
 
     Scenario: User wants to add a new investigation
