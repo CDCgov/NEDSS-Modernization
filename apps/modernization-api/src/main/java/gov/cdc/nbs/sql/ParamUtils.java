@@ -18,6 +18,7 @@ public class ParamUtils {
   // For 'IN' queries we want to replace the param with pre-formatted content instead of expanding
   // every item into a `?` placeholder and then having SQL server inject it
   public static String toSqlInContents(Collection<Long> ints) {
+    if (ints == null) return "";
     return ints.stream().map(String::valueOf).collect(Collectors.joining(", "));
   }
 }
