@@ -18,10 +18,7 @@ export const DISEASE_FILTER_CODE = 'CVG_CUSTOM_N01';
 export const STD_HIV_WORKERS_FILTER_CODE = 'STD_HIV_WRKR';
 
 const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
-    const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
-    // ignore include nulls indicator here
-    const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
-    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [];
+    const options = useFilterOptions(filter);
 
     useEffect(() => {
         // options have changed and the value is no longer in the option set
@@ -64,6 +61,11 @@ const useCurrentStateCountyOptions = () => {
     return options;
 };
 
+const useDiseaseOptions = (filterCodeSetName: string) => {
+    const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
+    return options;
+};
+
 const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable[]> = {
     [COUNTY_FILTER_CODE]: useCurrentStateCountyOptions,
     [STATE_FILTER_CODE]: useStateOptions,
@@ -74,8 +76,12 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable
     [STD_HIV_WORKERS_FILTER_CODE]: useStdHivWorkerNameOptions,
 };
 
-const useDiseaseOptions = (filterCodeSetName: string) => {
-    const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
+const useFilterOptions = (filter: BasicFilterConfiguration): Selectable[] => {
+    const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
+    // ignore include nulls indicator here
+    const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
+    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [];
+
     return options;
 };
 
