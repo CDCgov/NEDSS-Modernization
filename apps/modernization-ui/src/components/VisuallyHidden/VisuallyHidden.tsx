@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import styles from './VisuallyHidden.module.scss';
 
 // From https://www.joshwcomeau.com/snippets/react-components/visually-hidden/
 // Display text for screen readers only, but in dev mode can hold `Alt` to display the value
 const VisuallyHidden = ({ children, ...delegated }: { children: ReactNode } & JSX.IntrinsicElements['span']) => {
-    const [forceShow, setForceShow] = React.useState(false);
+    const [forceShow, setForceShow] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (import.meta.env.DEV) {
             const handleKeyDown = (ev: KeyboardEvent) => {
                 if (ev.key === 'Alt') {

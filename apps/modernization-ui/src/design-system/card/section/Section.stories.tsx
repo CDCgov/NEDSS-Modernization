@@ -1,5 +1,4 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Section } from './Section';
 import { Button } from 'design-system/button';
 import { Column, DataTable } from '../../table';

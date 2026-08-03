@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes } from 'react';
+import { useState, InputHTMLAttributes, ChangeEvent } from 'react';
 import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';
 import { Sizing } from 'design-system/field';
@@ -33,7 +33,7 @@ export const SearchBar = ({
     const value = controlledValue ?? internalValue;
 
     // Handle change event
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (controlledOnChange) {
             controlledOnChange(e.target.value); // call external onChange if controlled
         } else {

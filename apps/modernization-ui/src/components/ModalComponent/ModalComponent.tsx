@@ -1,12 +1,12 @@
 import './ModalComponent.scss';
 import { Modal, ModalHeading, ModalRef, ModalFooter } from '@trussworks/react-uswds';
-import React, { RefObject } from 'react';
+import { RefObject, ReactNode } from 'react';
 
 type ModalProps = {
     modalRef?: RefObject<ModalRef> | undefined;
-    modalHeading?: React.ReactNode | string;
-    modalBody?: React.ReactNode | React.ReactNode[] | string;
-    modalFooter?: React.ReactNode | React.ReactNode[] | string;
+    modalHeading?: ReactNode | string;
+    modalBody?: ReactNode | ReactNode[] | string;
+    modalFooter?: ReactNode | ReactNode[] | string;
     isLarge?: boolean;
     size?: string;
     forceAction?: boolean;

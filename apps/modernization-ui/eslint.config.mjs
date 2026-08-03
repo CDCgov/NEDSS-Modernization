@@ -69,14 +69,13 @@ export default defineConfig([
             'import/default': 'error',
             'import/export': 'error',
             'import/first': 'error',
-            'import/group-exports': 'error',
             'import/named': 'error',
             'import/namespace': 'error',
             'import/no-empty-named-blocks': 'error',
             'import/no-extraneous-dependencies': 'error',
             'import/no-named-as-default-member': 'error',
             'import/no-named-as-default': 'error',
-            'import/no-unassigned-import': 'error',
+            'import/no-unassigned-import': ['error', {"allow": ["**/*.scss"]}],
             // 'import/no-unresolved': 'error',
             // 'import/no-unused-modules': ['error', { unusedExports: true, missingExports: true }],
             'import/no-useless-path-segments': 'error',
@@ -86,6 +85,15 @@ export default defineConfig([
             jsdoc: {
                 tagNamePreference: {
                     return: 'return',
+                },
+            },
+            'import/parsers': {
+                '@typescript-eslint/parser': ['.ts', '.tsx'],
+            },
+            'import/resolver': {
+                typescript: {
+                    alwaysTryTypes: true, // Always search for types under @types folder
+                    project: './tsconfig.json',
                 },
             },
         },

@@ -1,6 +1,8 @@
+import { ReactNode, RefObject, useEffect, useState, KeyboardEvent as ReactKeyboardEvent } from 'react';
+
 import classNames from 'classnames';
+
 import './Suggestions.scss';
-import React, { ReactNode, RefObject, useEffect, useState } from 'react';
 
 type Props<T> = {
     listRef?: RefObject<HTMLUListElement>;
@@ -47,7 +49,7 @@ const Suggestions = <T,>({
         shown(false);
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
+    const handleKeyDown = (event: ReactKeyboardEvent<HTMLUListElement>) => {
         event.preventDefault();
         if (event.key === 'ArrowDown') {
             setActive((existing) => existing + 1);
