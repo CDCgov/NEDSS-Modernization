@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
 import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';

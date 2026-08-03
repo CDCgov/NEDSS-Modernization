@@ -6,7 +6,6 @@ import { Icon } from 'design-system/icon';
 import styles from './message.module.scss';
 import { resolveIcon } from './resolveIcon';
 
-
 type Type = 'information' | 'success' | 'warning' | 'error';
 
 type MessageProps = {

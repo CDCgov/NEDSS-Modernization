@@ -17,7 +17,6 @@ import { PageContent } from './content/PageContent';
 import { ReorderModal } from './reorder/ReorderModal/ReorderModal';
 import { ManageSectionModal } from './section/manage/ManageSectionModal';
 
-
 export const Edit = () => {
     const { page, fetch, refresh, loading } = useGetPageDetails();
 

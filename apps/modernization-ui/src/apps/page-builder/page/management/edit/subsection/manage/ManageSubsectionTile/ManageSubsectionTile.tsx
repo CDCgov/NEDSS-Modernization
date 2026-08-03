@@ -7,7 +7,6 @@ import { Icon as NbsIcon } from 'components/Icon/Icon';
 
 import styles from './managesubsectiontile.module.scss';
 
-
 type ManageSubsectionTileProps = {
     subsection: PagesSubSection;
     setOnAction?: (action: boolean) => void;

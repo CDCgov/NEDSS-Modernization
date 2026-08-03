@@ -10,7 +10,6 @@ import { ValuesetForm } from '../AddValueset/ValuesetForm/ValuesetForm';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
 
-
 import styles from './edit-valueset.module.scss';
 
 type Props = {

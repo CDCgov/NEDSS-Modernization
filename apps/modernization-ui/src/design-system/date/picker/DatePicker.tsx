@@ -11,7 +11,6 @@ import styles from './date-picker.module.scss';
 import { maskedAsDate } from './maskedAsDate';
 import { useDate } from './useDate';
 
-
 const handleExternalKeyUp = (event: Event) => {
     const input = event.target as HTMLInputElement;
 

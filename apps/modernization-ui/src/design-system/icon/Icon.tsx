@@ -8,8 +8,6 @@ import extended from './extended-sprite.svg';
 import styles from './icon.module.scss';
 import { Icons } from './types';
 
-
-
 export type IconProps = {
     name: Icons;
     sizing?: Sizing;

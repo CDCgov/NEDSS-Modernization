@@ -13,7 +13,6 @@ import { DefaultValues, FieldValues, FormProvider, useForm, UseFormReturn } from
 
 import { Required } from '../required/Required';
 
-
 import styles from './RepeatingBlock.module.scss';
 import { entryColumns } from './entryColumns';
 import { entryIdentifierGenerator } from './entryIdentifierGenerator';

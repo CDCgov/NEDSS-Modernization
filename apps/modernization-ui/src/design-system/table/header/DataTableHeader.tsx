@@ -8,7 +8,6 @@ import styles from '../data-table.module.scss';
 import { ColumnHeader } from './ColumnHeader';
 import { Column } from './column';
 
-
 type HeaderRowProps<V> = {
     columns: Column<V>[];
     sizing?: Sizing;

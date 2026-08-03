@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import styles from './Button.module.scss';
 import { isLabeled, StandardButtonProps } from './buttons';
 
-
 const resolveClasses = (props: StandardButtonProps) => {
     const labeled = isLabeled(props);
 

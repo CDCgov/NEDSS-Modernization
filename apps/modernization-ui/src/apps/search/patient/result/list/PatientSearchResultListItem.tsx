@@ -1,4 +1,3 @@
-
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 import {
     displayPhones,

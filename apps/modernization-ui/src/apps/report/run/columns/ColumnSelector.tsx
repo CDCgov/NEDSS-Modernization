@@ -14,7 +14,6 @@ import { useController } from 'react-hook-form';
 
 import { ReportExecuteForm } from '../ReportRunPage';
 
-
 import styles from './column-selector.module.scss';
 import { toSelectable } from './utils';
 

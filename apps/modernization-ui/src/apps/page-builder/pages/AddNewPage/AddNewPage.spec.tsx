@@ -19,7 +19,6 @@ import { MemoryRouter } from 'react-router';
 
 import { AddNewPage } from './AddNewPage';
 
-
 beforeEach(() => {
     vi.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(
         Promise.resolve([{ id: '1' }] as Condition[]) as CancelablePromise<Condition[]>

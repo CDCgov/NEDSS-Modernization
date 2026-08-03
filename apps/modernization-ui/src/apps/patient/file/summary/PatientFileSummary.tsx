@@ -10,7 +10,6 @@ import { MergeAlert } from './mergeHistory/MergeAlert';
 import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
 import { PatientFileOpenInvestigationsCard } from './openInvestigations';
 
-
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();
     const sizing = useComponentSizing();

@@ -25,7 +25,6 @@ import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { ReportResultPage } from './ReportResultPage';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
-
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;

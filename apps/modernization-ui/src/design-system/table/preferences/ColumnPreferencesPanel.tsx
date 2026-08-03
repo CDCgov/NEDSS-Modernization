@@ -11,7 +11,6 @@ import styles from './column-preference-panel.module.scss';
 import { ColumnPreference, isNamed, isLabeled, NamedColumnPreference } from './preference';
 import { useColumnPreferences } from './useColumnPreferences';
 
-
 const swap =
     <I,>(items: I[]) =>
     (from: number, to: number) => {

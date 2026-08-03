@@ -8,7 +8,6 @@ import styles from './data-table.module.scss';
 import { defaultCellRenderer } from './defaultCellRenderer';
 import { Column } from './header/column';
 
-
 type Props<V> = {
     columns: Column<V>[];
     row: V;

@@ -24,7 +24,6 @@ import { BasicFilter } from './filters/basic/BasicFilter';
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
 
-
 const BASIC_SECTIONS = [
     {
         title: 'Time',

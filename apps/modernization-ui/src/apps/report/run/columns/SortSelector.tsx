@@ -12,7 +12,6 @@ import { ReportExecuteForm } from '../ReportRunPage';
 import styles from './sort-selector.module.scss';
 import { toSelectable } from './utils';
 
-
 const DIRECTION_OPTIONS: EnumSelectable<SortSpec.direction>[] = [
     { value: SortSpec.direction.ASC, name: 'Ascending' },
     { value: SortSpec.direction.DESC, name: 'Descending' },

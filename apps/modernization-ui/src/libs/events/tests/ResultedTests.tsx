@@ -5,7 +5,6 @@ import { exists } from 'utils/exists';
 import styles from './resulted-tests.module.scss';
 import { ResultedTest } from './tests';
 
-
 type ResultedTestsProps = {
     children?: ResultedTest[];
 };

@@ -7,7 +7,6 @@ import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dat
 import { ExactDateField } from './exact';
 import { DateRangeField } from './range';
 
-
 type CriteriaType = 'equals' | 'between';
 
 const resolveCriteriaType = (value: DateCriteria): CriteriaType =>

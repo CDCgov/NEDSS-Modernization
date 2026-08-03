@@ -9,7 +9,6 @@ import styles from './patient-file-summary.module.scss';
 
 import { PatientFileDemographicsSummary, DisplayablePhone, DisplayableIdentification } from '.';
 
-
 type SummaryItemProps = {
     label: string;
     children: ReactNode;

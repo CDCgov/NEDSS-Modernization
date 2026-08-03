@@ -4,7 +4,6 @@ import { ItemGroup } from 'design-system/item';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { displayNameElement, matchesLegalName } from 'name';
 
-
 // Displays Other names, that are not the legal name
 const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element | null => {
     const legalName = result.legalName;

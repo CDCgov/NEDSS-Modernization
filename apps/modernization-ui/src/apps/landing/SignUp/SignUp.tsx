@@ -7,7 +7,6 @@ import { validEmailRule } from 'validation/entry';
 import styles from './sign-up.module.scss';
 import { useSignUp } from './useSignUp';
 
-
 type SignUpEntry = {
     email: string;
 };

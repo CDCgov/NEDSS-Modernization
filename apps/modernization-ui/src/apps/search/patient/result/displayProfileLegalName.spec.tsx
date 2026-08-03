@@ -4,7 +4,6 @@ import { defaultConfiguration } from 'configuration/defaults';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { BrowserRouter } from 'react-router';
 
-
 import { displayProfileLegalName } from './displayProfileLegalName';
 
 let mockPermissions: string[] = [];

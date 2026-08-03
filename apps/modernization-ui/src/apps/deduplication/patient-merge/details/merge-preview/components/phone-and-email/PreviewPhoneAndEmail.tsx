@@ -6,7 +6,6 @@ import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
 import { formatPhone } from '../../../shared/formatPhone';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
 
-
 type PhoneEmailEntry = {
     id: string;
     asOf: string;
