@@ -3,7 +3,7 @@ Feature: Page Builder - User can verify manage subsection here.
 
   Background:
     Given I am logged in as secure user
-    When User navigates to Edit page and views Edit page
+    And User navigates to Edit page and views Edit page
 
   Scenario: Manage subsection - Edit subsection
     When user is at Manage Subsection window
