@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.patient.events.investigation.association.AssociatedInvestigationRowMapper;
 import gov.cdc.nbs.sql.MultiMapResultSetExtractor;
+import gov.cdc.nbs.sql.ParamUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -44,10 +45,12 @@ class BasePatientFIleContactFinder implements PatientFileContactFinder {
       final long patient, PermissionScope scope, final PermissionScope associatedScope) {
     if (scope.allowed()) {
       return this.client
-          .sql(query)
+          .sql(
+              ParamUtils.replaceListParam(
+                  ParamUtils.replaceListParam(query, "any", scope.any()),
+                  "associated",
+                  resolveAssociated(associatedScope)))
           .param("patient", patient)
-          .param("any", scope.any())
-          .param("associated", resolveAssociated(associatedScope))
           .query(extractor)
           .asMap()
           .entrySet()
