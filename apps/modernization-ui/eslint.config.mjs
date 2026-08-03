@@ -68,7 +68,7 @@ export default defineConfig([
             'import/order': [
                 'error',
                 {
-                    groups: ['builtin', 'external', 'parent', 'sibling'],
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
 
                     pathGroups: [
                         {
