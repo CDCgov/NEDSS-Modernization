@@ -114,6 +114,12 @@ springdoc:
 
 server:
   tomcat:
+    accesslog:
+      # Exclude requests for static assets (e.g. JS, CSS, GIFs)
+      condition-unless: STATIC_ASSET
+      # 172.24.0.4 - - [28/Jul/2026:19:54:54 +0000] "GET /nbs/api/me HTTP/1.1" 200 2508ms
+      pattern: "%h %l %u %t \"%r\" %s %{ms}Tms"
+      enabled: false
     # to accommodate intercepted multipart requests from NBS6.  The value was chosen based on the largest number of
     # questions on a page builder page.  This can vary by STLT depending on the page templates that exist.
     max-part-count: 550
