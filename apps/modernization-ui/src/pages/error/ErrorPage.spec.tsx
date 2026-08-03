@@ -38,6 +38,22 @@ describe('ErrorPage', () => {
         expect(getByRole('link', { name: 'Return to home' })).toBeVisible();
     });
 
+    it('handles ApiError with message body', () => {
+        const error = new ApiError(
+            { method: 'GET', url: '/test' },
+            { url: '/test', status: 500, statusText: 'SERVER ERROR', ok: false, body: { id: '1234-1245' } },
+            'Uh oh'
+        );
+        vi.fn(useRouteError).mockReturnValue(error);
+
+        const { getByText, getByRole } = render(<ErrorPage />);
+
+        expect(getByText('500')).toBeVisible();
+        expect(getByText('SERVER ERROR')).toBeVisible();
+        expect(getByText(/\(ID: 1234-1245\)/)).toBeVisible();
+        expect(getByRole('link', { name: 'Return to home' })).toBeVisible();
+    });
+
     it('handles 404 ApiError', () => {
         const error = new ApiError(
             { method: 'GET', url: '/test' },

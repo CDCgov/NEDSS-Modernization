@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
     name = "enabled",
     havingValue = "true")
 public class ReportController {
+  private static final System.Logger LOGGER = System.getLogger(ReportController.class.getName());
 
   private final ReportService reportService;
   private final ReportFetcher reportFetcher;
@@ -45,6 +46,10 @@ public class ReportController {
   public ResponseEntity<ReportId> createReport(
       @AuthenticationPrincipal NbsUserDetails user,
       @Valid @RequestBody AdminReportRequest request) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "CREATE report request received from user %s".formatted(user.getId()));
+
     Report report = reportService.createReport(request, user);
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
@@ -56,6 +61,11 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody AdminReportRequest request) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "EDIT report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
+
     Report report = reportService.editReport(request, user, new ReportId(reportUid, dataSourceUid));
     return new ResponseEntity<>(report.getId(), HttpStatus.OK);
   }
@@ -66,6 +76,11 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody ReportExecutionRequest request) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "SAVE report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
+
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
 
     Report existingReport = reportRepository.findById(reportId).orElse(null);
@@ -125,6 +140,11 @@ public class ReportController {
       @PathVariable Long reportUid,
       @PathVariable Long dataSourceUid,
       @Valid @RequestBody SaveAsReportRequest request) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "SAVE AS report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
+
     String authOperationType;
     ReportConstants.ReportGroup reportGroup = request.group();
 
@@ -155,7 +175,14 @@ public class ReportController {
   @PreAuthorize(
       "hasAuthority('RUNREPORT-REPORTING') or hasAuthority('EXPORTREPORT-REPORTING') or hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<ReportConfiguration> getReportConfiguration(
-      @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @AuthenticationPrincipal NbsUserDetails user) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "GET report config request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
+
     ReportConfiguration reportConfigResponse = reportFetcher.getReport(reportUid, dataSourceUid);
     return new ResponseEntity<>(reportConfigResponse, HttpStatus.OK);
   }
@@ -164,7 +191,14 @@ public class ReportController {
   @PreAuthorize(
       "hasAuthority('RUNREPORT-REPORTING') or hasAuthority('EXPORTREPORT-REPORTING') or hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<String> getReportRunner(
-      @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @AuthenticationPrincipal NbsUserDetails user) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "GET report runner received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
+
     String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
     return new ResponseEntity<>(runner, HttpStatus.OK);
   }
@@ -174,7 +208,14 @@ public class ReportController {
   @DeleteMapping("/configuration/{reportUid}/{dataSourceUid}")
   @PreAuthorize("hasAuthority('REPORTADMIN-SYSTEM')")
   public ResponseEntity<ReportId> deleteReport(
-      @PathVariable Long reportUid, @PathVariable Long dataSourceUid) {
+      @PathVariable Long reportUid,
+      @PathVariable Long dataSourceUid,
+      @AuthenticationPrincipal NbsUserDetails user) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "DELETE report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), reportUid, dataSourceUid));
+
     ReportId reportId = new ReportId(reportUid, dataSourceUid);
     reportService.deleteReport(reportId);
     return new ResponseEntity<>(reportId, HttpStatus.OK);
@@ -183,7 +224,13 @@ public class ReportController {
   @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<ReportExecutionResult> runReport(
-      @Valid @RequestBody ReportExecutionRequest request) {
+      @Valid @RequestBody ReportExecutionRequest request,
+      @AuthenticationPrincipal NbsUserDetails user) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "RUN report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), request.reportUid(), request.dataSourceUid()));
+
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
 
@@ -193,7 +240,13 @@ public class ReportController {
   @PostMapping("/export")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
   public ResponseEntity<ReportExecutionResult> exportReport(
-      @Valid @RequestBody ReportExecutionRequest request) {
+      @Valid @RequestBody ReportExecutionRequest request,
+      @AuthenticationPrincipal NbsUserDetails user) {
+    LOGGER.log(
+        System.Logger.Level.TRACE,
+        "EXPORT report request received from user %s for report %s and datasource %s"
+            .formatted(user.getId(), request.reportUid(), request.dataSourceUid()));
+
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
     return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
