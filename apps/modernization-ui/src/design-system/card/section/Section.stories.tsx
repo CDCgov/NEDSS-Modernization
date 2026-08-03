@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Section } from './Section';
 import { Button } from 'design-system/button';
-import { Column, DataTable } from '../../table';
 import { Hint } from 'design-system/hint';
 import { Tag } from 'design-system/tag';
+
+import { Column, DataTable } from '../../table';
+
+import { Section } from './Section';
 
 type Person = {
     id: number;

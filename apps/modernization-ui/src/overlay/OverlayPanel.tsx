@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import {
     ReactNode,
     useState,
@@ -7,6 +6,9 @@ import {
     useEffect,
     MouseEvent as ReactMouseEvent,
 } from 'react';
+
+import classNames from 'classnames';
+
 import styles from './overlay-panel.module.scss';
 
 type Toggle = (element?: ReactMouseEvent<HTMLElement>) => void;

@@ -1,7 +1,10 @@
 import { useRef } from 'react';
+
 import { ModalRef, Icon, ModalToggleButton } from '@trussworks/react-uswds';
-import styles from './delete-question.module.scss';
+
 import { ConfirmationModal } from '../../../../confirmation';
+
+import styles from './delete-question.module.scss';
 
 type CommonProps = {
     isStaticElement: boolean;

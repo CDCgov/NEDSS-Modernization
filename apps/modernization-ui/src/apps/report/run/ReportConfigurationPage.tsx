@@ -1,25 +1,29 @@
 import { ReactNode } from 'react';
+
+import { FullPageBlock } from 'components/FullPageBlock';
+import { Heading } from 'components/heading';
 import { Button, NavLinkButton } from 'design-system/button';
-import { permissions, Permitted } from 'libs/permission';
-import { ReportLayout } from '../layout/ReportLayout';
-import { ReportConfiguration } from 'generated';
-import { BasicFilter } from './filters/basic/BasicFilter';
 import { Card } from 'design-system/card';
+import { Required } from 'design-system/entry';
+import { ValidationErrorBanner, ValidationErrorSection } from 'design-system/errors/ValidationError';
+import { InPageNavigation } from 'design-system/inPageNavigation';
+import { ReportConfiguration } from 'generated';
+import { permissions, Permitted } from 'libs/permission';
+import { FieldErrors, useFormState } from 'react-hook-form';
+
+import { NBS_MANAGE_REPORT_PAGE } from '../constants';
+import { ReportLayout } from '../layout/ReportLayout';
+
+import { AdvancedFilter, parseAdvancedFilterErrors } from './filters/advanced/AdvancedFilter';
+import { BasicFilter } from './filters/basic/BasicFilter';
+
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
-import { AdvancedFilter, parseAdvancedFilterErrors } from './filters/advanced/AdvancedFilter';
 import { ColumnSelector } from './columns/ColumnSelector';
-
 import layoutStyles from '../layout/layout.module.scss';
-import { Required } from 'design-system/entry';
-import { InPageNavigation } from 'design-system/inPageNavigation';
+
 import { SortSelector } from './columns/SortSelector';
-import { NBS_MANAGE_REPORT_PAGE } from '../constants';
 import { ReportExecuteForm } from './ReportRunPage';
-import { FieldErrors, useFormState } from 'react-hook-form';
-import { ValidationErrorBanner, ValidationErrorSection } from 'design-system/errors/ValidationError';
-import { Heading } from 'components/heading';
-import { FullPageBlock } from 'components/FullPageBlock';
 import { usePermissions } from 'libs/permission/usePermissions';
 
 const BASIC_SECTIONS = [

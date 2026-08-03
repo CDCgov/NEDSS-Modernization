@@ -1,4 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
+
 import styles from './VisuallyHidden.module.scss';
 
 // From https://www.joshwcomeau.com/snippets/react-components/visually-hidden/

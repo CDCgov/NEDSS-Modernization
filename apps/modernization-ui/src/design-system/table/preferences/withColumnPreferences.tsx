@@ -1,4 +1,5 @@
 import { FC, ComponentType } from 'react';
+
 import { ColumnPreference } from './preference';
 import { ColumnPreferenceProvider } from './useColumnPreferences';
 

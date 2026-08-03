@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+
 import classNames from 'classnames';
 
 type BannerContentProps = {
