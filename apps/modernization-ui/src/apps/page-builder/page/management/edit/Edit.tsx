@@ -1,3 +1,7 @@
+import { useRef } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import {
     PageHeader,
     PageManagementLayout,
@@ -8,12 +12,11 @@ import {
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'design-system/button';
+
 import { PageContent } from './content/PageContent';
-import { ManageSectionModal } from './section/manage/ManageSectionModal';
-import { ModalRef } from '@trussworks/react-uswds';
-import { useRef } from 'react';
 import { ReorderModal } from './reorder/ReorderModal/ReorderModal';
-import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { ManageSectionModal } from './section/manage/ManageSectionModal';
+
 
 export const Edit = () => {
     const { page, fetch, refresh, loading } = useGetPageDetails();

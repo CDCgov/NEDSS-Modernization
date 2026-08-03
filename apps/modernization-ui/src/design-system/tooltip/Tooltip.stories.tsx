@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Icon } from 'design-system/icon';
+
 import { Tooltip } from './Tooltip';
 
 const meta = {

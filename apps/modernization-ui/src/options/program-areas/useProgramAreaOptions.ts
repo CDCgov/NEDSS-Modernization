@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+
 import { ProgramAreaCode, useFindAllProgramAreasLazyQuery } from 'generated/graphql/schema';
-import { Selectable } from 'options/selectable';
 import { SelectableResolver, findByValue } from 'options/findByValue';
+import { Selectable } from 'options/selectable';
 import { mapNonNull } from 'utils';
 
 const asSelectable = (option: ProgramAreaCode): Selectable => ({

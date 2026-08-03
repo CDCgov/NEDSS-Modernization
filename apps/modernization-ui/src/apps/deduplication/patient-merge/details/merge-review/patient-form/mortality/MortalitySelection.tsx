@@ -1,9 +1,12 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
-import { Section } from '../shared/section/Section';
-import { Mortality } from './mortality/Mortality';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { PatientMergeForm } from '../../model/PatientMergeForm';
 import { useEffect, useState } from 'react';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { PatientMergeForm } from '../../model/PatientMergeForm';
+import { Section } from '../shared/section/Section';
+
+import { Mortality } from './mortality/Mortality';
 
 type Props = {
     mergeCandidates: MergeCandidate[];

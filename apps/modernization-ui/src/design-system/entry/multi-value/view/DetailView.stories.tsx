@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+
 import { DetailValue, DetailView, DetailViewProps } from './DetailView';
 
 const meta = {

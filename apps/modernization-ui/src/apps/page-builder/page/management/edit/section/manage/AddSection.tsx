@@ -1,17 +1,19 @@
+import { useEffect } from 'react';
+
 import { Button, Form } from '@trussworks/react-uswds';
+import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import {
     CreateSectionRequest,
     PagesSection,
     SectionControllerService,
     UpdateSectionRequest,
 } from 'apps/page-builder/generated';
-import { Controller, useForm } from 'react-hook-form';
-import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import styles from './addsection.module.scss';
-import { useEffect } from 'react';
-import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { Controller, useForm } from 'react-hook-form';
+import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { notEmptyRule } from 'validation/entry/notEmptyRule';
+
+import styles from './addsection.module.scss';
 
 type sectionProps = {
     tabId?: number;

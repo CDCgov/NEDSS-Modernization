@@ -1,4 +1,5 @@
 import { Selectable } from 'options';
+
 import { fromSelectable } from './fromSelectable';
 import { Term } from './terms';
 

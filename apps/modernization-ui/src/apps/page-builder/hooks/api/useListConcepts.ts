@@ -1,5 +1,6 @@
-import { Concept, ConceptControllerService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { Concept, ConceptControllerService } from 'apps/page-builder/generated';
 
 type State =
     | { status: 'idle' }

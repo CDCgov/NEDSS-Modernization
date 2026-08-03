@@ -2,9 +2,11 @@ import { displayAddressText } from 'address/display';
 import { MergeAddress, MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Column } from 'design-system/table';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
+
 import styles from './address-data-table.module.scss';
 
 type Props = {

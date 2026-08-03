@@ -1,14 +1,17 @@
+import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
+
 import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
-import { TOTAL_TABLE_DATA } from '../../utils/util';
+import classNames from 'classnames';
+import { Loading } from 'components/Spinner';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'design-system/data';
-import { Loading } from 'components/Spinner';
-import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
+
+import { TOTAL_TABLE_DATA } from '../../utils/util';
+
 import { TableHeader } from './TableHeader';
-import classNames from 'classnames';
-import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
 import styles from './table.module.scss';
+import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
 
 type SelectionMode = 'select' | 'deselect';
 

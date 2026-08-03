@@ -1,22 +1,26 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Button, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
 import { RuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import styles from './BusinessRulesForm.module.scss';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelectInput } from 'components/selection/multi';
 import { Input } from 'components/FormInputs/Input';
-import { useEffect, useRef, useState } from 'react';
-import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
+import { MultiSelectInput } from 'components/selection/multi';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useParams } from 'react-router';
+
 import { SourceValueProp } from '../Add/AddBusinessRules';
+import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
+import SubSectionsDropdown from '../SubSectionDropdown';
 import { TargetQuestion } from '../TargetQuestion/TargetQuestion';
 import { mapComparatorToString } from '../helpers/mapComparatorToString';
-import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
-import SubSectionsDropdown from '../SubSectionDropdown';
-import { useParams } from 'react-router';
 import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
+import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
+
 import './ModalWidth.scss';
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
-import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
+
+import styles from './BusinessRulesForm.module.scss';
 
 type Props = {
     isEdit: boolean;

@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import { Modal } from './Modal';
+
 import { Message } from '../message/Message';
+
+import { Modal } from './Modal';
 
 type Props = {
     title?: string;

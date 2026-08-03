@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
 import { textOperators, defaultTextOperator, textAlphaOperators } from 'options/operator';
+
+import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
 
 describe('OperatorSelect', () => {
     const mockOnChange = vi.fn();

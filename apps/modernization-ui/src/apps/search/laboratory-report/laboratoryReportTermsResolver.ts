@@ -1,4 +1,5 @@
 import { Term, fromSelectable, fromSelectables, fromValue } from 'apps/search/terms';
+
 import { LabReportFilterEntry } from './labReportFormTypes';
 
 const programAreas = fromSelectables('programAreas', 'PROGRAM AREA');

@@ -1,7 +1,8 @@
 import { render, waitFor } from '@testing-library/react';
-import { SaveAsReportModal } from './SaveAsReportModal.tsx';
-import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event/dist/cjs/index.js';
+import { axe } from 'jest-axe';
+
+import { SaveAsReportModal } from './SaveAsReportModal.tsx';
 
 const mockSaveAs = vi.fn();
 const modalRef = { current: null };

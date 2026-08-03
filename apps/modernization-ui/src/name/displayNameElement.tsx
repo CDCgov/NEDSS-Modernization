@@ -1,4 +1,5 @@
 import { ItemGroup } from 'design-system/item';
+
 import { displayName } from './displayName';
 import { DisplayableName } from './displayableName';
 import { NameFormat } from './format';

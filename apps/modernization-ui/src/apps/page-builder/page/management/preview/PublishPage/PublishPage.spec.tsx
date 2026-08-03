@@ -1,8 +1,10 @@
-import { AlertProvider } from 'alert';
-import { PageManagementProvider } from '../../usePageManagement';
-import { PublishPage } from './PublishPage';
 import { render } from '@testing-library/react';
+import { AlertProvider } from 'alert';
 import { PagesResponse } from 'apps/page-builder/generated';
+
+import { PageManagementProvider } from '../../usePageManagement';
+
+import { PublishPage } from './PublishPage';
 
 // Mock the PagePublishControllerService and PageInformationService to prevent fetch/network calls
 vi.mock('apps/page-builder/generated', () => ({

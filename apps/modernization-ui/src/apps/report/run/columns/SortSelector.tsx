@@ -1,14 +1,17 @@
-import { ReportColumn, SortSpec } from 'generated';
-import { ReportExecuteForm } from '../ReportRunPage';
-import { Controller, useController, useWatch } from 'react-hook-form';
 import { useEffect, useId } from 'react';
-import { SingleSelect } from 'design-system/select';
-import { toSelectable } from './utils';
+
+import { SIZING } from 'apps/report/constants';
 import { EnumSelectable } from 'apps/report/utils';
 import { EntryWrapper } from 'components/Entry';
-import { SIZING } from 'apps/report/constants';
+import { SingleSelect } from 'design-system/select';
+import { ReportColumn, SortSpec } from 'generated';
+import { Controller, useController, useWatch } from 'react-hook-form';
+
+import { ReportExecuteForm } from '../ReportRunPage';
 
 import styles from './sort-selector.module.scss';
+import { toSelectable } from './utils';
+
 
 const DIRECTION_OPTIONS: EnumSelectable<SortSpec.direction>[] = [
     { value: SortSpec.direction.ASC, name: 'Ascending' },

@@ -1,9 +1,10 @@
 import { Shown } from 'conditional-render';
+import { LabeledValue } from 'design-system/value';
 import { exists } from 'utils/exists';
-import { ResultedTest } from './tests';
 
 import styles from './resulted-tests.module.scss';
-import { LabeledValue } from 'design-system/value';
+import { ResultedTest } from './tests';
+
 
 type ResultedTestsProps = {
     children?: ResultedTest[];

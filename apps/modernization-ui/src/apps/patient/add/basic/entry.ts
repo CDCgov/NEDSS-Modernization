@@ -1,6 +1,6 @@
-import { today } from 'date';
 import { IdentificationEntry } from 'apps/patient/data';
 import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { today } from 'date';
 import { Selectable } from 'options';
 
 type NameInformationEntry = {

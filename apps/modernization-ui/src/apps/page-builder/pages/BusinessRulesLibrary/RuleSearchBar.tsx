@@ -1,5 +1,7 @@
-import { Button, Icon, TextInput } from '@trussworks/react-uswds';
 import { KeyboardEvent as ReactKeyboardEvent, ChangeEvent, useState, useEffect } from 'react';
+
+import { Button, Icon, TextInput } from '@trussworks/react-uswds';
+
 import styles from './rule-search-bar.module.scss';
 
 type Props = {

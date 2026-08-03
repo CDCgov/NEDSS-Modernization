@@ -1,9 +1,10 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
-import { LabReport } from 'generated/graphql/schema';
-import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResultsTable';
-import { Selectable } from 'options';
 import { Column } from 'design-system/table';
+import { LabReport } from 'generated/graphql/schema';
+import { Selectable } from 'options';
+import { MemoryRouter } from 'react-router';
+
+import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResultsTable';
 
 vi.mock('design-system/table/preferences', () => ({
     useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns }),

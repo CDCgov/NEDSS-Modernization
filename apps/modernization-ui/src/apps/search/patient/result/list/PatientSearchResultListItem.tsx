@@ -1,4 +1,3 @@
-import { PatientSearchResult } from 'generated/graphql/schema';
 
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 import {
@@ -9,6 +8,7 @@ import {
     displayProfileLegalName,
     displayPatientAge,
 } from 'apps/search/patient/result';
+import { PatientSearchResult } from 'generated/graphql/schema';
 
 type Props = {
     result: PatientSearchResult;

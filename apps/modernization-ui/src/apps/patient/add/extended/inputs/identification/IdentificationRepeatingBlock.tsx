@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
-import { Column } from 'design-system/table';
-import { RepeatingBlock } from 'design-system/entry/multi-value';
+
 import { IdentificationEntryFields, IdentificationEntry, initial } from 'apps/patient/data/identification';
-import { IdentificationView } from './IdentificationView';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Sizing } from 'design-system/field';
+import { Column } from 'design-system/table';
+
+import { IdentificationView } from './IdentificationView';
 
 const defaultValue: Partial<IdentificationEntry> = initial();
 

@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { useEffect, useState } from 'react';
 
 type Props = {
     content: string;

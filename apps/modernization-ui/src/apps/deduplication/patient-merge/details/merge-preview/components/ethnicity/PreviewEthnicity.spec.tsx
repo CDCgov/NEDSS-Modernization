@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
-import { PreviewEthnicity } from './PreviewEthnicity';
+import { MemoryRouter } from 'react-router';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
-import { MemoryRouter } from 'react-router';
+
+import { PreviewEthnicity } from './PreviewEthnicity';
 
 const Fixture = () => {
     return (

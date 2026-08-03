@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import styles from './heading.module.scss';
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5;

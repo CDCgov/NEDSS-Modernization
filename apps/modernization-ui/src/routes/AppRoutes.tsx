@@ -1,23 +1,24 @@
-import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router';
-import { initializationLoader, ProtectedLayout } from 'authorization';
 
-import { RedirectHome } from './RedirectHome';
 
-import { routing as searchRouting } from 'apps/search';
-import { routing as reportRouting } from 'apps/report';
-import { routing as addPatientRouting } from 'apps/patient/add';
-import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as deduplicationRouting } from 'apps/deduplication';
 import { routing as welcomeRouting } from 'apps/landing';
-import { routing as systemManagementRouting } from 'apps/system-management';
-import { routing as logoutRouting } from 'logout';
-import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
+import { routing as pageBuilderRouting } from 'apps/page-builder';
+import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as patientFileRouting } from 'apps/patient/file/PatientFileRouting';
-import { PageProvider } from 'page';
-import { LoadingBlock } from 'libs/loading/block';
-import { ErrorPage } from 'pages/error/ErrorPage';
+import { routing as reportRouting } from 'apps/report';
 import { loadReportResult, ResultDataPage } from 'apps/report/run/ResultDataPage';
+import { routing as searchRouting } from 'apps/search';
+import { routing as systemManagementRouting } from 'apps/system-management';
+import { initializationLoader, ProtectedLayout } from 'authorization';
+import { LoadingBlock } from 'libs/loading/block';
+import { routing as logoutRouting } from 'logout';
+import { PageProvider } from 'page';
+import { ErrorPage } from 'pages/error/ErrorPage';
+import { Login } from 'pages/login';
+import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router';
+
+import { RedirectHome } from './RedirectHome';
 
 const routing: RouteObject[] = [
     welcomeRouting,

@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+
 import { TableNumericInput } from './TableNumericInput';
 import '@testing-library/jest-dom';
 

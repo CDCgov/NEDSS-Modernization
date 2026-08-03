@@ -1,10 +1,13 @@
-import styles from './preview-subsection.module.scss';
+import { useState } from 'react';
+import React from 'react';
+
+import { Button } from '@trussworks/react-uswds';
+
 import { PagesSubSection } from '../../../../../generated';
 import { PreviewQuestion } from '../question/PreviewQuestion';
+
 import { PreviewSubsectionHeader } from './PreviewSubsectionHeader';
-import { useState } from 'react';
-import { Button } from '@trussworks/react-uswds';
-import React from 'react';
+import styles from './preview-subsection.module.scss';
 
 type Props = {
     subsection: PagesSubSection;

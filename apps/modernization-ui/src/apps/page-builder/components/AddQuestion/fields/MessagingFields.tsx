@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import { ToggleButton } from '../../ToggleButton';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';

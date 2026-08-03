@@ -1,16 +1,19 @@
+import { useRef, useState } from 'react';
+
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { ConfirmationModal } from 'confirmation';
-import { useRef, useState } from 'react';
-import { usePageManagement } from '../../usePageManagement';
-import styles from './subsection.module.scss';
-import { staticElementTypes } from '../staticelement/EditStaticElement';
+import { useAlert } from 'libs/alert';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { usePageManagement } from '../../usePageManagement';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
+
+import styles from './subsection.module.scss';
 
 type Props = {
     subsection: PagesSubSection;

@@ -1,7 +1,8 @@
 import { Card } from 'design-system/card/Card';
 import { SortableDataTable } from 'design-system/table';
-import { Tag } from 'design-system/tag/Tag';
 import { Column } from 'design-system/table';
+import { Tag } from 'design-system/tag/Tag';
+
 import styles from './MergePreviewTableCard.module.scss';
 
 type SortableTableCardProps<T> = {

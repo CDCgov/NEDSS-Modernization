@@ -1,7 +1,3 @@
-import { LabReport } from 'generated/graphql/schema';
-import { internalizeDate } from 'date';
-import { Selectable } from 'options';
-import { ClassicLink } from 'classic';
 import { displayProfileLink, displayGender } from 'apps/search/basic';
 import {
     getPatient,
@@ -11,6 +7,10 @@ import {
     getAssociatedInvestigations,
 } from 'apps/search/laboratory-report/result';
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
+import { ClassicLink } from 'classic';
+import { internalizeDate } from 'date';
+import { LabReport } from 'generated/graphql/schema';
+import { Selectable } from 'options';
 
 type Props = {
     result: LabReport;

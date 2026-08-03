@@ -1,5 +1,6 @@
-import { FilterDescriptor } from 'design-system/filter';
 import { ReactNode } from 'react';
+
+import { FilterDescriptor } from 'design-system/filter';
 import { Mapping } from 'utils/mapping';
 
 type SortIconType = 'alpha' | 'numeric';

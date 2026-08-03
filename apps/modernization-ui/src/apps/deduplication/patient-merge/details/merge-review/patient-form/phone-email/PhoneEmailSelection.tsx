@@ -1,7 +1,10 @@
-import { MergeCandidate, MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
+
+import { MergeCandidate, MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
+
 import { PhoneEmailDataTable } from './phone-email-data-table/PhoneEmailDataTable';
 import { PhoneEmailDetails } from './phone-email-details/PhoneEmailDetails';
 

@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import styles from './InPageNavigation.module.scss';
+
 import classNames from 'classnames';
-import useInPageNavigation from './useInPageNavigation';
 import { Link, useLocation } from 'react-router';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import styles from './InPageNavigation.module.scss';
+import useInPageNavigation from './useInPageNavigation';
 
 export interface NavSection {
     id: string;

@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
+
+import { Draggable, DraggableProvided, Droppable } from '@hello-pangea/dnd';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesSection, PagesTab } from 'apps/page-builder/generated';
-import { useEffect, useState } from 'react';
-import { Draggable, DraggableProvided, Droppable } from '@hello-pangea/dnd';
-import { ReorderSection } from '../ReorderSection/ReorderSection';
 import { Icon } from 'components/Icon/Icon';
+
+import { ReorderSection } from '../ReorderSection/ReorderSection';
+
 import styles from './reorder-tab.module.scss';
 
 type Props = {

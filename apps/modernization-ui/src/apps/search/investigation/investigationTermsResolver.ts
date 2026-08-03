@@ -1,4 +1,5 @@
 import { Term, fromSelectable, fromSelectables, fromValue } from 'apps/search/terms';
+
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
 const conditions = fromSelectables('conditions', 'CONDITION');

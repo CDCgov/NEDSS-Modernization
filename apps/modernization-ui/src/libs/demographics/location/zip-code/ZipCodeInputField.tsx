@@ -1,5 +1,5 @@
-import { MaskedTextInputFieldProps, MaskedTextInputField } from 'design-system/input/text';
 import { onlyNumericKeys } from 'design-system/input/numeric';
+import { MaskedTextInputFieldProps, MaskedTextInputField } from 'design-system/input/text';
 
 type ZipCodeInputFieldProps = Omit<MaskedTextInputFieldProps, 'mask' | 'pattern' | 'type' | 'inputMode' | 'onKeyDown'>;
 

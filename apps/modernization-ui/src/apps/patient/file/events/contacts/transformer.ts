@@ -1,9 +1,9 @@
+import { maybeDate } from 'date';
 import {
     PatientFileContact as PatientFileContactResponse,
     PatientFileContacts as PatientFileContactsResponse,
 } from 'generated';
 
-import { maybeDate } from 'date';
 import { PatientFileContact, PatientFileContacts } from './contacts';
 
 const transformer = (response: PatientFileContactsResponse): PatientFileContacts => ({

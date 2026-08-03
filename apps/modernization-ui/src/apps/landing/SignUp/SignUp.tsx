@@ -1,11 +1,12 @@
 import { Button } from '@trussworks/react-uswds';
+import { QuickNavigation } from 'apps/landing/QuickNavigation';
+import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { validEmailRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-import { QuickNavigation } from 'apps/landing/QuickNavigation';
-import { useSignUp } from './useSignUp';
 
 import styles from './sign-up.module.scss';
+import { useSignUp } from './useSignUp';
+
 
 type SignUpEntry = {
     email: string;

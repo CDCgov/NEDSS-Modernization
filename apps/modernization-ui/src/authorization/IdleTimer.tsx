@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import debounce from 'lodash.debounce';
+
 import { Confirmation } from 'design-system/modal';
-import { useTimeout } from './useTimeout';
+import debounce from 'lodash.debounce';
+
 import { useCountdown } from './useCountdown';
+import { useTimeout } from './useTimeout';
 
 interface IdleTimerProps {
     /** Timeout in milliseconds: amount of time before modal shows */

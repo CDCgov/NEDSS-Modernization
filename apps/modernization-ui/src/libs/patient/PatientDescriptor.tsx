@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
+import { Heading, HeadingLevel } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { mapOr } from 'utils/mapping';
-import { equalsIgnoreCase, not } from 'utils/predicate';
-import { defaultTo } from 'libs/supplying';
-import { displayName, DisplayableName } from 'name';
 import { displayAgeAsOf, today } from 'date';
 import { NoData } from 'design-system/data';
-import { Heading, HeadingLevel } from 'components/heading';
+import { defaultTo } from 'libs/supplying';
+import { displayName, DisplayableName } from 'name';
+import { mapOr } from 'utils/mapping';
+import { equalsIgnoreCase, not } from 'utils/predicate';
 
 const orElseToday = defaultTo(today);
 

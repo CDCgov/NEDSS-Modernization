@@ -1,6 +1,6 @@
-import { Validator } from 'validation';
 import { asDate, asDateEntry, validateDate } from 'design-system/date';
 import { DateBetweenCriteria } from 'design-system/date/criteria';
+import { Validator } from 'validation';
 
 /**
  * Validates that the given "from" and "to" dates are valid and that the "to" date is not earlier than the "from" date.

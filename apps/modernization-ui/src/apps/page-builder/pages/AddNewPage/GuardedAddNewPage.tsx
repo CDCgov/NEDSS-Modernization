@@ -1,4 +1,5 @@
 import { FeatureGuard } from 'feature';
+
 import { AddNewPage } from './AddNewPage';
 
 const GuardedAddNewPage = () => (

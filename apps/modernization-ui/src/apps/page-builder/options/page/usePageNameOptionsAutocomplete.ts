@@ -1,5 +1,4 @@
 import { PageBuilderOptionsService } from 'apps/page-builder/generated';
-
 import { AutocompleteOptionsResolver, SelectableAutocompletion, useSelectableAutocomplete } from 'options/autocompete';
 
 type Settings = {

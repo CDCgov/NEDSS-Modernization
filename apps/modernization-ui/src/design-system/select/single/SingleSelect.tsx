@@ -1,5 +1,6 @@
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable } from 'options';
+
 import Select from './Select';
 
 type Props = {

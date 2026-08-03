@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Condition } from 'apps/page-builder/generated';
 import { WithinTableProvider } from 'components/Table/testing';
+
 import { ConditionTable } from './ConditionTable';
-import userEvent from '@testing-library/user-event';
 
 const conditions: Condition[] = [
     {

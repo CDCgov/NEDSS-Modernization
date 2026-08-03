@@ -1,4 +1,5 @@
 import { useContext, useReducer, useEffect } from 'react';
+
 import { ClassicModalContext } from './ClassicModalContext';
 
 type ClassicModal = {

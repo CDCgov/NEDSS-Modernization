@@ -1,8 +1,3 @@
-import { Investigation } from 'generated/graphql/schema';
-import { internalizeDate } from 'date';
-import { SelectableResolver } from 'options';
-import { Column, DataTable } from 'design-system/table';
-import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
 import { withPatient, displayProfileLink, displayGender } from 'apps/search/basic';
 import {
     displayInvestigationLink,
@@ -11,6 +6,11 @@ import {
     displayStatus,
     getPatient,
 } from 'apps/search/investigation/result';
+import { internalizeDate } from 'date';
+import { Column, DataTable } from 'design-system/table';
+import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
+import { Investigation } from 'generated/graphql/schema';
+import { SelectableResolver } from 'options';
 
 const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
 const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };

@@ -1,9 +1,10 @@
 import { ReactNode, useId } from 'react';
-import classNames from 'classnames';
-import { Sizing } from 'design-system/field';
-import { OrElseNoData } from 'design-system/data';
-import { HelperText } from '../HelperText';
 
+import classNames from 'classnames';
+import { OrElseNoData } from 'design-system/data';
+import { Sizing } from 'design-system/field';
+
+import { HelperText } from '../HelperText';
 import styles from '../horizontal-field.module.scss';
 
 type ValueFieldProps = {

@@ -1,4 +1,5 @@
 import { internalizeDate } from 'date';
+
 import { now } from './clock';
 import { DateEntry } from './entry';
 

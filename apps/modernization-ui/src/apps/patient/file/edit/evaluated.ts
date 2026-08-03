@@ -1,14 +1,15 @@
+import { internalizeDate, today } from 'date';
 import { PatientDemographics, PatientDemographicsEntry } from 'libs/patient/demographics';
 import { AdministrativeInformation, initial as initialAdministrative } from 'libs/patient/demographics/administrative';
 import { EthnicityDemographic, initial as initialEthnicity } from 'libs/patient/demographics/ethnicity';
+import { GeneralInformationDemographic, initial as initialGeneral } from 'libs/patient/demographics/general';
 import { MortalityDemographic, initial as initialMortality } from 'libs/patient/demographics/mortality';
 import { SexBirthDemographic, initial as initialSexBirth } from 'libs/patient/demographics/sex-birth';
-import { GeneralInformationDemographic, initial as initialGeneral } from 'libs/patient/demographics/general';
-import { PatientDemographicsData } from '../demographics';
-import { internalizeDate, today } from 'date';
-import { mapOr, Mapping, maybeMapAll } from 'utils/mapping';
-import { EffectiveDated } from 'utils';
 import { Supplier } from 'libs/supplying';
+import { EffectiveDated } from 'utils';
+import { mapOr, Mapping, maybeMapAll } from 'utils/mapping';
+
+import { PatientDemographicsData } from '../demographics';
 
 const into =
     <P extends string, R, S>(property: P, mapping: Mapping<R, S>): Mapping<R, Record<P, S>> =>

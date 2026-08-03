@@ -1,6 +1,7 @@
-import { NavLink } from 'react-router';
-import { Icon } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
+
+import { Icon } from '@trussworks/react-uswds';
+import { NavLink } from 'react-router';
 
 import styles from './breadcrumb.module.scss';
 

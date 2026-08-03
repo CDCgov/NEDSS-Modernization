@@ -1,9 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
-import { MatchingCriteriaSidePanel } from './MatchingCriteriaSidePanel';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { MatchingCriteriaSidePanel } from './MatchingCriteriaSidePanel';
 
 const onAccept = vi.fn();
 const onCancel = vi.fn();

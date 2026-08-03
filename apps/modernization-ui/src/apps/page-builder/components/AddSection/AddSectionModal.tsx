@@ -1,7 +1,9 @@
+import React, { ChangeEvent, RefObject, useState } from 'react';
+
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import { SectionControllerService, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import React, { ChangeEvent, RefObject, useState } from 'react';
+
 import { ToggleButton } from '../ToggleButton';
 import './AddSectionModal.scss';
 import { logErrorToUserConsole } from 'utils/logging';

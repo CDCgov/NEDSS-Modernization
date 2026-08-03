@@ -1,9 +1,11 @@
 import { ReactNode, useId } from 'react';
+
 import classNames from 'classnames';
 import { Icon } from 'design-system/icon';
-import { resolveIcon } from './resolveIcon';
 
 import styles from './message.module.scss';
+import { resolveIcon } from './resolveIcon';
+
 
 type Type = 'information' | 'success' | 'warning' | 'error';
 

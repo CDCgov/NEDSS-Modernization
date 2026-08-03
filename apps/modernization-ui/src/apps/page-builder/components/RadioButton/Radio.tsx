@@ -1,4 +1,5 @@
 import { Icon } from '@trussworks/react-uswds';
+
 import styles from './radio.module.scss';
 
 type Props = {

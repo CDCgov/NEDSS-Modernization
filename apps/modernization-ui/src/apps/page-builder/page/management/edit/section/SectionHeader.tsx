@@ -1,8 +1,10 @@
-import { Button, Icon } from '@trussworks/react-uswds';
-import styles from './section.module.scss';
-import classNames from 'classnames';
-import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { useState } from 'react';
+
+import { Button, Icon } from '@trussworks/react-uswds';
+import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
+import classNames from 'classnames';
+
+import styles from './section.module.scss';
 
 type Props = {
     name: string;

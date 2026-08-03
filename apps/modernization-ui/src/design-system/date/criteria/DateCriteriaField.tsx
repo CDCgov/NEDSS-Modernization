@@ -1,11 +1,12 @@
+import { Shown } from 'conditional-render';
+import { Field, FieldProps } from 'design-system/field';
+import { Radio } from 'design-system/radio';
+
+import styles from './date-criteria.module.scss';
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { ExactDateField } from './exact';
 import { DateRangeField } from './range';
-import { Radio } from 'design-system/radio';
-import { Field, FieldProps } from 'design-system/field';
-import { Shown } from 'conditional-render';
 
-import styles from './date-criteria.module.scss';
 
 type CriteriaType = 'equals' | 'between';
 

@@ -1,6 +1,6 @@
-import { Selectable } from 'options/selectable';
 import { AutocompleteSingleProps, Autocomplete } from 'design-system/autocomplete';
 import { AutocompleteOptionsResolver } from 'options/autocompete';
+import { Selectable } from 'options/selectable';
 
 type SelectableAutocompleteSingleProps = AutocompleteSingleProps<Selectable>;
 type Props = SelectableAutocompleteSingleProps & { resolver: AutocompleteOptionsResolver };

@@ -1,7 +1,8 @@
 import { screen, render, waitFor, act } from '@testing-library/react';
-import { PhoneAndEmailRepeatingBlock, PhoneAndEmailRepeatingBlockProps } from './PhoneAndEmailRepeatingBlock';
-import { internalizeDate } from 'date';
 import userEvent from '@testing-library/user-event';
+import { internalizeDate } from 'date';
+
+import { PhoneAndEmailRepeatingBlock, PhoneAndEmailRepeatingBlockProps } from './PhoneAndEmailRepeatingBlock';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],

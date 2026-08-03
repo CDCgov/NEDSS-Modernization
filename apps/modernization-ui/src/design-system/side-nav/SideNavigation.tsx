@@ -1,8 +1,9 @@
 import { ReactElement, ReactNode } from 'react';
+
 import classNames from 'classnames';
 import { Heading, HeadingLevel } from 'components/heading';
-import { NavEntryProps } from './NavEntry';
 
+import { NavEntryProps } from './NavEntry';
 import styles from './side-nav.module.scss';
 
 type Props = {

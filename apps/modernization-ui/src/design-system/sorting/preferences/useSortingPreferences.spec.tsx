@@ -1,7 +1,9 @@
 import { ReactNode, act } from 'react';
+
 import { renderHook } from '@testing-library/react';
-import { ActiveSorting, SortingPreferenceProvider, useSortingPreferences } from './useSortingPreferences';
 import { Direction } from 'libs/sorting';
+
+import { ActiveSorting, SortingPreferenceProvider, useSortingPreferences } from './useSortingPreferences';
 
 let mockProperty: string | undefined = undefined;
 let mockDirection: Direction | undefined = undefined;

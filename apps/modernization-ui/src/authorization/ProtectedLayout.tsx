@@ -1,13 +1,15 @@
 import { Suspense } from 'react';
-import { Await, Navigate, useLoaderData, useNavigate } from 'react-router';
-import { User, UserContextProvider } from 'providers/UserContext';
-import { currentUser } from 'user';
-import { Configuration, ConfigurationProvider } from 'configuration';
+
 import { AnalyticsProvider } from 'analytics';
-import { Layout } from 'layout';
 import { Spinner } from 'components/Spinner';
-import { InitializationLoaderResult } from './initializationLoader';
+import { Configuration, ConfigurationProvider } from 'configuration';
+import { Layout } from 'layout';
+import { User, UserContextProvider } from 'providers/UserContext';
+import { Await, Navigate, useLoaderData, useNavigate } from 'react-router';
+import { currentUser } from 'user';
+
 import IdleTimer from './IdleTimer';
+import { InitializationLoaderResult } from './initializationLoader';
 
 const ProtectedLayout = () => {
     const data = useLoaderData() as InitializationLoaderResult;

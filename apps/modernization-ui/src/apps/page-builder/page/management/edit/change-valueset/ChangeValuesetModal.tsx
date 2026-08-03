@@ -1,8 +1,10 @@
+import { RefObject, useEffect } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { ValuesetSearch } from 'apps/page-builder/components/AddQuestion/valueset/ValuesetSearch';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { PaginationProvider } from 'pagination';
-import { RefObject, useEffect } from 'react';
+
 import './ChangeValuesetModal.scss';
 import styles from './change-valueset-modal.module.scss';
 import { useUpdatePageQuestionValueset } from 'apps/page-builder/hooks/api/useUpdatePageQuestionValueset';

@@ -1,6 +1,7 @@
 import { Shown } from 'conditional-render';
-import { LabeledValue, LabeledValueProps } from './LabeledValue';
 import { exists } from 'utils';
+
+import { LabeledValue, LabeledValueProps } from './LabeledValue';
 
 type MaybeLabeledValueProps = LabeledValueProps & {
     children?: LabeledValueProps['children'];

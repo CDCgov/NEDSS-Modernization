@@ -1,12 +1,15 @@
 import { useComponentSizing } from 'design-system/sizing';
-import { usePatientFileData } from '../usePatientFileData';
+import { FeatureToggle } from 'feature';
+
 import { PatientFileView } from '../PatientFileView';
 import { PatientFileDemographicsSummaryCard } from '../demographics/summary';
-import { PatientFileOpenInvestigationsCard } from './openInvestigations';
+import { usePatientFileData } from '../usePatientFileData';
+
 import { PatientDocumentRequiringReviewCard } from './documentRequiringReview';
-import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
-import { FeatureToggle } from 'feature';
 import { MergeAlert } from './mergeHistory/MergeAlert';
+import { PatientMergeHistoryCard } from './mergeHistory/PatientMergeHistoryCard';
+import { PatientFileOpenInvestigationsCard } from './openInvestigations';
+
 
 const PatientFileSummary = () => {
     const { summary, demographics, patient } = usePatientFileData();

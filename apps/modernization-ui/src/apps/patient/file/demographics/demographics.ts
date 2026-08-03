@@ -1,5 +1,3 @@
-import { MemoizedSupplier } from 'libs/supplying/';
-import { demographicsSummary, PatientFileDemographicsSummary } from './summary';
 import {
     AdministrativeInformation,
     GeneralInformationDemographic,
@@ -11,17 +9,19 @@ import {
     EthnicityDemographic,
     IdentificationDemographic,
 } from 'libs/patient/demographics';
+import { MemoizedSupplier } from 'libs/supplying/';
 
-import { PatientFileSexBirthDemographic, patientSexBirth } from './sex-birth';
-import { patientAdministrative } from './administrative';
-import { patientGeneral } from './general';
-import { patientPhoneEmail } from './phoneEmail';
-import { patientMortality } from './mortality';
-import { patientRace } from './race';
 import { patientAddress } from './address';
-import { patientNames } from './name';
+import { patientAdministrative } from './administrative';
 import { patientEthnicity } from './ethnicity';
+import { patientGeneral } from './general';
 import { patientIdentifications } from './identification';
+import { patientMortality } from './mortality';
+import { patientNames } from './name';
+import { patientPhoneEmail } from './phoneEmail';
+import { patientRace } from './race';
+import { PatientFileSexBirthDemographic, patientSexBirth } from './sex-birth';
+import { demographicsSummary, PatientFileDemographicsSummary } from './summary';
 
 type PatientDemographicsData = {
     summary: MemoizedSupplier<Promise<PatientFileDemographicsSummary>>;

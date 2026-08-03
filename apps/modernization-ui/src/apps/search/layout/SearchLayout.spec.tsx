@@ -1,11 +1,14 @@
-import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
-import { SearchLayout } from './SearchLayout';
-import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
-import { FilterProvider } from 'design-system/filter/useFilter';
-import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
+
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import { FilterProvider } from 'design-system/filter/useFilter';
+import { MemoryRouter } from 'react-router';
+
+import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
+
+import { SearchLayout } from './SearchLayout';
 
 vi.mock('pagination', () => ({
     usePagination: () => ({

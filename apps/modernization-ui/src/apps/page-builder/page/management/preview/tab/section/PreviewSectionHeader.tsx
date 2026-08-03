@@ -1,7 +1,9 @@
-import styles from './preview-section.module.scss';
 import { Icon } from '@trussworks/react-uswds';
-import { PagesSection } from '../../../../../generated';
 import classNames from 'classnames';
+
+import { PagesSection } from '../../../../../generated';
+
+import styles from './preview-section.module.scss';
 
 type Props = {
     section: PagesSection;

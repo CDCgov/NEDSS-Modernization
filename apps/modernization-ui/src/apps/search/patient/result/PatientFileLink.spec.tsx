@@ -1,7 +1,8 @@
-import { BrowserRouter } from 'react-router';
 import { render, screen } from '@testing-library/react';
-import { defaultConfiguration } from 'configuration/defaults';
 import { Features } from 'configuration';
+import { defaultConfiguration } from 'configuration/defaults';
+import { BrowserRouter } from 'react-router';
+
 import { PatientFileLink } from './PatientFileLink';
 
 let mockPermissions: string[] = [];

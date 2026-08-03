@@ -1,9 +1,12 @@
 import React, { useState, InputHTMLAttributes } from 'react';
+
 import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';
 import { Sizing } from 'design-system/field';
-import styles from './SearchBar.module.scss';
+
 import { Icons } from '../icon';
+
+import styles from './SearchBar.module.scss';
 
 type SearchBarProps = {
     size?: Sizing;

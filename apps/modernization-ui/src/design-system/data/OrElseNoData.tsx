@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
+
 import { exists } from 'utils/exists';
+
 import { NoData } from './NoData';
 
 type OrElseNoDataProps = {

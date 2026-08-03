@@ -1,7 +1,9 @@
-import { Card } from 'design-system/card/Card';
-import styles from './SystemManagementInfoCard.module.scss';
-import { useNavigate } from 'react-router';
 import React from 'react';
+
+import { Card } from 'design-system/card/Card';
+import { useNavigate } from 'react-router';
+
+import styles from './SystemManagementInfoCard.module.scss';
 
 type LinkItem = { text: string; href: string };
 

@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { InPageNavigation, NavSection, InPageNavigationProps } from './InPageNavigation';
 
 const meta: Meta<InPageNavigationProps> = {

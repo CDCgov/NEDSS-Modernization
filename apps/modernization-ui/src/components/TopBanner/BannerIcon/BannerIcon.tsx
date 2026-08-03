@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+
 import classNames from 'classnames';
 
 export const BannerIcon = ({ src, alt, className, ...imgProps }: JSX.IntrinsicElements['img']): ReactElement => {

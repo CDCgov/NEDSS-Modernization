@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react';
-import { AlertProvider } from 'alert';
-import { AddStaticElement } from './AddStaticElement';
-import { PageManagementProvider } from '../../usePageManagement';
-import { PagesResponse } from 'apps/page-builder/generated';
 import userEvent from '@testing-library/user-event';
+import { AlertProvider } from 'alert';
+import { PagesResponse } from 'apps/page-builder/generated';
+
+import { PageManagementProvider } from '../../usePageManagement';
+
+import { AddStaticElement } from './AddStaticElement';
 
 const page: PagesResponse = {
     id: 12039120,

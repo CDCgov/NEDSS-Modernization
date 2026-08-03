@@ -1,5 +1,7 @@
 import { createElement, act } from 'react';
+
 import { renderHook } from '@testing-library/react';
+
 import { useConditionalRender } from './useConditionalRender';
 
 describe('when conditionally rendering', () => {
