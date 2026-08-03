@@ -3,7 +3,7 @@ Feature: Page Builder - User can view existing question library here.
 
   Background:
     Given I am logged in as secure user
-    When User navigates to Question Library and views the Question library
+    And User navigates to Question Library and views the Question library
 
   Scenario: Add new question for published with draft status page
     When Click on Create New button
