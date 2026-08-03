@@ -10,7 +10,7 @@ import { InitializationLoaderResult } from './initializationLoader';
 import IdleTimer from './IdleTimer';
 
 const ProtectedLayout = () => {
-    const data = useLoaderData() as InitializationLoaderResult;
+    const data = useLoaderData<InitializationLoaderResult>();
     const navigate = useNavigate();
 
     const handleIdle = () => navigate('/expired');
@@ -18,39 +18,48 @@ const ProtectedLayout = () => {
         await currentUser();
     };
 
-    const WithUser = (user: User) => {
-        const data = useLoaderData() as InitializationLoaderResult;
+    // const WithUser = (user: User) => {
+    //     return (
+    //         <UserContextProvider initial={user}>
+    //             <Await resolve={data?.configuration}>{WithConfiguration}</Await>
+    //         </UserContextProvider>
+    //     );
+    // };
 
-        return (
-            <UserContextProvider initial={user}>
-                <Await resolve={data?.configuration}>{WithConfiguration}</Await>
-            </UserContextProvider>
-        );
-    };
+    // const WithConfiguration = (configuration: Configuration) => {
+    //     return (
+    //         <ConfigurationProvider initial={configuration}>
+    //             <IdleTimer
+    //                 onIdle={handleIdle}
+    //                 keepAlivePath={configuration.settings.session.keepAlivePath}
+    //                 onContinue={handleIdleContinue}
+    //                 timeout={configuration.settings.session.warning}
+    //                 warningTimeout={configuration.settings.session.expiration - configuration.settings.session.warning}
+    //             />
+    //             <AnalyticsProvider>
+    //                 <Layout />
+    //             </AnalyticsProvider>
+    //         </ConfigurationProvider>
+    //     );
+    // };
 
-    const WithConfiguration = (configuration: Configuration) => {
-        return (
-            <ConfigurationProvider initial={configuration}>
+    return (
+        <UserContextProvider initial={data.user}>
+            <ConfigurationProvider initial={data.configuration}>
                 <IdleTimer
                     onIdle={handleIdle}
-                    keepAlivePath={configuration.settings.session.keepAlivePath}
+                    keepAlivePath={data.configuration.settings.session.keepAlivePath}
                     onContinue={handleIdleContinue}
-                    timeout={configuration.settings.session.warning}
-                    warningTimeout={configuration.settings.session.expiration - configuration.settings.session.warning}
+                    timeout={data.configuration.settings.session.warning}
+                    warningTimeout={
+                        data.configuration.settings.session.expiration - data.configuration.settings.session.warning
+                    }
                 />
                 <AnalyticsProvider>
                     <Layout />
                 </AnalyticsProvider>
             </ConfigurationProvider>
-        );
-    };
-
-    return (
-        <Suspense fallback={<Spinner />}>
-            <Await resolve={data?.user} errorElement={<Navigate to="/login" />}>
-                {WithUser}
-            </Await>
-        </Suspense>
+        </UserContextProvider>
     );
 };
 

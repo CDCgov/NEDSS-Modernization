@@ -9,7 +9,7 @@ const fetchConfig = (): CancelablePromise<Configuration> => {
     });
 };
 
-const currentConfiguration = () => fetchConfig().then((response) => response as Configuration);
+const currentConfiguration = () => fetchConfig().then((response) => response);
 
 type CurrentConfigurationResponse = Awaited<ReturnType<typeof currentConfiguration>>;
 
