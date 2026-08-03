@@ -9,9 +9,9 @@ import { displayAgeAsOf, today } from 'date';
 import { NoData } from 'design-system/data';
 import { Heading, HeadingLevel } from 'components/heading';
 
-const orElseToday = defaultTo(today);
-
 import styles from './patient-descriptor.module.scss';
+
+const orElseToday = defaultTo(today);
 
 const maybeDisplayName = mapOr(displayName('fullLastFirst'), '---');
 
