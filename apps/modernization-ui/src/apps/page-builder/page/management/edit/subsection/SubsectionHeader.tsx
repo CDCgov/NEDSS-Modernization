@@ -108,7 +108,7 @@ export const SubsectionHeader = ({
                         data-testid="editSubsectionOption"
                         onClick={() => closeThenAct(onEditSubsection)}
                     >
-                        <Icon.Edit size={3} /> Edit subsection
+                        <Icon.Edit aria-label="edit" size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped &&
                         page.status !== 'Published' &&
@@ -119,7 +119,7 @@ export const SubsectionHeader = ({
                                 data-testid="ungroupQuestionsOption"
                                 onClick={() => setCloseOptions(true)}
                             >
-                                <IconComponent name="group" size="s" /> Ungroup questions
+                                <IconComponent name="group" size="s" alt="group" /> Ungroup questions
                             </ModalToggleButton>
                         )}
                     {!subsection.isGrouped &&
@@ -136,13 +136,13 @@ export const SubsectionHeader = ({
                                         data-testid="groupQuestionsOption"
                                         onClick={() => closeThenAct(onGroupQuestion)}
                                     >
-                                        <IconComponent name="group" size="s" /> Group questions
+                                        <IconComponent name="group" size="s" alt="group" /> Group questions
                                     </Button>
                                 )}
                             </>
                         )}
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
-                        <Icon.Add size={3} /> Add static element
+                        <Icon.Add size={3} aria-label="add" /> Add static element
                     </ModalToggleButton>
                     <Button
                         type="button"
@@ -151,13 +151,18 @@ export const SubsectionHeader = ({
                         }}
                         className="deleteSubsectionBtn"
                     >
-                        <Icon.Delete size={3} /> Delete subsection
+                        <Icon.Delete size={3} aria-label="delete" /> Delete subsection
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (
-                    <Icon.ExpandLess className="iconExpandLess" size={4} onClick={() => onExpandedChange(false)} />
+                    <Icon.ExpandLess
+                        aria-label="collapase"
+                        className="iconExpandLess"
+                        size={4}
+                        onClick={() => onExpandedChange(false)}
+                    />
                 ) : (
-                    <Icon.ExpandMore size={4} onClick={() => onExpandedChange(true)} />
+                    <Icon.ExpandMore aria-label="expand" size={4} onClick={() => onExpandedChange(true)} />
                 )}
             </div>
             <ConfirmationModal
