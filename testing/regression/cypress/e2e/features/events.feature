@@ -21,22 +21,22 @@ Feature: User accesses patient profile and can view existing patient data here.
         And Add a new investigation
 
     Scenario: User wants to add a new lab report
-        And user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         And user clicks on the "Add lab report" button  
 
     Scenario: User wants to add a new morbidity report
-        And user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         And user clicks on the "Add morbidity report" button
 
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add vaccination" button
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add vaccination" button
         Then user submits "anthrax" vaccination with a popup and deletes it
 
     Scenario: Display all investigations related to the patient in the "Investigations" section
-        And user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Investigations" table
             | Select to compare| A check box to compare investigations.                                 |
             | Investigation ID | A link to the selected open investigation screen                       |
@@ -79,7 +79,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No vaccinations
     @skip-broken
     Scenario: Display all vaccinations related to the patient in the "Vaccinations" section
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Vaccinations" table
             | Event ID             | System generated ID.                                        |
             | Date created         | Date the vaccination record is created.                     |
@@ -91,7 +91,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No treatment records
     @skip-broken
     Scenario: Display all treatment related to the patient in the "Treatment" section
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Treatment" table
             | Date created    | Date the treatment record is created                        |
             | Provider        | Provider selected for the treatment.                        |
@@ -103,7 +103,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No documents
     @skip-broken
     Scenario: Display documents electronically received (eCR) related to the patient in the "Documents" section
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Documents" table
             | Date received    | Date the treatment record is created |
             | Type             | Document type.                       |
@@ -116,7 +116,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No contact records
     @skip-broken
     Scenario: Display contact record(s) (contact(s) named by patient) in the "Contact records (contacts named by patient)" section
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Contact records (contacts named by patient)" table
             | Date created    | Date the contact record is created.                                  |
             | Contacts named  | Contact’s name named by the patient.                                 |
@@ -128,7 +128,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No contact records
     @skip-broken
     Scenario: Display contact record(s) (patient named by contact(s)) in the "Contact records (patient named by contacts)" section
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Contact records (patient named by contacts)" table
             | Date created    | Date the contact record is created.                                  |
             | Named by        | Patient’s name named by the contact.                                 |
