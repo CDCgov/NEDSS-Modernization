@@ -9,8 +9,8 @@ import { useAlert } from 'libs/alert';
 import { Direction } from 'libs/sorting';
 import { PaginationProvider, Status, usePagination } from 'pagination';
 
-import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import './BusinessRulesLibrary.scss';
+import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 
 const Internal = () => {
     const modalRef = useRef<ModalRef>(null);

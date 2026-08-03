@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { render, screen } from '@testing-library/react';
-
 import '@testing-library/jest-dom';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 

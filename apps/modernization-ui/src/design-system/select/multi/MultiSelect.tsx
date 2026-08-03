@@ -8,7 +8,6 @@ import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select
 import { CheckboxOption } from './CheckboxOption';
 import { DropdownIndicator } from './DropdownIndicator';
 import { styles, theme } from './design';
-
 import './multi-select.scss';
 
 type MultiSelectProps = {

@@ -17,6 +17,7 @@ import { logErrorToUserConsole } from 'utils/logging';
 
 import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
 import { Concept } from '../../generated/models/Concept';
+
 import './CreateCondition.scss';
 
 type Props = {

@@ -1,6 +1,7 @@
 import React, { RefObject, useState } from 'react';
 
 import { ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
+
 import './SavetTemplate.scss';
 
 export const SaveTemplates = ({ modalRef }: { modalRef: RefObject<ModalRef> }) => {

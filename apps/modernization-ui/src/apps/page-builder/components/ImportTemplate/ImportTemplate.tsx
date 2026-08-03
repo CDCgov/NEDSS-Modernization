@@ -6,6 +6,7 @@ import { useImportTemplate } from 'apps/page-builder/hooks/api/useImportTemplate
 import { Spinner } from 'components/Spinner/Spinner';
 
 import { AlertBanner } from '../AlertBanner/AlertBanner';
+
 import './ImportTemplate.scss';
 
 type ImportTemplateProps = {

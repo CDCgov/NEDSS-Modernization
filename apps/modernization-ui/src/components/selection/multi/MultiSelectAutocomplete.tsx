@@ -4,7 +4,6 @@ import { EntryWrapper } from 'components/Entry';
 import { Selectable } from 'options';
 import { MultiValue, components } from 'react-select';
 import AsyncSelect from 'react-select/async';
-
 import 'design-system/select/multi/multi-select.scss';
 
 const CheckedOption: typeof components.Option = (props) => {

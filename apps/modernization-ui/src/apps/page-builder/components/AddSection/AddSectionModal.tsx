@@ -5,6 +5,7 @@ import { SectionControllerService, SubSectionControllerService } from 'apps/page
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 import { ToggleButton } from '../ToggleButton';
+
 import './AddSectionModal.scss';
 import { logErrorToUserConsole } from 'utils/logging';
 

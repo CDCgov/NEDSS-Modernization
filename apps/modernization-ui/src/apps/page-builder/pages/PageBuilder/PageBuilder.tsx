@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { PageBuilderSideNav } from '../../components/Navigation/PageBuilderSideNav';
+
 import './PageBuilder.scss';
 
 type Props = {
