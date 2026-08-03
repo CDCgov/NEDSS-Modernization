@@ -35,10 +35,10 @@ import { RemoveButton } from './RemoveButton.tsx';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
+import styles from './advanced-filter.module.scss';
 import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
 import { KeyboardDnDProvider } from './useKeyboardDnd';
 import { validateRule } from './validator.ts';
-import styles from './advanced-filter.module.scss';
 
 // ============= Constants ============= /
 

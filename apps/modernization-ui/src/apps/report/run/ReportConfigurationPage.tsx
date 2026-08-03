@@ -9,22 +9,21 @@ import { ValidationErrorBanner, ValidationErrorSection } from 'design-system/err
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { ReportConfiguration } from 'generated';
 import { permissions, Permitted } from 'libs/permission';
+import { usePermissions } from 'libs/permission/usePermissions';
 import { FieldErrors, useFormState } from 'react-hook-form';
 
 import { NBS_MANAGE_REPORT_PAGE } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
-
-import { AdvancedFilter, parseAdvancedFilterErrors } from './filters/advanced/AdvancedFilter';
-import { BasicFilter } from './filters/basic/BasicFilter';
-
-import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
-import { CurrentStateProvider } from './filters/basic/useCurrentState';
-import { ColumnSelector } from './columns/ColumnSelector';
 import layoutStyles from '../layout/layout.module.scss';
 
-import { SortSelector } from './columns/SortSelector';
 import { ReportExecuteForm } from './ReportRunPage';
-import { usePermissions } from 'libs/permission/usePermissions';
+import { ColumnSelector } from './columns/ColumnSelector';
+import { SortSelector } from './columns/SortSelector';
+import { AdvancedFilter, parseAdvancedFilterErrors } from './filters/advanced/AdvancedFilter';
+import { BasicFilter } from './filters/basic/BasicFilter';
+import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
+import { CurrentStateProvider } from './filters/basic/useCurrentState';
+
 
 const BASIC_SECTIONS = [
     {
