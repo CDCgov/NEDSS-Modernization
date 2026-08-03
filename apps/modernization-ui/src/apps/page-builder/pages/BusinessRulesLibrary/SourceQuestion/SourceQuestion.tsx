@@ -82,7 +82,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                             <Tag className={styles.selectedQuestion}>
                                 {questionSelect.name} ({questionSelect.question})
                                 <div className={styles.closeBtn}>
-                                    <UswIcon.Close onClick={() => handleRemove()} size={3} />
+                                    <UswIcon.Close aria-label="close" onClick={() => handleRemove()} size={3} />
                                 </div>
                             </Tag>
                         </div>
@@ -109,7 +109,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                 setSourceList([]);
                                             }}
                                         >
-                                            <Icon name="group" size="m" />
+                                            <Icon name="group" size="m" alt="group" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -132,7 +132,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name="group" size="m" />
+                                                    <Icon name="group" size="m" alt="group" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
