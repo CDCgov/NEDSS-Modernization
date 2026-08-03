@@ -1,14 +1,14 @@
-import { Investigation } from 'generated/graphql/schema';
-import { internalizeDate } from 'date';
-import { SelectableResolver } from 'options';
 import { displayProfileLink, displayGender } from 'apps/search/basic';
-import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 import {
     displayInvestigationLink,
     displayInvestigator,
     displayStatus,
     getPatient,
 } from 'apps/search/investigation/result';
+import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
+import { internalizeDate } from 'date';
+import { Investigation } from 'generated/graphql/schema';
+import { SelectableResolver } from 'options';
 
 type Props = {
     result: Investigation;

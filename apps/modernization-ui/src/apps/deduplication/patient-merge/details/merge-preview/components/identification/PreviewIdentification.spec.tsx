@@ -1,8 +1,10 @@
 import { render, within } from '@testing-library/react';
-import { PreviewIdentification } from './PreviewIdentification';
+import { MemoryRouter } from 'react-router';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { IdentificationId } from '../../../merge-review/model/PatientMergeForm';
-import { MemoryRouter } from 'react-router';
+
+import { PreviewIdentification } from './PreviewIdentification';
 
 const Fixture = () => {
     return (

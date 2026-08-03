@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { BasicIdentificationEntry } from '../entry';
+
 import { BasicIdentificationFields } from './BasicIdentificationFields';
 
 const mockIdentificationCodedValues: IdentificationCodedValues = {

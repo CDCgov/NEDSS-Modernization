@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { MergePreviewTableCard } from './MergePreviewTableCard';
 import type { Column } from 'design-system/table';
 import { MemoryRouter } from 'react-router';
+
+import { MergePreviewTableCard } from './MergePreviewTableCard';
 
 type TestData = {
     id: number;

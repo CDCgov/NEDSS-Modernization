@@ -1,11 +1,14 @@
+import { useState } from 'react';
+
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesTab } from 'apps/page-builder/generated';
 import { deleteTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { useState } from 'react';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
-import { ManageTabsTile } from '../ManageTabsTile/ManageTabsTile';
-import styles from './reorderable-tabs.module.scss';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { ManageTabsTile } from '../ManageTabsTile/ManageTabsTile';
+
+import styles from './reorderable-tabs.module.scss';
 
 type Props = {
     page: number;

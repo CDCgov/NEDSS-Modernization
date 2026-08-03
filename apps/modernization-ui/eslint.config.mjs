@@ -7,7 +7,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
-import importPlugin from 'eslint-plugin-import';
+import eslintPluginImport from 'eslint-plugin-import';
 
 export default defineConfig([
     // Main config
@@ -33,7 +33,7 @@ export default defineConfig([
             'react-hooks': reactHooks,
             storybook,
             jsdoc,
-            import: importPlugin,
+            import: eslintPluginImport,
         },
         rules: {
             ...tseslint.configs.recommended.rules,
@@ -79,6 +79,30 @@ export default defineConfig([
             // 'import/no-unresolved': 'error',
             // 'import/no-unused-modules': ['error', { unusedExports: true, missingExports: true }],
             'import/no-useless-path-segments': 'error',
+            'import/order': [
+                'error',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
+
+                    pathGroups: [
+                        {
+                            pattern: 'react',
+                            group: 'builtin',
+                            position: 'before',
+                        },
+                    ],
+
+                    pathGroupsExcludedImportTypes: [],
+                    'newlines-between': 'always',
+
+                    alphabetize: {
+                        order: 'asc',
+                        caseInsensitive: false,
+                    },
+
+                    distinctGroup: false,
+                },
+            ],
         },
         settings: {
             react: { version: 'detect' },

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { InlineMessage, InlineMessageProps } from './InlineMessage';
 
+import { InlineMessage, InlineMessageProps } from './InlineMessage';
 import styles from './inline-warning-message.module.scss';
 
 const InlineWarningMessage = ({ className, ...remaining }: InlineMessageProps) => (

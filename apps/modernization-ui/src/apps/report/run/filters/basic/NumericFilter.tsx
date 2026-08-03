@@ -1,6 +1,7 @@
 import { NumericInput } from 'design-system/input';
-import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
+
+import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 999;

@@ -1,11 +1,12 @@
-import { UseFormReturn } from 'react-hook-form';
-import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } from 'generated/graphql/schema';
 import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
-import { transform as transformer } from './transformer';
-import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
-import { patientTermsResolver as termResolver } from './patientTermsResolver';
+import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } from 'generated/graphql/schema';
+import { UseFormReturn } from 'react-hook-form';
 import { maybeMap } from 'utils/mapping';
+
+import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 import { filterResolver } from './filterResolver';
+import { patientTermsResolver as termResolver } from './patientTermsResolver';
+import { transform as transformer } from './transformer';
 
 const maybeFilter = maybeMap(filterResolver);
 

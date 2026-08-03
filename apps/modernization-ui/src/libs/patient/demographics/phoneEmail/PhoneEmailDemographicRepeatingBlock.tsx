@@ -1,10 +1,10 @@
-import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
 import { internalizeDate } from 'date';
+import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
 import { Column } from 'design-system/table';
-import { PhoneEmailDemographic } from './phoneEmails';
-import { PhoneEmailDemographicView } from './PhoneEmailDemographicView';
 
+import { PhoneEmailDemographicView } from './PhoneEmailDemographicView';
 import styles from './phone-email-demographic-repeating-block.module.scss';
+import { PhoneEmailDemographic } from './phoneEmails';
 
 const columns: Column<PhoneEmailDemographic>[] = [
     {

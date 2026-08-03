@@ -1,7 +1,8 @@
-import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { internalizeDate } from 'date';
-import { mapOr } from 'utils/mapping';
+import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { Selectable } from 'options';
+import { mapOr } from 'utils/mapping';
+
 import { RaceDemographic, labels } from './race';
 
 const displayDetails = mapOr<Selectable[], string | undefined>(

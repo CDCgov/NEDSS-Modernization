@@ -1,8 +1,9 @@
-import { get, maybeJson } from 'libs/api';
-import { mapOr } from 'utils/mapping';
-import { MotherInformation, PatientFileBirthRecord } from './birth-record';
-import { AssociatedInvestigation } from 'libs/events/investigations/associated';
 import { maybeDate } from 'date';
+import { get, maybeJson } from 'libs/api';
+import { AssociatedInvestigation } from 'libs/events/investigations/associated';
+import { mapOr } from 'utils/mapping';
+
+import { MotherInformation, PatientFileBirthRecord } from './birth-record';
 
 type PatientFileBirthRecordResponse = {
     patient: number;

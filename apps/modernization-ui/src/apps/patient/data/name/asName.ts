@@ -1,7 +1,9 @@
 import { asValue } from 'options';
-import { NameEntry } from './entry';
-import { Name } from '../api';
 import { exists, orUndefined } from 'utils';
+
+import { Name } from '../api';
+
+import { NameEntry } from './entry';
 
 const asName = (entry: NameEntry): Name | undefined => {
     const { asOf, type, prefix, first, middle, secondMiddle, last, secondLast, suffix, degree } = entry;

@@ -1,20 +1,21 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { PatientSearchResult } from 'generated/graphql/schema';
 import { SearchInteractionProvider } from 'apps/search';
-import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { sorting } from 'apps/search/basic';
+import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { PaginationPreferenceProvider } from 'design-system/pagination';
+import { useComponentSizing } from 'design-system/sizing';
 import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
+import { PatientSearchResult } from 'generated/graphql/schema';
+import { Direction } from 'libs/sorting';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { PatientSearchActions } from './PatientSearchActions';
+import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { NoPatientResults } from './result/none';
 import { PatientSearchResultTable, preferences } from './result/table';
-import { ColumnPreferenceProvider } from 'design-system/table/preferences';
-import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
-import { PatientSearchActions } from './PatientSearchActions';
-import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { usePatientSearch } from './usePatientSearch';
-import { Direction } from 'libs/sorting';
-import { useComponentSizing } from 'design-system/sizing';
-import { PaginationPreferenceProvider } from 'design-system/pagination';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({

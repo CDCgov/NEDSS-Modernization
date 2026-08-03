@@ -1,7 +1,9 @@
 import { ReactNode, useMemo } from 'react';
+
 import { Shown } from 'conditional-render';
-import { usePermissions } from './usePermissions';
 import { Predicate } from 'utils';
+
+import { usePermissions } from './usePermissions';
 
 export type PermittedProps = {
     /** The name of the permission required or a predicate that resolves the permission */

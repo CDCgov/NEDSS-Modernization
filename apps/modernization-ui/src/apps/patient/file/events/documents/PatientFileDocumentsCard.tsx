@@ -1,15 +1,16 @@
-import { MemoizedSupplier } from 'libs/supplying';
-import { PatientFileDocument } from './documents';
-import { TableCard, TableCardProps } from 'design-system/card';
 import { Suspense } from 'react';
-import { LoadingOverlay } from 'libs/loading';
-import { Await } from 'react-router';
-import { ColumnPreference } from 'design-system/table/preferences';
+
+import { internalizeDate, internalizeDateTime } from 'date';
+import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
+import { ColumnPreference } from 'design-system/table/preferences';
+import { Associations } from 'libs/events/investigations/associated';
+import { LoadingOverlay } from 'libs/loading';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
 
 import styles from './document-card.module.scss';
-import { internalizeDate, internalizeDateTime } from 'date';
-import { Associations } from 'libs/events/investigations/associated';
+import { PatientFileDocument } from './documents';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date received' };

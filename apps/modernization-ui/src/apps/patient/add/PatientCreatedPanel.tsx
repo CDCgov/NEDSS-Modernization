@@ -1,13 +1,14 @@
-import { permissions, Permitted } from 'libs/permission';
-import { Modal } from 'design-system/modal';
-import { Message } from 'design-system/message';
+import { Heading } from 'components/heading';
 import { NavLinkButton } from 'design-system/button';
 import { LinkButton } from 'design-system/button';
-import { Heading } from 'components/heading';
-import { CreatedPatient } from './api';
-import { displayName } from 'name';
+import { Message } from 'design-system/message';
+import { Modal } from 'design-system/modal';
 import { FeatureToggle } from 'feature';
+import { permissions, Permitted } from 'libs/permission';
+import { displayName } from 'name';
 import { maybeMap } from 'utils/mapping';
+
+import { CreatedPatient } from './api';
 
 type Props = {
     created: CreatedPatient;

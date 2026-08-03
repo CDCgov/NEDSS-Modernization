@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
+
 import { act, renderHook } from '@testing-library/react';
+
 import { FilterProvider, useFilter } from './useFilter';
 
 const wrapper = ({ children }: { children: ReactNode }) => <FilterProvider>{children}</FilterProvider>;

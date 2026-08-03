@@ -1,3 +1,5 @@
+import { RefObject } from 'react';
+
 import { Form, ModalRef, Button, ModalToggleButton } from '@trussworks/react-uswds';
 import {
     AddDefault,
@@ -7,14 +9,15 @@ import {
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { RefObject } from 'react';
+import { useAlert } from 'libs/alert';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
-import { HyperlinkFields } from './HyperlinkFields';
-import { CommentsFields } from './CommentsFields';
+
 import { usePageManagement } from '../../usePageManagement';
+
+import { CommentsFields } from './CommentsFields';
+import { HyperlinkFields } from './HyperlinkFields';
 import styles from './staticelement.module.scss';
-import { useAlert } from 'libs/alert';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },

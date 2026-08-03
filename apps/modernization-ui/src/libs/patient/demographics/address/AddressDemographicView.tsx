@@ -1,5 +1,6 @@
 import { internalizeDate } from 'date';
 import { DetailValue, DetailView } from 'design-system/entry/multi-value';
+
 import { AddressDemographic } from './address';
 
 type AddressDemographicViewProps = {

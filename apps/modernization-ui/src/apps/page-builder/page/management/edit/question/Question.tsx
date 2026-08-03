@@ -1,10 +1,12 @@
+import { useEffect, useRef, useState } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
 import { PagesQuestion } from 'apps/page-builder/generated';
+import { ConfirmationModal } from 'confirmation';
+
+import { QuestionContent } from './QuestionContent';
 import { QuestionHeader } from './QuestionHeader';
 import styles from './question.module.scss';
-import { QuestionContent } from './QuestionContent';
-import { ModalRef } from '@trussworks/react-uswds';
-import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     question: PagesQuestion;

@@ -1,9 +1,11 @@
+import { isAllowed, Sensitive } from 'libs/sensitive';
 import { asValue } from 'options';
 import { orUndefined } from 'utils';
 import { isEmpty } from 'utils/isEmpty';
+
 import { GeneralInformationDemographic } from '../general';
+
 import { GeneralInformationDemographicRequest } from './generalRequest';
-import { isAllowed, Sensitive } from 'libs/sensitive';
 
 const asValueIfAllowed = (sensitive?: Sensitive<string> | null) => {
     if (isAllowed(sensitive) && sensitive.value) {

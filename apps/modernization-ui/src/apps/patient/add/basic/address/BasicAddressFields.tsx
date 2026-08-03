@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
 import {
     validZipCodeRule,
@@ -10,9 +12,8 @@ import {
     CensusTractInputField,
 } from 'libs/demographics/location';
 import { useLocationOptions } from 'options/location';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
-import { TextInputField } from 'design-system/input';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';

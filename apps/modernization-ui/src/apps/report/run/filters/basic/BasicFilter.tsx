@@ -1,19 +1,21 @@
+import { ReactNode, useId } from 'react';
+
+import classNames from 'classnames';
+import { Checkbox } from 'design-system/checkbox';
 import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
-import { ReactNode, useId } from 'react';
-import { ReportExecuteForm } from '../../ReportRunPage';
 import { Controller, ControllerRenderProps, RegisterOptions, useFormContext } from 'react-hook-form';
-import { validateRequiredRule } from 'validation/entry';
-import { TextFilter, getValueText } from './TextFilter';
-import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
 import { Validator } from 'validation';
-import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
-import { getYearRange, YearRangeFilter } from './YearRangeFilter';
+import { validateRequiredRule } from 'validation/entry';
+
+import { ReportExecuteForm } from '../../ReportRunPage';
+
+import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFilter';
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 import { getNumericValue, NumericFilter, numericValidator } from './NumericFilter.tsx';
-import { Checkbox } from 'design-system/checkbox';
-import classNames from 'classnames';
-
+import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
+import { TextFilter, getValueText } from './TextFilter';
+import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import styles from './basic-filter.module.scss';
 
 export type BasicFilterProps = {

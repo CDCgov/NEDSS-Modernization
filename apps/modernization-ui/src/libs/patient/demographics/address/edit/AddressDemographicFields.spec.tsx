@@ -1,10 +1,12 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { LocationOptions } from 'options/location';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { AddressDemographic } from '../address';
+
 import { AddressDemographicFields } from './AddressDemographicFields';
 import { AddressOptions } from './useAddressOptions';
-import { LocationOptions } from 'options/location';
 
 const mockState = vi.fn();
 

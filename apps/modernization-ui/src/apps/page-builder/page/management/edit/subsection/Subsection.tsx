@@ -1,4 +1,5 @@
-import { useAlert } from 'libs/alert';
+import { useEffect, useState } from 'react';
+
 import {
     PageQuestionControllerService,
     PageStaticControllerService,
@@ -6,12 +7,14 @@ import {
     PagesSubSection,
 } from 'apps/page-builder/generated';
 import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
-import { useEffect, useState } from 'react';
+import { useAlert } from 'libs/alert';
+
 import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
+
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
-import { staticElementTypes } from '../staticelement/EditStaticElement';
 
 type Props = {
     subsection: PagesSubSection;

@@ -1,7 +1,8 @@
 import { MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
-import { DetailsSection } from '../../shared/details-section/DetailsSection';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
+
 import { formatPhone } from '../../../../shared/formatPhone';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
+import { DetailsSection } from '../../shared/details-section/DetailsSection';
 
 type Props = {
     phoneEmail: MergePhoneEmail;

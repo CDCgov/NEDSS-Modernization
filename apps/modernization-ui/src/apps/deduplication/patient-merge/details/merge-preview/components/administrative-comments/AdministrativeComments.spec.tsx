@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { AdministrativeComments } from './AdministrativeComments';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+
+import { AdministrativeComments } from './AdministrativeComments';
 
 describe('AdministrativeComments', () => {
     it('renders title, date, and comment', () => {

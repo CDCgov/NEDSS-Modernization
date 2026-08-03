@@ -1,10 +1,12 @@
 import { ReactNode } from 'react';
-import { Outlet } from 'react-router';
-import { PaginationProvider, PaginationSettings } from 'pagination';
-import { SortingProvider, SortingSettings } from 'libs/sorting';
-import { SearchResultDisplayProvider } from './useSearchResultDisplay';
-import { ComponentSizingProvider } from 'design-system/sizing';
+
 import { FilterProvider } from 'design-system/filter';
+import { ComponentSizingProvider } from 'design-system/sizing';
+import { SortingProvider, SortingSettings } from 'libs/sorting';
+import { PaginationProvider, PaginationSettings } from 'pagination';
+import { Outlet } from 'react-router';
+
+import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 
 const SEARCH_PAGE_SIZE = 20;
 

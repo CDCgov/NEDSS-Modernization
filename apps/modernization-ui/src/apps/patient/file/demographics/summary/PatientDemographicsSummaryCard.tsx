@@ -1,11 +1,13 @@
 import { ReactNode } from 'react';
-import { NoData } from 'design-system/data';
-import { Card, CardProps } from 'design-system/card';
-import { ItemGroup } from 'design-system/item';
+
 import { DisplayableAddress, displayAddress } from 'address/display';
-import { PatientFileDemographicsSummary, DisplayablePhone, DisplayableIdentification } from '.';
+import { Card, CardProps } from 'design-system/card';
+import { NoData } from 'design-system/data';
+import { ItemGroup } from 'design-system/item';
 
 import styles from './patient-file-summary.module.scss';
+
+import { PatientFileDemographicsSummary, DisplayablePhone, DisplayableIdentification } from '.';
 
 type SummaryItemProps = {
     label: string;

@@ -1,13 +1,15 @@
+import { useSearchNavigation } from 'apps/search';
 import { useConditionalRender } from 'conditional-render';
-import { displayName } from 'name';
-import { useAlert } from 'libs/alert';
-import { Permitted, permissions } from 'libs/permission';
 import { Button } from 'design-system/button';
 import { Hint } from 'design-system/hint';
 import { Confirmation } from 'design-system/modal';
 import { LabeledValue } from 'design-system/value';
-import { useSearchNavigation } from 'apps/search';
+import { useAlert } from 'libs/alert';
+import { Permitted, permissions } from 'libs/permission';
+import { displayName } from 'name';
+
 import { Patient } from '../patient';
+
 import { DeletePatientResponse, useDeletePatient } from './useDeletePatient';
 
 const INACTIVE_MESSAGE = 'This patient file is inactive and cannot be deleted.';

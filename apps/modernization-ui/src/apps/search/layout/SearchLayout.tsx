@@ -1,18 +1,19 @@
 import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { Button } from 'components/button';
-import { Loading } from 'components/Spinner';
-import { Sizing } from 'design-system/field';
-import { CollapsiblePanel } from 'design-system/collapsible-panel';
-import { Shown } from 'conditional-render';
-import { SearchNavigation } from './navigation/SearchNavigation';
-import { PatientSearchHeader } from './patientSearchHeader/PatientSearchHeader';
+
 import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
-import { SearchLanding } from './landing';
-import { SearchResults } from './result';
-import { NoResults } from './result/none';
-import { NoInput } from './result/NoInput';
+import { Loading } from 'components/Spinner';
+import { Button } from 'components/button';
+import { Shown } from 'conditional-render';
+import { CollapsiblePanel } from 'design-system/collapsible-panel';
+import { Sizing } from 'design-system/field';
 import { FeatureToggle } from 'feature';
 
+import { SearchLanding } from './landing';
+import { SearchNavigation } from './navigation/SearchNavigation';
+import { PatientSearchHeader } from './patientSearchHeader/PatientSearchHeader';
+import { SearchResults } from './result';
+import { NoInput } from './result/NoInput';
+import { NoResults } from './result/none';
 import styles from './search-layout.module.scss';
 
 type Renderer = () => ReactNode;

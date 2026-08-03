@@ -1,6 +1,7 @@
-import { RedirectHome } from 'routes';
 import { Guarded } from 'libs/guard';
 import { permissions } from 'libs/permission';
+import { RedirectHome } from 'routes';
+
 import { PatientFile } from './PatientFile';
 
 const GuardedPatientFile = () => (

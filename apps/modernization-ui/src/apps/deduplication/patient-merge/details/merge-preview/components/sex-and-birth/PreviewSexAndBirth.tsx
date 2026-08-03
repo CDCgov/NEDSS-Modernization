@@ -1,8 +1,10 @@
 import React from 'react';
-import { MergeCandidate, MergeSexAndBirth } from '../../../../../api/model/MergeCandidate';
-import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
+
 import { format, parseISO, differenceInYears, isValid } from 'date-fns';
+
+import { MergeCandidate, MergeSexAndBirth } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
 
 type PreviewSexAndBirthProps = {
     mergeFormData: PatientMergeForm;

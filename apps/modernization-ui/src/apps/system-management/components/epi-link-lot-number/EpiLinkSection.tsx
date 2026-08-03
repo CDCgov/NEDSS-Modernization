@@ -1,5 +1,5 @@
-import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 import { Permitted } from '../../../../libs/permission';
+import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 
 const epiLinkLinks = [
     {

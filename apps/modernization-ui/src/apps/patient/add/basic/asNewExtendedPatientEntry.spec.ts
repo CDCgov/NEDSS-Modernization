@@ -1,7 +1,8 @@
 import { today } from 'date';
-import { BasicNewPatientEntry } from './entry';
 import { asSelectable } from 'options';
+
 import { asNewExtendedPatientEntry } from './asNewExtendedPatientEntry';
+import { BasicNewPatientEntry } from './entry';
 
 describe('Basic form to extended transfer', () => {
     it('should transfer name to extended', () => {

@@ -1,6 +1,7 @@
-import { PatientMorbidityReport } from 'generated';
-import { PatientFileMorbidityReport } from './morbidity-report';
 import { maybeDate } from 'date';
+import { PatientMorbidityReport } from 'generated';
+
+import { PatientFileMorbidityReport } from './morbidity-report';
 
 const transformer = (response: PatientMorbidityReport): PatientFileMorbidityReport => ({
     ...response,

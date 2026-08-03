@@ -1,6 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
-import { SearchBar } from './SearchBar';
 import { useState } from 'react';
+
+import { Meta, StoryObj } from '@storybook/react-vite';
+
+import { SearchBar } from './SearchBar';
 
 const meta = {
     title: 'Design System/Search/SearchBar',

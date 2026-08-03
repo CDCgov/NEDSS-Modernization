@@ -1,8 +1,8 @@
-import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { AlertMessage } from 'design-system/message';
-import { Alert } from './alert';
+import { createPortal } from 'react-dom';
 
+import { Alert } from './alert';
 import styles from './alert-toast.module.scss';
 
 type AlertToastStatus = 'showing' | 'leaving';

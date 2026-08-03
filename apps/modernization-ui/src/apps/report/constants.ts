@@ -1,5 +1,6 @@
 import { ReportConfiguration } from 'generated';
 import { permissions } from 'libs/permission';
+
 import { EnumSelectable } from './utils.ts';
 
 export const PERMISSION_GROUP_MAP: Record<ReportConfiguration.group, typeof permissions.reports.private> = {

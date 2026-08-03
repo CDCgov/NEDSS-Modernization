@@ -1,5 +1,7 @@
-import { Heading } from 'components/heading';
 import { ReactNode } from 'react';
+
+import { Heading } from 'components/heading';
+
 import styles from './notification-card.module.scss';
 
 type Props = {

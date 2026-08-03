@@ -1,6 +1,7 @@
 import { displayNoData } from 'design-system/data';
-import { mapOr } from 'utils/mapping';
 import { DisplayableName, displayName } from 'name';
+import { mapOr } from 'utils/mapping';
+
 import { Patient } from '../../patient';
 import { ContactsCard, ContactsCardProps } from '../contacts';
 

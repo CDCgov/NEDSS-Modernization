@@ -1,7 +1,8 @@
 import { internalizeDate } from 'date';
 import { Sizing, ValueField } from 'design-system/field';
-import { GeneralInformationDemographic, labels } from '../general';
 import { SensitiveValueField } from 'libs/sensitive';
+
+import { GeneralInformationDemographic, labels } from '../general';
 
 type GeneralInformationDemographicViewProps = {
     sizing?: Sizing;

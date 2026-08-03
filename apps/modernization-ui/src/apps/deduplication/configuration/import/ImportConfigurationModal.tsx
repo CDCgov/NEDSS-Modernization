@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ImportModal } from './importModal/ImportModal';
+
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
+
+import { ImportModal } from './importModal/ImportModal';
 
 const ERROR_MESSAGE =
     // eslint-disable-next-line max-len

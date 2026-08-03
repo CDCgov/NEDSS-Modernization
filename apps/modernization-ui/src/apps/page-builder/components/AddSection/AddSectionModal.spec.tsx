@@ -1,8 +1,9 @@
-import { fireEvent, render } from '@testing-library/react';
-
 import React from 'react';
-import AddSectionModal from './AddSectionModal';
+
+import { fireEvent, render } from '@testing-library/react';
 import { SectionControllerService } from 'apps/page-builder/generated';
+
+import AddSectionModal from './AddSectionModal';
 
 const props = {
     modalRef: { current: null },

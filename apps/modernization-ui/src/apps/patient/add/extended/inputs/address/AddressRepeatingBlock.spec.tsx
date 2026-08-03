@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
-import { internalizeDate } from 'date';
-import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 import { AddressEntry } from 'apps/patient/data';
+import { internalizeDate } from 'date';
 import { LocationOptions } from 'options/location';
+
+import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 
 const mockState = vi.fn();
 

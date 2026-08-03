@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
+
 import { DatePickerInput } from './DatePickerInput';
 
 describe('when picking a date value for data entry', () => {

@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { PersonMatchHeader } from './PersonMatchHeader';
 import userEvent from '@testing-library/user-event';
+
+import { PersonMatchHeader } from './PersonMatchHeader';
 
 const onImportClick = vi.fn();
 const onNavClick = vi.fn();

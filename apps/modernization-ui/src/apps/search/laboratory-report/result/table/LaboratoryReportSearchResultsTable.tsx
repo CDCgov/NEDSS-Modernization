@@ -1,9 +1,3 @@
-import { LabReport } from 'generated/graphql/schema';
-import { Column, DataTable } from 'design-system/table';
-import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
-import { internalizeDate } from 'date';
-import { ClassicLink } from 'classic';
-import { Selectable } from 'options';
 import { withPatient, displayProfileLink, displayGender } from 'apps/search/basic';
 import {
     getPatient,
@@ -12,6 +6,12 @@ import {
     getDescription,
     getAssociatedInvestigations,
 } from 'apps/search/laboratory-report/result';
+import { ClassicLink } from 'classic';
+import { internalizeDate } from 'date';
+import { Column, DataTable } from 'design-system/table';
+import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
+import { LabReport } from 'generated/graphql/schema';
+import { Selectable } from 'options';
 
 const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
 const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };

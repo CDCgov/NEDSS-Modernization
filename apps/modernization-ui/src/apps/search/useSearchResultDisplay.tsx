@@ -1,6 +1,8 @@
 import { ReactNode, createContext, useCallback, useContext, useEffect, useReducer } from 'react';
-import { SearchSettings, useSearchSettings } from './useSearchSettings';
+
 import { useLocalStorage } from 'storage';
+
+import { SearchSettings, useSearchSettings } from './useSearchSettings';
 
 type View = 'list' | 'table';
 

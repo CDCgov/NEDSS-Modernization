@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { PatientSearchResult } from 'generated/graphql/schema';
+
 import {
     displayPhones,
     displayEmails,

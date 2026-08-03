@@ -1,13 +1,12 @@
 import { useState } from 'react';
+
+import { EntryWrapper } from 'components/Entry';
+import { MultiSelectProps } from 'design-system/select';
+import { styles, theme, CheckboxOption } from 'design-system/select/multi';
+import { Selectable, asValue as asSelectableValue } from 'options';
+import { AutocompleteOptionsResolver } from 'options/autocompete';
 import { MultiValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { EntryWrapper } from 'components/Entry';
-import { Selectable, asValue as asSelectableValue } from 'options';
-
-import { AutocompleteOptionsResolver } from 'options/autocompete';
-
-import { styles, theme, CheckboxOption } from 'design-system/select/multi';
-import { MultiSelectProps } from 'design-system/select';
 
 const asSelectableDisplay = (selectable: Selectable) => selectable.name;
 

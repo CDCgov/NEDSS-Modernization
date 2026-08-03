@@ -1,5 +1,6 @@
 import { internalizeDate } from 'date';
 import { Sizing, ValueField } from 'design-system/field';
+
 import { MortalityDemographic, labels } from '../mortality';
 
 type MortalityDemographicViewProps = {

@@ -1,8 +1,9 @@
 import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect, useId, useCallback } from 'react';
-import { createPortal } from 'react-dom';
+
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
+import { createPortal } from 'react-dom';
 
 import styles from './modal.module.scss';
 

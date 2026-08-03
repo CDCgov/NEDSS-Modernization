@@ -1,12 +1,13 @@
-import { RouteObject } from 'react-router';
-import { ReportRunPage } from './run';
-import { RedirectHome } from 'routes';
 import { FeatureLayout } from 'feature';
+import { LoadingBlock } from 'libs/loading/block';
 import { permitsAny, permissions, Permitted } from 'libs/permission';
 import { PermittedLayout } from 'libs/permission/PermittedLayout';
-import { loadReportConfiguration } from './utils/loadReportConfiguration';
 import { ErrorPage } from 'pages/error';
-import { LoadingBlock } from 'libs/loading/block';
+import { RouteObject } from 'react-router';
+import { RedirectHome } from 'routes';
+
+import { ReportRunPage } from './run';
+import { loadReportConfiguration } from './utils/loadReportConfiguration';
 
 const routing: RouteObject[] = [
     {

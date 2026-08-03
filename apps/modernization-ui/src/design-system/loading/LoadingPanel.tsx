@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
+
+import classNames from 'classnames';
 import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
 
 import styles from './loading-panel.module.scss';
-import { Shown } from 'conditional-render';
-import classNames from 'classnames';
 
 type LoadingPanelProps = {
     className?: string;

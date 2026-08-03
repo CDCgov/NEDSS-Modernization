@@ -1,5 +1,6 @@
-import { PageQuestionControllerService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { PageQuestionControllerService } from 'apps/page-builder/generated';
 import { logErrorToUserConsole } from 'utils/logging';
 
 type State =

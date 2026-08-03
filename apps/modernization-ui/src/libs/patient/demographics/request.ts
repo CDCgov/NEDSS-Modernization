@@ -1,10 +1,10 @@
 import { AddressDemographicRequest } from './address';
-import { NameDemographicRequest } from './name';
 import { AdministrativeInformationRequest } from './administrative';
 import { EthnicityDemographicRequest } from './ethnicity';
 import { GeneralInformationDemographicRequest } from './general';
 import { IdentificationDemographicRequest } from './identification';
 import { MortalityDemographicRequest } from './mortality';
+import { NameDemographicRequest } from './name';
 import { PhoneEmailDemographicRequest } from './phoneEmail';
 import { RaceDemographicRequest } from './race';
 import { BirthDemographicRequest, SexDemographicRequest } from './sex-birth';

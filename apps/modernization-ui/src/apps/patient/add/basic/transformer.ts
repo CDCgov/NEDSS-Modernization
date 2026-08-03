@@ -1,13 +1,5 @@
-import { exists, isEmpty, orUndefined } from 'utils';
-import { Mapping, maybeMap, maybeMapAll } from 'utils/mapping';
-import { asValue, Selectable } from 'options';
-import { LEGAL } from 'options/name/types';
-import { HOME as HOME_ADDRESS } from 'options/address/uses';
-import { HOUSE } from 'options/address/types';
-import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
-import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
-import { Race } from 'apps/patient/data/race/api';
 import { NewPatient } from 'apps/patient/add/api';
+import { asAdministrative } from 'apps/patient/data';
 import {
     Address,
     Birth,
@@ -19,8 +11,15 @@ import {
     PhoneEmail,
     Sex,
 } from 'apps/patient/data/api';
-
-import { asAdministrative } from 'apps/patient/data';
+import { Race } from 'apps/patient/data/race/api';
+import { asValue, Selectable } from 'options';
+import { HOUSE } from 'options/address/types';
+import { HOME as HOME_ADDRESS } from 'options/address/uses';
+import { LEGAL } from 'options/name/types';
+import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
+import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
+import { exists, isEmpty, orUndefined } from 'utils';
+import { Mapping, maybeMap, maybeMapAll } from 'utils/mapping';
 
 import {
     BasicAddressEntry,

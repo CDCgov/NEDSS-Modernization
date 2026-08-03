@@ -1,6 +1,8 @@
-import { focusedTarget } from 'utils';
-import { useSkipLink } from './SkipLinkContext';
 import { useEffect } from 'react';
+
+import { focusedTarget } from 'utils';
+
+import { useSkipLink } from './SkipLinkContext';
 
 interface SkipLinkProps {
     id: string;

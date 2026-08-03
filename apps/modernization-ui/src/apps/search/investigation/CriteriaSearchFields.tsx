@@ -1,4 +1,9 @@
+import { SearchCriteria } from 'apps/search/criteria';
+import { EntryFieldsProps } from 'design-system/entry';
+import { SingleSelect, MultiSelect } from 'design-system/select';
+import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
 import { Controller, useFormContext } from 'react-hook-form';
+
 import {
     InvestigationFilterEntry,
     caseStatusOptions,
@@ -6,10 +11,6 @@ import {
     notificationStatusOptions,
     processingStatusOptions,
 } from './InvestigationFormTypes';
-import { SingleSelect, MultiSelect } from 'design-system/select';
-import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
-import { SearchCriteria } from 'apps/search/criteria';
-import { EntryFieldsProps } from 'design-system/entry';
 
 const CriteriaSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();

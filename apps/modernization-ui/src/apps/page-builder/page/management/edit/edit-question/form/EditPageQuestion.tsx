@@ -8,9 +8,10 @@ import { UserInterfaceFields } from 'apps/page-builder/components/AddQuestion/fi
 import { HorizontalRule } from 'apps/page-builder/components/FormDivider/HorizontalRule';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { UpdatePageQuestionRequest } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
+import { useFormContext, useWatch } from 'react-hook-form';
+
 import { EditFields } from './EditFields';
 import styles from './edit-question-form.module.scss';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 export type EditPageQuestionForm = Omit<UpdatePageQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';

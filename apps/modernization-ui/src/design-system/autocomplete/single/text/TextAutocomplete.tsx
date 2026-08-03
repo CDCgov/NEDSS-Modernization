@@ -1,6 +1,6 @@
-import { Optional } from 'types';
 import { AutocompleteSingleProps, Autocomplete } from 'design-system/autocomplete';
 import { AutocompleteOptionsResolver } from 'options/autocompete';
+import { Optional } from 'types';
 
 type TextAutocompleteSingleProps = Optional<AutocompleteSingleProps<string>, 'asValue' | 'asText'>;
 type Props = TextAutocompleteSingleProps & { resolver: AutocompleteOptionsResolver };

@@ -1,6 +1,7 @@
 import { Column, CellValue } from 'design-system/table';
-import { Entry } from './useMultiValueEntry';
 import { Rendered } from 'design-system/table/header/column';
+
+import { Entry } from './useMultiValueEntry';
 
 const entryColumns = <E>(columns: Column<E>[]): Column<Entry<E>>[] => {
     return columns.map(wrapped);

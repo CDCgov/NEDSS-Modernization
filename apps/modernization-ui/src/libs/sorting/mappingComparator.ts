@@ -1,6 +1,7 @@
-import { Mapping } from 'utils/mapping';
-import { Comparator } from './sorting';
 import { Maybe } from 'utils';
+import { Mapping } from 'utils/mapping';
+
+import { Comparator } from './sorting';
 
 const mappingComparator =
     <R, C>(mapping: Mapping<R, Maybe<C>>, comparator: Comparator<Maybe<C>>) =>

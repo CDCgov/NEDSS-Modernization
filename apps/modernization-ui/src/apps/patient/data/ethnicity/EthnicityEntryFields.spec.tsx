@@ -1,9 +1,10 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
-import { EthnicityCodedValues } from './useEthnicityCodedValues';
-import { EthnicityEntry } from './entry';
+
 import { EthnicityEntryFields } from './EthnicityEntryFields';
+import { EthnicityEntry } from './entry';
+import { EthnicityCodedValues } from './useEthnicityCodedValues';
 
 const mockEthnicityValues: EthnicityCodedValues = {
     ethnicGroups: [

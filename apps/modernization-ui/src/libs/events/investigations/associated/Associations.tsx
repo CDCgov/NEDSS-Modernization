@@ -1,8 +1,8 @@
-import { exists } from 'utils';
 import { Shown } from 'conditional-render';
 import { NoData } from 'design-system/data';
-import { AssociatedInvestigation } from './associated';
+import { exists } from 'utils';
 
+import { AssociatedInvestigation } from './associated';
 import styles from './associations.module.scss';
 
 type AssociationsProps = {

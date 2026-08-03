@@ -1,8 +1,10 @@
 import { asValue } from 'options';
 import { exists } from 'utils';
-import { EthnicityDemographic } from '../ethnicity';
-import { EthnicityDemographicRequest } from './ethnicityRequest';
 import { maybeMapAll } from 'utils/mapping';
+
+import { EthnicityDemographic } from '../ethnicity';
+
+import { EthnicityDemographicRequest } from './ethnicityRequest';
 
 const maybeAsValues = maybeMapAll(asValue);
 

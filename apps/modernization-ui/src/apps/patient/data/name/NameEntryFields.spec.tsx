@@ -1,8 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NameEntry } from './entry';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { NameEntryFields } from './NameEntryFields';
+import { NameEntry } from './entry';
 
 const mockNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],

@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
 import { PageSummary, PageSummaryService, Date, DateRange, MultiValue, SingleValue } from 'apps/page-builder/generated';
-import { Status as PageStatus, usePagination } from 'pagination';
 import { Filter, externalize } from 'filters';
 import { useSorting } from 'libs/sorting';
+import { Status as PageStatus, usePagination } from 'pagination';
 
 type Sorting = {
     property: string;

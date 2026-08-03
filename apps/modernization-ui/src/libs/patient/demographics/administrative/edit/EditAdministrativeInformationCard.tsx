@@ -1,7 +1,9 @@
-import { UseFormReturn } from 'react-hook-form';
 import { Card, CardProps } from 'design-system/card';
 import { EntryFieldsProps, Required } from 'design-system/entry';
+import { UseFormReturn } from 'react-hook-form';
+
 import { HasAdministrativeInformation } from '../administrative';
+
 import { AdministrativeInformationFields } from './AdministrativeInformationFields';
 
 type EditAdministrativeInformationCardProps = {
