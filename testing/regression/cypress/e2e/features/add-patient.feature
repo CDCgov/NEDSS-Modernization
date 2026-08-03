@@ -29,7 +29,6 @@ Feature: User can add a patient profile
     #     Then I should see "You have successfully added"
 
     Scenario: User add a patient create and delete profile
-        Scenario: View the patient detail of new created patient profile
         When the user has searched for a patient by "Person number" as "63506872864"
         And nagivate to add new patient page
         And I create a new patient
