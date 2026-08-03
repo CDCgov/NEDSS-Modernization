@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Button, NavLinkButton } from 'design-system/button';
 import { permissions, Permitted } from 'libs/permission';
 import { ReportLayout } from '../layout/ReportLayout';

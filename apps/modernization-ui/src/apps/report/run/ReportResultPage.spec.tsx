@@ -1,7 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
 import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { ReportResultPage } from './ReportResultPage.tsx';
 import { axe } from 'jest-axe';
 import { ReportConfiguration } from 'generated';

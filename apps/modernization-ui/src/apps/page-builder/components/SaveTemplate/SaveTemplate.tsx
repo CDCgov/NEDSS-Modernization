@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from 'react';
+import { RefObject, useState } from 'react';
 import { ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import './SavetTemplate.scss';
 

@@ -5,7 +5,7 @@ import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { NavLinkButton } from 'design-system/button';
 import { usePagination } from 'pagination';
-import React, { RefObject, useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Direction } from 'libs/sorting';
 import './BusinessRulesLibraryTable.scss';

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from '@hello-pangea/dnd';
 import { PagesResponse } from '../generated';
 import { reorderObjects } from '../services/reorderObjectsAPI';

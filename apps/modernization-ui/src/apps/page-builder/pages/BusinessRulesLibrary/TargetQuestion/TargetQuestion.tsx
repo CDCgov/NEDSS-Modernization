@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './TargetQuestion.module.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
