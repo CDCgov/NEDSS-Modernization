@@ -6,14 +6,14 @@ Feature: User accesses patient profile and can view existing patient data here.
 
     Scenario: Create Seed Profile Data
         Given create a new patient profile
-        Then I set patient id profile ENV
+        And I set patient id profile ENV
 
     # Not multiple investigations available
     @skip-broken
     Scenario: User compares investigations
         Then user clicks on a patient's profile "Events" tab
         When the user has selected multiple investigations
-        When user clicks on the "Compare investigations" button
+        And user clicks on the "Compare investigations" button
 
     Scenario: User wants to add a new investigation
         When user clicks on a patient's profile "Events" tab
