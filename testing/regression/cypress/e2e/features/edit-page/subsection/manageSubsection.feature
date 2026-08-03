@@ -11,7 +11,7 @@ Feature: Page Builder - User can verify manage subsection here.
     Then verify user is at Edit subsection window with all the details
     And verify Cancel and Save Changes button are available
     And verify Save changes button disabled by default
-    And updates subsection name
+    When updates subsection name
     And verify Save changes button is enabled
     When click on Save changes button
     Then verify user is brought back to manage subsection window
