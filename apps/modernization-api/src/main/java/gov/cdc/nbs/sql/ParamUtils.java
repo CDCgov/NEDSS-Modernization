@@ -3,7 +3,7 @@ package gov.cdc.nbs.sql;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class ParamUtils {
+public final class ParamUtils {
 
   /*
    * Replace a named query parameter of the style `blah IN (:param)` with the contents directly.
@@ -21,4 +21,6 @@ public class ParamUtils {
     if (ints == null) return "";
     return ints.stream().map(String::valueOf).collect(Collectors.joining(", "));
   }
+
+  private ParamUtils() {}
 }
