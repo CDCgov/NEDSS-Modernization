@@ -13,7 +13,7 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Then Edit patient details showing on the page
 
   Scenario: Successfully Submitting a Completed New Patient Extended Form
-    Given I am on the New patient Extended form
+    When I am on the New patient Extended form
     And I have filled out all required fields in all sections
     And I click the Save button
     Then Form should be submitted successfully without errors
