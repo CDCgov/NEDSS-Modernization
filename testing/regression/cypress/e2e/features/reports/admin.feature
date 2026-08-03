@@ -41,7 +41,7 @@ Feature: Manage report configuration
         When I click the "Confirm" button
         Then The "Data source" "combobox" should be disabled
         # == General fields ==
-        And I type "My test report" into the "Name" field
+        When I type "My test report" into the "Name" field
         And I type "My test report is the best report" into the "Description" field
         And I select value "System" in the "Owner" field
         And I select radio "Reporting Facility" in the "Group" field
