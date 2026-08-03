@@ -8,18 +8,18 @@ Feature: Page Builder - User can verify grouping and ungrouping questions here.
     And User navigates to Edit page and views Edit page for Grouping
 
   Scenario: Edit Page - Ungroup questions - View after clicking
-    And user already has grouped question for a subsection
-    When user clicks on 3 dots to edit subsection
+    When user already has grouped question for a subsection
+    And user clicks on 3 dots to edit subsection
     Then user should see option for "Ungroup questions"
     And clicks on Ungroup questions
-    Then verify a warning pop up window is opened
-    Then verify "Cancel" and "Ungroup" button are available
+    And verify a warning pop up window is opened
+    And verify "Cancel" and "Ungroup" button are available
     When user clicks on Ungroup button
     Then verify success message subsection is ungrouped on top of screen
     And subsection does not have 'R' next to subsection name
 
   Scenario: Edit Page- Edit group questions- accessible
-    And user already has grouped question for a subsection
+    When user already has grouped question for a subsection
     And user navigates to subsection which has grouped questions
     And user clicks on 3 dots to edit subsection
     And click on edit subsection
@@ -28,7 +28,7 @@ Feature: Page Builder - User can verify grouping and ungrouping questions here.
     And user should see 'Cancel' and 'Submit' button are enabled
 
   Scenario: Edit Page- Edit group questions- accessible
-    And user already has grouped question for a subsection
+    When user already has grouped question for a subsection
     And user navigates to subsection which has grouped questions
     And user clicks on 3 dots to edit subsection
     And click on edit subsection
@@ -44,10 +44,10 @@ Feature: Page Builder - User can verify grouping and ungrouping questions here.
     And verify all the changes made are visible on edit page subsection
 
   Scenario: Edit Page-Group questions - End to End flow
-    And user clicks on 3 dots to edit subsection to group
+    When user clicks on 3 dots to edit subsection to group
     And user clicks on Group question
     Then verify user is brought to Edit Subsection page
-    Then verify Subsection name is prefilled
+    And verify Subsection name is prefilled
     And Subsection Visible is default to yes
     When enter Block name as TEST123
     And Data mart repeat number as 0
