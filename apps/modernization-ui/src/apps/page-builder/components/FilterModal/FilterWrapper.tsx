@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
 
 import './filter.scss';
-import { ReactNode } from 'react';
 
 export const FilterWrapper = ({
     isModalHidden,

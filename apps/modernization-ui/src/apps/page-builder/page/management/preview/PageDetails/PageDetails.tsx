@@ -15,9 +15,9 @@ import { LinkButton } from 'components/button';
 import { useAlert } from 'libs/alert';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import { logErrorToUserConsole } from 'utils/logging';
 
 import './PageDetails.scss';
-import { logErrorToUserConsole } from 'utils/logging';
 
 import { PageDetailsField } from './PageDetailsField';
 

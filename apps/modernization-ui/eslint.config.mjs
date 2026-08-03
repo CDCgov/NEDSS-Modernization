@@ -78,7 +78,6 @@ export default defineConfig([
                         },
                     ],
 
-                    warnOnUnassignedImports: true,
                     pathGroupsExcludedImportTypes: [],
                     'newlines-between': 'always',
 

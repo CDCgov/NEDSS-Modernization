@@ -13,12 +13,12 @@ import { SourceValueProp } from '../Add/AddBusinessRules';
 import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
 import SubSectionsDropdown from '../SubSectionDropdown';
 import { TargetQuestion } from '../TargetQuestion/TargetQuestion';
+import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
 import { mapComparatorToString } from '../helpers/mapComparatorToString';
 import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
 import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
 
 import './ModalWidth.scss';
-import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
 
 import styles from './BusinessRulesForm.module.scss';
 

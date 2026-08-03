@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
+
 import { Icon } from '@trussworks/react-uswds';
 
 import './filter.scss';
-import { ReactNode } from 'react';
 
 export const FilterPanel = ({
     header,
