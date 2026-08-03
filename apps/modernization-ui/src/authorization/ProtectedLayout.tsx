@@ -10,7 +10,7 @@ import { InitializationLoaderResult } from './initializationLoader';
 import IdleTimer from './IdleTimer';
 
 const ProtectedLayout = () => {
-    const data = useLoaderData() as InitializationLoaderResult;
+    const data = useLoaderData<InitializationLoaderResult>();
     const navigate = useNavigate();
 
     const handleIdle = () => navigate('/expired');
@@ -19,18 +19,16 @@ const ProtectedLayout = () => {
     };
 
     const WithUser = (user: User) => {
-        const data = useLoaderData() as InitializationLoaderResult;
-
         return (
             <UserContextProvider initial={user}>
-                <Await resolve={data?.configuration}>{WithConfiguration}</Await>
+                <Await resolve={data.configuration}>{WithConfiguration}</Await>
             </UserContextProvider>
         );
     };
 
     const WithConfiguration = (configuration: Configuration) => {
         return (
-            <ConfigurationProvider initial={configuration}>
+            <ConfigurationProvider configuration={configuration}>
                 <IdleTimer
                     onIdle={handleIdle}
                     keepAlivePath={configuration.settings.session.keepAlivePath}
@@ -47,7 +45,7 @@ const ProtectedLayout = () => {
 
     return (
         <Suspense fallback={<Spinner />}>
-            <Await resolve={data?.user} errorElement={<Navigate to="/login" />}>
+            <Await resolve={data.user} errorElement={<Navigate to="/login" />}>
                 {WithUser}
             </Await>
         </Suspense>
