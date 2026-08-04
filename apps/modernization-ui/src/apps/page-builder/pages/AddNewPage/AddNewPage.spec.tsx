@@ -133,7 +133,7 @@ describe('Add New Page', () => {
         await user.click(submit);
 
         expect(setHrefSpy).toHaveBeenCalledWith('/nbs/page-builder/api/v1/pages/create');
-        expect(savePage).not.toBeCalled();
+        expect(savePage).not.toHaveBeenCalled();
     });
 
     it.skip('should display form when Investigation type is selected', async () => {

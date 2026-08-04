@@ -135,7 +135,7 @@ describe('when canceled', () => {
         });
 
         await waitFor(() => {
-            expect(onCancel).toBeCalled();
+            expect(onCancel).toHaveBeenCalled();
         });
     });
 });
