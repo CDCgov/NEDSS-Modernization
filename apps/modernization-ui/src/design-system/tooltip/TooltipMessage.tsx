@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import styles from './tooltip-message.module.scss';
 
 type TooltipMessageProps = {

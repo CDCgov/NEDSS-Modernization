@@ -1,6 +1,7 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { displayName } from 'name';
 import { mapOr } from 'utils/mapping';
+
 import { PatientFileLink } from './PatientFileLink';
 
 const maybeDisplayName = mapOr(displayName('fullLastFirst'), 'No Data');

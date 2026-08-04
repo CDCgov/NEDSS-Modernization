@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { Modal } from './Modal';
-import { Message } from 'design-system/message';
+
 import { Button } from 'design-system/button';
+import { Message } from 'design-system/message';
+
+import { Modal } from './Modal';
 
 type Props = {
     title?: string;

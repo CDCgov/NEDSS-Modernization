@@ -1,4 +1,4 @@
-import { Features, Properties, Configuration, Settings, Search } from './configuration';
+import { Configuration, Features, Properties, Search, Settings } from './configuration';
 
 const search: Search = {
     events: {

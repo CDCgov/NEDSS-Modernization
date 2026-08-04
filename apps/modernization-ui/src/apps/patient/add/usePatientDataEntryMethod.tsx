@@ -1,8 +1,10 @@
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+
 import { useNavigate } from 'react-router';
-import { ExtendedNewPatientEntry } from './extended';
-import { BasicNewPatientEntry } from './basic/entry';
+
 import { asNewExtendedPatientEntry } from './basic/asNewExtendedPatientEntry';
+import { BasicNewPatientEntry } from './basic/entry';
+import { ExtendedNewPatientEntry } from './extended';
 
 type PatientDataEntryMethodInteraction = {
     toExtended: (initial: BasicNewPatientEntry, criteria?: object) => void;

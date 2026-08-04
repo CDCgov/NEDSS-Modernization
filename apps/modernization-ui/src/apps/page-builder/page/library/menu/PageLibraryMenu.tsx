@@ -1,11 +1,12 @@
-import { OverlayPanel } from 'overlay';
-import { Filter, FilterPanel, Property } from 'filters';
-import { LinkButton, Button } from 'design-system/button';
-import { Search } from 'components/Search';
-
-import styles from './page-library-menu.module.scss';
-import { FilterDisplay } from './FilterDisplay';
 import { useState } from 'react';
+
+import { Search } from 'components/Search';
+import { Button, LinkButton } from 'design-system/button';
+import { Filter, FilterPanel, Property } from 'filters';
+import { OverlayPanel } from 'overlay';
+
+import { FilterDisplay } from './FilterDisplay';
+import styles from './page-library-menu.module.scss';
 
 type Props = {
     properties: Property[];

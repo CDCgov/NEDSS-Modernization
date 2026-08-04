@@ -1,4 +1,5 @@
 import { Shown } from 'conditional-render';
+
 import { NotificationCard } from './NotificationCard';
 
 type Props = {

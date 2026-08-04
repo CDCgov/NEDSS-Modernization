@@ -1,6 +1,7 @@
 import { Card, CardProps } from 'design-system/card';
-import { EthnicityDemographic } from './ethnicity';
+
 import { EthnicityView } from './EthnicityView';
+import { EthnicityDemographic } from './ethnicity';
 
 type EthnicityDemographicCardProps = {
     title?: string;

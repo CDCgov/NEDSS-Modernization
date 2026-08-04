@@ -1,7 +1,8 @@
-import { Required } from 'design-system/entry';
 import { Card, CardProps } from 'design-system/card';
-import { useMortalityOptions } from './useMortalityOptions';
+import { Required } from 'design-system/entry';
+
 import { MortalityDemographicFields, MortalityDemographicFieldsProps } from './MortalityDemographicFields';
+import { useMortalityOptions } from './useMortalityOptions';
 
 type EditMortalityDemographicCardProps = {
     title?: string;

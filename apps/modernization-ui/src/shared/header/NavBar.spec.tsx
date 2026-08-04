@@ -1,8 +1,9 @@
-import { Mock } from 'vitest';
 import { render } from '@testing-library/react';
-import { usePage } from 'page';
-import { NavBar } from './NavBar';
 import { permissions } from 'libs/permission';
+import { usePage } from 'page';
+import { Mock } from 'vitest';
+
+import { NavBar } from './NavBar';
 
 let mockPermissions: string[] = [];
 const mockAllowFn = vi.fn((permission: string) => mockPermissions.includes(permission));

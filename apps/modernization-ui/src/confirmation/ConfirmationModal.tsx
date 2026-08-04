@@ -1,4 +1,5 @@
 import { ReactNode, RefObject } from 'react';
+
 import {
     Button,
     ButtonGroup,
@@ -10,6 +11,7 @@ import {
     ModalToggleButton,
 } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import style from './confirmationModal.module.scss';
 
 type Props = {

@@ -1,6 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
-import { SidePanel } from './SidePanel';
 import userEvent from '@testing-library/user-event';
+
+import { SidePanel } from './SidePanel';
 
 const onClose = vi.fn();
 class ResizeObserver {

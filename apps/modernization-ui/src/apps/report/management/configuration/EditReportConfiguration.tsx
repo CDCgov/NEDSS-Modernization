@@ -1,14 +1,15 @@
-import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button, NavLinkButton } from 'design-system/button';
 import { useState } from 'react';
-import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
-import { FormProvider, useForm } from 'react-hook-form';
-import { ReportControllerService, ReportConfiguration } from 'generated';
-import { useLoaderData, useNavigate, useParams } from 'react-router';
-import { LoadingBlock } from 'libs/loading/block';
-import { ApiErrorBanner } from 'design-system/errors/ApiError';
 
+import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import styles from 'apps/report/layout/layout.module.scss';
+import { Button, NavLinkButton } from 'design-system/button';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
+import { ReportConfiguration, ReportControllerService } from 'generated';
+import { LoadingBlock } from 'libs/loading/block';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLoaderData, useNavigate, useParams } from 'react-router';
+
+import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
 
 const EditReportConfiguration = () => {
     const params = useParams();

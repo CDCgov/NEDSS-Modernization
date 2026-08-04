@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { Checkbox, CheckboxProps } from './Checkbox';
 
 const meta = {

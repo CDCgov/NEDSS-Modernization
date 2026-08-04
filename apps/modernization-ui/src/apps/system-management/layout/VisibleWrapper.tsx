@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 type Props = {
-    children: React.ReactNode;
+    children: ReactNode;
     onVisibilityChange: (visible: boolean) => void;
 };
 

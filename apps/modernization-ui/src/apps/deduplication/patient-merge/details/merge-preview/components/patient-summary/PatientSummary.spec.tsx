@@ -1,9 +1,10 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { PatientSummary } from './PatientSummary';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+
+import { PatientSummary } from './PatientSummary';
 
 describe('PatientSummary', () => {
     it('renders the most recent legal name and other fields correctly', () => {

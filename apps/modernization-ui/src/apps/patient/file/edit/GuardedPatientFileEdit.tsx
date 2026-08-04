@@ -1,9 +1,11 @@
-import { RedirectHome } from 'routes';
-import { permissions } from 'libs/permission';
-import { Guarded } from 'libs/guard';
-import { PatientFileEdit } from './PatientFileEdit';
-import { usePatientFileData } from '../usePatientFileData';
 import { Shown } from 'conditional-render';
+import { Guarded } from 'libs/guard';
+import { permissions } from 'libs/permission';
+import { RedirectHome } from 'routes';
+
+import { usePatientFileData } from '../usePatientFileData';
+
+import { PatientFileEdit } from './PatientFileEdit';
 
 const GuardedPatientFileEdit = () => {
     const { patient } = usePatientFileData();

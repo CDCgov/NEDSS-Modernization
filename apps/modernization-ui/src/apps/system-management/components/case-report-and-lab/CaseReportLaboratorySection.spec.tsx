@@ -1,6 +1,7 @@
-import { Mock } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Mock } from 'vitest';
+
 import { CaseReportLaboratorySection } from './CaseReportLaboratorySection';
 
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'DECISION_SUPPORT_ADMIN', 'REPORTADMIN', 'SRTADMIN-SYSTEM'];

@@ -1,8 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PhoneEmailEntry, initial } from './entry';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
+import { initial, PhoneEmailEntry } from './entry';
 
 const mockPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],

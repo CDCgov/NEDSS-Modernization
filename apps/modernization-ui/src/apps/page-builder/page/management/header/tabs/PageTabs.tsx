@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import { TabGroup } from 'apps/page-builder/components/TabGroup/TabGroup';
 import { PagesTab } from 'apps/page-builder/generated';
+
 import { ManageTabs } from '../../edit/tabs/ManageTabs/ManageTabs';
 import { usePageManagement } from '../../usePageManagement';
+
 import styles from './page-tabs.module.scss';
-import { useEffect, useState } from 'react';
 
 const contactRecordTab: PagesTab = {
     id: -1,

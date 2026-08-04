@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
+
 import { Selectable } from 'options/selectable';
-import { useStateOptions } from './state/useStateOptions';
+
 import { useCountryOptions } from './country/useCountryOptions';
 import { useCountyOptions } from './county/useCountyOptions';
+import { useStateOptions } from './state/useStateOptions';
 
 type LocationOptions = {
     states: Selectable[];

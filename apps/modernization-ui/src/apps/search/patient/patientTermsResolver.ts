@@ -1,8 +1,9 @@
-import { Term, fromDateBetweenCriteria, fromDateEqualsCriteria, fromSelectable, fromValue } from 'apps/search/terms';
-import { PatientCriteriaEntry } from './criteria';
-import { asTextCriteriaValue, TextCriteria, asTextCriteriaOperator } from 'options/operator';
+import { fromDateBetweenCriteria, fromDateEqualsCriteria, fromSelectable, fromValue, Term } from 'apps/search/terms';
+import { asTextCriteriaOperator, asTextCriteriaValue, TextCriteria } from 'options/operator';
 import { splitStringByCommonDelimiters } from 'utils';
 import { isEmptyObject } from 'utils/object';
+
+import { PatientCriteriaEntry } from './criteria';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];

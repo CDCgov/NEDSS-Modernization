@@ -1,5 +1,5 @@
-import { Provider } from 'libs/provider';
 import { ResultedTest } from 'libs/events/tests';
+import { Provider } from 'libs/provider';
 
 type PatientFileDocumentRequiringReview = {
     patient: number;

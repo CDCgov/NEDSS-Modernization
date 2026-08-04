@@ -1,8 +1,9 @@
-import React from 'react';
+import { ReactNode } from 'react';
+
 import styles from './button-group.module.scss';
 
 interface ButtonGroupProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export const ButtonGroup = ({ children }: ButtonGroupProps) => {

@@ -1,17 +1,19 @@
-import { TableCard, TableCardProps } from 'design-system/card';
-import { LoadingOverlay } from 'libs/loading';
-import { MemoizedSupplier } from 'libs/supplying';
 import { Suspense, useState } from 'react';
-import { Await } from 'react-router';
-import { ColumnPreference } from 'design-system/table/preferences';
+
+import { internalizeDateTime } from 'date';
+import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
+import { ColumnPreference } from 'design-system/table/preferences';
+import { ClassicModalButton } from 'libs/classic';
+import { Associations } from 'libs/events/investigations/associated';
+import { LoadingOverlay } from 'libs/loading';
+import { displayProvider } from 'libs/provider';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
 
 import styles from './treatments.module.scss';
-import { internalizeDateTime } from 'date';
-import { displayProvider } from 'libs/provider';
-import { Associations } from 'libs/events/investigations/associated';
+
 import { PatientFileTreatment } from '.';
-import { ClassicModalButton } from 'libs/classic';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };

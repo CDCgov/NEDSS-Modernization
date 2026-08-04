@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useRef, RefObject, useId } from 'react';
+import { createContext, ReactNode, RefObject, useId, useRef } from 'react';
 
 import styles from './classic-modal.module.scss';
 

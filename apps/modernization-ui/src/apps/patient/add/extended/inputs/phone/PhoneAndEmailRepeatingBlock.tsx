@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
+
+import { initial, PhoneEmailEntry, PhoneEmailEntryFields } from 'apps/patient/data/phoneEmail';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
-import { Column } from 'design-system/table';
-import { PhoneEmailEntry, PhoneEmailEntryFields, initial } from 'apps/patient/data/phoneEmail';
-import { PhoneEntryView } from './PhoneEntryView';
 import { Sizing } from 'design-system/field';
+import { Column } from 'design-system/table';
+
+import { PhoneEntryView } from './PhoneEntryView';
 
 const defaultValue: Partial<PhoneEmailEntry> = initial();
 

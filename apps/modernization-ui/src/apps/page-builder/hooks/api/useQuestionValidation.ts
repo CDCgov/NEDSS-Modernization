@@ -1,6 +1,7 @@
+import { useEffect, useReducer } from 'react';
+
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { QuestionControllerHelperService } from 'apps/page-builder/generated/services/QuestionControllerHelperService';
-import { useEffect, useReducer } from 'react';
 import { logErrorToUserConsole } from 'utils/logging';
 
 type State =

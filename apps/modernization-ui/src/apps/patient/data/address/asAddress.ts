@@ -1,7 +1,9 @@
 import { asValue } from 'options';
-import { Address } from '../api';
-import { AddressEntry } from './entry';
 import { exists, orUndefined } from 'utils';
+
+import { Address } from '../api';
+
+import { AddressEntry } from './entry';
 
 const asAddress = (entry: AddressEntry): Address | undefined => {
     const { asOf, use, type, state, county, country, address1, address2, city, zipcode, censusTract, comment } = entry;

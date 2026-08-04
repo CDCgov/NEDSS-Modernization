@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 
 import { Success } from './Success';
-import userEvent from '@testing-library/user-event';
 
 describe('when a success is displayed', () => {
     it('should render with no accessibility violations', async () => {

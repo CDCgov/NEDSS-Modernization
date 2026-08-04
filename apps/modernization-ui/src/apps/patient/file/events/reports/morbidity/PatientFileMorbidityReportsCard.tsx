@@ -1,21 +1,22 @@
 import { Suspense } from 'react';
-import { Await } from 'react-router';
-import { LoadingOverlay } from 'libs/loading';
-import { MemoizedSupplier } from 'libs/supplying';
+
+import { Shown } from 'conditional-render';
+import { internalizeDateTime } from 'date';
+import { LinkButton } from 'design-system/button';
+import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { Shown } from 'conditional-render';
-import { permissions, Permitted } from 'libs/permission';
-import { TableCard, TableCardProps } from 'design-system/card';
-import { internalizeDateTime } from 'date';
-import { displayProvider } from 'libs/provider';
-import { LinkButton } from 'design-system/button';
 import { MaybeLabeledValue } from 'design-system/value';
-import { PatientFileMorbidityReport } from './morbidity-report';
-import { ResultedTests } from 'libs/events/tests';
 import { Associations } from 'libs/events/investigations/associated';
 import { TreatmentList } from 'libs/events/reports/morbidity';
+import { ResultedTests } from 'libs/events/tests';
+import { LoadingOverlay } from 'libs/loading';
+import { permissions, Permitted } from 'libs/permission';
+import { displayProvider } from 'libs/provider';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
 
+import { PatientFileMorbidityReport } from './morbidity-report';
 import styles from './morbidity-reports.module.scss';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };

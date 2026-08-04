@@ -1,8 +1,10 @@
-import { PatientDescriptor } from 'libs/patient/PatientDescriptor';
-import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
-import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
-import styles from './PatientSummary.module.scss';
 import { format, parseISO } from 'date-fns';
+import { PatientDescriptor } from 'libs/patient/PatientDescriptor';
+
+import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
+import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+
+import styles from './PatientSummary.module.scss';
 
 type PatientSummaryProps = {
     mergeCandidates: MergeCandidate[];

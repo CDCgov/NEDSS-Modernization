@@ -1,5 +1,6 @@
-import { PatientVaccination } from 'generated';
 import { maybeDate } from 'date';
+import { PatientVaccination } from 'generated';
+
 import { PatientFileVaccinations } from '.';
 
 const transformer = (response: PatientVaccination): PatientFileVaccinations => ({

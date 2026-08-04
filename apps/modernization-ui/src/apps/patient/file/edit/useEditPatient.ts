@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { PatientDemographicsEntry } from 'libs/patient/demographics';
-import { transformer } from 'libs/patient/demographics/transformer';
+
 import { isFailure, put, RequestError } from 'libs/api';
+import { PatientDemographicsEntry } from 'libs/patient/demographics';
 import { PatientDemographicsRequest } from 'libs/patient/demographics/request';
+import { transformer } from 'libs/patient/demographics/transformer';
 
 type Step =
     | { status: 'requesting'; patient: number; demographics: PatientDemographicsEntry }

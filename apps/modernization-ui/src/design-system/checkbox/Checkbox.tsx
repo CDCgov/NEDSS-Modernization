@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
-import styles from './checkbox.module.scss';
 import { HasVisibleLabel, isLabelVisible, Labeled } from 'design-system/label-utils';
+
+import styles from './checkbox.module.scss';
 
 type CheckboxProps = {
     selected?: boolean;

@@ -1,7 +1,7 @@
-import { Sizing } from 'design-system/field';
-import { ColumnPreferencesAction } from 'design-system/table/preferences';
-import { useFilter } from 'design-system/filter';
 import { Button } from 'components/button';
+import { Sizing } from 'design-system/field';
+import { useFilter } from 'design-system/filter';
+import { ColumnPreferencesAction } from 'design-system/table/preferences';
 import { FeatureToggle } from 'feature';
 import { useSorting } from 'libs/sorting';
 

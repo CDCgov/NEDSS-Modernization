@@ -1,12 +1,13 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-
+import { indicators } from 'options/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { PatientDemographics } from '../../demographics';
+
 import { GeneralInformationDemographicFields } from './GeneralInformationDemographicFields';
 import { GeneralInformationOptions } from './useGeneralInformationOptions';
-import { indicators } from 'options/indicator';
-import { PatientDemographics } from '../../demographics';
 
 const mockGeneralCodedValues: GeneralInformationOptions = {
     maritalStatuses: [{ name: 'Married', value: 'M' }],

@@ -1,8 +1,9 @@
-import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
 import { ReactNode } from 'react';
-import { PageTabs } from './tabs/PageTabs';
+
+import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
 
 import styles from './page-header.module.scss';
+import { PageTabs } from './tabs/PageTabs';
 
 type PageHeaderProps = {
     page: PagesResponse;

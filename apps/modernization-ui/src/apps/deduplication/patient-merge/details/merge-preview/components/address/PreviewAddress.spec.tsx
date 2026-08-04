@@ -1,9 +1,10 @@
-import React from 'react';
 import { render, within } from '@testing-library/react';
-import { PreviewAddress } from './PreviewAddress';
+import { MemoryRouter } from 'react-router';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { AddressId } from '../../../merge-review/model/PatientMergeForm';
-import { MemoryRouter } from 'react-router';
+
+import { PreviewAddress } from './PreviewAddress';
 
 const Fixture = () => {
     return (

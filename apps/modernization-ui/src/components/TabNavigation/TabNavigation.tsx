@@ -1,9 +1,11 @@
-import { useLocation } from 'react-router';
 import { ReactElement } from 'react';
+
 import classNames from 'classnames';
-import style from './tabNavigation.module.scss';
 import { NavLinkButton } from 'design-system/button';
 import { Sizing } from 'design-system/field';
+import { useLocation } from 'react-router';
+
+import style from './tabNavigation.module.scss';
 
 type NavigationProps = {
     path: string;
