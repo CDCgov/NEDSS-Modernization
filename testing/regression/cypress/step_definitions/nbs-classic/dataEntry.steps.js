@@ -96,20 +96,6 @@ When(
   }
 );
 
-When(
-  "I select {string} from the Condition dropdown",
-  (condition) => {
-    morbidityReportPage.selectCondition(condition);
-  }
-)
-
-When(
-  "I select {string} from the Pregnant dropdown menu",
-  (status) => {
-    morbidityReportPage.selectPregnantStatus(status);
-  }
-)
-
 When("I clear the Jurisdiction field", () => {
   morbidityReportPage.clearJurisdiction();
 });
@@ -220,8 +206,6 @@ When("I click the Add button under Resulted Tests", () => {
 When("I enter patient first name {string} and last name {string}", (firstName, lastName) => {
   morbidityReportPage.enterPatientBothNames(firstName, lastName);
 });
-
-
 
 // 6: Verification Steps
 

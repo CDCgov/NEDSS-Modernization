@@ -1,6 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import PatientProfilePage from "cypress/e2e/pages/patientProfile.page";
-import eventsTab from "cypress/e2e/pages/eventsTab.page";
 
 Then("I explor the patient profile", () => {
     PatientProfilePage.navigatePatinet()
@@ -32,8 +31,4 @@ Then("I add invstigation - Amebiassis of patient", () => {
 
 Then("I add invstigation - Anaplasma phagocytophilum of patient", () => {
     PatientProfilePage.addPatientInvestigations_AnaplasmaPhagocytophilum()
-});
-
-When('user clicks on the "Add morbidity report" button within the Events tab', () => {
-    eventsTab.clickEventsTabButton("Add morbidity report");
 });
