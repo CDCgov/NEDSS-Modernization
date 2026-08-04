@@ -1,5 +1,6 @@
 import { validateRule, ValidationResultMap } from './validator';
-import { RuleGroupType, RuleType } from 'react-querybuilder';
+
+type QbQuery = Parameters<typeof validateRule>[0];
 
 describe('validateRule', () => {
     let mockResult: ValidationResultMap;
@@ -18,7 +19,7 @@ describe('validateRule', () => {
                 field: '~',
                 operator: '~',
                 value: '',
-            } as RuleType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -39,7 +40,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -61,7 +62,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -84,7 +85,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -114,7 +115,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -148,7 +149,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -186,7 +187,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
@@ -217,7 +218,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as unknown as QbQuery,
             mockResult
         );
 
