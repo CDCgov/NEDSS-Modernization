@@ -1,8 +1,8 @@
-import React from 'react';
-import { format, parseISO, isValid } from 'date-fns';
-import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
-import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+import { format, isValid, parseISO } from 'date-fns';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
+import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
 
 export const PreviewMortality = ({
     mergeFormData,

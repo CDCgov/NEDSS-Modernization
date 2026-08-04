@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { BannerLockImage } from './BannerLockImage';
 
 describe('BannerLockImage component tests', () => {

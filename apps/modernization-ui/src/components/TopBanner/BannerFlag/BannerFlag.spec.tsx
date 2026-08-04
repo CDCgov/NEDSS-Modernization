@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { BannerFlag } from './BannerFlag';
 
 describe('BannerFlag component tests', () => {

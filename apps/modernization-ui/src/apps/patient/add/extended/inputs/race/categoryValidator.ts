@@ -1,5 +1,5 @@
-import { Selectable } from 'options';
 import { categoryRequiredValidator, RaceEntry } from 'apps/patient/data/race';
+import { Selectable } from 'options';
 import { exists, Predicate } from 'utils';
 import { allOf } from 'utils/predicate';
 

@@ -1,15 +1,18 @@
 import { useCallback } from 'react';
+
 import { Field, Orientation, Sizing } from 'design-system/field';
 import { Selectable } from 'options';
 import {
+    asSelectableOperator,
+    asTextCriteria,
     asTextCriteriaOrString,
+    asTextCriteriaValue,
     TextCriteria,
     TextOperation,
-    asSelectableOperator,
-    asTextCriteriaValue,
-    asTextCriteria,
 } from 'options/operator';
+
 import { TextInput } from '../TextInput';
+
 import styles from './criteria.module.scss';
 import { OperatorSelect } from './operator';
 

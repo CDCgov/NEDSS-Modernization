@@ -1,6 +1,7 @@
 import { internalizeDate } from 'date';
 import { Sizing, ValueField } from 'design-system/field';
 import { renderSelectables } from 'options';
+
 import { EthnicityDemographic } from './ethnicity';
 
 type EthnicityViewProp = {

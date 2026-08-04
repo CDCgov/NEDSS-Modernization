@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { TextAutocomplete } from './TextAutocomplete';
 import { asSelectable, Selectable } from 'options';
+
+import { TextAutocomplete } from './TextAutocomplete';
 
 const meta = {
     title: 'Design System/Autocomplete/TextAutocomplete',

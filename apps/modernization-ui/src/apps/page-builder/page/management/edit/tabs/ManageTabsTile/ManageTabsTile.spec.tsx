@@ -1,8 +1,9 @@
-import { PagesResponse } from 'apps/page-builder/generated';
-import { ManageTabsTile } from './ManageTabsTile';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { render } from '@testing-library/react';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { PagesResponse } from 'apps/page-builder/generated';
+
+import { ManageTabsTile } from './ManageTabsTile';
 
 const content: PagesResponse = {
     id: 123,

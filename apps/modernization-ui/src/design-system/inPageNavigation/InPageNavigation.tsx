@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
-import styles from './InPageNavigation.module.scss';
+import { FC, useEffect } from 'react';
+
 import classNames from 'classnames';
-import useInPageNavigation from './useInPageNavigation';
 import { Link, useLocation } from 'react-router';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import styles from './InPageNavigation.module.scss';
+import useInPageNavigation from './useInPageNavigation';
 
 export interface NavSection {
     id: string;
@@ -15,7 +17,7 @@ export interface InPageNavigationProps {
     title?: string;
 }
 
-export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, title = 'On this page' }) => {
+export const InPageNavigation: FC<InPageNavigationProps> = ({ sections, title = 'On this page' }) => {
     useInPageNavigation(0);
     const location = useLocation();
 

@@ -1,7 +1,8 @@
 import { ChangeEvent } from 'react';
+
 import classNames from 'classnames';
-import { findByValue, Selectable } from 'options';
 import { Sizing } from 'design-system/field';
+import { findByValue, Selectable } from 'options';
 
 type SelectProps = {
     id: string;

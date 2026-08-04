@@ -1,7 +1,9 @@
-import classNames from 'classnames';
-import styles from './radio.module.scss';
-import { Sizing } from 'components/Entry';
 import { ChangeEvent } from 'react';
+
+import classNames from 'classnames';
+import { Sizing } from 'components/Entry';
+
+import styles from './radio.module.scss';
 
 type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> & {
     sizing?: Sizing;

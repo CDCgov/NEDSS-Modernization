@@ -1,7 +1,9 @@
-import { AddPatientInteraction, useAddPatient, creator } from 'apps/patient/add';
+import { useState } from 'react';
+
+import { AddPatientInteraction, creator, useAddPatient } from 'apps/patient/add';
+
 import { BasicNewPatientEntry } from './entry';
 import { transformer } from './transformer';
-import { useState } from 'react';
 
 type AddBasicPatientInteraction = AddPatientInteraction<BasicNewPatientEntry> & {
     canSave: boolean;

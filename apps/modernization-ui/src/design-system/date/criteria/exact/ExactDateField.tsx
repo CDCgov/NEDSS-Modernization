@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
+
 import classNames from 'classnames';
-import { withoutProperty, withProperty } from 'utils/object';
-import { Numeric } from 'design-system/input/numeric/Numeric';
 import { DateEntry } from 'design-system/date/entry';
+import { Numeric } from 'design-system/input/numeric/Numeric';
+import { withoutProperty, withProperty } from 'utils/object';
+
 import { DateEqualsCriteria } from '../dateCriteria';
 
 import styles from './exact-date-field.module.scss';

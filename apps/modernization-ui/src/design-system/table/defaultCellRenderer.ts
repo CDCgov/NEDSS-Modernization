@@ -1,4 +1,5 @@
-import { Fragment, createElement, ReactNode } from 'react';
+import { createElement, Fragment, ReactNode } from 'react';
+
 import { internalizeDate } from 'date';
 
 const defaultCellRenderer = <V>(value?: V): ReactNode | undefined => {

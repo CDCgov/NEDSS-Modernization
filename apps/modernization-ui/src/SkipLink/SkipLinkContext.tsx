@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SkipLinkContextType {
     skipTo: (id: string) => void;
@@ -17,7 +17,7 @@ export function useSkipLink() {
 }
 
 interface SkipLinkProviderProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {

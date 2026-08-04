@@ -1,6 +1,7 @@
-import { MergeName } from 'apps/deduplication/api/model/MergeCandidate';
-import { NameDetails } from './NameDetails';
 import { render, within } from '@testing-library/react';
+import { MergeName } from 'apps/deduplication/api/model/MergeCandidate';
+
+import { NameDetails } from './NameDetails';
 
 const defaultName: MergeName = {
     personUid: '1',

@@ -1,10 +1,11 @@
-import { Sizing } from 'design-system/field';
 import { Accordion } from 'components/Accordion';
-import { BasicInformation } from './BasicInformation';
+import { Sizing } from 'design-system/field';
+
 import { Address } from './Address';
+import { BasicInformation } from './BasicInformation';
 import { Contact } from './Contact';
-import { RaceEthnicity } from './RaceEthnicity';
 import { Id } from './Id';
+import { RaceEthnicity } from './RaceEthnicity';
 
 type PatientCriteriaProps = {
     sizing?: Sizing;

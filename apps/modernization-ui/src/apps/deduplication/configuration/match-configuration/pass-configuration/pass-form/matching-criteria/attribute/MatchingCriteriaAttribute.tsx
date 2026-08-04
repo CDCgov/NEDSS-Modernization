@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
+
 import { MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { NumericHintInput } from '../../matching-bounds/numeric-hint-input/NumericHintInput';
+
 import styles from './matching-criteria-attribute.module.scss';
 
 type AttributeProps = {

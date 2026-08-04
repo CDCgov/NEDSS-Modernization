@@ -1,12 +1,13 @@
 import { ReactNode, useEffect, useState } from 'react';
+
 import {
-    mappingComparator,
-    withDirection,
-    Direction,
-    nullsLast,
-    defaultComparator,
     Comparator,
+    defaultComparator,
+    Direction,
+    mappingComparator,
+    nullsLast,
     SortingInteraction,
+    withDirection,
 } from 'libs/sorting';
 import { Mapping, Maybe } from 'utils';
 

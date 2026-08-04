@@ -1,6 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router';
+
 import { CreateCondition } from './CreateCondition';
 
 vi.mock('apps/page-builder/services/valueSetAPI', () => ({

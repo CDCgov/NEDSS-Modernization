@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { usePagination, Status as PageStatus } from 'pagination';
-import { useSorting } from 'libs/sorting';
-import { Predicate } from 'utils';
+
 import { Filter, useFilterMaybe } from 'design-system/filter';
+import { useSorting } from 'libs/sorting';
+import { Status as PageStatus, usePagination } from 'pagination';
+import { Predicate } from 'utils';
+
+import { Term } from './terms';
 import { useSearchCriteria } from './useSearchCriteria';
 import { SearchInteractionStatus, SearchResults } from './useSearchInteraction';
-import { Term } from './terms';
 
 type Page = { number: number; size: number };
 type Filtering = { overallTotal: number; filtering: boolean };

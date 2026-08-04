@@ -1,8 +1,9 @@
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import { PaginationProvider } from 'pagination';
 import { SortingProvider, useSorting } from 'libs/sorting';
+import { PaginationProvider } from 'pagination';
+
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import styles from './merge-landing.module.scss';
 

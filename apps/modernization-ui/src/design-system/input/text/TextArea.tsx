@@ -1,5 +1,7 @@
-import classNames from 'classnames';
 import { ChangeEvent } from 'react';
+
+import classNames from 'classnames';
+
 import styles from './textarea.module.scss';
 
 type TextOnChange = (value?: string) => void;

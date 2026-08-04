@@ -1,17 +1,18 @@
 import { Suspense, useState } from 'react';
-import { Await } from 'react-router';
+
 import { internalizeDateTime } from 'date';
-import { MemoizedSupplier } from 'libs/supplying';
+import { TableCard, TableCardProps } from 'design-system/card';
+import { Column } from 'design-system/table';
+import { ColumnPreference } from 'design-system/table/preferences';
+import { ClassicModalButton } from 'libs/classic';
+import { Associations } from 'libs/events/investigations/associated';
 import { LoadingOverlay } from 'libs/loading';
 import { permissions, Permitted } from 'libs/permission';
-import { ClassicModalButton } from 'libs/classic';
-import { Column } from 'design-system/table';
-import { TableCard, TableCardProps } from 'design-system/card';
-import { ColumnPreference } from 'design-system/table/preferences';
-import { Associations } from 'libs/events/investigations/associated';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
+
 import { PatientFileBirthRecord } from './birth-record';
 import { maybeDisplayMotherInformation } from './displayMotherInformation';
-
 import styles from './patient-file-birth-record.module.scss';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };

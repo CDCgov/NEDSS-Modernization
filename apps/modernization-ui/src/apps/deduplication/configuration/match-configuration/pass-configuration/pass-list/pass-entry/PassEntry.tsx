@@ -1,9 +1,11 @@
+import { MouseEvent } from 'react';
+
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import classNames from 'classnames';
-import { Icon } from 'design-system/icon';
-import styles from './pass-entry.module.scss';
 import { Shown } from 'conditional-render';
-import React from 'react';
+import { Icon } from 'design-system/icon';
+
+import styles from './pass-entry.module.scss';
 
 type Props = {
     pass: Pass;
@@ -13,7 +15,7 @@ type Props = {
 };
 
 export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }: Props) => {
-    const handleEditClick = (e: React.MouseEvent) => {
+    const handleEditClick = (e: MouseEvent) => {
         e.stopPropagation();
         onEditName(pass);
     };

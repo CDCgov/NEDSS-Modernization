@@ -1,16 +1,17 @@
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+import { resolveDate } from 'design-system/date/criteria';
+import { Selectable } from 'options';
+import { asTextCriteriaValue, TextCriteria } from 'options/operator';
+
 import {
     BasicAddressEntry,
-    BasicNewPatientEntry,
-    BasicPersonalDetailsEntry,
-    NameInformationEntry,
-    BasicPhoneEmail,
     BasicEthnicityRace,
     BasicIdentificationEntry,
+    BasicNewPatientEntry,
+    BasicPersonalDetailsEntry,
+    BasicPhoneEmail,
+    NameInformationEntry,
 } from './entry';
-import { asTextCriteriaValue, TextCriteria } from 'options/operator';
-import { resolveDate } from 'design-system/date/criteria';
-import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
-import { Selectable } from 'options';
 
 const resolveCriteria = (textCriteria?: TextCriteria): string | undefined =>
     asTextCriteriaValue(textCriteria) ?? undefined;

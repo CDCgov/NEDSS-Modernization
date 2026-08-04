@@ -1,17 +1,18 @@
-import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button, NavLinkButton } from 'design-system/button';
 import { useRef, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router';
-import { ReportConfigurationContent } from './ReportConfigurationContent';
 
-import styles from 'apps/report/layout/layout.module.scss';
-import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 import { ModalRef } from '@trussworks/react-uswds';
+import { ReportLayout } from 'apps/report/layout/ReportLayout';
+import styles from 'apps/report/layout/layout.module.scss';
 import { ConfirmationModal } from 'confirmation';
+import { Button, NavLinkButton } from 'design-system/button';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import { ReportConfiguration, ReportControllerService } from 'generated';
 import { LoadingBlock } from 'libs/loading/block';
+import { useLoaderData, useParams } from 'react-router';
 import { redirectToNBS6 } from 'utils';
-import { ApiErrorBanner } from 'design-system/errors/ApiError';
+
+import { ReportConfigurationContent } from './ReportConfigurationContent';
+import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 
 const ViewReportConfiguration = () => {
     const params = useParams();

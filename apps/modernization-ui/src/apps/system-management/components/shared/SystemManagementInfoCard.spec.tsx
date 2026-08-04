@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { SystemManagementInfoCard } from './SystemManagementInfoCard';
 import { MemoryRouter } from 'react-router';
-import React from 'react';
+
+import { SystemManagementInfoCard } from './SystemManagementInfoCard';
 
 const links = [
     { text: 'Page Builder', href: '/page/builder' },

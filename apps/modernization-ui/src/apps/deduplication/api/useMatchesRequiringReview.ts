@@ -1,7 +1,9 @@
-import { Config } from 'config';
 import { useEffect, useState } from 'react';
-import { MatchRequiringReviewResponse } from './model/MatchRequiringReview';
+
+import { Config } from 'config';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { MatchRequiringReviewResponse } from './model/MatchRequiringReview';
 
 export const useMatchesRequiringReview = () => {
     const [loading, setLoading] = useState(false);

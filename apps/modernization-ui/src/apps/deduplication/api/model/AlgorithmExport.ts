@@ -1,4 +1,5 @@
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
+
 import { Pass } from './Pass';
 
 export type AlgorithmExport = {

@@ -1,7 +1,7 @@
-import classNames from 'classnames';
 import { Icon } from '@trussworks/react-uswds';
-import { BreadcrumbProps } from './Breadcrumb';
+import classNames from 'classnames';
 
+import { BreadcrumbProps } from './Breadcrumb';
 import styles from './breadcrumb.module.scss';
 
 // Same as above but for navigating "out" of mod and back to NBS 6

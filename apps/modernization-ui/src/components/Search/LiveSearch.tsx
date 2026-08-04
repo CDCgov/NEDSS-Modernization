@@ -1,9 +1,10 @@
-import { Icon } from '@trussworks/react-uswds';
 import { useId } from 'react';
 
+import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import styles from './search.module.scss';
 import { TextInput } from 'design-system/input/text';
+
+import styles from './search.module.scss';
 
 type SearchProps = {
     id?: string;

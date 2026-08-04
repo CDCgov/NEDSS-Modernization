@@ -1,11 +1,12 @@
 import { KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { TextInput } from 'design-system/input/text';
+
+import classNames from 'classnames';
 import { Shown } from 'conditional-render';
+import { Sizing } from 'design-system/field';
 import { FilterDescriptor, FilterInteraction } from 'design-system/filter';
+import { TextInput } from 'design-system/input/text';
 
 import styles from './header-filter-field.module.scss';
-import { Sizing } from 'design-system/field';
-import classNames from 'classnames';
 
 type HeaderFilterFieldProps = {
     descriptor: FilterDescriptor;

@@ -1,7 +1,9 @@
 import { asValue } from 'options';
 import { isEmpty, orUndefined } from 'utils';
-import { BirthDemographicRequest } from './sexBirthRequest';
+
 import { BirthDemographic } from '../sexBirth';
+
+import { BirthDemographicRequest } from './sexBirthRequest';
 
 const asBirth = (entry: Partial<BirthDemographic>): BirthDemographicRequest | undefined => {
     const { asOf, ...remaining } = entry;

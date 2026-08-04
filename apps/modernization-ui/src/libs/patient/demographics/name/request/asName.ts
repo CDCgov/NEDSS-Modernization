@@ -1,6 +1,8 @@
 import { asValue } from 'options';
 import { exists, orUndefined } from 'utils';
+
 import { NameDemographic } from '../names';
+
 import { NameDemographicRequest } from './nameRequest';
 
 const asName = (demographic: Partial<NameDemographic>): NameDemographicRequest | undefined => {

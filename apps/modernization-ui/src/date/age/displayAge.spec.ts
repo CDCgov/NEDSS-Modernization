@@ -1,4 +1,5 @@
 import { differenceInYears } from 'date-fns';
+
 import { asDate, displayAgeAsOf, displayAgeAsOfToday } from './displayAge';
 
 describe('displayAgeAsOf', () => {

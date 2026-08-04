@@ -1,4 +1,5 @@
 import { ChangeEvent as ReactChangeEvent } from 'react';
+
 import classNames from 'classnames';
 
 import styles from './search-result-page-size-select.module.scss';

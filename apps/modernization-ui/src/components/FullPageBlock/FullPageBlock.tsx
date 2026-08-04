@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
+
 import styles from './full-page-block.module.scss';
 
 // Will not take up full page unless inside an element that will grow to the full space,

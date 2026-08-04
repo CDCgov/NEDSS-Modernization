@@ -1,9 +1,10 @@
 import { render } from '@testing-library/react';
-import { Investigation } from 'generated/graphql/schema';
-import { MemoryRouter } from 'react-router';
 import { Column } from 'design-system/table';
-import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTable';
+import { Investigation } from 'generated/graphql/schema';
 import { SelectableResolver } from 'options';
+import { MemoryRouter } from 'react-router';
+
+import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTable';
 
 vi.mock('design-system/table/preferences', () => ({
     useColumnPreferences: () => ({ apply: (columns: Column<Investigation>[]) => columns }),

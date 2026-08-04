@@ -1,6 +1,7 @@
-import styles from './radiobutton.module.scss';
 import { Selectable } from 'options';
+
 import { Radio } from './Radio';
+import styles from './radiobutton.module.scss';
 
 type Props = {
     options: Selectable[];

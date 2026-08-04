@@ -1,6 +1,7 @@
-import { Sizing } from 'design-system/field';
-import { BasicIdentificationEntry } from '../entry';
 import { ValueView } from 'design-system/data-display/ValueView';
+import { Sizing } from 'design-system/field';
+
+import { BasicIdentificationEntry } from '../entry';
 
 type Props = {
     entry: BasicIdentificationEntry;

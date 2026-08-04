@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import SystemManagementPage from './SystemManagementPage';
 import { MemoryRouter } from 'react-router';
+
+import SystemManagementPage from './SystemManagementPage';
 
 const mockPermissions = ['LDFADMINISTRATION-SYSTEM', 'SRTADMIN-SYSTEM', 'ALERTADMIN-SYSTEM'];
 const mockAllows = (permission: string) => mockPermissions.includes(permission);

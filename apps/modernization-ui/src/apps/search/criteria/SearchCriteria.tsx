@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 
-import styles from './search-criteria.module.scss';
-import { Sizing } from 'design-system/field';
 import classNames from 'classnames';
+import { Sizing } from 'design-system/field';
+
+import styles from './search-criteria.module.scss';
 
 type Props = {
     children: ReactNode;

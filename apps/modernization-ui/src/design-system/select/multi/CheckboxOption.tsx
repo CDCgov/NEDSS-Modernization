@@ -1,6 +1,6 @@
-import { OptionProps, components } from 'react-select';
 import { DummyCheckbox } from 'design-system/checkbox/Checkbox';
 import { Selectable } from 'options';
+import { components, OptionProps } from 'react-select';
 
 import styles from './checkbox-option.module.scss';
 

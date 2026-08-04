@@ -1,4 +1,5 @@
 import { validateIfPresent } from 'validation';
+
 import { validateEmail } from './validateEmail';
 
 /**
