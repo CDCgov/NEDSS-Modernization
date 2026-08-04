@@ -86,7 +86,7 @@ describe('when ManageSectionTile renders', () => {
                                 <ManageSectionTile
                                     section={section}
                                     index={1}
-                                    setSelectedForDelete={vi.fn}
+                                    setSelectedForDelete={vi.fn()}
                                     selectedForDelete={undefined}
                                     handleDelete={vi.fn}
                                     setOnAction={vi.fn}
