@@ -128,7 +128,7 @@ export default defineConfig([
             },
             'import/resolver': {
                 typescript: {
-                    alwaysTryTypes: true, // Always search for types under @types folder
+                    alwaysTryTypes: true,
                     project: './tsconfig.json',
                 },
             },
