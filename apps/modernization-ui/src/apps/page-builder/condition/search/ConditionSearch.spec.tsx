@@ -103,7 +103,7 @@ describe('ConditionSearch', () => {
             </MemoryRouter>
         );
 
-        expect(search).toBeCalledWith({ page: 0, pageSize: 10, sort: undefined });
+        expect(search).toHaveBeenCalledWith({ page: 0, pageSize: 10, sort: undefined });
     });
 
     it('should have aria labels', () => {

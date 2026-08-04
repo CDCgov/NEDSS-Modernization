@@ -58,7 +58,7 @@ describe('useSortingPreferences', () => {
             expect.objectContaining({ property: 'property-value', direction: 'asc' })
         );
 
-        expect(mockSortBy).toBeCalledWith('property-value', 'asc');
+        expect(mockSortBy).toHaveBeenCalledWith('property-value', 'asc');
     });
 
     it('should reset the active sorting', () => {
@@ -74,7 +74,7 @@ describe('useSortingPreferences', () => {
 
         expect(result.current.active).toBeUndefined();
 
-        expect(mockReset).toBeCalled();
+        expect(mockReset).toHaveBeenCalled();
     });
 
     it('should sync with active sort changes', () => {
@@ -100,7 +100,7 @@ describe('useSortingPreferences', () => {
             expect.objectContaining({ property: 'initial-value', direction: 'desc' })
         );
 
-        expect(mockSortBy).toBeCalledWith('initial-value', 'desc');
+        expect(mockSortBy).toHaveBeenCalledWith('initial-value', 'desc');
     });
 
     it('should save sorting preferences when active sorting is changed', () => {
@@ -110,7 +110,7 @@ describe('useSortingPreferences', () => {
             result.current.sortOn({ property: 'property-value', direction: 'asc' as Direction });
         });
 
-        expect(mockSave).toBeCalledWith(expect.objectContaining({ property: 'property-value', direction: 'asc' }));
+        expect(mockSave).toHaveBeenCalledWith(expect.objectContaining({ property: 'property-value', direction: 'asc' }));
     });
 
     it('should remove sorting preferences when active sorting is reset', () => {
@@ -126,6 +126,6 @@ describe('useSortingPreferences', () => {
 
         expect(result.current.active).toBeUndefined();
 
-        expect(mockRemove).toBeCalled();
+        expect(mockRemove).toHaveBeenCalled();
     });
 });

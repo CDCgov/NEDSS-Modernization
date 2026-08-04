@@ -17,7 +17,7 @@ describe('Tabbed button bar', () => {
         await waitFor(() => {
             fireEvent.click(buttons[1]);
         });
-        expect(mockFn).toBeCalledWith('2');
+        expect(mockFn).toHaveBeenCalledWith('2');
     });
 
     it('should set active class on click', async () => {

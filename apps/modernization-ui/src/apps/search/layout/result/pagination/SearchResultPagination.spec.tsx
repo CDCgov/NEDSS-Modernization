@@ -73,7 +73,7 @@ describe('When paginating search results', () => {
 
         await user.click(page);
 
-        expect(mockRequest).toBeCalledWith(2);
+        expect(mockRequest).toHaveBeenCalledWith(2);
     });
 
     it('should request the selected page when a page is clicked.', async () => {
@@ -89,7 +89,7 @@ describe('When paginating search results', () => {
 
         await user.click(page);
 
-        expect(mockRequest).toBeCalledWith(2);
+        expect(mockRequest).toHaveBeenCalledWith(2);
     });
 
     it('should request the next page when the "Next page" button is clicked', async () => {
@@ -105,7 +105,7 @@ describe('When paginating search results', () => {
 
         await user.click(page);
 
-        expect(mockRequest).toBeCalledWith(3);
+        expect(mockRequest).toHaveBeenCalledWith(3);
     });
 
     it('should default to a page size of 20', () => {

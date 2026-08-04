@@ -245,7 +245,7 @@ describe('when searching using useSearchResults', () => {
         });
 
         await waitFor(() =>
-            expect(resultResolver).toBeCalledWith(
+            expect(resultResolver).toHaveBeenCalledWith(
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );
@@ -267,7 +267,7 @@ describe('when searching using useSearchResults', () => {
         });
 
         await waitFor(() =>
-            expect(resultResolver).toBeCalledWith(
+            expect(resultResolver).toHaveBeenCalledWith(
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );
@@ -289,7 +289,7 @@ describe('when searching using useSearchResults', () => {
         });
 
         await waitFor(() =>
-            expect(resultResolver).toBeCalledWith(
+            expect(resultResolver).toHaveBeenCalledWith(
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );

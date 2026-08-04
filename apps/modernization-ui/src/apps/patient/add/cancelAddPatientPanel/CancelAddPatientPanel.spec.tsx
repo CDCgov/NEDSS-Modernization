@@ -28,7 +28,7 @@ describe('CancelAddPatientPanel', () => {
 
         await user.click(closer);
 
-        expect(onClose).toBeCalled();
+        expect(onClose).toHaveBeenCalledWith();
     });
 
     it('should call onConfirm when confirm button is clicked', async () => {
@@ -41,7 +41,7 @@ describe('CancelAddPatientPanel', () => {
 
         await user.click(confirmButton);
 
-        expect(onConfirm).toBeCalled();
+        expect(onConfirm).toHaveBeenCalledWith();
     });
 
     it('should save checkbox state to local storage on confirm', async () => {
@@ -53,6 +53,6 @@ describe('CancelAddPatientPanel', () => {
         await user.click(getByRole('button', { name: 'Yes, cancel' }));
 
         expect(getByRole('checkbox')).toBeChecked();
-        expect(mockSave).toBeCalledWith(true);
+        expect(mockSave).toHaveBeenCalledWith(true);
     });
 });

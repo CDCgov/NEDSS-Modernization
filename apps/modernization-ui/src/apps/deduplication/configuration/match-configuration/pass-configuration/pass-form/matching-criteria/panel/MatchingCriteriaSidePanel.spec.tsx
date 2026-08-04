@@ -253,6 +253,6 @@ describe('MatchingCriteriaSidePanel', () => {
 
         await user.click(add);
 
-        expect(onAccept).toBeCalledWith([]);
+        expect(onAccept).toHaveBeenCalledWith([]);
     });
 });
