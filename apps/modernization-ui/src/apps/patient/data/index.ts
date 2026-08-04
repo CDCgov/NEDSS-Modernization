@@ -1,6 +1,6 @@
 export { asAdministrative } from './administrative/asAdministrative';
 
-export type { NameEntry } from "./name";
+export type { NameEntry } from './name';
 export { asName } from './name';
 
 export type { AddressEntry } from './address';

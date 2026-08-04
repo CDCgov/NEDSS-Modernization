@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Button, Checkbox, ErrorMessage, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';

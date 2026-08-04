@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useState } from 'react';
+import { DragEvent, ReactNode, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
@@ -45,7 +45,7 @@ export const ImportModal = ({
         onCancel();
     };
 
-    const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         if (accept === undefined || accept?.includes(file.type)) {
@@ -54,12 +54,12 @@ export const ImportModal = ({
         setDragOver(false);
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDragOver(true);
     };
 
-    const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDragOver(false);
     };

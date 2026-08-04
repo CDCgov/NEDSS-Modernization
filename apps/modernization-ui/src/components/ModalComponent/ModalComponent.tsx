@@ -1,5 +1,5 @@
 import './ModalComponent.scss';
-import { RefObject, ReactNode } from 'react';
+import { ReactNode, RefObject } from 'react';
 
 import { Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 

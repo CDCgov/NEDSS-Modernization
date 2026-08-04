@@ -1,4 +1,4 @@
-import React from 'react';
+import { MouseEvent } from 'react';
 
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import classNames from 'classnames';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }: Props) => {
-    const handleEditClick = (e: React.MouseEvent) => {
+    const handleEditClick = (e: MouseEvent) => {
         e.stopPropagation();
         onEditName(pass);
     };

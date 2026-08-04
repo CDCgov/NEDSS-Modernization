@@ -1,4 +1,4 @@
-import { useEffect, FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router';

@@ -1,10 +1,10 @@
 import {
-    ReactNode,
-    useState,
     KeyboardEvent as ReactKeyboardEvent,
-    useRef,
-    useEffect,
     MouseEvent as ReactMouseEvent,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
 } from 'react';
 
 import classNames from 'classnames';
@@ -86,7 +86,8 @@ const Dialog = ({ position, onClose, children }: DialogProps) => {
             aria-label="Overlay modal"
             open={true}
             className={classNames({ [styles.right]: position === 'right', [styles.left]: position === 'left' })}
-            onKeyDown={handleKeyDown}>
+            onKeyDown={handleKeyDown}
+        >
             {children}
         </dialog>
     );

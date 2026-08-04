@@ -1,4 +1,4 @@
-import {BaseSyntheticEvent} from 'react';
+import { BaseSyntheticEvent } from 'react';
 import { useCallback, useState } from 'react';
 
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
@@ -24,7 +24,6 @@ import { openNewTab } from '../utils/openNewTab';
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { ReportResultPage } from './ReportResultPage';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-
 
 export type ReportExecuteForm = {
     // key is the report's ID

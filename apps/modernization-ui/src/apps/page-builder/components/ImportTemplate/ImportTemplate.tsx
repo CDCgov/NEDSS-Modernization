@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent, DragEvent } from 'react';
+import { ChangeEvent, DragEvent, useEffect, useState } from 'react';
 
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';

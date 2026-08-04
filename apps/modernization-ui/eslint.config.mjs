@@ -75,9 +75,10 @@ export default defineConfig([
             'import/no-extraneous-dependencies': 'error',
             'import/no-named-as-default-member': 'error',
             'import/no-named-as-default': 'error',
-            'import/no-unassigned-import': ['error', {"allow": ["**/*.scss", "@testing-library/**/*"]}],
-            // 'import/no-unresolved': 'error',
-            // 'import/no-unused-modules': ['error', { unusedExports: true, missingExports: true }],
+            'import/no-unassigned-import': [
+                'error',
+                { allow: ['**/*.scss', '@testing-library/**/*', 'jest-axe/**/*'] },
+            ],
             'import/no-useless-path-segments': 'error',
             // Sort outer import statement lines
             'import/order': [

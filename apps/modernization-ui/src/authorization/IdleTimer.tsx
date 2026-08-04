@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, FC } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Confirmation } from 'design-system/modal';
 import debounce from 'lodash.debounce';

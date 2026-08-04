@@ -8,7 +8,7 @@ import { NoDataRow } from 'design-system/table/NoDataRow';
 import DOMPurify from 'dompurify';
 import { ReportExecutionResult } from 'generated';
 import { marked } from 'marked';
-import {parse } from 'papaparse';
+import { parse } from 'papaparse';
 import { LoaderFunction, useLoaderData } from 'react-router';
 
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';

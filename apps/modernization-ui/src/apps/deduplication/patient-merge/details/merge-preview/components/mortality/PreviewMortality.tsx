@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { format, isValid, parseISO } from 'date-fns';
 
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';

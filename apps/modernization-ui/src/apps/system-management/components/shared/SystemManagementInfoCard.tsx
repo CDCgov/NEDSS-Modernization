@@ -1,4 +1,4 @@
-import {MouseEvent} from 'react';
+import { MouseEvent } from 'react';
 
 import { Card } from 'design-system/card/Card';
 import { useNavigate } from 'react-router';

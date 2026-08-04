@@ -1,4 +1,4 @@
-import { ReactNode, BaseSyntheticEvent } from 'react';
+import { BaseSyntheticEvent, ReactNode } from 'react';
 
 import { FullPageBlock } from 'components/FullPageBlock';
 import { Heading } from 'components/heading';
@@ -23,7 +23,6 @@ import { AdvancedFilter, parseAdvancedFilterErrors } from './filters/advanced/Ad
 import { BasicFilter } from './filters/basic/BasicFilter';
 import { STATE_FILTER_CODE } from './filters/basic/OptionSelectFilter';
 import { CurrentStateProvider } from './filters/basic/useCurrentState';
-
 
 const BASIC_SECTIONS = [
     {

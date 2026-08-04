@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState, Fragment } from 'react';
+import { Fragment, RefObject, useEffect, useState } from 'react';
 
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Rule } from 'apps/page-builder/generated';
