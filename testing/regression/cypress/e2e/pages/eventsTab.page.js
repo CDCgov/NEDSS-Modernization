@@ -46,6 +46,11 @@ class EventsTabPage {
       });
     })
   }
+
+  clickEventsTabButton(buttonText) {
+    cy.contains('button', buttonText)
+      .click();
+  }
 }
 
 export default new EventsTabPage();

@@ -6,6 +6,8 @@ class MorbidityReportPage {
   jurisdictionField =
     'input[name="morbidityReport.theObservationDT.jurisdictionCd_textbox"]';
   morbidityDateField = "#morbidityReport\\.theObservationDT\\.activityToTime_s";
+  onsetDateField = '#morbidityProxy\\.observationVO_s\\[2\\]\\.obsValueDateDT_s\\[0\\]\\.fromTime_s';
+  pregnantField = 'input[name="morbidityProxy.observationVO_s[8].obsValueCodedDT_s[0].code_textbox"][type="text"]';
   facilityProviderField =
     'input[name="entity-codeLookupText-Org-ReportingOrganizationUID"]';
   codeLookupButton = 'input[value="Code Lookup"]';
@@ -38,7 +40,9 @@ class MorbidityReportPage {
   }
 
   selectJurisdiction(jurisdiction) {
-    cy.get(this.jurisdictionField).type(jurisdiction).type("{enter}");
+    cy.get(this.jurisdictionField)
+      .should('not.be.disabled')
+      .type(jurisdiction);
   }
 
   clearJurisdiction() {
@@ -54,8 +58,21 @@ class MorbidityReportPage {
     cy.get(this.morbidityDateField).type(formattedDate);
   }
 
+  enterOnsetDate(date) {
+    const [month, day, year] = date.split("/");
+    const formattedDate = `${month.padStart(2, "0")}${day.padStart(
+      2,
+      "0"
+    )}${year}`;
+    cy.get(this.onsetDateField).type(formattedDate);
+  }
+
   enterFacilityProvider(value) {
     cy.get(this.facilityProviderField).type(value);
+  }
+
+  selectPregnantStatus(status) {
+    cy.get(this.pregnantField).click().type(status).type("{enter}");
   }
 
   clickCodeLookup() {
