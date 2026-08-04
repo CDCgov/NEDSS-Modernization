@@ -89,7 +89,7 @@ const ReportResultPage = ({
         <ReportLayout
             title={config.title}
             startHref={NBS_MANAGE_REPORT_PAGE}
-            startPage="reports"
+            startPage="Reports"
             actions={
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
