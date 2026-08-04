@@ -33,7 +33,7 @@ describe('when adding patients with extended data', () => {
             result.current.create(entry);
         });
 
-        expect(mockCreate).toBeCalledWith(entry);
+        expect(mockCreate).toHaveBeenCalledWith(entry);
     });
 
     it('should validate name sub form is not dirty when attempting to create', async () => {
