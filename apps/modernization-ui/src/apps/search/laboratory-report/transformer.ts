@@ -12,8 +12,9 @@ import {
     ProviderType,
     UserType,
 } from 'generated/graphql/schema';
-import { EventDate, Identification, LabReportFilterEntry } from './labReportFormTypes';
 import { asNumericValues, asValue, asValues, Selectable } from 'options/selectable';
+
+import { EventDate, Identification, LabReportFilterEntry } from './labReportFormTypes';
 
 /**
  * Transforms the form data into a GraphQL object

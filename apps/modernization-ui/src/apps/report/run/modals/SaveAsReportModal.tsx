@@ -1,22 +1,23 @@
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
+
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import { Button, ButtonGroup } from 'design-system/button';
 import { TextAreaField, TextInputField } from 'design-system/input/text';
 import { RadioGroup } from 'design-system/radio/RadioGroup.tsx';
-
+import { SingleSelect } from 'design-system/select';
+import { AdminReportRequest, ReportConfiguration, SaveAsReportRequest } from 'generated';
+import { permits } from 'libs/permission';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { Selectable } from 'options';
+import { useReportSections } from 'options/report';
 import { Controller, useForm } from 'react-hook-form';
+import { validateRequiredRule } from 'validation/entry';
+
+import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
+import { EnumSelectable } from '../../utils.ts';
 
 import styles from './save-as-report-modal.module.scss';
-import { SingleSelect } from 'design-system/select';
-import { useReportSections } from 'options/report';
-import { AdminReportRequest, ReportConfiguration, SaveAsReportRequest } from 'generated';
-import { usePermissions } from 'libs/permission/usePermissions';
-import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
-import { Selectable } from 'options';
-import { validateRequiredRule } from 'validation/entry';
-import { EnumSelectable } from '../../utils.ts';
-import { permits } from 'libs/permission';
 
 type SaveAsForm = {
     reportTitle: string;

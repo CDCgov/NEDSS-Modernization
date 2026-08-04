@@ -1,8 +1,10 @@
 import { ReactNode, useId } from 'react';
+
 import classNames from 'classnames';
 import { Heading, HeadingLevel } from 'components/heading';
-import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
+
 import { resolveIcon } from '../resolveIcon';
 
 import styles from './alert-message.module.scss';

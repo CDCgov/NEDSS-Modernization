@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
+
 import { HelperText } from './HelperText';
 import { InlineErrorMessage } from './InlineErrorMessage';
 import { InlineWarningMessage } from './InlineWarningMessage';
-
 import styles from './vertical-field.module.scss';
 
 type Props = {

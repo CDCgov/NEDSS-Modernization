@@ -1,5 +1,6 @@
-import { FeatureToggle, FeatureToggleProps } from 'feature';
 import { ReactNode } from 'react';
+
+import { FeatureToggle, FeatureToggleProps } from 'feature';
 import { RedirectHome } from 'routes';
 
 type FeatureGuardProps = {

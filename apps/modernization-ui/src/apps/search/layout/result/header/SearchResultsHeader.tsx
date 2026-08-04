@@ -1,11 +1,11 @@
-import classNames from 'classnames';
-import { Sizing } from 'design-system/field';
 import { View } from 'apps/search';
 import { Term } from 'apps/search/terms';
-import { SearchTerms } from './terms/SearchTerms';
-import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';
+import classNames from 'classnames';
+import { Sizing } from 'design-system/field';
 
+import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';
 import styles from './search-results-header.module.scss';
+import { SearchTerms } from './terms/SearchTerms';
 
 type Props = {
     view: View;

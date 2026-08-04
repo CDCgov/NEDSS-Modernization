@@ -1,9 +1,10 @@
-import { SortHandler, SortingProvider } from 'libs/sorting';
 import { columnSortResolver } from 'design-system/table';
+import { SortHandler, SortingProvider } from 'libs/sorting';
+
 import {
+    columns,
     RaceDemographicRepeatingBlock,
     RaceDemographicRepeatingBlockProps,
-    columns,
 } from './RaceDemographicRepeatingBlock';
 
 type RaceDemographicCardProps = { title?: string } & Omit<

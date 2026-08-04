@@ -1,9 +1,9 @@
 import {
     DatePeriodOperator,
     DateRangeOperator,
+    ExactValueOperator,
     isExactValueProperty,
     isPartialValueProperty,
-    ExactValueOperator,
     PartialValueOperator,
 } from './operators';
 import { Property, ValueProperty } from './properties';

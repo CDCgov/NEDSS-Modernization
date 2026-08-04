@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import styles from './reorder-subsection.module.scss';
-import { Icon } from 'components/Icon/Icon';
-import { ReorderQuestion } from '../ReorderQuestion/ReorderQuestion';
-import { PagesSubSection } from 'apps/page-builder/generated/models/PagesSubSection';
-import { PagesQuestion } from 'apps/page-builder/generated';
+
 import { Draggable, DraggableProvided, Droppable } from '@hello-pangea/dnd';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { PagesQuestion } from 'apps/page-builder/generated';
+import { PagesSubSection } from 'apps/page-builder/generated/models/PagesSubSection';
+import { Icon } from 'components/Icon/Icon';
+
+import { ReorderQuestion } from '../ReorderQuestion/ReorderQuestion';
+
+import styles from './reorder-subsection.module.scss';
 
 type Props = {
     index: number;

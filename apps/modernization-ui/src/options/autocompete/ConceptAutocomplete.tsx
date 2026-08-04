@@ -1,9 +1,10 @@
-import { ConceptOptionsService } from 'generated';
-import { AutocompleteOptionsResolver } from './useSelectableAutocomplete';
 import {
     SelectableAutocomplete,
     SelectableAutocompleteSingleProps,
 } from 'design-system/autocomplete/single/selectable';
+import { ConceptOptionsService } from 'generated';
+
+import { AutocompleteOptionsResolver } from './useSelectableAutocomplete';
 
 const resolver =
     (valueSet: string): AutocompleteOptionsResolver =>

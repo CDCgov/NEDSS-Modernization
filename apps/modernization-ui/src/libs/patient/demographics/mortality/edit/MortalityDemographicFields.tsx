@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
-import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+
+import { Shown } from 'conditional-render';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
 import { isEqual, Selectable } from 'options';
 import { indicators } from 'options/indicator';
-import { Shown } from 'conditional-render';
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { EntryFieldsProps } from 'design-system/entry';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
-import { TextInputField } from 'design-system/input';
-import { MoralityOptions } from './useMortalityOptions';
+
 import { HasMortalityDemographic, labels, MortalityDemographic } from '../mortality';
+
+import { MoralityOptions } from './useMortalityOptions';
 
 const isDeceased = isEqual(indicators.yes);
 

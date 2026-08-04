@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
+
+import { mapOr } from 'utils/mapping';
+
 import { TextInput, TextInputProps } from './TextInput';
 import { masked } from './masked';
-import { mapOr } from 'utils/mapping';
 
 type MaskedTextInputProps = {
     mask: string;

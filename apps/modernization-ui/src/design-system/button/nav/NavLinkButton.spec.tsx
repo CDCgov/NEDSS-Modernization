@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { NavLinkButton, NavLinkButtonProps } from './NavLinkButton';
 import { MemoryRouter } from 'react-router';
+
+import { NavLinkButton, NavLinkButtonProps } from './NavLinkButton';
 
 const Fixture = (props: NavLinkButtonProps) => (
     <MemoryRouter>

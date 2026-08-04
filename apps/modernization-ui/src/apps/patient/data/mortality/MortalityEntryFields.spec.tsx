@@ -1,9 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { MortalityEntryFields } from './MortalityEntryFields';
 import { internalizeDate } from 'date';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { MortalityEntryFields } from './MortalityEntryFields';
 
 const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],

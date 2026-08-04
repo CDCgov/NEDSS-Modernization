@@ -1,6 +1,8 @@
 import { asValue } from 'options';
 import { exists, orUndefined } from 'utils';
+
 import { AddressDemographic } from '../address';
+
 import { AddressDemographicRequest } from './addressRequest';
 
 const asAddress = (demographic: Partial<AddressDemographic>): AddressDemographicRequest | undefined => {

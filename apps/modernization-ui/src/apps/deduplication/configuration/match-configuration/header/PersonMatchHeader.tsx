@@ -1,7 +1,7 @@
-import { Button } from 'design-system/button';
+import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
+import { Button } from 'design-system/button';
 
 import styles from './person-match-header.module.scss';
 

@@ -1,11 +1,12 @@
-import { Controller, useFormContext } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
-import { TextInputField } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
+import { Controller, useFormContext } from 'react-hook-form';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 
-import { NameDemographic, labels } from '../names';
+import { labels, NameDemographic } from '../names';
+
 import { NameOptions } from './useNameOptions';
 
 type NameDemographicFieldsProps = { options: NameOptions } & EntryFieldsProps;

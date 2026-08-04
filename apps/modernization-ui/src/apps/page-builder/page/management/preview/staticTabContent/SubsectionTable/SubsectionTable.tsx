@@ -1,4 +1,5 @@
 import { StaticSubsection } from '../StaticSubsection/StaticSubsection';
+
 import styles from './subsection-table.module.scss';
 
 type Props = {

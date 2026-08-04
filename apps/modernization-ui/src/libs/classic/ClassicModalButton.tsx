@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import { post } from 'libs/api';
+
 import { Button, ButtonProps } from 'design-system/button';
+import { post } from 'libs/api';
+
 import { Status, useClassicModal } from './useClassicModal';
 
 const performAction = (action?: string) => (action ? fetch(post(action)) : Promise.resolve());

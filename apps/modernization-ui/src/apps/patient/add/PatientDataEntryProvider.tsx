@@ -1,7 +1,8 @@
-import { Outlet } from 'react-router';
 import { ComponentSizingProvider } from 'design-system/sizing';
-import { SearchFromAddPatientProvider } from './useSearchFromAddPatient';
+import { Outlet } from 'react-router';
+
 import { PatientDataEntryMethodProvider } from './usePatientDataEntryMethod';
+import { SearchFromAddPatientProvider } from './useSearchFromAddPatient';
 
 const PatientDataEntryProvider = () => (
     <ComponentSizingProvider>

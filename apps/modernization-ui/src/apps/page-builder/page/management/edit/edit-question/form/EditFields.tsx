@@ -1,6 +1,7 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import { EditPageQuestionForm } from './EditPageQuestion';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { EditPageQuestionForm } from './EditPageQuestion';
 import styles from './edit-question-form.module.scss';
 
 export const EditFields = () => {

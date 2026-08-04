@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BasicPhoneEmailFields } from './BasicPhoneEmailFields';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { BasicPhoneEmail } from '../entry';
+
+import { BasicPhoneEmailFields } from './BasicPhoneEmailFields';
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const form = useForm<BasicPhoneEmail>({

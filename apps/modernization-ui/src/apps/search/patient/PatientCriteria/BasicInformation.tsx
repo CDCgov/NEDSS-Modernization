@@ -1,16 +1,17 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
-import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
-import { TextCriteriaField } from 'design-system/input/text/criteria';
-import { SingleSelect } from 'design-system/select';
-import { EntryFieldsProps } from 'design-system/entry';
-import { validNameRule } from 'validation/entry';
+import { SkipLink } from 'SkipLink';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { Permitted } from 'libs/permission';
-import { searchableGenders } from './searchableGenders';
+import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
+import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
-import { SkipLink } from 'SkipLink';
+import { TextCriteriaField } from 'design-system/input/text/criteria';
+import { SingleSelect } from 'design-system/select';
+import { Permitted } from 'libs/permission';
+import { Controller, useFormContext } from 'react-hook-form';
+import { validNameRule } from 'validation/entry';
+
+import { searchableGenders } from './searchableGenders';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();

@@ -1,8 +1,10 @@
-import { AvailableQuestion } from 'apps/page-builder/generated';
 import { useState } from 'react';
+
 import { TabbedButtonBar } from 'apps/page-builder/components/TabbedButtonBar/TabbedButtonBar';
-import styles from './expanded-question.module.scss';
+import { AvailableQuestion } from 'apps/page-builder/generated';
 import { NoData } from 'design-system/data';
+
+import styles from './expanded-question.module.scss';
 
 type Props = {
     question: AvailableQuestion;

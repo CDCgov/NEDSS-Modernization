@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
+
 import classNames from 'classnames';
 
 import styles from './collapsible.module.scss';

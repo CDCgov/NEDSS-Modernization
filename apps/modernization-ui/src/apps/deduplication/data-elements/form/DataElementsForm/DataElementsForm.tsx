@@ -4,8 +4,10 @@ import { Card } from 'design-system/card/Card';
 import { Checkbox } from 'design-system/checkbox';
 import { Hint } from 'design-system/hint';
 import { useFormContext, useWatch } from 'react-hook-form';
+
 import { DataElements } from '../../../api/model/DataElement';
 import { DataElementRow } from '../DataElementRow/DataElementRow';
+
 import styles from './DataElementsForm.module.scss';
 
 const dataElementKeys: (keyof DataElements)[] = [

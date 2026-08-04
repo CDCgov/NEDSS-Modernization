@@ -1,7 +1,8 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
 import { ReportExecutionResult } from 'generated';
-import { loadReportResult, ResultDataPage } from './ResultDataPage';
 import { LoaderFunctionArgs, useLoaderData } from 'react-router';
+
+import { loadReportResult, ResultDataPage } from './ResultDataPage';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');

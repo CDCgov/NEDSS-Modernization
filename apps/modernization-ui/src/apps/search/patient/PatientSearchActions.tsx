@@ -1,6 +1,7 @@
 import { Button } from 'components/button';
-import { useAddPatientFromSearch } from './add/useAddPatientFromSearch';
 import { permissions, Permitted } from 'libs/permission';
+
+import { useAddPatientFromSearch } from './add/useAddPatientFromSearch';
 
 type Props = {
     disabled: boolean;

@@ -1,23 +1,23 @@
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AlertProvider } from 'alert';
-import { MemoryRouter } from 'react-router';
-import { AddNewPage } from './AddNewPage';
-
 import {
     CancelablePromise,
     Concept,
+    ConceptControllerService,
     Condition,
     ConditionControllerService,
+    PageCondition,
     PageControllerService,
     PageCreateResponse,
-    PageCondition,
     ProgramArea,
     ProgramAreaControllerService,
     Template,
     TemplateControllerService,
-    ConceptControllerService,
 } from 'apps/page-builder/generated';
-import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router';
+
+import { AddNewPage } from './AddNewPage';
 
 beforeEach(() => {
     vi.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(

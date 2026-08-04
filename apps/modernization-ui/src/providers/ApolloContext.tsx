@@ -1,5 +1,6 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { ReactNode } from 'react';
+
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 
 type ApolloWrapperProps = {
     children: ReactNode;

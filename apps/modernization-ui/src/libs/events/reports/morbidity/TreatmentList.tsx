@@ -1,4 +1,5 @@
 import { Shown } from 'conditional-render';
+
 import styles from './treatment-list.module.scss';
 
 type TreatmentListProps = {

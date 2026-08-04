@@ -1,7 +1,10 @@
-import { MergeAddress, MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
+
+import { MergeAddress, MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
+
 import { AddressDataTable } from './address-data-table/AddressDataTable';
 import { AddressDetails } from './address-details/AddressDetails';
 

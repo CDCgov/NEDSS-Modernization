@@ -1,5 +1,5 @@
-import { SortHandler, SortingProvider } from 'libs/sorting';
 import { columnSortResolver } from 'design-system/table';
+import { SortHandler, SortingProvider } from 'libs/sorting';
 
 import {
     AddressDemographicRepeatingBlock,

@@ -1,4 +1,4 @@
-import { Selectable, asSelectable } from 'options';
+import { asSelectable, Selectable } from 'options';
 
 const STARTS_WITH_OPERATOR = asSelectable('startsWith', 'Starts with');
 const CONTAINS_OPERATOR = asSelectable('contains', 'Contains');

@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
-import { Column } from 'design-system/table';
+
 import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { Sizing } from 'design-system/field';
+import { Column } from 'design-system/table';
+
 import { BasicIdentificationEntry } from '../entry';
-import { initial } from './entry';
+
 import { BasicIdentificationFields } from './BasicIdentificationFields';
 import { BasicIdentificationView } from './BasicIdentificationView';
+import { initial } from './entry';
 import styles from './identification.module.scss';
-import { Sizing } from 'design-system/field';
 
 const defaultValue: Partial<BasicIdentificationEntry> = initial();
 

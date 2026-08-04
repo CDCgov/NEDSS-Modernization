@@ -1,11 +1,13 @@
+import { ReactNode } from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import React, { ReactNode } from 'react';
-import { ReportResultPage } from './ReportResultPage.tsx';
-import { axe } from 'jest-axe';
-import { ReportConfiguration } from 'generated';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext.tsx';
+import * as generated from 'generated';
+import { ReportConfiguration } from 'generated';
+import { axe } from 'jest-axe';
+
+import { ReportResultPage } from './ReportResultPage.tsx';
 
 vi.mock('generated', async (importOriginal) => {
     const actual = await importOriginal<typeof import('generated')>();

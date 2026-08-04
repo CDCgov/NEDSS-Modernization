@@ -1,16 +1,18 @@
-import React, { ReactElement, useState } from 'react';
-import { Banner } from './Banner/banner';
-import { BannerLockImage } from './BannerLockImage/BannerLockImage';
-import { BannerHeader } from './BannerHeader/BannerHeader';
-import { BannerFlag } from './BannerFlag/BannerFlag';
-import { BannerButton } from './BannerButton/BannerButton';
-import { BannerContent } from './BannerContent/BannerContent';
-import { BannerGuidance } from './BannerGuidance/BannerGuidance';
-import { BannerIcon } from './BannerIcon/BannerIcon';
+import { ReactElement, useState } from 'react';
+
 import { MediaBlockBody } from '../MediaBlockBody/MediaBlockBody';
-import flagImage from './Assets/us_flag_small.png';
+
 import dotIcon from './Assets/icon-dot-gov.svg';
 import httpIcon from './Assets/icon-https.svg';
+import flagImage from './Assets/us_flag_small.png';
+import { Banner } from './Banner/banner';
+import { BannerButton } from './BannerButton/BannerButton';
+import { BannerContent } from './BannerContent/BannerContent';
+import { BannerFlag } from './BannerFlag/BannerFlag';
+import { BannerGuidance } from './BannerGuidance/BannerGuidance';
+import { BannerHeader } from './BannerHeader/BannerHeader';
+import { BannerIcon } from './BannerIcon/BannerIcon';
+import { BannerLockImage } from './BannerLockImage/BannerLockImage';
 
 export const TopBanner = (): ReactElement => {
     const [isOpen, setIsOpen] = useState(false);

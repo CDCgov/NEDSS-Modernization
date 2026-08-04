@@ -1,6 +1,6 @@
-import { Selectable } from 'options/selectable';
 import { TextAutocomplete, TextAutocompleteSingleProps } from 'design-system/autocomplete/single/text';
 import { CodedResultOptionsService } from 'generated';
+import { Selectable } from 'options/selectable';
 
 const CodedResultsAutocomplete = ({
     id,

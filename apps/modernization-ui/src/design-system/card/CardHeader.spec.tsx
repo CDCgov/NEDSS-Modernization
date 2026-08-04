@@ -1,7 +1,8 @@
-import { Button } from 'design-system/button';
-import { CardHeader, CardHeaderProps } from './CardHeader';
 import { render, screen } from '@testing-library/react';
 import { HeadingLevel } from 'components/heading';
+import { Button } from 'design-system/button';
+
+import { CardHeader, CardHeaderProps } from './CardHeader';
 
 const Fixture = (props: Partial<CardHeaderProps>) => {
     return <CardHeader id="testing" title="Test Title" level={2} {...props} />;

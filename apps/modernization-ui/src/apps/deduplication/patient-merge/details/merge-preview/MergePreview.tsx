@@ -1,20 +1,22 @@
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import styles from './merge-preview.module.scss';
-import { PatientMergeForm } from '../merge-review/model/PatientMergeForm';
+
 import { MergeCandidate } from '../../../api/model/MergeCandidate';
-import { PatientSummary } from './components/patient-summary/PatientSummary';
-import { AdministrativeComments } from './components/administrative-comments/AdministrativeComments';
+import { PatientMergeForm } from '../merge-review/model/PatientMergeForm';
+
 import { PreviewAddress } from './components/address/PreviewAddress';
+import { AdministrativeComments } from './components/administrative-comments/AdministrativeComments';
+import { PreviewEthnicity } from './components/ethnicity/PreviewEthnicity';
+import { PreviewGeneralPatientInfo } from './components/general-patient-info/PreviewGeneralPatientInfo';
 import { PreviewIdentification } from './components/identification/PreviewIdentification';
+import { PreviewMortality } from './components/mortality/PreviewMortality';
 import { PreviewName } from './components/name/PreviewName';
+import { PatientSummary } from './components/patient-summary/PatientSummary';
 import { PreviewPhoneAndEmail } from './components/phone-and-email/PreviewPhoneAndEmail';
 import { PreviewRace } from './components/race/PreviewRace';
-import { PreviewEthnicity } from './components/ethnicity/PreviewEthnicity';
 import { PreviewSexAndBirth } from './components/sex-and-birth/PreviewSexAndBirth';
-import { PreviewMortality } from './components/mortality/PreviewMortality';
-import { PreviewGeneralPatientInfo } from './components/general-patient-info/PreviewGeneralPatientInfo';
 import { BackToTopButton } from './components/shared/back-to-top/BackToTopButton';
+import styles from './merge-preview.module.scss';
 
 type MergePreviewProps = {
     onBack: () => void;

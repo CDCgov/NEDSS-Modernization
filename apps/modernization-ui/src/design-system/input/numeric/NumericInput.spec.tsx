@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
+
 import { NumericInput, NumericRangeInput } from './NumericInput';
 
 describe('when entering numeric values for a field', () => {

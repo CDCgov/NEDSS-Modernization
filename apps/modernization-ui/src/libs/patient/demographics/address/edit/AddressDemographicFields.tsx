@@ -1,20 +1,23 @@
 import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import {
-    validZipCodeRule,
-    ZipCodeInputField,
-    CensusTractInputField,
-    validCensusTractRule,
-} from 'libs/demographics/location';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { SingleSelect } from 'design-system/select';
-import { AddressOptions } from './useAddressOptions';
-import { AddressDemographic, labels } from '../address';
+import {
+    CensusTractInputField,
+    validCensusTractRule,
+    validZipCodeRule,
+    ZipCodeInputField,
+} from 'libs/demographics/location';
 import { Selectable } from 'options';
+import { Controller, useFormContext } from 'react-hook-form';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { AddressDemographic, labels } from '../address';
+
+import { AddressOptions } from './useAddressOptions';
 
 type AddressDemographicFieldsProps = { options: AddressOptions; entry?: AddressDemographic } & EntryFieldsProps;
 

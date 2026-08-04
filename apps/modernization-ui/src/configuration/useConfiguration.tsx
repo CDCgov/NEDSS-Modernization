@@ -1,9 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+
 import merge from 'lodash.merge';
-import { Configuration } from './configuration';
-import { defaultConfiguration } from './defaults';
-import { currentConfiguration } from './currentConfiguration';
 import { logWarnToUserConsole } from 'utils/logging';
+
+import { Configuration } from './configuration';
+import { currentConfiguration } from './currentConfiguration';
+import { defaultConfiguration } from './defaults';
 
 type InternalState =
     | { status: 'default'; configuration: Configuration }

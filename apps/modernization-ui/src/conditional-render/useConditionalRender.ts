@@ -1,4 +1,4 @@
-import { useState, JSX as ReactJSX } from 'react';
+import { JSX as ReactJSX, useState } from 'react';
 
 type Hide = () => void;
 type Show = () => void;

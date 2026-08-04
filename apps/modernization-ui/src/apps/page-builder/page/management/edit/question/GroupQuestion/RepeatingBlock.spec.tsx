@@ -1,7 +1,9 @@
+import { ReactNode } from 'react';
+
 import { render } from '@testing-library/react';
 import { GroupSubSectionRequest, PagesQuestion, PagesSubSection } from 'apps/page-builder/generated';
-import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { RepeatingBlock } from './RepeatingBlock';
 
 const dateQuestion: PagesQuestion = {
