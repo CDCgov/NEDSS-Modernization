@@ -4,7 +4,7 @@ class MorbidityReportPage {
   reportInformationTab = "font.boldNineYellow";
   conditionField = 'input[name="conditionCd_textbox"]';
   jurisdictionField =
-    'input[name="morbidityReport.theObservationDT.jurisdictionCd_textbox"]';
+    'select[fieldlabel="Jurisdiction"][name="morbidityReport.theObservationDT.jurisdictionCd"]';
   morbidityDateField = "#morbidityReport\\.theObservationDT\\.activityToTime_s";
   facilityProviderField =
     'input[name="entity-codeLookupText-Org-ReportingOrganizationUID"]';
@@ -38,7 +38,7 @@ class MorbidityReportPage {
   }
 
   selectJurisdiction(jurisdiction) {
-    cy.get(this.jurisdictionField).type(jurisdiction).type("{enter}");
+    cy.get(this.jurisdictionField).select(jurisdiction, {force: true});
   }
 
   clearJurisdiction() {
