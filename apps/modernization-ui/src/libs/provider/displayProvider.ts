@@ -1,5 +1,6 @@
-import { maybeMap } from 'utils/mapping';
 import { exists } from 'utils/exists';
+import { maybeMap } from 'utils/mapping';
+
 import { Provider } from './provider';
 
 const displayProvider = maybeMap((provider: Provider) => {

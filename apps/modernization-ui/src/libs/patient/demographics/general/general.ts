@@ -1,8 +1,8 @@
+import { Sensitive } from 'libs/sensitive';
 import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 import { Nullable } from 'utils/object';
-import { Sensitive } from 'libs/sensitive';
 
 type GeneralInformationDemographic = EffectiveDated &
     Nullable<{

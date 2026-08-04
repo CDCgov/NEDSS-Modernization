@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { Checkbox } from 'design-system/checkbox';
+
 import { DataTable } from './DataTable';
 import { Column } from './header/column';
-import { Checkbox } from 'design-system/checkbox';
 
 type Person = {
     id: string;

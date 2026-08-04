@@ -1,4 +1,5 @@
 import { Field, FieldProps } from 'design-system/field';
+
 import { TextInput, TextInputProps } from './TextInput';
 
 type TextInputFieldProps = FieldProps & TextInputProps & { sorted?: boolean };

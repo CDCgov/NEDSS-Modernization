@@ -1,5 +1,6 @@
-import { MemoryRouter } from 'react-router';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+
 import { displayGender, displayProfileLink } from './BasicPatient';
 
 describe('when displaying a search result with basic patient information', () => {

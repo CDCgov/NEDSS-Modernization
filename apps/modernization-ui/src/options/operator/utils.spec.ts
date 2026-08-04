@@ -1,3 +1,7 @@
+import { Selectable } from 'options/selectable';
+
+import { defaultTextOperator, textOperators } from './operators';
+import { TextCriteria } from './types';
 import {
     asSelectableOperator,
     asTextCriteria,
@@ -5,9 +9,6 @@ import {
     asTextCriteriaOrString,
     asTextCriteriaValue,
 } from './utils';
-import { textOperators, defaultTextOperator } from './operators';
-import { Selectable } from 'options/selectable';
-import { TextCriteria } from './types';
 
 describe('utils', () => {
     describe('asSelectableOperator', () => {

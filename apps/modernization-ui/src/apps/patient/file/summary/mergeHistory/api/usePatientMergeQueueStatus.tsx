@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useApi } from 'libs/api';
+
 import { Config } from 'config';
+import { useApi } from 'libs/api';
 
 export function usePatientMergeQueueStatus(personUid?: string | number) {
     const fetchMergeStatus = (uid: string | number) =>

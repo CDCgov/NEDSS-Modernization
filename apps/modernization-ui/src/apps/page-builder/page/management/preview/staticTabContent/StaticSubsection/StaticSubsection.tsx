@@ -1,6 +1,8 @@
 import { ReactNode, useState } from 'react';
-import styles from './static-subsection.module.scss';
+
 import { Icon } from '@trussworks/react-uswds';
+
+import styles from './static-subsection.module.scss';
 
 type Props = {
     title: string;

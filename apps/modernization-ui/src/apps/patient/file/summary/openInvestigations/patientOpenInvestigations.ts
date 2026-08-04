@@ -1,5 +1,6 @@
-import { PatientFileService, PatientInvestigation as PatientInvestigationResponse } from 'generated';
 import { maybeDate } from 'date';
+import { PatientFileService, PatientInvestigation as PatientInvestigationResponse } from 'generated';
+
 import { PatientFileOpenInvestigation } from './openInvestigation';
 
 const transformer = (value: PatientInvestigationResponse): PatientFileOpenInvestigation => ({

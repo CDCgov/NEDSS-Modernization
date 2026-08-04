@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
+
+import { Heading } from 'components/heading';
 import { InPageNavigation, NavSection } from 'design-system/inPageNavigation/InPageNavigation';
+import { DataEntryLayout } from 'libs/data-entry';
+import { PageTitle } from 'page';
 
 import styles from './add-patient-layout.module.scss';
-import { DataEntryLayout } from 'libs/data-entry';
-import { Heading } from 'components/heading';
-import { PageTitle } from 'page';
 
 type AddPatientLayoutProps = {
     actions: () => ReactNode | ReactNode[];

@@ -1,7 +1,8 @@
 import { asValue } from 'options';
+import { isEmpty, orUndefined } from 'utils';
+
 import { Birth } from '../api';
 import { BirthEntry } from '../entry';
-import { isEmpty, orUndefined } from 'utils';
 
 const asBirth = (entry: BirthEntry): Birth | undefined => {
     const { asOf, ...remaining } = entry;

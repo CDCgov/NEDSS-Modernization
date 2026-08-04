@@ -1,11 +1,13 @@
 import { render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
-import { BrowserRouter } from 'react-router';
-import { AddEditTab } from './AddEditTab';
-import Router from 'react-router';
 import { PagesTab, Tab } from 'apps/page-builder/generated';
-import { ManageTabs } from '../ManageTabs/ManageTabs';
 import { FormProvider, useForm } from 'react-hook-form';
+import { BrowserRouter } from 'react-router';
+import Router from 'react-router';
+
+import { ManageTabs } from '../ManageTabs/ManageTabs';
+
+import { AddEditTab } from './AddEditTab';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');

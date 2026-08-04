@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
-import { validateRequiredRule } from 'validation/entry';
-import { validDateRule, DatePickerInput } from 'design-system/date';
 import { MultiSelect, SingleSelect } from 'design-system/select';
-import { RaceCategoryValidator, RaceDemographic, labels } from '../race';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { validateRequiredRule } from 'validation/entry';
+
+import { labels, RaceCategoryValidator, RaceDemographic } from '../race';
+
 import { RaceOptions } from './useRaceOptions';
 
 type RaceDemographicFieldsProps = {

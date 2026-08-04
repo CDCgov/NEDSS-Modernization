@@ -1,7 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PhoneEmailDemographic, initial } from '../phoneEmails';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { initial, PhoneEmailDemographic } from '../phoneEmails';
+
 import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
 
 const Fixture = () => {

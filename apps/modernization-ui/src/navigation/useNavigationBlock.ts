@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BlockerFunction, useBlocker, Location as RouterLocation, useNavigate } from 'react-router';
+
+import { BlockerFunction, Location as RouterLocation, useBlocker, useNavigate } from 'react-router';
 import { unblockableRoutes } from 'routes';
 
 type Paths = string | string[];

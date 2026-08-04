@@ -1,7 +1,9 @@
-import { Card, CardProps } from 'design-system/card';
-import { SexBirthDemographicView } from './SexBirthDemographicView';
-import { SexBirthDemographic } from '../sexBirth';
 import { AgeResolver } from 'date';
+import { Card, CardProps } from 'design-system/card';
+
+import { SexBirthDemographic } from '../sexBirth';
+
+import { SexBirthDemographicView } from './SexBirthDemographicView';
 
 type SexBirthDemographicCardProps = {
     title?: string;

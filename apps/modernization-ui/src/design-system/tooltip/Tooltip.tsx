@@ -1,9 +1,10 @@
 import { ReactNode, useCallback, useId, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { TooltipMessage, TooltipMessageProps } from './TooltipMessage';
 
-import styles from './tooltip.module.scss';
 import classNames from 'classnames';
+import { createPortal } from 'react-dom';
+
+import { TooltipMessage, TooltipMessageProps } from './TooltipMessage';
+import styles from './tooltip.module.scss';
 
 type Children = (id: string) => ReactNode | ReactNode[];
 

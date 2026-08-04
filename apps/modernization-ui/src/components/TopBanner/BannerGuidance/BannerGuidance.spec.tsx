@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
+
 import { MediaBlockBody } from '../../MediaBlockBody/MediaBlockBody';
 import { BannerIcon } from '../BannerIcon/BannerIcon';
+
 import { BannerGuidance } from './BannerGuidance';
 
 describe('BannerGuidance component tests', () => {

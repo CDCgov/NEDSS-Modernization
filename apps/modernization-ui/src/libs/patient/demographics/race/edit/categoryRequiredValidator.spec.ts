@@ -1,4 +1,5 @@
 import { Selectable } from 'options';
+
 import { categoryRequiredValidator } from './categoryRequiredValidator';
 
 describe('when validating the entry of a race category', () => {

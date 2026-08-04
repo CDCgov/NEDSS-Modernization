@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type UseTimeoutResult = {
     start: (callback: () => void, delay: number | null, clearIfExisting?: boolean) => void;

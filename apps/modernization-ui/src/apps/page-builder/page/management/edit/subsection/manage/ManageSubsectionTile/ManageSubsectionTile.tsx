@@ -1,9 +1,11 @@
-import { PagesSubSection } from 'apps/page-builder/generated';
-import styles from './managesubsectiontile.module.scss';
-import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { Icon, Button } from '@trussworks/react-uswds';
 import { useState } from 'react';
+
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
+import { Button, Icon } from '@trussworks/react-uswds';
+import { PagesSubSection } from 'apps/page-builder/generated';
+import { Icon as NbsIcon } from 'components/Icon/Icon';
+
+import styles from './managesubsectiontile.module.scss';
 
 type ManageSubsectionTileProps = {
     subsection: PagesSubSection;

@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { NotificationCard } from './NotificationCard';
 
 const Fixture = () => {

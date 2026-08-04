@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+
 import { Jurisdiction, useFindAllJurisdictionsLazyQuery } from 'generated/graphql/schema';
+import { findByValue, SelectableResolver } from 'options/findByValue';
 import { Selectable } from 'options/selectable';
 import { mapNonNull } from 'utils';
-import { SelectableResolver, findByValue } from 'options/findByValue';
 
 const asSelectable = (jurisdiction: Jurisdiction): Selectable => ({
     value: jurisdiction.id,

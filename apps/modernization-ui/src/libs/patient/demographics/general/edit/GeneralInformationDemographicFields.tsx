@@ -1,12 +1,14 @@
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { NumericInput, TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
 import { Permitted } from 'libs/permission';
 import { isAllowed } from 'libs/sensitive';
-import { NumericInput, TextInputField } from 'design-system/input';
-import { EntryFieldsProps } from 'design-system/entry';
-import { SingleSelect } from 'design-system/select';
-import { DatePickerInput, validDateRule } from 'design-system/date';
+import { Controller, UseFormReturn } from 'react-hook-form';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
+
 import { HasGeneralInformationDemographic, labels } from '../general';
+
 import { GeneralInformationOptions } from './useGeneralInformationOptions';
 
 type GeneralInformationDemographicFieldsProps = {

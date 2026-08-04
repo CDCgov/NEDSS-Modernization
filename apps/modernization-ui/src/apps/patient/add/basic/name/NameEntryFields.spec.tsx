@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { NameInformationEntry } from '../entry';
+
 import { NameEntryFields } from './NameEntryFields';
 
 const mockPatientNameCodedValues = {

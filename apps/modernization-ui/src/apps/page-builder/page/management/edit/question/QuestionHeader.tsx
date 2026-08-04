@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
 import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQuestion';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
-import { useEffect, useState } from 'react';
-import styles from './question-header.module.scss';
+
 import { staticElementTypes } from '../staticelement/EditStaticElement';
+
+import styles from './question-header.module.scss';
 
 type Props = {
     question: PagesQuestion;

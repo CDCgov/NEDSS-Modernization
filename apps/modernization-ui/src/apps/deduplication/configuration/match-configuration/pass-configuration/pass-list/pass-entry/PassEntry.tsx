@@ -1,9 +1,11 @@
+import React from 'react';
+
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import classNames from 'classnames';
-import { Icon } from 'design-system/icon';
-import styles from './pass-entry.module.scss';
 import { Shown } from 'conditional-render';
-import React from 'react';
+import { Icon } from 'design-system/icon';
+
+import styles from './pass-entry.module.scss';
 
 type Props = {
     pass: Pass;

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { NameDemographicView } from './NameDemographicView';
 import { asSelectable } from 'options/selectable';
+
+import { NameDemographicView } from './NameDemographicView';
 import { NameDemographic } from './names';
 
 const entry: NameDemographic = {

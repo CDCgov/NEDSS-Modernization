@@ -1,11 +1,13 @@
-import { Mock } from 'vitest';
 import { render, within } from '@testing-library/react';
-import { MergeLanding } from './MergeLanding';
-import { MemoryRouter, useSearchParams } from 'react-router';
 import userEvent from '@testing-library/user-event';
-import { useExportMatches } from '../../api/useExportMatches';
-import { PaginationProvider } from 'pagination';
 import { SortingProvider } from 'libs/sorting';
+import { PaginationProvider } from 'pagination';
+import { MemoryRouter, useSearchParams } from 'react-router';
+import { Mock } from 'vitest';
+
+import { useExportMatches } from '../../api/useExportMatches';
+
+import { MergeLanding } from './MergeLanding';
 
 vi.mock('../../api/useExportMatches', () => ({
     useExportMatches: vi.fn(),

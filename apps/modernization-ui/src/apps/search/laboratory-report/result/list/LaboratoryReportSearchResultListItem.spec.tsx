@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
-import { LaboratoryReportSearchResultListItem } from './LaboratoryReportSearchResultListItem';
 import { LabReport } from 'generated/graphql/schema';
+import { MemoryRouter } from 'react-router';
+
+import { LaboratoryReportSearchResultListItem } from './LaboratoryReportSearchResultListItem';
 
 describe('LaboratoryReportSearchResultListItem', () => {
     it('should render the legal name', () => {

@@ -1,4 +1,5 @@
 import { validateDateEntry } from 'design-system/date';
+
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { validateDateRange } from './range/validateDateRange';
 

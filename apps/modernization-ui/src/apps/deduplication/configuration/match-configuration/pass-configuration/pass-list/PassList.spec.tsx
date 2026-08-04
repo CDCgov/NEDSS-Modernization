@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Pass } from 'apps/deduplication/api/model/Pass';
-import { PassList } from './PassList';
 import { AlertProvider } from 'alert';
+import { Pass } from 'apps/deduplication/api/model/Pass';
+
+import { PassList } from './PassList';
 
 const selectPass = vi.fn();
 const addPass = vi.fn();

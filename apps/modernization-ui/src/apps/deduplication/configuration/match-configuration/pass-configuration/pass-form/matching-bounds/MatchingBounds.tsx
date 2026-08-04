@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
+
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Card } from 'design-system/card';
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { NumericHintInput } from './numeric-hint-input/NumericHintInput';
-import { DataElements } from 'apps/deduplication/api/model/DataElement';
-import styles from './matching-bounds.module.scss';
+
 import { getLogOdds } from '../matching-criteria/getLogOdds';
+
+import styles from './matching-bounds.module.scss';
+import { NumericHintInput } from './numeric-hint-input/NumericHintInput';
 
 type Props = {
     dataElements: DataElements;

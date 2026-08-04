@@ -1,30 +1,31 @@
 import { useCallback, useRef } from 'react';
-import { UseFormReturn, useWatch } from 'react-hook-form';
-import classNames from 'classnames';
+
 import { SkipLink } from 'SkipLink';
-import { Sizing } from 'design-system/field';
-import { InPageNavigation } from 'design-system/inPageNavigation';
-import { sections } from './sections';
-import { BackToTop } from 'libs/page/back-to-top';
+import classNames from 'classnames';
+import { asOfAgeResolver } from 'date';
 import {
     PendingEntryAlert,
     PendingFormEntryInteraction,
     PendingMessageRendererProps,
 } from 'design-system/entry/pending';
-import { PatientDemographicsDefaults, PatientDemographicsEntry } from './demographics';
-import { EditAdministrativeInformationCard } from './administrative';
-import { EditGeneralInformationDemographicCard } from './general';
-import { EditEthnicityDemographicCard } from './ethnicity';
-import { EditMortalityDemographicCard } from './mortality';
-import { EditSexBirthDemographicCard } from './sex-birth';
-import { asOfAgeResolver } from 'date';
-import { EditNameDemographicsCard } from './name';
-import { EditAddressDemographicsCard } from './address';
-import { EditPhoneEmailDemographicsCard } from './phoneEmail';
-import { EditIdentificationDemographicsCard } from './identification';
-import { EditRaceDemographicsCard } from './race';
+import { Sizing } from 'design-system/field';
+import { InPageNavigation } from 'design-system/inPageNavigation';
+import { BackToTop } from 'libs/page/back-to-top';
+import { UseFormReturn, useWatch } from 'react-hook-form';
 
+import { EditAddressDemographicsCard } from './address';
+import { EditAdministrativeInformationCard } from './administrative';
+import { PatientDemographicsDefaults, PatientDemographicsEntry } from './demographics';
+import { EditEthnicityDemographicCard } from './ethnicity';
+import { EditGeneralInformationDemographicCard } from './general';
+import { EditIdentificationDemographicsCard } from './identification';
+import { EditMortalityDemographicCard } from './mortality';
+import { EditNameDemographicsCard } from './name';
 import styles from './patient-demographics-form.module.scss';
+import { EditPhoneEmailDemographicsCard } from './phoneEmail';
+import { EditRaceDemographicsCard } from './race';
+import { sections } from './sections';
+import { EditSexBirthDemographicCard } from './sex-birth';
 
 const NAME_ENTRY = { id: 'names', name: 'Name' };
 const ADDRESS_ENTRY = { id: 'addresses', name: 'Address' };

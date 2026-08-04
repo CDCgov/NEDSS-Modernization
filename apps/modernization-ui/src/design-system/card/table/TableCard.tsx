@@ -2,6 +2,7 @@ import { Sizing } from 'design-system/field';
 import { Column, SortableDataTable } from 'design-system/table';
 import { ColumnPreference, ColumnPreferenceProvider, ColumnPreferencesAction } from 'design-system/table/preferences';
 import { Tag } from 'design-system/tag';
+
 import { Card, CardProps } from '../Card';
 
 export type TableCardProps<V> = {

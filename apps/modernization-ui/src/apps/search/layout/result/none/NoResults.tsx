@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 
-import styles from './no-results.module.scss';
 import { AlertMessage } from 'design-system/message';
+
+import styles from './no-results.module.scss';
 
 type Props = {
     children?: ReactNode;

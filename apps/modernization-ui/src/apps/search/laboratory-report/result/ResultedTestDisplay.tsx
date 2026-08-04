@@ -1,5 +1,7 @@
-import { LabTestSummary } from 'generated/graphql/schema';
 import { ReactNode } from 'react';
+
+import { LabTestSummary } from 'generated/graphql/schema';
+
 import styles from './resulted-test.module.scss';
 type Props = {
     test: LabTestSummary;

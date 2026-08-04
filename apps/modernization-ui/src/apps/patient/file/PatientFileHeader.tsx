@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import { Patient } from './patient';
+
 import { PatientDescriptor } from 'libs/patient';
 
+import { Patient } from './patient';
 import styles from './patient-file-header.module.scss';
 
 type PatientFileHeaderProps = {

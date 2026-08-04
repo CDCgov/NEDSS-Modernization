@@ -1,5 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+
 import { useLocation } from 'react-router';
+
 import { ScrollToTop } from './scrollToTop';
 
 type UsePageInteraction = {

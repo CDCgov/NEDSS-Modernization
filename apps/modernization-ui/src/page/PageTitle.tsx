@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
+
 import { usePage } from '.';
 
 type PageTitleProps = {

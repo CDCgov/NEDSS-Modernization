@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
+
 import { Shown } from 'conditional-render';
-import { PendingEntry } from './pending';
 import { AlertMessage } from 'design-system/message';
+
+import { PendingEntry } from './pending';
 
 type PendingMessageRendererProps = { entry: PendingEntry };
 

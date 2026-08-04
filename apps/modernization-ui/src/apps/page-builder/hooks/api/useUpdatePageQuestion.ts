@@ -1,3 +1,5 @@
+import { useEffect, useReducer } from 'react';
+
 import {
     CancelablePromise,
     EditableQuestion,
@@ -7,7 +9,6 @@ import {
     UpdatePageNumericQuestionRequest,
     UpdatePageTextQuestionRequest,
 } from 'apps/page-builder/generated';
-import { useEffect, useReducer } from 'react';
 
 export type UpdatePageQuestionRequest =
     | (UpdatePageTextQuestionRequest & { questionType: 'TEXT' })

@@ -1,4 +1,5 @@
 import { DateFilter, DateRangeFilter, ExactValueFilter, PartialValueFilter } from 'filters';
+
 import { externalize } from './externalize';
 
 describe('when a filter is externalized', () => {

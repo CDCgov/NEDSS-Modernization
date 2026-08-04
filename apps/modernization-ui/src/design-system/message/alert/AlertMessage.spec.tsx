@@ -1,6 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { AlertMessage } from './AlertMessage';
 import { useState } from 'react';
+
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import { AlertMessage } from './AlertMessage';
 
 const AlertWrapper = () => {
     const [visible, setVisible] = useState(true);

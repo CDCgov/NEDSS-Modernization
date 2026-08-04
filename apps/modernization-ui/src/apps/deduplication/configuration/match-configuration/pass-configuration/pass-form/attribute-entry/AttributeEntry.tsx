@@ -1,7 +1,8 @@
-import { Checkbox } from 'design-system/checkbox';
-import styles from './attribute-entry.module.scss';
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
+import { Checkbox } from 'design-system/checkbox';
+
+import styles from './attribute-entry.module.scss';
 
 type Props = {
     label: string;

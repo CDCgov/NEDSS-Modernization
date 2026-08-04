@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from 'react';
+
 import { Selectable } from 'options';
 
 type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Selectable[] };

@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useSexBirthCodedValues } from './useSexBirthCodedValues';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
+
+import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOf, displayAgeAsOfToday } from 'date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
-import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { SingleSelect } from 'design-system/select';
 import { useLocationOptions } from 'options/location';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { useSexBirthCodedValues } from './useSexBirthCodedValues';
 
 const UNKNOWN_GENDER = 'U';
 

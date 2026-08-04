@@ -1,8 +1,10 @@
+import { RefObject } from 'react';
+
 import { ModalRef } from '@trussworks/react-uswds';
 import { PagesQuestion } from 'apps/page-builder/generated';
-import { RefObject } from 'react';
-import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+
+import { EditStaticElement } from '../staticelement/EditStaticElement';
 
 type Props = {
     modal: RefObject<ModalRef>;

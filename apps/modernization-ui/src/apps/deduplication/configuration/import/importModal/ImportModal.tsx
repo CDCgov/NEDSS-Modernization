@@ -1,9 +1,11 @@
+import React, { ReactNode, useMemo, useState } from 'react';
+
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { Modal } from 'design-system/modal';
-import React, { ReactNode, useMemo, useState } from 'react';
+
 import styles from './import-modal.module.scss';
 
 type Props = {

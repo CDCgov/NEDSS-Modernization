@@ -1,5 +1,5 @@
-import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 import { permissions, Permitted } from '../../../../libs/permission';
+import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 
 const reportLinks = [
     {

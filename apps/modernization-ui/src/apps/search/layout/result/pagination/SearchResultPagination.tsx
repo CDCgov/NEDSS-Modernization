@@ -1,11 +1,12 @@
 import { RefObject } from 'react';
-import { usePagination } from 'pagination';
+
 import { Shown } from 'conditional-render';
 import { Pagination } from 'design-system/pagination';
-import { SearchResultPageSizeSelect } from './page-size-select';
-import { SearchResultsShowing } from './showing';
+import { usePagination } from 'pagination';
 
+import { SearchResultPageSizeSelect } from './page-size-select';
 import styles from './search-result-pagination.module.scss';
+import { SearchResultsShowing } from './showing';
 
 const pageSizes = [20, 30, 50, 100];
 

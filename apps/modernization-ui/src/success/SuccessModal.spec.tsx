@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { SuccessModal } from './SuccessModal';
 import { Button } from '@trussworks/react-uswds';
+
+import { SuccessModal } from './SuccessModal';
 
 describe('when SuccessModal renders', () => {
     const modal = { current: null };

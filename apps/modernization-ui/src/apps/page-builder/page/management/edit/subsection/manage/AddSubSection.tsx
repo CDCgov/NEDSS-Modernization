@@ -1,17 +1,19 @@
+import { useEffect } from 'react';
+
+import { Button, Form, Icon } from '@trussworks/react-uswds';
+import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import {
     CreateSubSectionRequest,
     PagesSubSection,
     SubSectionControllerService,
     UpdateSubSectionRequest,
 } from 'apps/page-builder/generated';
-import { Controller, useForm } from 'react-hook-form';
-import styles from './addsubsection.module.scss';
-import { Button, Form, Icon } from '@trussworks/react-uswds';
-import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { maxLengthRule } from 'validation/entry';
 import { validSubsectionNameRule } from 'validation/entry/validSubsectionNameRule';
+
+import styles from './addsubsection.module.scss';
 
 type subSectionProps = {
     sectionId?: number;

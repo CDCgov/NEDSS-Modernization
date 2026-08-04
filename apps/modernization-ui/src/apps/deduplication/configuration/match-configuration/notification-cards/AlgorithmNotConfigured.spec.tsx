@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
-import { AlgorithmNotConfigured } from './AlgorithmNotConfigured';
-import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router';
+
+import { AlgorithmNotConfigured } from './AlgorithmNotConfigured';
 
 const onImportClick = vi.fn();
 

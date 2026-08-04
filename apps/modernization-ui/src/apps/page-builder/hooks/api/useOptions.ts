@@ -1,5 +1,6 @@
-import { ConceptOptionsService, Option } from 'generated';
 import { useEffect, useReducer } from 'react';
+
+import { ConceptOptionsService, Option } from 'generated';
 
 type State =
     | { status: 'idle' }

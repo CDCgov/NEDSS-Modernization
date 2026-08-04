@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
-import { useLocalStorage } from 'storage';
+
 import { usePagination } from 'pagination';
+import { useLocalStorage } from 'storage';
 
 type PaginationSizePreference = {
     pageSize: number;

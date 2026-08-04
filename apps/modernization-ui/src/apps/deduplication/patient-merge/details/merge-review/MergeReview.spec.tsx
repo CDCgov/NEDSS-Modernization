@@ -1,12 +1,13 @@
-import { Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AlertProvider } from 'alert';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router';
+import { Mock } from 'vitest';
+
 import { MergeReview } from './MergeReview';
 import { PatientMergeForm } from './model/PatientMergeForm';
-import { AlertProvider } from 'alert';
 
 const onPreview = vi.fn();
 const onRemove = vi.fn();

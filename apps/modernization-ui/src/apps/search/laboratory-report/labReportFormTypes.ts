@@ -1,4 +1,4 @@
-import { Selectable, pregnancyStatusOptions } from 'options';
+import { pregnancyStatusOptions, Selectable } from 'options';
 import { asSelectable } from 'options/selectable';
 
 type EventDate = {

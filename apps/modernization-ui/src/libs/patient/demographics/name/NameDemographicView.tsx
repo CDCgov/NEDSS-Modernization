@@ -1,6 +1,7 @@
-import { DetailValue, DetailView } from 'design-system/entry/multi-value';
-import { NameDemographic } from './names';
 import { internalizeDate } from 'date';
+import { DetailValue, DetailView } from 'design-system/entry/multi-value';
+
+import { NameDemographic } from './names';
 
 type NameDemographicViewProps = {
     entry: Partial<NameDemographic>;

@@ -1,42 +1,43 @@
+import { ReactNode, useEffect, useState } from 'react';
+
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import {
+    draggable,
+    dropTargetForElements,
+    monitorForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { QueryBuilderDnD } from '@react-querybuilder/dnd';
+import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
+import classNames from 'classnames';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
+import { AlertMessage } from 'design-system/message/index.ts';
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
 import QueryBuilder, {
+    Rule as DefaultRule,
+    RuleGroup as DefaultRuleGroup,
     Field,
     formatQuery,
     isRuleType,
     joinWith,
     RuleGroupProps,
     RuleGroupType,
+    RuleProps,
     splitBy,
     ValidationResult,
-    RuleGroup as DefaultRuleGroup,
-    Rule as DefaultRule,
-    RuleProps,
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
-import { QueryBuilderDnD } from '@react-querybuilder/dnd';
-import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
-import {
-    draggable,
-    dropTargetForElements,
-    monitorForElements,
-} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
-import { KeyboardDnDProvider } from './useKeyboardDnd';
+
+import { RemoveButton } from '././RemoveButton.tsx';
+import { AddButton } from './AddButton.tsx';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
-import { RemoveButton } from '././RemoveButton.tsx';
-import { validateRule } from './validator.ts';
-import { AddButton } from './AddButton.tsx';
-import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
-import { ReactNode, useEffect, useState } from 'react';
-import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
-import { AlertMessage } from 'design-system/message/index.ts';
-import classNames from 'classnames';
-
 import styles from './advanced-filter.module.scss';
+import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { KeyboardDnDProvider } from './useKeyboardDnd';
+import { validateRule } from './validator.ts';
 
 // ============= Constants ============= /
 

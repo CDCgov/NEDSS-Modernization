@@ -1,6 +1,6 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
-import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 
+import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 type InputProps = {

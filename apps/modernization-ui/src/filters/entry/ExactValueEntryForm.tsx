@@ -1,8 +1,9 @@
-import { Controller, useFormContext } from 'react-hook-form';
 import { MultiSelectAutocomplete } from 'components/selection/multi';
-import { FilterEntry } from './FilterEntry';
 import { ValueProperty } from 'filters/properties';
 import { Selectable } from 'options';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { FilterEntry } from './FilterEntry';
 
 const asFilterValue = (selectable: Selectable) => {
     return selectable.name;

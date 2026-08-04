@@ -1,5 +1,6 @@
-import { Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 
 type State =
     | { status: 'idle' }

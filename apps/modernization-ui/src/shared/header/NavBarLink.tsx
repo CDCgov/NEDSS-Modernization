@@ -1,6 +1,7 @@
-import { Predicate } from 'utils';
-import styles from './NavBar.module.scss';
 import { Permitted } from 'libs/permission';
+import { Predicate } from 'utils';
+
+import styles from './NavBar.module.scss';
 
 type NavLinkProps = {
     url: string;

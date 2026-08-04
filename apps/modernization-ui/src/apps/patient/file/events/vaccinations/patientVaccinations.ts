@@ -1,6 +1,8 @@
 import { maybeJson } from 'libs/api';
 import { mapOr } from 'utils/mapping';
+
 import { transformer } from './transformer';
+
 import { PatientFileVaccinations } from '.';
 
 const patientVaccinations = (patient: number): Promise<PatientFileVaccinations[]> =>

@@ -1,6 +1,8 @@
-import classNames from 'classnames';
-import './Suggestions.scss';
 import React, { ReactNode, RefObject, useEffect, useState } from 'react';
+
+import classNames from 'classnames';
+
+import './Suggestions.scss';
 
 type Props<T> = {
     listRef?: RefObject<HTMLUListElement>;

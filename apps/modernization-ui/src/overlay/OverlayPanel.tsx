@@ -1,5 +1,7 @@
+import React, { KeyboardEvent as ReactKeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
+
 import classNames from 'classnames';
-import React, { ReactNode, useState, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
+
 import styles from './overlay-panel.module.scss';
 
 type Toggle = (element?: React.MouseEvent<HTMLElement>) => void;

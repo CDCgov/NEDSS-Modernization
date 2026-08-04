@@ -1,8 +1,9 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
-import { AddressDataTable } from './AddressDataTable';
 import { render, within } from '@testing-library/react';
-import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { AddressDataTable } from './AddressDataTable';
 
 const patientData: Partial<MergeCandidate> = {
     addresses: [

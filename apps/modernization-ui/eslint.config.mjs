@@ -7,6 +7,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
+import eslintPluginImport from 'eslint-plugin-import';
 
 export default defineConfig([
     // Main config
@@ -32,6 +33,7 @@ export default defineConfig([
             'react-hooks': reactHooks,
             storybook,
             jsdoc,
+            import: eslintPluginImport,
         },
         rules: {
             ...tseslint.configs.recommended.rules,
@@ -63,6 +65,41 @@ export default defineConfig([
             'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
             'object-shorthand': 'error',
+            // Sort members within a single import statement
+            'sort-imports': [
+                'error',
+                {
+                    ignoreCase: true,
+                    ignoreDeclarationSort: true, // Let import/order handle statement lines
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+                },
+            ],
+            // Sort outer import statement lines
+            'import/order': [
+                'error',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
+
+                    pathGroups: [
+                        {
+                            pattern: 'react',
+                            group: 'builtin',
+                            position: 'before',
+                        },
+                    ],
+
+                    pathGroupsExcludedImportTypes: [],
+                    'newlines-between': 'always',
+
+                    alphabetize: {
+                        order: 'asc',
+                        caseInsensitive: false,
+                    },
+
+                    distinctGroup: false,
+                },
+            ],
         },
         settings: {
             react: { version: 'detect' },

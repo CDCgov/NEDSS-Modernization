@@ -1,9 +1,9 @@
 import { Button } from 'components/button';
+import { Sizing } from 'design-system/field';
 import { SortingPreferencesPanel } from 'design-system/sorting/preferences';
 import { OverlayPanel } from 'overlay';
 
 import styles from './search-results-list-options.module.scss';
-import { Sizing } from 'design-system/field';
 
 type Props = {
     disabled?: boolean;

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
+
 import { ToggleField } from './ToggleField';
 
 describe('when entering text values for a field', () => {

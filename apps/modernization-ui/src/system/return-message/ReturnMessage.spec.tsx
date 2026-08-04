@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { ReturnMessage } from './ReturnMessage';
 
 describe('when displaying a ReturnMessage', () => {
