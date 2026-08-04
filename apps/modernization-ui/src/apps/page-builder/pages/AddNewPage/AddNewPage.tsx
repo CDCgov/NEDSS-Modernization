@@ -196,7 +196,8 @@ export const AddNewPage = () => {
                         type="button"
                         className="createPage"
                         onClick={handleSubmit}
-                        disabled={!form.formState.isValid}>
+                        disabled={!form.formState.isValid}
+                    >
                         Create page
                     </Button>
                 </div>
@@ -214,7 +215,8 @@ export const AddNewPage = () => {
                 isLarge={true}
                 ref={importTemplateModal}
                 aria-labelledby="import-template-modal-header"
-                aria-describedby="import-template-modal-content">
+                aria-describedby="import-template-modal-content"
+            >
                 <ImportTemplate
                     id="import-template-modal"
                     onCancel={() => importTemplateModal.current?.toggleModal()}
@@ -228,7 +230,8 @@ export const AddNewPage = () => {
                 isLarge={true}
                 ref={conditionLookupModal}
                 aria-labelledby="condition-lookup-modal-header"
-                aria-describedby="condition-lookup-modal-content">
+                aria-describedby="condition-lookup-modal-content"
+            >
                 <ConditionSearch
                     id="condition-lookup-modal"
                     onCancel={() => conditionLookupModal.current?.toggleModal()}

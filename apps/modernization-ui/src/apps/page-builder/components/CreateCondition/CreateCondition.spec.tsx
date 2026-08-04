@@ -26,7 +26,7 @@ describe('Create Condition', () => {
             expect(getByTestId('header-title').innerHTML).toBe('Condition details');
 
             // ensure rendering settles
-            expect(await findByRole('heading', {name: 'Condition details'})).toBeVisible();
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
     });
 
@@ -41,9 +41,9 @@ describe('Create Condition', () => {
             );
             const btn = container.getElementsByClassName('usa-button')[0];
             expect(btn.hasAttribute('disabled'));
-            
+
             // ensure rendering settles
-            expect(await findByRole('heading', {name: 'Condition details'})).toBeVisible();
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
     });
 
@@ -64,9 +64,9 @@ describe('Create Condition', () => {
             expect(getByText('Will this condition need the Contact Tracing Module?')).toBeTruthy();
             expect(getByText('Condition family')).toBeTruthy();
             expect(getByText('Co-infection group')).toBeTruthy();
-            
+
             // ensure rendering settles
-            expect(await findByRole('heading', {name: 'Condition details'})).toBeVisible();
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
 
         it('should render a dropdown to select Program Area from the provided options', async () => {
@@ -88,9 +88,9 @@ describe('Create Condition', () => {
             for (let i = 1; i < options.length; i++) {
                 expect(options[i].value).toBe(options[i].value);
             }
-            
+
             // ensure rendering settles
-            expect(await findByRole('heading', {name: 'Condition details'})).toBeVisible();
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
     });
 });

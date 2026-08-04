@@ -67,7 +67,7 @@ describe('Add New Page', () => {
         const { getByText, findByLabelText } = render(<Fixture />);
 
         expect(getByText('Create new page')).toBeInTheDocument();
-        
+
         // ensure all rendering settles
         expect(await findByLabelText('close')).toBeVisible();
     });
@@ -96,7 +96,7 @@ describe('Add New Page', () => {
         const { getByText, findByLabelText } = render(<Fixture />);
 
         expect(getByText('Create new page')).toHaveAttribute('aria-label', 'Create new page');
-        
+
         // ensure all rendering settles
         expect(await findByLabelText('close')).toBeVisible();
     });
@@ -114,7 +114,7 @@ describe('Add New Page', () => {
 
         const warning = getByTestId('event-type-warning');
         expect(warning).toBeInTheDocument();
-        
+
         // ensure all rendering settles
         expect(await findByLabelText('close')).toBeVisible();
     });
@@ -153,7 +153,7 @@ describe('Add New Page', () => {
 
         expect(setHrefSpy).toHaveBeenCalledWith('/nbs/page-builder/api/v1/pages/create');
         expect(savePage).not.toHaveBeenCalled();
-        
+
         // ensure all rendering settles
         expect(await findByLabelText('close')).toBeVisible();
     });
@@ -177,7 +177,7 @@ describe('Add New Page', () => {
         expect(getByText('Reporting mechanism')).toBeInTheDocument();
         expect(getByText('Page description')).toBeInTheDocument();
         expect(getByText('Data mart name')).toBeInTheDocument();
-        
+
         // ensure all rendering settles
         expect(await findByLabelText('close')).toBeVisible();
     });
