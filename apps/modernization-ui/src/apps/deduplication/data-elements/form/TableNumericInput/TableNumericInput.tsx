@@ -43,7 +43,7 @@ export const TableNumericInput = ({ label, name, value, error, max, min, step, d
                 />
                 {error && (
                     <Tooltip id={`${name}-error-tooltip`} label={error} className={styles.tooltip} position="top">
-                        <Icon.ErrorOutline className={styles.tooltipIcon} />
+                        <Icon.ErrorOutline aria-label="error tooltip" className={styles.tooltipIcon} />
                     </Tooltip>
                 )}
             </div>
