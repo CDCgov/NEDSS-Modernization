@@ -20,7 +20,6 @@ describe('OperatorSelect', () => {
     });
 
     it('calls onChange when an option is selected', async () => {
-        const user = userEvent.setup();
 
         const { getByRole } = render(<OperatorSelect {...defaultProps} />);
         const selectElement = getByRole('combobox');

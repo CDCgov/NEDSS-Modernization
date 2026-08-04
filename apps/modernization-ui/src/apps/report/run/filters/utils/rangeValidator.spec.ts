@@ -73,7 +73,7 @@ describe('rangeValidator', () => {
             [
                 ["15", "6"],
                 ['0.9887', '0.125'],
-            ].forEach((range, index) => {
+            ].forEach((range) => {
                 const actual = validateNumericRange(range, FIELD_NAME);
                 expect(actual).toEqual(`From value must be before To value for ${FIELD_NAME}.`);
             });

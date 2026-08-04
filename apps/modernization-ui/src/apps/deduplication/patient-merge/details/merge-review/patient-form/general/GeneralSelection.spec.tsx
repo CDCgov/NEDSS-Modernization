@@ -2,8 +2,6 @@ import { render } from '@testing-library/react';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { SexAndBirthSelection } from '../sex-and-birth/SexAndBirthSelection';
-
 import { GeneralSelection } from './GeneralSelection';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [

@@ -71,7 +71,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     </tr>
                 </thead>
                 <tbody data-testid="group-questions-tbody">
-                    {fields.map((item: Batch, index: number) => (
+                    {fields.map((_item: Batch, index: number) => (
                         <tr className={styles.row} key={index}>
                             <td className={styles.number}>
                                 <p>{index + 1}</p>

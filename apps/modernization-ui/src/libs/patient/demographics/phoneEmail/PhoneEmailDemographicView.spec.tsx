@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { today } from 'date';
 import { asSelectable } from 'options';
 
 import { PhoneEmailDemographicView } from './PhoneEmailDemographicView';

@@ -2,8 +2,6 @@ import { render, screen } from '@testing-library/react';
 
 import { MortalityDemographicView } from './MortalityDemographicView';
 
-const noop = () => undefined;
-
 describe('MortalityDemographicView', () => {
     it('should display "As of" when present', () => {
         render(<MortalityDemographicView demographic={{ asOf: '2020-03-17' }} />);

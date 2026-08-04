@@ -24,7 +24,7 @@ const mockSave = vi.fn();
 const mockRemove = vi.fn();
 
 vi.mock('storage', () => ({
-    useLocalStorage: ({ key, initial }: { key: string; initial?: any }) => ({
+    useLocalStorage: () => ({
         value: mockValue,
         save: mockSave,
         remove: mockRemove,

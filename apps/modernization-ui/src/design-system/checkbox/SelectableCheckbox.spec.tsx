@@ -68,8 +68,6 @@ describe('Checkbox testing', () => {
     });
 
     it('should emit onChange event when label clicked', async () => {
-        const user = userEvent.setup();
-
         const onChange = vi.fn();
 
         const { getByText } = render(<SelectableCheckbox onChange={onChange} selectable={option} selected={false} />);

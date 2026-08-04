@@ -82,7 +82,7 @@ describe('When paginating search results', () => {
         mockPageSize = 20;
         mockCurrent = 1;
 
-        const { getByLabelText, debug } = render(<Setup />);
+        const { getByLabelText } = render(<Setup />);
 
         const page = getByLabelText('Page 2');
 
