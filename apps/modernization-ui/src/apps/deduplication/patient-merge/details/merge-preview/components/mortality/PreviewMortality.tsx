@@ -1,4 +1,3 @@
-import React from 'react';
 import { format, parseISO, isValid } from 'date-fns';
 import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';

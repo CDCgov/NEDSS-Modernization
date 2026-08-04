@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import classNames from 'classnames';
 
 export const BannerFlag = ({ alt, className, ...imgProps }: JSX.IntrinsicElements['img']): ReactElement => {

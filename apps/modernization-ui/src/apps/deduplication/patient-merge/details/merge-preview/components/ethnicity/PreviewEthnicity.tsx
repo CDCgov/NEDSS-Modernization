@@ -1,4 +1,3 @@
-import React from 'react';
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
 import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';

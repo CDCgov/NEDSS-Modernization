@@ -1,4 +1,3 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Section } from './Section';
 import { Button } from 'design-system/button';

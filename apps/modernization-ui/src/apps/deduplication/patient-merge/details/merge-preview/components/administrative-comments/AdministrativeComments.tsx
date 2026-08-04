@@ -1,4 +1,3 @@
-import React from 'react';
 import { format, parseISO, isValid } from 'date-fns';
 import { Card } from 'design-system/card/Card';
 import styles from './AdministrativeComments.module.scss';
