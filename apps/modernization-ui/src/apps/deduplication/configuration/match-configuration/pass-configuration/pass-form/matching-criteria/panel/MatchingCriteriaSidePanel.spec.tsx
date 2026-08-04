@@ -238,7 +238,7 @@ describe('MatchingCriteriaSidePanel', () => {
 
         await user.click(cancel);
 
-        expect(onCancel).toBeCalledTimes(1);
+        expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger onAccept when Add attribute(s) is clicked', async () => {

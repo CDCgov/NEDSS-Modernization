@@ -111,41 +111,41 @@ describe('MatchesRequiringReviewTable', () => {
 
         // default sort
         await waitFor(() => {
-            expect(mockFetch).lastCalledWith(0, 20, 'identified,desc');
+            expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'identified,desc');
         });
 
         await user.click(getByText('Patient ID').children[0]); // sort on patient Id asc
-        expect(mockFetch).lastCalledWith(0, 20, 'patient-id,asc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'patient-id,asc');
 
         await user.click(getByText('Patient ID').children[0]); // sort on patient Id desc
-        expect(mockFetch).lastCalledWith(0, 20, 'patient-id,desc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'patient-id,desc');
 
         await user.click(getByText('Person name').children[0]); // sort on Person name
-        expect(mockFetch).lastCalledWith(0, 20, 'name,asc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'name,asc');
 
         await user.click(getByText('Person name').children[0]); // sort on Person name desc
-        expect(mockFetch).lastCalledWith(0, 20, 'name,desc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'name,desc');
 
         await user.click(getByText('Date created').children[0]); // sort on Date created
-        expect(mockFetch).lastCalledWith(0, 20, 'created,asc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'created,asc');
 
         await user.click(getByText('Date created').children[0]); // sort on Date created desc
-        expect(mockFetch).lastCalledWith(0, 20, 'created,desc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'created,desc');
 
         await user.click(getByText('Date identified').children[0]); // sort on Date identified
-        expect(mockFetch).lastCalledWith(0, 20, 'identified,asc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'identified,asc');
 
         await user.click(getByText('Date identified').children[0]); // sort on Date identified desc
-        expect(mockFetch).lastCalledWith(0, 20, 'identified,desc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'identified,desc');
 
         await user.click(getByText('Number of matching records').children[0]); // sort on Number of matching records
-        expect(mockFetch).lastCalledWith(0, 20, 'count,asc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'count,asc');
 
         await user.click(getByText('Number of matching records').children[0]); // sort on Number of matching records desc
-        expect(mockFetch).lastCalledWith(0, 20, 'count,desc');
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'count,desc');
 
         await user.click(getByText('Number of matching records').children[0]); // clear sort on Number
-        expect(mockFetch).lastCalledWith(0, 20, 'identified,desc'); // back to default
+        expect(mockFetch).toHaveBeenLastCalledWith(0, 20, 'identified,desc'); // back to default
     });
 
     it('should display the proper match data', () => {
