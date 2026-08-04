@@ -1,4 +1,4 @@
-import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';

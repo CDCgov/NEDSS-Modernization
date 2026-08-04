@@ -11,7 +11,7 @@ import { isEqual, Selectable } from 'options';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
 
-import { HasSexBirthDemographic, SexBirthDemographic, labels } from '../sexBirth';
+import { HasSexBirthDemographic, labels, SexBirthDemographic } from '../sexBirth';
 
 import { SexBirthOptions } from './useSexBirthOptions';
 

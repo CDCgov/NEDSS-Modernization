@@ -3,7 +3,7 @@ import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } f
 import { UseFormReturn } from 'react-hook-form';
 import { maybeMap } from 'utils/mapping';
 
-import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
+import { initial as defaultValues, PatientCriteriaEntry } from './criteria';
 import { filterResolver } from './filterResolver';
 import { patientTermsResolver as termResolver } from './patientTermsResolver';
 import { transform as transformer } from './transformer';

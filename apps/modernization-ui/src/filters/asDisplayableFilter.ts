@@ -5,8 +5,8 @@ import { DateProperty, Property, ValueProperty } from './properties';
 import {
     dateOperators,
     ExactValueOperators,
-    SelectableDateRangeOperator,
     PartialValueOperators,
+    SelectableDateRangeOperator,
     withValue,
 } from './selectables';
 

@@ -4,7 +4,7 @@ import { Column } from 'design-system/table';
 
 import { NameDemographicView } from './NameDemographicView';
 import styles from './name-demographic-repeating-block.module.scss';
-import { NameDemographic, labels } from './names';
+import { labels, NameDemographic } from './names';
 
 const columns: Column<NameDemographic>[] = [
     {

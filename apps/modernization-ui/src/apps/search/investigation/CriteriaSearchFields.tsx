@@ -1,12 +1,12 @@
 import { SearchCriteria } from 'apps/search/criteria';
 import { EntryFieldsProps } from 'design-system/entry';
-import { SingleSelect, MultiSelect } from 'design-system/select';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import {
-    InvestigationFilterEntry,
     caseStatusOptions,
+    InvestigationFilterEntry,
     investigationStatusOptions,
     notificationStatusOptions,
     processingStatusOptions,

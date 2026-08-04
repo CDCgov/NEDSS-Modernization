@@ -7,7 +7,7 @@ import { ItemGroup } from 'design-system/item';
 
 import styles from './patient-file-summary.module.scss';
 
-import { PatientFileDemographicsSummary, DisplayablePhone, DisplayableIdentification } from '.';
+import { DisplayableIdentification, DisplayablePhone, PatientFileDemographicsSummary } from '.';
 
 type SummaryItemProps = {
     label: string;

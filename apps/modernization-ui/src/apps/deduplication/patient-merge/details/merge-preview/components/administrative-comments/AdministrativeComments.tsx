@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { format, parseISO, isValid } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 import { Card } from 'design-system/card/Card';
 
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';

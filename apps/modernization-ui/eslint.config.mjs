@@ -79,6 +79,7 @@ export default defineConfig([
             // 'import/no-unresolved': 'error',
             // 'import/no-unused-modules': ['error', { unusedExports: true, missingExports: true }],
             'import/no-useless-path-segments': 'error',
+            // Sort outer import statement lines
             'import/order': [
                 'error',
                 {
@@ -101,6 +102,16 @@ export default defineConfig([
                     },
 
                     distinctGroup: false,
+                },
+            ],
+            // Sort members within a single import statement
+            'sort-imports': [
+                'error',
+                {
+                    ignoreCase: true,
+                    ignoreDeclarationSort: true, // Let import/order handle statement lines
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
                 },
             ],
         },

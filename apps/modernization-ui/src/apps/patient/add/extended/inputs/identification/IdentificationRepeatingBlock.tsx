@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { IdentificationEntryFields, IdentificationEntry, initial } from 'apps/patient/data/identification';
+import { IdentificationEntry, IdentificationEntryFields, initial } from 'apps/patient/data/identification';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Sizing } from 'design-system/field';
 import { Column } from 'design-system/table';

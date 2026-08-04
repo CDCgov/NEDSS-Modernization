@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Jurisdiction, useFindAllJurisdictionsLazyQuery } from 'generated/graphql/schema';
-import { SelectableResolver, findByValue } from 'options/findByValue';
+import { findByValue, SelectableResolver } from 'options/findByValue';
 import { Selectable } from 'options/selectable';
 import { mapNonNull } from 'utils';
 

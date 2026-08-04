@@ -1,4 +1,4 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect, useId, useCallback } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode, useCallback, useEffect, useId, useRef } from 'react';
 
 import classNames from 'classnames';
 import { Heading } from 'components/heading';

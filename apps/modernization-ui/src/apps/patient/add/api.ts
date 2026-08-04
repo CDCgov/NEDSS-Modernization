@@ -1,14 +1,14 @@
 import {
-    Administrative,
-    Name,
     Address,
-    PhoneEmail,
-    Identification,
-    Ethnicity,
-    Sex,
+    Administrative,
     Birth,
-    Mortality,
+    Ethnicity,
     GeneralInformation,
+    Identification,
+    Mortality,
+    Name,
+    PhoneEmail,
+    Sex,
 } from 'apps/patient/data/api';
 import { Race } from 'apps/patient/data/race/api';
 

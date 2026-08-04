@@ -1,6 +1,6 @@
 import { FC, useContext, useState, createContext, ReactNode } from 'react';
 
-import { DragStart, DragUpdate, DraggableLocation, DropResult } from '@hello-pangea/dnd';
+import { DraggableLocation, DragStart, DragUpdate, DropResult } from '@hello-pangea/dnd';
 
 import { PagesResponse } from '../generated';
 import { reorderObjects } from '../services/reorderObjectsAPI';

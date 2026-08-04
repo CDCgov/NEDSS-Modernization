@@ -1,5 +1,5 @@
 import { displayAddress } from 'address/display';
-import { internalizeDate, displayAgeAsOfToday } from 'date';
+import { displayAgeAsOfToday, internalizeDate } from 'date';
 import { ItemGroup } from 'design-system/item';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { displayNameElement, matchesLegalName } from 'name';

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
-import { RuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSubSection, Rule, RuleRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';

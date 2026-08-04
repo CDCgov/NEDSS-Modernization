@@ -1,7 +1,7 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { render } from '@testing-library/react';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { PagesSection, PagesResponse } from 'apps/page-builder/generated';
+import { PagesResponse, PagesSection } from 'apps/page-builder/generated';
 
 import { ReorderSection } from './ReorderSection';
 

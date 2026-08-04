@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Button, Icon } from '@trussworks/react-uswds';
-import { ValuesetSort, useFindValuesets } from 'apps/page-builder/hooks/api/useFindValueset';
+import { useFindValuesets, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
 import { Status, usePagination } from 'pagination';
 
 import { ButtonBar } from '../../ButtonBar/ButtonBar';

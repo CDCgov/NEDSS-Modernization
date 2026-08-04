@@ -5,7 +5,7 @@ import { Hint } from 'design-system/hint';
 import { Confirmation } from 'design-system/modal';
 import { LabeledValue } from 'design-system/value';
 import { useAlert } from 'libs/alert';
-import { Permitted, permissions } from 'libs/permission';
+import { permissions, Permitted } from 'libs/permission';
 import { displayName } from 'name';
 
 import { Patient } from '../patient';

@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Rule } from 'apps/page-builder/generated';
 import { PaginationProvider } from 'pagination';
 import { BrowserRouter } from 'react-router';

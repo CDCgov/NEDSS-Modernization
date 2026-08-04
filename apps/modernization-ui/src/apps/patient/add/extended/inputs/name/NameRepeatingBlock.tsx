@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { NameEntry, NameEntryFields, initial } from 'apps/patient/data/name';
+import { initial, NameEntry, NameEntryFields } from 'apps/patient/data/name';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Sizing } from 'design-system/field';
 import { Column } from 'design-system/table';

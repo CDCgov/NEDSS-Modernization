@@ -1,5 +1,5 @@
 /* eslint-disable no-redeclare */
-import { parseISO, isMatch } from 'date-fns';
+import { isMatch, parseISO } from 'date-fns';
 
 import { INTERNAL_DATE_FORMAT } from './Dates';
 

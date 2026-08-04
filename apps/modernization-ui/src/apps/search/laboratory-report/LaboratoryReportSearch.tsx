@@ -8,7 +8,7 @@ import { useJurisdictionOptions } from 'options/jurisdictions';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
-import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
+import { initial as defaultValues, LabReportFilterEntry } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { LaboratoryReportSearchResultsTable, preferences } from './result/table';
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';

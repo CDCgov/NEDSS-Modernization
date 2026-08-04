@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import {
     PageQuestionControllerService,
-    PageStaticControllerService,
     PagesQuestion,
     PagesSubSection,
+    PageStaticControllerService,
 } from 'apps/page-builder/generated';
 import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
 import { useAlert } from 'libs/alert';

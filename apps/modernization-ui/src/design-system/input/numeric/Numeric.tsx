@@ -2,7 +2,7 @@ import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 
 import classNames from 'classnames';
 
-import { onlyNumericKeys, onlyDecimalKeys } from './onlyNumericKeys';
+import { onlyDecimalKeys, onlyNumericKeys } from './onlyNumericKeys';
 import { useNumeric } from './useNumeric';
 
 type NumericOnChange = (value?: number | null) => void;

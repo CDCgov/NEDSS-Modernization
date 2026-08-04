@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { RuleRequest, PagesSubSection, PagesQuestion } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSubSection, RuleRequest } from 'apps/page-builder/generated';
 import { useGetTargetSubsections } from 'apps/page-builder/hooks/useGetTargetSubsections';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { MultiSelectInput } from 'components/selection/multi';

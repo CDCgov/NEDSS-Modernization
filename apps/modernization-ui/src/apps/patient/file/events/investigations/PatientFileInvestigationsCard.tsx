@@ -8,7 +8,7 @@ import { Hint } from 'design-system/hint';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { LabeledValue } from 'design-system/value';
-import { displayNotificationStatus, displayStatus, displayInvestigator } from 'libs/events/investigations';
+import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
 import { LoadingOverlay } from 'libs/loading';
 import { permissions, Permitted } from 'libs/permission';
 import { MemoizedSupplier } from 'libs/supplying';

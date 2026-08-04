@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { Location } from 'react-router';
 
 import { PageProvider, usePage } from './PageContext';

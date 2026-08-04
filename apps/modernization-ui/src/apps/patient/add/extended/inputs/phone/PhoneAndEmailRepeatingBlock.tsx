@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { PhoneEmailEntry, PhoneEmailEntryFields, initial } from 'apps/patient/data/phoneEmail';
+import { initial, PhoneEmailEntry, PhoneEmailEntryFields } from 'apps/patient/data/phoneEmail';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Sizing } from 'design-system/field';
 import { Column } from 'design-system/table';

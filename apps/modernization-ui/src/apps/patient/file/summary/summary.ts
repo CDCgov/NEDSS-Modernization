@@ -1,6 +1,6 @@
 import { MemoizedSupplier } from 'libs/supplying';
 
-import { PatientFileDocumentRequiringReview, patientDDR } from './documentRequiringReview';
+import { patientDDR, PatientFileDocumentRequiringReview } from './documentRequiringReview';
 import { PatientFileMergeHistory } from './mergeHistory/model/mergeHistory';
 import { patientMergeHistory } from './mergeHistory/patientMergeHistory';
 import { PatientFileOpenInvestigation, patientOpenInvestigations } from './openInvestigations';

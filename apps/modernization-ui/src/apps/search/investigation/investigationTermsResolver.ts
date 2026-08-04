@@ -1,4 +1,4 @@
-import { Term, fromSelectable, fromSelectables, fromValue } from 'apps/search/terms';
+import { fromSelectable, fromSelectables, fromValue, Term } from 'apps/search/terms';
 
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 

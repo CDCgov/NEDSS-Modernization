@@ -1,4 +1,4 @@
-import { Selectable, cachedSelectableResolver, useSelectableOptions } from 'options';
+import { cachedSelectableResolver, Selectable, useSelectableOptions } from 'options';
 import { Predicate } from 'utils';
 
 const resolver = cachedSelectableResolver('races.options', '/nbs/api/options/races');

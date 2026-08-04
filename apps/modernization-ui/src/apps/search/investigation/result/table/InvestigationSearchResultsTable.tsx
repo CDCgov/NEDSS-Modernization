@@ -1,4 +1,4 @@
-import { withPatient, displayProfileLink, displayGender } from 'apps/search/basic';
+import { displayGender, displayProfileLink, withPatient } from 'apps/search/basic';
 import {
     displayInvestigationLink,
     displayInvestigator,

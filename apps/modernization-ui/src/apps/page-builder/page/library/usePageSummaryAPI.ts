@@ -1,4 +1,4 @@
-import { PageSummaryService, PagePageSummary } from 'apps/page-builder/generated';
+import { PagePageSummary, PageSummaryService } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = async (
     token: string,

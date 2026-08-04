@@ -5,7 +5,7 @@ import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 
-import { NameDemographic, labels } from '../names';
+import { labels, NameDemographic } from '../names';
 
 import { NameOptions } from './useNameOptions';
 

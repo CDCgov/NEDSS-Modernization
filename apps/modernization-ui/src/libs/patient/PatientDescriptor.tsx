@@ -6,7 +6,7 @@ import { Shown } from 'conditional-render';
 import { displayAgeAsOf, today } from 'date';
 import { NoData } from 'design-system/data';
 import { defaultTo } from 'libs/supplying';
-import { displayName, DisplayableName } from 'name';
+import { DisplayableName, displayName } from 'name';
 import { mapOr } from 'utils/mapping';
 import { equalsIgnoreCase, not } from 'utils/predicate';
 

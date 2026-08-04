@@ -1,4 +1,4 @@
-import { createElement, act } from 'react';
+import { act, createElement } from 'react';
 
 import { renderHook } from '@testing-library/react';
 

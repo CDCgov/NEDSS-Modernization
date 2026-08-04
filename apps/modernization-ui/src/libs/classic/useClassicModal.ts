@@ -1,4 +1,4 @@
-import { useContext, useReducer, useEffect } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 
 import { ClassicModalContext } from './ClassicModalContext';
 

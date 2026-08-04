@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-import { Selectable, isEqual } from 'options';
+import { isEqual, Selectable } from 'options';
 import { mapIf } from 'utils';
 
 type Item = { selected: boolean; value: Selectable };

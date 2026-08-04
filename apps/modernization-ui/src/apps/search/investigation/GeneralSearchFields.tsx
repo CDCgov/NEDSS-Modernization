@@ -12,9 +12,9 @@ import { useProgramAreaOptions } from 'options/program-areas';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import {
-    InvestigationFilterEntry,
     dateTypeOptions,
     investigationEventTypeOptions,
+    InvestigationFilterEntry,
     pregnancyStatusOptions,
 } from './InvestigationFormTypes';
 

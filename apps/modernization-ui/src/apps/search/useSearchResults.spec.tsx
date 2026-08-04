@@ -1,4 +1,4 @@
-import { ReactNode, act } from 'react';
+import { act, ReactNode } from 'react';
 
 import { renderHook, waitFor } from '@testing-library/react';
 import { Filter } from 'design-system/filter';

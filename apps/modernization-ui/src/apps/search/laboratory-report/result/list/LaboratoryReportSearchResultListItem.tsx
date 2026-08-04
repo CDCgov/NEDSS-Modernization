@@ -1,10 +1,10 @@
-import { displayProfileLink, displayGender } from 'apps/search/basic';
+import { displayGender, displayProfileLink } from 'apps/search/basic';
 import {
-    getPatient,
-    getOrderingProviderName,
-    getReportingFacility,
-    getDescription,
     getAssociatedInvestigations,
+    getDescription,
+    getOrderingProviderName,
+    getPatient,
+    getReportingFacility,
 } from 'apps/search/laboratory-report/result';
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 import { ClassicLink } from 'classic';

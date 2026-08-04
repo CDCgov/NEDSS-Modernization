@@ -1,5 +1,5 @@
 import { FeatureToggle } from 'feature';
-import { permitsAny, permissions, permitsAll } from 'libs/permission';
+import { permissions, permitsAll, permitsAny } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
 

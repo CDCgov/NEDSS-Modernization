@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
-import { Icon, Button } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
 

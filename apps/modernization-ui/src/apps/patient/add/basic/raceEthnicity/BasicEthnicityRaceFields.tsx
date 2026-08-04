@@ -4,7 +4,7 @@ import { CheckboxGroup } from 'design-system/checkbox';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
-import { useRaceCategoryOptions, MULTI_RACE } from 'options/race';
+import { MULTI_RACE, useRaceCategoryOptions } from 'options/race';
 import { Controller, useFormContext } from 'react-hook-form';
 
 const categoryFilter = (race: Selectable) => race.value !== MULTI_RACE.value;

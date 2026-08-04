@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { ModalRef, Icon, ModalToggleButton } from '@trussworks/react-uswds';
+import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 
 import { ConfirmationModal } from '../../../../confirmation';
 

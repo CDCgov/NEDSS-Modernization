@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { LabReportFilterEntry, initial } from './labReportFormTypes';
+import { initial, LabReportFilterEntry } from './labReportFormTypes';
 
 const LabratorySearchCriteriaFormWrapper = ({ children }: { children: ReactNode }) => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({

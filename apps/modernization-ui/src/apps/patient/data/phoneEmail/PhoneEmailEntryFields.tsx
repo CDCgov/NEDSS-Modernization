@@ -4,7 +4,7 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { SingleSelect } from 'design-system/select';
-import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
+import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
 import { Verification } from 'libs/verification';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';

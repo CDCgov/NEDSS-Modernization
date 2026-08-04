@@ -1,7 +1,7 @@
 import { AgeResolver, internalizeDate } from 'date';
 import { Sizing, ValueField } from 'design-system/field';
 
-import { SexBirthDemographic, labels } from '../sexBirth';
+import { labels, SexBirthDemographic } from '../sexBirth';
 
 type SexBirthDemographicViewProps = {
     sizing?: Sizing;

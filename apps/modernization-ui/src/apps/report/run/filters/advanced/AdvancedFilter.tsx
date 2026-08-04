@@ -20,6 +20,7 @@ import {
     joinWith,
     RuleGroupProps,
     RuleGroupType,
+    RuleProps,
     splitBy,
     ValidationResult,
     RuleGroup as DefaultRuleGroup,

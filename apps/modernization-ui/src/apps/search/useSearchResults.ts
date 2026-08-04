@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
 import { Filter, useFilterMaybe } from 'design-system/filter';
 import { useSorting } from 'libs/sorting';
-import { usePagination, Status as PageStatus } from 'pagination';
+import { Status as PageStatus, usePagination } from 'pagination';
 import { Predicate } from 'utils';
 
 import { Term } from './terms';

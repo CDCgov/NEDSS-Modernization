@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
-import { AddPatientState, useAddPatient, creator } from 'apps/patient/add';
+import { AddPatientState, creator, useAddPatient } from 'apps/patient/add';
 import { Creator, Transformer } from 'apps/patient/add/api';
 
 import { ExtendedNewPatientEntry } from './entry';
