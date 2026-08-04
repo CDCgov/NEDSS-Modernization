@@ -1,8 +1,10 @@
 import { isRuleGroupType, ValidationResult } from 'react-querybuilder';
-import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
-import { BINARY_OPERATORS } from './operators.ts';
 import { logErrorToUserConsole } from 'utils/logging.ts';
+
+import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';
+
 import { isQbRuleGroupType, isQbRuleType, QbQuery } from './AdvancedFilter.tsx';
+import { BINARY_OPERATORS } from './operators.ts';
 
 export type ValidationResultMap = Record<string, ValidationResult>;
 

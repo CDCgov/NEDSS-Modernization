@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
+
 import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
-import { useMemo } from 'react';
+
 import { DataElements } from '../../api/model/DataElement';
+
 import { PersonMatchHeader } from './header/PersonMatchHeader';
 import { AlgorithmNotConfigured } from './notification-cards/AlgorithmNotConfigured';
 import { PassConfiguration } from './pass-configuration/PassConfiguration';

@@ -1,6 +1,8 @@
 import { asValue } from 'options';
 import { isEmpty, orUndefined } from 'utils';
+
 import { MortalityDemographic } from '../mortality';
+
 import { MortalityDemographicRequest } from './mortalityRequest';
 
 const asMortality = (demographic: Partial<MortalityDemographic>): MortalityDemographicRequest | undefined => {

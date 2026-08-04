@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
+
 import { SingleSelect } from './SingleSelect';
 
 describe('when selecting a single item from a specific set of items', () => {

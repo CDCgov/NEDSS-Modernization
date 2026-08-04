@@ -1,9 +1,10 @@
-import { Navigate } from 'react-router';
 import { ApolloWrapper } from 'providers/ApolloContext';
+import { Navigate } from 'react-router';
+
 import { SearchPage } from './SearchPage';
-import { PatientSearch } from './patient/PatientSearch';
-import { LaboratoryReportSearch } from './laboratory-report';
 import { InvestigationSearch } from './investigation';
+import { LaboratoryReportSearch } from './laboratory-report';
+import { PatientSearch } from './patient/PatientSearch';
 import { SimpleSearch } from './simple';
 
 const routing = [

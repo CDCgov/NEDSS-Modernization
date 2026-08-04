@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { ImportModal } from './ImportModal';
 import userEvent from '@testing-library/user-event';
+
+import { ImportModal } from './ImportModal';
 
 const onCancel = vi.fn();
 const onImport = vi.fn();

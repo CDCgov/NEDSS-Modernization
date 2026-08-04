@@ -1,19 +1,21 @@
 import { useCallback, useEffect } from 'react';
-import { useLocation } from 'react-router';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Button } from 'components/button';
-import { NavigationGuard } from 'design-system/entry/navigation-guard';
-import { sections } from './sections';
-import { AddPatientBasicForm } from './AddPatientBasicForm';
-import { BasicNewPatientEntry, initial } from './entry';
-import { useAddBasicPatient } from './useAddBasicPatient';
-import { AddPatientLayout } from '../layout';
-import { PatientCreatedPanel } from '../PatientCreatedPanel';
-import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
-import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
-import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
 
 import { SkipLink } from 'SkipLink';
+import { Button } from 'components/button';
+import { NavigationGuard } from 'design-system/entry/navigation-guard';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLocation } from 'react-router';
+
+import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { AddPatientLayout } from '../layout';
+import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
+import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
+
+import { AddPatientBasicForm } from './AddPatientBasicForm';
+import { BasicNewPatientEntry, initial } from './entry';
+import { sections } from './sections';
+import { useAddBasicPatient } from './useAddBasicPatient';
+import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 
 export const AddPatientBasic = () => {
     const { defaults } = useAddPatientBasicDefaults();

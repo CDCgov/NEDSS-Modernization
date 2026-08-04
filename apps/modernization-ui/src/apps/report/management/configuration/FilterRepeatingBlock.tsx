@@ -1,19 +1,21 @@
+import { useEffect, useState } from 'react';
+
+import { Shown } from 'conditional-render';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
+import { SingleSelect } from 'design-system/select';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
+import { ToggleField } from 'design-system/toggle/ToggleField';
+import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
+import { Selectable } from 'options';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
-import { useEffect, useState } from 'react';
-import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
-import { Selectable } from 'options';
-import { addLabelToName, EnumSelectable } from '../../utils';
-import { SIZING } from '../../constants';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
-import { SingleSelect } from 'design-system/select';
-import { Shown } from 'conditional-render';
-import { ToggleField } from 'design-system/toggle/ToggleField';
+
+import { SIZING } from '../../constants';
+import { addLabelToName, EnumSelectable } from '../../utils';
 
 const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
     { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single-select filter' },

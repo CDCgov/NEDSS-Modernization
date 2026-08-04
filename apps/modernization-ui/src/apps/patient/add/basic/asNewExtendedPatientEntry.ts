@@ -1,12 +1,14 @@
-import { ExtendedNewPatientEntry } from '../extended';
-import { BasicNewPatientEntry } from './entry';
 import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry, RaceEntry } from 'apps/patient/data';
-import { LEGAL } from 'options/name/types';
-import { HOME as HOME_ADDRESS } from 'options/address/uses';
 import { HOUSE } from 'options/address/types';
-import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
+import { HOME as HOME_ADDRESS } from 'options/address/uses';
+import { LEGAL } from 'options/name/types';
+import { CELL_PHONE, EMAIL, PHONE } from 'options/phone/types';
 import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
 import { isEmpty } from 'utils';
+
+import { ExtendedNewPatientEntry } from '../extended';
+
+import { BasicNewPatientEntry } from './entry';
 
 const asNewExtendedPatientEntry = (initial: BasicNewPatientEntry): ExtendedNewPatientEntry => {
     return {

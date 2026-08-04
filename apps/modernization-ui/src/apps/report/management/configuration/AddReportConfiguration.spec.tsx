@@ -1,11 +1,13 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
-import * as generated from 'generated';
-import * as options from 'options/selectableResolver';
-import { Layout } from 'layout';
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
-import { AddReportConfiguration } from './AddReportConfiguration';
+
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import * as generated from 'generated';
+import { Layout } from 'layout';
+import * as options from 'options/selectableResolver';
+import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+
+import { AddReportConfiguration } from './AddReportConfiguration';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');

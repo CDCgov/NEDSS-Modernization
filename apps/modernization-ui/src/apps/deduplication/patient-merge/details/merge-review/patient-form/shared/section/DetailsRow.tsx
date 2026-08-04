@@ -1,6 +1,8 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
-import styles from './section.module.scss';
 import { ReactNode } from 'react';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
+import styles from './section.module.scss';
 
 type Props = {
     id: string;

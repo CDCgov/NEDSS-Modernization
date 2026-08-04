@@ -1,5 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { DragStart, DragUpdate, DraggableLocation, DropResult } from '@hello-pangea/dnd';
+import { createContext, FC, ReactNode, useContext, useState } from 'react';
+
+import { DraggableLocation, DragStart, DragUpdate, DropResult } from '@hello-pangea/dnd';
+
 import { PagesResponse } from '../generated';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 
@@ -13,10 +15,10 @@ type DragDropContextProps = {
     dragTarget: { droppableId: string; index: number; source: number };
 };
 
-const DragDropContext = React.createContext<DragDropContextProps | undefined>(undefined);
+const DragDropContext = createContext<DragDropContextProps | undefined>(undefined);
 
-const DragDropProvider: React.FC<{
-    children: React.ReactNode;
+const DragDropProvider: FC<{
+    children: ReactNode;
     pageData: PagesResponse | undefined;
     successCallBack?: () => void;
 }> = ({ children, pageData, successCallBack }) => {

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import { AdministrativeInformationCard } from './AdministrativeInformationCard';
 
 describe('when displaying administrative comments for a patient', () => {

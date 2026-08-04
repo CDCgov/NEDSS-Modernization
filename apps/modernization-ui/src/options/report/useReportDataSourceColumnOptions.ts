@@ -1,4 +1,4 @@
-import { selectableResolver, SelectableOptionsInteraction, useSelectableOptions } from 'options';
+import { SelectableOptionsInteraction, selectableResolver, useSelectableOptions } from 'options';
 
 const resolver = async (dataSource?: string | null) => {
     if (!dataSource) {

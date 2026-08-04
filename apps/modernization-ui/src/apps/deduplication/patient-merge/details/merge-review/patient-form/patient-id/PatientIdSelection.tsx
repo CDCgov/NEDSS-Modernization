@@ -4,7 +4,9 @@ import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Radio } from 'design-system/radio';
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { PatientMergeForm } from '../../model/PatientMergeForm';
+
 import styles from './patient-id-selection.module.scss';
 
 type Props = {

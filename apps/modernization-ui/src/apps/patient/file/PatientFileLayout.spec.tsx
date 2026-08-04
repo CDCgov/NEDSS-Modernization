@@ -1,6 +1,7 @@
-import { PatientFileLayout } from './PatientFileLayout';
-import { SkipLinkProvider } from 'SkipLink';
 import { render, screen } from '@testing-library/react';
+import { SkipLinkProvider } from 'SkipLink';
+
+import { PatientFileLayout } from './PatientFileLayout';
 
 describe('PatientFileLayout', () => {
     it('should focus the header when skip link is clicked', async () => {

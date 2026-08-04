@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
 
 import styles from './hint-panel.module.scss';

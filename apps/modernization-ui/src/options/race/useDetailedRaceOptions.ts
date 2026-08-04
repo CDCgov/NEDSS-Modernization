@@ -1,4 +1,4 @@
-import { Selectable, useSelectableOptions, SelectableOptionsInteraction } from 'options';
+import { Selectable, SelectableOptionsInteraction, useSelectableOptions } from 'options';
 import { selectableResolver } from 'options/selectableResolver';
 
 const resolver = (category?: string) =>

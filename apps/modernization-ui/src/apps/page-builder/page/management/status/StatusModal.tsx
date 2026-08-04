@@ -1,5 +1,7 @@
-import { Button, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
+
+import { Button, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
+
 import styles from './statusmodal.module.scss';
 
 type Props = {

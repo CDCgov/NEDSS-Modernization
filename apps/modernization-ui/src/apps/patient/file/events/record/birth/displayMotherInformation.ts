@@ -1,7 +1,8 @@
-import { maybeMap } from 'utils/mapping';
-import { exists } from 'utils/exists';
-import { maybeDisplayName } from 'name';
 import { displayAddressText } from 'address/display';
+import { maybeDisplayName } from 'name';
+import { exists } from 'utils/exists';
+import { maybeMap } from 'utils/mapping';
+
 import { MotherInformation } from './birth-record';
 
 const maybeDisplayAddress = maybeMap(displayAddressText);

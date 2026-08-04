@@ -1,6 +1,7 @@
+import { useMemo } from 'react';
+
 import { useConfiguration } from 'configuration';
 import { asSelectable, Selectable } from 'options';
-import { useMemo } from 'react';
 import { maybeMap } from 'utils/mapping';
 
 const maybeAsSelectable = maybeMap(asSelectable);

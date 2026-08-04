@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { AutocompleteOptionsResolver } from 'options/autocompete';
+
 import { Autocomplete } from './Autocomplete';
 
 const mockResolver: AutocompleteOptionsResolver = async (criteria: string) => {

@@ -1,15 +1,16 @@
 import { maybeMap, maybeMapAll } from 'utils/mapping';
-import { PatientDemographicsEntry } from './demographics';
-import { PatientDemographicsRequest } from './request';
-import { asAdministrative } from './administrative';
-import { asName } from './name';
+
 import { asAddress } from './address';
+import { asAdministrative } from './administrative';
+import { PatientDemographicsEntry } from './demographics';
 import { asEthnicity } from './ethnicity';
 import { asGeneral } from './general';
 import { asIdentification } from './identification';
 import { asMortality } from './mortality';
+import { asName } from './name';
 import { asPhoneEmail } from './phoneEmail';
 import { asRace } from './race';
+import { PatientDemographicsRequest } from './request';
 import { asBirth, asSex } from './sex-birth';
 
 const asNames = maybeMapAll(asName);

@@ -1,8 +1,9 @@
-import { screen, render } from '@testing-library/react';
-import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
-import { BrowserRouter } from 'react-router';
+import { render, screen } from '@testing-library/react';
 import { Rule } from 'apps/page-builder/generated';
 import { PaginationProvider } from 'pagination';
+import { BrowserRouter } from 'react-router';
+
+import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 
 describe('BusinessRulesLibraryTable', () => {
     const modalRef = { current: null };

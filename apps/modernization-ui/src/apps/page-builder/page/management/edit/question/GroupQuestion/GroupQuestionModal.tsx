@@ -1,11 +1,14 @@
+import { RefObject } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { PagesSubSection } from 'apps/page-builder/generated';
-import { RefObject } from 'react';
+
+import { usePageManagement } from '../../../usePageManagement';
+
 import { GroupQuestion } from './Create/GroupQuestion';
 import './GroupQuestionModal.scss';
-import styles from './group-question-modal.module.scss';
-import { usePageManagement } from '../../../usePageManagement';
 import { UpdateGroupedQuestion } from './Update/UpdateGroupedQuestion';
+import styles from './group-question-modal.module.scss';
 
 type Props = {
     modal: RefObject<ModalRef>;

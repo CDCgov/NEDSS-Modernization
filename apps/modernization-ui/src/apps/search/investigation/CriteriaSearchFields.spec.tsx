@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import CriteriaSearchFields from './CriteriaSearchFields';
+import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
 vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: () => ({ options: [] }),

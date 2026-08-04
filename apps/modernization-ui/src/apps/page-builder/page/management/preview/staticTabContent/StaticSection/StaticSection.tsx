@@ -1,5 +1,7 @@
 import { ReactNode, useState } from 'react';
+
 import { Icon } from '@trussworks/react-uswds';
+
 import styles from './static-section.module.scss';
 
 type Props = {

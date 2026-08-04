@@ -1,8 +1,10 @@
 import { createContext, ReactNode, useContext, useEffect } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { ReportExecuteForm } from '../../ReportRunPage';
-import { BasicFilterConfiguration } from 'generated';
+
 import { useConfiguration } from 'configuration';
+import { BasicFilterConfiguration } from 'generated';
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { ReportExecuteForm } from '../../ReportRunPage';
 
 const CurrentStateContext = createContext<string | undefined>(undefined);
 

@@ -1,12 +1,14 @@
-import { Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AddPatientExtended } from './AddPatientExtended';
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import { Selectable } from 'options';
+import { PageProvider } from 'page';
 import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+import { Mock } from 'vitest';
+
 import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
-import { Selectable } from 'options';
-import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { PageProvider } from 'page';
+
+import { AddPatientExtended } from './AddPatientExtended';
 
 window.scrollTo = vi.fn();
 

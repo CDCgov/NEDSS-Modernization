@@ -1,4 +1,5 @@
 import { Accordion } from 'components/Accordion';
+
 import { CriteriaFields } from './CriteriaFields';
 import { GeneralFields } from './GeneralFields';
 

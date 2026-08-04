@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react';
+
 import { useUser } from 'user';
 import { Predicate } from 'utils';
+
 import { permits } from './permits';
 
 type Interaction = {

@@ -1,10 +1,12 @@
 import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect } from 'react';
-import { DragHandleProps } from 'react-querybuilder';
-import { useKeyboardDnd } from './useKeyboardDnd';
+
 import { Icon } from 'design-system/icon';
+import { DragHandleProps } from 'react-querybuilder';
+
+import { AnyEventBinding, EventBinding } from './eventTypes';
 import * as keyCodes from './keyCodes';
 import supportedPageVisibilityEventName from './supportedPageVisibilityEventName';
-import { AnyEventBinding, EventBinding } from './eventTypes';
+import { useKeyboardDnd } from './useKeyboardDnd';
 
 // custom drag handle to add shifting action on keyboard up down when space enabled
 const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttributes<HTMLSpanElement>> = forwardRef<

@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
+
 import { useLocation } from 'react-router';
+
 import { ExtendedNewPatientEntry, initial } from './entry';
 
 type Interaction = {

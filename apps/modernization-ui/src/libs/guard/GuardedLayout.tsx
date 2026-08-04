@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router';
-import { Guarded, GuardedProps } from './Guarded';
 import { RedirectHome } from 'routes';
+
+import { Guarded, GuardedProps } from './Guarded';
 
 type GuardedLayoutProps = Omit<GuardedProps, 'children'>;
 

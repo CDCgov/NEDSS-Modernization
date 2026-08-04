@@ -1,7 +1,9 @@
-import { Config } from 'config';
 import { useState } from 'react';
-import { MergeCandidate } from './model/MergeCandidate';
+
+import { Config } from 'config';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { MergeCandidate } from './model/MergeCandidate';
 
 export const useMergeDetails = () => {
     const [loading, setLoading] = useState(false);

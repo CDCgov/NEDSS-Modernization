@@ -1,10 +1,12 @@
-import { Concept, Valueset } from 'apps/page-builder/generated';
-import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import { ValuesetDetails } from './ValuesetDetails';
 import { Button, Icon } from '@trussworks/react-uswds';
+import { Concept, Valueset } from 'apps/page-builder/generated';
 import { ConceptSort } from 'apps/page-builder/hooks/api/useFindConcepts';
-import { ConceptTable } from './concept/ConceptTable';
+
 import { ButtonBar } from '../ButtonBar/ButtonBar';
+import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+
+import { ValuesetDetails } from './ValuesetDetails';
+import { ConceptTable } from './concept/ConceptTable';
 import styles from './edit-valueset.module.scss';
 
 type Props = {

@@ -1,8 +1,10 @@
 import { Suspense } from 'react';
-import { Await } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
+
 import { LoadingOverlay } from 'libs/loading';
-import { SexBirthDemographicCardProps, SexBirthDemographicCard } from 'libs/patient/demographics/sex-birth';
+import { SexBirthDemographicCard, SexBirthDemographicCardProps } from 'libs/patient/demographics/sex-birth';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
+
 import { PatientFileSexBirthDemographic } from './PatientFileSexBirthDemographic';
 
 type PatientFileSexBirthCardProps = {

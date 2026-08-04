@@ -1,7 +1,8 @@
-import { Mock } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useDeletePatient } from './useDeletePatient';
 import { PatientFileService } from 'generated';
+import { Mock } from 'vitest';
+
+import { useDeletePatient } from './useDeletePatient';
 
 vi.mock('generated', () => ({
     PatientFileService: {

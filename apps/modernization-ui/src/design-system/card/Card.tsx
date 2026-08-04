@@ -1,10 +1,11 @@
 import { ReactNode, useId, useState } from 'react';
+
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+
 import { CardHeader, CardHeaderProps } from './CardHeader';
 import { Collapsible } from './Collapsible';
-
 import styles from './card.module.scss';
 
 type CardProps = {

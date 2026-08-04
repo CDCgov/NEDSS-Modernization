@@ -1,7 +1,8 @@
-import { PagesQuestion } from 'apps/page-builder/generated';
-import styles from './reorder-question.module.scss';
-import { Icon } from 'components/Icon/Icon';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
+import { PagesQuestion } from 'apps/page-builder/generated';
+import { Icon } from 'components/Icon/Icon';
+
+import styles from './reorder-question.module.scss';
 
 type Props = {
     question: PagesQuestion;

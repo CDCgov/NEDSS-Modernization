@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MultiSelect } from './MultiSelect';
 import { axe } from 'jest-axe';
+
+import { MultiSelect } from './MultiSelect';
 
 describe('MultiSelect', () => {
     const options = [

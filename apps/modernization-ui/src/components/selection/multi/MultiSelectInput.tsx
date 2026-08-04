@@ -1,11 +1,10 @@
 import { FocusEventHandler, useEffect, useState } from 'react';
+
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { CheckboxOption, styles, theme } from 'design-system/select/multi';
+import { asName, asValue, asValues, Selectable } from 'options';
 import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
-import { Selectable, asValues, asValue, asName } from 'options';
-import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-
-import { theme, styles, CheckboxOption } from 'design-system/select/multi';
-
 import 'design-system/select/multi/multi-select.scss';
 
 const asSelected = (selectables: Selectable[]) => (item: string) =>

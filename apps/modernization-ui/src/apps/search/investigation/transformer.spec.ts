@@ -6,6 +6,7 @@ import {
     PregnancyStatus,
     ProcessingStatus,
 } from 'generated/graphql/schema';
+
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { transformObject } from './transformer';
 

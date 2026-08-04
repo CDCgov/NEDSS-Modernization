@@ -1,8 +1,17 @@
+import {
+    KeyboardEvent as ReactKeyboardEvent,
+    MouseEvent as ReactMouseEvent,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+
 import classNames from 'classnames';
-import React, { ReactNode, useState, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect } from 'react';
+
 import styles from './overlay-panel.module.scss';
 
-type Toggle = (element?: React.MouseEvent<HTMLElement>) => void;
+type Toggle = (element?: ReactMouseEvent<HTMLElement>) => void;
 type Close = () => void;
 
 type ButtonRendererProps = {
@@ -24,7 +33,7 @@ const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: O
     const [visible, setVisible] = useState(false);
     const [openerElement, setOpenerElement] = useState<HTMLElement | null>(null);
 
-    const handleToggle = (element?: React.MouseEvent<HTMLElement>) => {
+    const handleToggle = (element?: ReactMouseEvent<HTMLElement>) => {
         if (element) setOpenerElement(element.currentTarget);
         setVisible((existing) => !existing);
     };

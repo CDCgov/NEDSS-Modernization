@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import styles from './value-view.module.scss';
 import { Sizing } from 'design-system/field';
+
+import styles from './value-view.module.scss';
 
 type Props = {
     title: string;

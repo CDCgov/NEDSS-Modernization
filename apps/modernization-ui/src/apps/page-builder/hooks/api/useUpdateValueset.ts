@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import { ValueSetControllerService, Valueset } from 'apps/page-builder/generated';
+import { Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 import { UpdateValueSetRequest } from 'apps/page-builder/generated/models/UpdateValueSetRequest';
 
 type State =

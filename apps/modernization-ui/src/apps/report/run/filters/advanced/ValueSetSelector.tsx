@@ -1,11 +1,13 @@
+import { useEffect, useId, useState } from 'react';
+
 import { useConfiguration } from 'configuration';
 import { MultiSelect } from 'design-system/select';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { cachedSelectableResolver, Selectable } from 'options';
-import { useEffect, useId, useState } from 'react';
 import { FullField, ValueEditorProps } from 'react-querybuilder';
-import { ValueSetMetadata } from './AdvancedFilter';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { ValueSetMetadata } from './AdvancedFilter';
 
 const getValueSetMap = (state: string): Record<string, string> => {
     return {

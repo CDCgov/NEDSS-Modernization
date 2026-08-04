@@ -1,7 +1,8 @@
-import { Required } from 'design-system/entry';
 import { Card, CardProps } from 'design-system/card';
-import { useSexBirthOptions } from './useSexBirthOptions';
+import { Required } from 'design-system/entry';
+
 import { SexBirthDemographicFields, SexBirthDemographicFieldsProps } from './SexBirthDemographicFields';
+import { useSexBirthOptions } from './useSexBirthOptions';
 
 type EditSexBirthDemographicCardProps = {
     title?: string;

@@ -1,8 +1,10 @@
+import { ReactNode } from 'react';
+
 import { BasicPatient } from 'apps/search/basic';
 import { LabReport } from 'generated/graphql/schema';
 import { displayName } from 'name';
-import { ReactNode } from 'react';
 import { Maybe } from 'utils';
+
 import { ResultedTestDisplay } from './ResultedTestDisplay';
 
 const getPatient = (labReport: LabReport): Maybe<BasicPatient> =>

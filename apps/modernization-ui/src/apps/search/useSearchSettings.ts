@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+
 import { useConfiguration } from 'configuration';
+
 import { View } from './useSearchResultDisplay';
 
 type SearchSettings = {

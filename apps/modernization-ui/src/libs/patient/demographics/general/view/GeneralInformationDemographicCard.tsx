@@ -1,6 +1,8 @@
 import { Card, CardProps } from 'design-system/card';
-import { GeneralInformationDemographicView } from './GeneralInformationDemographicView';
+
 import { GeneralInformationDemographic } from '../general';
+
+import { GeneralInformationDemographicView } from './GeneralInformationDemographicView';
 
 type GeneralInformationDemographicCardProps = {
     title?: string;

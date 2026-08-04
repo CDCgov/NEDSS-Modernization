@@ -1,11 +1,13 @@
 import { ReactNode } from 'react';
-import { Column } from 'design-system/table';
+
+import { initial, RaceEntry, RaceEntryFields } from 'apps/patient/data/race';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { Sizing } from 'design-system/field';
+import { Column } from 'design-system/table';
 import { useRaceCategoryOptions } from 'options/race';
-import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
+
 import { RaceEntryView } from './RaceEntryView';
 import { categoryValidator } from './categoryValidator';
-import { Sizing } from 'design-system/field';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },

@@ -1,5 +1,6 @@
-import { MemoryRouter } from 'react-router';
 import { Meta, StoryObj } from '@storybook/react/*';
+import { MemoryRouter } from 'react-router';
+
 import { TabNavigation, TabNavigationEntry, TabNavigationProps } from './TabNavigation';
 
 const meta = {

@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { MemoryRouter } from 'react-router';
-import { SideNavigation } from './SideNavigation';
+
 import { NavEntry } from './NavEntry';
+import { SideNavigation } from './SideNavigation';
 
 describe('SideNavigation', () => {
     const Fixture = () => (

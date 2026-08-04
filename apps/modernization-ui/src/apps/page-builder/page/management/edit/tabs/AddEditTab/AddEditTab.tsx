@@ -2,7 +2,9 @@ import { CreateTabRequest, UpdateTabRequest } from 'apps/page-builder/generated'
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import { ToggleButton } from '../../../../../components/ToggleButton';
+
 import styles from './addedittab.module.scss';
 
 type TabEntry = { name: string | undefined; visible: boolean; order: number };

@@ -1,4 +1,5 @@
 import { PatientFileService } from 'generated';
+
 import { PatientFileDemographicsSummary } from './summary';
 
 const demographicsSummary = (patient: number): Promise<PatientFileDemographicsSummary> =>

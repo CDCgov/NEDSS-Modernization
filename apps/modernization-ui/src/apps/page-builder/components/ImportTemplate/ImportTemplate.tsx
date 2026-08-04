@@ -1,8 +1,10 @@
+import { ChangeEvent, DragEvent, useEffect, useState } from 'react';
+
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';
 import { useImportTemplate } from 'apps/page-builder/hooks/api/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
-import React, { useEffect, useState } from 'react';
+
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
@@ -22,7 +24,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
         }
     }, [imported]);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files === null) {
             setFile(undefined);
@@ -44,17 +46,17 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
         onCancel();
     };
 
-    const handleDragEnd = (ev: React.DragEvent<HTMLDivElement>) => {
+    const handleDragEnd = (ev: DragEvent<HTMLDivElement>) => {
         ev.preventDefault();
         setFileDrag(false);
     };
 
-    const handleDragOver = (ev: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (ev: DragEvent<HTMLDivElement>) => {
         ev.preventDefault();
         setFileDrag(true);
     };
 
-    const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    const handleFileDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setFileDrag(false);
         setFile(event.dataTransfer.files[0]);

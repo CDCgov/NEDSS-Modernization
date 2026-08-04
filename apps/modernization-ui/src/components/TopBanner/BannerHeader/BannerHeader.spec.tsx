@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
+
 import { BannerButton } from '../BannerButton/BannerButton';
+
 import { BannerHeader } from './BannerHeader';
 
 describe('BannerHeader component tests', () => {

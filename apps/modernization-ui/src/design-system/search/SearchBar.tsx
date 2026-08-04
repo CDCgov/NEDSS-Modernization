@@ -1,9 +1,12 @@
-import React, { useState, InputHTMLAttributes } from 'react';
+import { ChangeEvent, InputHTMLAttributes, useState } from 'react';
+
 import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';
 import { Sizing } from 'design-system/field';
-import styles from './SearchBar.module.scss';
+
 import { Icons } from '../icon';
+
+import styles from './SearchBar.module.scss';
 
 type SearchBarProps = {
     size?: Sizing;
@@ -33,7 +36,7 @@ export const SearchBar = ({
     const value = controlledValue ?? internalValue;
 
     // Handle change event
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (controlledOnChange) {
             controlledOnChange(e.target.value); // call external onChange if controlled
         } else {

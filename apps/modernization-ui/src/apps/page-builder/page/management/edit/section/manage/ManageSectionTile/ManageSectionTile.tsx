@@ -1,9 +1,11 @@
-import { PagesSection } from 'apps/page-builder/generated';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
-import { Icon as IconComponent } from 'components/Icon/Icon';
 import { Button, Icon } from '@trussworks/react-uswds';
-import styles from './manageSectionTile.module.scss';
+import { PagesSection } from 'apps/page-builder/generated';
+import { Icon as IconComponent } from 'components/Icon/Icon';
+
 import { AlertInLineProps } from '../ManageSectionModal';
+
+import styles from './manageSectionTile.module.scss';
 
 type Props = {
     section: PagesSection;

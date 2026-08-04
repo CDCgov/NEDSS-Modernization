@@ -1,26 +1,26 @@
 import { Suspense, useState } from 'react';
-import { Await, NavLink } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
-import { internalizeDate, internalizeDateTime } from 'date';
-import { exists } from 'utils';
-import { LoadingOverlay } from 'libs/loading';
+
 import { Shown } from 'conditional-render';
-import { Sizing } from 'design-system/field';
-import { displayNoData } from 'design-system/data';
+import { internalizeDate, internalizeDateTime } from 'date';
 import { Card, TableCardProps } from 'design-system/card';
-import { Tag } from 'design-system/tag';
-import { MaybeLabeledValue } from 'design-system/value';
 import { Section } from 'design-system/card';
+import { displayNoData } from 'design-system/data';
+import { Sizing } from 'design-system/field';
 import { Column, SortableDataTable } from 'design-system/table';
 import { ColumnPreference, ColumnPreferenceProvider, ColumnPreferencesAction } from 'design-system/table/preferences';
-
-import { maybeDisplayName } from 'name';
+import { Tag } from 'design-system/tag';
+import { MaybeLabeledValue } from 'design-system/value';
 import { ClassicModalButton } from 'libs/classic';
 import { AssociatedWith } from 'libs/events/investigations/associated';
-import { PatientFileContact, PatientFileContacts } from './contacts';
-
-import styles from './contacts-card.module.scss';
+import { LoadingOverlay } from 'libs/loading';
+import { MemoizedSupplier } from 'libs/supplying';
+import { maybeDisplayName } from 'name';
+import { Await, NavLink } from 'react-router';
+import { exists } from 'utils';
 import { maybeMap } from 'utils/mapping';
+
+import { PatientFileContact, PatientFileContacts } from './contacts';
+import styles from './contacts-card.module.scss';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'created-on', name: 'Date created' };

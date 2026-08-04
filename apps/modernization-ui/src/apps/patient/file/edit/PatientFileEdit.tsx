@@ -1,29 +1,31 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { defaultTo } from 'libs/supplying';
-import { useForm } from 'react-hook-form';
+
 import { useAlert } from 'alert';
-import { maybeDisplayName } from 'name';
-import { NavigationGuard } from 'design-system/entry/navigation-guard';
-import { Shown } from 'conditional-render';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
-import { useComponentSizing } from 'design-system/sizing';
+import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { exists } from 'utils/exists';
+import { NavigationGuard } from 'design-system/entry/navigation-guard';
+import { usePendingFormEntry } from 'design-system/entry/pending';
+import { useComponentSizing } from 'design-system/sizing';
+import { LoadingOverlay } from 'libs/loading';
 import {
     PatientDemographicsEntry,
     PatientDemographicsForm,
     usePatientDemographicDefaults,
 } from 'libs/patient/demographics';
-import { usePendingFormEntry } from 'design-system/entry/pending';
-import { Patient } from '../patient';
-import { PatientFileLayout } from '../PatientFileLayout';
-import { usePatientFileData } from '../usePatientFileData';
-import { evaluated } from './evaluated';
-import { useEditPatient } from './useEditPatient';
+import { defaultTo } from 'libs/supplying';
+import { maybeDisplayName } from 'name';
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router';
+import { exists } from 'utils/exists';
 
+import { PatientFileLayout } from '../PatientFileLayout';
+import { Patient } from '../patient';
+import { usePatientFileData } from '../usePatientFileData';
+
+import { evaluated } from './evaluated';
 import styles from './patient-file-edit.module.scss';
-import { LoadingOverlay } from 'libs/loading';
+import { useEditPatient } from './useEditPatient';
 
 const PatientFileEdit = () => {
     const { patient, demographics } = usePatientFileData();

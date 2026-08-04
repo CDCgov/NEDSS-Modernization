@@ -1,13 +1,16 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { useEffect, useRef, useState } from 'react';
+import { useAlert } from 'libs/alert';
+
 import { ConfirmationModal } from '../../../../../../confirmation';
 import { usePageManagement } from '../../usePageManagement';
 import { Subsection } from '../subsection/Subsection';
 import { AddSubSection } from '../subsection/manage/AddSubSection';
 import { ManageSubsection } from '../subsection/manage/ManageSubsection';
+
 import { SectionHeader } from './SectionHeader';
 import { AddSection } from './manage/AddSection';
 import { AlertInLineProps } from './manage/ManageSectionModal';

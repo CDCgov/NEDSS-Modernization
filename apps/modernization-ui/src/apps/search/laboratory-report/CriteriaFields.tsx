@@ -1,9 +1,9 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import { LabReportFilterEntry } from 'apps/search/laboratory-report/labReportFormTypes';
-import { CodedResultsAutocomplete } from 'options/autocompete/CodedResultsAutocomplete';
 import { SearchCriteria } from 'apps/search/criteria';
-import { ResultedTestsAutocomplete } from 'options/autocompete/ResultedTestsAutocomplete';
+import { LabReportFilterEntry } from 'apps/search/laboratory-report/labReportFormTypes';
 import { EntryFieldsProps } from 'design-system/entry';
+import { CodedResultsAutocomplete } from 'options/autocompete/CodedResultsAutocomplete';
+import { ResultedTestsAutocomplete } from 'options/autocompete/ResultedTestsAutocomplete';
+import { Controller, useFormContext } from 'react-hook-form';
 
 export const CriteriaFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const form = useFormContext<LabReportFilterEntry, Partial<LabReportFilterEntry>>();

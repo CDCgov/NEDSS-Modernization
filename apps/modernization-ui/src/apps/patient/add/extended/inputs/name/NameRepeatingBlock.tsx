@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
-import { Column } from 'design-system/table';
+
+import { initial, NameEntry, NameEntryFields } from 'apps/patient/data/name';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
-import { NameEntry, NameEntryFields, initial } from 'apps/patient/data/name';
-import { NameEntryView } from './NameEntryView';
 import { Sizing } from 'design-system/field';
+import { Column } from 'design-system/table';
+
+import { NameEntryView } from './NameEntryView';
 
 const defaultValue: Partial<NameEntry> = initial();
 

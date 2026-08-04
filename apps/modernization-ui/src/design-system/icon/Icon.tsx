@@ -1,12 +1,12 @@
 import { SVGProps as ReactSVGProps } from 'react';
-import classNames from 'classnames';
-import { Sizing } from 'design-system/field';
-import { Icons } from './types';
-
-import styles from './icon.module.scss';
 
 import uswds from '@uswds/uswds/img/sprite.svg';
+import classNames from 'classnames';
+import { Sizing } from 'design-system/field';
+
 import extended from './extended-sprite.svg';
+import styles from './icon.module.scss';
+import { Icons } from './types';
 
 export type IconProps = {
     name: Icons;

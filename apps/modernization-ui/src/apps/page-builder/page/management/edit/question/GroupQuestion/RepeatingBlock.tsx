@@ -1,10 +1,12 @@
-import styles from './repeating-block.module.scss';
-import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Input } from 'components/FormInputs/Input';
-import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { useEffect, useState } from 'react';
+
+import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+
+import styles from './repeating-block.module.scss';
 
 type Props = {
     questions: PagesQuestion[];
