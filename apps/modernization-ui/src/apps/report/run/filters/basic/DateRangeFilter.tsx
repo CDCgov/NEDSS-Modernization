@@ -30,7 +30,7 @@ const dateRangeValidator = (filter: BasicFilterConfiguration, label: string) => 
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
         }
 
-        const errorMsg = validateDateRange(value, label);
+        const errorMsg = validateDateRange(value.map((v) => v ?? ''), label);
 
         if (errorMsg) return errorMsg;
 
