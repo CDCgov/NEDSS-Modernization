@@ -1,4 +1,4 @@
-import React, { ReactNode, RefObject, useEffect, useState } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode, RefObject, useEffect, useState } from 'react';
 
 import classNames from 'classnames';
 
@@ -49,7 +49,7 @@ const Suggestions = <T,>({
         shown(false);
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
+    const handleKeyDown = (event: ReactKeyboardEvent<HTMLUListElement>) => {
         event.preventDefault();
         if (event.key === 'ArrowDown') {
             setActive((existing) => existing + 1);

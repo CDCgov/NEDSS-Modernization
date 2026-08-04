@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType, FC } from 'react';
 
 import { ColumnPreference } from './preference';
 import { ColumnPreferenceProvider } from './useColumnPreferences';
@@ -12,12 +12,12 @@ type WithColumnPreferencesOptions = {
 };
 
 export function withColumnPreferences<T extends object>(
-    WrappedComponent: React.ComponentType<T>,
+    WrappedComponent: ComponentType<T>,
     options: WithColumnPreferencesOptions
-): React.FC<T> {
+): FC<T> {
     const { storageKey, defaults } = options;
 
-    const EnhancedComponent: React.FC<T> = (props) => {
+    const EnhancedComponent: FC<T> = (props) => {
         return (
             <ColumnPreferenceProvider id={storageKey} defaults={defaults}>
                 <WrappedComponent {...props} />

@@ -10,9 +10,9 @@ import { DisplayableName, displayName } from 'name';
 import { mapOr } from 'utils/mapping';
 import { equalsIgnoreCase, not } from 'utils/predicate';
 
-const orElseToday = defaultTo(today);
-
 import styles from './patient-descriptor.module.scss';
+
+const orElseToday = defaultTo(today);
 
 const maybeDisplayName = mapOr(displayName('fullLastFirst'), '---');
 

@@ -13,13 +13,14 @@ import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx'
 import { AlertMessage } from 'design-system/message/index.ts';
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
-import QueryBuilder, {
+import {
     Rule as DefaultRule,
     RuleGroup as DefaultRuleGroup,
     Field,
     formatQuery,
     isRuleType,
     joinWith,
+    QueryBuilder,
     RuleGroupProps,
     RuleGroupType,
     RuleProps,
@@ -29,8 +30,8 @@ import QueryBuilder, {
 
 import { ReportExecuteForm } from '../../ReportRunPage';
 
-import { RemoveButton } from '././RemoveButton.tsx';
 import { AddButton } from './AddButton.tsx';
+import { RemoveButton } from './RemoveButton.tsx';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
@@ -61,11 +62,11 @@ type NbsQuery = RuleGroup | Rule;
 // to match `RuleType` more closely
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any; label?: string; type?: string };
-export type QbRuleGroup = RuleGroupType<QbRule>;
-export type QbQuery = QbRuleGroup | QbRule;
+type QbRuleGroup = RuleGroupType<QbRule>;
+type QbQuery = QbRuleGroup | QbRule;
 
-export const isQbRuleType = (rule: QbQuery): rule is QbRule => isRuleType(rule) && 'field' in rule;
-export const isQbRuleGroupType = (rule: QbQuery): rule is QbRuleGroup => !isQbRuleType(rule);
+const isQbRuleType = (rule: QbQuery): rule is QbRule => isRuleType(rule) && 'field' in rule;
+const isQbRuleGroupType = (rule: QbQuery): rule is QbRuleGroup => !isQbRuleType(rule);
 
 // map rules and remove any extraneous fields
 function mapNbsRules(rule: NbsQuery, mapper: (r: Rule) => QbRule): QbQuery {
@@ -145,7 +146,7 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
     }) as QbRuleGroup;
 };
 
-export type ValueSetMetadata = { codeDescCd?: string; codesetNm?: string; columnUid: number };
+type ValueSetMetadata = { codeDescCd?: string; codesetNm?: string; columnUid: number };
 
 const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
     const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode;
@@ -371,4 +372,5 @@ const RuleWithErrors = (props: RuleProps) => {
     );
 };
 
-export { AdvancedFilter, queryToAdvancedFilterRequest, parseAdvancedFilterErrors };
+export { AdvancedFilter, isQbRuleGroupType, isQbRuleType, parseAdvancedFilterErrors, queryToAdvancedFilterRequest };
+export type { QbQuery, QbRuleGroup, ValueSetMetadata };

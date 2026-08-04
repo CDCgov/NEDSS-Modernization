@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

@@ -65,16 +65,21 @@ export default defineConfig([
             'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
             'object-shorthand': 'error',
-            // Sort members within a single import statement
-            'sort-imports': [
+
+            'import/default': 'error',
+            'import/export': 'error',
+            'import/first': 'error',
+            'import/named': 'error',
+            'import/namespace': 'error',
+            'import/no-empty-named-blocks': 'error',
+            'import/no-extraneous-dependencies': 'error',
+            'import/no-named-as-default-member': 'error',
+            'import/no-named-as-default': 'error',
+            'import/no-unassigned-import': [
                 'error',
-                {
-                    ignoreCase: true,
-                    ignoreDeclarationSort: true, // Let import/order handle statement lines
-                    ignoreMemberSort: false,
-                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-                },
+                { allow: ['**/*.scss', '@testing-library/**/*', 'jest-axe/**/*'] },
             ],
+            'import/no-useless-path-segments': 'error',
             // Sort outer import statement lines
             'import/order': [
                 'error',
@@ -100,12 +105,31 @@ export default defineConfig([
                     distinctGroup: false,
                 },
             ],
+            // Sort members within a single import statement
+            'sort-imports': [
+                'error',
+                {
+                    ignoreCase: true,
+                    ignoreDeclarationSort: true, // Let import/order handle statement lines
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+                },
+            ],
         },
         settings: {
             react: { version: 'detect' },
             jsdoc: {
                 tagNamePreference: {
                     return: 'return',
+                },
+            },
+            'import/parsers': {
+                '@typescript-eslint/parser': ['.ts', '.tsx'],
+            },
+            'import/resolver': {
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: './tsconfig.json',
                 },
             },
         },

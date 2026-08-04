@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { BaseSyntheticEvent, ReactNode } from 'react';
 
 import { FullPageBlock } from 'components/FullPageBlock';
 import { Heading } from 'components/heading';
@@ -143,7 +143,7 @@ const ReportConfigurationPage = ({
     dataSourceUid,
 }: {
     config: ReportConfiguration;
-    handleSubmit: (e: React.BaseSyntheticEvent, isExport: boolean) => void;
+    handleSubmit: (e: BaseSyntheticEvent, isExport: boolean) => void;
     error?: ReactNode;
     reportUid: number;
     dataSourceUid: number;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router';
@@ -17,7 +17,7 @@ export interface InPageNavigationProps {
     title?: string;
 }
 
-export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, title = 'On this page' }) => {
+export const InPageNavigation: FC<InPageNavigationProps> = ({ sections, title = 'On this page' }) => {
     useInPageNavigation(0);
     const location = useLocation();
 

@@ -1,7 +1,6 @@
-import React, { RefObject, useState } from 'react';
+import { ChangeEvent, RefObject, useState } from 'react';
 
 import { ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
-
 import './SavetTemplate.scss';
 
 export const SaveTemplates = ({ modalRef }: { modalRef: RefObject<ModalRef> }) => {
@@ -15,7 +14,7 @@ export const SaveTemplates = ({ modalRef }: { modalRef: RefObject<ModalRef> }) =
             [target.name]: target?.type === 'checkbox' ? target?.checked : target.value,
         });
     };
-    const handleValidation = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const handleValidation = ({ target }: ChangeEvent<HTMLInputElement>) => {
         const pattern = /^[a-zA-Z0-9\s?!,-_]*$/;
         setValidateName(!pattern.test(target?.value) || target?.value === '');
     };

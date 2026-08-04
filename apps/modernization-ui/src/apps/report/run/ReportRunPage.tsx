@@ -1,4 +1,4 @@
-import React from 'react';
+import { BaseSyntheticEvent } from 'react';
 import { useCallback, useState } from 'react';
 
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
@@ -73,7 +73,7 @@ const ReportRunPage = () => {
         reValidateMode: 'onSubmit',
     });
 
-    const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
+    const onSubmit = (event: BaseSyntheticEvent, isExport: boolean) => {
         form.handleSubmit((data) => {
             const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                 .map(([id, { value, includeNulls }]) => {

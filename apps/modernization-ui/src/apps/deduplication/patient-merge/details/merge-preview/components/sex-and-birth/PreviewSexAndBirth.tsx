@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { differenceInYears, format, isValid, parseISO } from 'date-fns';
 
 import { MergeCandidate, MergeSexAndBirth } from '../../../../../api/model/MergeCandidate';
