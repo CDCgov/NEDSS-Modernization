@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.file.events.investigation;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.demographics.name.DisplayableSimpleNameRowMapper;
+import gov.cdc.nbs.sql.ParamUtils;
 import java.util.List;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
@@ -120,9 +121,8 @@ class PatientInvestigationsFinder {
 
   List<PatientInvestigation> findAll(final long patient, final PermissionScope scope) {
     return this.client
-        .sql(QUERY)
+        .sql(ParamUtils.replaceListParam(QUERY, "any", scope.any()))
         .param("patient", patient)
-        .param("any", scope.any())
         .param("status", null)
         .query(this.mapper)
         .list();
@@ -130,9 +130,8 @@ class PatientInvestigationsFinder {
 
   List<PatientInvestigation> findOpen(final long patient, final PermissionScope scope) {
     return this.client
-        .sql(QUERY)
+        .sql(ParamUtils.replaceListParam(QUERY, "any", scope.any()))
         .param("patient", patient)
-        .param("any", scope.any())
         .param("status", OPEN_STATUS)
         .query(this.mapper)
         .list();

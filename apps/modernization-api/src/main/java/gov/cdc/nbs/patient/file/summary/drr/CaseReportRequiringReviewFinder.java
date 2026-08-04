@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.file.summary.drr;
 
+import gov.cdc.nbs.sql.ParamUtils;
 import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -67,9 +68,8 @@ class CaseReportRequiringReviewFinder {
 
   List<DocumentRequiringReview> find(final DocumentsRequiringReviewCriteria criteria) {
     return this.client
-        .sql(QUERY)
+        .sql(ParamUtils.replaceListParam(QUERY, ANY_PARAMETER, criteria.documentScope().any()))
         .param(PATIENT_PARAMETER, criteria.patient())
-        .param(ANY_PARAMETER, criteria.documentScope().any())
         .query(this.mapper)
         .list();
   }
