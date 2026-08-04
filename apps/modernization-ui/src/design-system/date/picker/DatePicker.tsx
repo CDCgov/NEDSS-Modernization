@@ -63,7 +63,7 @@ const DatePicker = ({
         }
     }, [current, externalInputRef.current]);
 
-    const handleExternalOnBlur = useCallback((e) => onBlur?.(e), [onBlur]);
+    const handleExternalOnBlur = useCallback((e: Event) => onBlur?.(), [onBlur]);
 
     const handleExternalOnChange = useCallback(
         (event: Event) => {
