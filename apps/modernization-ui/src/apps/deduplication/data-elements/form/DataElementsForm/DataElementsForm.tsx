@@ -4,8 +4,10 @@ import { Card } from 'design-system/card/Card';
 import { Checkbox } from 'design-system/checkbox';
 import { Hint } from 'design-system/hint';
 import { useFormContext, useWatch } from 'react-hook-form';
+
 import { DataElements } from '../../../api/model/DataElement';
 import { DataElementRow } from '../DataElementRow/DataElementRow';
+
 import styles from './DataElementsForm.module.scss';
 
 const dataElementKeys: (keyof DataElements)[] = [
@@ -59,6 +61,7 @@ export const DataElementsForm = ({ dataElements }: Props) => {
         <Card
             id="dataElementsCard"
             title="Data elements"
+            // eslint-disable-next-line max-len
             subtext="This table contains all the possible data elements that are available for use as person matching criteria."
         >
             <div className={styles.dataElementsForm}>
@@ -67,13 +70,13 @@ export const DataElementsForm = ({ dataElements }: Props) => {
                         <tr>
                             <th className={styles.checkbox}>
                                 <Checkbox
-                                    name={'selectAll'}
+                                    name="selectAll"
                                     label=""
-                                    id={'toggle-all-checkbox'}
+                                    id="toggle-all-checkbox"
                                     selected={!hasInactive()}
                                     onChange={handleToggleAll}
-                                    aria-label={'Select All'}
-                                    aria-labelledby={`select-all-checkbox`}
+                                    aria-label="Select All"
+                                    aria-labelledby="select-all-checkbox"
                                 />
                             </th>
                             <th>Field</th>

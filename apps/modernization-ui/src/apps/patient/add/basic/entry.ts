@@ -1,6 +1,6 @@
-import { today } from 'date';
 import { IdentificationEntry } from 'apps/patient/data';
 import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { today } from 'date';
 import { Selectable } from 'options';
 
 type NameInformationEntry = {
@@ -70,7 +70,7 @@ export type {
 
 const initial = (asOf: string = today()): BasicNewPatientEntry => ({
     administrative: {
-        asOf: asOf,
+        asOf,
     },
     address: {
         country: {

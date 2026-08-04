@@ -1,5 +1,8 @@
-import { Config } from 'config';
 import { useEffect, useState } from 'react';
+
+import { Config } from 'config';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { DataElements } from './model/DataElement';
 
 export const useDataElements = () => {
@@ -21,11 +24,11 @@ export const useDataElements = () => {
                     .json()
                     .then((dataElements) => setDataElements(dataElements))
                     .catch(() => {
-                        console.error('Failed to extract json for data elements.');
+                        logErrorToUserConsole('Failed to extract json for data elements.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to retrieve data elements');
             })
             .finally(() => setLoading(false));
@@ -45,11 +48,11 @@ export const useDataElements = () => {
                     .json()
                     .then((dataElements) => setDataElements(dataElements))
                     .catch(() => {
-                        console.error('Failed to extract json for data elements.');
+                        logErrorToUserConsole('Failed to extract json for data elements.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to save data elements');
             });
 

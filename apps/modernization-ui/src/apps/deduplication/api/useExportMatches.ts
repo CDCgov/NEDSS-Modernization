@@ -1,4 +1,5 @@
 import { Config } from 'config';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export const useExportMatches = () => {
     const exportMatchesCSV = async (sort?: string) => {
@@ -16,7 +17,7 @@ export const useExportMatches = () => {
             });
 
             if (!response.ok) {
-                console.error('Failed to export CSV');
+                logErrorToUserConsole('Failed to export CSV');
                 return;
             }
 
@@ -28,7 +29,7 @@ export const useExportMatches = () => {
             a.click();
             window.URL.revokeObjectURL(urlBlob);
         } catch (error) {
-            console.error('Error exporting CSV:', error);
+            logErrorToUserConsole('Error exporting CSV:', error);
         }
     };
 
@@ -47,7 +48,7 @@ export const useExportMatches = () => {
             });
 
             if (!response.ok) {
-                console.error('Failed to export PDF');
+                logErrorToUserConsole('Failed to export PDF');
                 return;
             }
 
@@ -59,7 +60,7 @@ export const useExportMatches = () => {
             a.click();
             window.URL.revokeObjectURL(urlBlob);
         } catch (error) {
-            console.error('Error exporting PDF:', error);
+            logErrorToUserConsole('Error exporting PDF:', error);
         }
     };
 

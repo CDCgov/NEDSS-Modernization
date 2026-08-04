@@ -1,4 +1,4 @@
-import { PageControllerService, PagePageSummary, PageSummaryService, PagesService } from 'apps/page-builder/generated';
+import { PageControllerService, PagePageSummary, PagesService, PageSummaryService } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = (
     token: string,
@@ -19,13 +19,13 @@ export const fetchPageSummaries = (
 
 export const fetchPageDetails = (id: number) => {
     return PagesService.details({
-        id: id,
+        id,
     });
 };
 
 export const savePageAsDraft = (id: number) => {
     return PageControllerService.savePageDraft({
-        id: id,
+        id,
     }).then((response) => {
         return response;
     });

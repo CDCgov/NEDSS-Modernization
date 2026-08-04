@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import styles from './TargetQuestion.module.scss';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
-import { Icon } from 'components/Icon/Icon';
+import { ChangeEvent, useEffect, useState } from 'react';
+
 import { Button, Checkbox, ErrorMessage, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
+import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { useGetTargetQuestions } from 'apps/page-builder/hooks/api/useGetTargetQuestions';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Icon } from 'components/Icon/Icon';
+
+import styles from './TargetQuestion.module.scss';
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;
@@ -42,14 +44,14 @@ export const TargetQuestion = ({
         if (ruleFunction && sourceQuestion) {
             if (editTargetQuestion) {
                 fetch(page?.id ?? 0, {
-                    ruleFunction: ruleFunction,
-                    sourceQuestion: sourceQuestion,
+                    ruleFunction,
+                    sourceQuestion,
                     targetQuestion: editTargetQuestion,
                 });
             } else {
                 fetch(page?.id ?? 0, {
-                    ruleFunction: ruleFunction,
-                    sourceQuestion: sourceQuestion,
+                    ruleFunction,
+                    sourceQuestion,
                 });
                 setSelectedList([]);
             }
@@ -64,7 +66,7 @@ export const TargetQuestion = ({
         }
     }, [selectedList]);
 
-    const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelect = (question: PagesQuestion, e: ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
 
         if (e.target.checked) {
@@ -77,7 +79,7 @@ export const TargetQuestion = ({
         }
     };
 
-    const handleSelectAll = (questions: PagesQuestion[], e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelectAll = (questions: PagesQuestion[], e: ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
         if (e.target.checked) {
             questions?.map((question) => {
@@ -177,7 +179,7 @@ export const TargetQuestion = ({
                                                 setTargetList([]);
                                             }}
                                         >
-                                            <Icon name={'group'} size={'m'} />
+                                            <Icon name="group" size="m" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -200,7 +202,7 @@ export const TargetQuestion = ({
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name={'group'} size={'m'} />
+                                                    <Icon name="group" size="m" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
@@ -221,7 +223,7 @@ export const TargetQuestion = ({
                                 <Checkbox
                                     onChange={(e) => handleSelectAll(targetList, e)}
                                     id="hots1"
-                                    name={'race1'}
+                                    name="race1"
                                     label="Select All"
                                 />
                             </div>
@@ -244,7 +246,7 @@ export const TargetQuestion = ({
             <div className={styles.footerBtn}>
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     data-testid="targetQuestionModalCancelBtn"
                     onClick={() => {
                         onReset?.();

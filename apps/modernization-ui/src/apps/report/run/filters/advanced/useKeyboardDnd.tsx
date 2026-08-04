@@ -1,5 +1,6 @@
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { createContext, ReactNode, useContext, useState } from 'react';
+
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { getPathOfID, isRuleType, move, Path, RuleGroupTypeAny, RuleType } from 'react-querybuilder';
 
 type RuleOrGroupType = RuleType | RuleGroupTypeAny;

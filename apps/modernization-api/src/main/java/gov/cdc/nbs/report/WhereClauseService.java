@@ -92,17 +92,25 @@ public class WhereClauseService {
     String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
     if (!basicWhereFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding basic filter criteria to WHERE fragment: %s".formatted(basicWhereFragment));
       activeClauses.add(basicWhereFragment);
     }
 
     String advWhereFragment =
         buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
     if (advWhereFragment != null && !advWhereFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding advanced filter criteria to WHERE fragment: %s".formatted(advWhereFragment));
       activeClauses.add(advWhereFragment);
     }
 
     boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
     if (hasLabResultVal) {
+      LOGGER.log(System.Logger.Level.TRACE, "Building lab result query fragment");
+
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
       String labResultQueryValFragment =
           LAB_RESULT_QUERY_VAL.formatted(
@@ -119,6 +127,9 @@ public class WhereClauseService {
 
     String permissionFragment = buildPermissionFragment(reportConfig);
     if (!permissionFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding permission criteria to WHERE fragment: %s".formatted(permissionFragment));
       activeClauses.add(permissionFragment);
     }
 

@@ -1,21 +1,20 @@
-import { PatientSearchResult } from 'generated/graphql/schema';
-import { useSorting } from 'libs/sorting';
-import { Sizing } from 'design-system/field';
-import { Column, DataTable } from 'design-system/table';
-import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
-
 import {
-    displayPhones,
-    displayPatientName,
-    displayPatientAge,
-    displayEmails,
     displayAddresses,
+    displayEmails,
     displayIdentifications,
+    displayPatientAge,
+    displayPatientName,
+    displayPhones,
     PatientFileLink,
 } from 'apps/search/patient/result';
+import { Sizing } from 'design-system/field';
+import { useFilter } from 'design-system/filter';
+import { Column, DataTable } from 'design-system/table';
+import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
+import { PatientSearchResult } from 'generated/graphql/schema';
+import { useSorting } from 'libs/sorting';
 
 import styles from './patient-search-result-table.module.scss';
-import { useFilter } from 'design-system/filter';
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };

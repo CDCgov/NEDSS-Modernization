@@ -1,4 +1,5 @@
 import { Config } from 'config';
+import { logErrorToUserConsole } from 'utils/logging';
 
 export const useRemoveMerge = () => {
     const keepAllSeparate = (groupId: string, onSuccess: () => void, onError: () => void) => {
@@ -16,7 +17,7 @@ export const useRemoveMerge = () => {
                 }
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 onError();
             });
     };
@@ -36,7 +37,7 @@ export const useRemoveMerge = () => {
                 }
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 onError();
             });
     };

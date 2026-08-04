@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import styles from './InPageNavigation.module.scss';
+
 import { focusedTarget } from 'utils';
+
+import styles from './InPageNavigation.module.scss';
 
 const useInPageNavigation = (threshold: number = 0) => {
     useEffect(() => {
@@ -43,7 +45,7 @@ const useInPageNavigation = (threshold: number = 0) => {
 
                 const enterOrSpaceEventListener = (event: Event) => {
                     const keyboardEvent = event as KeyboardEvent;
-                    if (keyboardEvent.key == 'Enter' || keyboardEvent.key === ' ') {
+                    if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
                         event.preventDefault();
                         smoothScroll(section as HTMLElement);
                         focusedTarget(`${section.id}-title`);

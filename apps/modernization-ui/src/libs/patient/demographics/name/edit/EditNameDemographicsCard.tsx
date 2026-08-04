@@ -1,8 +1,10 @@
-import { Controller, UseFormReturn } from 'react-hook-form';
 import { Sizing } from 'design-system/field';
+import { Controller, UseFormReturn } from 'react-hook-form';
+
 import { PatientDemographicsDefaults } from '../../demographics';
-import { HasNameDemographics, initial, NameDemographic } from '../names';
 import { NameDemographicRepeatingBlock, NameDemographicRepeatingBlockProps } from '../NameDemographicRepeatingBlock';
+import { HasNameDemographics, initial, NameDemographic } from '../names';
+
 import { NameDemographicFields } from './NameDemographicFields';
 import { useNameOptions } from './useNameOptions';
 
@@ -24,7 +26,7 @@ const EditNameDemographicsCard = ({ form, defaults, ...remaining }: EditNameDemo
                     collapsible={false}
                     data={value}
                     onChange={onChange}
-                    editable
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(_?: NameDemographic, sizing?: Sizing) => (
                         <NameDemographicFields sizing={sizing} options={options} />

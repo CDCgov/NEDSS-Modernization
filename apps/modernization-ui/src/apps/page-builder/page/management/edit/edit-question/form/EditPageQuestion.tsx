@@ -8,9 +8,10 @@ import { UserInterfaceFields } from 'apps/page-builder/components/AddQuestion/fi
 import { HorizontalRule } from 'apps/page-builder/components/FormDivider/HorizontalRule';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { UpdatePageQuestionRequest } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
+import { useFormContext, useWatch } from 'react-hook-form';
+
 import { EditFields } from './EditFields';
 import styles from './edit-question-form.module.scss';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 export type EditPageQuestionForm = Omit<UpdatePageQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';
@@ -26,15 +27,15 @@ export const EditPageQuestion = ({ page, question }: Props) => {
     const displayControl = useWatch({ control: form.control, name: 'displayControl', exact: true });
     return (
         <div className={styles.form}>
-            <BasicInformationFields editing />
-            <QuestionSpecificFields editing published={question?.isPublished} />
+            <BasicInformationFields editing={true} />
+            <QuestionSpecificFields editing={true} published={question?.isPublished} />
             <HorizontalRule />
             <UserInterfaceFields published={question?.isPublished} />
             <EditFields />
             {displayControl?.toString() !== '1026' && (
                 <>
                     <HorizontalRule />
-                    <DataMartFields editing page={page} questionId={question?.id} />
+                    <DataMartFields editing={true} page={page} questionId={question?.id} />
                     <HorizontalRule />
                     <MessagingFields />
                 </>

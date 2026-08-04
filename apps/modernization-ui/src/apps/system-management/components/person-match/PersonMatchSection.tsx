@@ -1,5 +1,5 @@
-import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 import { Permitted } from '../../../../libs/permission';
+import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 
 const personMatchLinks = [
     {
@@ -18,13 +18,13 @@ type Props = {
 
 export const PersonMatchSection = ({ filter }: Props) => {
     return (
-        <Permitted permission={'MERGE-PATIENT'}>
+        <Permitted permission="MERGE-PATIENT">
             <SystemManagementInfoCard
                 id="person-match"
                 title="Person match"
                 filter={filter}
                 links={personMatchLinks}
-                useNavigation
+                useNavigation={true}
             />
         </Permitted>
     );

@@ -1,9 +1,11 @@
-import { PagesSection } from 'apps/page-builder/generated';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
-import { Icon as IconComponent } from 'components/Icon/Icon';
 import { Button, Icon } from '@trussworks/react-uswds';
-import styles from './manageSectionTile.module.scss';
+import { PagesSection } from 'apps/page-builder/generated';
+import { Icon as IconComponent } from 'components/Icon/Icon';
+
 import { AlertInLineProps } from '../ManageSectionModal';
+
+import styles from './manageSectionTile.module.scss';
 
 type Props = {
     section: PagesSection;
@@ -33,6 +35,7 @@ export const ManageSectionTile = ({
 }: Props) => {
     const deleteHeader = (section: PagesSection) => {
         if (section.subSections.length !== 0) {
+            // eslint-disable-next-line max-len
             return `Section cannot be deleted. This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted.`;
         } else {
             return `Are you sure you want to delete this section?`;
@@ -123,7 +126,7 @@ export const ManageSectionTile = ({
                                         setSectionState('edit');
                                         setSelectedForEdit(section);
                                     }}
-                                    outline
+                                    outline={true}
                                     className={styles.iconBtn}
                                     disabled={onAction}
                                 >
@@ -132,7 +135,7 @@ export const ManageSectionTile = ({
                                 <Button
                                     type="button"
                                     className={styles.iconBtn}
-                                    outline
+                                    outline={true}
                                     disabled={onAction}
                                     onClick={() => {
                                         setSelectedForDelete(section);
@@ -144,7 +147,7 @@ export const ManageSectionTile = ({
                                 {section.visible ? (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         className={styles.iconBtn}
                                         disabled={onAction}
                                         onClick={() => {
@@ -160,7 +163,7 @@ export const ManageSectionTile = ({
                                 ) : (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         className={`${styles.iconBtn} ${styles.offVisibility}`}
                                         disabled={onAction}
                                         onClick={() => {

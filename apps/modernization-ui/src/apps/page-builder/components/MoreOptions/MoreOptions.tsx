@@ -1,8 +1,19 @@
 import './MoreOptions.scss';
-import useComponentVisible from './useComponentVisible';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 
-export const MoreOptions = ({ children, header, close, className }: any) => {
+import useComponentVisible from './useComponentVisible';
+
+export const MoreOptions = ({
+    children,
+    header,
+    close,
+    className,
+}: {
+    children: ReactNode;
+    header: ReactNode;
+    close: boolean;
+    className?: string;
+}) => {
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
     useEffect(() => {
         if (close === true) {

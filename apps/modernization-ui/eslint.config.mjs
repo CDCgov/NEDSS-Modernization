@@ -7,6 +7,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
+import eslintPluginImport from 'eslint-plugin-import';
 
 export default defineConfig([
     // Main config
@@ -32,6 +33,7 @@ export default defineConfig([
             'react-hooks': reactHooks,
             storybook,
             jsdoc,
+            import: eslintPluginImport,
         },
         rules: {
             ...tseslint.configs.recommended.rules,
@@ -49,12 +51,70 @@ export default defineConfig([
                 'error',
                 { caughtErrors: 'none', destructuredArrayIgnorePattern: '^_' },
             ],
-            '@typescript-eslint/no-explicit-any': 'warn',
             'react/react-in-jsx-scope': 'off',
             'react/no-unescaped-entities': 'off',
-            'react-hooks/rules-of-hooks': 'off',
+            'react-hooks/rules-of-hooks': 'warn',
+            // KLUDGE: this should be on, but doesn't play well with some of the current patterns
             'react-hooks/exhaustive-deps': 'off',
+            'react/jsx-curly-brace-presence': [2, 'never'],
+            'react/jsx-boolean-value': [2, 'always'],
+            'dot-notation': 'error',
+            'object-shorthand': 'error',
+            eqeqeq: 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
+            'object-shorthand': 'error',
+
+            'import/default': 'error',
+            'import/export': 'error',
+            'import/first': 'error',
+            'import/named': 'error',
+            'import/namespace': 'error',
+            'import/no-empty-named-blocks': 'error',
+            'import/no-extraneous-dependencies': 'error',
+            'import/no-named-as-default-member': 'error',
+            'import/no-named-as-default': 'error',
+            'import/no-unassigned-import': [
+                'error',
+                { allow: ['**/*.scss', '@testing-library/**/*', 'jest-axe/**/*'] },
+            ],
+            'import/no-useless-path-segments': 'error',
+            // Sort outer import statement lines
+            'import/order': [
+                'error',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
+
+                    pathGroups: [
+                        {
+                            pattern: 'react',
+                            group: 'builtin',
+                            position: 'before',
+                        },
+                    ],
+
+                    pathGroupsExcludedImportTypes: [],
+                    'newlines-between': 'always',
+
+                    alphabetize: {
+                        order: 'asc',
+                        caseInsensitive: false,
+                    },
+
+                    distinctGroup: false,
+                },
+            ],
+            // Sort members within a single import statement
+            'sort-imports': [
+                'error',
+                {
+                    ignoreCase: true,
+                    ignoreDeclarationSort: true, // Let import/order handle statement lines
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+                },
+            ],
         },
         settings: {
             react: { version: 'detect' },
@@ -63,11 +123,25 @@ export default defineConfig([
                     return: 'return',
                 },
             },
+            'import/parsers': {
+                '@typescript-eslint/parser': ['.ts', '.tsx'],
+            },
+            'import/resolver': {
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: './tsconfig.json',
+                },
+            },
         },
     },
     // Test and story files overrides
     {
-        files: ['**/*.spec.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}', '**/*.stories.{js,jsx,ts,tsx}'],
+        files: [
+            '**/*.spec.{js,jsx,ts,tsx}',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/*.stories.{js,jsx,ts,tsx}',
+            'src/setupTests.ts',
+        ],
         languageOptions: {
             globals: {
                 vi: 'readonly',
@@ -78,6 +152,7 @@ export default defineConfig([
             ...js.configs.recommended.rules,
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
+            'react-hooks/rules-of-hooks': 'off',
             'no-undef': 'off',
             'no-unused-vars': 'off',
             'no-console': 'off',

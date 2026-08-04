@@ -1,6 +1,7 @@
 import { displayNoData } from 'design-system/data';
-import { mapOr } from 'utils/mapping';
 import { DisplayableName, displayName } from 'name';
+import { mapOr } from 'utils/mapping';
+
 import { Patient } from '../../patient';
 import { ContactsCard, ContactsCardProps } from '../contacts';
 
@@ -16,7 +17,7 @@ const titleResolver =
 
 const PatientFilePatientsNamedCard = ({ patient, ...remaining }: PatientFilePatientsNamedCardProps) => {
     return (
-        <ContactsCard {...remaining} title={'Patient named by contacts'} titleResolver={titleResolver(patient.name)} />
+        <ContactsCard {...remaining} title="Patient named by contacts" titleResolver={titleResolver(patient.name)} />
     );
 };
 

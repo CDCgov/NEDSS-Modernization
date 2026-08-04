@@ -1,4 +1,5 @@
 import { PageProvider } from 'page';
+
 import Logout from './Logout';
 
 const routing = {

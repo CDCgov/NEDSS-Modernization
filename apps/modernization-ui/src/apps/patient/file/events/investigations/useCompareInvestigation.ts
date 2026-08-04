@@ -1,4 +1,5 @@
 import { useCallback, useReducer } from 'react';
+
 import { PatientFileInvestigation } from './investigation';
 
 type Action =
@@ -59,7 +60,8 @@ const removing = (existing: ComparisonState, investigation: PatientFileInvestiga
         //  removing the selected investigation, reset to waiting
         return initial;
     } else if (existing.status === 'comparable' && existing.selected === investigation.identifier) {
-        // removing the selected investigation that is already comparable, make the comparison the selected investigation
+        // removing the selected investigation that is already comparable, make the comparison the
+        // selected investigation
         return {
             status: 'selecting',
             condition: existing.condition,

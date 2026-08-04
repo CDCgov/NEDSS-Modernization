@@ -1,5 +1,6 @@
-import { OpenAPI } from 'apps/page-builder/generated/core/OpenAPI';
 import { useEffect, useReducer } from 'react';
+
+import { OpenAPI } from 'apps/page-builder/generated/core/OpenAPI';
 
 type State =
     | { status: 'idle' }

@@ -557,10 +557,10 @@ describe('when the PatientCriteria contains event ids criteria', () => {
         expect(actual).toEqual(
             expect.objectContaining([
                 {
-                    name: name,
-                    source: source,
-                    title: title,
-                    value: value,
+                    name,
+                    source,
+                    title,
+                    value,
                 },
             ])
         );

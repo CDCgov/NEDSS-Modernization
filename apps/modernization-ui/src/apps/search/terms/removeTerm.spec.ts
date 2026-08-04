@@ -1,8 +1,10 @@
 import { act } from 'react';
-import { useForm } from 'react-hook-form';
+
 import { renderHook } from '@testing-library/react';
-import { removeTerm } from './removeTerm';
 import { asSelectable, Selectable } from 'options';
+import { useForm } from 'react-hook-form';
+
+import { removeTerm } from './removeTerm';
 
 const DEFAULT_TERM = {
     source: 'source',

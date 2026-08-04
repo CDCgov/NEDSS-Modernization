@@ -1,7 +1,7 @@
+import { Supplier } from 'libs/supplying';
+import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 import { Nullable } from 'utils/object';
-import { Selectable } from 'options';
-import { Supplier } from 'libs/supplying';
 
 type PhoneEmailDemographic = EffectiveDated & { identifier?: number } & Nullable<{
         type?: Selectable;

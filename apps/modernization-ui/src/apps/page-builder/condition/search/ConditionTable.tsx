@@ -1,9 +1,10 @@
+import { ChangeEvent, useEffect, useState } from 'react';
+
 import { ConditionSort, ConditionSortField } from 'apps/page-builder/condition/search/useConditionSearch';
 import { Condition } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table';
-import { usePagination } from 'pagination';
-import { ChangeEvent, useEffect, useState } from 'react';
 import { Direction } from 'libs/sorting';
+import { usePagination } from 'pagination';
 
 enum ConditionColumn {
     Condition = 'Condition',

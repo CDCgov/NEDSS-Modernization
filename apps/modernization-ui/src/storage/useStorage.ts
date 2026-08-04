@@ -12,7 +12,7 @@ type StorageOptions<V> = {
 };
 
 const useStorage = <V>({ storage, key, initial }: StorageOptions<V> & { storage: Storage }): StorageInteraction<V> => {
-    const read = useCallback((id: string) => readFrom(storage)(id, initial), [storage, key, initial]);
+    const read = useCallback((id: string) => readFrom(storage)(id, initial), [storage, initial]);
 
     const [value, setValue] = useState(() => read(key));
 

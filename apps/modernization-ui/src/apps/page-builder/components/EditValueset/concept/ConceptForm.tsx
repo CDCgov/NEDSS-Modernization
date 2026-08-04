@@ -1,13 +1,15 @@
+import { ChangeEvent, useEffect } from 'react';
+
 import { Label, Radio, Textarea } from '@trussworks/react-uswds';
 import { CreateConceptRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { ChangeEvent, useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { isAfter } from 'validation/date/isAfter';
 import { maxLengthRule } from 'validation/entry';
+
 import styles from './concept-form.module.scss';
 
 type Props = {
@@ -76,7 +78,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -102,7 +104,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -119,7 +121,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                                 label="Effective from time"
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                required
+                                required={true}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -214,7 +216,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -237,7 +239,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -260,7 +262,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -282,7 +284,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                             options={codeSystems}
                             name={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />

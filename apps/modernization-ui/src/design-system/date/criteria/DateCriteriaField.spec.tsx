@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DateCriteriaFieldProps, DateCriteriaField } from './DateCriteriaField';
-import { DateEqualsCriteria } from './dateCriteria';
 import { axe } from 'jest-axe';
+
+import { DateCriteriaField, DateCriteriaFieldProps } from './DateCriteriaField';
+import { DateEqualsCriteria } from './dateCriteria';
 
 describe('DateCriteriaField Component', () => {
     const defaultProps: DateCriteriaFieldProps = {

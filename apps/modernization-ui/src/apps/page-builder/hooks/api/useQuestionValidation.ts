@@ -1,6 +1,8 @@
+import { useEffect, useReducer } from 'react';
+
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { QuestionControllerHelperService } from 'apps/page-builder/generated/services/QuestionControllerHelperService';
-import { useEffect, useReducer } from 'react';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type State =
     | { status: 'idle' }
@@ -35,7 +37,7 @@ export const useQuestionValidation = (field: QuestionValidationRequest.field) =>
                 requestBody: { value: state.value, field: state.field },
             })
                 .then((response) => dispatch({ type: 'complete', isValid: response.isValid ?? false }))
-                .catch(() => console.error(`Failed to validate ${state.field}`));
+                .catch(() => logErrorToUserConsole(`Failed to validate ${state.field}`));
         }
     }, [state.status]);
 

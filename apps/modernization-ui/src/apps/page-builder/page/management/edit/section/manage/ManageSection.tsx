@@ -1,13 +1,15 @@
+import { useState } from 'react';
+
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Button, Icon } from '@trussworks/react-uswds';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesSection, PagesTab, SectionControllerService } from 'apps/page-builder/generated';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
-import styles from './managesection.module.scss';
-import { useState } from 'react';
+
 import { AddSection } from './AddSection';
 import { AlertInLineProps } from './ManageSectionModal';
 import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
-import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import styles from './managesection.module.scss';
 
 type ManageSectionProps = {
     pageId: number;
@@ -143,7 +145,7 @@ export const ManageSection = ({
                         )}
                         <div className={styles.tab}>
                             <div className={styles.folderIcon}>
-                                <NbsIcon name={'folder'} />
+                                <NbsIcon name="folder" />
                             </div>
                             <p className={styles.tabName}>{tab?.name}</p>
                         </div>
@@ -188,8 +190,8 @@ export const ManageSection = ({
                                 onCancel?.();
                                 setConfirmDelete(undefined);
                             }}
-                            type={'button'}
-                            outline
+                            type="button"
+                            outline={true}
                             className="manageSectionsCloseBtn"
                         >
                             Close

@@ -1,9 +1,11 @@
-import { useLocation } from 'react-router';
 import { ReactElement } from 'react';
+
 import classNames from 'classnames';
-import style from './tabNavigation.module.scss';
 import { NavLinkButton } from 'design-system/button';
 import { Sizing } from 'design-system/field';
+import { useLocation } from 'react-router';
+
+import style from './tabNavigation.module.scss';
 
 type NavigationProps = {
     path: string;
@@ -16,8 +18,8 @@ const TabNavigationEntry = ({ children, path }: NavigationProps) => {
     return (
         <div className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
             <NavLinkButton
-                secondary
-                tertiary
+                secondary={true}
+                tertiary={true}
                 to={path}
                 className={classNames(style.tabContent, { [style.active]: isActive(path, pathname) })}
             >
@@ -40,8 +42,8 @@ const TabNavigation = ({ sizing = 'medium', children = [], className }: TabNavig
         <div
             className={classNames(
                 style['tab-navigation'],
-                sizing === 'large' && style['large'],
-                sizing === 'medium' && style['medium'],
+                sizing === 'large' && style.large,
+                sizing === 'medium' && style.medium,
                 className
             )}
         >

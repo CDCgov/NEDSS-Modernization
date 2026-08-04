@@ -1,11 +1,14 @@
-import { Icon } from 'components/Icon/Icon';
-import styles from './reorder-section.module.scss';
-import { PagesSection } from 'apps/page-builder/generated/models/PagesSection';
 import { useEffect, useState } from 'react';
-import { ReorderSubsection } from '../ReorderSubsection/ReorderSubsection';
+
 import { Draggable, DraggableProvided, Droppable } from '@hello-pangea/dnd';
-import { PagesSubSection } from 'apps/page-builder/generated';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { PagesSubSection } from 'apps/page-builder/generated';
+import { PagesSection } from 'apps/page-builder/generated/models/PagesSection';
+import { Icon } from 'components/Icon/Icon';
+
+import { ReorderSubsection } from '../ReorderSubsection/ReorderSubsection';
+
+import styles from './reorder-section.module.scss';
 
 type Props = {
     index: number;
@@ -42,15 +45,15 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
                             {subsectionsOpen ? (
-                                <Icon name={'expand-more'} size={'s'} />
+                                <Icon name="expand-more" size="s" />
                             ) : (
-                                <Icon name={'navigate-next'} size={'s'} />
+                                <Icon name="navigate-next" size="s" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
-                            <Icon name={'drag'} size={'m'} />
+                            <Icon name="drag" size="m" />
                         </div>
-                        <Icon name={'group'} size={'m'} />
+                        <Icon name="group" size="m" />
                         <p>{section.name}</p>
                     </div>
                     <div className={`${styles.subsections} ${subsectionsOpen ? '' : styles.closed}`}>
@@ -63,7 +66,7 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                                     style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                 >
                                     {subsections
-                                        ? subsections.map((subsection: any, i: number) => {
+                                        ? subsections.map((subsection: PagesSubSection, i: number) => {
                                               return (
                                                   <ReorderSubsection
                                                       subsection={subsection}

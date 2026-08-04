@@ -1,7 +1,8 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { Ethnicity } from './Ethnicity';
 import { render } from '@testing-library/react';
 import { MergeEthnicity } from 'apps/deduplication/api/model/MergeCandidate';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { Ethnicity } from './Ethnicity';
 
 const defaultData: MergeEthnicity = {
     asOf: '2014-03-11T00:00:00.000',

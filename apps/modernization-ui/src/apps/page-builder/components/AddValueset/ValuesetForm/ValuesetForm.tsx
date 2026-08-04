@@ -3,6 +3,7 @@ import { CreateValuesetRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import styles from './valueset-form.module.scss';
 
 type Props = {
@@ -30,7 +31,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             <Radio
                                 id="codeSet_LOCAL"
                                 name="codeSet"
-                                value={'LOCAL'}
+                                value="LOCAL"
                                 label="LOCAL"
                                 onChange={onChange}
                                 checked={value === 'LOCAL'}
@@ -39,7 +40,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             <Radio
                                 id="codeSet_PHIN"
                                 name="codeSet"
-                                value={'PHIN'}
+                                value="PHIN"
                                 label="PHIN"
                                 onChange={onChange}
                                 checked={value === 'PHIN'}
@@ -68,7 +69,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             htmlFor={name}
                             id={name}
                             disabled={isEditing}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -91,7 +92,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                             name={name}
                             htmlFor={name}
                             id={name}
-                            required
+                            required={true}
                         />
                     )}
                 />

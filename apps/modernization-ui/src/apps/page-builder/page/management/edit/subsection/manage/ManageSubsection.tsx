@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import styles from './managesubsection.module.scss';
-import { Button, Icon } from '@trussworks/react-uswds';
-import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
-import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
-import { AddSubSection } from './AddSubSection';
-import { usePageManagement } from '../../../usePageManagement';
+
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
+import { Icon as NbsIcon } from 'components/Icon/Icon';
+
+import { usePageManagement } from '../../../usePageManagement';
+import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
+
+import { AddSubSection } from './AddSubSection';
+import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
+import styles from './managesubsection.module.scss';
 
 type ManageSubsectionProps = {
     alert?: AlertInLineProps;
@@ -89,7 +92,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         refresh();
                     }}
                     subsectionEdit={editSubsection}
-                    isEdit
+                    isEdit={true}
                 />
             )}
             {subsectionState === 'manage' && (
@@ -128,7 +131,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         )}
                         <div className={styles.section}>
                             <div className={styles.folderIcon}>
-                                <NbsIcon name={'folder'} />
+                                <NbsIcon name="folder" />
                             </div>
                             <p className={styles.sectionName}>{section?.name}</p>
                         </div>
@@ -163,9 +166,9 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             onClick={() => {
                                 onCancel?.();
                             }}
-                            type={'button'}
+                            type="button"
                             data-testid="manageSubsectionCloseBtn"
-                            outline
+                            outline={true}
                         >
                             Close
                         </Button>

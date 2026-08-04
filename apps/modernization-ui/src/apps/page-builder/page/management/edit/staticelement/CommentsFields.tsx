@@ -1,6 +1,6 @@
 import { AddReadOnlyComments, UpdateReadOnlyComments } from 'apps/page-builder/generated';
-import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
+import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 
 export const CommentsFields = () => {
@@ -21,11 +21,11 @@ export const CommentsFields = () => {
                         onBlur={onBlur}
                         defaultValue={value}
                         label="Comments text"
-                        required
+                        required={true}
                         type="text"
                         ariaLabel="commentsText"
                         error={error?.message}
-                        multiline
+                        multiline={true}
                     />
                 )}
             />

@@ -1,11 +1,13 @@
+import { ReactNode } from 'react';
+
 import { render, waitFor } from '@testing-library/react';
-import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
-import React, { ReactNode } from 'react';
-import { ReportResultPage } from './ReportResultPage.tsx';
-import { axe } from 'jest-axe';
-import { ReportConfiguration } from 'generated';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext.tsx';
+import * as generated from 'generated';
+import { ReportConfiguration } from 'generated';
+import { axe } from 'jest-axe';
+
+import { ReportResultPage } from './ReportResultPage.tsx';
 
 vi.mock('generated', async (importOriginal) => {
     const actual = await importOriginal<typeof import('generated')>();
@@ -214,6 +216,24 @@ describe('report result page', () => {
             expect(await findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
+
+        it('closes on escape key', async () => {
+            const user = userEvent.setup();
+
+            const props = createMockProps();
+            const { getAllByRole, queryByRole } = renderWithRouter(props);
+
+            const saveButtons = getAllByRole('button', { name: 'Save' });
+            const openModalButton = saveButtons[0];
+            await user.click(openModalButton);
+
+            expect(queryByRole('dialog', { name: 'Overwrite saved report?' })).toHaveClass('is-visible');
+
+            await user.keyboard('{Escape}');
+
+            expect(queryByRole('dialog', { name: 'Overwrite saved report?' })).toHaveClass('is-hidden');
+            expect(window.location.href).not.toBe('/nbs/ManageReports.do');
+        });
     });
 
     describe('save as modal', () => {
@@ -263,6 +283,23 @@ describe('report result page', () => {
 
             expect(await render.findByText('Issue with saving report as new')).toBeVisible();
             expect(await render.findByText(/There was an error saving this report/)).toBeVisible();
+            expect(window.location.href).not.toBe('/nbs/ManageReports.do');
+        });
+
+        it('closes on escape key', async () => {
+            const user = userEvent.setup();
+
+            const props = createMockProps();
+            const { getAllByRole, queryByRole } = renderWithRouter(props);
+
+            const saveAsNewButtons = getAllByRole('button', { name: 'Save as new' });
+            await user.click(saveAsNewButtons[0]);
+
+            expect(queryByRole('dialog', { name: 'Save as a new report' })).toHaveClass('is-visible');
+
+            await user.keyboard('{Escape}');
+
+            expect(queryByRole('dialog', { name: 'Save as a new report' })).toHaveClass('is-hidden');
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
         });
     });

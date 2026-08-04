@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import Select from './Select';
 import userEvent from '@testing-library/user-event';
+
+import Select from './Select';
 
 describe('Select Component', () => {
     const options = [

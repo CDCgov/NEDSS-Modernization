@@ -1,6 +1,5 @@
-import { Navigate } from 'react-router';
-
 import { useConfiguration } from 'configuration';
+import { Navigate } from 'react-router';
 
 const RedirectHome = () => {
     const {
@@ -9,7 +8,7 @@ const RedirectHome = () => {
 
     const path = search.view.enabled ? '/search' : '/advanced-search';
 
-    return <Navigate to={path} replace />;
+    return <Navigate to={path} replace={true} />;
 };
 
 export { RedirectHome };

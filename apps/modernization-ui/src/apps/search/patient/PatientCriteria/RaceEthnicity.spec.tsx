@@ -1,6 +1,7 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import { Selectable } from 'options';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { RaceEthnicity } from './RaceEthnicity';
 
 vi.mock('options/concepts', () => ({

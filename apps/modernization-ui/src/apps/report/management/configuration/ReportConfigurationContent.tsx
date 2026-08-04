@@ -1,9 +1,16 @@
+import { ReactNode, useId, useRef, useState } from 'react';
+
 import { ModalRef } from '@trussworks/react-uswds';
 import { Shown } from 'conditional-render';
 import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
+import {
+    DirtySectionErrorMessage,
+    ValidationErrorBanner,
+    ValidationErrorSection,
+} from 'design-system/errors/ValidationError';
 import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text';
@@ -14,17 +21,13 @@ import { Selectable } from 'options';
 import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
 import { useUserOptions } from 'options/users';
 import { ReactComponentLike } from 'prop-types';
-import { ReactNode, useId, useRef, useState } from 'react';
 import { Controller, useFormState, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
-import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
-import { addLabelToName, EnumSelectable } from '../../utils';
+
 import { GROUP_OPTIONS, SIZING } from '../../constants.ts';
-import {
-    DirtySectionErrorMessage,
-    ValidationErrorBanner,
-    ValidationErrorSection,
-} from 'design-system/errors/ValidationError';
+import { addLabelToName, EnumSelectable } from '../../utils';
+
+import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 
 export type ConfigForm = {
     dataSourceId: Selectable;
@@ -58,6 +61,9 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
 const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportConfiguration; isEditable: boolean }) => {
     const [dataSource, setDataSource] = useState<string | Selectable | undefined>(config?.dataSource.id.toString());
     const dataSourceSelected = !!dataSource;
+
+    const userOptions = useUserOptions();
+    const libOptions = useReportLibraries();
 
     return (
         <>
@@ -96,10 +102,9 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     label="Owner"
                     defaultValue={config?.ownerUid.toString()}
                     getOptions={() => {
-                        const options = useUserOptions();
-                        if (options.length === 0) return options;
+                        if (userOptions.length === 0) return userOptions;
                         // add system option once loaded (to avoid options appearing loaded when not)
-                        return [{ value: '0', name: 'System' }, ...options];
+                        return [{ value: '0', name: 'System' }, ...userOptions];
                     }}
                     helperText="The user who can edit and delete this report."
                 />
@@ -132,9 +137,8 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     defaultValue={config?.library.id.toString()}
                     getOptions={() => {
                         // move nbs custom to the top of the list
-                        const libs = useReportLibraries();
-                        const nbsCustom = libs.find(({ name }) => name === 'nbs_custom');
-                        const options = libs.filter(({ name }) => name !== 'nbs_custom');
+                        const nbsCustom = libOptions.find(({ name }) => name === 'nbs_custom');
+                        const options = libOptions.filter(({ name }) => name !== 'nbs_custom');
                         if (!nbsCustom) return options;
                         return [nbsCustom, ...options];
                     }}

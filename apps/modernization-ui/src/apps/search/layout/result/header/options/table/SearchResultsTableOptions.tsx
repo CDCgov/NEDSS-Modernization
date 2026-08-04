@@ -1,7 +1,7 @@
-import { Sizing } from 'design-system/field';
-import { ColumnPreferencesAction } from 'design-system/table/preferences';
-import { useFilter } from 'design-system/filter';
 import { Button } from 'components/button';
+import { Sizing } from 'design-system/field';
+import { useFilter } from 'design-system/filter';
+import { ColumnPreferencesAction } from 'design-system/table/preferences';
 import { FeatureToggle } from 'feature';
 import { useSorting } from 'libs/sorting';
 
@@ -26,7 +26,7 @@ const SearchResultsTableOptions = ({ disabled = false, sizing }: Props) => {
             <FeatureToggle guard={(features) => features.patient.search.filters.enabled}>
                 <div className={styles.filter}>
                     {filter && (
-                        <Button tertiary onClick={handleFilterSortReset} sizing={sizing}>
+                        <Button tertiary={true} onClick={handleFilterSortReset} sizing={sizing}>
                             Reset sort/filters
                         </Button>
                     )}

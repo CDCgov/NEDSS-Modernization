@@ -1,11 +1,11 @@
-import { Sizing } from 'design-system/field';
 import { View } from 'apps/search';
 import { useSearchSettings } from 'apps/search/useSearchSettings';
-import { ToggleView } from './toggleView/ToggleView';
-import { SearchResultsListOptions } from './list/SearchResultsListOptions';
-import { SearchResultsTableOptions } from './table/SearchResultsTableOptions';
+import { Sizing } from 'design-system/field';
 
+import { SearchResultsListOptions } from './list/SearchResultsListOptions';
 import style from './search-results-options.module.scss';
+import { SearchResultsTableOptions } from './table/SearchResultsTableOptions';
+import { ToggleView } from './toggleView/ToggleView';
 
 type Props = {
     view: View;

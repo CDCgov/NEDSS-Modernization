@@ -1,8 +1,9 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
-import { IdentificationDataTable } from './IdentificationDataTable';
 import { render, within } from '@testing-library/react';
-import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { IdentificationDataTable } from './IdentificationDataTable';
 
 const patientData: Partial<MergeCandidate> = {
     identifications: [

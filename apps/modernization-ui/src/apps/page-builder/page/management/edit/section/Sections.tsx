@@ -1,10 +1,13 @@
-import { ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
-import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
 import { useRef, useState } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
+import { useAlert } from 'libs/alert';
+
 import { ConfirmationModal } from '../../../../../../confirmation';
 import { StatusModal } from '../../status/StatusModal';
 import { usePageManagement } from '../../usePageManagement';
+
 import { Section } from './Section';
 import styles from './section.module.scss';
 
@@ -86,10 +89,9 @@ export const Sections = ({
             <StatusModal
                 modal={sectionStatusModalRef}
                 messageHeader="Section cannot be deleted."
-                title={'Warning'}
-                message={
-                    'This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted.'
-                }
+                title="Warning"
+                // eslint-disable-next-line max-len
+                message="This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted."
                 onConfirm={() => {
                     sectionStatusModalRef.current?.toggleModal(undefined, false);
                 }}
@@ -98,10 +100,9 @@ export const Sections = ({
             <StatusModal
                 modal={subSectionStatusModalRef}
                 messageHeader="Subsection cannot be deleted."
-                title={'Warning'}
-                message={
-                    'This subsection contains elements (questions) inside it. Remove the contents first, and then the subsection can be deleted.'
-                }
+                title="Warning"
+                // eslint-disable-next-line max-len
+                message="This subsection contains elements (questions) inside it. Remove the contents first, and then the subsection can be deleted."
                 onConfirm={() => {
                     subSectionStatusModalRef.current?.toggleModal(undefined, false);
                 }}

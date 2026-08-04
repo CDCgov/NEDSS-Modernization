@@ -1,10 +1,12 @@
-import styles from './repeating-block.module.scss';
-import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Input } from 'components/FormInputs/Input';
-import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { useEffect, useState } from 'react';
+
+import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+
+import styles from './repeating-block.module.scss';
 
 type Props = {
     questions: PagesQuestion[];
@@ -20,7 +22,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
         name: 'batches',
     });
 
-    const batches = useWatch({ control: control, name: 'batches' });
+    const batches = useWatch({ control, name: 'batches' });
     const calcTotal = (batches: Batch[]): number => {
         return batches
             .filter((batch) => batch.appearsInTable)
@@ -88,7 +90,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                                 { name: 'Yes', value: 'Y' },
                                                 { name: 'No', value: 'N' },
                                             ]}
-                                            required
+                                            required={true}
                                             error={error?.message}
                                         />
                                     )}

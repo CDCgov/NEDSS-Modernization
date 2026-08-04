@@ -1,12 +1,13 @@
 import { FocusEventHandler, useState } from 'react';
+
 import classNames from 'classnames';
-import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
-import { Selectable, asValue as asSelectableValue } from 'options';
 import { Field, FieldProps } from 'design-system/field';
-import { styles, theme } from './design';
+import { asValue as asSelectableValue, Selectable } from 'options';
+import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
+
 import { CheckboxOption } from './CheckboxOption';
 import { DropdownIndicator } from './DropdownIndicator';
-
+import { styles, theme } from './design';
 import './multi-select.scss';
 
 type MultiSelectProps = {
@@ -81,7 +82,7 @@ export const MultiSelect = ({
             <Select<Selectable, true>
                 theme={theme}
                 styles={styles}
-                isMulti
+                isMulti={true}
                 inputId={id}
                 name={name}
                 options={optionsWithSelectAll}
@@ -105,7 +106,7 @@ export const MultiSelect = ({
                 onInputChange={handleInputChange}
                 getOptionValue={asValue}
                 getOptionLabel={asDisplay}
-                components={{ Option: CheckboxOption, DropdownIndicator: DropdownIndicator }}
+                components={{ Option: CheckboxOption, DropdownIndicator }}
                 filterOption={(option: FilterOptionOption<Selectable>) =>
                     option.value === SELECT_ALL_VALUE
                         ? true

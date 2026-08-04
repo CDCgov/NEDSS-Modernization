@@ -1,7 +1,10 @@
 import { createContext, ReactNode, useContext } from 'react';
+
 import { AddPatientInteraction } from 'apps/patient/add';
-import { ExtendedNewPatientEntry } from './entry';
+
 import { Created, Working } from '../useAddPatient';
+
+import { ExtendedNewPatientEntry } from './entry';
 
 type Invalid = {
     status: 'invalid';

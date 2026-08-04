@@ -1,14 +1,16 @@
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
-import { Controller, useFormContext } from 'react-hook-form';
-import { validDateRule, DatePickerInput } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { SingleSelect } from 'design-system/select';
 import { TextInputField } from 'design-system/input';
-import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { MaskedTextInputField } from 'design-system/input/text';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { SingleSelect } from 'design-system/select';
 import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
 import { Verification } from 'libs/verification';
+import { Controller, useFormContext } from 'react-hook-form';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { labels, PhoneEmailDemographic } from '../phoneEmails';
+
 import { PhoneEmailOptions } from './usePhoneEmailOptions';
 
 type PhoneEmailDemographicFieldsProps = { options: PhoneEmailOptions } & EntryFieldsProps;
@@ -36,7 +38,7 @@ const PhoneEmailDemographicFields = ({
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -58,7 +60,7 @@ const PhoneEmailDemographicFields = ({
                         name={name}
                         options={options.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -78,7 +80,7 @@ const PhoneEmailDemographicFields = ({
                         name={name}
                         options={options.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

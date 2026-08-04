@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReportService {
+  private static final System.Logger LOGGER = System.getLogger(ReportService.class.getName());
+
   private final ReportRepository reportRepository;
   private final DataSourceRepository dataSourceRepository;
   private final ReportLibraryRepository reportLibraryRepository;
@@ -69,12 +71,15 @@ public class ReportService {
 
   @Transactional
   public Report createReport(AdminReportRequest request, NbsUserDetails user) {
+    LOGGER.log(System.Logger.Level.TRACE, "Creating new report " + request.reportTitle());
     return upsertReport(request, user, null);
   }
 
   @Transactional
   public Report editReport(
       AdminReportRequest request, NbsUserDetails user, ReportId existingReportId) {
+    LOGGER.log(System.Logger.Level.TRACE, "Editing existing report " + existingReportId);
+
     Report existingReport =
         reportRepository
             .findById(existingReportId)
@@ -85,6 +90,8 @@ public class ReportService {
 
   @Transactional
   public void deleteReport(ReportId existingReportId) {
+    LOGGER.log(System.Logger.Level.TRACE, "Deleting report " + existingReportId);
+
     Report existingReport =
         reportRepository
             .findById(existingReportId)
@@ -116,6 +123,9 @@ public class ReportService {
 
   @Transactional
   public Report saveAsReport(SaveAsReportRequest request, NbsUserDetails user, ReportId reportId) {
+    LOGGER.log(
+        System.Logger.Level.TRACE, "Saving report as new report for ID " + reportId.toString());
+
     Report report =
         reportRepository
             .findById(reportId)
@@ -154,6 +164,8 @@ public class ReportService {
       throw new NotFoundException(getReportNotFoundText(reportId));
     }
 
+    LOGGER.log(System.Logger.Level.TRACE, "Saving report " + report.getId());
+
     updateReportExecutionData(request, report);
     return reportRepository.save(report);
   }
@@ -175,6 +187,9 @@ public class ReportService {
    * <b>without persisting said changes to the database.</b>
    */
   private void updateBasicFilterValues(Report report, List<BasicFilterRequest> basicFilterReqs) {
+    LOGGER.log(
+        System.Logger.Level.TRACE, "Updating basic filter values for report " + report.getId());
+
     Map<Long, ReportFilter> basicFiltersById =
         report.getReportFilters().stream()
             .filter(ReportFilter::isBasicFilter)
@@ -223,6 +238,9 @@ public class ReportService {
    * <b>without persisting said changes to the database.</b>
    */
   private void updateAdvancedFilterValues(Report report, AdvancedFilterRequest advFilterReq) {
+    LOGGER.log(
+        System.Logger.Level.TRACE, "Updating advanced filter values for report " + report.getId());
+
     ReportFilter advancedFilter =
         report.getReportFilters().stream()
             .filter(ReportFilter::isAdvancedFilter)
@@ -255,6 +273,8 @@ public class ReportService {
    * persisting said changes to the database.</b>
    */
   private void updateDisplayColumns(Report report, List<Long> displayColumnIds) {
+    LOGGER.log(System.Logger.Level.TRACE, "Updating display columns for report " + report.getId());
+
     report.getDisplayColumns().clear();
 
     List<DataSourceColumn> reportColumns = report.getDataSource().getDataSourceColumns();
@@ -292,6 +312,8 @@ public class ReportService {
    * said changes to the database.</b>
    */
   private void updateSortColumns(Report report, SortSpec sort) {
+    LOGGER.log(System.Logger.Level.TRACE, "Updating sort columns for report " + report.getId());
+
     report.getReportSortColumns().clear();
 
     if (sort != null) {

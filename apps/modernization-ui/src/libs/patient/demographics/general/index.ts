@@ -1,7 +1,7 @@
 export { initial } from './general';
 export type { GeneralInformationDemographic, HasGeneralInformationDemographic } from './general';
 
-export { GeneralInformationDemographicCard } from './view/';
+export { GeneralInformationDemographicCard } from './view';
 export type { GeneralInformationDemographicCardProps } from './view';
 
 export { useGeneralInformationOptions } from './edit/useGeneralInformationOptions';

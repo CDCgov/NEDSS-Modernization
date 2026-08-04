@@ -1,7 +1,8 @@
-import { PagesTab } from 'apps/page-builder/generated';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { Icon } from '@trussworks/react-uswds';
+import { PagesTab } from 'apps/page-builder/generated';
 import { Icon as IconComponent } from 'components/Icon/Icon';
+
 import styles from './manageTabsTile.module.scss';
 
 type Props = {
@@ -46,7 +47,7 @@ export const ManageTabsTile = ({
                                 <IconComponent name="drag" />
                             )}
                         </div>
-                        <div className={styles.label} data-testid={'label'}>
+                        <div className={styles.label} data-testid="label">
                             <IconComponent name="folder" />
                             {tab.name}&nbsp;
                             {tab.sections && tab.sections.length ? '(' + tab.sections!.length + ')' : '(0)'}

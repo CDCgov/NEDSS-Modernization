@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { DetailValue, DetailView } from './DetailView';
 import { axe } from 'jest-axe';
+
+import { DetailValue, DetailView } from './DetailView';
 
 describe('DetailView', () => {
     it('should render with no accessibility violations', async () => {

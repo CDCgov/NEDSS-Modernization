@@ -1,7 +1,8 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { AddressSelection } from './AddressSelection';
 import { render } from '@testing-library/react';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { AddressSelection } from './AddressSelection';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [
     {

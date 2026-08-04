@@ -1,6 +1,7 @@
-import { MergeInvestigation } from 'apps/deduplication/api/model/MergeCandidate';
-import { Investigation } from './Investigation';
 import { render } from '@testing-library/react';
+import { MergeInvestigation } from 'apps/deduplication/api/model/MergeCandidate';
+
+import { Investigation } from './Investigation';
 
 const investigations: MergeInvestigation[] = [
     {

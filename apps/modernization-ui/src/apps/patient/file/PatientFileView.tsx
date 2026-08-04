@@ -1,16 +1,17 @@
 import { ReactNode } from 'react';
-import { permissions, Permitted } from 'libs/permission';
+
+import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
+import { Shown } from 'conditional-render';
 import { Button, NavLinkButton } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { BackToTop } from 'libs/page/back-to-top';
-import { Patient } from './patient';
+import { permissions, Permitted } from 'libs/permission';
+import { useLocation } from 'react-router';
+
 import { PatientFileLayout } from './PatientFileLayout';
 import { DeleteAction } from './delete';
-
+import { Patient } from './patient';
 import styles from './patient-file-view.module.scss';
-import { useLocation } from 'react-router';
-import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
-import { Shown } from 'conditional-render';
 
 type PatientFileViewProps = {
     patient: Patient;
@@ -43,12 +44,18 @@ const ViewActions = (patient: Patient) => {
                 data-tooltip-offset="center"
                 icon="print"
                 sizing="medium"
-                secondary
+                secondary={true}
             />
 
             <Shown when={patient.status === 'ACTIVE'}>
                 <Permitted permission={permissions.patient.update}>
-                    <NavLinkButton icon="edit" secondary sizing="medium" to="../edit" state={{ return: pathname }}>
+                    <NavLinkButton
+                        icon="edit"
+                        secondary={true}
+                        sizing="medium"
+                        to="../edit"
+                        state={{ return: pathname }}
+                    >
                         Edit
                     </NavLinkButton>
                 </Permitted>

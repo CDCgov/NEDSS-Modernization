@@ -1,4 +1,5 @@
 import { maxLengthRule } from 'validation/entry';
+
 import { maybeValidateEmail } from './maybeValidateEmail';
 
 const validEmailRule = (name: string) => ({

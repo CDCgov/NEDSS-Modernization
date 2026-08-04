@@ -1,4 +1,5 @@
 import { anyOf, Predicate } from 'utils/predicate';
+
 import { permits } from './permits';
 
 /**

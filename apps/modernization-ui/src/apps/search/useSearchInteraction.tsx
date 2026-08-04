@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useContext } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
+
 import { Term } from './terms';
 
 type SearchInteractionStatus =
@@ -22,10 +23,10 @@ type SearchInteraction<R> = {
     clear: () => void;
 };
 
-const SearchInteractionContext = createContext<SearchInteraction<any> | undefined>(undefined);
+const SearchInteractionContext = createContext<SearchInteraction<unknown> | undefined>(undefined);
 
 type Props = {
-    interaction: SearchInteraction<any>;
+    interaction: SearchInteraction<unknown>;
     children: ReactNode;
 };
 

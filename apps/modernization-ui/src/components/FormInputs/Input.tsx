@@ -1,6 +1,6 @@
-import { FocusEventHandler } from 'react';
-import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
+import { ChangeEventHandler, FocusEventHandler } from 'react';
 
+import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 type InputProps = {
@@ -15,7 +15,7 @@ type InputProps = {
     error?: string;
     orientation?: Orientation;
     sizing?: Sizing;
-    onChange?: any;
+    onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     defaultValue?: string | null;
     placeholder?: string;
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';

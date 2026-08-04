@@ -1,20 +1,22 @@
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useEffect } from 'react';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { TextInputField } from 'design-system/input';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { SingleSelect } from 'design-system/select';
 import {
-    validZipCodeRule,
-    ZipCodeInputField,
     CensusTractInputField,
     validCensusTractRule,
+    validZipCodeRule,
+    ZipCodeInputField,
 } from 'libs/demographics/location';
-import { AddressEntry } from './entry';
-import { TextAreaField } from 'design-system/input/text/TextAreaField';
-import { useAddressCodedValues } from './useAddressCodedValues';
 import { useLocationOptions } from 'options/location';
-import { TextInputField } from 'design-system/input';
-import { useEffect } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { AddressEntry } from './entry';
+import { useAddressCodedValues } from './useAddressCodedValues';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -57,7 +59,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -78,7 +80,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={`address-${name}`}
                         options={coded.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -98,7 +100,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal', sizing = 'mediu
                         name={`address-${name}`}
                         options={coded.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

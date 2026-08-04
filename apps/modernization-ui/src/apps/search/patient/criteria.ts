@@ -1,6 +1,6 @@
 import { DateCriteria } from 'design-system/date/criteria';
-import { Selectable, asSelectable } from 'options';
-import { TextCriteria, AlphaTextCriteria } from 'options/operator';
+import { asSelectable, Selectable } from 'options';
+import { AlphaTextCriteria, TextCriteria } from 'options/operator';
 
 const ACTIVE = asSelectable('ACTIVE', 'Active');
 

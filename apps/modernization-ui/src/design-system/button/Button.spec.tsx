@@ -1,5 +1,5 @@
-import React from 'react';
 import { render, screen, within } from '@testing-library/react';
+
 import { Button } from './Button';
 
 describe('Button component tests', () => {
@@ -37,18 +37,18 @@ describe('Button component tests', () => {
     });
 
     it('renders the destructive className when set', () => {
-        render(<Button destructive>Destructive</Button>);
+        render(<Button destructive={true}>Destructive</Button>);
         expect(screen.getByRole('button')).toHaveClass('destructive');
     });
 
     it('renders the secondary className when set', () => {
-        render(<Button secondary>Destructive</Button>);
+        render(<Button secondary={true}>Destructive</Button>);
         expect(screen.getByRole('button')).toHaveClass('secondary');
     });
 
     it('renders the secondary and destructive classNames when set', () => {
         render(
-            <Button destructive secondary>
+            <Button destructive={true} secondary={true}>
                 Destructive
             </Button>
         );
@@ -57,7 +57,7 @@ describe('Button component tests', () => {
     });
 
     it('renders the tertiary className when set', () => {
-        render(<Button tertiary>tertiary</Button>);
+        render(<Button tertiary={true}>tertiary</Button>);
         expect(screen.getByRole('button')).toHaveClass('tertiary');
     });
 });

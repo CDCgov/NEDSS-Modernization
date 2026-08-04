@@ -1,8 +1,10 @@
+import { ReactNode } from 'react';
+
 import classNames from 'classnames';
 import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
 import { Hint } from 'design-system/hint';
 import { Numeric } from 'design-system/input/numeric/Numeric';
-import { ReactNode } from 'react';
+
 import styles from './numeric-hint-input.module.scss';
 
 type Props = {

@@ -1,11 +1,14 @@
-import { Button, Icon } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
+
+import { Button, Icon } from '@trussworks/react-uswds';
+import { useFindValuesets, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
+import { Status, usePagination } from 'pagination';
+
 import { ButtonBar } from '../../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../../CloseableHeader/CloseableHeader';
 import { ValuesetSearchTable } from '../../ValuesetSearchTable/ValuesetSearchTable';
+
 import styles from './valueset-search.module.scss';
-import { Status, usePagination } from 'pagination';
-import { ValuesetSort, useFindValuesets } from 'apps/page-builder/hooks/api/useFindValueset';
 
 type Props = {
     onCancel: () => void;
@@ -31,7 +34,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
                 query,
                 page: page.current - 1,
                 pageSize: page.pageSize,
-                sort: sort,
+                sort,
             });
         }
     }, [page.status]);
@@ -76,7 +79,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
                 </div>
             </div>
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

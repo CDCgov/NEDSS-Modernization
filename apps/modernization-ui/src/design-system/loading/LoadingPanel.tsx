@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
+
+import classNames from 'classnames';
 import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
 
 import styles from './loading-panel.module.scss';
-import { Shown } from 'conditional-render';
-import classNames from 'classnames';
 
 type LoadingPanelProps = {
     className?: string;
@@ -17,7 +18,7 @@ const LoadingPanel = ({ loading = false, children, className }: LoadingPanelProp
             <Shown when={loading}>
                 <span className={styles.panel}>
                     <span className={classNames(styles.loader, className)}>
-                        <Loading center />
+                        <Loading center={true} />
                     </span>
                 </span>
             </Shown>

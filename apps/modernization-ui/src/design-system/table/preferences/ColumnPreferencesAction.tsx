@@ -1,8 +1,8 @@
-import { OverlayPanel } from 'overlay';
 import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
-import { ColumnPreferencesPanel } from './ColumnPreferencesPanel';
+import { OverlayPanel } from 'overlay';
 
+import { ColumnPreferencesPanel } from './ColumnPreferencesPanel';
 import styles from './column-preference-action.module.scss';
 
 type ColumnPreferenceActionProps = {
@@ -20,7 +20,7 @@ const ColumnPreferencesAction = ({ sizing, position = 'right' }: ColumnPreferenc
                     aria-label="Settings"
                     data-tooltip-position="top"
                     data-tooltip-offset="center"
-                    secondary
+                    secondary={true}
                     icon="settings"
                     onClick={toggle}
                     sizing={sizing}

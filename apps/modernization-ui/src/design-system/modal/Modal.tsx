@@ -1,8 +1,9 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent, useRef, useEffect, useId, useCallback } from 'react';
-import { createPortal } from 'react-dom';
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode, useCallback, useEffect, useId, useRef } from 'react';
+
 import classNames from 'classnames';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
+import { createPortal } from 'react-dom';
 
 import styles from './modal.module.scss';
 
@@ -65,22 +66,22 @@ const Component = ({ title, size, forceAction = false, children, className, onCl
                         [styles.large]: size === 'large',
                     })}
                     data-force-action={forceAction}
-                    open
+                    open={true}
                 >
                     <header id={header} className={classNames('usa-modal__heading', styles.header)}>
                         <Heading level={2}>{title}</Heading>
                         {!forceAction && (
                             <Button
                                 className={styles.closer}
-                                tertiary
+                                tertiary={true}
                                 aria-label={`Close ${title}`}
                                 icon="close"
                                 onClick={onClose}
-                                data-close-modal
+                                data-close-modal={true}
                             />
                         )}
                     </header>
-                    <div className={'usa-modal__content'}>
+                    <div className="usa-modal__content">
                         {footer && (
                             <footer className={classNames('usa-modal__footer', styles.footer)}>
                                 {footer(onClose)}

@@ -1,6 +1,6 @@
 import { Selectable } from 'options';
-import { Indicators, indicators } from 'options/indicator';
 import { useConceptOptions } from 'options/concepts';
+import { Indicators, indicators } from 'options/indicator';
 import { usePrimaryLanguageOptions } from 'options/language';
 import { useOccupationOptions } from 'options/occupations';
 

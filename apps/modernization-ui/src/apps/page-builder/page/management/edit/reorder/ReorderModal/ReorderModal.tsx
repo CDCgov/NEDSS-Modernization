@@ -1,14 +1,18 @@
-import { ModalRef } from '@trussworks/react-uswds';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { RefObject, useState } from 'react';
-import styles from './reorder-modal.module.scss';
-import { ReorderTab } from '../ReorderTab/ReorderTab';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
-import { Spinner } from 'components/Spinner/Spinner';
-import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { ModalRef } from '@trussworks/react-uswds';
 import { ModalToggleButton } from '@trussworks/react-uswds';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { PagesTab } from 'apps/page-builder/generated';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { Spinner } from 'components/Spinner/Spinner';
+
 import { usePageManagement } from '../../../usePageManagement';
+import { ReorderTab } from '../ReorderTab/ReorderTab';
+
+import styles from './reorder-modal.module.scss';
 
 type ReorderProps = {
     modalRef: RefObject<ModalRef>;
@@ -22,7 +26,6 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            closer
             size="wide"
             modalHeading="Reorder"
             modalBody={
@@ -33,7 +36,7 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                 >
                     {loading ? <Spinner /> : null}
                     <div className={styles.modal}>
-                        {alertMessage ? <AlertBanner type={'prompt'}>{alertMessage}</AlertBanner> : null}
+                        {alertMessage ? <AlertBanner type="prompt">{alertMessage}</AlertBanner> : null}
                         <div className={styles.content}>
                             <Droppable droppableId="all-tabs" type="tab">
                                 {(provided, snapshot) => (
@@ -43,7 +46,7 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                                         style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}
                                     >
                                         {page.tabs
-                                            ? page.tabs.map((tab: any, i: number) => {
+                                            ? page.tabs.map((tab: PagesTab, i: number) => {
                                                   return (
                                                       <ReorderTab
                                                           key={tab.id.toString()}
@@ -63,7 +66,7 @@ export const ReorderModal = ({ modalRef, alertMessage }: ReorderProps) => {
                 </DragDropContext>
             }
             modalFooter={
-                <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                <ModalToggleButton modalRef={modalRef} closer={true} outline={true} data-testid="condition-cancel-btn">
                     Close
                 </ModalToggleButton>
             }

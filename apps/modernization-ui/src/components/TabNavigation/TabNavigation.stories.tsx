@@ -1,5 +1,6 @@
-import { MemoryRouter } from 'react-router';
 import { Meta, StoryObj } from '@storybook/react/*';
+import { MemoryRouter } from 'react-router';
+
 import { TabNavigation, TabNavigationEntry, TabNavigationProps } from './TabNavigation';
 
 const meta = {
@@ -14,9 +15,9 @@ type Story = StoryObj<typeof meta>;
 const renderTabs = (args: TabNavigationProps) => (
     <MemoryRouter>
         <TabNavigation {...args}>
-            <TabNavigationEntry path={`test1`}>Tab 1</TabNavigationEntry>
-            <TabNavigationEntry path={`test2`}>Tab 2</TabNavigationEntry>
-            <TabNavigationEntry path={`test3`}>Tab 3</TabNavigationEntry>
+            <TabNavigationEntry path="test1">Tab 1</TabNavigationEntry>
+            <TabNavigationEntry path="test2">Tab 2</TabNavigationEntry>
+            <TabNavigationEntry path="test3">Tab 3</TabNavigationEntry>
         </TabNavigation>
     </MemoryRouter>
 );

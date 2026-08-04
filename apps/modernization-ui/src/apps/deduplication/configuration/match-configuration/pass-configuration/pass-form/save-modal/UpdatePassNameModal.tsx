@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
+
 import { Input } from 'components/FormInputs/Input';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Modal } from 'design-system/modal';
 import { Controller, useForm } from 'react-hook-form';
+
 import styles from './save-pass-modal.module.scss';
-import { useEffect } from 'react';
 
 type Props = {
     name: string;
@@ -25,13 +27,13 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
 
     const footer = () => (
         <>
-            <Button secondary onClick={onCancel} data-close-modal>
+            <Button secondary={true} onClick={onCancel} data-close-modal={true}>
                 Cancel
             </Button>
             <Button
                 disabled={!form.formState.isValid}
                 onClick={() => onAccept(form.getValues().name, form.getValues().description)}
-                data-close-modal
+                data-close-modal={true}
             >
                 Save
             </Button>
@@ -40,7 +42,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
     return (
         <Shown when={visible}>
             <Modal
-                id={`update-pass-name-modal`}
+                id="update-pass-name-modal"
                 size="small"
                 title="Save pass configuration"
                 onClose={onCancel}
@@ -54,7 +56,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Pass title"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
@@ -62,7 +64,7 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                             name={name}
                             id={name}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -72,12 +74,12 @@ export const UpdatePassNameModal = ({ name, description, visible, onCancel, onAc
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             label="Description"
-                            orientation={'vertical'}
+                            orientation="vertical"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
-                            multiline
+                            multiline={true}
                             name={name}
                             id={name}
                             error={error?.message}

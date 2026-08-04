@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useSexBirthCodedValues } from './useSexBirthCodedValues';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
+
+import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOf, displayAgeAsOfToday } from 'date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
-import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { SingleSelect } from 'design-system/select';
 import { useLocationOptions } from 'options/location';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { useSexBirthCodedValues } from './useSexBirthCodedValues';
 
 const UNKNOWN_GENDER = 'U';
 
@@ -62,7 +64,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                         onBlur={onBlur}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -109,7 +111,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                 <Controller
                     control={control}
                     name="birthAndSex.unknownReason"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label="Unknown reason"
@@ -202,7 +204,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal', sizing = 'm
                 <Controller
                     control={control}
                     name="birthAndSex.order"
-                    shouldUnregister
+                    shouldUnregister={true}
                     rules={{ min: { value: 0, message: 'Must be a positive number.' } }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input

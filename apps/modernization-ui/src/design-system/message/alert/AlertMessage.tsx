@@ -1,8 +1,10 @@
 import { ReactNode, useId } from 'react';
+
 import classNames from 'classnames';
 import { Heading, HeadingLevel } from 'components/heading';
-import { Icon } from 'design-system/icon';
 import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
+
 import { resolveIcon } from '../resolveIcon';
 
 import styles from './alert-message.module.scss';
@@ -43,10 +45,10 @@ const AlertMessage = ({
             className={classNames(
                 styles.alertMessage,
                 {
-                    [styles.information]: type == 'information',
-                    [styles.success]: type == 'success',
-                    [styles.warning]: type == 'warning',
-                    [styles.error]: type == 'error',
+                    [styles.information]: type === 'information',
+                    [styles.success]: type === 'success',
+                    [styles.warning]: type === 'warning',
+                    [styles.error]: type === 'error',
                     [styles.slim]: slim,
                 },
                 className
@@ -63,7 +65,7 @@ const AlertMessage = ({
                     type="button"
                     onClick={onClose}
                     icon="close"
-                    tertiary
+                    tertiary={true}
                     sizing="small"
                     aria-label="Close alert"
                     className={styles.closeButton}

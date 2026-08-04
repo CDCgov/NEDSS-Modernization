@@ -1,12 +1,14 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
-import { AdministrativeInformationFields } from './AdministrativeInformationFields';
+
 import { PatientDemographics } from '../../demographics';
+
+import { AdministrativeInformationFields } from './AdministrativeInformationFields';
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const methods = useForm<PatientDemographics>({ mode: 'onBlur' });
-    return <AdministrativeInformationFields sizing={props.sizing} form={methods} orientation={'horizontal'} />;
+    return <AdministrativeInformationFields sizing={props.sizing} form={methods} orientation="horizontal" />;
 };
 
 describe('when entering patient administrative information', () => {

@@ -1,11 +1,13 @@
+import { useEffect, useId, useState } from 'react';
+
 import { useConfiguration } from 'configuration';
 import { MultiSelect } from 'design-system/select';
 import { LoadingIndicator } from 'libs/loading/indicator';
 import { cachedSelectableResolver, Selectable } from 'options';
-import { useEffect, useId, useState } from 'react';
 import { FullField, ValueEditorProps } from 'react-querybuilder';
-import { ValueSetMetadata } from './AdvancedFilter';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { ValueSetMetadata } from './AdvancedFilter';
 
 const getValueSetMap = (state: string): Record<string, string> => {
     return {
@@ -41,7 +43,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
         const getValues = async (): Promise<Selectable[]> => {
             const valueSetMap = getValueSetMap(properties.entries.NBS_STATE_CODE);
 
-            let cacheId = `report.valueset.${codesetNm ?? columnUid}`.toLowerCase();
+            const cacheId = `report.valueset.${codesetNm ?? columnUid}`.toLowerCase();
 
             let endpoint = '';
             if (codeDescCd?.toLowerCase() === CODE_DESC_CD.HARD_CODED) {

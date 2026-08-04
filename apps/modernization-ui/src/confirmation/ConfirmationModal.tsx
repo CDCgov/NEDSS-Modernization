@@ -1,4 +1,5 @@
 import { ReactNode, RefObject } from 'react';
+
 import {
     Button,
     ButtonGroup,
@@ -10,6 +11,7 @@ import {
     ModalToggleButton,
 } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import style from './confirmationModal.module.scss';
 
 type Props = {
@@ -63,7 +65,7 @@ export const ConfirmationModal = ({
             </div>
             <ModalFooter id="confirmation-footer">
                 <ButtonGroup className={classNames(style.actionButtonGroup)}>
-                    <ModalToggleButton modalRef={modal} outline data-testid="cancel-btn" disabled={disabled}>
+                    <ModalToggleButton modalRef={modal} outline={true} data-testid="cancel-btn" disabled={disabled}>
                         {cancelText}
                     </ModalToggleButton>
                     <Button

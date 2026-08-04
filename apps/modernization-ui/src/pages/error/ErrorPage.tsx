@@ -1,10 +1,11 @@
+import { FullPageBlock } from 'components/FullPageBlock';
 import { Heading } from 'components/heading';
+import { LinkButton } from 'design-system/button';
+import { ApiError } from 'generated';
 import { isRouteErrorResponse, useRouteError } from 'react-router';
 import { logErrorToUserConsole } from 'utils/logging';
+
 import { NotFoundError } from './NotFoundError';
-import { FullPageBlock } from 'components/FullPageBlock';
-import { ApiError } from 'generated';
-import { LinkButton } from 'design-system/button';
 
 const ErrorPage = () => {
     const error = useRouteError();
@@ -30,7 +31,11 @@ const ErrorPage = () => {
                                 </p>
                             </>
                         ) : (
-                            <p>{'data' in error ? JSON.stringify(error.data) : error?.body?.message}</p>
+                            <p>
+                                {'data' in error
+                                    ? JSON.stringify(error.data)
+                                    : error?.body?.message + (error?.body?.id ? ` (ID: ${error.body.id})` : '')}
+                            </p>
                         )}
                     </>
                 ) : error instanceof Error ? (

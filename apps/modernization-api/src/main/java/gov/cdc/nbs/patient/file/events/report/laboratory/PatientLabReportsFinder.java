@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.file.events.report.laboratory;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.sql.ParamUtils;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -135,9 +136,8 @@ class PatientLabReportsFinder {
       return Collections.emptyList();
     }
     return this.client
-        .sql(QUERY)
+        .sql(ParamUtils.replaceListParam(QUERY, "any", scope.any()))
         .param("patient", patient)
-        .param("any", scope.any())
         .query(this.mapper)
         .list();
   }

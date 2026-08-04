@@ -1,9 +1,11 @@
+import { RefObject, useEffect } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { EditValueset } from 'apps/page-builder/components/EditValueset/EditValueset';
 import { useValueset } from 'apps/page-builder/hooks/api/useValueset';
 import { Spinner } from 'components/Spinner';
-import { RefObject, useEffect } from 'react';
+
 import './EditValuesetModal.scss';
 import styles from './edit-valueset-modal.module.scss';
 type Props = {
@@ -37,9 +39,9 @@ export const EditValuesetModal = ({ modal, valuesetName, onValuesetChanged }: Pr
 
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="edit-valueset-modal"
             id="edit-valueset-modal"
             aria-labelledby="edit-valueset-modal"

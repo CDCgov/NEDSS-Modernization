@@ -1,9 +1,10 @@
-import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
+
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-import { Selectable } from 'options/selectable';
 import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
+import { Selectable } from 'options/selectable';
 import { Suggestions } from 'suggestion/Suggestions';
 
 type SuggestionRenderer = (suggestion: Selectable) => ReactNode;
@@ -25,7 +26,7 @@ type AutocompleteSingleProps<V> = {
     asValue?: ValueConverter<V>;
     asText?: TextConverter<V>;
     asSuggestion?: SuggestionRenderer;
-    onBlur?: any;
+    onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
 const Autocomplete = <V,>({

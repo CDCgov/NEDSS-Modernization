@@ -1,12 +1,14 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
 import { PageRuleControllerService, Rule, RuleRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Breadcrumb } from 'breadcrumb';
+import { useAlert } from 'libs/alert';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
+
 import styles from './AddBusinessRule.module.scss';
 
 export type SourceValueProp = {
@@ -107,7 +109,7 @@ export const AddBusinessRule = () => {
                 </Form>
                 <div className={styles.footerBtns}>
                     <Button
-                        outline
+                        outline={true}
                         onClick={() => {
                             form.reset();
                             redirectToLibrary();

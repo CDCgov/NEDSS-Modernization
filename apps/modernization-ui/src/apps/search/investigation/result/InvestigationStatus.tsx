@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import styles from './investigation-status.module.scss';
 
 type Props = {

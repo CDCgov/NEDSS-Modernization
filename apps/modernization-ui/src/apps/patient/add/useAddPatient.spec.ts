@@ -1,7 +1,9 @@
 import { act } from 'react';
+
 import { renderHook } from '@testing-library/react';
-import { AddPatientSettings, useAddPatient } from './useAddPatient';
+
 import { NewPatient } from './api';
+import { AddPatientSettings, useAddPatient } from './useAddPatient';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Example = {};

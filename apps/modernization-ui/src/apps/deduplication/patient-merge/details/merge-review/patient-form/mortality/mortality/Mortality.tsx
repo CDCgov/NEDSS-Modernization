@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;
@@ -41,7 +43,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                     label="Is the patient deceased?"
                     display={mortality.deceased}
                     groupType="last"
-                    underlined
+                    underlined={true}
                 />
                 <Controller
                     control={form.control}
@@ -55,7 +57,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                                 formValue: personUid,
                                 ...field,
                             }}
-                            underlined
+                            underlined={true}
                         />
                     )}
                 />
@@ -71,7 +73,7 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                                 formValue: personUid,
                                 ...field,
                             }}
-                            underlined
+                            underlined={true}
                         />
                     )}
                 />
@@ -90,7 +92,12 @@ export const Mortality = ({ personUid, mortality, allowDetailedSelection }: Prop
                         />
                     )}
                 />
-                <MergeDataDisplay label="Death county" display={mortality.deathCounty} groupType="last" underlined />
+                <MergeDataDisplay
+                    label="Death county"
+                    display={mortality.deathCounty}
+                    groupType="last"
+                    underlined={true}
+                />
                 <Controller
                     control={form.control}
                     name="mortality.deathCountry"

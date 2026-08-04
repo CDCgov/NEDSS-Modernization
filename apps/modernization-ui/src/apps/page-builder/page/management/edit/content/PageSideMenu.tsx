@@ -1,6 +1,7 @@
 import { Icon } from '@trussworks/react-uswds';
-import styles from './page-content.module.scss';
 import { Icon as EQIcon } from 'components/Icon/Icon';
+
+import styles from './page-content.module.scss';
 
 type PageSideMenuProps = {
     onAddSection: () => void;

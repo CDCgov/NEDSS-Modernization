@@ -1,12 +1,13 @@
 import { Suspense } from 'react';
+
 import { LoadingOverlay } from 'libs/loading';
-import { Await } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
 import {
     AdministrativeInformation,
     AdministrativeInformationCard,
     AdministrativeInformationCardProps,
 } from 'libs/patient/demographics/administrative';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
 
 type PatientFileAdministrativeInformationCardProps = {
     provider: MemoizedSupplier<Promise<AdministrativeInformation>>;

@@ -27,11 +27,11 @@ const useTableActionState = <T>(): TableActions<T> => {
         reset: () => setSelected(undefined),
         prepareForAdd: () => setSelected({ type: 'add' }),
 
-        selectForDetail: (item: T) => setSelected({ type: 'detail', item: item }),
+        selectForDetail: (item: T) => setSelected({ type: 'detail', item }),
 
-        selectForEdit: (item: T) => setSelected({ type: 'update', item: item }),
+        selectForEdit: (item: T) => setSelected({ type: 'update', item }),
 
-        selectForDelete: (item: T) => setSelected({ type: 'delete', item: item }),
+        selectForDelete: (item: T) => setSelected({ type: 'delete', item }),
     };
 
     return { selected, actions };

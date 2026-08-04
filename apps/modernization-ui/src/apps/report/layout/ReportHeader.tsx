@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
+import { BackToNbs6Link } from 'breadcrumb';
 import { Heading } from 'components/heading';
 
 import styles from './layout.module.scss';
-import { BackToNbs6Link } from 'breadcrumb';
 
 export type ReportHeaderProps = {
     title: string;

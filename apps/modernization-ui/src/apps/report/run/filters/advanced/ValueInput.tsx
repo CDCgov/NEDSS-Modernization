@@ -1,13 +1,15 @@
-import { useId, useEffect } from 'react';
-import { FullField, ValueEditorProps } from 'react-querybuilder';
-import { NumericInput, NumericRangeInput, TextInputField } from 'design-system/input';
-import { DatePickerInput } from 'design-system/date';
-import { DatePickerRange } from 'design-system/date/range/DatePickerRange.tsx';
-import { DateBetweenCriteria } from 'design-system/date/criteria';
-import { NumberBetweenCriteria } from 'design-system/input/range/NumberRangeField.tsx';
-import { BETWEEN_OPERATOR } from './operators.ts';
-import { ReactComponentLike } from 'prop-types';
+import { useEffect, useId } from 'react';
+
 import { SIZING } from 'apps/report/constants.ts';
+import { DatePickerInput } from 'design-system/date';
+import { DateBetweenCriteria } from 'design-system/date/criteria';
+import { DatePickerRange } from 'design-system/date/range/DatePickerRange.tsx';
+import { NumericInput, NumericRangeInput, TextInputField } from 'design-system/input';
+import { NumberBetweenCriteria } from 'design-system/input/range/NumberRangeField.tsx';
+import { ReactComponentLike } from 'prop-types';
+import { FullField, ValueEditorProps } from 'react-querybuilder';
+
+import { BETWEEN_OPERATOR } from './operators.ts';
 
 const RANGE_COMPONENTS: Record<string, ReactComponentLike> = {
     date: DatePickerRange,
@@ -37,7 +39,7 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     const isBetween = operator === BETWEEN_OPERATOR_NAME;
     const InputComponent = isBetween ? RANGE_COMPONENTS[inputType!] : SINGLE_COMPONENTS[inputType!];
 
-    let convertedValue = isBetween ? getConvertedRange(props) : (value ?? '');
+    const convertedValue = isBetween ? getConvertedRange(props) : (value ?? '');
 
     // eslint-disable-next-line max-len
     // adapted from https://github.com/mcmcgrath13/react-querybuilder/blob/87a991b124fa9060431ac8e1e8f42b789a5ddecb/packages/react-querybuilder/src/components/ValueEditor.tsx#L312-L322
@@ -68,14 +70,14 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     };
 
     return (
-        <div className={'queryBuilder-value'}>
+        <div className="queryBuilder-value">
             <InputComponent
                 id={id}
                 label={isBetween ? '' : labelName}
                 value={convertedValue}
                 name={labelName}
                 onChange={isBetween ? handleBetweenOnChange : handleSingleOnChange}
-                required
+                required={true}
                 sizing={SIZING}
             />
         </div>

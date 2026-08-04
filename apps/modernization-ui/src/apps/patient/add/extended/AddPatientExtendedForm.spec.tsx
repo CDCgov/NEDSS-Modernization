@@ -1,10 +1,11 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen, within } from '@testing-library/react';
+import { internalizeDate } from 'date';
+import { Selectable } from 'options';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { ExtendedNewPatientEntry, initial } from './entry';
-import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
-import { Selectable } from 'options';
 
 const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],

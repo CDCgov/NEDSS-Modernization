@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
 import { axe } from 'jest-axe';
+import { MemoryRouter } from 'react-router';
+
 import { PatientSearchActions } from './PatientSearchActions';
 
 vi.mock('./add/useAddPatientFromSearch', () => ({

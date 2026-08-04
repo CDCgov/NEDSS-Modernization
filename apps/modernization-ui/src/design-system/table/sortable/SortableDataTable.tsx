@@ -1,5 +1,7 @@
 import { SortHandler, SortingProvider } from 'libs/sorting';
+
 import { DataTable, DataTableProps } from '../DataTable';
+
 import { columnSortResolver } from './columnSortResolver';
 
 /**

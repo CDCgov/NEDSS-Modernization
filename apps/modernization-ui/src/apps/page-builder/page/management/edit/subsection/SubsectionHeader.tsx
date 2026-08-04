@@ -1,15 +1,19 @@
+import { useRef, useState } from 'react';
+
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { ConfirmationModal } from 'confirmation';
-import { useRef, useState } from 'react';
+import { useAlert } from 'libs/alert';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { usePageManagement } from '../../usePageManagement';
-import styles from './subsection.module.scss';
 import { staticElementTypes } from '../staticelement/EditStaticElement';
+
+import styles from './subsection.module.scss';
 
 type Props = {
     subsection: PagesSubSection;
@@ -50,15 +54,14 @@ export const SubsectionHeader = ({
                 refresh();
             })
             .catch((error) => {
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -91,11 +94,12 @@ export const SubsectionHeader = ({
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" className="add-btn addQuestionBtn" outline onClick={onAddQuestion}>
+                <Button type="button" className="add-btn addQuestionBtn" outline={true} onClick={onAddQuestion}>
                     Add question
                 </Button>
                 <MoreOptions
                     header={<Icon.MoreVert role="menu" size={4} onClick={() => setCloseOptions(false)} />}
+                    // eslint-disable-next-line max-len
                     className={`subsectionOptionsWithGrouped-${subsection.isGrouped ? 'grouped' : subsection.questions.length > 2 ? 'ungrouped' : ''}`}
                     close={closeOptions}
                 >
@@ -115,7 +119,7 @@ export const SubsectionHeader = ({
                                 data-testid="ungroupQuestionsOption"
                                 onClick={() => setCloseOptions(true)}
                             >
-                                <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                                <IconComponent name="group" size="s" /> Ungroup questions
                             </ModalToggleButton>
                         )}
                     {!subsection.isGrouped &&
@@ -132,7 +136,7 @@ export const SubsectionHeader = ({
                                         data-testid="groupQuestionsOption"
                                         onClick={() => closeThenAct(onGroupQuestion)}
                                     >
-                                        <IconComponent name={'group'} size={'s'} /> Group questions
+                                        <IconComponent name="group" size="s" /> Group questions
                                     </Button>
                                 )}
                             </>
@@ -159,6 +163,7 @@ export const SubsectionHeader = ({
             <ConfirmationModal
                 modal={ungroupSubsectionModalRef}
                 title="Warning"
+                // eslint-disable-next-line max-len
                 message="You have indicated that you would like to ungroup the repeating block questions in the Tribal Affiliation Repeating Block questions."
                 detail="Select Ungroup or Cancel to return to Edit Page."
                 confirmText="Ungroup"
@@ -169,7 +174,7 @@ export const SubsectionHeader = ({
             />
             <ModalComponent
                 modalRef={addStaticElementModalRef}
-                modalHeading={'Add static element'}
+                modalHeading="Add static element"
                 modalBody={<AddStaticElement modalRef={addStaticElementModalRef} subsectionId={subsection.id} />}
             />
         </div>

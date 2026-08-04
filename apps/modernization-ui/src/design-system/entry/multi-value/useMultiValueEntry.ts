@@ -70,7 +70,7 @@ const reducer =
             case 'view': {
                 // select an item for viewing
 
-                if (current.status == 'viewing' && current.selected.id === action.identifier) {
+                if (current.status === 'viewing' && current.selected.id === action.identifier) {
                     // already viewing the selected item, this is a reset
                     return { ...current, status: 'adding' };
                 } else if (action.identifier in current.lookup) {

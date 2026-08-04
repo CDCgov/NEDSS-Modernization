@@ -1,12 +1,14 @@
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { NumericInput, TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
 import { Permitted } from 'libs/permission';
 import { isAllowed } from 'libs/sensitive';
-import { NumericInput, TextInputField } from 'design-system/input';
-import { EntryFieldsProps } from 'design-system/entry';
-import { SingleSelect } from 'design-system/select';
-import { DatePickerInput, validDateRule } from 'design-system/date';
+import { Controller, UseFormReturn } from 'react-hook-form';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
+
 import { HasGeneralInformationDemographic, labels } from '../general';
+
 import { GeneralInformationOptions } from './useGeneralInformationOptions';
 
 type GeneralInformationDemographicFieldsProps = {
@@ -34,7 +36,7 @@ const GeneralInformationDemographicFields = ({
                     onChange={onChange}
                     onBlur={onBlur}
                     error={error?.message}
-                    required
+                    required={true}
                     sizing={sizing}
                     aria-description="This field defaults to today's date and can be changed if needed."
                 />
@@ -188,13 +190,13 @@ const GeneralInformationDemographicFields = ({
                 control={form.control}
                 name="general.stateHIVCase"
                 rules={maxLengthRule(16, labels.stateHIVCase)}
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                     <TextInputField
                         label={labels.stateHIVCase}
                         orientation={orientation}
                         onBlur={onBlur}
-                        onChange={(value) => onChange({ value: value })}
+                        onChange={(value) => onChange({ value })}
                         maxLength={16}
                         value={isAllowed(value) ? value.value : undefined}
                         id={name}

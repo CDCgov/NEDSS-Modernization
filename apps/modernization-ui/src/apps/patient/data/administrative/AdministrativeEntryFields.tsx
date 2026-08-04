@@ -1,9 +1,9 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
-import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { Controller, useFormContext } from 'react-hook-form';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 const AS_OF_DATE_LABEL = 'Information as of date';
 const COMMENTS_LABEL = 'Comments';
@@ -28,7 +28,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal', sizing =
                         orientation={orientation}
                         error={error?.message}
                         sizing={sizing}
-                        required
+                        required={true}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
                 )}

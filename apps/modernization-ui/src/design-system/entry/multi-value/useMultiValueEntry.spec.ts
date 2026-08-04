@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
-import { MultiValueEntrySettings, useMultiValueEntry } from './useMultiValueEntry';
+
 import { entryIdentifierGenerator } from './entryIdentifierGenerator';
+import { MultiValueEntrySettings, useMultiValueEntry } from './useMultiValueEntry';
 
 describe('useMultiValueEntry', () => {
     type Example = { id: number; name: string; description?: string; order?: number };

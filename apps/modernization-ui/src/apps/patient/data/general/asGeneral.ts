@@ -1,8 +1,9 @@
 import { asValue } from 'options';
-import { GeneralInformation } from '../api';
-import { GeneralInformationEntry } from '../entry';
 import { orUndefined } from 'utils';
 import { isEmpty } from 'utils/isEmpty';
+
+import { GeneralInformation } from '../api';
+import { GeneralInformationEntry } from '../entry';
 
 const asGeneral = (entry: GeneralInformationEntry): GeneralInformation | undefined => {
     const { asOf, ...remaining } = entry;

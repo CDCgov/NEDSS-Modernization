@@ -1,22 +1,23 @@
 import { Suspense } from 'react';
-import { Await } from 'react-router';
-import { LoadingOverlay } from 'libs/loading';
-import { MemoizedSupplier } from 'libs/supplying';
+
+import { Shown } from 'conditional-render';
+import { LinkButton } from 'design-system/button';
+import { TableCard, TableCardProps } from 'design-system/card';
+import { Checkbox } from 'design-system/checkbox';
+import { Hint } from 'design-system/hint';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { TableCard, TableCardProps } from 'design-system/card';
-import { permissions, Permitted } from 'libs/permission';
-import { LinkButton } from 'design-system/button';
-import { Checkbox } from 'design-system/checkbox';
-import { displayNotificationStatus, displayStatus, displayInvestigator } from 'libs/events/investigations';
-import { PatientFileInvestigation } from './investigation';
-import { useCompareInvestigation } from './useCompareInvestigation';
-import { either, not } from 'utils/predicate';
-import { Shown } from 'conditional-render';
-import { Hint } from 'design-system/hint';
 import { LabeledValue } from 'design-system/value';
+import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
+import { LoadingOverlay } from 'libs/loading';
+import { permissions, Permitted } from 'libs/permission';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
+import { either, not } from 'utils/predicate';
 
+import { PatientFileInvestigation } from './investigation';
 import styles from './investigations.module.scss';
+import { useCompareInvestigation } from './useCompareInvestigation';
 
 const SELECTION = { id: 'selection', label: 'Select to compare' };
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
@@ -150,7 +151,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
             title="Investigations"
             data={data}
             columns={[selectionColumn, ...columns]}
-            columnPreferencesKey={'patient.file.investigations.preferences'}
+            columnPreferencesKey="patient.file.investigations.preferences"
             defaultColumnPreferences={columnPreferences}
             sizing={sizing}
             className={styles.selectable}
@@ -158,7 +159,7 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                 <>
                     <Permitted permission={permissions.investigation.add}>
                         <LinkButton
-                            secondary
+                            secondary={true}
                             sizing={sizing}
                             icon="add_circle"
                             href={`/nbs/api/profile/${patient}/investigation`}
@@ -173,10 +174,11 @@ const InternalCard = ({ patient, sizing, data = [], ...remaining }: InternalCard
                             enabled={!comparison}
                             target={
                                 <LinkButton
-                                    secondary
+                                    secondary={true}
                                     sizing={sizing}
                                     disabled={!comparison}
                                     aria-describedby="compare-investigations"
+                                    // eslint-disable-next-line max-len
                                     href={`/nbs/api/profile/${patient}/investigation/${comparison?.selected}/compare/${comparison?.comparedTo}`}
                                 >
                                     Compare investigations

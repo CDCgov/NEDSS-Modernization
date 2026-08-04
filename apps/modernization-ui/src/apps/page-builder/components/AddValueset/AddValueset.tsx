@@ -1,9 +1,11 @@
 import { Button, Icon } from '@trussworks/react-uswds';
+import { CreateValuesetRequest, Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 import { useAlert } from 'libs/alert';
-import { CreateValuesetRequest, ValueSetControllerService, Valueset } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+
 import { ValuesetForm } from './ValuesetForm/ValuesetForm';
 import styles from './create-valueset.module.scss';
 
@@ -43,7 +45,7 @@ export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button disabled={!form.formState.isValid} onClick={handleCreate} type="button">
