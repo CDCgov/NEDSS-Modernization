@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+
 import './ToggleBtn.scss';
 
 type Props = {

@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Card } from 'design-system/card/Card';
+
 import { Button } from 'design-system/button';
+import { Card } from 'design-system/card/Card';
 import { Confirmation } from 'design-system/modal/Confirmation';
+import { Permitted } from 'libs/permission';
+
 import styles from './CaseReportLaboratorySection.module.scss';
 import { caseReportLinks } from './caseLinks';
-import { Permitted } from 'libs/permission';
 
 type Props = {
     filter: string;

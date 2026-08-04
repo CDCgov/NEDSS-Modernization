@@ -1,5 +1,6 @@
-import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { FilterEntry } from './FilterEntry';
 
 const PartialValueEntryForm = () => {

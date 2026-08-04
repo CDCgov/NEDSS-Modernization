@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DateFilter, DateRangeFilter, Filter, ExactValueFilter, PartialValueFilter } from 'filters';
+import { DateFilter, DateRangeFilter, ExactValueFilter, Filter, PartialValueFilter } from 'filters';
+
 import { AppliedFilters } from './AppliedFilters';
 
 describe('when there are applied filters', () => {

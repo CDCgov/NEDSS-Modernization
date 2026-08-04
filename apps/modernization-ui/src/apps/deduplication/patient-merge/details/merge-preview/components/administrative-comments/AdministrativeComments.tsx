@@ -1,8 +1,10 @@
-import { format, parseISO, isValid } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 import { Card } from 'design-system/card/Card';
-import styles from './AdministrativeComments.module.scss';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+
+import styles from './AdministrativeComments.module.scss';
 
 type AdministrativeCommentsProps = {
     mergeCandidates: MergeCandidate[];

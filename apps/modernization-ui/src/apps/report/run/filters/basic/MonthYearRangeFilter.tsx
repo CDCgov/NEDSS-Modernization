@@ -1,7 +1,8 @@
-import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
-import { BasicFilterConfiguration } from 'generated';
 import { MonthYearPickerRange } from 'design-system/date/range/MonthYearPickerRange';
+import { BasicFilterConfiguration } from 'generated';
 import { validateRequiredRule } from 'validation/entry';
+
+import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 
 const YEARS_BACK = 100;
 const getThisYear = () => new Date().getFullYear();

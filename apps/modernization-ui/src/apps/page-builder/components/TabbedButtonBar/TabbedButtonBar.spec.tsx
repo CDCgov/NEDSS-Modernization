@@ -1,4 +1,5 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
+
 import { TabbedButtonBar } from './TabbedButtonBar';
 
 describe('Tabbed button bar', () => {

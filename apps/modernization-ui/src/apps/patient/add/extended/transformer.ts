@@ -1,20 +1,20 @@
-import { maybeMap, maybeMapAll } from 'utils/mapping';
+import { NewPatient, Transformer } from 'apps/patient/add/api';
 import {
     asAddress,
     asAdministrative,
+    asBirth,
+    asEthnicity,
+    asGeneral,
+    asIdentification,
+    asMortality,
     asName,
     asPhoneEmail,
-    asIdentification,
     asRace,
-    asEthnicity,
     asSex,
-    asBirth,
-    asMortality,
-    asGeneral,
 } from 'apps/patient/data';
-import { ExtendedNewPatientEntry } from './entry';
+import { maybeMap, maybeMapAll } from 'utils/mapping';
 
-import { NewPatient, Transformer } from 'apps/patient/add/api';
+import { ExtendedNewPatientEntry } from './entry';
 
 const asNames = maybeMapAll(asName);
 const asAddresses = maybeMapAll(asAddress);

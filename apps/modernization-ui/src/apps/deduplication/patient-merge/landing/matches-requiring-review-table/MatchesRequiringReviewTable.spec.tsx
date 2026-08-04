@@ -1,10 +1,11 @@
-import { MatchRequiringReviewResponse } from 'apps/deduplication/api/model/MatchRequiringReview';
-import { MatchesRequiringReviewTable } from './MatchesRequiringReviewTable';
 import { render, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MatchRequiringReviewResponse } from 'apps/deduplication/api/model/MatchRequiringReview';
+import { SortingProvider } from 'libs/sorting';
 import { PaginationProvider } from 'pagination';
 import { MemoryRouter } from 'react-router';
-import userEvent from '@testing-library/user-event';
-import { SortingProvider } from 'libs/sorting';
+
+import { MatchesRequiringReviewTable } from './MatchesRequiringReviewTable';
 
 let mockReturnValue: MatchRequiringReviewResponse;
 beforeEach(() => {

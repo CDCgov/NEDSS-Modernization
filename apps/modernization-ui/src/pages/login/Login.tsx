@@ -1,4 +1,5 @@
 import { Config } from 'config';
+
 import { LoginForm } from './LoginForm';
 
 const Login = () => {

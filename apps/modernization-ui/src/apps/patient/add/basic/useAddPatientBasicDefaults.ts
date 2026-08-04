@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
+
 import { useLocation } from 'react-router';
-import { BasicNewPatientEntry, initial } from './entry';
+
 import { asBasicNewPatientEntry } from './asBasicNewPatientEntry';
+import { BasicNewPatientEntry, initial } from './entry';
 
 type Interaction = {
     defaults: BasicNewPatientEntry | undefined;

@@ -1,9 +1,11 @@
+import { useState } from 'react';
+
 import { PagesSection } from 'apps/page-builder/generated';
 
-import styles from './preview-section.module.scss';
 import { PreviewSubsection } from '../subsection/PreviewSubsection';
+
 import { PreviewSectionHeader } from './PreviewSectionHeader';
-import { useState } from 'react';
+import styles from './preview-section.module.scss';
 
 type PreviewSectionType = {
     section: PagesSection;

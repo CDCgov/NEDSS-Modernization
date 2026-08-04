@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { Sizing } from 'design-system/field';
+
 import { useConfiguration } from 'configuration';
+import { Sizing } from 'design-system/field';
 
 const FALLBACK_SIZING = 'medium';
 

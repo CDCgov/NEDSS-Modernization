@@ -1,4 +1,6 @@
+import { render } from '@testing-library/react';
 import { LabReport } from 'generated/graphql/schema';
+
 import {
     getAssociatedInvestigations,
     getDescription,
@@ -6,7 +8,6 @@ import {
     getPatient,
     getReportingFacility,
 } from './laboratoryReportResult';
-import { render } from '@testing-library/react';
 
 describe('when displaying a Laboratory Search Result', () => {
     it('should resolve the patient when present', () => {

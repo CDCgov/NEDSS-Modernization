@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;

@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { TopBanner } from './TopBanner';
 
 describe('TopBanner component tests', () => {

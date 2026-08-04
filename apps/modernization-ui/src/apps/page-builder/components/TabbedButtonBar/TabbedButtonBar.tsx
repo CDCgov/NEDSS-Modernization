@@ -1,6 +1,8 @@
+import { useState } from 'react';
+
 import { Button } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { useState } from 'react';
+
 import styles from './tabbed-button-bar.module.scss';
 
 interface Props {

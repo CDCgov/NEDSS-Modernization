@@ -1,5 +1,5 @@
-import { Supplier } from 'libs/supplying';
 import { Location } from 'libs/location';
+import { Supplier } from 'libs/supplying';
 import { Selectable } from 'options';
 import { EffectiveDated } from 'utils';
 import { Nullable } from 'utils/object';

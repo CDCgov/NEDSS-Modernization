@@ -1,4 +1,5 @@
 import { RecordStatus } from 'generated/graphql/schema';
+
 import { PatientCriteriaEntry } from './criteria';
 import { transform } from './transformer';
 

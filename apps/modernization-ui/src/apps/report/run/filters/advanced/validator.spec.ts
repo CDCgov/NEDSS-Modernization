@@ -1,6 +1,6 @@
-import { validateRule, ValidationResultMap } from './validator';
+import { RuleGroupType, RuleType } from 'react-querybuilder';
 
-type QbQuery = Parameters<typeof validateRule>[0];
+import { validateRule, ValidationResultMap } from './validator';
 
 describe('validateRule', () => {
     let mockResult: ValidationResultMap;

@@ -1,7 +1,8 @@
 import { FullField, FullOperator, ValueEditorProps } from 'react-querybuilder';
-import { ValueSetSelector } from './ValueSetSelector';
+
 import { ValueSetMetadata } from './AdvancedFilter';
 import { ValueInput } from './ValueInput';
+import { ValueSetSelector } from './ValueSetSelector';
 
 const ValueEditorSwitch = (props: ValueEditorProps<ValueSetMetadata & FullField & FullOperator>) => {
     switch (props.type) {

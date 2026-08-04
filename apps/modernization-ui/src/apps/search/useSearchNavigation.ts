@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+
 import { useConfiguration } from 'configuration';
+import { useNavigate } from 'react-router';
 
 type Interaction = {
     path: string;

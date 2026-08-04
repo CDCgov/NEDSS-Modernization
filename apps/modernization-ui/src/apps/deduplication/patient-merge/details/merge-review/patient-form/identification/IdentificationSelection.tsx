@@ -1,7 +1,10 @@
-import { MergeCandidate, MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
+
+import { MergeCandidate, MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
+
 import { IdentificationDataTable } from './identification-data-table/IdentificationDataTable';
 import { IdentificationDetails } from './identification-details/IdentificationDetails';
 

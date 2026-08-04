@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+
 import { usePostHog } from 'posthog-js/react';
+import { useLocation } from 'react-router';
 
 const PageviewTracker = () => {
     const { pathname, search } = useLocation();

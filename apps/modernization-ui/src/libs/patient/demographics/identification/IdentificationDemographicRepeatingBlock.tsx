@@ -1,9 +1,9 @@
 import { internalizeDate } from 'date';
 import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
 import { Column } from 'design-system/table';
-import { IdentificationDemographic, labels } from './identifications';
-import { IdentificationDemographicView } from './IdentificationDemographicView';
 
+import { IdentificationDemographicView } from './IdentificationDemographicView';
+import { IdentificationDemographic, labels } from './identifications';
 import styles from './identifications-demographic-repeating-block.module.scss';
 
 const columns: Column<IdentificationDemographic>[] = [

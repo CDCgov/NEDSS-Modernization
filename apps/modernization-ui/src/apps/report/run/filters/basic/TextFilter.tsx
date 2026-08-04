@@ -1,6 +1,7 @@
 import { TextInputField } from 'design-system/input';
-import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
+
+import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 
 // Don't need `filter` for this component, but don't want to pass it down
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

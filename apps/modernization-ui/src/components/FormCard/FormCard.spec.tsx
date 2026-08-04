@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import FormCard from './FormCard';
 
 describe('General information component tests', () => {

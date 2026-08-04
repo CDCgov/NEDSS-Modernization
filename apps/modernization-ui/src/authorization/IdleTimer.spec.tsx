@@ -1,5 +1,6 @@
-import { Mock } from 'vitest';
 import { act, fireEvent, render } from '@testing-library/react';
+import { Mock } from 'vitest';
+
 import IdleTimer, { IdleTimerProps } from './IdleTimer';
 
 const default_timeout = 5000;

@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import classNames from 'classnames';
-import { mapOr } from 'utils/mapping';
-import { Sizing } from 'design-system/field';
-import { asStrictISODate } from 'design-system/date/asStrictISODate';
-import { onlyNumericKeys } from 'design-system/input/numeric';
-import { maskedAsDate } from './maskedAsDate';
-import { useDate } from './useDate';
 
 import datePicker from '@uswds/uswds/js/usa-date-picker';
+import classNames from 'classnames';
+import { asStrictISODate } from 'design-system/date/asStrictISODate';
+import { Sizing } from 'design-system/field';
+import { onlyNumericKeys } from 'design-system/input/numeric';
+import { mapOr } from 'utils/mapping';
+
 import styles from './date-picker.module.scss';
+import { maskedAsDate } from './maskedAsDate';
+import { useDate } from './useDate';
 
 const handleExternalKeyUp = (event: Event) => {
     const input = event.target as HTMLInputElement;

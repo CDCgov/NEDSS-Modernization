@@ -1,6 +1,7 @@
-import { MockedFunction } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MockedFunction } from 'vitest';
+
 import { ClassicLink } from './ClassicLink';
 import { useRedirect } from './useRedirect';
 

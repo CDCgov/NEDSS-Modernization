@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { TextArea, TextAreaProps } from './TextArea';
 import userEvent from '@testing-library/user-event';
+
+import { TextArea, TextAreaProps } from './TextArea';
 
 const Fixture = ({ id = 'testing-area', ...remaining }: Partial<TextAreaProps>) => (
     <div>

@@ -1,6 +1,7 @@
 import { Filter } from 'filters';
-import styles from './filter-display.module.scss';
 import { asString } from 'filters/asDisplayableFilter';
+
+import styles from './filter-display.module.scss';
 
 type Props = {
     filters: Filter[];

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import styles from './SourceQuestion.module.scss';
-import { PagesQuestion, PagesSection, PagesSubSection, PagesTab, Rule } from 'apps/page-builder/generated';
-import { Icon } from 'components/Icon/Icon';
+
 import { Button, Radio, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
+import { PagesQuestion, PagesSection, PagesSubSection, PagesTab, Rule } from 'apps/page-builder/generated';
 import { useGetSourceQuestion } from 'apps/page-builder/hooks/api/useGetSourceQuestions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Icon } from 'components/Icon/Icon';
+
+import styles from './SourceQuestion.module.scss';
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;

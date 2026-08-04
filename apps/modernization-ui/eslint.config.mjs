@@ -7,6 +7,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
+import eslintPluginImport from 'eslint-plugin-import';
 
 export default defineConfig([
     // Main config
@@ -32,6 +33,7 @@ export default defineConfig([
             'react-hooks': reactHooks,
             storybook,
             jsdoc,
+            import: eslintPluginImport,
         },
         rules: {
             ...tseslint.configs.recommended.rules,
@@ -63,12 +65,71 @@ export default defineConfig([
             'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
             'object-shorthand': 'error',
+
+            'import/default': 'error',
+            'import/export': 'error',
+            'import/first': 'error',
+            'import/named': 'error',
+            'import/namespace': 'error',
+            'import/no-empty-named-blocks': 'error',
+            'import/no-extraneous-dependencies': 'error',
+            'import/no-named-as-default-member': 'error',
+            'import/no-named-as-default': 'error',
+            'import/no-unassigned-import': [
+                'error',
+                { allow: ['**/*.scss', '@testing-library/**/*', 'jest-axe/**/*'] },
+            ],
+            'import/no-useless-path-segments': 'error',
+            // Sort outer import statement lines
+            'import/order': [
+                'error',
+                {
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
+
+                    pathGroups: [
+                        {
+                            pattern: 'react',
+                            group: 'builtin',
+                            position: 'before',
+                        },
+                    ],
+
+                    pathGroupsExcludedImportTypes: [],
+                    'newlines-between': 'always',
+
+                    alphabetize: {
+                        order: 'asc',
+                        caseInsensitive: false,
+                    },
+
+                    distinctGroup: false,
+                },
+            ],
+            // Sort members within a single import statement
+            'sort-imports': [
+                'error',
+                {
+                    ignoreCase: true,
+                    ignoreDeclarationSort: true, // Let import/order handle statement lines
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+                },
+            ],
         },
         settings: {
             react: { version: 'detect' },
             jsdoc: {
                 tagNamePreference: {
                     return: 'return',
+                },
+            },
+            'import/parsers': {
+                '@typescript-eslint/parser': ['.ts', '.tsx'],
+            },
+            'import/resolver': {
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: './tsconfig.json',
                 },
             },
         },

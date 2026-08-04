@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
+
 import { MergeCandidate } from '../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../merge-review/model/PatientMergeForm';
+
+import { MergePreview } from './MergePreview';
 import { PreviewAddress } from './components/address/PreviewAddress';
 import { AdministrativeComments } from './components/administrative-comments/AdministrativeComments';
 import { PreviewEthnicity } from './components/ethnicity/PreviewEthnicity';
@@ -11,7 +14,6 @@ import { PreviewName } from './components/name/PreviewName';
 import { PatientSummary } from './components/patient-summary/PatientSummary';
 import { PreviewPhoneAndEmail } from './components/phone-and-email/PreviewPhoneAndEmail';
 import { PreviewRace } from './components/race/PreviewRace';
-import { MergePreview } from './MergePreview';
 
 describe('MergePreview', () => {
     const mockOnBack = vi.fn();

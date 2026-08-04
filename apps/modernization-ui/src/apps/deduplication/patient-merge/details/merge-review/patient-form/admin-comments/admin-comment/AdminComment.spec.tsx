@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { PatientMergeForm } from '../../../model/PatientMergeForm';
-import { AdminComment } from './AdminComment';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { PatientMergeForm } from '../../../model/PatientMergeForm';
+
+import { AdminComment } from './AdminComment';
 
 const Fixture = () => {
     const form = useForm<PatientMergeForm>();

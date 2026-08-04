@@ -1,6 +1,9 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { ReactNode } from 'react';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { SectionLabel } from '../section-label/SectionLabel';
+
 import styles from './section.module.scss';
 
 type Props = {

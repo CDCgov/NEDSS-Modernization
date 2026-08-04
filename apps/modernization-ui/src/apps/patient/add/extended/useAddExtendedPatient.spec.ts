@@ -1,7 +1,9 @@
 import { act } from 'react';
+
 import { renderHook } from '@testing-library/react';
-import { useAddExtendedPatient } from './useAddExtendedPatient';
+
 import { ExtendedNewPatientEntry } from './entry';
+import { useAddExtendedPatient } from './useAddExtendedPatient';
 
 const setup = () => {
     return renderHook(() => useAddExtendedPatient());

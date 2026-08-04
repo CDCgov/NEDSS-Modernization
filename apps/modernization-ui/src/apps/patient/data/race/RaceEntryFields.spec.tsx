@@ -1,8 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RaceEntry } from './entry';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
+import { RaceEntry } from './entry';
 
 const mockDetailResolver = vi.fn();
 

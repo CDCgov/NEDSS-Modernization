@@ -1,4 +1,5 @@
 import { Card } from 'design-system/card/Card';
+
 import styles from './LinedMergePreviewCard.module.scss';
 
 type LabelTextPair = {

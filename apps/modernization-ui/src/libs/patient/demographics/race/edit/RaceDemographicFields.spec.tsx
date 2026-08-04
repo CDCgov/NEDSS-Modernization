@@ -1,7 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { RaceDemographic } from '../race';
+
 import { RaceDemographicFields, RaceDemographicFieldsProps } from './RaceDemographicFields';
 import { RaceOptions } from './useRaceOptions';
 

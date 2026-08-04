@@ -1,9 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IdentificationCodedValues } from './useIdentificationCodedValues';
-import { IdentificationEntry } from './entry';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { IdentificationEntryFields } from './IdentificationEntryFields';
+import { IdentificationEntry } from './entry';
+import { IdentificationCodedValues } from './useIdentificationCodedValues';
 
 const mockIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],

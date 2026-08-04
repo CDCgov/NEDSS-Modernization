@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BasicInformationFields } from './BasicInformationFields';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { CreateQuestionForm } from '../QuestionForm';
+
+import { BasicInformationFields } from './BasicInformationFields';
 
 const { result } = renderHook(() =>
     useForm<CreateQuestionForm>({

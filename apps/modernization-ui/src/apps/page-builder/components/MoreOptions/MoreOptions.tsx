@@ -1,6 +1,7 @@
 import './MoreOptions.scss';
-import useComponentVisible from './useComponentVisible';
 import { ReactNode, useEffect } from 'react';
+
+import useComponentVisible from './useComponentVisible';
 
 export const MoreOptions = ({
     children,

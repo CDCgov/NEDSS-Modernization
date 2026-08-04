@@ -1,6 +1,7 @@
 import { Button, Icon, Label } from '@trussworks/react-uswds';
-import styles from './segmentedButtons.module.scss';
 import { Option } from 'generated';
+
+import styles from './segmentedButtons.module.scss';
 type Props = {
     title?: string;
     buttons: Option[];

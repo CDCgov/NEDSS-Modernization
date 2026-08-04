@@ -1,8 +1,10 @@
-import { DatePicker } from '@trussworks/react-uswds';
 import { FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent, useState } from 'react';
+
+import { DatePicker } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { isFuture } from 'date-fns';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { isFuture } from 'date-fns';
+
 import { EN_US } from './datePickerLocalization';
 
 type OnChange = (val?: string) => void;

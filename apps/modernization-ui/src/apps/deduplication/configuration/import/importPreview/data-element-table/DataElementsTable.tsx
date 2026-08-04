@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Conversion';
 import { DataElement, DataElements } from 'apps/deduplication/api/model/DataElement';
 import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 import { Card } from 'design-system/card';
 import { Column, DataTable } from 'design-system/table';
-import { useEffect, useState } from 'react';
 
 type DataElementEntry = {
     field: string;

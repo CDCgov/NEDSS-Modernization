@@ -1,15 +1,16 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
-import { SortingInteraction } from 'libs/sorting';
-import { Column } from './header/column';
 import { Sizing } from 'design-system/field';
 import { FilterInteraction } from 'design-system/filter';
-import { DataTableHeader } from './header/DataTableHeader';
+import { SortingInteraction } from 'libs/sorting';
+
 import { DataTableRow } from './DataTableRow';
 import { NoDataRow } from './NoDataRow';
-
 import styles from './data-table.module.scss';
+import { DataTableHeader } from './header/DataTableHeader';
+import { Column } from './header/column';
 
 type EmptyRenderer = (columns: number) => ReactNode | ReactNode[] | undefined;
 

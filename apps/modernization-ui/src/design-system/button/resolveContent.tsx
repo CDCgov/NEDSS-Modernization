@@ -1,4 +1,5 @@
 import { Icon } from 'design-system/icon';
+
 import { isLabeled, StandardButtonProps } from './buttons';
 
 const resolveContent = (props: StandardButtonProps) => {

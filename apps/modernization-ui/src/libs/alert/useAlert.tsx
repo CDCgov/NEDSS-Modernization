@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
-import { Alert, AlertOptions } from './alert';
+
 import { AlertToast, AlertToastStatus } from './AlertToast';
+import { Alert, AlertOptions } from './alert';
 
 type Message = Alert['message'];
 

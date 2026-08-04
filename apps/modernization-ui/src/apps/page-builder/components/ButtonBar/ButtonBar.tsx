@@ -1,5 +1,6 @@
-import styles from './button-bar.module.scss';
 import { ReactNode } from 'react';
+
+import styles from './button-bar.module.scss';
 
 type Props = {
     children: ReactNode[] | ReactNode;

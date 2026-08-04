@@ -1,7 +1,9 @@
 import { asValue } from 'options';
 import { exists } from 'utils';
-import { IdentificationDemographicRequest } from './identificationRequest';
+
 import { IdentificationDemographic } from '../identifications';
+
+import { IdentificationDemographicRequest } from './identificationRequest';
 
 const asIdentification = (
     demographic: Partial<IdentificationDemographic>

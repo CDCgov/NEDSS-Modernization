@@ -1,7 +1,8 @@
 import { format, isValid, parseISO } from 'date-fns';
-import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
-import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
+import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';
+import { LinedMergePreviewCard } from '../shared/preview-card-lined/LinedMergePreviewCard';
 
 export const PreviewGeneralPatientInfo = ({
     mergeFormData,

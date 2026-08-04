@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react';
-import { SubsectionHeader } from './SubsectionHeader';
-import { PagesResponse, PagesSubSection } from 'apps/page-builder/generated';
-import { PageManagementProvider } from '../../usePageManagement';
-import { AlertProvider } from 'alert';
 import userEvent from '@testing-library/user-event';
+import { AlertProvider } from 'alert';
+import { PagesResponse, PagesSubSection } from 'apps/page-builder/generated';
+
+import { PageManagementProvider } from '../../usePageManagement';
+
+import { SubsectionHeader } from './SubsectionHeader';
 
 const onAdd = vi.fn();
 const handleExpanded = vi.fn();

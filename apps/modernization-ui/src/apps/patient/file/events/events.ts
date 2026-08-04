@@ -1,17 +1,18 @@
-import { MemoizedSupplier } from 'libs/supplying';
-import { PatientFileInvestigation, patientInvestigations } from './investigations';
-import { PatientFileLaboratoryReport, patientLaboratoryReports } from './reports/laboratory';
-import { PatientFileMorbidityReport, patientMorbidityReports } from './reports/morbidity';
-import { PatientFileVaccinations } from './vaccinations/vaccinations';
-import { patientVaccinations } from './vaccinations/patientVaccinations';
-import { PatientFileTreatment } from './treatments/treatment';
-import { patientTreatments } from './treatments/patientTreatments';
 import { PatientFileContacts } from 'apps/patient/file/events/contacts';
+import { MemoizedSupplier } from 'libs/supplying';
+
+import { patientContacts } from './contactsNamed/patientContacts';
 import { PatientFileDocument } from './documents/documents';
 import { patientDocuments } from './documents/patientDocuments';
+import { PatientFileInvestigation, patientInvestigations } from './investigations';
 import { patientsNamed } from './patientsNamed/patientNamed';
-import { patientContacts } from './contactsNamed/patientContacts';
 import { patientBirthRecords, PatientFileBirthRecord } from './record/birth';
+import { PatientFileLaboratoryReport, patientLaboratoryReports } from './reports/laboratory';
+import { PatientFileMorbidityReport, patientMorbidityReports } from './reports/morbidity';
+import { patientTreatments } from './treatments/patientTreatments';
+import { PatientFileTreatment } from './treatments/treatment';
+import { patientVaccinations } from './vaccinations/patientVaccinations';
+import { PatientFileVaccinations } from './vaccinations/vaccinations';
 
 type Reports = {
     laboratory: MemoizedSupplier<Promise<PatientFileLaboratoryReport[]>>;

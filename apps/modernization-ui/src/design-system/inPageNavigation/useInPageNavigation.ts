@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import styles from './InPageNavigation.module.scss';
+
 import { focusedTarget } from 'utils';
+
+import styles from './InPageNavigation.module.scss';
 
 const useInPageNavigation = (threshold: number = 0) => {
     useEffect(() => {

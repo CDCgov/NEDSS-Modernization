@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import { PaginationProvider, PaginationSettings } from 'pagination';
+
 import { SortingProvider, SortingSettings } from 'libs/sorting';
+import { PaginationProvider, PaginationSettings } from 'pagination';
 
 type TableProviderProps = {
     children: ReactNode;

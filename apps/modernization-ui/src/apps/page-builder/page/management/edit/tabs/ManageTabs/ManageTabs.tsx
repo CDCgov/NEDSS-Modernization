@@ -1,15 +1,19 @@
+import { ReactNode, useEffect, useRef, useState } from 'react';
+
 import { Button, Icon, Modal, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { PagesTab, Tab } from 'apps/page-builder/generated';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
 import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { ReactNode, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import './ManageTabModal.scss';
-import { ManageTabsHeader } from './header/ManageTabsHeader';
-import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
-import styles from './manageTabs.module.scss';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import './ManageTabModal.scss';
+
+import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
+
+import { ManageTabsHeader } from './header/ManageTabsHeader';
+import styles from './manageTabs.module.scss';
 
 type Props = {
     pageId: number;

@@ -1,5 +1,6 @@
-import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { internalizeDate } from 'date';
+import { DetailValue, DetailView } from 'design-system/entry/multi-value';
+
 import { IdentificationDemographic } from './identifications';
 
 type IdentificationDemographicViewProps = {

@@ -1,7 +1,8 @@
-import { render } from '@testing-library/react';
-import { PagesSection, PagesResponse } from 'apps/page-builder/generated';
-import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { render } from '@testing-library/react';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse, PagesSection } from 'apps/page-builder/generated';
+
 import { ManageSectionTile } from './ManageSectionTile';
 
 describe('when ManageSectionTile renders', () => {

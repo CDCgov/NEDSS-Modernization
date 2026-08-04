@@ -1,10 +1,10 @@
-import { permitsAny, permissions, permitsAll } from 'libs/permission';
+import { FeatureToggle } from 'feature';
+import { permissions, permitsAll, permitsAny } from 'libs/permission';
 import { usePage } from 'page';
 import { useUser } from 'user';
-import { FeatureToggle } from 'feature';
-import { NavBarLink, PermittedNavBarLink } from './NavBarLink';
 
 import styles from './NavBar.module.scss';
+import { NavBarLink, PermittedNavBarLink } from './NavBarLink';
 
 const BASE_SYS_MGMT_PERMISSIONS = [
     'EPILINKADMIN-SYSTEM',

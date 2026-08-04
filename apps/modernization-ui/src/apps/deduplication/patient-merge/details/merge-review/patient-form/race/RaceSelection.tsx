@@ -1,7 +1,10 @@
-import { MergeCandidate, MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
 import { useState } from 'react';
+
+import { MergeCandidate, MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { DetailsRow } from '../shared/section/DetailsRow';
 import { Section } from '../shared/section/Section';
+
 import { RaceDataTable } from './race-data-table/RaceDataTable';
 import { RaceDetails } from './race-details/RaceDetails';
 
