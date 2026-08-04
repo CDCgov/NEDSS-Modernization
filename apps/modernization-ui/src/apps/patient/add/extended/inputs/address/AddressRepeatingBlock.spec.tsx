@@ -18,6 +18,10 @@ vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions,
 }));
 
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'test', value: '2' }] }),
+}));
+
 const onChange = vi.fn();
 const isDirty = vi.fn();
 
