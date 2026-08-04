@@ -91,6 +91,7 @@
     "scripts": {
         "start": "vite",
         "build": "vite build",
+        "typecheck": "tsc -b",
         "preview": "vite preview",
         "test": "vitest --changed",
         "test:all": "vitest run",
