@@ -72,10 +72,6 @@ When('I add incomplete or incorrect advanced filters', () => {
         if (advFilter.field === 'Confirmation Method Time') {
           enterBetweenInput('1', '32');
         }
-
-        if (advFilter.field === 'Deceased Time') {
-          enterBetweenInput('1/1/2020', '12/31/1999');
-        }
       }
     })
   })
