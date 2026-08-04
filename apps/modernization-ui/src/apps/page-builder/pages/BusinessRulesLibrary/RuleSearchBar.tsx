@@ -1,4 +1,4 @@
-import { KeyboardEvent as ReactKeyboardEvent, ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
 
 import { Button, Icon, TextInput } from '@trussworks/react-uswds';
 

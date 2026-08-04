@@ -10,7 +10,7 @@ import { parseISO } from 'date-fns/fp';
 import { Confirmation } from 'design-system/modal';
 import { useAlert } from 'libs/alert';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams, useLocation } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import styles from './MergeDetails.module.scss';
 import { MergePreview } from './merge-preview/MergePreview';

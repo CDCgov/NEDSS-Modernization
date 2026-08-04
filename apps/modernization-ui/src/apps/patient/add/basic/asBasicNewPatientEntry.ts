@@ -5,12 +5,12 @@ import { asTextCriteriaValue, TextCriteria } from 'options/operator';
 
 import {
     BasicAddressEntry,
-    BasicNewPatientEntry,
-    BasicPersonalDetailsEntry,
-    NameInformationEntry,
-    BasicPhoneEmail,
     BasicEthnicityRace,
     BasicIdentificationEntry,
+    BasicNewPatientEntry,
+    BasicPersonalDetailsEntry,
+    BasicPhoneEmail,
+    NameInformationEntry,
 } from './entry';
 
 const resolveCriteria = (textCriteria?: TextCriteria): string | undefined =>

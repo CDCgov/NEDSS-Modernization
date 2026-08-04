@@ -4,7 +4,7 @@ import { TableCard } from 'design-system/card';
 import { TableCardProps } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { displayNotificationStatus, displayInvestigator } from 'libs/events/investigations';
+import { displayInvestigator, displayNotificationStatus } from 'libs/events/investigations';
 import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
 import { Await } from 'react-router';

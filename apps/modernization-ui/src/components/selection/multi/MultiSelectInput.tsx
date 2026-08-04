@@ -1,8 +1,8 @@
 import { FocusEventHandler, useEffect, useState } from 'react';
 
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-import { theme, styles, CheckboxOption } from 'design-system/select/multi';
-import { Selectable, asValues, asValue, asName } from 'options';
+import { CheckboxOption, styles, theme } from 'design-system/select/multi';
+import { asName, asValue, asValues, Selectable } from 'options';
 import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
 import 'design-system/select/multi/multi-select.scss';

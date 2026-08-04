@@ -1,4 +1,4 @@
-import { AutocompleteSingleProps, Autocomplete } from 'design-system/autocomplete';
+import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
 import { AutocompleteOptionsResolver } from 'options/autocompete';
 import { Optional } from 'types';
 

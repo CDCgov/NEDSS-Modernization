@@ -1,6 +1,6 @@
 import { FeatureLayout } from 'feature';
 import { LoadingBlock } from 'libs/loading/block';
-import { permitsAny, permissions, Permitted } from 'libs/permission';
+import { permissions, permitsAny, Permitted } from 'libs/permission';
 import { PermittedLayout } from 'libs/permission/PermittedLayout';
 import { ErrorPage } from 'pages/error';
 import { RouteObject } from 'react-router';

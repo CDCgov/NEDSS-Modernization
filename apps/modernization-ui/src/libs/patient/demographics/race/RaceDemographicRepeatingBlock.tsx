@@ -3,7 +3,7 @@ import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-v
 import { Column } from 'design-system/table';
 
 import { RaceDemographicView } from './RaceDemographicView';
-import { RaceDemographic, labels } from './race';
+import { labels, RaceDemographic } from './race';
 import styles from './race-repeating-block.module.scss';
 
 const columns: Column<RaceDemographic>[] = [

@@ -3,8 +3,8 @@ import { PatientDemographics, PatientDemographicsEntry } from 'libs/patient/demo
 import { AdministrativeInformation, initial as initialAdministrative } from 'libs/patient/demographics/administrative';
 import { EthnicityDemographic, initial as initialEthnicity } from 'libs/patient/demographics/ethnicity';
 import { GeneralInformationDemographic, initial as initialGeneral } from 'libs/patient/demographics/general';
-import { MortalityDemographic, initial as initialMortality } from 'libs/patient/demographics/mortality';
-import { SexBirthDemographic, initial as initialSexBirth } from 'libs/patient/demographics/sex-birth';
+import { initial as initialMortality, MortalityDemographic } from 'libs/patient/demographics/mortality';
+import { initial as initialSexBirth, SexBirthDemographic } from 'libs/patient/demographics/sex-birth';
 import { Supplier } from 'libs/supplying';
 import { EffectiveDated } from 'utils';
 import { mapOr, Mapping, maybeMapAll } from 'utils/mapping';

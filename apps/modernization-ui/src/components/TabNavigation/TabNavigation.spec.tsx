@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 
-import { TabNavigationEntry, TabNavigation } from './TabNavigation';
+import { TabNavigation, TabNavigationEntry } from './TabNavigation';
 import style from './tabNavigation.module.scss';
 
 const renderWithRouter = (ui: ReactElement, { route = '/' } = {}) => {

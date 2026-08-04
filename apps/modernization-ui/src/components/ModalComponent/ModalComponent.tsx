@@ -1,7 +1,7 @@
 import './ModalComponent.scss';
 import React, { RefObject } from 'react';
 
-import { Modal, ModalHeading, ModalRef, ModalFooter } from '@trussworks/react-uswds';
+import { Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 
 type ModalProps = {
     modalRef?: RefObject<ModalRef> | undefined;

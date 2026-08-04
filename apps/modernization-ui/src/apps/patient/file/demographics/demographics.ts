@@ -1,13 +1,13 @@
 import {
-    AdministrativeInformation,
-    GeneralInformationDemographic,
-    MortalityDemographic,
-    RaceDemographic,
-    PhoneEmailDemographic,
     AddressDemographic,
-    NameDemographic,
+    AdministrativeInformation,
     EthnicityDemographic,
+    GeneralInformationDemographic,
     IdentificationDemographic,
+    MortalityDemographic,
+    NameDemographic,
+    PhoneEmailDemographic,
+    RaceDemographic,
 } from 'libs/patient/demographics';
 import { MemoizedSupplier } from 'libs/supplying/';
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
 import { Button } from 'design-system/button';
 import { Checkbox } from 'design-system/checkbox';
 import { Sizing } from 'design-system/field';
@@ -8,7 +8,7 @@ import { Icon } from 'design-system/icon';
 import { ClosablePanel } from 'design-system/panel/closable';
 
 import styles from './column-preference-panel.module.scss';
-import { ColumnPreference, isNamed, isLabeled, NamedColumnPreference } from './preference';
+import { ColumnPreference, isLabeled, isNamed, NamedColumnPreference } from './preference';
 import { useColumnPreferences } from './useColumnPreferences';
 
 const swap =

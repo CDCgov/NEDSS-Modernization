@@ -1,4 +1,4 @@
-import { Column, CellValue } from 'design-system/table';
+import { CellValue, Column } from 'design-system/table';
 import { Rendered } from 'design-system/table/header/column';
 
 import { Entry } from './useMultiValueEntry';

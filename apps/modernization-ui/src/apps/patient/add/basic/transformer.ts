@@ -16,7 +16,7 @@ import { asValue, Selectable } from 'options';
 import { HOUSE } from 'options/address/types';
 import { HOME as HOME_ADDRESS } from 'options/address/uses';
 import { LEGAL } from 'options/name/types';
-import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
+import { CELL_PHONE, EMAIL, PHONE } from 'options/phone/types';
 import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
 import { exists, isEmpty, orUndefined } from 'utils';
 import { Mapping, maybeMap, maybeMapAll } from 'utils/mapping';
@@ -26,9 +26,9 @@ import {
     BasicEthnicityRace,
     BasicIdentificationEntry,
     BasicNewPatientEntry,
+    BasicPersonalDetailsEntry,
     BasicPhoneEmail,
     NameInformationEntry,
-    BasicPersonalDetailsEntry,
 } from './entry';
 
 const maybeMapEach =

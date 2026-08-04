@@ -1,4 +1,4 @@
-import { ReactNode, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react';
 
 import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
 import { Loading } from 'components/Spinner';

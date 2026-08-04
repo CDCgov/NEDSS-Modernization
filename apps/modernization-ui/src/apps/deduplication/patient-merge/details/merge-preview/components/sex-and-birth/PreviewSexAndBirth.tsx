@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { format, parseISO, differenceInYears, isValid } from 'date-fns';
+import { differenceInYears, format, isValid, parseISO } from 'date-fns';
 
 import { MergeCandidate, MergeSexAndBirth } from '../../../../../api/model/MergeCandidate';
 import { PatientMergeForm } from '../../../merge-review/model/PatientMergeForm';

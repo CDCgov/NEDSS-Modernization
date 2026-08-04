@@ -1,4 +1,4 @@
-import { TextInputFieldProps, TextInputField } from 'design-system/input/text';
+import { TextInputField, TextInputFieldProps } from 'design-system/input/text';
 
 type PhoneNumberInputFieldProps = Omit<TextInputFieldProps, 'type' | 'inputMode' | 'onKeyDown'>;
 

@@ -1,10 +1,10 @@
 import {
-    displayPhones,
-    displayPatientName,
-    displayPatientAge,
-    displayEmails,
     displayAddresses,
+    displayEmails,
     displayIdentifications,
+    displayPatientAge,
+    displayPatientName,
+    displayPhones,
     PatientFileLink,
 } from 'apps/search/patient/result';
 import { Sizing } from 'design-system/field';

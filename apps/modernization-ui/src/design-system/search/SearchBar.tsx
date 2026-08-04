@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useState } from 'react';
 
 import classNames from 'classnames';
 import { Button } from 'design-system/button/Button';

@@ -1,10 +1,10 @@
-import { withPatient, displayProfileLink, displayGender } from 'apps/search/basic';
+import { displayGender, displayProfileLink, withPatient } from 'apps/search/basic';
 import {
-    getPatient,
-    getOrderingProviderName,
-    getReportingFacility,
-    getDescription,
     getAssociatedInvestigations,
+    getDescription,
+    getOrderingProviderName,
+    getPatient,
+    getReportingFacility,
 } from 'apps/search/laboratory-report/result';
 import { ClassicLink } from 'classic';
 import { internalizeDate } from 'date';

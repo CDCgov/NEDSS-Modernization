@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 
-import { Form, ModalRef, Button, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import {
     AddDefault,
     AddHyperlink,

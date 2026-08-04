@@ -6,10 +6,10 @@ import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { SingleSelect } from 'design-system/select';
 import {
-    validZipCodeRule,
-    ZipCodeInputField,
     CensusTractInputField,
     validCensusTractRule,
+    validZipCodeRule,
+    ZipCodeInputField,
 } from 'libs/demographics/location';
 import { Selectable } from 'options';
 import { Controller, useFormContext } from 'react-hook-form';

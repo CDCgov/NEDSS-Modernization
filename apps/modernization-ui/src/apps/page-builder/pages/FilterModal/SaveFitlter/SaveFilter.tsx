@@ -1,4 +1,4 @@
-import { Button, TextInput, Radio } from '@trussworks/react-uswds';
+import { Button, Radio, TextInput } from '@trussworks/react-uswds';
 
 import { FilterPanel } from '../../../components/FilterModal/FilterPanel';
 

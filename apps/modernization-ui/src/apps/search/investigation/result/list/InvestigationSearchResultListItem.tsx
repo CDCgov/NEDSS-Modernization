@@ -1,4 +1,4 @@
-import { displayProfileLink, displayGender } from 'apps/search/basic';
+import { displayGender, displayProfileLink } from 'apps/search/basic';
 import {
     displayInvestigationLink,
     displayInvestigator,

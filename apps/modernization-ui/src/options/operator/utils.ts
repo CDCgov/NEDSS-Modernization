@@ -1,8 +1,8 @@
 import { findByValue } from 'options/findByValue';
 import { Selectable } from 'options/selectable';
 
-import { textOperators, defaultTextOperator } from './operators';
-import { TextOperation, TextCriteria } from './types';
+import { defaultTextOperator, textOperators } from './operators';
+import { TextCriteria, TextOperation } from './types';
 
 const hasLegacyOperators = (value: string) => value && value.startsWith('%') && value.length > 1;
 

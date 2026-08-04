@@ -1,6 +1,6 @@
 import { Selectable } from 'options/selectable';
 
-import { textOperators, defaultTextOperator } from './operators';
+import { defaultTextOperator, textOperators } from './operators';
 import { TextCriteria } from './types';
 import {
     asSelectableOperator,

@@ -2,15 +2,15 @@ import { NewPatient, Transformer } from 'apps/patient/add/api';
 import {
     asAddress,
     asAdministrative,
+    asBirth,
+    asEthnicity,
+    asGeneral,
+    asIdentification,
+    asMortality,
     asName,
     asPhoneEmail,
-    asIdentification,
     asRace,
-    asEthnicity,
     asSex,
-    asBirth,
-    asMortality,
-    asGeneral,
 } from 'apps/patient/data';
 import { maybeMap, maybeMapAll } from 'utils/mapping';
 

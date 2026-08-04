@@ -11,7 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { PatientSearchActions } from './PatientSearchActions';
-import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
+import { initial as defaultValues, PatientCriteriaEntry } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { NoPatientResults } from './result/none';
 import { PatientSearchResultTable, preferences } from './result/table';

@@ -1,4 +1,4 @@
-import { ReactNode, act } from 'react';
+import { act, ReactNode } from 'react';
 
 import { renderHook } from '@testing-library/react';
 import { Direction } from 'libs/sorting';

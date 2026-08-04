@@ -1,7 +1,7 @@
 import { format, parseISO } from 'date-fns';
 import { Column } from 'design-system/table';
 
-import { MergePhoneEmail, MergeCandidate } from '../../../../../api/model/MergeCandidate';
+import { MergeCandidate, MergePhoneEmail } from '../../../../../api/model/MergeCandidate';
 import { PhoneEmailId } from '../../../merge-review/model/PatientMergeForm';
 import { formatPhone } from '../../../shared/formatPhone';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';

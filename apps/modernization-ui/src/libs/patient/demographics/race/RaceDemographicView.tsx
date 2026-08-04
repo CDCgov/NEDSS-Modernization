@@ -3,7 +3,7 @@ import { DetailValue, DetailView } from 'design-system/entry/multi-value';
 import { Selectable } from 'options';
 import { mapOr } from 'utils/mapping';
 
-import { RaceDemographic, labels } from './race';
+import { labels, RaceDemographic } from './race';
 
 const displayDetails = mapOr<Selectable[], string | undefined>(
     (details) => details.map((detail) => detail.name).join(', '),

@@ -14,17 +14,17 @@ import { AlertMessage } from 'design-system/message/index.ts';
 import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
 import QueryBuilder, {
+    Rule as DefaultRule,
+    RuleGroup as DefaultRuleGroup,
     Field,
     formatQuery,
     isRuleType,
     joinWith,
     RuleGroupProps,
     RuleGroupType,
+    RuleProps,
     splitBy,
     ValidationResult,
-    RuleGroup as DefaultRuleGroup,
-    Rule as DefaultRule,
-    RuleProps,
 } from 'react-querybuilder';
 
 import { ReportExecuteForm } from '../../ReportRunPage';

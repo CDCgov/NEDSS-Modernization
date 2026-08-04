@@ -2,7 +2,7 @@ import { FocusEventHandler, useState } from 'react';
 
 import classNames from 'classnames';
 import { Field, FieldProps } from 'design-system/field';
-import { Selectable, asValue as asSelectableValue } from 'options';
+import { asValue as asSelectableValue, Selectable } from 'options';
 import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
 
 import { CheckboxOption } from './CheckboxOption';

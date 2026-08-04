@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
-import { PageSummary, PageSummaryService, Date, DateRange, MultiValue, SingleValue } from 'apps/page-builder/generated';
-import { Filter, externalize } from 'filters';
+import { Date, DateRange, MultiValue, PageSummary, PageSummaryService, SingleValue } from 'apps/page-builder/generated';
+import { externalize, Filter } from 'filters';
 import { useSorting } from 'libs/sorting';
 import { Status as PageStatus, usePagination } from 'pagination';
 

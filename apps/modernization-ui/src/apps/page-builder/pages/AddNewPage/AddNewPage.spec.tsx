@@ -1,19 +1,19 @@
-import { render, act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AlertProvider } from 'alert';
 import {
     CancelablePromise,
     Concept,
+    ConceptControllerService,
     Condition,
     ConditionControllerService,
+    PageCondition,
     PageControllerService,
     PageCreateResponse,
-    PageCondition,
     ProgramArea,
     ProgramAreaControllerService,
     Template,
     TemplateControllerService,
-    ConceptControllerService,
 } from 'apps/page-builder/generated';
 import { MemoryRouter } from 'react-router';
 

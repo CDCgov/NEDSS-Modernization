@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
+import { initial, RaceEntry, RaceEntryFields } from 'apps/patient/data/race';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Sizing } from 'design-system/field';
 import { Column } from 'design-system/table';

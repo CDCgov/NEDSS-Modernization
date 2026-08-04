@@ -14,7 +14,7 @@ import { DateRangeFilter, dateRangeValidator, getDateRange } from './DateRangeFi
 import { getMonthYearRange, MonthYearRangeFilter, monthYearRangeValidator } from './MonthYearRangeFilter';
 import { getNumericValue, NumericFilter, numericValidator } from './NumericFilter.tsx';
 import { getValueList, OptionSelectFilter, optionSelectValidator } from './OptionSelectFilter';
-import { TextFilter, getValueText } from './TextFilter';
+import { getValueText, TextFilter } from './TextFilter';
 import { getYearRange, YearRangeFilter } from './YearRangeFilter';
 import styles from './basic-filter.module.scss';
 

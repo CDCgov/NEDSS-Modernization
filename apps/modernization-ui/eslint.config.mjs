@@ -65,6 +65,17 @@ export default defineConfig([
             'prefer-const': 'error',
             'storybook/hierarchy-separator': 'off',
             'object-shorthand': 'error',
+            // Sort members within a single import statement
+            'sort-imports': [
+                'error',
+                {
+                    ignoreCase: true,
+                    ignoreDeclarationSort: true, // Let import/order handle statement lines
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+                },
+            ],
+            // Sort outer import statement lines
             'import/order': [
                 'error',
                 {

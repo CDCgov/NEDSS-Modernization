@@ -1,4 +1,4 @@
-import { ExactValue, PartialValue, DateRange } from 'filters';
+import { DateRange, ExactValue, PartialValue } from 'filters';
 import { DatePeriodOperator, DateRangeOperator, ExactValueOperator, PartialValueOperator } from 'filters/operators';
 
 type BaseFilterEntry = {

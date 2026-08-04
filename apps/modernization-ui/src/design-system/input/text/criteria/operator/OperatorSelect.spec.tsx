@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { textOperators, defaultTextOperator, textAlphaOperators } from 'options/operator';
+import { defaultTextOperator, textAlphaOperators, textOperators } from 'options/operator';
 
 import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
 

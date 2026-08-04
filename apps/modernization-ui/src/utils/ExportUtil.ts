@@ -1,4 +1,4 @@
-import { Filter, externalize } from 'filters';
+import { externalize, Filter } from 'filters';
 
 import { OpenAPI } from '../generated/core/OpenAPI';
 

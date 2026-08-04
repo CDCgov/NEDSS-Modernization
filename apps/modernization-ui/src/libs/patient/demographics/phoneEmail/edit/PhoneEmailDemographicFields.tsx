@@ -1,4 +1,4 @@
-import { validDateRule, DatePickerInput } from 'design-system/date';
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
 import { MaskedTextInputField } from 'design-system/input/text';

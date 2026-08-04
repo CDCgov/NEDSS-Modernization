@@ -6,10 +6,10 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
 import {
+    CensusTractInputField,
+    validCensusTractRule,
     validZipCodeRule,
     ZipCodeInputField,
-    validCensusTractRule,
-    CensusTractInputField,
 } from 'libs/demographics/location';
 import { useLocationOptions } from 'options/location';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';

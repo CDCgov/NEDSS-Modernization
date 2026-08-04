@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Search } from 'components/Search';
-import { LinkButton, Button } from 'design-system/button';
+import { Button, LinkButton } from 'design-system/button';
 import { Filter, FilterPanel, Property } from 'filters';
 import { OverlayPanel } from 'overlay';
 
