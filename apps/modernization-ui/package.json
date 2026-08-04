@@ -93,7 +93,8 @@
     "scripts": {
         "start": "vite",
         "build": "vite build",
-        "typecheck": "tsc -b",
+        "typecheck": "tsc -b --noEmit",
+        "typecheck:watch": "tsc -b --noEmit --watch",
         "preview": "vite preview",
         "test": "vitest --changed",
         "test:all": "vitest run",
