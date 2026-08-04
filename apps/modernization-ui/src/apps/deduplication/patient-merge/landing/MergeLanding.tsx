@@ -1,8 +1,9 @@
 import { useExportMatches } from 'apps/deduplication/api/useExportMatches';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import { PaginationProvider } from 'pagination';
 import { SortingProvider, useSorting } from 'libs/sorting';
+import { PaginationProvider } from 'pagination';
+
 import { MatchesRequiringReviewTable } from './matches-requiring-review-table/MatchesRequiringReviewTable';
 import styles from './merge-landing.module.scss';
 
@@ -28,7 +29,7 @@ const MergeLandingContent = () => {
                     <Button
                         icon="print"
                         sizing="medium"
-                        secondary
+                        secondary={true}
                         aria-label="Print"
                         data-tooltip-position="top"
                         onClick={() => exportPDF(sorting)}
@@ -36,7 +37,7 @@ const MergeLandingContent = () => {
                     <Button
                         icon="file_download"
                         sizing="medium"
-                        secondary
+                        secondary={true}
                         aria-label="Download"
                         data-tooltip-position="top"
                         data-tooltip-offset="left"

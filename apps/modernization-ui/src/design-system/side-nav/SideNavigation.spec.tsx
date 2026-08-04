@@ -1,14 +1,15 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { MemoryRouter } from 'react-router';
-import { SideNavigation } from './SideNavigation';
+
 import { NavEntry } from './NavEntry';
+import { SideNavigation } from './SideNavigation';
 
 describe('SideNavigation', () => {
     const Fixture = () => (
         <MemoryRouter>
             <SideNavigation title="Side navigation test">
-                <NavEntry name="active entry" active />
+                <NavEntry name="active entry" active={true} />
                 <NavEntry name="internal link" path="/internalRoute" />
                 <NavEntry name="external link" href="/nbs/externalRoute" />
             </SideNavigation>

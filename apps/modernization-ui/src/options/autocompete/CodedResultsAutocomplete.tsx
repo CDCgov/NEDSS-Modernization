@@ -1,6 +1,6 @@
-import { Selectable } from 'options/selectable';
 import { TextAutocomplete, TextAutocompleteSingleProps } from 'design-system/autocomplete/single/text';
 import { CodedResultOptionsService } from 'generated';
+import { Selectable } from 'options/selectable';
 
 const CodedResultsAutocomplete = ({
     id,
@@ -15,8 +15,8 @@ const CodedResultsAutocomplete = ({
 
     const resolver = (criteria: string, limit?: number) =>
         CodedResultOptionsService.codedResultAutocomplete({
-            criteria: criteria,
-            limit: limit,
+            criteria,
+            limit,
         }).then((response) => response as Selectable[]);
 
     return (

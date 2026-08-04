@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { NumericInput } from './NumericInput';
 
 const meta = {

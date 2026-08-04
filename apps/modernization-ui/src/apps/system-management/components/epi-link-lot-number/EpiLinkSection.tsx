@@ -1,5 +1,5 @@
-import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 import { Permitted } from '../../../../libs/permission';
+import { SystemManagementInfoCard } from '../shared/SystemManagementInfoCard';
 
 const epiLinkLinks = [
     {
@@ -18,7 +18,7 @@ type Props = {
 
 export const EpiLinkSection = ({ filter }: Props) => {
     return (
-        <Permitted permission={'EPILINKADMIN-SYSTEM'}>
+        <Permitted permission="EPILINKADMIN-SYSTEM">
             <SystemManagementInfoCard
                 id="epi-link-lot-number"
                 title="Epi-link (lot number)"

@@ -1,11 +1,10 @@
 import { FocusEventHandler, useEffect, useState } from 'react';
+
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { CheckboxOption, styles, theme } from 'design-system/select/multi';
+import { asName, asValue, asValues, Selectable } from 'options';
 import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
-import { Selectable, asValues, asValue, asName } from 'options';
-import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-
-import { theme, styles, CheckboxOption } from 'design-system/select/multi';
-
 import 'design-system/select/multi/multi-select.scss';
 
 const asSelected = (selectables: Selectable[]) => (item: string) =>
@@ -20,7 +19,7 @@ type MultiSelectInputProps = {
     sizing?: Sizing;
     options?: Selectable[];
     value?: string[];
-    onChange?: (value: any) => void;
+    onChange?: (value: string[]) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
     disabled?: boolean;
@@ -76,12 +75,12 @@ export const MultiSelectInput = ({
             <ReactSelect<Selectable, true>
                 theme={theme}
                 styles={styles}
-                isMulti
+                isMulti={true}
                 id={id}
                 name={name}
                 value={selectedOptions}
                 placeholder={placeholder}
-                className={'multi-select'}
+                className="multi-select"
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}

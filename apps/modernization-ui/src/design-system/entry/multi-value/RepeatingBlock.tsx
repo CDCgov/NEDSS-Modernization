@@ -1,20 +1,22 @@
 import { ReactNode, useEffect, useMemo } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { Sizing } from 'design-system/field';
 import { Card, CardProps } from 'design-system/card';
-import { Tooltip } from 'design-system/tooltip';
-import { Tag } from 'design-system/tag';
+import { Sizing } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable, DataTableFeatures } from 'design-system/table';
+import { Tag } from 'design-system/tag';
+import { Tooltip } from 'design-system/tooltip';
+import { DefaultValues, FieldValues, FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+
 import { Required } from '../required/Required';
-import { Entry, MultiValueEntryInteraction, useMultiValueEntry } from './useMultiValueEntry';
-import { entryIdentifierGenerator } from './entryIdentifierGenerator';
-import { entryColumns } from './entryColumns';
 
 import styles from './RepeatingBlock.module.scss';
+import { entryColumns } from './entryColumns';
+import { entryIdentifierGenerator } from './entryIdentifierGenerator';
+import { Entry, MultiValueEntryInteraction, useMultiValueEntry } from './useMultiValueEntry';
 
 type DefaultValuesResolver<D> = (() => D) | D;
 
@@ -132,7 +134,7 @@ const RepeatingBlock = <V extends FieldValues>({
         const formErrorMessages = Object.values(form.formState.errors).map((error) => error?.message?.toString());
         const messages: ReactNode[] = [...errors, ...formErrorMessages];
 
-        return messages.filter((a) => a != undefined);
+        return messages.filter((a) => a !== undefined);
     }, [JSON.stringify(form.formState.errors), errors]);
 
     useEffect(() => {
@@ -283,7 +285,7 @@ const ActionColumn = ({
                             className={styles.action}
                             aria-label="View"
                             aria-describedby={id}
-                            tertiary
+                            tertiary={true}
                             onClick={onView}
                             aria-pressed={isViewing}
                             icon="visibility"
@@ -298,7 +300,7 @@ const ActionColumn = ({
                             className={styles.action}
                             aria-label="Edit"
                             aria-describedby={id}
-                            tertiary
+                            tertiary={true}
                             onClick={onEdit}
                             aria-pressed={isEditing}
                             icon="edit"
@@ -311,7 +313,7 @@ const ActionColumn = ({
                             className={styles.action}
                             aria-label="Delete"
                             aria-describedby={id}
-                            tertiary
+                            tertiary={true}
                             onClick={onRemove}
                             icon="delete"
                         />
@@ -365,12 +367,12 @@ const EditFooter = <E extends FieldValues>({
             })}
         >
             <Shown when={interaction.status === 'adding'}>
-                <Button secondary icon="add" sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
+                <Button secondary={true} icon="add" sizing={sizing} onClick={form.handleSubmit(handleAdd)}>
                     {`Add ${itemName.toLowerCase()}`}
                 </Button>
                 <Shown when={clearable}>
                     <Button
-                        secondary
+                        secondary={true}
                         sizing={sizing}
                         aria-description={`clear the pending values for ${itemName}`}
                         onClick={handleClear}
@@ -381,11 +383,11 @@ const EditFooter = <E extends FieldValues>({
                 </Shown>
             </Shown>
             <Shown when={interaction.status === 'editing'}>
-                <Button secondary sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
+                <Button secondary={true} sizing={sizing} onClick={form.handleSubmit(handleUpdate)}>
                     {`Update ${itemName.toLowerCase()}`}
                 </Button>
                 <Button
-                    secondary
+                    secondary={true}
                     sizing={sizing}
                     aria-description={`cancel editing current ${itemName}`}
                     onClick={interaction.reset}

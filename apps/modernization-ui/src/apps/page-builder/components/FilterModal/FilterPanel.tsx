@@ -1,8 +1,18 @@
+import { ReactNode } from 'react';
+
 import { Icon } from '@trussworks/react-uswds';
-import React from 'react';
+
 import './filter.scss';
 
-export const FilterPanel = ({ header, footerAction, children }: any) => {
+export const FilterPanel = ({
+    header,
+    footerAction,
+    children,
+}: {
+    header: ReactNode;
+    footerAction: ReactNode;
+    children: ReactNode;
+}) => {
     const toggleModal = () => {
         const filterBtn = document.getElementById('filter-model-btn');
         filterBtn?.click();

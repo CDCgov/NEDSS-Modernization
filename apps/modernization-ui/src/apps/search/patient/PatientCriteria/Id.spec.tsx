@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
-import { Id } from './Id';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { PatientCriteriaEntry } from '../criteria';
+
+import { Id } from './Id';
 
 vi.mock('options/concepts', () => ({
     useConceptOptions: () => ({

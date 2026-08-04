@@ -1,6 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
-import { AlertMessage } from './AlertMessage';
 import { useState } from 'react';
+
+import { Meta, StoryObj } from '@storybook/react-vite';
+
+import { AlertMessage } from './AlertMessage';
 
 const meta = {
     title: 'Design System/AlertMessage',
@@ -160,7 +162,7 @@ export const Closable = () => {
     if (!show) return null;
 
     return (
-        <AlertMessage type="information" slim onClose={() => setShow(false)}>
+        <AlertMessage type="information" slim={true} onClose={() => setShow(false)}>
             You can dismiss this message.
         </AlertMessage>
     );

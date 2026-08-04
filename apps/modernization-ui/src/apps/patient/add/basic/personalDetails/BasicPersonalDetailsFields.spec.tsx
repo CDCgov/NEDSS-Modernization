@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { BasicPersonalDetailsEntry } from '../entry';
+
+import { BasicPersonalDetailsFields } from './BasicPersonalDetailsFields';
 
 const mockNow = vi.fn();
 

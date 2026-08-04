@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
+import { Features } from 'configuration';
+import { defaultConfiguration } from 'configuration/defaults';
+import { PatientSearchResult } from 'generated/graphql/schema';
 import { BrowserRouter } from 'react-router';
 
-import { defaultConfiguration } from 'configuration/defaults';
-import { Features } from 'configuration';
 import { displayProfileLegalName } from './displayProfileLegalName';
-import { PatientSearchResult } from 'generated/graphql/schema';
 
 let mockPermissions: string[] = [];
 
@@ -21,7 +21,7 @@ const withModernizedPatientProfile = (enabled: boolean) => ({
     patient: {
         ...defaultConfiguration.features.patient,
         file: {
-            enabled: enabled,
+            enabled,
         },
     },
 });

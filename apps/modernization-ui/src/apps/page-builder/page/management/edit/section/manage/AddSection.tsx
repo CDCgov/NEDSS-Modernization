@@ -1,17 +1,19 @@
+import { useEffect } from 'react';
+
 import { Button, Form } from '@trussworks/react-uswds';
+import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import {
     CreateSectionRequest,
     PagesSection,
     SectionControllerService,
     UpdateSectionRequest,
 } from 'apps/page-builder/generated';
-import { Controller, useForm } from 'react-hook-form';
-import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import styles from './addsection.module.scss';
-import { useEffect } from 'react';
-import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { Controller, useForm } from 'react-hook-form';
+import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { notEmptyRule } from 'validation/entry/notEmptyRule';
+
+import styles from './addsection.module.scss';
 
 type sectionProps = {
     tabId?: number;
@@ -39,7 +41,7 @@ export const AddSection = ({
 
     useEffect(() => {
         if (section && isEdit) {
-            form.reset({ name: section.name, tabId: tabId, visible: section.visible });
+            form.reset({ name: section.name, tabId, visible: section.visible });
         }
     }, [section]);
     const onSubmit = form.handleSubmit((data) => {
@@ -55,7 +57,7 @@ export const AddSection = ({
         } else {
             SectionControllerService.createSection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, tabId: tabId },
+                requestBody: { name: data.name, visible: data.visible, tabId },
             }).then(() => {
                 form.reset();
                 onAddSection?.(data.name ?? '');
@@ -91,7 +93,7 @@ export const AddSection = ({
                                 label="Section Name"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                                 className={`${styles.inputField} sectionName`}
                             />
                         )}
@@ -116,7 +118,7 @@ export const AddSection = ({
             </Form>
             <div className={styles.footer}>
                 <div className={styles.footerBtns}>
-                    <Button type="button" outline onClick={onClose}>
+                    <Button type="button" outline={true} onClick={onClose}>
                         Cancel
                     </Button>
                     {isEdit ? (

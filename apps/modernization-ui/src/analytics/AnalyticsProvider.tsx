@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { AnalyticsSettings, useAnalyticsSettings } from './useAnalytics';
+
 import { PostHogProvider } from 'posthog-js/react';
+
 import { PageviewTracker } from './PageviewTracker';
+import { AnalyticsSettings, useAnalyticsSettings } from './useAnalytics';
 
 type AnalyticsProviderProps = {
     children: ReactNode;

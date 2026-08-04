@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import { TableNumericInput } from './TableNumericInput';
 import '@testing-library/jest-dom';
 
@@ -32,7 +33,7 @@ describe('TableNumericInput', () => {
     });
 
     it('should be disabled when disabled prop is true', () => {
-        render(<TableNumericInput name="testInput" value="5" disabled onChange={() => {}} onBlur={() => {}} />);
+        render(<TableNumericInput name="testInput" value="5" disabled={true} onChange={() => {}} onBlur={() => {}} />);
 
         const input = screen.getByLabelText('numericInput');
         expect(input).toBeDisabled();

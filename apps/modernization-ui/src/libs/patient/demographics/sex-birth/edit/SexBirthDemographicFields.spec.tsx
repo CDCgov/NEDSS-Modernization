@@ -1,14 +1,17 @@
+import { useCallback } from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useForm, useWatch } from 'react-hook-form';
-import { PatientDemographics } from '../../demographics';
-import { SexBirthDemographicFields } from './SexBirthDemographicFields';
 import { asOfAgeResolver } from 'date';
-import { useCallback } from 'react';
-import { SexBirthOptions } from './useSexBirthOptions';
 import { genders } from 'options/gender';
 import { indicators } from 'options/indicator';
 import { LocationOptions } from 'options/location';
+import { useForm, useWatch } from 'react-hook-form';
+
+import { PatientDemographics } from '../../demographics';
+
+import { SexBirthDemographicFields } from './SexBirthDemographicFields';
+import { SexBirthOptions } from './useSexBirthOptions';
 
 const mockState = vi.fn();
 
@@ -20,7 +23,7 @@ const location: LocationOptions = {
 };
 
 const mockSexBirthCodedValues: SexBirthOptions = {
-    genders: genders,
+    genders,
     preferredGenders: [{ name: 'FTM', value: 'FTM' }],
     genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
     multipleBirth: indicators,

@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { useEffect, useState } from 'react';
 import { useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { exists } from 'utils';
+
 import { ActivateToggle } from './activate-toggle/ActivateToggle';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';
@@ -60,7 +62,7 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
         const newValue = attributes.map((m) => {
             // if attribute was already selected, set method to pre-selected method
             const method = matchingCriteria?.find((x) => x.attribute === m)?.method ?? MatchMethod.NONE;
-            return { attribute: m, method: method, threshold: method === MatchMethod.EXACT ? 1 : undefined };
+            return { attribute: m, method, threshold: method === MatchMethod.EXACT ? 1 : undefined };
         });
         form.setValue('matchingCriteria', newValue, { shouldDirty: true, shouldValidate: true });
         closePanel();
@@ -120,13 +122,18 @@ export const PassForm = ({ passCount, dataElements, onCancel, onDelete, onSave }
             <div className={styles.buttonBar}>
                 <div>
                     <Shown when={id !== undefined}>
-                        <Button secondary destructive sizing="small" onClick={() => setShowDeleteConfirmation(true)}>
+                        <Button
+                            secondary={true}
+                            destructive={true}
+                            sizing="small"
+                            onClick={() => setShowDeleteConfirmation(true)}
+                        >
                             Delete pass configuration
                         </Button>
                     </Shown>
                 </div>
                 <div>
-                    <Button secondary onClick={handleCancelClick}>
+                    <Button secondary={true} onClick={handleCancelClick}>
                         Cancel
                     </Button>
                     <Button disabled={!isDirty || !exists(dirtyFields) || !isValid} onClick={onSave}>

@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { MemoryRouter } from 'react-router';
+import { Button } from 'design-system/button';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { Button } from 'design-system/button';
+import { MemoryRouter } from 'react-router';
+
 import { TableCard } from './TableCard';
 
 type Person = {
@@ -67,7 +68,7 @@ export const Default: Story = {
             { id: '3', name: 'Sam Wilson', age: 23 },
             { id: '4', name: 'Cassandra Jones', age: 24 },
         ],
-        columns: columns,
+        columns,
         columnPreferencesKey: 'storybook.tablecard',
         defaultColumnPreferences: columnPreferences,
     },
@@ -84,7 +85,7 @@ export const Actions: Story = {
     args: {
         ...Default.args,
         actions: (
-            <Button sizing="small" secondary icon="add_circle">
+            <Button sizing="small" secondary={true} icon="add_circle">
                 Add Person
             </Button>
         ),

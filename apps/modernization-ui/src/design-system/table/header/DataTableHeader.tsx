@@ -1,11 +1,12 @@
-import { SortingInteraction } from 'libs/sorting';
-import { FilterInteraction } from 'design-system/filter';
+import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
-import { Column } from './column';
-import { ColumnHeader } from './ColumnHeader';
+import { FilterInteraction } from 'design-system/filter';
+import { SortingInteraction } from 'libs/sorting';
 
 import styles from '../data-table.module.scss';
-import classNames from 'classnames';
+
+import { ColumnHeader } from './ColumnHeader';
+import { Column } from './column';
 
 type HeaderRowProps<V> = {
     columns: Column<V>[];
@@ -37,7 +38,7 @@ const DataTableHeader = <T,>({ columns, sizing, sorting, filtering, sticky = fal
                         </ColumnHeader>
                     ))}
                 </tr>
-                <tr className={styles.border} aria-hidden>
+                <tr className={styles.border} aria-hidden={true}>
                     <th colSpan={columns.length} />
                 </tr>
             </thead>

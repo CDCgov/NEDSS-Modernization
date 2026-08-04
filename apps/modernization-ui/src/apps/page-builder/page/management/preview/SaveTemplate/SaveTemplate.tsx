@@ -1,11 +1,15 @@
-import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { Input } from 'components/FormInputs/Input';
-import { Controller, useForm } from 'react-hook-form';
 import { RefObject } from 'react';
+
+import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { CreateTemplateRequest, PagesService } from 'apps/page-builder/generated';
-import { usePageManagement } from '../../usePageManagement';
+import { Input } from 'components/FormInputs/Input';
 import { useAlert } from 'libs/alert';
+import { Controller, useForm } from 'react-hook-form';
+import { logErrorToUserConsole } from 'utils/logging';
 import { maxLengthRule } from 'validation/entry';
+
+import { usePageManagement } from '../../usePageManagement';
+
 import styles from './save-tempate.module.scss';
 
 const initSave = {
@@ -46,15 +50,14 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                 });
             } catch (error: unknown) {
                 modalRef.current?.toggleModal();
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -83,7 +86,7 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                             defaultValue={value}
                             onChange={onChange}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
@@ -99,13 +102,13 @@ export const SaveTemplate = ({ modalRef }: Props) => {
                             defaultValue={value}
                             onChange={onChange}
                             error={error?.message}
-                            required
+                            required={true}
                         />
                     )}
                 />
             </div>
             <div className={styles.footer}>
-                <ModalToggleButton type="button" closer outline modalRef={modalRef}>
+                <ModalToggleButton type="button" closer={true} outline={true} modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
                 <Button type="submit" disabled={!saveForm.formState.isValid}>

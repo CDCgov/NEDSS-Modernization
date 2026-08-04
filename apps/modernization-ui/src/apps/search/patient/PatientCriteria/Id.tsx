@@ -1,14 +1,16 @@
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { SingleSelect } from 'design-system/select';
-import { EntryFieldsProps } from 'design-system/entry';
-import { useConceptOptions } from 'options/concepts';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input/text/TextInputField';
+import { SingleSelect } from 'design-system/select';
+import { useConceptOptions } from 'options/concepts';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
-    const identificationType = useWatch({ control: control, name: 'identificationType' });
+    const identificationType = useWatch({ control, name: 'identificationType' });
+
+    const conceptOptions = useConceptOptions('EI_TYPE_PAT', { lazy: false }).options;
 
     return (
         <SearchCriteria sizing={sizing}>
@@ -24,7 +26,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                         id={name}
                         sizing={sizing}
                         orientation={orientation}
-                        options={useConceptOptions('EI_TYPE_PAT', { lazy: false }).options}
+                        options={conceptOptions}
                     />
                 )}
             />
@@ -46,7 +48,7 @@ export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
                             onChange={onChange}
                             name={name}
                             label="ID number"
-                            required
+                            required={true}
                             error={error?.message}
                         />
                     )}

@@ -1,13 +1,14 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+
 import { SearchResultPageSizeSelect } from './SearchResultPageSizeSelect';
 
 describe('when changing the number of results per page', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(
             <SearchResultPageSizeSelect
-                id={'testing'}
+                id="testing"
                 value={20}
                 selections={[20, 30, 50, 100]}
                 onPageSizeChanged={vi.fn()}
@@ -19,7 +20,7 @@ describe('when changing the number of results per page', () => {
 
     it('should default to the minimum size', () => {
         const { getByLabelText } = render(
-            <SearchResultPageSizeSelect id={'testing'} selections={[100, 50, 30, 20]} onPageSizeChanged={vi.fn()} />
+            <SearchResultPageSizeSelect id="testing" selections={[100, 50, 30, 20]} onPageSizeChanged={vi.fn()} />
         );
 
         const toggle = getByLabelText('Results per page');
@@ -34,7 +35,7 @@ describe('when changing the number of results per page', () => {
 
         const { getByLabelText } = render(
             <SearchResultPageSizeSelect
-                id={'testing'}
+                id="testing"
                 value={30}
                 selections={[20, 30, 50, 100]}
                 onPageSizeChanged={mockOnPageSizeChanged}

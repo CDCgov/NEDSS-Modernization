@@ -1,19 +1,21 @@
 import { fireEvent, render, waitFor, within } from '@testing-library/react';
-import { ReportRunPage } from './ReportRunPage';
-import * as generated from 'generated';
 import userEvent from '@testing-library/user-event';
+import * as generated from 'generated';
 import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
-import { Layout } from 'layout';
-import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
-import fileDownload from 'js-file-download';
 import { axe } from 'jest-axe';
-import * as options from 'options/selectableResolver';
-import { ConceptOptions, useConceptOptions } from 'options/concepts';
+import fileDownload from 'js-file-download';
+import { Layout } from 'layout';
 import { LoadingBlock } from 'libs/loading/block';
 import { permissions } from 'libs/permission';
-import { UserContextProvider } from 'user';
+import { ConceptOptions, useConceptOptions } from 'options/concepts';
+import * as options from 'options/selectableResolver';
 import { ErrorPage } from 'pages/error';
+import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
+import { UserContextProvider } from 'user';
+
 import { PERMISSION_GROUP_MAP } from '../constants';
+
+import { ReportRunPage } from './ReportRunPage';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -1817,7 +1819,7 @@ describe('report run page', () => {
                     expect(await findByRole('option', { name: '2019 Novel Coronavirus' })).toBeVisible();
 
                     // component refreshes when options populates, so can't do this earlier
-                    let dropDown = await findByLabelText('Full Name');
+                    const dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
                     await user.selectOptions(dropDown, '2019 Novel Coronavirus');
 
@@ -1939,7 +1941,7 @@ describe('report run page', () => {
                     expect(await findByRole('option', { name: '2019 Novel Coronavirus' })).toBeVisible();
 
                     // component refreshes when options populates, so can't do this earlier
-                    let dropDown = await findByLabelText('Full Name');
+                    const dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
                     await user.click(dropDown);
                     await user.click(getByText('2019 Novel Coronavirus'));
@@ -2081,7 +2083,7 @@ describe('report run page', () => {
                     expect(useConceptOptions).toHaveBeenCalledWith('CASE_DIAGNOSIS_STD', { lazy: false });
 
                     // component refreshes when options populates, so can't do this earlier
-                    let dropDown = await findByLabelText('Full Name');
+                    const dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
                     await user.selectOptions(dropDown, '100 - Chancroid');
 
@@ -2209,7 +2211,7 @@ describe('report run page', () => {
                     expect(useConceptOptions).toHaveBeenCalledWith('CASE_DIAGNOSIS_STD', { lazy: false });
 
                     // component refreshes when options populates, so can't do this earlier
-                    let dropDown = await findByLabelText('Full Name');
+                    const dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
                     await user.click(dropDown);
                     await user.click(getByText('100 - Chancroid'));
@@ -2563,7 +2565,7 @@ describe('report run page', () => {
                     expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
 
                     // component refreshes when options populates, so can't do this earlier
-                    let dropDown = await findByLabelText('Full Name');
+                    const dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
                     await user.selectOptions(dropDown, 'Jyn Erso');
 
@@ -2685,7 +2687,7 @@ describe('report run page', () => {
                     expect(await findByRole('option', { name: 'Jyn Erso' })).toBeVisible();
 
                     // component refreshes when options populates, so can't do this earlier
-                    let dropDown = await findByLabelText('Full Name');
+                    const dropDown = await findByLabelText('Full Name');
                     expect(dropDown).toBeVisible();
                     await user.click(dropDown);
                     await user.click(getByText('Jyn Erso'));
@@ -2783,6 +2785,13 @@ describe('report run page', () => {
             reportFilterUid: 1001,
             defaultValue: undefined,
         };
+
+        beforeEach(() => {
+            // Spy on console.error and force it to throw an error
+            vi.spyOn(console, 'error').mockImplementation((message) => {
+                throw new Error(`Test failed due to console.error: ${message}`);
+            });
+        });
 
         it('renders the empty filter builder when no default value', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
@@ -3434,7 +3443,7 @@ describe('report run page', () => {
                 const ruleGroupHandle = async () => await findByTestId('drag-handle-128-128-128');
                 const announcementEl = await findByTestId('announcement');
 
-                let ruleGroups = await findAllByTestId('rule-group');
+                const ruleGroups = await findAllByTestId('rule-group');
                 expect(ruleGroups[0]).toContainElement(await ruleGroupHandle());
                 expect(ruleGroups[1]).not.toContainElement(await ruleGroupHandle());
                 expect(ruleGroups[2]).toContainElement(await ruleGroupHandle());
@@ -3490,7 +3499,7 @@ describe('report run page', () => {
 
             await user.click((await options())[0]); // select all
             (await options()).forEach((option, i) => {
-                if (i == 0) {
+                if (i === 0) {
                     expect(option).not.toBeChecked();
                     expect(option).toHaveAccessibleName('Deselect all');
                 } else {
@@ -3506,7 +3515,7 @@ describe('report run page', () => {
             await user.click(await findByLabelText('Select search results'));
             await waitFor(async () =>
                 (await options()).forEach((option, i) => {
-                    if (i == 0) {
+                    if (i === 0) {
                         expect(option).not.toBeChecked();
                         expect(option).toHaveAccessibleName('Deselect search results');
                     } else {

@@ -1,12 +1,13 @@
-import { BrowserRouter } from 'react-router';
-import { PageBuilder } from './PageBuilder';
 import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router';
+
+import { PageBuilder } from './PageBuilder';
 
 describe('when rendered', () => {
     it('should display side nav', async () => {
         const { container } = render(
             <BrowserRouter>
-                <PageBuilder nav>Child</PageBuilder>
+                <PageBuilder nav={true}>Child</PageBuilder>
             </BrowserRouter>
         );
 

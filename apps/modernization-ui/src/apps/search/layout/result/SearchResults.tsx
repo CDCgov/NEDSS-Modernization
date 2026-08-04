@@ -1,11 +1,12 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
+
+import { View } from 'apps/search';
+import { Term } from 'apps/search/terms';
 import { Sizing } from 'design-system/field';
 import { LoadingPanel } from 'design-system/loading';
-import { View } from 'apps/search';
-import { SearchResultsHeader } from './header/SearchResultsHeader';
-import { Term } from 'apps/search/terms';
-import { SearchResultPagination } from './pagination';
 
+import { SearchResultsHeader } from './header/SearchResultsHeader';
+import { SearchResultPagination } from './pagination';
 import styles from './search-results.module.scss';
 
 type Props = {

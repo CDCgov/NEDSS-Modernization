@@ -1,4 +1,5 @@
 import { Field, FieldProps } from 'design-system/field';
+
 import { Toggle, ToggleProps } from './Toggle';
 
 type ToggleFieldProps = FieldProps & Omit<ToggleProps, 'aria-label' | 'name'> & { sorted?: boolean; id: string };

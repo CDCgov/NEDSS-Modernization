@@ -1,8 +1,10 @@
-import { Button, Icon } from '@trussworks/react-uswds';
-import styles from './section.module.scss';
-import classNames from 'classnames';
-import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { useState } from 'react';
+
+import { Button, Icon } from '@trussworks/react-uswds';
+import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
+import classNames from 'classnames';
+
+import styles from './section.module.scss';
 
 type Props = {
     name: string;
@@ -40,13 +42,13 @@ export const SectionHeader = ({
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" onClick={onAddSubsection} outline data-testid="addNewSubsection">
+                <Button type="button" onClick={onAddSubsection} outline={true} data-testid="addNewSubsection">
                     Add subsection
                 </Button>
                 <Button
                     type="button"
                     onClick={handleManageSubsection}
-                    outline
+                    outline={true}
                     data-testid={`manageSubsectionGearIcon-${subsectionCount ? 'yes' : 'no'}`}
                     className={styles.settingBtn}
                 >

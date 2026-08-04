@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import { ToggleButton } from '../../ToggleButton';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
@@ -169,13 +171,13 @@ export const MessagingFields = () => {
             />
             <SelectInput
                 label="HL7 segment"
-                value={'OBX-3.0'}
-                disabled
+                value="OBX-3.0"
+                disabled={true}
                 options={[{ name: 'OBX-3.0', value: 'OBX-3.0' }]}
             />
             <Input
                 label="Group number (Order group ID)"
-                defaultValue={'2'}
+                defaultValue="2"
                 type="text"
                 name="Group number"
                 id="Group number"

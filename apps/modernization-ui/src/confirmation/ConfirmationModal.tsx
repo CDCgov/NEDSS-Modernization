@@ -1,6 +1,17 @@
 import { ReactNode, RefObject } from 'react';
-import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
+
+import {
+    Button,
+    ButtonGroup,
+    Icon,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton,
+} from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import style from './confirmationModal.module.scss';
 
 type Props = {
@@ -13,7 +24,6 @@ type Props = {
     confirmText?: string;
     onConfirm: () => void;
     cancelText?: string;
-    onCancel: () => void;
     confirmBtnClassName?: string;
     disabled?: boolean;
 };
@@ -28,13 +38,13 @@ export const ConfirmationModal = ({
     confirmText = 'Confirm',
     onConfirm,
     cancelText = 'Cancel',
-    onCancel,
     confirmBtnClassName,
     disabled = false,
 }: Props) => {
     return (
         <Modal
-            forceAction
+            // allow escape to cancel unless interaction is disabled
+            forceAction={disabled}
             ref={modal}
             id={id}
             aria-labelledby="confirmation-heading"
@@ -55,9 +65,9 @@ export const ConfirmationModal = ({
             </div>
             <ModalFooter id="confirmation-footer">
                 <ButtonGroup className={classNames(style.actionButtonGroup)}>
-                    <Button type="button" onClick={onCancel} outline data-testid="cancel-btn" disabled={disabled}>
+                    <ModalToggleButton modalRef={modal} outline={true} data-testid="cancel-btn" disabled={disabled}>
                         {cancelText}
-                    </Button>
+                    </ModalToggleButton>
                     <Button
                         type="button"
                         onClick={onConfirm}

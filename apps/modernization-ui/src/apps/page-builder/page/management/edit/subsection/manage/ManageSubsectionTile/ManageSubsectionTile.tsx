@@ -1,9 +1,11 @@
-import { PagesSubSection } from 'apps/page-builder/generated';
-import styles from './managesubsectiontile.module.scss';
-import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { Icon, Button } from '@trussworks/react-uswds';
 import { useState } from 'react';
+
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
+import { Button, Icon } from '@trussworks/react-uswds';
+import { PagesSubSection } from 'apps/page-builder/generated';
+import { Icon as NbsIcon } from 'components/Icon/Icon';
+
+import styles from './managesubsectiontile.module.scss';
 
 type ManageSubsectionTileProps = {
     subsection: PagesSubSection;
@@ -28,6 +30,7 @@ export const ManageSubsectionTile = ({
 
     const deleteHeader = (curSubsection: PagesSubSection) => {
         if (curSubsection.questions.length !== 0) {
+            // eslint-disable-next-line max-len
             return `Subsection cannot be deleted. This subsection contains elements (questions) inside it. Remove the contents first, and then the subsection can be deleted.`;
         } else {
             return `Are you sure you want to delete this subsection?`;
@@ -105,9 +108,11 @@ export const ManageSubsectionTile = ({
                             <div className={styles.handle} {...provided.dragHandleProps} data-testid="dragAndDropIcon">
                                 <NbsIcon name="drag" size="3" />
                             </div>
-                            <div className={styles.label} data-testid={'label'}>
+                            <div className={styles.label} data-testid="label">
                                 <NbsIcon name="group" size="3" />
-                                <span data-testid="manageSectionTileId">{`${subsection.name} (${subsection.questions.length})`}</span>
+                                <span data-testid="manageSectionTileId">
+                                    {subsection.name} ({subsection.questions.length})
+                                </span>
                             </div>
 
                             <div className={styles.buttons}>
@@ -116,7 +121,7 @@ export const ManageSubsectionTile = ({
                                     onClick={() => {
                                         setEdit(subsection);
                                     }}
-                                    outline
+                                    outline={true}
                                     disabled={action}
                                     data-testid="subsectionTileEditIcon"
                                     className={styles.iconBtn}
@@ -127,7 +132,7 @@ export const ManageSubsectionTile = ({
                                     type="button"
                                     data-testid="subsectionTileDeleteIcon"
                                     className={styles.iconBtn}
-                                    outline
+                                    outline={true}
                                     disabled={action}
                                     onClick={() => {
                                         setDeleteWarning(subsection);
@@ -139,7 +144,7 @@ export const ManageSubsectionTile = ({
                                 {subsection.visible ? (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         data-testid="subsectionTileVisibilityIcon-on"
                                         className={styles.iconBtn}
                                         disabled={action}
@@ -152,7 +157,7 @@ export const ManageSubsectionTile = ({
                                 ) : (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         data-testid="subsectionTileVisibilityIcon-off"
                                         className={`${styles.iconBtn} ${styles.offVisibility}`}
                                         disabled={action}

@@ -1,15 +1,18 @@
-import { useAlert } from 'libs/alert';
+import { useEffect, useState } from 'react';
+
+import { Loading } from 'components/Spinner';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
-import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
+import { useAlert } from 'libs/alert';
 import { FormProvider, useForm, useFormState, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { exists } from 'utils';
+
 import { DataElements } from '../api/model/DataElement';
 import { useDataElements } from '../api/useDataElements';
 import { useMatchConfiguration } from '../api/useMatchConfiguration';
+
 import styles from './data-elements.module.scss';
 import { DataElementsForm } from './form/DataElementsForm/DataElementsForm';
 import { DataElementValidationError, InUseDataElements } from './validation/DataElementValidationError';
@@ -98,7 +101,7 @@ export const DataElementConfig = () => {
             <div className={styles.content}>
                 <DataElementValidationError validationError={validationError} />
                 <main>
-                    <Shown when={!loading} fallback={<Loading center />}>
+                    <Shown when={!loading} fallback={<Loading center={true} />}>
                         <FormProvider {...form}>
                             <DataElementsForm dataElements={dataElements} />
                         </FormProvider>
@@ -106,7 +109,7 @@ export const DataElementConfig = () => {
                 </main>
             </div>
             <div className={styles.buttonBar}>
-                <Button secondary onClick={handleCancel}>
+                <Button secondary={true} onClick={handleCancel}>
                     Cancel
                 </Button>
                 <Button onClick={handleSubmit} disabled={isSaveDisabled}>

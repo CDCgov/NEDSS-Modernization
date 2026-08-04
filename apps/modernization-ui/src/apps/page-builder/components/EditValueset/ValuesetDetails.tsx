@@ -1,5 +1,6 @@
-import { Valueset } from 'apps/page-builder/generated';
 import { Button, Icon } from '@trussworks/react-uswds';
+import { Valueset } from 'apps/page-builder/generated';
+
 import styles from './edit-valueset.module.scss';
 
 type ValuesetDetailsProps = {
@@ -13,9 +14,9 @@ export const ValuesetDetails = ({ valueset, onEdit }: ValuesetDetailsProps) => {
                 <div className={styles.sectionText}>Value set details</div>
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     className={styles.editValuesetButton}
-                    aria-label={'edit value set details'}
+                    aria-label="edit value set details"
                     onClick={onEdit}
                 >
                     <Icon.Edit size={3} />

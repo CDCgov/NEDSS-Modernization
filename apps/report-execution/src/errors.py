@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 
 class BaseReportExecutionError(Exception):
@@ -7,6 +8,8 @@ class BaseReportExecutionError(Exception):
     def __init__(self, message: str, http_code: int):
         self.message = message
         self.http_code = http_code
+        self.id = str(uuid.uuid4())
+
         super().__init__(self.message)
 
 
@@ -54,10 +57,11 @@ class InternalServerError(BaseReportExecutionError):
     """
 
     def __init__(self, message, orig_exc=None):
-        logging.error(message)
-        if orig_exc is not None:
-            logging.error(orig_exc)
         super().__init__('Internal Server Error', 500)
+
+        logging.error(f'(Error ID: {self.id}) - {message}')
+        if orig_exc is not None:
+            logging.error(f'(Error ID: {self.id}) - {orig_exc}')
 
 
 class InvalidReportSpecError(BaseReportExecutionError):
@@ -84,7 +88,7 @@ class ToDoError(BaseReportExecutionError):
         todo_message = f'TODO: {message}'
         if orig_exc is not None:
             logging.error(orig_exc)
-        super().__init__(todo_message, 502)
+        super().__init__(todo_message, 501)
 
 
 class InvalidConfigurationError(BaseReportExecutionError):

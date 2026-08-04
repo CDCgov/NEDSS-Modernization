@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router';
 import { RedirectHome } from 'routes';
-import { Guard } from './guard';
+
 import { FeatureToggle } from './FeatureToggle';
+import { Guard } from './guard';
 
 type FeatureLayoutProps = {
     guard: Guard;

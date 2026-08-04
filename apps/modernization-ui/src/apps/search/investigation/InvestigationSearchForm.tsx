@@ -1,11 +1,12 @@
-import GeneralSearchFields from './GeneralSearchFields';
-import CriteriaSearchFields from './CriteriaSearchFields';
 import { Accordion } from 'components/Accordion/Accordion';
+
+import CriteriaSearchFields from './CriteriaSearchFields';
+import GeneralSearchFields from './GeneralSearchFields';
 
 const InvestigationSearchForm = () => {
     return (
         <>
-            <Accordion title="General search" open>
+            <Accordion title="General search" open={true}>
                 <GeneralSearchFields />
             </Accordion>
             <Accordion title="Investigation criteria">

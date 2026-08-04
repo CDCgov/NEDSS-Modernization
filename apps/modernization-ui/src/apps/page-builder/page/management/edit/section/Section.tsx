@@ -1,13 +1,16 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { useEffect, useRef, useState } from 'react';
+import { useAlert } from 'libs/alert';
+
 import { ConfirmationModal } from '../../../../../../confirmation';
 import { usePageManagement } from '../../usePageManagement';
 import { Subsection } from '../subsection/Subsection';
 import { AddSubSection } from '../subsection/manage/AddSubSection';
 import { ManageSubsection } from '../subsection/manage/ManageSubsection';
+
 import { SectionHeader } from './SectionHeader';
 import { AddSection } from './manage/AddSection';
 import { AlertInLineProps } from './manage/ManageSectionModal';
@@ -165,7 +168,7 @@ export const Section = ({
                     ))}
                 </div>
             )}
-            <Modal id={'add-section-modal'} ref={editSectionModalRef} className={'add-section-modal'} isLarge>
+            <Modal id="add-section-modal" ref={editSectionModalRef} className="add-section-modal" isLarge={true}>
                 <AddSection
                     pageId={page.id}
                     tabId={selected?.id}
@@ -181,11 +184,11 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id={'add-section-modal'}
+                id="add-section-modal"
                 ref={addSubsectionModalRef}
-                className={'add-section-modal'}
-                isLarge
-                forceAction
+                className="add-section-modal"
+                isLarge={true}
+                forceAction={true}
             >
                 <AddSubSection
                     sectionId={section.id}
@@ -200,11 +203,11 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id={'add-section-modal'}
+                id="add-section-modal"
                 ref={editSubsectionModalRef}
-                className={'add-section-modal'}
-                isLarge
-                forceAction
+                className="add-section-modal"
+                isLarge={true}
+                forceAction={true}
             >
                 <AddSubSection
                     sectionId={section.id}
@@ -216,16 +219,16 @@ export const Section = ({
                         refresh();
                     }}
                     subsectionEdit={editSubsection}
-                    isEdit
+                    isEdit={true}
                 />
             </Modal>
 
             <Modal
-                id={'manage-section-modal'}
+                id="manage-section-modal"
                 ref={manageSubsectionModalRef}
-                className={'manage-section-modal'}
-                forceAction
-                isLarge
+                className="manage-section-modal"
+                forceAction={true}
+                isLarge={true}
             >
                 <DragDropProvider pageData={page} successCallBack={handleReorderSubsection}>
                     <ManageSubsection
@@ -233,7 +236,7 @@ export const Section = ({
                         alert={alert}
                         onResetAlert={() => setAlert(undefined)}
                         onSetAlert={(message, type) => {
-                            setAlert({ message: message, type: type });
+                            setAlert({ message, type });
                         }}
                         onCancel={onCloseManageSubsection}
                     />
@@ -248,9 +251,6 @@ export const Section = ({
                 confirmText="Yes, delete"
                 onConfirm={() => {
                     deleteSubsection();
-                    deleteSubsectionModalRef.current?.toggleModal();
-                }}
-                onCancel={() => {
                     deleteSubsectionModalRef.current?.toggleModal();
                 }}
             />

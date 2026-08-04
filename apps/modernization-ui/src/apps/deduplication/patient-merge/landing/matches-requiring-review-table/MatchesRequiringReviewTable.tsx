@@ -1,17 +1,19 @@
+import { useEffect, useState } from 'react';
+
 import { MatchRequiringReview } from 'apps/deduplication/api/model/MatchRequiringReview';
 import { useMatchesRequiringReview } from 'apps/deduplication/api/useMatchesRequiringReview';
 import { SearchResultPageSizeSelect } from 'apps/search/layout/result/pagination/page-size-select';
 import { SearchResultsShowing } from 'apps/search/layout/result/pagination/showing';
 import { Loading } from 'components/Spinner';
+import { Shown } from 'conditional-render';
 import { format, parseISO } from 'date-fns';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
-import { Status, usePagination } from 'pagination';
-import { useEffect, useState } from 'react';
-import { Shown } from 'conditional-render';
 import { Direction, useSorting } from 'libs/sorting';
+import { Status, usePagination } from 'pagination';
 import { useNavigate } from 'react-router';
+
 import styles from './matches-requiring-review.module.scss';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';
@@ -106,7 +108,7 @@ export const MatchesRequiringReviewTable = () => {
         <div className={styles.matchesRequiringReviewTable}>
             <Shown when={loading}>
                 <div className={styles.loadingContainer}>
-                    <Loading center />
+                    <Loading center={true} />
                 </div>
             </Shown>
             <div className={styles.tableWrapper}>
@@ -121,7 +123,7 @@ export const MatchesRequiringReviewTable = () => {
             <Shown when={page.total > 0}>
                 <div className={styles.pagination}>
                     <SearchResultPageSizeSelect
-                        id={`page-size-select`}
+                        id="page-size-select"
                         value={page.pageSize}
                         selections={[20, 30, 50, 100]}
                         onPageSizeChanged={resize}

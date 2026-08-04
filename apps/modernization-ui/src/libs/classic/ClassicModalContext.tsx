@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useRef, RefObject, useId } from 'react';
+import { createContext, ReactNode, RefObject, useId, useRef } from 'react';
 
 import styles from './classic-modal.module.scss';
 
@@ -14,7 +14,7 @@ const ClassicModalProvider = ({ children }: Props) => {
 
     return (
         <>
-            <form id={id} ref={form} aria-hidden className={styles.target} />
+            <form id={id} ref={form} aria-hidden={true} className={styles.target} />
             <ClassicModalContext.Provider value={form}>{children}</ClassicModalContext.Provider>
         </>
     );

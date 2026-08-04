@@ -1,22 +1,24 @@
+import { ReactNode, useRef, useState } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+import classNames from 'classnames';
+import { FullPageBlock } from 'components/FullPageBlock';
+import { Heading } from 'components/heading';
+import { Shown } from 'conditional-render';
+import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
-import { ReportLayout } from '../layout/ReportLayout';
+import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
 import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
-import { ReactNode, useRef, useState } from 'react';
-import { Heading } from 'components/heading';
 import { permissions, permits, permitsAny, Permitted } from 'libs/permission';
-import { Shown } from 'conditional-render';
 import { useUser } from 'user';
-import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
-import { ModalRef } from '@trussworks/react-uswds';
-import { SaveReportModal } from './modals/SaveReportModal.tsx';
-import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 import { redirectToNBS6 } from 'utils';
-import classNames from 'classnames';
-import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
-import { FullPageBlock } from 'components/FullPageBlock';
 
+import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
+import { ReportLayout } from '../layout/ReportLayout';
 import layoutStyles from '../layout/layout.module.scss';
+
+import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 
 const ReportResultPage = ({
     config,
@@ -66,11 +68,11 @@ const ReportResultPage = ({
                 redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
             })
             .catch((err) => {
-                const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
-                modalRef.current?.toggleModal();
                 setSaveError(err);
             })
             .finally(() => {
+                const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
+                modalRef.current?.toggleModal();
                 setSaving(false);
             });
     };
@@ -87,7 +89,7 @@ const ReportResultPage = ({
         <ReportLayout
             title={config.title}
             startHref={NBS_MANAGE_REPORT_PAGE}
-            startPage="reports"
+            startPage="Reports"
             actions={
                 <>
                     <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
@@ -134,7 +136,20 @@ const ReportResultPage = ({
                             >
                                 Save
                             </Button>
-                            <SaveReportModal saveReportModalRef={saveReportModalRef} saving={saving} onSave={onSave} />
+                            <ConfirmationModal
+                                modal={saveReportModalRef}
+                                title="Overwrite saved report?"
+                                message={
+                                    <>
+                                        This will replace the saved criteria with your current criteria. This action
+                                        cannot be undone.
+                                    </>
+                                }
+                                confirmText="Save"
+                                cancelText="Cancel"
+                                onConfirm={onSave}
+                                disabled={saving}
+                            />
                         </Permitted>
                     </Shown>
                 </>

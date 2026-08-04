@@ -1,22 +1,23 @@
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
-import { useNavigate, useParams, useLocation } from 'react-router';
+import { useAlert } from 'libs/alert';
+import { useLocation, useNavigate, useParams } from 'react-router';
+
 import styles from './merge-review.module.scss';
+import { AddressSelection } from './patient-form/address/AddressSelection';
 import { AdminCommentsSelection } from './patient-form/admin-comments/AdminCommentsSelection';
+import { EthnicitySelection } from './patient-form/ethnicity/EthnicitySelection';
+import { GeneralSelection } from './patient-form/general/GeneralSelection';
+import { IdentificationSelection } from './patient-form/identification/IdentificationSelection';
+import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
+import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
 import { NameSelection } from './patient-form/name/NameSelection';
 import { PatientIdSelection } from './patient-form/patient-id/PatientIdSelection';
-import { AddressSelection } from './patient-form/address/AddressSelection';
 import { PhoneEmailSelection } from './patient-form/phone-email/PhoneEmailSelection';
-import { IdentificationSelection } from './patient-form/identification/IdentificationSelection';
 import { RaceSelection } from './patient-form/race/RaceSelection';
-import { EthnicitySelection } from './patient-form/ethnicity/EthnicitySelection';
 import { SexAndBirthSelection } from './patient-form/sex-and-birth/SexAndBirthSelection';
-import { MortalitySelection } from './patient-form/mortality/MortalitySelection';
-import { GeneralSelection } from './patient-form/general/GeneralSelection';
-import { InvestigationDisplay } from './patient-form/investigations/InvestigationsDisplay';
-import { useAlert } from 'libs/alert';
-import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 
 export type Props = {
     mergeCandidates: MergeCandidate[];
@@ -69,7 +70,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
                 <Heading level={1}>Patient matches requiring review</Heading>
                 <div className={styles.buttons}>
                     <Button
-                        secondary
+                        secondary={true}
                         onClick={() =>
                             fromPatientFileSummary
                                 ? nav(`/patient/${fromPatientId}/summary`)
@@ -78,7 +79,7 @@ export const MergeReview = ({ mergeCandidates, onPreview, onRemovePatient, onMer
                     >
                         Back
                     </Button>
-                    <Button secondary onClick={onPreview}>
+                    <Button secondary={true} onClick={onPreview}>
                         Preview merge
                     </Button>
                     <Button onClick={handleKeepAllSeparate}>Keep all separate</Button>

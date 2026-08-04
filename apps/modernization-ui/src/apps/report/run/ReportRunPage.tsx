@@ -1,4 +1,7 @@
-import React from 'react';
+import { BaseSyntheticEvent } from 'react';
+import { useCallback, useState } from 'react';
+
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import {
     AdvancedFilterRequest,
     BasicFilterRequest,
@@ -7,21 +10,20 @@ import {
     ReportExecutionRequest,
     SortSpec,
 } from 'generated';
-import { useCallback, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router';
-import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { useNewTab } from './useNewTab';
-import { ResultDataPage } from './ResultDataPage';
 import fileDownload from 'js-file-download';
-import { ReportResultPage } from './ReportResultPage';
-import { FormProvider, useForm } from 'react-hook-form';
-import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-import { usePermissions } from 'libs/permission/usePermissions';
-import { PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
-import { NotFoundError } from 'pages/error/NotFoundError';
 import { permissions, permitsAll } from 'libs/permission';
-import { ApiErrorBanner } from 'design-system/errors/ApiError';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { NotFoundError } from 'pages/error/NotFoundError';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLoaderData, useParams } from 'react-router';
+
+import { LOCAL_STORAGE_RESULT_PREFIX, PERMISSION_GROUP_MAP } from '../constants';
+import { openNewTab } from '../utils/openNewTab';
+
+import { ReportConfigurationPage } from './ReportConfigurationPage';
+import { ReportResultPage } from './ReportResultPage';
+import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -51,7 +53,6 @@ const ReportRunPage = () => {
     const [lastReportExecutionRequest, setLastReportExecutionRequest] = useState<ReportExecutionRequest | undefined>(
         undefined
     );
-    const { openNewTab } = useNewTab();
     const config = useLoaderData<ReportConfiguration>();
     const { permissions: userPermissions, allows } = usePermissions();
     const canRunReport = allows(permissions.reports.run);
@@ -72,7 +73,7 @@ const ReportRunPage = () => {
         reValidateMode: 'onSubmit',
     });
 
-    const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
+    const onSubmit = (event: BaseSyntheticEvent, isExport: boolean) => {
         form.handleSubmit((data) => {
             const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                 .map(([id, { value, includeNulls }]) => {
@@ -126,13 +127,15 @@ const ReportRunPage = () => {
                         if (isExport) {
                             fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
                         } else {
+                            const resultId = crypto.randomUUID();
                             openNewTab(
-                                <ResultDataPage
-                                    result={res}
-                                    title={config?.title ?? ''}
-                                    dataSourceName={config?.dataSource.name ?? ''}
-                                />,
-                                `NBS Report: ${config?.title ?? ''}`
+                                `/report/result/${resultId}`,
+                                {
+                                    result: res,
+                                    title: config?.title ?? '',
+                                    dataSourceName: config?.dataSource.name ?? '',
+                                },
+                                `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
                             );
                         }
                     } catch (err) {

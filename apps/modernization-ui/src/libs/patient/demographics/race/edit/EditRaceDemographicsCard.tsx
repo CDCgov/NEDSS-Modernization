@@ -1,8 +1,10 @@
-import { Controller, UseFormReturn } from 'react-hook-form';
 import { Sizing } from 'design-system/field';
+import { Controller, UseFormReturn } from 'react-hook-form';
+
 import { PatientDemographicsDefaults } from '../../demographics';
-import { HasRaceDemographics, initial, RaceDemographic } from '../race';
 import { RaceDemographicRepeatingBlock, RaceDemographicRepeatingBlockProps } from '../RaceDemographicRepeatingBlock';
+import { HasRaceDemographics, initial, RaceDemographic } from '../race';
+
 import { RaceDemographicFields } from './RaceDemographicFields';
 import { categoryValidator } from './categoryValidator';
 import { useRaceOptions } from './useRaceOptions';
@@ -24,8 +26,8 @@ const EditRaceDemographicsCard = ({ form, defaults, ...remaining }: EditRaceDemo
                     {...remaining}
                     collapsible={false}
                     data={value}
-                    viewable
-                    editable
+                    viewable={true}
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(demographic?: RaceDemographic, sizing?: Sizing) => (
                         <RaceDemographicFields

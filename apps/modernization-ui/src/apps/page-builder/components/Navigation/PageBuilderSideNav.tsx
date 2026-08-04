@@ -2,7 +2,7 @@ import { NavEntry, SideNavigation } from 'design-system/side-nav';
 
 export const PageBuilderSideNav = () => (
     <SideNavigation title="Data entry" className="side-nav">
-        <NavEntry name="Page library" active />
+        <NavEntry name="Page library" active={true} />
         <NavEntry
             name="Condition library"
             href="/nbs/ManageCondition.do?method=ViewConditionLib&actionMode=Manage&initLoad=true"

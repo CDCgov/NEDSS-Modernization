@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import { VerticalField } from './VerticalField.tsx';
 
 describe('VeritcalField', () => {
@@ -14,7 +15,7 @@ describe('VeritcalField', () => {
 
     it('should not display the label when required but no label provided', async () => {
         render(
-            <VerticalField label="" htmlFor="1" required>
+            <VerticalField label="" htmlFor="1" required={true}>
                 Value goes here
             </VerticalField>
         );

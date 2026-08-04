@@ -1,10 +1,11 @@
 import { Accordion } from 'components/Accordion';
+
 import { CriteriaFields } from './CriteriaFields';
 import { GeneralFields } from './GeneralFields';
 
 const LaboratoryReportSearchCriteria = () => (
     <>
-        <Accordion title="General search" open>
+        <Accordion title="General search" open={true}>
             <GeneralFields />
         </Accordion>
         <Accordion title="Lab report criteria">

@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { Modal } from './Modal';
-import { Message } from 'design-system/message';
+
 import { Button } from 'design-system/button';
+import { Message } from 'design-system/message';
+
+import { Modal } from './Modal';
 
 type Props = {
     title?: string;
@@ -33,7 +35,7 @@ const Confirmation = ({
             onClose={onCancel}
             footer={(close) => (
                 <>
-                    <Button onClick={close} secondary data-close-modal>
+                    <Button onClick={close} secondary={true} data-close-modal={true}>
                         {cancelText}
                     </Button>
                     <Button onClick={onConfirm} destructive={destructive}>

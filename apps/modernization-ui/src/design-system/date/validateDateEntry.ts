@@ -1,7 +1,8 @@
 import { getDaysInMonth } from 'date-fns';
+
+import { now } from './clock';
 import { DateEntry } from './entry';
 import { occursInThePast } from './occursInThePast';
-import { now } from './clock';
 
 const validateYear = (name: string) => (value: DateEntry) => {
     if (value.year !== undefined) {

@@ -1,14 +1,16 @@
 import { useMemo } from 'react';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import { Button } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Property } from 'filters/properties';
-import { FilterEntry } from './FilterEntry';
-import { DataRangeEntryForm } from './DataRangeEntryForm';
-import { PartialValueEntryForm } from './PartialValueEntryForm';
-import { ExactValueEntryForm } from './ExactValueEntryForm';
-import styles from './filter-entry-form.module.scss';
 import { operators } from 'filters/selectables';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
+import { DataRangeEntryForm } from './DataRangeEntryForm';
+import { ExactValueEntryForm } from './ExactValueEntryForm';
+import { FilterEntry } from './FilterEntry';
+import { PartialValueEntryForm } from './PartialValueEntryForm';
+import styles from './filter-entry-form.module.scss';
 
 type FilterEditViewProps = {
     properties: Property[];
@@ -72,7 +74,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                         <Controller
                             control={control}
                             name="operator"
-                            shouldUnregister
+                            shouldUnregister={true}
                             rules={{ required: { value: true, message: 'An operator is required.' } }}
                             render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
                                 <SelectInput
@@ -94,7 +96,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                 </FormProvider>
             </section>
             <footer>
-                <Button type="button" id="cancel-button" onClick={onCancel} outline>
+                <Button type="button" id="cancel-button" onClick={onCancel} outline={true}>
                     Cancel
                 </Button>
                 <Button type="submit" id="done-button" disabled={!isValid} onClick={handleSubmit(onSubmit)}>

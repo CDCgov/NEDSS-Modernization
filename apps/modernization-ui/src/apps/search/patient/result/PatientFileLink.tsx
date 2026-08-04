@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
 import { FeatureToggle } from 'feature';
 import { Permitted } from 'libs/permission';
+import { Link } from 'react-router';
 
 type PatientFileLinkProps = {
     identifier: number;

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Radio } from './Radio';
 
 const mockOnChange = vi.fn();
@@ -43,7 +44,7 @@ describe('Radio Component', () => {
 
     it('should display the label as disabled when input is disabled', () => {
         const { getByText } = render(
-            <Radio name="test" value="radio-1" label="Test Label" disabled onChange={mockOnChange} />
+            <Radio name="test" value="radio-1" label="Test Label" disabled={true} onChange={mockOnChange} />
         );
         const labelElement = getByText('Test Label');
         expect(labelElement).toHaveClass('disabled');

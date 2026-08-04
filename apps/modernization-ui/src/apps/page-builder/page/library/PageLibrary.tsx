@@ -1,29 +1,28 @@
-import { externalize, Filter } from 'filters';
 import { useState } from 'react';
-import { useSorting } from 'libs/sorting';
-import { usePageLibraryProperties } from './usePageLibraryProperties';
-import { usePageSummarySearch } from './usePageSummarySearch';
-
-import { NavLinkButton } from 'design-system/button';
-import { TableProvider } from 'components/Table/TableProvider';
 
 import {
-    PageSummaryDownloadControllerService,
     Date,
     DateRange,
     MultiValue,
+    PageSummaryDownloadControllerService,
     SingleValue,
 } from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
+import { TableProvider } from 'components/Table/TableProvider';
+import { useConfiguration } from 'configuration';
+import { LinkButton } from 'design-system/button';
+import { NavLinkButton } from 'design-system/button';
+import { externalize, Filter } from 'filters';
+import fileDownload from 'js-file-download';
+import { useSorting } from 'libs/sorting';
+import { downloadPageLibraryPdf } from 'utils/ExportUtil';
+
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 import { PageLibraryMenu } from './menu/PageLibraryMenu';
-import { PageLibraryTable } from './table/PageLibraryTable';
-
-import { LinkButton } from 'design-system/button';
-import { useConfiguration } from 'configuration';
 import styles from './page-library.module.scss';
-import { downloadPageLibraryPdf } from 'utils/ExportUtil';
-import { download } from 'utils/download';
+import { PageLibraryTable } from './table/PageLibraryTable';
+import { usePageLibraryProperties } from './usePageLibraryProperties';
+import { usePageSummarySearch } from './usePageSummarySearch';
 
 const PageLibrary = () => {
     return (
@@ -59,7 +58,7 @@ const PageLibraryContent = () => {
                 filters: externalize(filters) as ApiFilter,
             },
             sort: sorting ? [sorting] : ['id,asc'],
-        }).then((file) => download({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
+        }).then((file) => fileDownload(file, 'PageLibrary.csv', 'text/csv'));
     };
 
     const handleDownloadPDF = () => {
@@ -69,12 +68,12 @@ const PageLibraryContent = () => {
     return (
         <>
             <CustomFieldAdminBanner />
-            <PageBuilder nav>
+            <PageBuilder nav={true}>
                 <section className={styles.library} id="pageLibrary">
                     <header>
                         <h1 aria-label="Page library">Page library</h1>
                         {!config.loading && config.features.pageBuilder.page.management.create.enabled ? (
-                            <NavLinkButton className="createNewPageButton" to={'/page-builder/pages/add'}>
+                            <NavLinkButton className="createNewPageButton" to="/page-builder/pages/add">
                                 Create new page
                             </NavLinkButton>
                         ) : (

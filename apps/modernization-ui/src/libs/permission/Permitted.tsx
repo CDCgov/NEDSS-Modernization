@@ -1,7 +1,9 @@
 import { ReactNode, useMemo } from 'react';
+
 import { Shown } from 'conditional-render';
-import { usePermissions } from './usePermissions';
 import { Predicate } from 'utils';
+
+import { usePermissions } from './usePermissions';
 
 export type PermittedProps = {
     /** The name of the permission required or a predicate that resolves the permission */
@@ -17,10 +19,6 @@ export type PermittedProps = {
  * the fallback component is displayed when the permission fails.
  *
  * A permission of 'string' is equivalent to using {@link permits}.
- *
- *
- * @param {PermittedProps} props
- * @return {ReactNode}
  */
 const Permitted = ({ permission, children, fallback }: PermittedProps) => {
     const { allows, permissions } = usePermissions();

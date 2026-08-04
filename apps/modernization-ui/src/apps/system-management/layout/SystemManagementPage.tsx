@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+
 import { Heading } from 'components/heading';
-import { SearchBar } from 'design-system/search/SearchBar';
 import { AlertMessage } from 'design-system/message';
+import { SearchBar } from 'design-system/search/SearchBar';
+
 import { CaseReportLaboratorySection } from '../components/case-report-and-lab/CaseReportLaboratorySection';
 import { DecisionSupportSection } from '../components/decision-support/DecisionSupportSection';
 import { EpiLinkSection } from '../components/epi-link-lot-number/EpiLinkSection';
@@ -10,8 +12,9 @@ import { PageSection } from '../components/page/PageSection';
 import { PersonMatchSection } from '../components/person-match/PersonMatchSection';
 import { ReportSection } from '../components/report/ReportSection';
 import { SecuritySection } from '../components/security/SecuritySection';
-import VisibleWrapper from './VisibleWrapper';
+
 import styles from './SystemManagementPage.module.scss';
+import VisibleWrapper from './VisibleWrapper';
 
 const SystemManagementPage = () => {
     const [filter, setFilter] = useState('');
@@ -64,11 +67,11 @@ const SystemManagementPage = () => {
                 <div className={styles.titleBar}>
                     <Heading level={1}>System Management</Heading>
                     <SearchBar
-                        placeholder={'Filter by keyword'}
+                        placeholder="Filter by keyword"
                         aria-label="Search"
                         value={filter}
                         onChange={setFilter}
-                        iconName={'filter_alt'}
+                        iconName="filter_alt"
                     />
                 </div>
             </header>

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { LoadingIndicator } from '../indicator';
 
 import styles from './loading-overlay.module.scss';

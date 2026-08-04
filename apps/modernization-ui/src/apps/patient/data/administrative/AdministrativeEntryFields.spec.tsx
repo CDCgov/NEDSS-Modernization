@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FormProvider, useForm } from 'react-hook-form';
-import { AdministrativeEntryFields } from './AdministrativeEntryFields';
 import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { AdministrativeEntryFields } from './AdministrativeEntryFields';
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
     const methods = useForm<AdministrativeEntry>({ mode: 'onBlur' });

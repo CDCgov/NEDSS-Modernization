@@ -1,43 +1,44 @@
-import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
-import { useController } from 'react-hook-form';
-import QueryBuilder, {
-    Field,
-    formatQuery,
-    isRuleType,
-    joinWith,
-    RuleGroupProps,
-    RuleGroupType,
-    splitBy,
-    ValidationResult,
-    RuleGroup as DefaultRuleGroup,
-    Rule as DefaultRule,
-    RuleProps,
-    FullField,
-} from 'react-querybuilder';
+import { ReactNode, useEffect, useState } from 'react';
 
-import { ReportExecuteForm } from '../../ReportRunPage';
-import { QueryBuilderDnD } from '@react-querybuilder/dnd';
-import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import {
     draggable,
     dropTargetForElements,
     monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
-import { KeyboardDnDProvider } from './useKeyboardDnd';
+import { QueryBuilderDnD } from '@react-querybuilder/dnd';
+import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
+import classNames from 'classnames';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
+import { AlertMessage } from 'design-system/message/index.ts';
+import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
+import { useController } from 'react-hook-form';
+import {
+    Rule as DefaultRule,
+    RuleGroup as DefaultRuleGroup,
+    Field,
+    formatQuery,
+    isRuleType,
+    joinWith,
+    QueryBuilder,
+    RuleGroupProps,
+    RuleGroupType,
+    RuleProps,
+    splitBy,
+    ValidationResult,
+} from 'react-querybuilder';
+
+import { ReportExecuteForm } from '../../ReportRunPage';
+
+import { AddButton } from './AddButton.tsx';
+import { RemoveButton } from './RemoveButton.tsx';
 import { ShiftableDragHandle } from './ShiftableDragHandle';
 import { ValueEditorSwitch } from './ValueEditorSwitch.tsx';
 import { ValueSingleSelector } from './ValueSingleSelector.tsx';
-import { RemoveButton } from '././RemoveButton.tsx';
-import { validateRule } from './validator.ts';
-import { AddButton } from './AddButton.tsx';
-import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
-import { ComponentType, ReactNode, useEffect, useState } from 'react';
-import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
-import { AlertMessage } from 'design-system/message/index.ts';
-import classNames from 'classnames';
-
 import styles from './advanced-filter.module.scss';
+import { ALL_OPERATORS, LIST_OPERATORS, NULL_OPERATORS, OPERATOR_MAP } from './operators.ts';
+import { KeyboardDnDProvider } from './useKeyboardDnd';
+import { validateRule } from './validator.ts';
 
 // ============= Constants ============= /
 
@@ -61,11 +62,11 @@ type NbsQuery = RuleGroup | Rule;
 // to match `RuleType` more closely
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type QbRule = Omit<Rule, 'columnId' | 'value'> & { field: string; value: any; label?: string; type?: string };
-export type QbRuleGroup = RuleGroupType<QbRule>;
-export type QbQuery = QbRuleGroup | QbRule;
+type QbRuleGroup = RuleGroupType<QbRule>;
+type QbQuery = QbRuleGroup | QbRule;
 
-export const isQbRuleType = (rule: QbQuery): rule is QbRule => isRuleType(rule) && 'field' in rule;
-export const isQbRuleGroupType = (rule: QbQuery): rule is QbRuleGroup => !isQbRuleType(rule);
+const isQbRuleType = (rule: QbQuery): rule is QbRule => isRuleType(rule) && 'field' in rule;
+const isQbRuleGroupType = (rule: QbQuery): rule is QbRuleGroup => !isQbRuleType(rule);
 
 // map rules and remove any extraneous fields
 function mapNbsRules(rule: NbsQuery, mapper: (r: Rule) => QbRule): QbQuery {
@@ -145,7 +146,7 @@ const advancedFilterConfigToQuery = (query: RuleGroup, columns: ReportColumn[]):
     }) as QbRuleGroup;
 };
 
-export type ValueSetMetadata = { codeDescCd?: string; codesetNm?: string; columnUid: number };
+type ValueSetMetadata = { codeDescCd?: string; codesetNm?: string; columnUid: number };
 
 const translateColumnToField = (c: ReportColumn): Field & ValueSetMetadata => {
     const sourceType = c.codeDescCd ? 'CODED' : c.sourceTypeCode;
@@ -290,7 +291,15 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                 </ValidationErrorBanner>
             )}
             <KeyboardDnDProvider>
-                <QueryBuilderDnD dnd={pragmaticDndAdapter} updateWhileDragging={false}>
+                <QueryBuilderDnD
+                    dnd={pragmaticDndAdapter}
+                    updateWhileDragging={false}
+                    // DnD needs these set earlier so that it can handle the context passing
+                    controlElements={{
+                        ruleGroup: RuleGroupWithErrors,
+                        rule: RuleWithErrors,
+                    }}
+                >
                     <QueryBuilder
                         fields={fields}
                         query={value}
@@ -309,11 +318,6 @@ const AdvancedFilter = ({ filter, columns }: { filter: AdvancedFilterConfigurati
                             addRuleAction: AddButton,
                             removeGroupAction: RemoveButton,
                             removeRuleAction: RemoveButton,
-                            // KLUDGE: This is using the literal default component, but ts is very unhappy
-                            ruleGroup: RuleGroupWithErrors as unknown as ComponentType<
-                                RuleGroupProps<ValueSetMetadata & FullField, string>
-                            >,
-                            rule: RuleWithErrors,
                         }}
                     />
                 </QueryBuilderDnD>
@@ -368,4 +372,5 @@ const RuleWithErrors = (props: RuleProps) => {
     );
 };
 
-export { AdvancedFilter, queryToAdvancedFilterRequest, parseAdvancedFilterErrors };
+export { AdvancedFilter, isQbRuleGroupType, isQbRuleType, parseAdvancedFilterErrors, queryToAdvancedFilterRequest };
+export type { QbQuery, QbRuleGroup, ValueSetMetadata };

@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { InPageNavigation, NavSection, InPageNavigationProps } from './InPageNavigation';
+
+import { InPageNavigation, InPageNavigationProps, NavSection } from './InPageNavigation';
 
 const meta: Meta<InPageNavigationProps> = {
     title: 'Design System/InPageNavigation',
@@ -21,6 +22,6 @@ const sections: NavSection[] = [
 export const Default: Story = {
     args: {
         title: 'Fruits',
-        sections: sections,
+        sections,
     },
 };

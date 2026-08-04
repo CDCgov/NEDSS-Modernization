@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon, Pagination } from '@trussworks/react-uswds';
 import {
     PageInformation as InfoType,
@@ -6,9 +8,11 @@ import {
     PageInformationService,
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { usePageManagement } from '../../usePageManagement';
+
 import styles from './page-information.module.scss';
 
 const PageInformation = () => {
@@ -40,7 +44,7 @@ const PageInformation = () => {
             .then((data: InfoType) => {
                 setPageInfo(data);
             })
-            .catch((err) => console.error(err));
+            .catch(logErrorToUserConsole);
     };
     useEffect(() => {
         fetchPageInfo();
@@ -64,11 +68,11 @@ const PageInformation = () => {
 
     const renderTabs = (
         <ul className={styles.tabs}>
-            <li className={activeTab == 'Details' ? styles.active : ''} onClick={() => setActiveTab('Details')}>
+            <li className={activeTab === 'Details' ? styles.active : ''} onClick={() => setActiveTab('Details')}>
                 Details
             </li>
             <li
-                className={`${activeTab == 'History' ? styles.active : ''} historyTab`}
+                className={`${activeTab === 'History' ? styles.active : ''} historyTab`}
                 data-testid="historyTab"
                 onClick={() => setActiveTab('History')}
             >
@@ -90,7 +94,7 @@ const PageInformation = () => {
         <section className={styles.information}>
             <header>
                 <h3>Page information</h3>
-                <Button type="button" outline onClick={handleDownloadMetadata} className={styles.icon}>
+                <Button type="button" outline={true} onClick={handleDownloadMetadata} className={styles.icon}>
                     <Icon.FileDownload />
                     Metadata
                 </Button>
@@ -98,7 +102,7 @@ const PageInformation = () => {
             <nav>
                 <div>{renderTabs}</div>
             </nav>
-            {activeTab == 'Details' ? (
+            {activeTab === 'Details' ? (
                 <div className={styles.content}>
                     <div className={styles.detailsContainer}>
                         <div className={styles.informationBlock}>
@@ -131,7 +135,7 @@ const PageInformation = () => {
                         <footer>
                             <Button
                                 type="button"
-                                outline
+                                outline={true}
                                 onClick={handleViewPage}
                                 className={`${styles.icon} EditViewPageDetails`}
                                 data-testid="EditViewPageDetails"
@@ -161,7 +165,7 @@ const PageInformation = () => {
                             className="historyPagination"
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
-                            pathname={'/'}
+                            pathname="/"
                             onClickNext={() => handleNext(currentPage + 1)}
                             onClickPrevious={() => handleNext(currentPage - 1)}
                             onClickPageNumber={(_, page) => handleNext(page)}

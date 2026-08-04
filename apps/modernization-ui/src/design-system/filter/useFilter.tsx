@@ -1,6 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useCallback } from 'react';
-import { Filter } from './filter';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+
 import { exists } from 'utils';
+
+import { Filter } from './filter';
 
 type FilterInteraction = {
     active: boolean;
@@ -111,7 +113,7 @@ const useFilter = () => {
     return context;
 };
 
-const maybeUseFilter = () => useContext(FilterableContext);
+const useFilterMaybe = () => useContext(FilterableContext);
 
-export { useFilter, maybeUseFilter, FilterProvider };
+export { useFilter, useFilterMaybe, FilterProvider };
 export type { FilterInteraction };

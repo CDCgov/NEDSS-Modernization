@@ -1,10 +1,12 @@
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+
 import { MemoizedSupplier } from 'libs/supplying/';
-import { Patient } from './patient';
+
 import { PatientDemographicsData } from './demographics';
-import { PatientFileSummaryData } from './summary';
-import { PatientFileEventData } from './events';
 import { description } from './description';
+import { PatientFileEventData } from './events';
+import { Patient } from './patient';
+import { PatientFileSummaryData } from './summary';
 
 type PatientFileData = {
     id: number;

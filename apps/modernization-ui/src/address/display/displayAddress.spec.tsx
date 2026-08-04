@@ -1,4 +1,5 @@
 import { ItemGroup } from 'design-system/item';
+
 import { displayAddress, displayAddressText } from './displayAddress';
 
 describe('when given an address', () => {

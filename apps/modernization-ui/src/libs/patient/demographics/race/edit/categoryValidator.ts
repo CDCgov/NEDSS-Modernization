@@ -1,8 +1,10 @@
 import { Selectable } from 'options';
 import { exists, Predicate } from 'utils';
 import { allOf } from 'utils/predicate';
-import { categoryRequiredValidator } from './categoryRequiredValidator';
+
 import { RaceDemographic } from '../race';
+
+import { categoryRequiredValidator } from './categoryRequiredValidator';
 
 const withCategory =
     (category: Selectable): Predicate<RaceDemographic> =>
@@ -28,6 +30,7 @@ const categoryValidator = (entries: RaceDemographic[]) => (id: number, category:
 
             //  validation fails
             if (resolved) {
+                // eslint-disable-next-line max-len
                 return `Race ${category?.name} has already been added to the repeating block. Please select another race to add.`;
             }
         }

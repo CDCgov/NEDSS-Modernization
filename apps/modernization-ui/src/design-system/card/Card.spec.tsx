@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Card, CardProps } from './Card';
 
 const Fixture = ({
@@ -43,7 +44,7 @@ describe('Card', () => {
 
     describe('that is collapsible', () => {
         it('collapses an open card when the control is clicked', async () => {
-            const { getByRole } = render(<Fixture title="card" collapsible open={true} />);
+            const { getByRole } = render(<Fixture title="card" collapsible={true} open={true} />);
 
             const toggle = getByRole('button', { name: /hide card content/i });
 
@@ -55,7 +56,7 @@ describe('Card', () => {
         });
 
         it('expands an collapsed card when the control is clicked', async () => {
-            const { getByRole } = render(<Fixture title="card" collapsible open={false} />);
+            const { getByRole } = render(<Fixture title="card" collapsible={true} open={false} />);
 
             const toggle = getByRole('button', { name: /show card content/i });
 

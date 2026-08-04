@@ -20,7 +20,8 @@ const get = (url: string) => {
 };
 
 /**
- * Creates a standard POST request to the API with an optional request `body`.  If a body is provided it is converted to JSON.
+ * Creates a standard POST request to the API with an optional request `body`.
+ * If a body is provided it is converted to JSON.
  *
  * @param {string} url The URL of the request.
  * @param {object} body The body of the request.
@@ -36,7 +37,8 @@ const post = (url: string, body?: object) => {
 };
 
 /**
- * Creates a standard PUT request to the API with an optional request `body`.  If a body is provided it is converted to JSON.
+ * Creates a standard PUT request to the API with an optional request `body`.
+ * If a body is provided it is converted to JSON.
  *
  * @param {string} url The URL of the request.
  * @param {object} body The body of the request.

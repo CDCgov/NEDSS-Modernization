@@ -1,22 +1,23 @@
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
+
+import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import { Button, ButtonGroup } from 'design-system/button';
 import { TextAreaField, TextInputField } from 'design-system/input/text';
 import { RadioGroup } from 'design-system/radio/RadioGroup.tsx';
-
+import { SingleSelect } from 'design-system/select';
+import { AdminReportRequest, ReportConfiguration, SaveAsReportRequest } from 'generated';
+import { permits } from 'libs/permission';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { Selectable } from 'options';
+import { useReportSections } from 'options/report';
 import { Controller, useForm } from 'react-hook-form';
+import { validateRequiredRule } from 'validation/entry';
+
+import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
+import { EnumSelectable } from '../../utils.ts';
 
 import styles from './save-as-report-modal.module.scss';
-import { SingleSelect } from 'design-system/select';
-import { useReportSections } from 'options/report';
-import { AdminReportRequest, ReportConfiguration, SaveAsReportRequest } from 'generated';
-import { usePermissions } from 'libs/permission/usePermissions';
-import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';
-import { Selectable } from 'options';
-import { validateRequiredRule } from 'validation/entry';
-import { EnumSelectable } from '../../utils.ts';
-import { permits } from 'libs/permission';
 
 type SaveAsForm = {
     reportTitle: string;
@@ -49,6 +50,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
     const permissions = usePermissions();
 
     const reportGroupOptions = getUserReportCreatePermissionsOptions(permissions.permissions);
+    const reportSectionOptions = useReportSections();
 
     const { control, handleSubmit } = useForm<SaveAsForm>({
         defaultValues: {
@@ -72,6 +74,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
 
     return (
         <ModalComponent
+            disabled={saving}
             id="save-report-modal"
             className={styles.layout}
             modalRef={saveAsReportModalRef}
@@ -92,7 +95,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     onChange={onChange}
                                     value={value}
                                     type="text"
-                                    required
+                                    required={true}
                                     error={error?.message}
                                     maxLength={100}
                                 />
@@ -111,7 +114,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     onChange={onChange}
                                     value={value}
                                     error={error?.message}
-                                    required
+                                    required={true}
                                     maxLength={300}
                                 />
                             )}
@@ -129,8 +132,8 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     onChange={onChange}
                                     name={name}
                                     error={error?.message}
-                                    required
-                                    options={useReportSections()}
+                                    required={true}
+                                    options={reportSectionOptions}
                                     helperText="The heading under which the report appears."
                                 />
                             )}
@@ -150,7 +153,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
                                     error={error?.message}
                                     value={value}
                                     orientation="vertical"
-                                    required
+                                    required={true}
                                     helperText="The level of visibility for the report."
                                 />
                             )}
@@ -160,7 +163,7 @@ export const SaveAsReportModal = ({ saveAsReportModalRef, saving, onSaveAs }: Sa
             }
             modalFooter={
                 <ButtonGroup>
-                    <ModalToggleButton modalRef={saveAsReportModalRef} outline disabled={saving}>
+                    <ModalToggleButton modalRef={saveAsReportModalRef} outline={true} disabled={saving}>
                         Cancel
                     </ModalToggleButton>
                     <Button onClick={handleSubmit(handleOnSaveAs)} disabled={saving}>

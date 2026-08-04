@@ -1,15 +1,16 @@
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { SearchCriteria } from 'apps/search/criteria';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
-import { MultiSelect, SingleSelect } from 'design-system/select';
-import { EntryFieldsProps } from 'design-system/entry';
-import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
-import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { EntryFieldsProps } from 'design-system/entry';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { useJurisdictionOptions } from 'options/jurisdictions';
 import { useProgramAreaOptions } from 'options/program-areas';
-import { SearchCriteria } from 'apps/search/criteria';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import {
     dateTypes,
     enteredByTypes,
@@ -83,7 +84,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             <Controller
                 control={form.control}
                 name="identification.type"
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         name={name}
@@ -114,7 +115,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                             htmlFor={name}
                             id={name}
                             sizing={sizing}
-                            required
+                            required={true}
                             error={error?.message}
                         />
                     )}
@@ -124,7 +125,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             <Controller
                 control={form.control}
                 name="eventDate.type"
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         id={name}
@@ -143,7 +144,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                     <Controller
                         control={form.control}
                         name="eventDate.from"
-                        shouldUnregister
+                        shouldUnregister={true}
                         rules={{
                             required: { value: true, message: 'From date is required' },
                         }}
@@ -155,7 +156,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                                 onBlur={onBlur}
                                 name={name}
                                 label="From"
-                                required
+                                required={true}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -164,7 +165,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                     <Controller
                         control={form.control}
                         name="eventDate.to"
-                        shouldUnregister
+                        shouldUnregister={true}
                         rules={{
                             required: { value: true, message: 'To date is required' },
                         }}
@@ -176,7 +177,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                                 onBlur={onBlur}
                                 name={name}
                                 label="To"
-                                required
+                                required={true}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -273,7 +274,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             <Controller
                 control={form.control}
                 name="orderingFacility"
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <FacilityAutocomplete
                         value={value}
@@ -290,7 +291,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             <Controller
                 control={form.control}
                 name="orderingProvider"
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <ProviderAutocomplete
                         id={name}
@@ -307,7 +308,7 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
             <Controller
                 control={form.control}
                 name="reportingFacility"
-                shouldUnregister
+                shouldUnregister={true}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <FacilityAutocomplete
                         id={name}

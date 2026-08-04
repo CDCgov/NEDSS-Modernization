@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { PagesTab } from 'apps/page-builder/generated';
 import {
     PageHeader,
     PageManagementLayout,
@@ -10,19 +12,21 @@ import {
 } from 'apps/page-builder/page/management';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Loading } from 'components/Spinner';
+import { ConfirmationModal } from 'confirmation';
 import { LinkButton } from 'design-system/button';
 import { NavLinkButton } from 'design-system/button';
-import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
+import { useAlert } from 'libs/alert';
 import { useNavigate } from 'react-router';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { PageControllerService } from '../../../generated/services/PageControllerService';
+
 import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
 import { PageInformation } from './information/PageInformation';
 import styles from './preview-page.module.scss';
 import { StaticTabContent } from './staticTabContent/StaticTabContent';
 import { PreviewTab } from './tab';
-import { PagesTab } from 'apps/page-builder/generated';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -32,7 +36,7 @@ const PreviewPage = () => {
             <PreviewPageContent />
         </PageManagementProvider>
     ) : (
-        <Loading center />
+        <Loading center={true} />
     );
 };
 
@@ -77,15 +81,14 @@ const PreviewPageContent = () => {
                 refresh();
             })
             .catch((error) => {
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -109,15 +112,14 @@ const PreviewPageContent = () => {
                 navigate('/page-builder/pages');
             })
             .catch((error) => {
+                logErrorToUserConsole(error);
                 if (error instanceof Error) {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
                         message: error.message,
                     });
                 } else {
-                    console.error(error);
                     showAlert({
                         type: 'error',
                         title: 'error',
@@ -135,12 +137,12 @@ const PreviewPageContent = () => {
                         <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
                         </NavLinkButton>
-                        <ModalToggleButton modalRef={saveTemplateRef} outline type="button">
+                        <ModalToggleButton modalRef={saveTemplateRef} outline={true} type="button">
                             Save as template
                         </ModalToggleButton>
                         {page.status !== 'Published' && (
                             <>
-                                <ModalToggleButton modalRef={deleteDraftRef} type="button" outline>
+                                <ModalToggleButton modalRef={deleteDraftRef} type="button" outline={true}>
                                     Delete draft
                                 </ModalToggleButton>
                                 <NavLinkButton
@@ -164,7 +166,8 @@ const PreviewPageContent = () => {
                             </LinkButton>
                             {page.status !== 'Published' ? (
                                 <LinkButton
-                                    href={`https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true`}
+                                    // eslint-disable-next-line max-len
+                                    href="https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true"
                                     className={styles.link}
                                     rel="noopener noreferrer"
                                     data-tooltip-position="top"
@@ -229,26 +232,21 @@ const PreviewPageContent = () => {
                 onConfirm={() => {
                     handleDeleteDraft();
                 }}
-                onCancel={() => {
-                    deleteDraftRef.current?.toggleModal();
-                }}
             />
             {!isPublishing ? (
                 <ModalComponent
                     modalRef={publishDraftRef}
                     modalHeading="Publish page"
                     size="wide"
-                    closer
                     modalBody={<PublishPage modalRef={publishDraftRef} onPublishing={setIsPublishing} />}
                 />
             ) : (
                 <ModalComponent
                     modalRef={publishingLoaderRef}
                     size="width"
-                    closer
                     modalBody={
                         <div className={styles.loaderContent}>
-                            <Loading center className={styles.loaderIcon} />
+                            <Loading center={true} className={styles.loaderIcon} />
                             <div className={styles.loaderText}>
                                 <h2>Publishing...</h2>
                             </div>

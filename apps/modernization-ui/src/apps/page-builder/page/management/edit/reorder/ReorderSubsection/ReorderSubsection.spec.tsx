@@ -1,8 +1,9 @@
-import { render } from '@testing-library/react';
-import { ReorderSubsection } from './ReorderSubsection';
-import { PagesSubSection, PagesResponse } from 'apps/page-builder/generated';
-import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { render } from '@testing-library/react';
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse, PagesSubSection } from 'apps/page-builder/generated';
+
+import { ReorderSubsection } from './ReorderSubsection';
 
 describe('when ReorderSubsection renders', () => {
     const content: PagesResponse = {
@@ -85,7 +86,7 @@ describe('when ReorderSubsection renders', () => {
                 <Droppable droppableId="testId">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__subsections">
-                            <ReorderSubsection subsection={subsection} index={1} visible />
+                            <ReorderSubsection subsection={subsection} index={1} visible={true} />
                         </div>
                     )}
                 </Droppable>

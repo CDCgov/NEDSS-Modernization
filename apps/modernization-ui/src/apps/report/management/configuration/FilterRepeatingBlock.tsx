@@ -1,19 +1,21 @@
+import { useEffect, useState } from 'react';
+
+import { Shown } from 'conditional-render';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
+import { SingleSelect } from 'design-system/select';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
+import { ToggleField } from 'design-system/toggle/ToggleField';
+import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
+import { Selectable } from 'options';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
-import { useEffect, useState } from 'react';
-import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
-import { Selectable } from 'options';
-import { addLabelToName, EnumSelectable } from '../../utils';
-import { SIZING } from '../../constants';
 import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
-import { SingleSelect } from 'design-system/select';
-import { Shown } from 'conditional-render';
-import { ToggleField } from 'design-system/toggle/ToggleField';
+
+import { SIZING } from '../../constants';
+import { addLabelToName, EnumSelectable } from '../../utils';
 
 const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
     { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single-select filter' },
@@ -69,7 +71,7 @@ const FilterRepeatingBlock = ({
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
             filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: SELECT_OPTIONS.find(({ value }) => value == f.selectType),
+            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType),
             associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()),
             isRequired: f.isRequired,
         })) ?? [];
@@ -90,11 +92,6 @@ const FilterRepeatingBlock = ({
             defaultValue={defaultFilterData}
             rules={{ validate: () => !filtersIsDirty }}
             render={({ field: { onChange, value } }) => {
-                // force revalidation when dirty state changes
-                useEffect(() => {
-                    onChange(value);
-                }, [filtersIsDirty]);
-
                 return (
                     <FilterRepeatingBlockImpl
                         onChange={onChange}
@@ -102,7 +99,11 @@ const FilterRepeatingBlock = ({
                         dataSourceSelected={dataSourceSelected}
                         filterOptions={filterOptions}
                         columnOptions={columnOptions}
-                        setFiltersIsDirty={setFiltersIsDirty}
+                        setFiltersIsDirty={(v: boolean) => {
+                            // force overall form revalidation when dirty state changes
+                            onChange(value);
+                            setFiltersIsDirty(v);
+                        }}
                         value={value}
                     />
                 );
@@ -225,13 +226,13 @@ const FilterConfigForm = ({
                 render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
                     <SingleSelect
                         id={`filter-${name}`}
-                        label={'Filter'}
+                        label="Filter"
                         disabled={!!entry?.id} // can't change filter type on edit
                         name={name}
                         options={filterOptions}
                         orientation="horizontal"
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={SIZING}
                         {...remaining}
                     />
@@ -252,7 +253,7 @@ const FilterConfigForm = ({
                             options={SELECT_OPTIONS}
                             orientation="horizontal"
                             error={error?.message}
-                            required
+                            required={true}
                             sizing={SIZING}
                             {...remaining}
                         />
@@ -273,7 +274,7 @@ const FilterConfigForm = ({
                             options={columnOptions}
                             orientation="horizontal"
                             error={error?.message}
-                            required
+                            required={true}
                             sizing={SIZING}
                             {...remaining}
                         />

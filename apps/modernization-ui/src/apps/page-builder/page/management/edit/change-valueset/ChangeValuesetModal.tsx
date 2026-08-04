@@ -1,13 +1,15 @@
+import { RefObject, useEffect } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { ValuesetSearch } from 'apps/page-builder/components/AddQuestion/valueset/ValuesetSearch';
 import { PagesQuestion } from 'apps/page-builder/generated';
+import { useUpdatePageQuestionValueset } from 'apps/page-builder/hooks/api/useUpdatePageQuestionValueset';
+import { Spinner } from 'components/Spinner';
+import { useAlert } from 'libs/alert';
 import { PaginationProvider } from 'pagination';
-import { RefObject, useEffect } from 'react';
+
 import './ChangeValuesetModal.scss';
 import styles from './change-valueset-modal.module.scss';
-import { useUpdatePageQuestionValueset } from 'apps/page-builder/hooks/api/useUpdatePageQuestionValueset';
-import { useAlert } from 'libs/alert';
-import { Spinner } from 'components/Spinner';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -40,9 +42,9 @@ export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }
 
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="change-valueset-modal"
             id="change-valueset-modal"
             aria-labelledby="change-valueset-modal"

@@ -1,10 +1,10 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import { Direction } from 'libs/sorting';
-import { Sorting } from './useTableSorting';
-import { Header } from './Table';
 
+import { Header } from './Table';
 import styles from './table.module.scss';
+import { Sorting } from './useTableSorting';
 
 type TableHeaderProps = {
     sorting: Sorting;
@@ -26,7 +26,7 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
                     <Button
                         disabled={!sorting.enabled}
                         className="usa-button--unstyled"
-                        type={'button'}
+                        type="button"
                         aria-label="sort"
                         onClick={() => sorting.toggleSort(header.name)}
                     >

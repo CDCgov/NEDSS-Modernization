@@ -1,5 +1,7 @@
-import { PageQuestionControllerService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { PageQuestionControllerService } from 'apps/page-builder/generated';
+import { logErrorToUserConsole } from 'utils/logging';
 
 type State =
     | { status: 'idle' }
@@ -41,7 +43,7 @@ export const usePageQuestionDataMartValidation = () => {
                 datamart: state.dataMart,
             })
                 .then((response) => dispatch({ type: 'complete', isValid: response.isValid ?? false }))
-                .catch(() => console.error(`Failed to validate Data Mart Column Name`));
+                .catch(() => logErrorToUserConsole(`Failed to validate Data Mart Column Name`));
         }
     }, [state.status]);
 

@@ -3,8 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { EthnicityEntry } from 'apps/patient/data/ethnicity';
 import { EthnicityCodedValues } from 'apps/patient/data/ethnicity/useEthnicityCodedValues';
 import { FormProvider, useForm } from 'react-hook-form';
-import { EthnicityDemographicsFields } from './EthnicityDemographicFields';
+
 import { PatientDemographics } from '../../demographics';
+
+import { EthnicityDemographicsFields } from './EthnicityDemographicFields';
 
 const mockEthnicityValues: EthnicityCodedValues = {
     ethnicGroups: [

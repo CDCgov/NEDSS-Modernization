@@ -104,6 +104,11 @@ class TestReportExecuteEndpoint:
         response = client.post('/report/execute', json=invalid_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
-        assert response.json() == {
-            'message': 'Library `missing_library` (is_builtin: True) not found'
-        }
+
+        res_body = response.json()
+
+        assert (
+            res_body['message']
+            == 'Library `missing_library` (is_builtin: True) not found'
+        )
+        assert res_body['id'] is not None

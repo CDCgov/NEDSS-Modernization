@@ -1,18 +1,19 @@
 import { useComponentSizing } from 'design-system/sizing';
-import { usePatientFileData } from '../usePatientFileData';
+
 import { PatientFileView } from '../PatientFileView';
-import { PatientFileAdministrativeInformationCard } from './administrative';
-import { PatientFileNameCard } from './name/PatientFileNameCard';
+import { usePatientFileData } from '../usePatientFileData';
+
 import { PatientFileAddressCard } from './address';
-import { PatientFileIdentificationCard } from './identification';
-import { PatientFilePhoneEmailCard } from './phoneEmail';
+import { PatientFileAdministrativeInformationCard } from './administrative';
 import { PatientFileEthnicityCard } from './ethnicity';
+import { PatientFileGeneralInformationCard } from './general';
+import { PatientFileIdentificationCard } from './identification';
+import { PatientFileMortalityCard } from './mortality';
+import { PatientFileNameCard } from './name/PatientFileNameCard';
+import styles from './patient-file-demographics.module.scss';
+import { PatientFilePhoneEmailCard } from './phoneEmail';
 import { PatientFileRaceCard } from './race';
 import { PatientFileSexBirthCard } from './sex-birth';
-import { PatientFileGeneralInformationCard } from './general';
-import { PatientFileMortalityCard } from './mortality';
-
-import styles from './patient-file-demographics.module.scss';
 
 const PatientFileDemographics = () => {
     const { demographics, patient } = usePatientFileData();
@@ -48,7 +49,7 @@ const PatientFileDemographics = () => {
                     provider={demographics.get().identifications}
                 />
                 <PatientFileRaceCard id="patient-file-race" provider={demographics.get().race} sizing={sizing} />
-                <span data-half>
+                <span data-half={true}>
                     <PatientFileEthnicityCard
                         id="patient-file-ethnicity"
                         sizing={sizing}
@@ -60,7 +61,7 @@ const PatientFileDemographics = () => {
                         sizing={sizing}
                     />
                 </span>
-                <span data-half>
+                <span data-half={true}>
                     <PatientFileMortalityCard
                         id="patient-file-mortality"
                         provider={demographics.get().mortality}

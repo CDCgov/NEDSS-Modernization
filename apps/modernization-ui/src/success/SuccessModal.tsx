@@ -1,6 +1,8 @@
 import { ReactNode, RefObject } from 'react';
+
 import { Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import styles from './successModal.module.scss';
 
 type Props = {
@@ -22,10 +24,10 @@ export const SuccessModal = ({
 }: Props) => {
     return (
         <Modal
-            forceAction
+            forceAction={true}
             ref={modal}
             id={id}
-            isLarge
+            isLarge={true}
             aria-labelledby="success-heading"
             className={styles.modal}
             aria-describedby={ariaDescribedBy}

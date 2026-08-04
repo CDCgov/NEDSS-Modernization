@@ -1,11 +1,13 @@
-import { Controller, UseFormReturn } from 'react-hook-form';
 import { Sizing } from 'design-system/field';
+import { Controller, UseFormReturn } from 'react-hook-form';
+
 import { PatientDemographicsDefaults } from '../../demographics';
-import { AddressDemographic, HasAddressDemographics, initial } from '../address';
 import {
     AddressDemographicRepeatingBlock,
     AddressDemographicRepeatingBlockProps,
 } from '../AddressDemographicRepeatingBlock';
+import { AddressDemographic, HasAddressDemographics, initial } from '../address';
+
 import { AddressDemographicFields } from './AddressDemographicFields';
 import { useAddressOptions } from './useAddressOptions';
 
@@ -27,8 +29,8 @@ const EditAddressDemographicsCard = ({ form, defaults, ...remaining }: EditAddre
                     {...remaining}
                     collapsible={false}
                     data={value}
-                    viewable
-                    editable
+                    viewable={true}
+                    editable={true}
                     defaultValues={defaultValues}
                     formRenderer={(entry?: AddressDemographic, sizing?: Sizing) => (
                         <AddressDemographicFields sizing={sizing} options={options} entry={entry} />

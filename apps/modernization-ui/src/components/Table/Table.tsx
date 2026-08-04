@@ -1,20 +1,23 @@
-import { Table, Pagination, Checkbox } from '@trussworks/react-uswds';
-import { TOTAL_TABLE_DATA } from '../../utils/util';
+import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
+
+import { Checkbox, Pagination, Table } from '@trussworks/react-uswds';
+import classNames from 'classnames';
+import { Loading } from 'components/Spinner';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'design-system/data';
-import { Loading } from 'components/Spinner';
-import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
+
+import { TOTAL_TABLE_DATA } from '../../utils/util';
+
 import { TableHeader } from './TableHeader';
-import classNames from 'classnames';
-import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
 import styles from './table.module.scss';
+import { SortHandler, Sorting, useTableSorting } from './useTableSorting';
 
 type SelectionMode = 'select' | 'deselect';
 
 type SelectionHandler = (mode: SelectionMode) => void;
 
-type OldSelectionHandler = (event: ChangeEvent<HTMLInputElement>, item: any) => void;
+type OldSelectionHandler = (event: ChangeEvent<HTMLInputElement>, item: TableBody) => void;
 
 export type Cell = {
     id: string | number;
@@ -32,7 +35,7 @@ export type TableBody = {
     radioButton?: boolean;
     id: number | string | undefined | null;
     tableDetails: Cell[];
-    data?: any;
+    data?: unknown;
     expanded?: boolean;
     expandedViewComponent?: ReactNode;
     selectable?: boolean | (() => boolean);
@@ -109,7 +112,7 @@ export const TableComponent = ({
                                     <input
                                         key={`selection-${index}`}
                                         id={`selection-${index}`}
-                                        name={'selection'}
+                                        name="selection"
                                         type="radio"
                                         onChange={handleRowSelection(row, handleSelected)}
                                     />
@@ -118,7 +121,7 @@ export const TableComponent = ({
                                         disabled={!row.selectable}
                                         key={`selection-${index}`}
                                         id={`selection-${index}`}
-                                        name={'selection'}
+                                        name="selection"
                                         label=""
                                         onChange={handleRowSelection(row, handleSelected)}
                                     />
@@ -158,7 +161,7 @@ export const TableComponent = ({
             <>
                 <Table
                     bordered={false}
-                    fullWidth
+                    fullWidth={true}
                     className={classNames(
                         {
                             [styles.standard]: display === 'standard',
@@ -194,7 +197,7 @@ export const TableComponent = ({
                             className={styles.pagination}
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
-                            pathname={'/patient-profile'}
+                            pathname="/patient-profile"
                             onClickNext={() => handleNext?.(currentPage + 1)}
                             onClickPrevious={() => handleNext?.(currentPage - 1)}
                             onClickPageNumber={(_, page) => handleNext?.(page)}
@@ -242,7 +245,7 @@ type LoadingProps = {
 const LoadingRow = ({ columns }: LoadingProps) => (
     <tr>
         <td colSpan={columns}>
-            <Loading center />
+            <Loading center={true} />
         </td>
     </tr>
 );

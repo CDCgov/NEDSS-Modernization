@@ -1,5 +1,6 @@
-import { Selectable, isEqual } from 'options';
 import { useReducer } from 'react';
+
+import { isEqual, Selectable } from 'options';
 import { mapIf } from 'utils';
 
 type Item = { selected: boolean; value: Selectable };
@@ -40,7 +41,7 @@ const withItemDeselected = (current: State, selectable: Selectable) => {
 };
 
 const contains = (selected: Selectable[]) => (selectable: Selectable) =>
-    selected.find(isEqual(selectable)) != undefined;
+    selected.find(isEqual(selectable)) !== undefined;
 
 const resolveItemSelection = (selected: Selectable[]) => (selectable: Selectable) => {
     const isSelected = contains(selected)(selectable);

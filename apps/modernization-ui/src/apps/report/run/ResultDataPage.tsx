@@ -1,16 +1,19 @@
+import { useEffect, useId } from 'react';
+
 import { Card } from 'design-system/card';
 import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
-import Papa from 'papaparse';
-import { useId } from 'react';
-import { ReportLayout } from '../layout/ReportLayout';
+import { NoDataRow } from 'design-system/table/NoDataRow';
+import DOMPurify from 'dompurify';
 import { ReportExecutionResult } from 'generated';
 import { marked } from 'marked';
-import DOMPurify from 'dompurify';
+import { parse } from 'papaparse';
+import { LoaderFunction, useLoaderData } from 'react-router';
 
+import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
+import { ReportLayout } from '../layout/ReportLayout';
 import layoutStyes from '../layout/layout.module.scss';
-import { NoDataRow } from 'design-system/table/NoDataRow';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -22,21 +25,60 @@ const dateFormatter = Intl.DateTimeFormat('en-US', {
 });
 const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
-const ResultDataPage = ({
-    result: {
-        query,
-        timestamp,
-        result: { context_header, description, content },
-    },
-    title,
-    dataSourceName,
-}: {
+type Result = {
     result: ReportExecutionResult;
     title: string;
     dataSourceName: string;
-}) => {
+};
+
+const loadReportResult: LoaderFunction = async (request): Promise<Result | null> => {
+    const { resultId } = request.params;
+    const resultKey = `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`;
+    const rawData = localStorage.getItem(resultKey);
+    // clean up after the data to make sure it doesn't linger in cache
+    localStorage.removeItem(resultKey);
+    return rawData ? JSON.parse(rawData) : null;
+};
+
+const ResultDataPage = () => {
     const id = useId();
-    const { data, errors, meta } = Papa.parse<Record<string, string>>(content, {
+    const result = useLoaderData();
+
+    // Display a generic browser warning about losing info before navigating away.
+    // Requires the user to have interacted with the page somewhat for it to trigger.
+    useEffect(() => {
+        if (result) {
+            const handler = (event: BeforeUnloadEvent) => {
+                event.preventDefault();
+                // Required by Chrome and newer specifications
+                event.returnValue = '';
+            };
+            window.addEventListener('beforeunload', handler);
+
+            return () => window.removeEventListener('beforeunload', handler);
+        }
+    });
+
+    if (result === null) {
+        return (
+            <AlertMessage type="warning" title="No result found" level={1} className="margin-2">
+                <p>This can happen if the page was refreshed. Re-run the report to retrieve a new result.</p>
+                <p>If this persists, contact your system administrator.</p>
+            </AlertMessage>
+        );
+    }
+
+    const {
+        result: {
+            result: { content, description, context_header },
+            timestamp,
+            query,
+        },
+        title,
+        dataSourceName,
+    } = result;
+
+    const { data, errors, meta } = parse<Record<string, string>>(content, {
         header: true,
         skipEmptyLines: true,
         delimiter: ',',
@@ -81,7 +123,8 @@ const ResultDataPage = ({
                     flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
                 >
                     {meta.fields && (
-                        <section className="overflow-auto">
+                        // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
+                        <section className="overflow-auto" tabIndex={0}>
                             <DataTable
                                 id={id}
                                 fullWidth={false}
@@ -110,4 +153,4 @@ const ResultDataPage = ({
     );
 };
 
-export { ResultDataPage };
+export { ResultDataPage, loadReportResult };

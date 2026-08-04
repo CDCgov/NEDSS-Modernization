@@ -1,9 +1,10 @@
 import { ReactNode, useCallback, useId, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { TooltipMessage, TooltipMessageProps } from './TooltipMessage';
 
-import styles from './tooltip.module.scss';
 import classNames from 'classnames';
+import { createPortal } from 'react-dom';
+
+import { TooltipMessage, TooltipMessageProps } from './TooltipMessage';
+import styles from './tooltip.module.scss';
 
 type Children = (id: string) => ReactNode | ReactNode[];
 
@@ -50,7 +51,7 @@ const Tooltip = ({ children, message, spanClass, ...remaining }: TooltipProps) =
 
     const targeted = useCallback(
         (element: HTMLElement | null) => {
-            if (visible && element != null) {
+            if (visible && element !== null) {
                 const { top, left, width } = element.getBoundingClientRect();
 
                 setPlacement({

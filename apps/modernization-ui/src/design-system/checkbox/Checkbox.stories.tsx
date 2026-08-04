@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { Checkbox, CheckboxProps } from './Checkbox';
 
 const meta = {
@@ -18,9 +19,9 @@ const render = (args: CheckboxProps) => (
             <Checkbox sizing="large" {...args} />
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <Checkbox sizing="small" {...args} selected />
-            <Checkbox sizing="medium" {...args} selected />
-            <Checkbox sizing="large" {...args} selected />
+            <Checkbox sizing="small" {...args} selected={true} />
+            <Checkbox sizing="medium" {...args} selected={true} />
+            <Checkbox sizing="large" {...args} selected={true} />
         </div>
     </div>
 );

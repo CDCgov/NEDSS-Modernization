@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SelectableCheckbox } from './SelectableCheckbox';
 import { Selectable } from 'options';
+
+import { SelectableCheckbox } from './SelectableCheckbox';
 
 const onChange = vi.fn();
 const option: Selectable = { value: 'value', label: 'label', name: 'name' };
@@ -38,7 +39,7 @@ describe('Checkbox testing', () => {
 
     it('should render disabled', () => {
         const { getByRole } = render(
-            <SelectableCheckbox onChange={onChange} selectable={option} selected={true} disabled />
+            <SelectableCheckbox onChange={onChange} selectable={option} selected={true} disabled={true} />
         );
 
         const checkbox = getByRole('checkbox');

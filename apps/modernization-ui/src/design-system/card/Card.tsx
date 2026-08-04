@@ -1,10 +1,11 @@
 import { ReactNode, useId, useState } from 'react';
+
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+
 import { CardHeader, CardHeaderProps } from './CardHeader';
 import { Collapsible } from './Collapsible';
-
 import styles from './card.module.scss';
 
 type CardProps = {
@@ -66,7 +67,7 @@ const Card = ({
                         <Button
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing={remaining.sizing}
-                            tertiary
+                            tertiary={true}
                             icon="expand_less"
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
                             aria-controls={collapsibleId}

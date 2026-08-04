@@ -1,6 +1,10 @@
-import { CreateQuestionRequest } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import { useEffect } from 'react';
+
+import { CreateQuestionRequest } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import { useFormContext, useWatch } from 'react-hook-form';
+
+import { HorizontalRule } from '../FormDivider/HorizontalRule';
+
 import { AdministrativeFields } from './fields/AdministrativeFields';
 import { BasicInformationFields } from './fields/BasicInformationFields';
 import { DataMartFields } from './fields/DataMartFields';
@@ -8,7 +12,6 @@ import { MessagingFields } from './fields/MessagingFields';
 import { QuestionSpecificFields } from './fields/QuestionSpecificFields';
 import { UserInterfaceFields } from './fields/UserInterfaceFields';
 import styles from './question-form.module.scss';
-import { HorizontalRule } from '../FormDivider/HorizontalRule';
 
 export type CreateQuestionForm = Omit<CreateQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';
@@ -45,7 +48,8 @@ export const QuestionForm = ({ onFindValueSet }: Props) => {
             <QuestionSpecificFields onFindValueSet={onFindValueSet} />
             <HorizontalRule />
             <UserInterfaceFields />
-            {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
+            {/* hide data mart and messaging if display control = 'Readonly User text, number, or date' */}
+            {displayControl?.toString() !== '1026' && (
                 <>
                     <HorizontalRule />
                     <DataMartFields />

@@ -1,5 +1,6 @@
 import { ReportConfiguration } from 'generated';
 import { permissions } from 'libs/permission';
+
 import { EnumSelectable } from './utils.ts';
 
 export const PERMISSION_GROUP_MAP: Record<ReportConfiguration.group, typeof permissions.reports.private> = {
@@ -19,3 +20,5 @@ export const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
 export const SIZING = 'medium';
 
 export const NBS_MANAGE_REPORT_PAGE = '/nbs/ManageReports.do';
+
+export const LOCAL_STORAGE_RESULT_PREFIX = 'reportResult';

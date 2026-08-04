@@ -1,8 +1,10 @@
+import { ChangeEvent, DragEvent, useEffect, useState } from 'react';
+
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
 import { Template } from 'apps/page-builder/generated';
 import { useImportTemplate } from 'apps/page-builder/hooks/api/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
-import React, { useEffect, useState } from 'react';
+
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
@@ -22,9 +24,9 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
         }
     }, [imported]);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (files == null) {
+        if (files === null) {
             setFile(undefined);
         } else {
             setFile(files[0]);
@@ -32,7 +34,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
     };
 
     const handleSubmit = () => {
-        if (file == undefined) {
+        if (file === undefined) {
             return;
         }
         importTemplate(file);
@@ -44,17 +46,17 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
         onCancel();
     };
 
-    const handleDragEnd = (ev: React.DragEvent<HTMLDivElement>) => {
+    const handleDragEnd = (ev: DragEvent<HTMLDivElement>) => {
         ev.preventDefault();
         setFileDrag(false);
     };
 
-    const handleDragOver = (ev: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (ev: DragEvent<HTMLDivElement>) => {
         ev.preventDefault();
         setFileDrag(true);
     };
 
-    const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    const handleFileDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setFileDrag(false);
         setFile(event.dataTransfer.files[0]);
@@ -81,13 +83,13 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                 </div>
                 <label htmlFor="importTempId">
                     <input
-                        value={''}
+                        value=""
                         onChange={handleFileChange}
                         name="fileInput"
                         type="file"
                         id="importTempId"
                         accept="text/xml"
-                        hidden
+                        hidden={true}
                     />
 
                     <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>

@@ -6,8 +6,8 @@ import { FacilityOptionsService } from 'generated';
 
 const resolver = (criteria: string, limit?: number) =>
     FacilityOptionsService.facilityAutocomplete({
-        criteria: criteria,
-        limit: limit,
+        criteria,
+        limit,
     }).then((response) => response);
 
 const FacilityAutocomplete = ({

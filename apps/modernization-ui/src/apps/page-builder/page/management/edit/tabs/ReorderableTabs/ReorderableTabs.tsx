@@ -1,9 +1,13 @@
+import { useState } from 'react';
+
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesTab } from 'apps/page-builder/generated';
 import { deleteTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { useState } from 'react';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { ManageTabsTile } from '../ManageTabsTile/ManageTabsTile';
+
 import styles from './reorderable-tabs.module.scss';
 
 type Props = {
@@ -19,7 +23,7 @@ export const ReorderableTabs = ({ page, tabs, onEdit, onTabChanged, onDeleteErro
 
     const handleVisibilityChange = (tab: PagesTab) => {
         updateTab(page, { name: tab.name, visible: !tab.visible }, tab.id)
-            .catch(() => console.error('Failed to update tab visibility'))
+            .catch(() => logErrorToUserConsole('Failed to update tab visibility'))
             .then(() => {
                 onTabChanged(`Successfully updated tab visibility`);
             });
@@ -32,9 +36,7 @@ export const ReorderableTabs = ({ page, tabs, onEdit, onTabChanged, onDeleteErro
                 setSelectedForDelete(undefined);
             } else {
                 deleteTab(page, selectedForDelete.id)
-                    .catch((e) => {
-                        console.error(e);
-                    })
+                    .catch(logErrorToUserConsole)
                     .then(() => {
                         onTabChanged(`You've successfully deleted ${selectedForDelete.name}!`);
                         setSelectedForDelete(undefined);

@@ -1,7 +1,9 @@
-import classNames from 'classnames';
-import styles from './radio.module.scss';
-import { Sizing } from 'components/Entry';
 import { ChangeEvent } from 'react';
+
+import classNames from 'classnames';
+import { Sizing } from 'components/Entry';
+
+import styles from './radio.module.scss';
 
 type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> & {
     sizing?: Sizing;
@@ -23,7 +25,7 @@ const Radio = ({ className, name, checked = false, sizing, onChange, label, valu
                 value={value}
                 checked={checked}
                 onChange={onChange}
-                className={'usa-radio usa-radio__input '}
+                className="usa-radio usa-radio__input "
                 {...inputProps}
             />
             <label className={classNames({ [styles.disabled]: inputProps.disabled }, 'usa-radio__label')} htmlFor={id}>

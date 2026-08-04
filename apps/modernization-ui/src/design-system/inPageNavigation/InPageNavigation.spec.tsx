@@ -1,7 +1,8 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NavSection, InPageNavigation } from './InPageNavigation';
 import { MemoryRouter } from 'react-router';
+
+import { InPageNavigation, NavSection } from './InPageNavigation';
 
 const mockSections: NavSection[] = [
     { id: 'section1', label: 'Section 1' },

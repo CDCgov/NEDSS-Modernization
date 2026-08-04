@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import { NameEntry } from 'apps/patient/data/name';
-import { NameEntryView } from './NameEntryView';
 import { asSelectable } from 'options/selectable';
+
+import { NameEntryView } from './NameEntryView';
 
 const entry: NameEntry = {
     asOf: '12/25/2020',

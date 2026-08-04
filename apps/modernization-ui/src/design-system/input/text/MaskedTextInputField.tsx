@@ -1,4 +1,5 @@
 import { Field, FieldProps } from 'design-system/field';
+
 import { MaskedTextInput, MaskedTextInputProps } from './MaskedTextInput';
 
 type MaskedTextInputFieldProps = FieldProps & MaskedTextInputProps;

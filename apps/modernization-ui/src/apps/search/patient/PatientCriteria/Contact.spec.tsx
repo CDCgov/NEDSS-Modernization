@@ -1,9 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { MockedProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
-import { Contact } from './Contact';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { PatientCriteriaEntry } from '../criteria';
 
-import { MockedProvider } from '@apollo/client/testing';
+import { Contact } from './Contact';
 
 const Fixture = () => {
     const form = useForm<PatientCriteriaEntry>({

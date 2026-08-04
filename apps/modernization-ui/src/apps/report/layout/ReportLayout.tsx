@@ -1,7 +1,8 @@
 import { ReactNode, useId } from 'react';
-import { SkipLink } from 'SkipLink';
-import { ReportHeader, ReportHeaderProps } from './ReporHeader';
 
+import { SkipLink } from 'SkipLink';
+
+import { ReportHeader, ReportHeaderProps } from './ReportHeader';
 import styles from './layout.module.scss';
 
 type ReportRunLayoutProps = ReportHeaderProps & {

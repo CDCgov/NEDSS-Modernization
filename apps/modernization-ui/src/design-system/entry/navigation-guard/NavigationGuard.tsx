@@ -1,10 +1,11 @@
 import { useCallback, useState } from 'react';
-import { FieldValues, UseFormReturn } from 'react-hook-form';
-import { useFormNavigationBlock } from 'navigation';
-import { useLocalStorage } from 'storage';
+
 import { Shown } from 'conditional-render';
-import { Confirmation } from 'design-system/modal';
 import { Checkbox } from 'design-system/checkbox';
+import { Confirmation } from 'design-system/modal';
+import { useFormNavigationBlock } from 'navigation';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { useLocalStorage } from 'storage';
 
 type Paths = string | string[];
 
@@ -25,7 +26,6 @@ type NavigationGuardProps<V extends FieldValues, C, D extends FieldValues | unde
  * Adds a guard to a form that prompts the user to confirm navigation away from a page that contains
  * pending data.  The guard can be bypassed by the user to prevent any future warnings from appearing.
  *
- * @param {NavigationGuardProps} props
  * @return {NavigationGuard}
  */
 const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undefined = undefined>({
@@ -52,7 +52,7 @@ const NavigationGuard = <V extends FieldValues, C, D extends FieldValues | undef
                 title="Discard unsaved data?"
                 confirmText="Yes, cancel"
                 cancelText="No, back to form"
-                forceAction
+                forceAction={true}
                 onConfirm={handleConfirm}
                 onCancel={blocker.reset}
             >

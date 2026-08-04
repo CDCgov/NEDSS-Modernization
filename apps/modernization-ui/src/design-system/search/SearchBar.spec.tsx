@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import { SearchBar } from './SearchBar';
 
 describe('SearchBar', () => {
@@ -28,7 +28,7 @@ describe('SearchBar', () => {
     });
 
     it('applies tall class when tall is true', () => {
-        const { container } = render(<SearchBar tall />);
+        const { container } = render(<SearchBar tall={true} />);
         const tallElement = container.querySelector(`.${'tall'}`);
         expect(tallElement).toBeInTheDocument();
     });

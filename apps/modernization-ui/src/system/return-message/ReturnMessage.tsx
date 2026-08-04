@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import styles from './return-message.module.scss';
 
 type Props = {

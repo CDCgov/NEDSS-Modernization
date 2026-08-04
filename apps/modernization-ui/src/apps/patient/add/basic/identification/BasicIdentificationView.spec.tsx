@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
-import { BasicIdentificationView } from './BasicIdentificationView';
+
 import { BasicIdentificationEntry } from '../entry';
+
+import { BasicIdentificationView } from './BasicIdentificationView';
 
 const entry: BasicIdentificationEntry = {
     type: { name: 'Account number', value: 'AN' },

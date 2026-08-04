@@ -1,10 +1,10 @@
 import { internalizeDate } from 'date';
-import { Column } from 'design-system/table';
 import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
-import { NameDemographic, labels } from './names';
-import { NameDemographicView } from './NameDemographicView';
+import { Column } from 'design-system/table';
 
+import { NameDemographicView } from './NameDemographicView';
 import styles from './name-demographic-repeating-block.module.scss';
+import { labels, NameDemographic } from './names';
 
 const columns: Column<NameDemographic>[] = [
     {

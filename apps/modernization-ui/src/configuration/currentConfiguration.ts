@@ -1,6 +1,7 @@
-import { request } from 'generated/core/request';
-import { Configuration } from './configuration';
 import { CancelablePromise, OpenAPI } from 'generated';
+import { request } from 'generated/core/request';
+
+import { Configuration } from './configuration';
 
 const fetchConfig = (): CancelablePromise<Configuration> => {
     return request(OpenAPI, {

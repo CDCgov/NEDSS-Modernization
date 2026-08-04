@@ -1,16 +1,19 @@
+import { useEffect, useState } from 'react';
+
 import { Button } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { GroupRequest, useGroupSubsection } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { Spinner } from 'components/Spinner';
-import { useEffect, useState } from 'react';
+import { useAlert } from 'libs/alert';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import { RepeatingBlock } from '../RepeatingBlock';
 import { SubsectionDetails } from '../SubsectionDetails';
+
 import styles from './group-question.module.scss';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
 type Props = {
     page: number;
@@ -101,7 +104,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button onClick={handleCancel} type="button" outline>
+                <Button onClick={handleCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

@@ -1,3 +1,5 @@
+import { useEffect, useReducer } from 'react';
+
 import {
     CancelablePromise,
     EditableQuestion,
@@ -7,7 +9,6 @@ import {
     UpdatePageNumericQuestionRequest,
     UpdatePageTextQuestionRequest,
 } from 'apps/page-builder/generated';
-import { useEffect, useReducer } from 'react';
 
 export type UpdatePageQuestionRequest =
     | (UpdatePageTextQuestionRequest & { questionType: 'TEXT' })
@@ -83,7 +84,7 @@ export const useUpdatePageQuestion = () => {
             }
             request
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => response && dispatch({ type: 'complete', response: response }));
+                .then((response) => response && dispatch({ type: 'complete', response }));
         }
     }, [state.status]);
 

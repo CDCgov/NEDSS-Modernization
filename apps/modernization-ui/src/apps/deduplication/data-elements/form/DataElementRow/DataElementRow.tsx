@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+
+import { Checkbox } from 'design-system/checkbox';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { DataElements } from '../../../api/model/DataElement';
 import { TableNumericInput } from '../TableNumericInput/TableNumericInput';
+
 import styles from './DataElementRow.module.scss';
-import { Checkbox } from 'design-system/checkbox';
 
 type Props = {
     fieldName: string;
@@ -40,7 +43,7 @@ export const DataElementRow = ({ fieldName, field, dataElements }: Props) => {
 
     useEffect(() => {
         const oddsRatio = Number(watch[field]?.oddsRatio);
-        if (oddsRatio == undefined || isNaN(oddsRatio) || oddsRatio == 0) {
+        if (oddsRatio === undefined || isNaN(oddsRatio) || oddsRatio === 0) {
             form.setValue(`${field}.logOdds`, undefined);
             return;
         }

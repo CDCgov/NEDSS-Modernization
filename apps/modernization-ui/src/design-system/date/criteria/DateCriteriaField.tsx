@@ -1,11 +1,11 @@
+import { Shown } from 'conditional-render';
+import { Field, FieldProps } from 'design-system/field';
+import { Radio } from 'design-system/radio';
+
+import styles from './date-criteria.module.scss';
 import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { ExactDateField } from './exact';
 import { DateRangeField } from './range';
-import { Radio } from 'design-system/radio';
-import { Field, FieldProps } from 'design-system/field';
-import { Shown } from 'conditional-render';
-
-import styles from './date-criteria.module.scss';
 
 type CriteriaType = 'equals' | 'between';
 
@@ -47,10 +47,10 @@ const DateCriteriaField = ({
             <div className={styles.content}>
                 <div role="group" className={styles.operators} data-range-operator={type} aria-label={label}>
                     <Radio
-                        id={'equals'}
+                        id="equals"
                         name="dateOperation"
-                        label={'Exact Date'}
-                        value={'equals'}
+                        label="Exact Date"
+                        value="equals"
                         onChange={() => {
                             onChange({ equals: {} });
                             clearErrors?.();
@@ -60,10 +60,10 @@ const DateCriteriaField = ({
                         className={styles.radio}
                     />
                     <Radio
-                        id={'between'}
+                        id="between"
                         name="dateOperation"
-                        label={'Date Range'}
-                        value={'between'}
+                        label="Date Range"
+                        value="between"
                         onChange={() => {
                             onChange({ between: {} });
                             clearErrors?.();
