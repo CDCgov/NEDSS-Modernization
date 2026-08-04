@@ -32,7 +32,7 @@ Feature: Run report
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    Scenario Outline: I can run a report for library with condition code
+    Scenario Outline: I can run a report for library with condition code for library <name>
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I select "AIDS" from the "Condition Code" dropdown menu
         And I click the "Run" button
@@ -46,7 +46,7 @@ Feature: Run report
             | sr_11      | 7         | 1             |
             | sr_13      | 23        | 1             |
 
-    Scenario Outline: I can run a report for library with date range and condition code
+    Scenario Outline: I can run a report for library with date range and condition code library <name>
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
@@ -88,7 +88,7 @@ Feature: Run report
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    Scenario: I can run a report for library pa_02 <name>
+    Scenario Outline: I can run a report for library pa_02 <name>
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: 23
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
@@ -124,14 +124,20 @@ Feature: Run report
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
 
-    Scenario: I can run a report for library qa_01
-        When I navigate to "Public" report with reportUid: 10066751 and dataSourceUid: 23
+    Scenario Outline: I can run a report with date range for report <name>
+        When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
 
-    Scenario Outline: I can run a report for library with date range and diagnosis
+        Examples:
+            | name        | reportUid | dataSourceUid |
+            | qa_01       | 10066751  | 23            |
+            | tb_case_ver | 10066779  | 40            |
+            | sr_18       | 10066725  | 15            |
+
+    Scenario Outline: I can run a report for library with date range and diagnosis with report <name>
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
@@ -152,7 +158,7 @@ Feature: Run report
             | pa_04 (iad) | 10066740  | 23            |
             | pa_04 (cd)  | 10066741  | 23            |
 
-    Scenario Outline: I can run a report for HIV library with date range and diagnosis
+    Scenario Outline: I can run a report for HIV library with date range and diagnosis for report <name>
         When I navigate to "Public" report with reportUid: <reportUid> and dataSourceUid: <dataSourceUid>
         And I enter "04/28/2025" to the From date
         And I enter "04/28/2026" to the To date
@@ -218,12 +224,5 @@ Feature: Run report
         And I enter "04/28/2026" to the To date
         And I select "100 - Chancroid" from the "DIAGNOSIS_CD" dropdown menu
         And I select "Fulton LocalUser" from the "INVESTIGATOR_INTERVIEW_QC" dropdown menu
-        And I click the "Run" button
-        Then I should see a "heading" labelled "Your report has opened in a new tab."
-
-    Scenario: I can run a report for library tb_case_ver
-        When I navigate to "Public" report with reportUid: 10066779 and dataSourceUid: 40
-        And I enter "04/28/2025" to the From date
-        And I enter "04/28/2026" to the To date
         And I click the "Run" button
         Then I should see a "heading" labelled "Your report has opened in a new tab."
