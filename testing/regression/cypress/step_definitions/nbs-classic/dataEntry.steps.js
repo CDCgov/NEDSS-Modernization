@@ -105,6 +105,10 @@ When("I enter the current date in the Date of Morbidity Report field", () => {
   morbidityReportPage.enterMorbidityDate(today);
 });
 
+When("I select {string} from the Pregnant dropdown menu", (value) => {
+  morbidityReportPage.selectPregnant(value);
+});
+
 When(
   "I enter {string} in the Facility and Provider Information field",
   (value) => {
@@ -206,6 +210,8 @@ When("I click the Add button under Resulted Tests", () => {
 When("I enter patient first name {string} and last name {string}", (firstName, lastName) => {
   morbidityReportPage.enterPatientBothNames(firstName, lastName);
 });
+
+When
 
 // 6: Verification Steps
 

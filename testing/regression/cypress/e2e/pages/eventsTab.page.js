@@ -47,8 +47,42 @@ class EventsTabPage {
     })
   }
 
-  clickEventsTabButton(buttonValue) {
+  clickAddButton(buttonValue) {
     cy.get('button').contains(buttonValue).click();
+  }
+
+  getMorbidityReportCount() {
+    // Wait for spinner to disappear
+    cy.get('._indicator_1vvtd_1', { timeout: 15000 })
+      .should('not.exist');
+      
+    cy.get('div._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
+      .eq(2)
+      .invoke('text')
+      .then(text => {
+        const count = parseInt(text.trim());
+        Cypress.env('morbidityReportCount', count);
+        cy.log(`Saved morbidity report count: ${count}`);
+      });
+  }
+
+  verifyMorbidityReportCountIncreased() {
+    // Wait for spinner to disappear before getting the count
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    // Now get the count and verify it increased
+    const initialCount = Cypress.env('morbidityReportCount');
+    
+    cy.get('._title_r9t1e_16 ._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
+      .eq(2)
+      .invoke('text')
+      .then(text => {
+        const newCount = parseInt(text.trim(), 10);
+        cy.log(`📊 Initial count: ${initialCount}, New count: ${newCount}`);
+        expect(newCount, `Morbidity report count should increase by 1`)
+          .to.equal(initialCount + 1);
+      });
   }
 }
 

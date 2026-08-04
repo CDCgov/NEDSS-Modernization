@@ -9,6 +9,7 @@ class MorbidityReportPage {
   facilityProviderField =
     'input[name="entity-codeLookupText-Org-ReportingOrganizationUID"]';
   codeLookupButton = 'input[value="Code Lookup"]';
+  pregnantDropdown = 'select[fieldlabel="Is Patient Pregnant"][validate="pregnantMale"]';
   submitButton = "#Submit";
 
   // Patient entry fields
@@ -56,6 +57,10 @@ class MorbidityReportPage {
 
   enterFacilityProvider(value) {
     cy.get(this.facilityProviderField).type(value);
+  }
+
+  selectPregnant(value) {
+    cy.get(this.pregnantDropdown).select(value, { force: true });
   }
 
   clickCodeLookup() {

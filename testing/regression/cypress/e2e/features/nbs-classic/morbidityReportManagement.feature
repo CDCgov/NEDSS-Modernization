@@ -6,12 +6,17 @@ Feature: Patient File - Event Management - Morbidity Report
     And Click Events tab on Patient Profile Page
 
     Scenario: Add new morbidity report without investigation
-        When user clicks on the "Add morbidity report" button within the Events tab
+        When I check the current count of morbidity reports in the Events tab
+        And user clicks on the "Add morbidity report" button within the Events tab
         And I select "Botulism, foodborne" from the Condition dropdown menu
         And I select "Cobb County" from the Jurisdiction dropdown menu
         And I enter the current date in the Date of Morbidity Report field
         And I enter "2" in the Facility and Provider Information field
+        And I click on the Code Lookup button
         And I select "No" from the Pregnant dropdown menu
+        And I click the Submit button
+        And Click Events tab on Patient Profile Page
+        Then the morbidity report count should increase by 1 in the Events tab
     
     # Scenario: Add new morbidity report and create investigation
 

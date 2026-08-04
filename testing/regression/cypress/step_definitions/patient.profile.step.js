@@ -35,5 +35,13 @@ Then("I add invstigation - Anaplasma phagocytophilum of patient", () => {
 });
 
 When("user clicks on the {string} button within the Events tab", (buttonValue) => {
-    eventsTabPage.clickEventsTabButton(buttonValue);
+    eventsTabPage.clickAddButton(buttonValue);
+});
+
+When("I check the current count of morbidity reports in the Events tab", () => {
+    eventsTabPage.getMorbidityReportCount();
+});
+
+Then("the morbidity report count should increase by 1 in the Events tab", () => {
+    eventsTabPage.verifyMorbidityReportCountIncreased();
 });
