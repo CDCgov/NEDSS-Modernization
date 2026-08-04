@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 
 import { Button, Checkbox, ErrorMessage, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
@@ -66,7 +66,7 @@ export const TargetQuestion = ({
         }
     }, [selectedList]);
 
-    const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelect = (question: PagesQuestion, e: ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
 
         if (e.target.checked) {
@@ -79,7 +79,7 @@ export const TargetQuestion = ({
         }
     };
 
-    const handleSelectAll = (questions: PagesQuestion[], e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelectAll = (questions: PagesQuestion[], e: ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
         if (e.target.checked) {
             questions?.map((question) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, FC } from 'react';
 
 import { Confirmation } from 'design-system/modal';
 import debounce from 'lodash.debounce';
@@ -18,7 +18,7 @@ interface IdleTimerProps {
     onContinue?: () => void;
 }
 
-const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAlivePath, onIdle, onContinue }) => {
+const IdleTimer: FC<IdleTimerProps> = ({ timeout, warningTimeout, keepAlivePath, onIdle, onContinue }) => {
     const [idle, setIdle] = useState(false);
     const idleTimer = useTimeout();
     const warningTimer = useTimeout();

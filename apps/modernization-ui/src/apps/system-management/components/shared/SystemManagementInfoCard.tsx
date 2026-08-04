@@ -1,4 +1,4 @@
-import React from 'react';
+import {MouseEvent} from 'react';
 
 import { Card } from 'design-system/card/Card';
 import { useNavigate } from 'react-router';
@@ -22,7 +22,7 @@ export const SystemManagementInfoCard = ({ id, title, filter, links, useNavigati
 
     if (filteredLinks.length === 0) return null;
 
-    const handleClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleClick = (href: string, e: MouseEvent<HTMLAnchorElement>) => {
         if (useNavigation) {
             e.preventDefault();
             navigate(href);

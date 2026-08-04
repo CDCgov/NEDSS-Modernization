@@ -1,11 +1,8 @@
 import { render } from '@testing-library/react';
 import { AlertProvider } from 'alert';
-import { PagesTab, Tab } from 'apps/page-builder/generated';
+import { Tab } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BrowserRouter } from 'react-router';
-import Router from 'react-router';
-
-import { ManageTabs } from '../ManageTabs/ManageTabs';
 
 import { AddEditTab } from './AddEditTab';
 

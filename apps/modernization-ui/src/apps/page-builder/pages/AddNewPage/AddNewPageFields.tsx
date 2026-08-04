@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, RefObject } from 'react';
 
 import { ErrorMessage, Icon, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
 import { Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
@@ -12,9 +12,9 @@ import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
-    conditionLookupModal: React.RefObject<ModalRef>;
-    createConditionModal: React.RefObject<ModalRef>;
-    importTemplateModal: React.RefObject<ModalRef>;
+    conditionLookupModal: RefObject<ModalRef>;
+    createConditionModal: RefObject<ModalRef>;
+    importTemplateModal: RefObject<ModalRef>;
     templates: Template[];
     mmgs: Option[];
 };

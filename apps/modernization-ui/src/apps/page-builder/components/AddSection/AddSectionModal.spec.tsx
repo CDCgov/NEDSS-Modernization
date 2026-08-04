@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fireEvent, render } from '@testing-library/react';
 import { SectionControllerService } from 'apps/page-builder/generated';
 

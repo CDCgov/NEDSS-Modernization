@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { FC, useContext, useState, createContext, ReactNode } from 'react';
 
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from '@hello-pangea/dnd';
 
@@ -15,10 +15,10 @@ type DragDropContextProps = {
     dragTarget: { droppableId: string; index: number; source: number };
 };
 
-const DragDropContext = React.createContext<DragDropContextProps | undefined>(undefined);
+const DragDropContext = createContext<DragDropContextProps | undefined>(undefined);
 
-const DragDropProvider: React.FC<{
-    children: React.ReactNode;
+const DragDropProvider: FC<{
+    children: ReactNode;
     pageData: PagesResponse | undefined;
     successCallBack?: () => void;
 }> = ({ children, pageData, successCallBack }) => {
