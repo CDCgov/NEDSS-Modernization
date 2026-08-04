@@ -1,11 +1,15 @@
-import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { AddSection } from './AddSection';
-import { ManageSection } from './ManageSection';
 import { RefObject, useEffect, useState } from 'react';
-import './ManageSectionModal.scss';
-import { usePageManagement } from '../../../usePageManagement';
+
+import { Modal, ModalRef } from '@trussworks/react-uswds';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { useAlert } from 'libs/alert';
+
+import { usePageManagement } from '../../../usePageManagement';
+
+import { AddSection } from './AddSection';
+import { ManageSection } from './ManageSection';
+
+import './ManageSectionModal.scss';
 
 type ManageSectionModalProps = {
     addSecModalRef: RefObject<ModalRef>;

@@ -1,8 +1,9 @@
-import { today } from 'date';
-import { PhoneEmailDemographic } from './phoneEmails';
-import { asSelectable } from 'options';
 import { render, screen } from '@testing-library/react';
+import { today } from 'date';
+import { asSelectable } from 'options';
+
 import { PhoneEmailDemographicView } from './PhoneEmailDemographicView';
+import { PhoneEmailDemographic } from './phoneEmails';
 
 const entry: PhoneEmailDemographic = {
     asOf: '2000-01-01',

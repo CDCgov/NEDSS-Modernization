@@ -1,5 +1,6 @@
-import { Input } from './Input';
 import { render } from '@testing-library/react';
+
+import { Input } from './Input';
 
 describe('Input component tests', () => {
     describe('when there is an error', () => {

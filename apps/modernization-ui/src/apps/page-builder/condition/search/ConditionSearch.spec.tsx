@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
-import { ConditionSearch } from './ConditionSearch';
-import { MemoryRouter } from 'react-router';
 import { Condition } from 'apps/page-builder/generated';
+import { MemoryRouter } from 'react-router';
+
+import { ConditionSearch } from './ConditionSearch';
 
 const mockCondition: Condition = {
     coinfectionGroup: 'coinfection',

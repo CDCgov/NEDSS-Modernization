@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
-import { RaceEntryView } from './RaceEntryView';
 import { RaceEntry } from 'apps/patient/data/race';
 import { asSelectable } from 'options';
+
+import { RaceEntryView } from './RaceEntryView';
 
 const entry: RaceEntry = {
     id: 331,

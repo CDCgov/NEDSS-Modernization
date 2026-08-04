@@ -1,8 +1,10 @@
-import { useNavigate } from 'react-router';
-import { useFormContext } from 'react-hook-form';
-import { useSearchCriteriaEncrypted } from 'apps/search/useSearchCriteriaEncrypted';
-import { PatientCriteriaEntry } from '../criteria';
 import { useCallback } from 'react';
+
+import { useSearchCriteriaEncrypted } from 'apps/search/useSearchCriteriaEncrypted';
+import { useFormContext } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+
+import { PatientCriteriaEntry } from '../criteria';
 
 type Interaction = {
     add: () => void;

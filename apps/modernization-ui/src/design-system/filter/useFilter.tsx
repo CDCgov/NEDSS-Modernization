@@ -1,6 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useCallback } from 'react';
-import { Filter } from './filter';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+
 import { exists } from 'utils';
+
+import { Filter } from './filter';
 
 type FilterInteraction = {
     active: boolean;

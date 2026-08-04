@@ -1,4 +1,4 @@
-import { Selectable, findByValue } from 'options';
+import { findByValue, Selectable } from 'options';
 
 const FEMALE = { name: 'Female', value: 'F' };
 const MALE = { name: 'Male', value: 'M' };

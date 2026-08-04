@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
+
 import { Shown } from 'conditional-render';
 import { useConfiguration } from 'configuration';
 
-import { ReactNode } from 'react';
 import { Guard } from './guard';
 
 type FeatureToggleProps = {

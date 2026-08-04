@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { DataElementsTable } from './DataElementsTable';
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
+
+import { DataElementsTable } from './DataElementsTable';
 
 const dataElements: DataElements = {
     firstName: {

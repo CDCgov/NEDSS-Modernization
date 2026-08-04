@@ -1,10 +1,11 @@
-import { Controller, useFormContext } from 'react-hook-form';
 import { EntryFieldsProps } from 'design-system/entry';
-import { maxLengthRule } from 'validation/entry';
-import { Verification } from 'libs/verification';
-import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
-import { BasicPhoneEmail } from '../entry';
 import { MaskedTextInputField } from 'design-system/input/text';
+import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { Verification } from 'libs/verification';
+import { Controller, useFormContext } from 'react-hook-form';
+import { maxLengthRule } from 'validation/entry';
+
+import { BasicPhoneEmail } from '../entry';
 
 const HOME_PHONE_LABEL = 'Home phone';
 const WORK_PHONE_LABEL = 'Work phone';

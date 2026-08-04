@@ -1,8 +1,10 @@
-import { Mock } from 'vitest';
 import { act } from 'react';
+
 import { renderHook } from '@testing-library/react';
-import { useNavigationBlock } from './useNavigationBlock';
 import { useBlocker } from 'react-router';
+import { Mock } from 'vitest';
+
+import { useNavigationBlock } from './useNavigationBlock';
 
 const mockUseNavigate = vi.fn();
 

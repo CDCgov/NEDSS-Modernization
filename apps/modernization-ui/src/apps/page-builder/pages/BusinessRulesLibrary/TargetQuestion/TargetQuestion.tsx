@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import styles from './TargetQuestion.module.scss';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
-import { Icon } from 'components/Icon/Icon';
+import { ChangeEvent, useEffect, useState } from 'react';
+
 import { Button, Checkbox, ErrorMessage, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
+import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { useGetTargetQuestions } from 'apps/page-builder/hooks/api/useGetTargetQuestions';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Icon } from 'components/Icon/Icon';
+
+import styles from './TargetQuestion.module.scss';
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;
@@ -64,7 +66,7 @@ export const TargetQuestion = ({
         }
     }, [selectedList]);
 
-    const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelect = (question: PagesQuestion, e: ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
 
         if (e.target.checked) {
@@ -77,7 +79,7 @@ export const TargetQuestion = ({
         }
     };
 
-    const handleSelectAll = (questions: PagesQuestion[], e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelectAll = (questions: PagesQuestion[], e: ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
         if (e.target.checked) {
             questions?.map((question) => {

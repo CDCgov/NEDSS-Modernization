@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { Chip } from './Chip';
 import userEvent from '@testing-library/user-event';
+
+import { Chip } from './Chip';
 
 describe('Chip', () => {
     const mockProps = {

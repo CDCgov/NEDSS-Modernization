@@ -1,11 +1,13 @@
+import { ChangeEvent, useEffect } from 'react';
+
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { usePageQuestionDataMartValidation } from 'apps/page-builder/hooks/api/usePageQuestionValidation';
 import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
-import { ChangeEvent, useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import { CreateQuestionForm } from '../QuestionForm';
 
 type Props = {

@@ -1,11 +1,13 @@
 import { FeatureGuard } from 'feature';
 import { PageTitle } from 'page';
+
+import { permitsAll, Permitted } from '../../libs/permission';
+import { RedirectHome } from '../../routes';
+
 import { MatchConfigurationLandingPage } from './configuration/MatchConfigurationLandingPage';
 import { DataElementConfig } from './data-elements/DataElementConfig';
 import { MergeDetails } from './patient-merge/details/MergeDetails';
 import { MergeLanding } from './patient-merge/landing/MergeLanding';
-import { permitsAll, Permitted } from '../../libs/permission';
-import { RedirectHome } from '../../routes';
 
 const routing = [
     {

@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
-import { Column } from 'design-system/table';
-import { RepeatingBlock } from 'design-system/entry/multi-value';
+
 import { AddressEntry, AddressEntryFields, initial } from 'apps/patient/data/address';
 import { asAddressTypeUse } from 'apps/patient/data/address/utils';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { Sizing } from 'design-system/field';
+import { Column } from 'design-system/table';
 
 import { AddressView } from './AddressView';
 

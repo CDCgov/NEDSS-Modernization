@@ -1,7 +1,8 @@
 import { asValue, asValues } from 'options';
-import { RaceEntry } from './entry';
-import { Race } from './api';
 import { exists } from 'utils';
+
+import { Race } from './api';
+import { RaceEntry } from './entry';
 
 const asRace = (entry: RaceEntry): Race | undefined => {
     const { race, detailed, asOf } = entry;

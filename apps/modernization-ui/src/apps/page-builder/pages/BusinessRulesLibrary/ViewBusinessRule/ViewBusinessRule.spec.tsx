@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
-import { ViewBusinessRule } from './ViewBusinessRule';
+import { PaginationProvider } from 'pagination';
 import { BrowserRouter } from 'react-router';
 
-import { PaginationProvider } from 'pagination';
+import { ViewBusinessRule } from './ViewBusinessRule';
 
 describe('when ViewBusinessRule rendered', () => {
     it('should display heading', () => {

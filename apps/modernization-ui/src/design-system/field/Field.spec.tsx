@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import { Field, Orientation, Sizing } from './Field';
 import { ReactNode } from 'react';
+
+import { render, screen } from '@testing-library/react';
+
+import { Field, Orientation, Sizing } from './Field';
 
 describe('Field Component', () => {
     const mockProps: {

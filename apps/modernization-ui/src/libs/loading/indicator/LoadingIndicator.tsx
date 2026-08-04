@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import styles from './loading-indicator.module.scss';
 
 type LoadingIndicatorProps = {

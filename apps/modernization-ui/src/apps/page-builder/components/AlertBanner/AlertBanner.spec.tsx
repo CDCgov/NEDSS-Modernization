@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { AlertBanner } from './AlertBanner';
 
 describe('when AlertBanner renders', () => {

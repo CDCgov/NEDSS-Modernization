@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useReducer } from 'react';
+import { createContext, ReactNode, useEffect, useReducer } from 'react';
 
 import { User } from 'user';
 
@@ -28,7 +28,7 @@ type Interaction = {
     logout: () => void;
 };
 
-const UserContext = React.createContext<Interaction>({
+const UserContext = createContext<Interaction>({
     state: { isLoggedIn: false },
     logout: () => {},
 });

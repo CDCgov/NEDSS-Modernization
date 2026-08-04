@@ -1,7 +1,9 @@
+import { MouseEvent } from 'react';
+
 import { Card } from 'design-system/card/Card';
-import styles from './SystemManagementInfoCard.module.scss';
 import { useNavigate } from 'react-router';
-import React from 'react';
+
+import styles from './SystemManagementInfoCard.module.scss';
 
 type LinkItem = { text: string; href: string };
 
@@ -20,7 +22,7 @@ export const SystemManagementInfoCard = ({ id, title, filter, links, useNavigati
 
     if (filteredLinks.length === 0) return null;
 
-    const handleClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleClick = (href: string, e: MouseEvent<HTMLAnchorElement>) => {
         if (useNavigation) {
             e.preventDefault();
             navigate(href);

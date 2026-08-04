@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CheckboxGroup } from './CheckboxGroup';
 import { axe } from 'jest-axe';
+
+import { CheckboxGroup } from './CheckboxGroup';
 
 const options = [
     { value: 'value1', label: 'label1', name: 'name1' },

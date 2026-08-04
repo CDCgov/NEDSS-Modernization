@@ -1,23 +1,25 @@
 import { Suspense } from 'react';
-import { Await } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
-import { LoadingOverlay } from 'libs/loading';
-import { TableCard } from 'design-system/card';
-import { Column } from 'design-system/table';
-import { ColumnPreference } from 'design-system/table/preferences';
+
+import { Shown } from 'conditional-render';
 import { internalizeDate } from 'date';
 import { internalizeDateTime } from 'date/InternalizeDateTime';
-import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
-import { PatientFileDocumentRequiringReview } from './drr';
+import { TableCard } from 'design-system/card';
 import { TableCardProps } from 'design-system/card/table/TableCard';
+import { displayNoData } from 'design-system/data';
+import { Column } from 'design-system/table';
+import { ColumnPreference } from 'design-system/table/preferences';
+import { Tag } from 'design-system/tag';
+import { Tooltip } from 'design-system/tooltip';
 import { MaybeLabeledValue } from 'design-system/value';
 import { ResultedTests } from 'libs/events/tests';
+import { LoadingOverlay } from 'libs/loading';
+import { MemoizedSupplier } from 'libs/supplying';
+import { Await } from 'react-router';
 
+import { renderFacilityProvider, renderMorbidity } from '../../renderPatientFile';
+
+import { PatientFileDocumentRequiringReview } from './drr';
 import styles from './drr.module.scss';
-import { displayNoData } from 'design-system/data';
-import { Tag } from 'design-system/tag';
-import { Shown } from 'conditional-render';
-import { Tooltip } from 'design-system/tooltip';
 
 const renderDescription = (value: PatientFileDocumentRequiringReview) => {
     return (

@@ -1,5 +1,6 @@
-import { get, maybeJson } from 'libs/api';
 import { asOfAgeResolver } from 'date';
+import { get, maybeJson } from 'libs/api';
+
 import { PatientFileSexBirthDemographic } from './PatientFileSexBirthDemographic';
 
 const patientSexBirth = (patient: number): Promise<PatientFileSexBirthDemographic> =>

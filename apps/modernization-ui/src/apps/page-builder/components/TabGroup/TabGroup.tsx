@@ -1,5 +1,7 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+
+import classNames from 'classnames';
+
 import styles from './tab-group.module.scss';
 
 type Props = {

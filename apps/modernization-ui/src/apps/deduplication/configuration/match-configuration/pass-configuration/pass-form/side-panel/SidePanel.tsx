@@ -1,8 +1,10 @@
+import { ReactNode, useEffect, useRef, useState } from 'react';
+
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import styles from './side-panel.module.scss';
-import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Icon } from 'design-system/icon';
+
+import styles from './side-panel.module.scss';
 
 type Props = {
     heading: string;

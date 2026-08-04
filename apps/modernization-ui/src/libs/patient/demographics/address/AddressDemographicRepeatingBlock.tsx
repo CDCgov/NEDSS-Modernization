@@ -1,11 +1,11 @@
 import { internalizeDate } from 'date';
-import { exists } from 'utils/exists';
 import { orNoData } from 'design-system/data';
 import { RepeatingBlock, RepeatingBlockProps } from 'design-system/entry/multi-value';
 import { Column } from 'design-system/table';
-import { AddressDemographic, labels } from './address';
-import { AddressDemographicView } from './AddressDemographicView';
+import { exists } from 'utils/exists';
 
+import { AddressDemographicView } from './AddressDemographicView';
+import { AddressDemographic, labels } from './address';
 import styles from './address-repeating-block.module.scss';
 
 const displayAddress = (value: AddressDemographic) =>

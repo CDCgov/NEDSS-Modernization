@@ -1,6 +1,7 @@
 import { Closable, ClosablePanel } from 'design-system/panel/closable';
-import { SortingSelectable } from './selectable';
+
 import { SortPreference } from './SortPreference';
+import { SortingSelectable } from './selectable';
 import { useSortingPreferences } from './useSortingPreferences';
 
 type Props = Closable;

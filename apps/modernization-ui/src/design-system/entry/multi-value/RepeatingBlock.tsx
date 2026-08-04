@@ -1,20 +1,22 @@
 import { ReactNode, useEffect, useMemo } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+
 import classNames from 'classnames';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { Sizing } from 'design-system/field';
 import { Card, CardProps } from 'design-system/card';
-import { Tooltip } from 'design-system/tooltip';
-import { Tag } from 'design-system/tag';
+import { Sizing } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { Column, DataTable, DataTableFeatures } from 'design-system/table';
+import { Tag } from 'design-system/tag';
+import { Tooltip } from 'design-system/tooltip';
+import { DefaultValues, FieldValues, FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+
 import { Required } from '../required/Required';
-import { Entry, MultiValueEntryInteraction, useMultiValueEntry } from './useMultiValueEntry';
-import { entryIdentifierGenerator } from './entryIdentifierGenerator';
-import { entryColumns } from './entryColumns';
 
 import styles from './RepeatingBlock.module.scss';
+import { entryColumns } from './entryColumns';
+import { entryIdentifierGenerator } from './entryIdentifierGenerator';
+import { Entry, MultiValueEntryInteraction, useMultiValueEntry } from './useMultiValueEntry';
 
 type DefaultValuesResolver<D> = (() => D) | D;
 

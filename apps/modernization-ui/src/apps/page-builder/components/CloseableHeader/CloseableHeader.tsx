@@ -1,6 +1,8 @@
-import { Icon } from '@trussworks/react-uswds';
-import styles from './closeable-header.module.scss';
 import { ReactNode } from 'react';
+
+import { Icon } from '@trussworks/react-uswds';
+
+import styles from './closeable-header.module.scss';
 
 type Props = {
     onClose: () => void;

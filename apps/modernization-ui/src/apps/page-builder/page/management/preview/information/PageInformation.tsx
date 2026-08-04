@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon, Pagination } from '@trussworks/react-uswds';
 import {
     PageInformation as InfoType,
@@ -6,11 +8,12 @@ import {
     PageInformationService,
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { usePageManagement } from '../../usePageManagement';
-import styles from './page-information.module.scss';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { usePageManagement } from '../../usePageManagement';
+
+import styles from './page-information.module.scss';
 
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');

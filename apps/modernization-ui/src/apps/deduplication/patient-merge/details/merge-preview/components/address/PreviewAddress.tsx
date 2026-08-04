@@ -1,8 +1,9 @@
+import { format, parseISO } from 'date-fns';
+import { Column } from 'design-system/table';
+
 import { MergeAddress, MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { AddressId } from '../../../merge-review/model/PatientMergeForm';
-import { format, parseISO } from 'date-fns';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
-import { Column } from 'design-system/table';
 
 type AddressEntry = {
     id: string;

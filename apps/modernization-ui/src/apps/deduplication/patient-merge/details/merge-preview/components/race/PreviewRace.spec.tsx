@@ -1,9 +1,10 @@
-import React from 'react';
 import { render, within } from '@testing-library/react';
-import { PreviewRace } from './PreviewRace';
+import { MemoryRouter } from 'react-router';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { RaceId } from '../../../merge-review/model/PatientMergeForm';
-import { MemoryRouter } from 'react-router';
+
+import { PreviewRace } from './PreviewRace';
 
 const Fixture = () => {
     return (

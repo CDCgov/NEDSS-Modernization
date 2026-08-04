@@ -1,7 +1,9 @@
 import { asValue } from 'options';
-import { PhoneEmail } from '../api';
-import { PhoneEmailEntry } from './entry';
 import { exists, orUndefined } from 'utils';
+
+import { PhoneEmail } from '../api';
+
+import { PhoneEmailEntry } from './entry';
 
 const asPhoneEmail = (entry: PhoneEmailEntry): PhoneEmail | undefined => {
     const { asOf, type, use, countryCode, phoneNumber, extension, email, url, comment } = entry;

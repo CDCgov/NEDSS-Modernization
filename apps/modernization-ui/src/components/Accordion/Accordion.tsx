@@ -1,7 +1,8 @@
 import { ReactNode, useId, useState } from 'react';
 
-import styles from './accordion.module.scss';
 import { Icon } from 'design-system/icon';
+
+import styles from './accordion.module.scss';
 
 type Props = {
     title?: string;

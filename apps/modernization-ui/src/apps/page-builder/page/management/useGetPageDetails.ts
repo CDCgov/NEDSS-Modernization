@@ -1,5 +1,6 @@
-import { PagesResponse, PagesService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { PagesResponse, PagesService } from 'apps/page-builder/generated';
 import { useParams } from 'react-router';
 
 type State =

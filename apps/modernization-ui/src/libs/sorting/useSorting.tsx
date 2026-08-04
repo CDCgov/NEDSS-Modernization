@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+
 import { useSearchParams } from 'react-router';
+
 import { Direction } from './sorting';
 
 const SORT_ON_PARAMETER = 'sortOn';

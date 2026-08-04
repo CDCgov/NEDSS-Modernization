@@ -1,6 +1,7 @@
-import { Investigation, InvestigationPersonParticipation } from 'generated/graphql/schema';
 import { ClassicLink } from 'classic';
+import { Investigation, InvestigationPersonParticipation } from 'generated/graphql/schema';
 import { SelectableResolver } from 'options';
+
 import { InvestigationStatus } from './InvestigationStatus';
 
 const getPatient = (investigation: Investigation): InvestigationPersonParticipation | undefined | null => {

@@ -1,7 +1,9 @@
 import { act } from 'react';
+
 import { renderHook } from '@testing-library/react';
-import { useMultiSelection } from './useMultiSelection';
+
 import { Selectable } from './selectable';
+import { useMultiSelection } from './useMultiSelection';
 
 describe('when using the useMultiSelection hook', () => {
     it('should initialize without initially selected values', () => {

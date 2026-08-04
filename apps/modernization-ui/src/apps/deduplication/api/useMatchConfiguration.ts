@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Pass } from './model/Pass';
+
 import { Config } from 'config';
-import { AlgorithmExport } from './model/AlgorithmExport';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { AlgorithmExport } from './model/AlgorithmExport';
+import { Pass } from './model/Pass';
 
 export const useMatchConfiguration = (lazy = false) => {
     const [passes, setPasses] = useState<Pass[]>([]);
