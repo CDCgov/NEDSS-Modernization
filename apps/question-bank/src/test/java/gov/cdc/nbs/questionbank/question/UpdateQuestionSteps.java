@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -14,6 +15,7 @@ import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Set;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
@@ -26,6 +28,9 @@ public class UpdateQuestionSteps {
   private final WaQuestionRepository questionRepository;
 
   private final QuestionMother questionMother;
+
+  private final NbsUserDetails user =
+      new NbsUserDetails(103L, "username", "first", "last", Set.of(), true, 1L);
 
   Long questionId;
 
@@ -49,7 +54,7 @@ public class UpdateQuestionSteps {
   public void i_send_an_text_update_question_request() {
     updateTextQuestionRequest = QuestionRequestMother.updateTextQuestionRequest();
     try {
-      controller.updateTextQuestion(questionMother.one().getId(), updateTextQuestionRequest);
+      controller.updateTextQuestion(user, questionMother.one().getId(), updateTextQuestionRequest);
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
@@ -66,7 +71,7 @@ public class UpdateQuestionSteps {
   public void i_send_an_update_date_question_request() {
     updateDateQuestionRequest = QuestionRequestMother.updateDateQuestionRequest();
     try {
-      controller.updateDateQuestion(questionMother.one().getId(), updateDateQuestionRequest);
+      controller.updateDateQuestion(user, questionMother.one().getId(), updateDateQuestionRequest);
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
@@ -83,7 +88,8 @@ public class UpdateQuestionSteps {
   public void i_send_an_update_coded_question_request() {
     updateCodedQuestionRequest = QuestionRequestMother.updateCodedQuestionRequest();
     try {
-      controller.updateCodedQuestion(questionMother.one().getId(), updateCodedQuestionRequest);
+      controller.updateCodedQuestion(
+          user, questionMother.one().getId(), updateCodedQuestionRequest);
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
@@ -100,7 +106,8 @@ public class UpdateQuestionSteps {
   public void i_send_an_update_numeric_question_request() {
     updateNumericQuestionRequest = QuestionRequestMother.updateNumericQuestionRequest();
     try {
-      controller.updateNumericQuestion(questionMother.one().getId(), updateNumericQuestionRequest);
+      controller.updateNumericQuestion(
+          user, questionMother.one().getId(), updateNumericQuestionRequest);
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
@@ -118,7 +125,7 @@ public class UpdateQuestionSteps {
     updateTextQuestionRequest = QuestionRequestMother.updateTextQuestionRequest();
     try {
       questionId = questionMother.dateQuestion().getId();
-      controller.updateTextQuestion(questionId, updateTextQuestionRequest);
+      controller.updateTextQuestion(user, questionId, updateTextQuestionRequest);
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
@@ -134,7 +141,7 @@ public class UpdateQuestionSteps {
   public void i_send_an_update_for_bad_question() {
     updateTextQuestionRequest = QuestionRequestMother.updateTextQuestionRequest();
     try {
-      controller.updateTextQuestion(-1234L, updateTextQuestionRequest);
+      controller.updateTextQuestion(user, -1234L, updateTextQuestionRequest);
     } catch (QuestionNotFoundException e) {
       exceptionHolder.setException(e);
     }
