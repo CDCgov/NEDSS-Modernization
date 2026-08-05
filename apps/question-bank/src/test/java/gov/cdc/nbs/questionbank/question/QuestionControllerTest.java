@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
@@ -23,8 +22,6 @@ class QuestionControllerTest {
 
   @Mock private QuestionCreator creator;
 
-  @Mock private UserDetailsProvider provider;
-
   @InjectMocks private QuestionController controller;
 
   @Test
@@ -32,8 +29,6 @@ class QuestionControllerTest {
     // given a valid user is logged in
     NbsUserDetails user = mock(NbsUserDetails.class);
     when(user.getId()).thenReturn(1L);
-
-    when(provider.getCurrentUserDetails()).thenReturn(user);
 
     // and a create text question request is sent
     CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
@@ -46,7 +41,7 @@ class QuestionControllerTest {
                 null, null, null));
 
     // when the request is processed
-    Question response = controller.createTextQuestion(request);
+    Question response = controller.createTextQuestion(user, request);
 
     // then a valid response is given
     assertEquals(19L, response.id());
