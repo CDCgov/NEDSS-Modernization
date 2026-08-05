@@ -14,16 +14,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 public class SimpleSearchRedirectSteps {
-
-  private static final Pattern ENCRYPTED_LOCATION = Pattern.compile(".*/(.+)");
 
   private final SimpleSearchRedirectRequester requester;
   private final Active<ResultActions> response;
@@ -84,13 +80,10 @@ public class SimpleSearchRedirectSteps {
     String location = result.andReturn().getResponse().getRedirectedUrl();
 
     if (location != null) {
-      Matcher matcher = ENCRYPTED_LOCATION.matcher(location);
+      String[] parts = location.split("/");
+      String encrypted = parts[parts.length - 1];
 
-      if (matcher.find()) {
-        String encrypted = matcher.group(1);
-
-        this.decrypted.active(this.decryptionRequester.request(encrypted));
-      }
+      this.decrypted.active(this.decryptionRequester.request(encrypted));
     }
   }
 
