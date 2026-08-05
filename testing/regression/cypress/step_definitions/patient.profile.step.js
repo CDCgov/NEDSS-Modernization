@@ -53,3 +53,11 @@ Then("the {string} count should remain the same in the Events tab", (reportType)
 When("I click on the first morbidity report link in the Events tab", () => {
     eventsTabPage.clickFirstMorbidityReportLink();
 });
+
+When("I count the number of treatments in the first morbidity report", () => {
+    eventsTabPage.saveInitialTreatmentCount();
+});
+
+Then("the treatment count should increase by 1 in the first morbidity report", () => {
+    eventsTabPage.verifyTreatmentCountIncreased();
+});

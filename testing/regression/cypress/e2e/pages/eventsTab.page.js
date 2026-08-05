@@ -121,11 +121,48 @@ class EventsTabPage {
         expect(newCount, `${ReportType} count should remain the same`)
           .to.equal(initialCount);
       });
-    } 
+  }
 
-    clickFirstMorbidityReportLink() {
-      cy.get(this.morbidityReportLinks).first().click();
-    }
+  saveInitialTreatmentCount() {
+    // Wait for spinner to disappear
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    // Get the first morbidity report row and find the treatment count
+    cy.get('#morbidity-reports-table tbody tr')
+      .first()
+      .find('td:nth-child(6)') // Treatment info column
+      .find('ul._treatments_t5nhh_1 li')
+      .its('length')
+      .then(count => {
+        Cypress.env('initialTreatmentCount', count);
+        cy.log(`Initial treatment count in first morbidity report: ${count}`);
+      });
+  }
+  verifyTreatmentCountIncreased() {
+    // Wait for spinner to disappear
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    const initialCount = Cypress.env('initialTreatmentCount');
+    
+    // Get the first morbidity report row and find the treatment count
+    cy.get('#morbidity-reports-table tbody tr')
+      .first()
+      .find('td:nth-child(6)') // Treatment info column
+      .find('ul._treatments_t5nhh_1 li')
+      .its('length')
+      .then(newCount => {
+        cy.log(`Initial treatment count: ${initialCount}, New count: ${newCount}`);
+        expect(newCount, `Treatment count should increase by 1`)
+          .to.equal(initialCount + 1);
+      });
+  }
+
+  clickFirstMorbidityReportLink() {
+    cy.get(this.morbidityReportLinks).first().click();
+  }
+    
   }
 
 export default new EventsTabPage();

@@ -16,7 +16,7 @@ class MorbidityReportPage {
   submitButton = "#Submit";
   submitAndCreateInvestigationButton = 'input[type="image"][name="Submit and Create Investigation"]';
   cancelButton = "#Cancel";
-  editButton = 'input[type="image"][name="Edit"]';
+  editButton = '#Edit';
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -85,6 +85,8 @@ class MorbidityReportPage {
   clickAddTreatment() {
     cy.get(this.addTreatmentButton).click();
   }
+
+
 
   clickCodeLookup() {
     cy.get(this.codeLookupButton).first().click();
