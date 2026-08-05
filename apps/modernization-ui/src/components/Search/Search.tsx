@@ -65,8 +65,8 @@ const Search = (props: SearchProps) => {
                     maxLength={50}
                 />
             )}
-            <Button id="searchButton" aria-label="search" type="button" onClick={handleSearch}>
-                <Icon.Search size={3} name="Search" />
+            <Button id="searchButton" type="button" onClick={handleSearch}>
+                <Icon.Search aria-label="search" size={3} name="Search" />
             </Button>
         </search>
     );
