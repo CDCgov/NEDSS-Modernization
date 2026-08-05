@@ -55,21 +55,19 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                         className={styles.searchButton}
                         data-testid="businessRulesSearchBtn"
                     >
-                        <Icon.Search size={5} className={styles.searchIcon} />
+                        <Icon.Search aria-label="search" size={5} className={styles.searchIcon} />
                     </Button>
                 </div>
                 <Button
-                    aria-label="Print this page"
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.downloadButton}
                     outline={true}
                     data-tooltip-position="top"
                 >
-                    <Icon.Print size={3} data-testid="print-icon" />
+                    <Icon.Print aria-label="print this page" size={3} data-testid="print-icon" />
                 </Button>
                 <Button
-                    aria-label="Download as csv"
                     type="button"
                     className={styles.downloadButton}
                     outline={true}
@@ -77,7 +75,7 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     data-testid="file-download"
                     data-tooltip-position="top"
                 >
-                    <Icon.FileDownload size={3} />
+                    <Icon.FileDownload aria-label="Download as csv" size={3} />
                 </Button>
             </div>
         </div>

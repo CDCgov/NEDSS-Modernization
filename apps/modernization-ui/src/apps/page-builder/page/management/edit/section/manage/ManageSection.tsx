@@ -12,6 +12,7 @@ import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import styles from './managesection.module.scss';
 
 type ManageSectionProps = {
+    id: string;
     pageId: number;
     tab?: PagesTab;
     onCancel?: () => void;
@@ -26,6 +27,7 @@ type ManageSectionProps = {
 };
 
 export const ManageSection = ({
+    id,
     onCancel,
     tab,
     onContentChange,
@@ -80,6 +82,7 @@ export const ManageSection = ({
         <>
             {sectionState === 'add' && (
                 <AddSection
+                    id={id}
                     pageId={pageId}
                     onSectionTouched={() => {
                         onContentChange?.();
@@ -93,6 +96,7 @@ export const ManageSection = ({
             )}
             {sectionState === 'edit' && (
                 <AddSection
+                    id={id}
                     pageId={pageId}
                     onSectionTouched={() => {
                         onContentChange?.();
@@ -111,7 +115,7 @@ export const ManageSection = ({
             )}
             {sectionState === 'manage' && (
                 <div className={styles.managesection}>
-                    <div className={styles.header}>
+                    <div id={`${id}-header`} className={styles.header}>
                         <div className={styles.manageSectionHeader} data-testid="header">
                             <h2>Manage sections</h2>
                         </div>
@@ -124,28 +128,28 @@ export const ManageSection = ({
                                 className={`${styles.addSectionBtn} addNewSectionBtn`}
                                 disabled={onAction}
                             >
-                                <Icon.Add size={3} className={styles.addIcon} />
+                                <Icon.Add aria-label="add" size={3} className={styles.addIcon} />
                                 Add new section
                             </Button>
                         </div>
                     </div>
-                    <div className={styles.content}>
+                    <div id={`${id}-content`} className={styles.content}>
                         {alert !== undefined && (
                             <div className={styles.alert}>
                                 <div className={styles.checkCircle}>
-                                    <Icon.CheckCircle size={3} />
+                                    <Icon.CheckCircle aria-label="check" size={3} />
                                 </div>
                                 <div className={styles.alertContent}>
                                     <div className={styles.alertMessage}>{alert.message}</div>
                                     <div className={styles.closeBtn}>
-                                        <Icon.Close size={3} onClick={() => onResetAlert?.()} />
+                                        <Icon.Close aria-label="close" size={3} onClick={() => onResetAlert?.()} />
                                     </div>
                                 </div>
                             </div>
                         )}
                         <div className={styles.tab}>
                             <div className={styles.folderIcon}>
-                                <NbsIcon name="folder" />
+                                <NbsIcon alt="folder" name="folder" />
                             </div>
                             <p className={styles.tabName}>{tab?.name}</p>
                         </div>

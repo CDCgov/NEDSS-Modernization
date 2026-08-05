@@ -81,7 +81,7 @@ Feature: Classic Data Entry
     And I enter patient first name "Homer" and last name "Simpson"
     And I click on the Report Information tab
     And I select "Acute flaccid myelitis" from the Condition dropdown menu
-    And I select "Autauga County" from the Jurisdiction dropdown menu
+    And I select "Clayton County" from the Jurisdiction dropdown menu
     And I enter the current date in the Date of Morbidity Report field
     And I enter "2" in the Facility and Provider Information field
     And I click on the Code Lookup button

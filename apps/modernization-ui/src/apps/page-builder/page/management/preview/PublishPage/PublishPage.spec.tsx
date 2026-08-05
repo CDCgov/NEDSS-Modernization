@@ -47,26 +47,14 @@ describe('When PublishPage renders', () => {
             },
         ],
     };
-    it('should display textarea', () => {
-        const { container } = render(
+    it('should display textarea', async () => {
+        const { findByLabelText } = render(
             <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
                 <AlertProvider>
                     <PublishPage modalRef={modalRef} />
                 </AlertProvider>
             </PageManagementProvider>
         );
-        const input = container.getElementsByTagName('textarea');
-        expect(input).toHaveLength(1);
-    });
-    it('should display label', () => {
-        const { container } = render(
-            <PageManagementProvider page={content} fetch={vi.fn()} refresh={vi.fn()} loading={false}>
-                <AlertProvider>
-                    <PublishPage modalRef={modalRef} />
-                </AlertProvider>
-            </PageManagementProvider>
-        );
-        const label = container.getElementsByTagName('label');
-        expect(label).toHaveLength(1);
+        expect(await findByLabelText(/Version notes/)).toHaveRole('textbox');
     });
 });
