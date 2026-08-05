@@ -11,7 +11,7 @@ type ModalProps = {
     isLarge?: boolean;
     size?: string;
     forceAction?: boolean;
-    id: string;
+    id?: string;
     className?: string;
     disabled?: boolean;
 };
