@@ -1,5 +1,6 @@
 package gov.cdc.nbs.testing.authorization;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,6 @@ class AuthenticationSupportSettingsConfiguration {
   @Bean
   AuthenticationSupportSettings authenticationSettings(
       final @Value("${testing.data.createdBy:9999}") long createdBy) {
-    return new AuthenticationSupportSettings(createdBy, LocalDateTime.now());
+    return new AuthenticationSupportSettings(createdBy, LocalDateTime.now(Clock.systemDefaultZone()));
   }
 }

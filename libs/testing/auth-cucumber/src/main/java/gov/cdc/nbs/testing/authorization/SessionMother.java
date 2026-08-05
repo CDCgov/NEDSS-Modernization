@@ -6,6 +6,8 @@ import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
+
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -48,11 +50,13 @@ class SessionMother {
   private final Active<SessionCookie> active;
   private final JdbcClient client;
   private final TestingDataCleaner<String> cleaner;
+  private final Clock clock;
 
-  SessionMother(final Active<SessionCookie> active, JdbcClient client) {
+  SessionMother(final Active<SessionCookie> active, JdbcClient client, final Clock clock) {
     this.active = active;
     this.client = client;
     this.cleaner = new TestingDataCleaner<>(client, DELETE, "identifiers");
+    this.clock = clock;
   }
 
   @PreDestroy
@@ -79,7 +83,7 @@ class SessionMother {
         .sql(INSERT)
         .param("user", user.username())
         .param("type", type.name())
-        .param("time", LocalDateTime.now())
+        .param("time", LocalDateTime.now(clock))
         .param("session", session)
         .param("entry", user.nedssEntry())
         .update();
