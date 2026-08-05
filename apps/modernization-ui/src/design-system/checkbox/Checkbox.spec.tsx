@@ -28,6 +28,8 @@ describe('Checkbox testing', () => {
     });
 
     it('should render checked', () => {
+        render(<Checkbox id="test" label="Test Label" selected={true} />);
+
         const checkbox = screen.getByRole('checkbox', { name: 'Test Label' });
         expect(checkbox).toBeChecked();
         expect(checkbox).toHaveAttribute('aria-checked', 'true');
