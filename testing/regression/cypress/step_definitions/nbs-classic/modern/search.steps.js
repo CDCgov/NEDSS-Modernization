@@ -1,5 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicHomePage from "@pages/nbs-classic/home.page";
+import classicSearchPatientPage from "cypress/e2e/pages/patient-extended-form/patient.page";
 
 Then("Enter Last Name text box input {string}", (text) => {
     classicHomePage.enterLastName(text)
@@ -38,7 +39,18 @@ Then("I click first patient Search results to view profile", () => {
 });
 
 Then("I click search filter result icon", () => {
-    cy.get('button[aria-label="Filter"]').eq(0).click()    
+    // wait for spinner to disappear
+
+    cy.get('span._loading_rd9r9_1', { timeout: 10000 })
+      .should('not.exist');
+
+    // For some reason test fails because Search needs to be clicked again
+    classicSearchPatientPage.clickSearchBtnInModernizedPatientSearchPane() 
+
+    cy.get('button[aria-label="Filter"]', { timeout: 10000 })
+        .should('be.visible')
+        .click()
+
 });
 
 Then("I search filter column {string} with {string}", (columnName, string) => {

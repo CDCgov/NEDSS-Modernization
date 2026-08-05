@@ -31,19 +31,19 @@ Feature: Classic NBS - User can view data in NBS Home
       | Supervisor Review Queue                  |
 
   Scenario: Display selected home page merge patients
-    Then Create two users with same firstname and last name
+    When Create two users with same firstname and last name
     And Click on Merge Patients tab on upper left side
-    Then Click on Manual Search tab
+    And Click on Manual Search tab
     And Verify user navigated to Find Patient page
-    Then Search user to manual merge
+    And Search user to manual merge
     And Select users and merge
-    Then Click on Merge Patients tab on upper left side
+    And Click on Merge Patients tab on upper left side
     And Click on System Identified tab
-    And Verify Merge Candidate List is displayed to user
+    Then Verify Merge Candidate List is displayed to user
 
   Scenario: Display selected home page reports
-    Then Click on Reports tab on upper left side
-    And Verify user navigated to Reports page
+    When Click on Reports tab on upper left side
+    Then Verify user navigated to Reports page
     And Create and run a report
 
   Scenario: Verify Documents Requiring Security Assignment
