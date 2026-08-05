@@ -5,13 +5,13 @@ Feature: Investigation Search by criteria
 
   Background:
     Given I am logged in as secure user
-    Given I navigate the event investigation
-    Given I click criteria tab
+    And I navigate the event investigation
+    And I click criteria tab
 
   Scenario: Basic Info - Search by Condition
     When I select an investigation status for event investigation
     Then I should see Results with the text "closed"
-    Then I should see "closed"
+    And I should see "closed"
 
   Scenario: Basic Info - Search by Outbreak name
     When I select outbreak name for event investigation

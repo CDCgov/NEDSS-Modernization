@@ -81,8 +81,8 @@ public class PatientEthnicity {
   }
 
   public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
-    this.ethnicities.removeIf(
-        detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
+    ensureEthnicities()
+        .removeIf(detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
   }
 
   public void clear() {
