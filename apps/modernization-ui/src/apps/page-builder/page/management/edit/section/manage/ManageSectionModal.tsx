@@ -53,6 +53,8 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
         <>
             <Modal
                 id="manage-section-modal"
+                aria-labelledby="manage-section-modal-header"
+                aria-describedby="manage-section-modal-content"
                 className="manage-section-modal"
                 ref={manageSectionModalRef}
                 forceAction={true}
@@ -60,6 +62,7 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
             >
                 <DragDropProvider pageData={page} successCallBack={onReorderSuccess}>
                     <ManageSection
+                        id="manage-section-modal"
                         pageId={page.id}
                         alert={alert}
                         onResetAlert={() => setAlert(undefined)}
@@ -87,8 +90,16 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
                     />
                 </DragDropProvider>
             </Modal>
-            <Modal id="add-section-modal" ref={addSectionModalRef} className="add-section-modal" isLarge={true}>
+            <Modal
+                id="add-section-modal"
+                aria-labelledby="add-section-modal-header"
+                aria-describedby="add-section-modal-conent"
+                ref={addSectionModalRef}
+                className="add-section-modal"
+                isLarge={true}
+            >
                 <AddSection
+                    id="add-section-modal"
                     pageId={page.id}
                     tabId={selected?.id}
                     onSectionTouched={() => {

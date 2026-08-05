@@ -53,17 +53,17 @@ export const ManageSubsectionTile = ({
                         <div className={styles.warningModal}>
                             <div className={styles.warningModalHeader}>
                                 <div className={styles.warningIcon}>
-                                    <Icon.Warning size={3} />
+                                    <Icon.Warning aria-label="warning" size={3} />
                                 </div>
                                 {deleteHeader?.(subsection)}
                             </div>
                             <div className={styles.warningModalContent}>
                                 <div className={styles.content}>
                                     <div className={styles.warningDrag} {...provided.dragHandleProps}>
-                                        <NbsIcon name="drag" size="3" />
+                                        <NbsIcon name="drag" size="3" alt="drag" />
                                     </div>
                                     <div className={styles.warningGroup}>
-                                        <NbsIcon name="group" size="3" />
+                                        <NbsIcon name="group" size="3" alt="group" />
                                     </div>
                                     <div>{`${deleteWarning.name}(${subsection.questions.length})`}</div>
                                 </div>
@@ -106,10 +106,10 @@ export const ManageSubsectionTile = ({
                     ) : (
                         <div className={styles.manageSubsectionTile}>
                             <div className={styles.handle} {...provided.dragHandleProps} data-testid="dragAndDropIcon">
-                                <NbsIcon name="drag" size="3" />
+                                <NbsIcon name="drag" size="3" alt="drag" />
                             </div>
                             <div className={styles.label} data-testid="label">
-                                <NbsIcon name="group" size="3" />
+                                <NbsIcon name="group" size="3" alt="group" />
                                 <span data-testid="manageSectionTileId">
                                     {subsection.name} ({subsection.questions.length})
                                 </span>
@@ -126,7 +126,7 @@ export const ManageSubsectionTile = ({
                                     data-testid="subsectionTileEditIcon"
                                     className={styles.iconBtn}
                                 >
-                                    <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Edit aria-label="edit" style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 <Button
                                     type="button"
@@ -139,7 +139,7 @@ export const ManageSubsectionTile = ({
                                         setOnAction?.(true);
                                     }}
                                 >
-                                    <Icon.Delete style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Delete aria-label="delete" style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 {subsection.visible ? (
                                     <Button
@@ -152,7 +152,7 @@ export const ManageSubsectionTile = ({
                                             onChangeVisibility(subsection, false);
                                         }}
                                     >
-                                        <Icon.Visibility style={{ cursor: 'pointer' }} size={3} />
+                                        <Icon.Visibility aria-label="collapse" style={{ cursor: 'pointer' }} size={3} />
                                     </Button>
                                 ) : (
                                     <Button
@@ -165,7 +165,11 @@ export const ManageSubsectionTile = ({
                                             onChangeVisibility(subsection, true);
                                         }}
                                     >
-                                        <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
+                                        <Icon.VisibilityOff
+                                            aria-label="expand"
+                                            style={{ cursor: 'pointer' }}
+                                            size={3}
+                                        />
                                     </Button>
                                 )}
                             </div>
