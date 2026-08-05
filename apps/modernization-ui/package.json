@@ -105,7 +105,7 @@
         "test:coveragePageBuilder": "vitest --coverage --include=src/apps/page-builder/**/*.{js,jsx,ts,tsx}",
         "test:coverageSearch": "vitest --coverage --include=src/apps/search/**/*.{js,jsx,ts,tsx}",
         "lint": "eslint . --max-warnings=0",
-        "lint:fix": "eslint --fix",
+        "lint:fix": "eslint --fix .",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
