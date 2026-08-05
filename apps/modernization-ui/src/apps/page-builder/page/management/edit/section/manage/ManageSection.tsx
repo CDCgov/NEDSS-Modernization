@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesSection, PagesTab, SectionControllerService } from 'apps/page-builder/generated';
 import { Icon as NbsIcon } from 'components/Icon/Icon';

@@ -1,7 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { internalizeDate } from 'date';
 import { Selectable } from 'options';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { ExtendedNewPatientEntry, initial } from './entry';

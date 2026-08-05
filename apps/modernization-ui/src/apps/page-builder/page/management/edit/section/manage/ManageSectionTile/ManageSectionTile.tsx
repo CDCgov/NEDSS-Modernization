@@ -1,5 +1,6 @@
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { PagesSection } from 'apps/page-builder/generated';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 

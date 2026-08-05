@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+import { Await } from 'react-router';
+
 import { TableCard } from 'design-system/card';
 import { TableCardProps } from 'design-system/card/table/TableCard';
 import { Column } from 'design-system/table';
@@ -7,7 +9,6 @@ import { ColumnPreference } from 'design-system/table/preferences';
 import { displayInvestigator, displayNotificationStatus } from 'libs/events/investigations';
 import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 
 import styles from './open-investigations.module.scss';
 import { PatientFileOpenInvestigation } from './openInvestigation';

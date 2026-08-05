@@ -1,7 +1,8 @@
 import { MouseEvent } from 'react';
 
-import { Pass } from 'apps/deduplication/api/model/Pass';
 import classNames from 'classnames';
+
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
 

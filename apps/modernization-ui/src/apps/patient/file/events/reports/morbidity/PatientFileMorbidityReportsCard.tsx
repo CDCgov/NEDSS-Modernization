@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+import { Await } from 'react-router';
+
 import { Shown } from 'conditional-render';
 import { internalizeDateTime } from 'date';
 import { LinkButton } from 'design-system/button';
@@ -14,7 +16,6 @@ import { LoadingOverlay } from 'libs/loading';
 import { permissions, Permitted } from 'libs/permission';
 import { displayProvider } from 'libs/provider';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 
 import { PatientFileMorbidityReport } from './morbidity-report';
 import styles from './morbidity-reports.module.scss';

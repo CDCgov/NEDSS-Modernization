@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 import { PatientCriteriaEntry } from '../criteria';
 

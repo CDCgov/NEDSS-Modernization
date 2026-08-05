@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 
+import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+
 import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import styles from './repeating-block.module.scss';
 

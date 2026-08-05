@@ -1,3 +1,5 @@
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { SearchInteractionProvider } from 'apps/search';
 import { sorting } from 'apps/search/basic';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
@@ -6,7 +8,6 @@ import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 import { Investigation } from 'generated/graphql/schema';
 import { findByValue } from 'options';
 import { useConceptOptions } from 'options/concepts';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { InvestigationSearchForm } from './InvestigationSearchForm';

@@ -1,4 +1,5 @@
 import { Icon } from '@trussworks/react-uswds';
+
 import { Icon as EQIcon } from 'components/Icon/Icon';
 
 import styles from './page-content.module.scss';

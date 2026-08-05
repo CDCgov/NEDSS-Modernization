@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router';
+
 import { AlertProvider } from 'alert';
 import {
     CancelablePromise,
@@ -15,7 +17,6 @@ import {
     Template,
     TemplateControllerService,
 } from 'apps/page-builder/generated';
-import { MemoryRouter } from 'react-router';
 
 import { AddNewPage } from './AddNewPage';
 

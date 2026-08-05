@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { Button } from 'design-system/button';
 
 import { Card } from './Card';

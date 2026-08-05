@@ -1,9 +1,10 @@
 import { render, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router';
+
 import { MatchRequiringReviewResponse } from 'apps/deduplication/api/model/MatchRequiringReview';
 import { SortingProvider } from 'libs/sorting';
 import { PaginationProvider } from 'pagination';
-import { MemoryRouter } from 'react-router';
 
 import { MatchesRequiringReviewTable } from './MatchesRequiringReviewTable';
 

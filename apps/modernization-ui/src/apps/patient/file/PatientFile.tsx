@@ -1,6 +1,7 @@
+import { Outlet, useLoaderData } from 'react-router';
+
 import { ComponentSizingProvider } from 'design-system/sizing';
 import { PageTitle } from 'page';
-import { Outlet, useLoaderData } from 'react-router';
 
 import { PatientFileData, PatientFileProvider } from './usePatientFileData';
 

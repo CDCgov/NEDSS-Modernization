@@ -1,8 +1,9 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { useIdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 import { BasicIdentificationEntry } from '../entry';

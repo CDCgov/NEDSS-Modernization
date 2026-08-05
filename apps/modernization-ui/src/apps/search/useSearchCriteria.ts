@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useReducer } from 'react';
 
-import { decrypt, encrypt } from 'cryptography';
 import { useSearchParams } from 'react-router';
+
+import { decrypt, encrypt } from 'cryptography';
 
 import { useSearchCriteriaEncrypted } from './useSearchCriteriaEncrypted';
 

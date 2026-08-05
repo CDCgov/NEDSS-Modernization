@@ -1,4 +1,5 @@
 import { Button, Icon, Label } from '@trussworks/react-uswds';
+
 import { Option } from 'generated';
 
 import styles from './segmentedButtons.module.scss';

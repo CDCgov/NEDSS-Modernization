@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react';
-import { PatientFileService } from 'generated';
 import { Mock } from 'vitest';
+
+import { PatientFileService } from 'generated';
 
 import { useDeletePatient } from './useDeletePatient';
 

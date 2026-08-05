@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
-import { AlertProvider } from 'alert';
-import { Tab } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { BrowserRouter } from 'react-router';
+
+import { AlertProvider } from 'alert';
+import { Tab } from 'apps/page-builder/generated';
 
 import { AddEditTab } from './AddEditTab';
 

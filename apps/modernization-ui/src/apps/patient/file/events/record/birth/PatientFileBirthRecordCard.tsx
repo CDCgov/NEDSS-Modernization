@@ -1,5 +1,7 @@
 import { Suspense, useState } from 'react';
 
+import { Await } from 'react-router';
+
 import { internalizeDateTime } from 'date';
 import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
@@ -9,7 +11,6 @@ import { Associations } from 'libs/events/investigations/associated';
 import { LoadingOverlay } from 'libs/loading';
 import { permissions, Permitted } from 'libs/permission';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 
 import { PatientFileBirthRecord } from './birth-record';
 import { maybeDisplayMotherInformation } from './displayMotherInformation';

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { Radio } from '@trussworks/react-uswds';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { Input } from 'components/FormInputs/Input';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import styles from './subsection-details.module.scss';
 

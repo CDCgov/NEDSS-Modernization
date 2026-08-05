@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Draggable, DraggableProvided, Droppable } from '@hello-pangea/dnd';
+
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { PagesSection } from 'apps/page-builder/generated/models/PagesSection';

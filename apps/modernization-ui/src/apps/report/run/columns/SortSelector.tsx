@@ -1,11 +1,12 @@
 import { useEffect, useId } from 'react';
 
+import { Controller, useController, useWatch } from 'react-hook-form';
+
 import { SIZING } from 'apps/report/constants';
 import { EnumSelectable } from 'apps/report/utils';
 import { EntryWrapper } from 'components/Entry';
 import { SingleSelect } from 'design-system/select';
 import { ReportColumn, SortSpec } from 'generated';
-import { Controller, useController, useWatch } from 'react-hook-form';
 
 import { ReportExecuteForm } from '../ReportRunPage';
 

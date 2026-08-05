@@ -1,5 +1,6 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import { Direction } from 'libs/sorting';
 
 import { Header } from './Table';

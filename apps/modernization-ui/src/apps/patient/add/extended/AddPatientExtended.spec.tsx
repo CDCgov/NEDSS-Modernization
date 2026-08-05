@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
+import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+import { Mock } from 'vitest';
+
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { Selectable } from 'options';
 import { PageProvider } from 'page';
-import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
-import { Mock } from 'vitest';
 
 import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';

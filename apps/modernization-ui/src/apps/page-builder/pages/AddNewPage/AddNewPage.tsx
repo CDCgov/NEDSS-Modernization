@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
@@ -13,8 +16,6 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useConfiguration } from 'configuration';
 import { useAlert } from 'libs/alert';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';

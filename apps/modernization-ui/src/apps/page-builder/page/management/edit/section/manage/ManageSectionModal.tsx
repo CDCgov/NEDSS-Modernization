@@ -1,6 +1,7 @@
 import { RefObject, useEffect, useState } from 'react';
 
 import { Modal, ModalRef } from '@trussworks/react-uswds';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { useAlert } from 'libs/alert';
 

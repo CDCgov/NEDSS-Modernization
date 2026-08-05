@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { EthnicityCodedValues } from 'apps/patient/data/ethnicity/useEthnicityCodedValues';
 import { useForm } from 'react-hook-form';
+
+import { EthnicityCodedValues } from 'apps/patient/data/ethnicity/useEthnicityCodedValues';
 
 import { PatientDemographics } from '../../demographics';
 

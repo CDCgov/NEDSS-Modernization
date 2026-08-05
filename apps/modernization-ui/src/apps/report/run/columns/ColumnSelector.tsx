@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
+import { useController } from 'react-hook-form';
+
 import { SIZING } from 'apps/report/constants';
 import { LiveSearch } from 'components/Search/LiveSearch';
 import { Button } from 'design-system/button';
@@ -10,7 +12,6 @@ import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
 import { Icon } from 'design-system/icon';
 import { ReportColumn } from 'generated';
 import { Selectable } from 'options';
-import { useController } from 'react-hook-form';
 
 import { ReportExecuteForm } from '../ReportRunPage';
 

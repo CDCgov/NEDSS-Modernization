@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { Controller, useWatch } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
@@ -11,7 +13,6 @@ import { LoadingIndicator } from 'libs/loading/indicator';
 import { Selectable } from 'options';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
-import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 
 import { SIZING } from '../../constants';

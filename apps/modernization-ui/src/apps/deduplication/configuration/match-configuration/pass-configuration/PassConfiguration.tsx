@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
 import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
 import { useAlert } from 'libs/alert';
-import { FormProvider, useForm, useFormState } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import { exists } from 'utils';
 
 import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';

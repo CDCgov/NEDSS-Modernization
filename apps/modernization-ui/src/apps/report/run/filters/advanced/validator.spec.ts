@@ -1,5 +1,5 @@
-import { validateRule, ValidationResultMap } from './validator';
 import {QbQuery} from "./AdvancedFilter.tsx";
+import { validateRule, ValidationResultMap } from './validator';
 
 describe('validateRule', () => {
     let mockResult: ValidationResultMap;

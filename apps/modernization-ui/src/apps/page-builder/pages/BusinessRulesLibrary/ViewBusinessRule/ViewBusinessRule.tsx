@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import { useParams } from 'react-router';
+
 import { PageRuleControllerService, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Breadcrumb } from 'breadcrumb';
-import { useParams } from 'react-router';
 
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
 import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';

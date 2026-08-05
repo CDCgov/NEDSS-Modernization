@@ -1,7 +1,8 @@
 import { render, within } from '@testing-library/react';
-import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 import { differenceInYears } from 'date-fns/differenceInYears';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 
 import { SexAndBirth } from './SexAndBirth';
 

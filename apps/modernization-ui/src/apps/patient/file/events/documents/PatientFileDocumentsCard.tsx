@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+import { Await } from 'react-router';
+
 import { internalizeDate, internalizeDateTime } from 'date';
 import { TableCard, TableCardProps } from 'design-system/card';
 import { Column } from 'design-system/table';
@@ -7,7 +9,6 @@ import { ColumnPreference } from 'design-system/table/preferences';
 import { Associations } from 'libs/events/investigations/associated';
 import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 
 import styles from './document-card.module.scss';
 import { PatientFileDocument } from './documents';

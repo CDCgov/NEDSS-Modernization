@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useContext, useEffect } from 'react';
 
+import { useFormContext, useWatch } from 'react-hook-form';
+
 import { useConfiguration } from 'configuration';
 import { BasicFilterConfiguration } from 'generated';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
 

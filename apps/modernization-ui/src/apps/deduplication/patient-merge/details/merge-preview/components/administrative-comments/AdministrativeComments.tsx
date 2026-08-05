@@ -1,4 +1,5 @@
 import { format, isValid, parseISO } from 'date-fns';
+
 import { Card } from 'design-system/card/Card';
 
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
