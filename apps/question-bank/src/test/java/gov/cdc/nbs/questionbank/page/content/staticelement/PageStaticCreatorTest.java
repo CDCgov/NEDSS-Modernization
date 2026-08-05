@@ -19,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,7 +66,7 @@ class PageStaticCreatorTest {
 
     Long newId = contentManager.addLineSeparator(pageId, request, userId);
 
-    verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+    verify(uiMetadatumRepository, times(1)).save(any());
     assertEquals(999L, captor.getValue().getAddUserId().longValue());
     assertEquals("test100", captor.getValue().getQuestionIdentifier());
     assertNotNull(newId);
@@ -154,7 +153,7 @@ class PageStaticCreatorTest {
 
     Long newId = contentManager.addHyperLink(pageId, request, userId);
 
-    verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+    verify(uiMetadatumRepository, times(1)).save(any());
     assertEquals(999L, captor.getValue().getAddUserId().longValue());
     assertEquals(request.label(), captor.getValue().getQuestionLabel());
     assertEquals(request.linkUrl(), captor.getValue().getDefaultValue());
@@ -242,7 +241,7 @@ class PageStaticCreatorTest {
 
     Long newId = contentManager.addReadOnlyComments(pageId, request, userId);
 
-    verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+    verify(uiMetadatumRepository, times(1)).save(any());
     assertEquals(999L, captor.getValue().getAddUserId().longValue());
     assertEquals(request.commentsText(), captor.getValue().getQuestionLabel());
     assertEquals("test100", captor.getValue().getQuestionIdentifier());
@@ -329,7 +328,7 @@ class PageStaticCreatorTest {
 
     Long newId = contentManager.addReadOnlyParticipantsList(pageId, request, userId);
 
-    verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+    verify(uiMetadatumRepository, times(1)).save(any());
     assertEquals(999L, captor.getValue().getAddUserId().longValue());
     assertEquals("test100", captor.getValue().getQuestionIdentifier());
     assertNotNull(newId);
@@ -415,7 +414,7 @@ class PageStaticCreatorTest {
 
     Long newId = contentManager.addOriginalElectronicDocList(pageId, request, userId);
 
-    verify(uiMetadatumRepository, times(1)).save(Mockito.any());
+    verify(uiMetadatumRepository, times(1)).save(any());
     assertEquals(999L, captor.getValue().getAddUserId().longValue());
     assertEquals("test100", captor.getValue().getQuestionIdentifier());
     assertNotNull(newId);

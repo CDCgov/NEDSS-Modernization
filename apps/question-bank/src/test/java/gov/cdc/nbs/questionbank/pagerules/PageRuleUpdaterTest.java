@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +48,7 @@ class PageRuleUpdaterTest {
 
   @Test
   void should_fail_null_page() {
-    WaRuleMetadata mockRule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata mockRule = mock(WaRuleMetadata.class);
     when(mockRule.getWaTemplateUid()).thenReturn(78L);
     when(entityManager.find(WaRuleMetadata.class, 1L)).thenReturn(mockRule);
 
@@ -59,11 +59,11 @@ class PageRuleUpdaterTest {
 
   @Test
   void should_fail_published_page() {
-    WaRuleMetadata mockRule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata mockRule = mock(WaRuleMetadata.class);
     when(mockRule.getWaTemplateUid()).thenReturn(78L);
     when(entityManager.find(WaRuleMetadata.class, 1L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Published");
     when(entityManager.find(WaTemplate.class, 78L)).thenReturn(template);
 
@@ -98,15 +98,15 @@ class PageRuleUpdaterTest {
 
   @Test
   void enable() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99L);
     when(rule.getWaTemplateUid()).thenReturn(66L);
     when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
@@ -130,15 +130,15 @@ class PageRuleUpdaterTest {
 
   @Test
   void disable() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99L);
     when(rule.getWaTemplateUid()).thenReturn(66L);
     when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
@@ -162,15 +162,15 @@ class PageRuleUpdaterTest {
 
   @Test
   void date() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99L);
     when(rule.getWaTemplateUid()).thenReturn(66L);
     when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
@@ -194,15 +194,15 @@ class PageRuleUpdaterTest {
 
   @Test
   void hide() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99L);
     when(rule.getWaTemplateUid()).thenReturn(66L);
     when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
@@ -226,15 +226,15 @@ class PageRuleUpdaterTest {
 
   @Test
   void unhide() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99L);
     when(rule.getWaTemplateUid()).thenReturn(66L);
     when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 
@@ -258,15 +258,15 @@ class PageRuleUpdaterTest {
 
   @Test
   void require_if() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99L);
     when(rule.getWaTemplateUid()).thenReturn(66L);
     when(entityManager.find(WaRuleMetadata.class, 99L)).thenReturn(rule);
 
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99L)).thenReturn(mockRule);
 
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 66L)).thenReturn(template);
 

@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,11 +31,11 @@ class SubsectionCreatorTest {
   @Test
   void should_create_subsection() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    WaUiMetadata newSubSectionMock = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata newSubSectionMock = mock(WaUiMetadata.class);
     when(newSubSectionMock.getId()).thenReturn(98l);
-    when(page.addSubSection(Mockito.any(PageContentCommand.AddSubsection.class)))
+    when(page.addSubSection(any(PageContentCommand.AddSubsection.class)))
         .thenReturn(newSubSectionMock);
 
     // And a working id generator

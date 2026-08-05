@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
@@ -22,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,8 +70,7 @@ class QuestionManagementUtilTest {
     CodeValueGeneral cvg = new CodeValueGeneral();
     cvg.setCodeDescTxt("2.16.840.1.113883.12.78");
     cvg.setCodeShortDescTxt("Abnormal flags (HL7)");
-    when(codeValueGeneralRepository.findCodeSystemByCode(Mockito.anyString()))
-        .thenReturn(Optional.of(cvg));
+    when(codeValueGeneralRepository.findCodeSystemByCode(anyString())).thenReturn(Optional.of(cvg));
 
     // when I generate the question oid
     QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", CodeSet.LOCAL);

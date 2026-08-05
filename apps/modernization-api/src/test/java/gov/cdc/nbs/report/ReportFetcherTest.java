@@ -2,6 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -87,7 +87,7 @@ class ReportFetcherTest {
                   null,
                   null));
       Report report = buildTestReport(id, "python", "nbs_ods.PHCDemographic", reportFilters);
-      Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+      lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
       ReportConfiguration config = reportFetcher.getReport(reportUid, dataSourceUid);
 
@@ -119,7 +119,7 @@ class ReportFetcherTest {
     void getReport_should_throw_when_library_not_found() {
       Report report = mock(Report.class);
 
-      Mockito.lenient().when(report.getReportLibrary()).thenReturn(null);
+      lenient().when(report.getReportLibrary()).thenReturn(null);
       ReportId id = new ReportId(reportUid, dataSourceUid);
       when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
@@ -135,7 +135,7 @@ class ReportFetcherTest {
     void getReportRunner_should_return_runner_when_report_exists() {
       ReportId id = new ReportId(reportUid, dataSourceUid);
       Report report = buildTestReport(id, "python", "nbs_ods.PHCDemographic", List.of());
-      Mockito.lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+      lenient().when(reportRepository.findById(id)).thenReturn(Optional.of(report));
 
       String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
 
@@ -161,7 +161,7 @@ class ReportFetcherTest {
 
       report.setReportLibrary(null);
 
-      Mockito.lenient().when(reportRepository.findById(reportId)).thenReturn(Optional.of(report));
+      lenient().when(reportRepository.findById(reportId)).thenReturn(Optional.of(report));
 
       String runner = reportFetcher.getReportRunner(reportUid, dataSourceUid);
 

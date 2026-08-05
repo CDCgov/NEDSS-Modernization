@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.delete;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.valueset.ValueSetStateManager;
@@ -10,7 +11,6 @@ import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
@@ -28,7 +28,7 @@ class ValueSetStateManagerTest {
 
   @Test
   void deleteValueSetTest() {
-    when(valueSetRepository.inActivateValueSet(Mockito.anyString())).thenReturn(1);
+    when(valueSetRepository.inActivateValueSet(anyString())).thenReturn(1);
     ValueSetStateChangeResponse response = valueSetStateManager.deleteValueSet(codeSetNm);
     assertEquals(codeSetNm, response.getCodeSetNm());
     assertEquals(HttpStatus.OK, response.getStatus());
@@ -37,7 +37,7 @@ class ValueSetStateManagerTest {
 
   @Test
   void deleteValueSetUpdateFailureTest() {
-    when(valueSetRepository.inActivateValueSet(Mockito.anyString())).thenReturn(0);
+    when(valueSetRepository.inActivateValueSet(anyString())).thenReturn(0);
     ValueSetStateChangeResponse response = valueSetStateManager.deleteValueSet(codeSetNm);
     assertEquals(codeSetNm, response.getCodeSetNm());
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
@@ -53,7 +53,7 @@ class ValueSetStateManagerTest {
 
   @Test
   void deleteValueSetExceptionTest() {
-    when(valueSetRepository.inActivateValueSet(Mockito.anyString()))
+    when(valueSetRepository.inActivateValueSet(anyString()))
         .thenThrow(new IllegalArgumentException(message));
     ValueSetStateChangeResponse response = valueSetStateManager.deleteValueSet("testCodeSetNm");
     assertEquals(null, response.getCodeSetNm());
@@ -65,7 +65,7 @@ class ValueSetStateManagerTest {
 
   @Test
   void activateValueSetTest() {
-    when(valueSetRepository.activateValueSet(Mockito.anyString())).thenReturn(1);
+    when(valueSetRepository.activateValueSet(anyString())).thenReturn(1);
     ValueSetStateChangeResponse response = valueSetStateManager.activateValueSet(codeSetNm);
     assertEquals(codeSetNm, response.getCodeSetNm());
     assertEquals(HttpStatus.OK, response.getStatus());
@@ -74,7 +74,7 @@ class ValueSetStateManagerTest {
 
   @Test
   void activateValueSetUpdateFailureTest() {
-    when(valueSetRepository.activateValueSet(Mockito.anyString())).thenReturn(0);
+    when(valueSetRepository.activateValueSet(anyString())).thenReturn(0);
     ValueSetStateChangeResponse response = valueSetStateManager.activateValueSet(codeSetNm);
     assertEquals(codeSetNm, response.getCodeSetNm());
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
@@ -90,7 +90,7 @@ class ValueSetStateManagerTest {
 
   @Test
   void activateValueSetExceptionTest() {
-    when(valueSetRepository.activateValueSet(Mockito.anyString()))
+    when(valueSetRepository.activateValueSet(anyString()))
         .thenThrow(new IllegalArgumentException(message));
     ValueSetStateChangeResponse response = valueSetStateManager.activateValueSet(codeSetNm);
     assertEquals(null, response.getCodeSetNm());

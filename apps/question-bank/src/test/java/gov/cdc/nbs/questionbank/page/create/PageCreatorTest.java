@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.create;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
@@ -24,7 +25,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,7 +50,7 @@ class PageCreatorTest {
             "INV", List.of("1023"), "TestPage", 10L, "HEP_Case_Map_V1.0", "unit test", "dataMart");
     WaTemplate page = pageCreator.buildPage(request, "INV", 10L);
     page.setId(id);
-    when(templateRepository.save(Mockito.any())).thenReturn(page);
+    when(templateRepository.save(any())).thenReturn(page);
     PageCreateResponse response = pageCreator.createPage(request, 1L);
     assertEquals(page.getId(), response.pageId());
     assertEquals(page.getTemplateNm(), response.pageName());
@@ -60,7 +60,7 @@ class PageCreatorTest {
   @Test
   void testCopyWaTemplateUIMetaData() {
     WaTemplate oldPage = getTemplate(10L);
-    when(waUiMetadatumRepository.findAllByWaTemplateUid(Mockito.any()))
+    when(waUiMetadatumRepository.findAllByWaTemplateUid(any()))
         .thenReturn(List.of(getwaUiMetaDatum(oldPage)));
     WaTemplate newPage = getTemplate(20L);
     List<WaUiMetadata> result = pageCreator.copyWaTemplateUIMetaData(oldPage, newPage);
@@ -71,7 +71,7 @@ class PageCreatorTest {
   @Test
   void testCopyWaTemplateRuleMetaData() {
     WaTemplate oldPage = getTemplate(10L);
-    when(waRuleMetaDataRepository.findByWaTemplateUid(Mockito.any()))
+    when(waRuleMetaDataRepository.findByWaTemplateUid(any()))
         .thenReturn(List.of(getwaRuleMetaDtum(oldPage)));
     WaTemplate newPage = getTemplate(20L);
     List<WaRuleMetadata> result = pageCreator.copyWaTemplateRuleMetaData(oldPage, newPage);
