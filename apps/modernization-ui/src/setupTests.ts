@@ -1,6 +1,21 @@
 import { vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import 'jest-axe/extend-expect';
+import failOnConsole from 'vitest-fail-on-console';
+
+failOnConsole({
+    silenceMessage: (message: string) => {
+        // Due to https://github.com/jsdom/jsdom/issues/3882
+        if (/The tag <search> is unrecognized in this browser/.test(message)) {
+            return true;
+        }
+        return false;
+    },
+});
+
+// mock common window function calls that won't do anything in jsdom
+window.scrollTo = vi.fn();
+window.open = vi.fn();
 
 // All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
 
