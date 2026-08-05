@@ -26,7 +26,6 @@ import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import jakarta.persistence.EntityManager;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collection;

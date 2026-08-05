@@ -6,7 +6,6 @@ import gov.cdc.nbs.testing.data.TestingDataCleaner;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
 import jakarta.annotation.PreDestroy;
-
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.UUID;

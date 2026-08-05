@@ -12,6 +12,7 @@ class AuthenticationSupportSettingsConfiguration {
   @Bean
   AuthenticationSupportSettings authenticationSettings(
       final @Value("${testing.data.createdBy:9999}") long createdBy) {
-    return new AuthenticationSupportSettings(createdBy, LocalDateTime.now(Clock.systemDefaultZone()));
+    return new AuthenticationSupportSettings(
+        createdBy, LocalDateTime.now(Clock.systemDefaultZone()));
   }
 }
