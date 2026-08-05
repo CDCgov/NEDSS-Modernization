@@ -8,7 +8,6 @@ import gov.cdc.nbs.patient.PatientCommand;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-
 import org.junit.jupiter.api.Test;
 
 class PatientSexBirthTest {
