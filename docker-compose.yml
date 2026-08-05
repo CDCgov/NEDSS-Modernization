@@ -39,9 +39,6 @@ services:
       - PARAMETER_SECRET=${PARAMETER_SECRET}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - MANAGEMENT_OTLP_TRACING_ENDPOINT=http://jaeger:4318/v1/traces
-      - MANAGEMENT_TRACING_SAMPLING_PROBABILITY=1.0
-      - SPRING_APPLICATION_NAME=modernization-api
       - SPRING_PROFILES_ACTIVE=default,development,local
     depends_on:
       - jaeger
