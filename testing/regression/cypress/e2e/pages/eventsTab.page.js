@@ -101,6 +101,26 @@ class EventsTabPage {
       });
   }
 
-}
+  verifyReportCountUnchanged(ReportType) {
+    const reportIndex = this.reportTypeIndexMap[ReportType];
+
+    // Wait for spinner to disappear before getting the count
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    // Now get the count and verify it remains the same
+    const initialCount = Cypress.env('reportCount');
+    
+    cy.get('._title_r9t1e_16 ._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
+      .eq(reportIndex)
+      .invoke('text')
+      .then(text => {
+        const newCount = parseInt(text.trim(), 10);
+        cy.log(`Initial count: ${initialCount}, New count: ${newCount}`);
+        expect(newCount, `${ReportType} count should remain the same`)
+          .to.equal(initialCount);
+      });
+    } 
+  }
 
 export default new EventsTabPage();

@@ -45,3 +45,7 @@ When("I check the current count of {string} in the Events tab", (reportType) => 
 Then("the {string} count should increase by 1 in the Events tab", (reportType) => {
     eventsTabPage.verifyReportCountIncreased(reportType);
 });
+
+Then("the {string} count should remain the same in the Events tab", (reportType) => {
+    eventsTabPage.verifyReportCountUnchanged(reportType);
+});

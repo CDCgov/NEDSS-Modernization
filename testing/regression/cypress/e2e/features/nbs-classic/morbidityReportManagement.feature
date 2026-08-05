@@ -33,8 +33,14 @@ Feature: Patient File - Event Management - Morbidity Report
         And Click Events tab on Patient Profile Page
         Then the "Investigations" count should increase by 1 in the Events tab
 
-    # Scenario: Cancel creation of a new morbidity report
-
+    Scenario: Cancel creation of a new morbidity report
+        When I check the current count of "Morbidity reports" in the Events tab
+        And user clicks on the "Add morbidity report" button within the Events tab
+        And I select "Botulism, foodborne" from the Condition dropdown menu
+        And I click the Cancel button on the Morbidity Report page
+        And I confirm the submission by clicking "Ok"
+        And I click the Cancel button on the Morbidity Report page
+        Then the "Morbidity reports" count should remain the same in the Events tab
     # Scenario: Edit existing morbidity report
 
     # Scenario: Print morbidity report

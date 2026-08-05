@@ -73,6 +73,10 @@ When("I click the submit button", () => {
   clickSubmitButton();
 });
 
+When("I click the Cancel button on the Morbidity Report page", () => {
+  morbidityReportPage.clickCancel();
+});
+
 When("I click the Submit and Create Investigation button", () => {
   morbidityReportPage.clickSubmitAndCreateInvestigation();
 });

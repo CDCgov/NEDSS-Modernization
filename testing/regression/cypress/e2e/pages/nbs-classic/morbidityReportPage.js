@@ -12,6 +12,7 @@ class MorbidityReportPage {
   pregnantDropdown = 'select[fieldlabel="Is Patient Pregnant"][validate="pregnantMale"]';
   submitButton = "#Submit";
   submitAndCreateInvestigationButton = 'input[type="image"][name="Submit and Create Investigation"]';
+  cancelButton = "#Cancel";
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -72,12 +73,18 @@ class MorbidityReportPage {
     cy.get(this.submitButton).click();
   }
 
+  clickCancel() {
+    cy.get(this.cancelButton).click();
+  }
+
   clickSubmitAndCreateInvestigation() {
     cy.get(this.submitAndCreateInvestigationButton).eq(0).click();
   }
 
   confirmSubmission() {
     cy.on("window:confirm", () => true); // Automatically confirm the popup
+    // small buffer
+    cy.wait(500);
   }
 
   // Patient entry methods
