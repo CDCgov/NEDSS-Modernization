@@ -38,10 +38,10 @@ When("user clicks on the {string} button within the Events tab", (buttonValue) =
     eventsTabPage.clickAddButton(buttonValue);
 });
 
-When("I check the current count of morbidity reports in the Events tab", () => {
-    eventsTabPage.getMorbidityReportCount();
+When("I check the current count of {string} in the Events tab", (reportType) => {
+    eventsTabPage.getReportCount(reportType);
 });
 
-Then("the morbidity report count should increase by 1 in the Events tab", () => {
-    eventsTabPage.verifyMorbidityReportCountIncreased();
+Then("the {string} count should increase by 1 in the Events tab", (reportType) => {
+    eventsTabPage.verifyReportCountIncreased(reportType);
 });

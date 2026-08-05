@@ -3,6 +3,18 @@ class EventsTabPage {
     return "section";
   }
 
+  reportTypeIndexMap = {
+    "Investigations": 0,
+    "Lab reports": 1,
+    "Morbidity reports": 2,
+    "Vaccinations": 3,
+    "Birth records": 4,
+    "Treatments": 5,
+    "Documents": 6,
+    "Contacts named by patient": 7,
+    "Patient named by contacts": 8,
+  };
+
   selectMultipleInvestigations() {
     const conditionText = "Acanthamoeba Disease (Excluding Keratitis)";
     const conditionColumnIndex = 3;    
@@ -51,39 +63,44 @@ class EventsTabPage {
     cy.get('button').contains(buttonValue).click();
   }
 
-  getMorbidityReportCount() {
+  getReportCount(ReportType) {
+    const reportIndex = this.reportTypeIndexMap[ReportType];
+
     // Wait for spinner to disappear
     cy.get('._indicator_1vvtd_1', { timeout: 15000 })
       .should('not.exist');
       
     cy.get('div._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
-      .eq(2)
+      .eq(reportIndex)
       .invoke('text')
       .then(text => {
         const count = parseInt(text.trim());
-        Cypress.env('morbidityReportCount', count);
-        cy.log(`Saved morbidity report count: ${count}`);
+        Cypress.env('reportCount', count);
+        cy.log(`Saved report count: ${count}`);
       });
   }
 
-  verifyMorbidityReportCountIncreased() {
+  verifyReportCountIncreased(ReportType) {
+    const reportIndex = this.reportTypeIndexMap[ReportType];
+
     // Wait for spinner to disappear before getting the count
     cy.get('._indicator_1vvtd_1', { timeout: 10000 })
       .should('not.exist');
     
     // Now get the count and verify it increased
-    const initialCount = Cypress.env('morbidityReportCount');
+    const initialCount = Cypress.env('reportCount');
     
     cy.get('._title_r9t1e_16 ._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
-      .eq(2)
+      .eq(reportIndex)
       .invoke('text')
       .then(text => {
         const newCount = parseInt(text.trim(), 10);
-        cy.log(`📊 Initial count: ${initialCount}, New count: ${newCount}`);
-        expect(newCount, `Morbidity report count should increase by 1`)
+        cy.log(`Initial count: ${initialCount}, New count: ${newCount}`);
+        expect(newCount, `${ReportType} count should increase by 1`)
           .to.equal(initialCount + 1);
       });
   }
+
 }
 
 export default new EventsTabPage();

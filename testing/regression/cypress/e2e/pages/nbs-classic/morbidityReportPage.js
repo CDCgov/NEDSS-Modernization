@@ -11,6 +11,7 @@ class MorbidityReportPage {
   codeLookupButton = 'input[value="Code Lookup"]';
   pregnantDropdown = 'select[fieldlabel="Is Patient Pregnant"][validate="pregnantMale"]';
   submitButton = "#Submit";
+  submitAndCreateInvestigationButton = 'input[type="image"][name="Submit and Create Investigation"]';
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -69,6 +70,10 @@ class MorbidityReportPage {
 
   clickSubmit() {
     cy.get(this.submitButton).click();
+  }
+
+  clickSubmitAndCreateInvestigation() {
+    cy.get(this.submitAndCreateInvestigationButton).eq(0).click();
   }
 
   confirmSubmission() {
