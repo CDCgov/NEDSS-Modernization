@@ -223,6 +223,10 @@ When("I click the Edit button on the Morbidity Report page", () => {
   morbidityReportPage.clickEdit();
 });
 
+When("I click the Print button on the Morbidity Report page", () => {
+  morbidityReportPage.clickPrint();
+});
+
 When("I enter the current date in the Treatment Date field", () => {
   const today = new Date().toLocaleDateString("en-US");
   morbidityReportPage.enterTreatmentDate(today);
@@ -234,6 +238,10 @@ When("I select {string} from the Treatment dropdown menu", (treatment) => {
 
 When("I click the Add Treatment button", () => {
   morbidityReportPage.clickAddTreatment();
+});
+
+When("I click the Transfer Ownership button on the Morbidity Report page", () => {
+  morbidityReportPage.clickTransferOwnership();
 });
 
 // 6: Verification Steps

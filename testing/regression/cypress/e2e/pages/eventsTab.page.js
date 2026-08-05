@@ -132,37 +132,87 @@ class EventsTabPage {
     cy.get('#morbidity-reports-table tbody tr')
       .first()
       .find('td:nth-child(6)') // Treatment info column
-      .find('ul._treatments_t5nhh_1 li')
-      .its('length')
-      .then(count => {
+      .then($td => {
+        // Check if the ul exists, if not, count is 0
+        const $list = $td.find('ul._treatments_t5nhh_1 li');
+        const count = $list.length || 0;
         Cypress.env('initialTreatmentCount', count);
         cy.log(`Initial treatment count in first morbidity report: ${count}`);
       });
-  }
+    }
+
   verifyTreatmentCountIncreased() {
     // Wait for spinner to disappear
     cy.get('._indicator_1vvtd_1', { timeout: 10000 })
       .should('not.exist');
     
     const initialCount = Cypress.env('initialTreatmentCount');
+    const eventId = Cypress.env('morbidityEventId');
     
-    // Get the first morbidity report row and find the treatment count
+    // Find the row containing the specific event ID and check its treatment count
     cy.get('#morbidity-reports-table tbody tr')
-      .first()
+      .contains('td:first-child a', eventId)
+      .parent() // Get the td
+      .parent() // Get the tr
       .find('td:nth-child(6)') // Treatment info column
       .find('ul._treatments_t5nhh_1 li')
       .its('length')
       .then(newCount => {
         cy.log(`Initial treatment count: ${initialCount}, New count: ${newCount}`);
-        expect(newCount, `Treatment count should increase by 1`)
+        expect(newCount, `Treatment count for ${eventId} should increase by 1`)
           .to.equal(initialCount + 1);
       });
   }
 
-  clickFirstMorbidityReportLink() {
-    cy.get(this.morbidityReportLinks).first().click();
-  }
+  clickFirstMorbidityReportLinkStoreEventID() {
+    // Wait for spinner to disappear
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
     
+    // Get the first morbidity report row
+    cy.get('#morbidity-reports-table tbody tr:first-child')
+      .scrollIntoView()
+      .should('be.visible')
+      .within(() => {
+        // Get the link element
+        cy.get('td:first-child a')
+          .scrollIntoView()
+          .should('be.visible')
+          .then($link => {
+            // Extract and store the event ID
+            const eventId = $link.text().trim();
+            Cypress.env('morbidityEventId', eventId);
+            cy.log(`Stored morbidity event ID: ${eventId}`);
+            
+            // Click the link
+            cy.wrap($link).click();
+          });
+      });
   }
+  verifySavedMorbidityReportJurisdiction(expectedJurisdiction) {
+    // Wait for spinner to disappear
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    const eventId = Cypress.env('morbidityEventId');
+    
+    cy.log(`Looking for morbidity report with Event ID: ${eventId}`);
+    
+    // Find the row with the specific event ID and check the jurisdiction column
+    cy.get('#morbidity-reports-table tbody tr')
+      .filter((index, row) => {
+        return Cypress.$(row).find('td:first-child a').text().trim() === eventId;
+      })
+      .should('have.length', 1, `Should find exactly one row with Event ID: ${eventId}`)
+      .find('td:nth-child(7)') // Jurisdiction is the 7th column (1-based index)
+      .should('be.visible')
+      .invoke('text')
+      .then(text => {
+        const actualJurisdiction = text.trim();
+        cy.log(`Jurisdiction for ${eventId}: "${actualJurisdiction}" (expected: "${expectedJurisdiction}")`);
+        expect(actualJurisdiction).to.equal(expectedJurisdiction);
+      });
+  }
+}
 
 export default new EventsTabPage();

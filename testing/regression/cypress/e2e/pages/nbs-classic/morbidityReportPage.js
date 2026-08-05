@@ -3,8 +3,7 @@ class MorbidityReportPage {
   patientTab = "font.boldNineYellow";
   reportInformationTab = "font.boldNineYellow";
   conditionField = 'input[name="conditionCd_textbox"]';
-  jurisdictionField =
-    'select[fieldlabel="Jurisdiction"][name="morbidityReport.theObservationDT.jurisdictionCd"]';
+  jurisdictionField = 'select[fieldlabel="Jurisdiction"]';
   morbidityDateField = "#morbidityReport\\.theObservationDT\\.activityToTime_s";
   treatmentDateField = '#treatment_s\\[i\\]\\.treatmentVO_s\\[0\\]\\.treatmentAdministeredDT_s\\[0\\]\\.effectiveFromTime_s';
   treatmentDropdown = 'select[fieldlabel="Treatment"][validate="required"]';
@@ -17,6 +16,8 @@ class MorbidityReportPage {
   submitAndCreateInvestigationButton = 'input[type="image"][name="Submit and Create Investigation"]';
   cancelButton = "#Cancel";
   editButton = '#Edit';
+  printButton = "#Print";
+  transferOwnershipButton = "input[id='Transfer Ownership']";
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -102,6 +103,14 @@ class MorbidityReportPage {
 
   clickEdit() {
     cy.get(this.editButton).click();
+  }
+
+  clickPrint() {
+    cy.get(this.printButton).click();
+  }
+
+  clickTransferOwnership() {
+    cy.get(this.transferOwnershipButton).first().click();
   }
 
   clickSubmitAndCreateInvestigation() {
