@@ -68,7 +68,14 @@ Feature: Patient File - Event Management - Morbidity Report
         And user clicks the "View File" link, the user is returned to Patient profile summary page
         Then the saved morbidity report should have jurisdiction "Gwinnett County" 
    
-    # Scenario: Create investigation from morbidity report
+    Scenario: Create investigation from morbidity report
+        When I click on the first unassociated morbidity report link in the Events tab and store its Event ID
+        And I click the Create Investigation button on the Morbidity Report page
+        And I click the Submit button
+        And user clicks the "View File" link, the user is returned to Patient profile summary page
+        And Click Events tab on Patient Profile Page
+        Then the saved morbidity report should be associated with an investigation
+   
     # Scenario: Associate investigation from morbidity report
     # Scenario: Mark morbidity report as reviewed
     # Scenario: Mark morbidity report as reviewed - STD

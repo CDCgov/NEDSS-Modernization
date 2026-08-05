@@ -1,7 +1,11 @@
 class EventsTabPage {
-  get table() {
-    return "section";
-  }
+  // Constants
+  static SPINNER_SELECTOR = '._indicator_1vvtd_1';
+  static COUNT_BADGE_SELECTOR = '._title_r9t1e_16 ._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76';
+  static MORBIDITY_TABLE_SELECTOR = '#morbidity-reports-table tbody tr';
+  static TREATMENT_COLUMN = 6;
+  static JURISDICTION_COLUMN = 7;
+  static ASSOCIATED_COLUMN = 8;
 
   reportTypeIndexMap = {
     "Investigations": 0,
@@ -14,7 +18,43 @@ class EventsTabPage {
     "Contacts named by patient": 7,
     "Patient named by contacts": 8,
   };
-  morbidityReportLinks = 'a[href="/nbs/api/profile/10000001/report/morbidity/10009436"]'
+  
+  waitForSpinner(timeout = 10000) {
+    cy.get(EventsTabPage.SPINNER_SELECTOR, { timeout })
+      .should('not.exist');
+  }
+
+  getCountBadge(reportIndex) {
+    return cy.get(EventsTabPage.COUNT_BADGE_SELECTOR).eq(reportIndex);
+  }
+
+  extractAndStoreEventId($link) {
+    const eventId = $link.text().trim();
+    Cypress.env('morbidityEventId', eventId);
+    cy.log('Stored morbidity event ID: ' + eventId);
+    return eventId;
+  }
+
+  findRowByEventId(eventId) {
+    return cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
+      .filter((index, row) => {
+        return Cypress.$(row).find('td:first-child a').text().trim() === eventId;
+      })
+      .should('have.length', 1, 'Should find exactly one row with Event ID: ' + eventId);
+  }
+
+  getTreatmentCount($td) {
+    const $list = $td.find('ul._treatments_t5nhh_1 li');
+    return $list.length || 0;
+  }
+
+  clickLink($link) {
+    cy.wrap($link).click();
+  }
+
+  get table() {
+    return "section";
+  }
 
   selectMultipleInvestigations() {
     const conditionText = "Acanthamoeba Disease (Excluding Keratitis)";
@@ -28,7 +68,6 @@ class EventsTabPage {
           .eq(conditionColumnIndex)
           .invoke('text')
           .then(text => {
-
             if (text.includes(conditionText)) {
               cy.wrap($row)
                 .find("input")
@@ -36,28 +75,30 @@ class EventsTabPage {
             }
           });
       });
-}
+  }
 
   validateTableColumns(tableName, dataTable) {
     const myArray = [];    
     cy.contains("section", tableName).within(() => {
       cy.get("th")
-      .then((headerElements) => {
-        const headers = Cypress.$.map(headerElements, (headerElement) => {
-          return Cypress.$(headerElement).text().trim();
-        }).filter(Boolean);
-        dataTable.rawTable.forEach((row) => {
-          const label = row[0];
-          if ((label == "Investigation #") & (tableName === "Investigations")) {
-            myArray.push("");
-          }
-          myArray.push(label);
+        .then((headerElements) => {
+          const headers = Cypress.$.map(headerElements, (headerElement) => {
+            return Cypress.$(headerElement).text().trim();
+          }).filter(Boolean);
+          
+          dataTable.rawTable.forEach((row) => {
+            const label = row[0];
+            if ((label == "Investigation #") & (tableName === "Investigations")) {
+              myArray.push("");
+            }
+            myArray.push(label);
+          });
+          
+          console.log("myArray", myArray);
+          console.log("headers", headers);
+          expect(headers).to.deep.equal(myArray);
         });
-        console.log("myArray", myArray);
-        console.log("headers", headers);
-        expect(headers).to.deep.equal(myArray);
-      });
-    })
+    });
   }
 
   clickAddButton(buttonValue) {
@@ -66,151 +107,160 @@ class EventsTabPage {
 
   getReportCount(ReportType) {
     const reportIndex = this.reportTypeIndexMap[ReportType];
-
-    // Wait for spinner to disappear
-    cy.get('._indicator_1vvtd_1', { timeout: 15000 })
-      .should('not.exist');
-      
-    cy.get('div._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
-      .eq(reportIndex)
+    this.waitForSpinner();
+    
+    this.getCountBadge(reportIndex)
       .invoke('text')
       .then(text => {
         const count = parseInt(text.trim());
         Cypress.env('reportCount', count);
-        cy.log(`Saved report count: ${count}`);
+        cy.log('Saved ' + ReportType + ' count: ' + count);
       });
   }
 
   verifyReportCountIncreased(ReportType) {
     const reportIndex = this.reportTypeIndexMap[ReportType];
-
-    // Wait for spinner to disappear before getting the count
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
-      .should('not.exist');
+    this.waitForSpinner();
     
-    // Now get the count and verify it increased
     const initialCount = Cypress.env('reportCount');
     
-    cy.get('._title_r9t1e_16 ._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
-      .eq(reportIndex)
+    this.getCountBadge(reportIndex)
       .invoke('text')
       .then(text => {
         const newCount = parseInt(text.trim(), 10);
-        cy.log(`Initial count: ${initialCount}, New count: ${newCount}`);
-        expect(newCount, `${ReportType} count should increase by 1`)
+        cy.log(ReportType + ' - Initial: ' + initialCount + ', New: ' + newCount);
+        expect(newCount, ReportType + ' count should increase by 1')
           .to.equal(initialCount + 1);
       });
   }
 
   verifyReportCountUnchanged(ReportType) {
     const reportIndex = this.reportTypeIndexMap[ReportType];
-
-    // Wait for spinner to disappear before getting the count
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
-      .should('not.exist');
+    this.waitForSpinner();
     
-    // Now get the count and verify it remains the same
     const initialCount = Cypress.env('reportCount');
     
-    cy.get('._title_r9t1e_16 ._default_rfc4h_1._small_rfc4h_64._regular_rfc4h_76')
-      .eq(reportIndex)
+    this.getCountBadge(reportIndex)
       .invoke('text')
       .then(text => {
         const newCount = parseInt(text.trim(), 10);
-        cy.log(`Initial count: ${initialCount}, New count: ${newCount}`);
-        expect(newCount, `${ReportType} count should remain the same`)
+        cy.log(ReportType + ' - Initial: ' + initialCount + ', New: ' + newCount);
+        expect(newCount, ReportType + ' count should remain the same')
           .to.equal(initialCount);
       });
   }
 
   saveInitialTreatmentCount() {
-    // Wait for spinner to disappear
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
-      .should('not.exist');
+    this.waitForSpinner();
     
-    // Get the first morbidity report row and find the treatment count
-    cy.get('#morbidity-reports-table tbody tr')
+    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
       .first()
-      .find('td:nth-child(6)') // Treatment info column
+      .find('td:nth-child(' + EventsTabPage.TREATMENT_COLUMN + ')')
       .then($td => {
-        // Check if the ul exists, if not, count is 0
-        const $list = $td.find('ul._treatments_t5nhh_1 li');
-        const count = $list.length || 0;
+        const count = this.getTreatmentCount($td);
         Cypress.env('initialTreatmentCount', count);
-        cy.log(`Initial treatment count in first morbidity report: ${count}`);
+        cy.log('Initial treatment count in first morbidity report: ' + count);
       });
-    }
+  }
 
   verifyTreatmentCountIncreased() {
-    // Wait for spinner to disappear
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
-      .should('not.exist');
+    this.waitForSpinner();
     
     const initialCount = Cypress.env('initialTreatmentCount');
     const eventId = Cypress.env('morbidityEventId');
     
-    // Find the row containing the specific event ID and check its treatment count
-    cy.get('#morbidity-reports-table tbody tr')
-      .contains('td:first-child a', eventId)
-      .parent() // Get the td
-      .parent() // Get the tr
-      .find('td:nth-child(6)') // Treatment info column
+    cy.log('Looking for morbidity report with Event ID: ' + eventId);
+    
+    this.findRowByEventId(eventId)
+      .find('td:nth-child(' + EventsTabPage.TREATMENT_COLUMN + ')')
       .find('ul._treatments_t5nhh_1 li')
       .its('length')
       .then(newCount => {
-        cy.log(`Initial treatment count: ${initialCount}, New count: ${newCount}`);
-        expect(newCount, `Treatment count for ${eventId} should increase by 1`)
+        cy.log('Initial treatment count: ' + initialCount + ', New count: ' + newCount);
+        expect(newCount, 'Treatment count for ' + eventId + ' should increase by 1')
           .to.equal(initialCount + 1);
       });
   }
 
   clickFirstMorbidityReportLinkStoreEventID() {
-    // Wait for spinner to disappear
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
-      .should('not.exist');
+    this.waitForSpinner();
     
-    // Get the first morbidity report row
-    cy.get('#morbidity-reports-table tbody tr:first-child')
+    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
+      .first()
       .scrollIntoView()
       .should('be.visible')
       .within(() => {
-        // Get the link element
         cy.get('td:first-child a')
           .scrollIntoView()
           .should('be.visible')
           .then($link => {
-            // Extract and store the event ID
-            const eventId = $link.text().trim();
-            Cypress.env('morbidityEventId', eventId);
-            cy.log(`Stored morbidity event ID: ${eventId}`);
-            
-            // Click the link
-            cy.wrap($link).click();
+            this.extractAndStoreEventId($link);
+            this.clickLink($link);
           });
       });
   }
+
+  clickFirstUnassociatedMorbidityReport() {
+    this.waitForSpinner();
+    
+    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
+      .filter((index, row) => {
+        const associatedText = Cypress.$(row)
+          .find('td:nth-child(' + EventsTabPage.ASSOCIATED_COLUMN + ')')
+          .text()
+          .trim();
+        return associatedText === '---';
+      })
+      .first()
+      .scrollIntoView()
+      .should('be.visible')
+      .within(() => {
+        cy.get('td:first-child a')
+          .scrollIntoView()
+          .should('be.visible')
+          .then($link => {
+            this.extractAndStoreEventId($link);
+            this.clickLink($link);
+          });
+      });
+  }
+
   verifySavedMorbidityReportJurisdiction(expectedJurisdiction) {
-    // Wait for spinner to disappear
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
-      .should('not.exist');
+    this.waitForSpinner();
     
     const eventId = Cypress.env('morbidityEventId');
     
-    cy.log(`Looking for morbidity report with Event ID: ${eventId}`);
+    cy.log('Looking for morbidity report with Event ID: ' + eventId);
     
-    // Find the row with the specific event ID and check the jurisdiction column
-    cy.get('#morbidity-reports-table tbody tr')
-      .filter((index, row) => {
-        return Cypress.$(row).find('td:first-child a').text().trim() === eventId;
-      })
-      .should('have.length', 1, `Should find exactly one row with Event ID: ${eventId}`)
-      .find('td:nth-child(7)') // Jurisdiction is the 7th column (1-based index)
+    this.findRowByEventId(eventId)
+      .find('td:nth-child(' + EventsTabPage.JURISDICTION_COLUMN + ')')
       .should('be.visible')
       .invoke('text')
       .then(text => {
         const actualJurisdiction = text.trim();
-        cy.log(`Jurisdiction for ${eventId}: "${actualJurisdiction}" (expected: "${expectedJurisdiction}")`);
+        cy.log('Jurisdiction for ' + eventId + ': "' + actualJurisdiction + '" (expected: "' + expectedJurisdiction + '")');
         expect(actualJurisdiction).to.equal(expectedJurisdiction);
+      });
+  }
+
+  verifyStoredMorbidityReportHasAssociation() {
+    this.waitForSpinner();
+    
+    const eventId = Cypress.env('morbidityEventId');
+    
+    expect(eventId, 'Morbidity event ID should exist').to.not.be.empty;
+    
+    cy.log('Looking for morbidity report with Event ID: ' + eventId);
+    
+    this.findRowByEventId(eventId)
+      .find('td:nth-child(' + EventsTabPage.ASSOCIATED_COLUMN + ')')
+      .should('be.visible')
+      .invoke('text')
+      .then(text => {
+        const associatedText = text.trim();
+        cy.log('Associated with for ' + eventId + ': "' + associatedText + '"');
+        expect(associatedText, 'Associated with should have an investigation ID')
+          .to.match(/CAS\d+/);
       });
   }
 }

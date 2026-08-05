@@ -244,6 +244,10 @@ When("I click the Transfer Ownership button on the Morbidity Report page", () =>
   morbidityReportPage.clickTransferOwnership();
 });
 
+When("I click the Create Investigation button on the Morbidity Report page", () => {
+  morbidityReportPage.clickCreateInvestigation();
+});
+
 // 6: Verification Steps
 
 When("I go to the Home page", () => {
