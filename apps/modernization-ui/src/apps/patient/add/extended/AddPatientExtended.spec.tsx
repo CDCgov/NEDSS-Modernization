@@ -166,7 +166,7 @@ describe('AddPatientExtended', () => {
         const cancelButton = screen.getByRole('button', { name: 'Cancel' });
         cancelButton.click();
 
-        expect(useNavigate).toBeCalled();
+        expect(useNavigate).toHaveBeenCalled();
     });
 
     it('should not show modal when local storage flag is set', () => {
