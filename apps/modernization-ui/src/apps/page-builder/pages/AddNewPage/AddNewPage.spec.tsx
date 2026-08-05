@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AlertProvider } from 'alert';
 import {
@@ -15,6 +15,7 @@ import {
     Template,
     TemplateControllerService,
 } from 'apps/page-builder/generated';
+import { CancelablePromise as CancelablePromiseTop, ConceptOptionsResponse, ConceptOptionsService } from 'generated';
 import { MemoryRouter } from 'react-router';
 
 import { AddNewPage } from './AddNewPage';
@@ -25,6 +26,12 @@ beforeEach(() => {
     );
     vi.spyOn(ConceptControllerService, 'findConcepts').mockReturnValue(
         Promise.resolve([{ conceptCode: 'concept' }] as Concept[]) as CancelablePromise<Concept[]>
+    );
+    vi.spyOn(ConceptOptionsService, 'concepts').mockReturnValue(
+        Promise.resolve({
+            valueSet: 'concept',
+            options: [],
+        } as ConceptOptionsResponse) as CancelablePromiseTop<ConceptOptionsResponse>
     );
     vi.spyOn(TemplateControllerService, 'findAllTemplates').mockReturnValue(
         Promise.resolve([{ id: 2 }]) as CancelablePromise<Template[]>
@@ -56,14 +63,17 @@ const Fixture = () => (
 );
 
 describe('Add New Page', () => {
-    it('should have the title of Create new page', () => {
-        const { getByText } = render(<Fixture />);
+    it('should have the title of Create new page', async () => {
+        const { getByText, findByLabelText } = render(<Fixture />);
 
         expect(getByText('Create new page')).toBeInTheDocument();
+
+        // ensure all rendering settles
+        expect(await findByLabelText('close')).toBeVisible();
     });
 
     it('should render event type drop down', async () => {
-        const { getByRole, queryByText } = render(<Fixture />);
+        const { getByRole, queryByText, findByLabelText } = render(<Fixture />);
 
         const select = getByRole('combobox', { name: 'Event type' });
 
@@ -77,17 +87,23 @@ describe('Add New Page', () => {
 
         const addCondition = queryByText('Search and add condition');
         expect(addCondition).not.toBeInTheDocument();
+
+        // ensure all rendering settles
+        expect(await findByLabelText('close')).toBeVisible();
     });
 
     it('should have aria label for heading', async () => {
-        const { getByText } = render(<Fixture />);
+        const { getByText, findByLabelText } = render(<Fixture />);
 
         expect(getByText('Create new page')).toHaveAttribute('aria-label', 'Create new page');
+
+        // ensure all rendering settles
+        expect(await findByLabelText('close')).toBeVisible();
     });
 
     //  The complexity of the AddNePage component makes testing it very difficult.  There are multiple modals being rendered that make API calls and the selection of the "Event Type" is not triggering changes.
     it.skip('should display warning when non Investigation type is selected', async () => {
-        const { getByTestId, getByRole } = render(<Fixture />);
+        const { getByTestId, getByRole, findByLabelText } = render(<Fixture />);
 
         const select = getByRole('combobox', { name: 'Event type' });
         const interview = getByRole('option', { name: 'Interview' });
@@ -98,6 +114,9 @@ describe('Add New Page', () => {
 
         const warning = getByTestId('event-type-warning');
         expect(warning).toBeInTheDocument();
+
+        // ensure all rendering settles
+        expect(await findByLabelText('close')).toBeVisible();
     });
 
     it.skip('should redirect to classic on create page when non investigation is selected', async () => {
@@ -118,7 +137,7 @@ describe('Add New Page', () => {
         // @ts-expect-error : location is mocked to check that the href is changed by the redirect
         window.location = mockLocation;
 
-        const { getByRole, getByText } = render(<Fixture />);
+        const { getByRole, getByText, findByLabelText } = render(<Fixture />);
 
         const select = getByRole('combobox', { name: 'Event type' });
 
@@ -133,11 +152,14 @@ describe('Add New Page', () => {
         await user.click(submit);
 
         expect(setHrefSpy).toHaveBeenCalledWith('/nbs/page-builder/api/v1/pages/create');
-        expect(savePage).not.toBeCalled();
+        expect(savePage).not.toHaveBeenCalled();
+
+        // ensure all rendering settles
+        expect(await findByLabelText('close')).toBeVisible();
     });
 
     it.skip('should display form when Investigation type is selected', async () => {
-        const { queryByText, getByText, getByRole } = render(<Fixture />);
+        const { queryByText, getByText, getByRole, findByLabelText } = render(<Fixture />);
 
         const select = getByRole('combobox', { name: 'Event type' });
         const investigation = getByRole('option', { name: 'Investigation' });
@@ -155,5 +177,8 @@ describe('Add New Page', () => {
         expect(getByText('Reporting mechanism')).toBeInTheDocument();
         expect(getByText('Page description')).toBeInTheDocument();
         expect(getByText('Data mart name')).toBeInTheDocument();
+
+        // ensure all rendering settles
+        expect(await findByLabelText('close')).toBeVisible();
     });
 });
