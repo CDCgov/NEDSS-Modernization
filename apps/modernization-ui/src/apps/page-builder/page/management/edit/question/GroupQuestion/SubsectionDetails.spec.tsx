@@ -19,13 +19,13 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
             name: 'subsection.name',
             batches: [
                 {
-                    appearsInTable: undefined,
-                    width: undefined,
-                    label: undefined,
+                    appearsInTable: true,
+                    width: 0,
+                    label: 'test',
                     id: 1234,
                 },
             ],
-            blockName: undefined,
+            blockName: '',
             id: 1234,
             visibleText: 'Y',
             repeatNumber: 1,

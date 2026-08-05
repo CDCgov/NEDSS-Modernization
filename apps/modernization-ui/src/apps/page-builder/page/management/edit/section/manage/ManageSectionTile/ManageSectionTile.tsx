@@ -58,7 +58,7 @@ export const ManageSectionTile = ({
                         <div className={styles.warningModal}>
                             <div className={styles.warningModalHeader}>
                                 <div className={styles.warningIcon}>
-                                    <Icon.Warning size={3} />
+                                    <Icon.Warning aria-label="warning" size={3} />
                                 </div>
                                 {deleteHeader?.(section)}
                             </div>
@@ -130,7 +130,12 @@ export const ManageSectionTile = ({
                                     className={styles.iconBtn}
                                     disabled={onAction}
                                 >
-                                    <Icon.Edit data-testId="editIcon" style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Edit
+                                        aria-label="edit"
+                                        data-testid="editIcon"
+                                        style={{ cursor: 'pointer' }}
+                                        size={3}
+                                    />
                                 </Button>
                                 <Button
                                     type="button"
@@ -142,7 +147,12 @@ export const ManageSectionTile = ({
                                         setOnAction(true);
                                     }}
                                 >
-                                    <Icon.Delete data-testId="deleteIcon" style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Delete
+                                        aria-label="delete"
+                                        data-testid="deleteIcon"
+                                        style={{ cursor: 'pointer' }}
+                                        size={3}
+                                    />
                                 </Button>
                                 {section.visible ? (
                                     <Button
@@ -155,7 +165,8 @@ export const ManageSectionTile = ({
                                         }}
                                     >
                                         <Icon.Visibility
-                                            data-testId="visibilityIcon"
+                                            aria-label="hide"
+                                            data-testid="visibilityIcon"
                                             style={{ cursor: 'pointer' }}
                                             size={3}
                                         />
@@ -170,7 +181,7 @@ export const ManageSectionTile = ({
                                             onChangeVisibility(section, true);
                                         }}
                                     >
-                                        <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
+                                        <Icon.VisibilityOff aria-label="show" style={{ cursor: 'pointer' }} size={3} />
                                     </Button>
                                 )}
                             </div>
