@@ -13,7 +13,7 @@ export const CloseableHeader = ({ onClose, title }: Props) => {
         <div className={styles.header}>
             <div className={styles.title}>{title}</div>
             <button className={styles.closeButton} onClick={onClose}>
-                <Icon.Close size={4} />
+                <Icon.Close aria-label="close" size={4} />
             </button>
         </div>
     );

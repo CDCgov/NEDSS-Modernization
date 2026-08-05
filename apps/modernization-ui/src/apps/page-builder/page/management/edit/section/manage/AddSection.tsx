@@ -15,7 +15,8 @@ import { notEmptyRule } from 'validation/entry/notEmptyRule';
 
 import styles from './addsection.module.scss';
 
-type sectionProps = {
+type SectionProps = {
+    id: string;
     tabId?: number;
     pageId?: number;
     onCancel?: () => void;
@@ -26,6 +27,7 @@ type sectionProps = {
 };
 
 export const AddSection = ({
+    id,
     onSectionTouched,
     tabId,
     onCancel,
@@ -33,7 +35,7 @@ export const AddSection = ({
     section,
     isEdit,
     onAddSection,
-}: sectionProps) => {
+}: SectionProps) => {
     const form = useForm<CreateSectionRequest | UpdateSectionRequest>({
         mode: 'onBlur',
         defaultValues: { visible: true },
@@ -73,9 +75,11 @@ export const AddSection = ({
 
     return (
         <div className={styles.addSection}>
-            <div className={styles.header}>{isEdit ? <h2>Edit section</h2> : <h2>Add a section</h2>}</div>
+            <div id={`${id}-header`} className={styles.header}>
+                {isEdit ? <h2>Edit section</h2> : <h2>Add a section</h2>}
+            </div>
             <Form onSubmit={onSubmit} className={styles.form}>
-                <div className={styles.content}>
+                <div id={`${id}-content`} className={styles.content}>
                     <Controller
                         control={form.control}
                         name="name"

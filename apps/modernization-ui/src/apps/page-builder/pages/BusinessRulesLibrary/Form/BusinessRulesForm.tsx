@@ -329,6 +329,7 @@ export const BusinessRulesForm = ({
                                     </div>
                                     <div className={styles.closeBtn}>
                                         <Icon.Close
+                                            aria-label="close"
                                             onClick={() => {
                                                 setSourceQuestion(undefined);
                                                 setTargetQuestion([]);
@@ -481,7 +482,7 @@ export const BusinessRulesForm = ({
                                     <div className={styles.title}>
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
-                                                <Icon.Check />
+                                                <Icon.Check aria-label="check" />
                                                 {/* eslint-disable-next-line max-len */}
                                                 {`${checkForSemicolon(removeNumericAndSymbols(question.name ?? question.componentName))} (${
                                                     question.question
@@ -497,7 +498,7 @@ export const BusinessRulesForm = ({
                                             onClick={handleOpenTargetQuestion}
                                             className={styles.btn}
                                         >
-                                            <Icon.Edit />
+                                            <Icon.Edit aria-label="edit" />
                                             <span>Edit</span>
                                         </Button>
                                     </div>

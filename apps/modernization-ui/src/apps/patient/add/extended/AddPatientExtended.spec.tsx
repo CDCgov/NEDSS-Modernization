@@ -67,6 +67,18 @@ vi.mock('options/race', () => ({
     useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn }),
 }));
 
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'test', value: '2' }] }),
+}));
+
+vi.mock('options/language', () => ({
+    usePrimaryLanguageOptions: () => ({ options: [{ name: 'english', value: '2' }] }),
+}));
+
+vi.mock('options/occupations', () => ({
+    useOccupationOptions: () => ({ options: [{ name: 'job', value: '2' }] }),
+}));
+
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
     useIdentificationCodedValues: () => ({
         types: [{ value: 'type-value', name: 'type-name' }],
@@ -154,7 +166,7 @@ describe('AddPatientExtended', () => {
         const cancelButton = screen.getByRole('button', { name: 'Cancel' });
         cancelButton.click();
 
-        expect(useNavigate).toBeCalled();
+        expect(useNavigate).toHaveBeenCalled();
     });
 
     it('should not show modal when local storage flag is set', () => {
