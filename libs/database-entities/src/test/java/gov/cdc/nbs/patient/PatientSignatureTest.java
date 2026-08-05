@@ -588,7 +588,7 @@ class PatientSignatureTest {
         new PatientCommand.UpdateBirth(
             967L,
             LocalDate.of(2023, Month.JUNE, 1),
-            LocalDate.of(1949, 10, 15),
+            LocalDate.of(1949, Month.OCTOBER, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
             17,
@@ -606,7 +606,7 @@ class PatientSignatureTest {
         new PatientCommand.UpdateBirth(
             967L,
             LocalDate.of(2023, Month.JUNE, 1),
-            LocalDate.of(1949, 10, 15),
+            LocalDate.of(1949, Month.OCTOBER, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
             17,
@@ -629,7 +629,7 @@ class PatientSignatureTest {
             new PatientCommand.UpdateBirth(
                 967L,
                 LocalDate.now(),
-                LocalDate.of(1949, 10, 15),
+                LocalDate.of(1949, Month.OCTOBER, 15),
                 Gender.U.value(),
                 Indicator.NO.getId(),
                 17,
@@ -657,7 +657,7 @@ class PatientSignatureTest {
             new PatientCommand.UpdateBirth(
                 967L,
                 LocalDate.of(2023, Month.JUNE, 1),
-                LocalDate.of(1949, 10, 15),
+                LocalDate.of(1949, Month.OCTOBER, 15),
                 Gender.F.value(),
                 Indicator.NO.getId(),
                 17,
@@ -671,7 +671,7 @@ class PatientSignatureTest {
             new PatientCommand.UpdateBirth(
                 967L,
                 LocalDate.of(2023, Month.JUNE, 1),
-                LocalDate.of(1949, 10, 15),
+                LocalDate.of(1949, Month.OCTOBER, 15),
                 Gender.U.value(),
                 Indicator.YES.getId(),
                 17,
@@ -685,7 +685,7 @@ class PatientSignatureTest {
             new PatientCommand.UpdateBirth(
                 967L,
                 LocalDate.of(2023, Month.JUNE, 1),
-                LocalDate.of(1949, 10, 15),
+                LocalDate.of(1949, Month.OCTOBER, 15),
                 Gender.U.value(),
                 Indicator.NO.getId(),
                 151,
@@ -709,7 +709,7 @@ class PatientSignatureTest {
         new PatientCommand.UpdateBirth(
             967L,
             LocalDate.of(2023, Month.JUNE, 1),
-            LocalDate.of(1949, 10, 15),
+            LocalDate.of(1949, Month.OCTOBER, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
             17,
