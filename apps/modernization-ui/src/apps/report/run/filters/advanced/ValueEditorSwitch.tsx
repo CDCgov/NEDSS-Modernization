@@ -9,7 +9,7 @@ const ValueEditorSwitch = (props: ValueEditorProps<ValueSetMetadata & FullField 
         case 'multiselect':
             return <ValueSetSelector {...props} />;
         default:
-            return <ValueInput {...props as any} />;
+            return <ValueInput {...props} />;
     }
 };
 
