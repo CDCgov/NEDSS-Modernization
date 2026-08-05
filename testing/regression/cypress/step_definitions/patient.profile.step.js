@@ -49,3 +49,7 @@ Then("the {string} count should increase by 1 in the Events tab", (reportType) =
 Then("the {string} count should remain the same in the Events tab", (reportType) => {
     eventsTabPage.verifyReportCountUnchanged(reportType);
 });
+
+When("I click on the first morbidity report link in the Events tab", () => {
+    eventsTabPage.clickFirstMorbidityReportLink();
+});

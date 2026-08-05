@@ -6,6 +6,9 @@ class MorbidityReportPage {
   jurisdictionField =
     'select[fieldlabel="Jurisdiction"][name="morbidityReport.theObservationDT.jurisdictionCd"]';
   morbidityDateField = "#morbidityReport\\.theObservationDT\\.activityToTime_s";
+  treatmentDateField = '#treatment_s\\[i\\]\\.treatmentVO_s\\[0\\]\\.treatmentAdministeredDT_s\\[0\\]\\.effectiveFromTime_s';
+  treatmentDropdown = 'select[fieldlabel="Treatment"][validate="required"]';
+  addTreatmentButton = 'input#BatchEntryAddButtonTreatment[value="Add Treatment"]';
   facilityProviderField =
     'input[name="entity-codeLookupText-Org-ReportingOrganizationUID"]';
   codeLookupButton = 'input[value="Code Lookup"]';
@@ -13,6 +16,7 @@ class MorbidityReportPage {
   submitButton = "#Submit";
   submitAndCreateInvestigationButton = 'input[type="image"][name="Submit and Create Investigation"]';
   cancelButton = "#Cancel";
+  editButton = 'input[type="image"][name="Edit"]';
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -57,12 +61,29 @@ class MorbidityReportPage {
     cy.get(this.morbidityDateField).type(formattedDate);
   }
 
+  enterTreatmentDate(date) {
+    const [month, day, year] = date.split("/");
+    const formattedDate = `${month.padStart(2, "0")}${day.padStart(
+      2,
+      "0"
+    )}${year}`;
+    cy.get(this.treatmentDateField).type(formattedDate);
+  }
+
   enterFacilityProvider(value) {
     cy.get(this.facilityProviderField).type(value);
   }
 
   selectPregnant(value) {
     cy.get(this.pregnantDropdown).select(value, { force: true });
+  }
+
+  selectTreatment(value) {
+    cy.get(this.treatmentDropdown).select(value, { force: true });
+  }
+
+  clickAddTreatment() {
+    cy.get(this.addTreatmentButton).click();
   }
 
   clickCodeLookup() {
@@ -75,6 +96,10 @@ class MorbidityReportPage {
 
   clickCancel() {
     cy.get(this.cancelButton).click();
+  }
+
+  clickEdit() {
+    cy.get(this.editButton).click();
   }
 
   clickSubmitAndCreateInvestigation() {

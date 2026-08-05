@@ -41,8 +41,16 @@ Feature: Patient File - Event Management - Morbidity Report
         And I confirm the submission by clicking "Ok"
         And I click the Cancel button on the Morbidity Report page
         Then the "Morbidity reports" count should remain the same in the Events tab
-    # Scenario: Edit existing morbidity report
 
+    Scenario: Edit existing morbidity report
+        When I click on the first morbidity report link in the Events tab
+        And I click the Edit button on the Morbidity Report page
+        And I enter the current date in the Treatment Date field
+        And I select "Acyclovir, 800 mg, PO, BID, x 5 days" from the Treatment dropdown menu
+        And I click the Add Treatment button
+        And I click the Submit button on the Morbidity Report page
+        And user clicks the "View File" link, the user is returned to Patient profile summary page
+        And Click Events tab on Patient Profile Page
     # Scenario: Print morbidity report
 
     # Scenario: Transfer ownership of morbidity report

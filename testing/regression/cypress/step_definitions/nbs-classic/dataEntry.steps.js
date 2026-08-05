@@ -219,7 +219,22 @@ When("I enter patient first name {string} and last name {string}", (firstName, l
   morbidityReportPage.enterPatientBothNames(firstName, lastName);
 });
 
-When
+When("I click the Edit button on the Morbidity Report page", () => {
+  morbidityReportPage.clickEdit();
+});
+
+When("I enter the current date in the Treatment Date field", () => {
+  const today = new Date().toLocaleDateString("en-US");
+  morbidityReportPage.enterTreatmentDate(today);
+});
+
+When("I select {string} from the Treatment dropdown menu", (treatment) => {
+  morbidityReportPage.selectTreatment(treatment);
+});
+
+When("I click the Add Treatment button", () => {
+  morbidityReportPage.clickAddTreatment();
+});
 
 // 6: Verification Steps
 

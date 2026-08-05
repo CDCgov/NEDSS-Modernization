@@ -14,6 +14,7 @@ class EventsTabPage {
     "Contacts named by patient": 7,
     "Patient named by contacts": 8,
   };
+  morbidityReportLinks = 'a[href="/nbs/api/profile/10000001/report/morbidity/10009436"]'
 
   selectMultipleInvestigations() {
     const conditionText = "Acanthamoeba Disease (Excluding Keratitis)";
@@ -121,6 +122,10 @@ class EventsTabPage {
           .to.equal(initialCount);
       });
     } 
+
+    clickFirstMorbidityReportLink() {
+      cy.get(this.morbidityReportLinks).first().click();
+    }
   }
 
 export default new EventsTabPage();
