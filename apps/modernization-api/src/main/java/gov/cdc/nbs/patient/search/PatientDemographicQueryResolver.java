@@ -330,10 +330,12 @@ class PatientDemographicQueryResolver {
   }
 
   // Accounts for datetime comparison (i.e. DOB values with time components)
-  private QueryVariant asFullDayRange(final String field, final LocalDate date) {
+  private Optional<QueryVariant> asFullDayRange(final String field, final LocalDate date) {
+    if (date == null) return Optional.empty();
     String start = FlexibleInstantConverter.toString(date);
     String end = FlexibleInstantConverter.toString(date.plusDays(1));
-    return RangeQuery.of(range -> range.term(term -> term.field(field).gte(start).lt(end)));
+    return Optional.of(
+        RangeQuery.of(range -> range.term(term -> term.field(field).gte(start).lt(end))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthCriteria(final PatientSearchCriteria criteria) {
@@ -349,7 +351,7 @@ class PatientDemographicQueryResolver {
             Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(value))));
         case "after" ->
             Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).gt(value))));
-        default -> Optional.of(asFullDayRange(BIRTHDAY, dateOfBirth));
+        default -> asFullDayRange(BIRTHDAY, dateOfBirth);
       };
     }
 
@@ -359,7 +361,7 @@ class PatientDemographicQueryResolver {
         && dateCriteria.equals().isCompleteDate()) {
       Equals equals = dateCriteria.equals();
       LocalDate targetDate = LocalDate.of(equals.year(), equals.month(), equals.day());
-      return Optional.of(asFullDayRange(BIRTHDAY, targetDate));
+      return asFullDayRange(BIRTHDAY, targetDate);
     }
 
     return Optional.empty();

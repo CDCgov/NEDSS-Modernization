@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.condition.create;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.condition.ConditionController;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
@@ -15,6 +16,7 @@ import gov.cdc.nbs.questionbank.support.condition.ConditionMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Set;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
@@ -32,6 +34,9 @@ public class CreateConditionSteps {
 
   private CreateConditionRequest request;
   private Condition response;
+
+  private final NbsUserDetails user =
+      new NbsUserDetails(103L, "username", "first", "last", Set.of(), true, 1L);
 
   CreateConditionSteps(
       final UserMother userMother,
@@ -90,7 +95,7 @@ public class CreateConditionSteps {
   @When("I send a create condition request")
   public void create_condition() {
     try {
-      response = conditionController.createCondition(request);
+      response = conditionController.createCondition(user, request);
       conditionHolder.setCreateConditionResponse(response);
     } catch (AccessDeniedException
         | AuthenticationCredentialsNotFoundException
