@@ -23,7 +23,7 @@ describe('rangeValidator', () => {
             const actual0 = validateDateRange(['14/1999', '10/13/2026'], FIELD_NAME);
             expect(actual0).toEqual(`From date of "14/1999" is not valid mm/dd/yyyy formatted date for ${FIELD_NAME}.`);
 
-            const actual1 = validateDateRange(['10/13/2022', "1"], FIELD_NAME);
+            const actual1 = validateDateRange(['10/13/2022', '1'], FIELD_NAME);
             expect(actual1).toEqual(`To date of "1" is not valid mm/dd/yyyy formatted date for ${FIELD_NAME}.`);
 
             const actual2 = validateDateRange(['10/13/2022', '1/1/1992323'], FIELD_NAME);
@@ -42,8 +42,8 @@ describe('rangeValidator', () => {
         it('should not return an error msg for a valid numeric', () => {
             [
                 ['90210', '100000'],
-                ["-1", "1.0"],
-                ["0.125", '0.9887'],
+                ['-1', '1.0'],
+                ['0.125', '0.9887'],
             ].forEach((range) => {
                 const actual = validateNumericRange(range, FIELD_NAME);
                 expect(actual).toBeUndefined();
@@ -71,7 +71,7 @@ describe('rangeValidator', () => {
 
         it('should return an error msg when the from number is greater than the to number', () => {
             [
-                ["15", "6"],
+                ['15', '6'],
                 ['0.9887', '0.125'],
             ].forEach((range) => {
                 const actual = validateNumericRange(range, FIELD_NAME);

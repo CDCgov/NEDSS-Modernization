@@ -1,4 +1,4 @@
-import {QbQuery} from "./AdvancedFilter.tsx";
+import { QbQuery } from './AdvancedFilter.tsx';
 import { validateRule, ValidationResultMap } from './validator';
 
 describe('validateRule', () => {

@@ -113,7 +113,9 @@ describe('useSortingPreferences', () => {
             result.current.sortOn({ property: 'property-value', direction: 'asc' as Direction });
         });
 
-        expect(mockSave).toHaveBeenCalledWith(expect.objectContaining({ property: 'property-value', direction: 'asc' }));
+        expect(mockSave).toHaveBeenCalledWith(
+            expect.objectContaining({ property: 'property-value', direction: 'asc' })
+        );
     });
 
     it('should remove sorting preferences when active sorting is reset', () => {

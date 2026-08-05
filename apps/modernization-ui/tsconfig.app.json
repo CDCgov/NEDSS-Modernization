@@ -32,10 +32,6 @@
         },
         "types": ["vite/client", "node"]
     },
-    "exclude": [
-        "src/**/*.spec.ts",
-        "src/**/*.spec.tsx",
-        "src/setupTests.ts"
-    ],
+    "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/setupTests.ts"],
     "include": ["src"]
 }
