@@ -45,7 +45,7 @@ class MorbidityReportPage {
   }
 
   clearJurisdiction() {
-    cy.get(this.jurisdictionField).clear();
+    cy.get(this.jurisdictionField).select("", { force: true });
   }
 
   enterMorbidityDate(date) {
