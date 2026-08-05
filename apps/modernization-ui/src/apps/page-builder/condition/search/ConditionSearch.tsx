@@ -10,14 +10,16 @@ import { ConditionTable } from './ConditionTable';
 import styles from './condition-search.module.scss';
 
 type Props = {
+    id: string;
     onConditionSelect: (ids: number[]) => void;
     onCancel: () => void;
     onCreateNew: () => void;
 };
-export const ConditionSearch = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
+export const ConditionSearch = ({ id, onConditionSelect, onCancel, onCreateNew }: Props) => {
     return (
         <PaginationProvider>
             <ConditionSearchContent
+                id={id}
                 onCreateNew={onCreateNew}
                 onCancel={onCancel}
                 onConditionSelect={onConditionSelect}
@@ -26,7 +28,7 @@ export const ConditionSearch = ({ onConditionSelect, onCancel, onCreateNew }: Pr
     );
 };
 
-const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
+const ConditionSearchContent = ({ id, onConditionSelect, onCancel, onCreateNew }: Props) => {
     const { search, response, isLoading, keyword, reset } = useConditionSearch();
     const { page, ready, request } = usePagination();
     const [sort, setSort] = useState<ConditionSort | undefined>();
@@ -84,11 +86,11 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
 
     return (
         <div className={styles.conditionSearch}>
-            <div className={styles.header}>
+            <div id={`${id}-header`} className={styles.header}>
                 <h2>Search and add condition(s)</h2>
-                <Icon.Close size={4} onClick={handleCancel} data-testid="closeSearchModalBtn" />
+                <Icon.Close aria-label="close" size={4} onClick={handleCancel} data-testid="closeSearchModalBtn" />
             </div>
-            <div className={styles.content}>
+            <div id={`${id}-content`} className={styles.content}>
                 <h3>You can search for existing condition(s) or create a new one.</h3>
                 <div className={styles.controls}>
                     {resetTable === false && (

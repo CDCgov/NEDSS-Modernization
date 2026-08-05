@@ -43,7 +43,12 @@ describe('ConditionSearch', () => {
     it('should have a modal heading', () => {
         const { getByText } = render(
             <MemoryRouter>
-                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+                <ConditionSearch
+                    id="test"
+                    onConditionSelect={onConditionSelect}
+                    onCancel={onCancel}
+                    onCreateNew={onCreateNew}
+                />
             </MemoryRouter>
         );
         expect(getByText('Search and add condition(s)')).toBeInTheDocument();
@@ -52,7 +57,12 @@ describe('ConditionSearch', () => {
     it('should have a title', () => {
         const { getByText } = render(
             <MemoryRouter>
-                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+                <ConditionSearch
+                    id="test"
+                    onConditionSelect={onConditionSelect}
+                    onCancel={onCancel}
+                    onCreateNew={onCreateNew}
+                />
             </MemoryRouter>
         );
         expect(getByText('You can search for existing condition(s) or create a new one.')).toBeInTheDocument();
@@ -61,7 +71,12 @@ describe('ConditionSearch', () => {
     it('should have expected buttons', () => {
         const { getByText } = render(
             <MemoryRouter>
-                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+                <ConditionSearch
+                    id="test"
+                    onConditionSelect={onConditionSelect}
+                    onCancel={onCancel}
+                    onCreateNew={onCreateNew}
+                />
             </MemoryRouter>
         );
         const createBtn = getByText('Create new condition');
@@ -83,7 +98,12 @@ describe('ConditionSearch', () => {
     it('should pass data to the table', () => {
         const { getAllByRole } = render(
             <MemoryRouter>
-                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+                <ConditionSearch
+                    id="test"
+                    onConditionSelect={onConditionSelect}
+                    onCancel={onCancel}
+                    onCreateNew={onCreateNew}
+                />
             </MemoryRouter>
         );
 
@@ -101,7 +121,12 @@ describe('ConditionSearch', () => {
     it('should search with appropriate page size', () => {
         render(
             <MemoryRouter>
-                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+                <ConditionSearch
+                    id="test"
+                    onConditionSelect={onConditionSelect}
+                    onCancel={onCancel}
+                    onCreateNew={onCreateNew}
+                />
             </MemoryRouter>
         );
 
@@ -111,7 +136,12 @@ describe('ConditionSearch', () => {
     it('should have aria labels', () => {
         const { getByText } = render(
             <MemoryRouter>
-                <ConditionSearch onConditionSelect={onConditionSelect} onCancel={onCancel} onCreateNew={onCreateNew} />
+                <ConditionSearch
+                    id="test"
+                    onConditionSelect={onConditionSelect}
+                    onCancel={onCancel}
+                    onCreateNew={onCreateNew}
+                />
             </MemoryRouter>
         );
 

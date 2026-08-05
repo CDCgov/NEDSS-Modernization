@@ -11,7 +11,7 @@ const props = {
     onAddSection: vi.fn(),
 };
 
-const mockAddSectionUsingPost = vi.spyOn(SectionControllerService, 'createSection');
+const mockAddSectionUsingPost = vi.spyOn(SectionControllerService, 'createSection').mockResolvedValue({});
 
 describe('AddSectionModal', () => {
     it('should render successfully', () => {

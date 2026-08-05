@@ -205,13 +205,21 @@ export const AddNewPage = () => {
             </Form>
 
             <ModalComponent
+                id="create-new-condition-modal"
                 isLarge={true}
                 modalRef={createConditionModal}
                 modalHeading="Create new condition"
                 modalBody={<CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />}
             />
-            <Modal id="import-template-modal" isLarge={true} ref={importTemplateModal}>
+            <Modal
+                id="import-template-modal"
+                isLarge={true}
+                ref={importTemplateModal}
+                aria-labelledby="import-template-modal-header"
+                aria-describedby="import-template-modal-content"
+            >
                 <ImportTemplate
+                    id="import-template-modal"
                     onCancel={() => importTemplateModal.current?.toggleModal()}
                     onTemplateCreated={handleTemplateImported}
                 />
@@ -222,8 +230,11 @@ export const AddNewPage = () => {
                 className="add-condition-modal"
                 isLarge={true}
                 ref={conditionLookupModal}
+                aria-labelledby="condition-lookup-modal-header"
+                aria-describedby="condition-lookup-modal-content"
             >
                 <ConditionSearch
+                    id="condition-lookup-modal"
                     onCancel={() => conditionLookupModal.current?.toggleModal()}
                     onConditionSelect={handleAddConditions}
                     onCreateNew={handleCreateCondition}

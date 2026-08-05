@@ -42,11 +42,11 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
 const resolveSortIcon = (direction: Direction) => {
     switch (direction) {
         case Direction.Ascending:
-            return <Icon.ArrowDownward color="black" />;
+            return <Icon.ArrowDownward aria-label="ascending" color="black" />;
         case Direction.Descending:
-            return <Icon.ArrowUpward color="black" />;
+            return <Icon.ArrowUpward aria-label="descending" color="black" />;
         default:
-            return <Icon.SortArrow color="black" />;
+            return <Icon.SortArrow aria-label="unsorted" color="black" />;
     }
 };
 

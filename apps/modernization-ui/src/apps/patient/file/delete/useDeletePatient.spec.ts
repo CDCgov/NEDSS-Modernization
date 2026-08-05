@@ -32,6 +32,10 @@ describe('useDeletePatient', () => {
 
     it('should call onDeleteComplete with failure when deletion fails', async () => {
         (PatientFileService.delete as Mock).mockRejectedValueOnce(new Error('Deletion failed'));
+        let message;
+        vi.spyOn(console, 'error').mockImplementation((msg) => {
+            message = msg;
+        });
         const { result } = renderHook(() => useDeletePatient(onDeleteCompleteMock));
         const deletePatientFile = result.current;
 
@@ -42,5 +46,6 @@ describe('useDeletePatient', () => {
             success: false,
             message: 'Failed to delete patient.',
         });
+        expect(message).toEqual('Error deleting patient:');
     });
 });

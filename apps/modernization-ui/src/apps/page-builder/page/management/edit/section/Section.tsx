@@ -169,8 +169,16 @@ export const Section = ({
                     ))}
                 </div>
             )}
-            <Modal id="add-section-modal" ref={editSectionModalRef} className="add-section-modal" isLarge={true}>
+            <Modal
+                id="add-section-modal"
+                ref={editSectionModalRef}
+                className="add-section-modal"
+                isLarge={true}
+                aria-labelledby="add-section-modal-header"
+                aria-describedby="add-section-modal-content"
+            >
                 <AddSection
+                    id="add-section-modal"
                     pageId={page.id}
                     tabId={selected?.id}
                     onSectionTouched={() => {
@@ -185,13 +193,16 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id="add-section-modal"
+                id="add-subsection-modal"
                 ref={addSubsectionModalRef}
                 className="add-section-modal"
                 isLarge={true}
                 forceAction={true}
+                aria-labelledby="add-subsection-modal-header"
+                aria-describedby="add-subsection-modal-content"
             >
                 <AddSubSection
+                    id="add-subsection-modal"
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={onCloseAddSubSection}
@@ -204,13 +215,16 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id="add-section-modal"
+                id="edit-subsection-modal"
                 ref={editSubsectionModalRef}
                 className="add-section-modal"
                 isLarge={true}
                 forceAction={true}
+                aria-labelledby="edit-subsection-modal-header"
+                aria-describedby="edit-subsection-modal-content"
             >
                 <AddSubSection
+                    id="edit-subsection-modal"
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={onCloseEditSubsectionModal}
@@ -230,9 +244,12 @@ export const Section = ({
                 className="manage-section-modal"
                 forceAction={true}
                 isLarge={true}
+                aria-labelledby="manage-section-modal-header"
+                aria-describedby="manage-section-modal-content"
             >
                 <DragDropProvider pageData={page} successCallBack={handleReorderSubsection}>
                     <ManageSubsection
+                        id="manage-section-modal"
                         section={section}
                         alert={alert}
                         onResetAlert={() => setAlert(undefined)}

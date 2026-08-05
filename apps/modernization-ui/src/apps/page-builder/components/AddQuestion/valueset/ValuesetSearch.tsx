@@ -58,7 +58,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
             <CloseableHeader
                 title={
                     <div className={styles.addValuesetHeader}>
-                        <Icon.ArrowBack onClick={onCancel} /> Add value set
+                        <Icon.ArrowBack aria-label="back" onClick={onCancel} /> Add value set
                     </div>
                 }
                 onClose={onClose}

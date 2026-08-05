@@ -18,19 +18,22 @@ vi.mock('apps/page-builder/services/programAreaAPI', () => ({
 describe('Create Condition', () => {
     const modal = { current: null };
     describe('General information component tests', () => {
-        it('should display create condition form', () => {
-            const { getByTestId } = render(
+        it('should display create condition form', async () => {
+            const { getByTestId, findByRole } = render(
                 <AlertProvider>
                     <CreateCondition modal={modal} />
                 </AlertProvider>
             );
             expect(getByTestId('header-title').innerHTML).toBe('Condition details');
+
+            // ensure rendering settles
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
     });
 
     describe('When page loads', () => {
-        it('Create & add condition button should be disabled', () => {
-            const { container } = render(
+        it('Create & add condition button should be disabled', async () => {
+            const { container, findByRole } = render(
                 <BrowserRouter>
                     <AlertProvider>
                         <CreateCondition modal={modal} />
@@ -39,12 +42,15 @@ describe('Create Condition', () => {
             );
             const btn = container.getElementsByClassName('usa-button')[0];
             expect(btn.hasAttribute('disabled'));
+
+            // ensure rendering settles
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
     });
 
     describe('Condition component tests', () => {
-        it('should render a grid with 10 inputs labels which are Condition Name, Coding System, Condition Code, Others', () => {
-            const { getByText } = render(
+        it('should render a grid with 10 inputs labels which are Condition Name, Coding System, Condition Code, Others', async () => {
+            const { getByText, findByRole } = render(
                 <AlertProvider>
                     <CreateCondition modal={modal} />
                 </AlertProvider>
@@ -59,10 +65,13 @@ describe('Create Condition', () => {
             expect(getByText('Will this condition need the Contact Tracing Module?')).toBeTruthy();
             expect(getByText('Condition family')).toBeTruthy();
             expect(getByText('Co-infection group')).toBeTruthy();
+
+            // ensure rendering settles
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
 
-        it('should render a dropdown to select Program Area from the provided options', () => {
-            const { getByTestId, queryByText, container } = render(
+        it('should render a dropdown to select Program Area from the provided options', async () => {
+            const { getByTestId, queryByText, container, findByRole } = render(
                 <AlertProvider>
                     <CreateCondition modal={modal} />
                 </AlertProvider>
@@ -80,6 +89,9 @@ describe('Create Condition', () => {
             for (let i = 1; i < options.length; i++) {
                 expect(options[i].value).toBe(options[i].value);
             }
+
+            // ensure rendering settles
+            expect(await findByRole('heading', { name: 'Condition details' })).toBeVisible();
         });
     });
 });

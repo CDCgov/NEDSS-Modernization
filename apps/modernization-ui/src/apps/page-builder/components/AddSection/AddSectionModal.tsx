@@ -1,4 +1,4 @@
-import { ChangeEvent, RefObject, useState } from 'react';
+import { ChangeEvent, RefObject, useId, useState } from 'react';
 
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 
@@ -29,6 +29,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
     const [sectionName, setSectionName] = useState('');
     const [sectionDescription, setSectionDescription] = useState('');
     const [visible, setVisible] = useState(true);
+    const id = useId();
 
     const handleSectionNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSectionName(e.target.value);
@@ -60,6 +61,7 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
 
     return (
         <ModalComponent
+            id={id}
             modalRef={modalRef}
             isLarge={true}
             modalHeading={isSubSection ? `'Add Subsection` : 'Manage Sections'}

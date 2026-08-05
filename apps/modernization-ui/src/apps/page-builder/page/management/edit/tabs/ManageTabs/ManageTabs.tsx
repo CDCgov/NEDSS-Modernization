@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useId, useRef, useState } from 'react';
 
 import { Button, Icon, Modal, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -27,6 +27,8 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const [message, setMessage] = useState<AlertMessage | undefined>(undefined);
     const [addEdit, setAddEdit] = useState(false);
     const [selectedForEdit, setSelectedForEdit] = useState<PagesTab | undefined>(undefined);
+    const headerId = useId();
+    const contentId = useId();
 
     const form = useForm<Tab>({
         mode: 'onBlur',
@@ -141,13 +143,21 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 modalRef={modalRef}
                 data-testid="openManageTabs"
             >
-                <Icon.Edit />
+                <Icon.Edit aria-label="edit" />
                 <h2>Manage tabs</h2>
             </ModalToggleButton>
-            <Modal id="manage-tab-modal" ref={modalRef} className="manage-tab-modal" isLarge={true} forceAction={true}>
+            <Modal
+                id="manage-tab-modal"
+                ref={modalRef}
+                className="manage-tab-modal"
+                isLarge={true}
+                forceAction={true}
+                aria-labelledby={headerId}
+                aria-describedby={contentId}
+            >
                 <div className={styles.manageTabModal}>
-                    <ManageTabsHeader showAddTab={!addEdit} onAddNew={addNew} />
-                    <div className={styles.modalBody}>
+                    <ManageTabsHeader id={headerId} showAddTab={!addEdit} onAddNew={addNew} />
+                    <div id={contentId} className={styles.modalBody}>
                         {message && (
                             <AlertBanner
                                 type={message.type}

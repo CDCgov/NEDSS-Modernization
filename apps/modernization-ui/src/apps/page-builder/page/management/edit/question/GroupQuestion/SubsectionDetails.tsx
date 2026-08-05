@@ -60,7 +60,7 @@ export const SubsectionDetails = () => {
                                     name={name}
                                     value="true"
                                     id="visible"
-                                    checked={control._formValues.visible}
+                                    checked={!!control._formValues.visible}
                                     onChange={() => setVisibleToggle('true')}
                                     label="Yes"
                                 />

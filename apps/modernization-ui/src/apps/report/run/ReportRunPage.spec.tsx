@@ -275,6 +275,10 @@ describe('report run page', () => {
 
         it('run error displays error', async () => {
             const user = userEvent.setup();
+            let message;
+            vi.spyOn(console, 'error').mockImplementation((msg) => {
+                message = msg;
+            });
             vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
             const mockApi = vi
                 .mocked(generated.ReportControllerService.runReport)
@@ -293,6 +297,7 @@ describe('report run page', () => {
             expect(await findByRole('button', { name: 'Refine report' })).toBeEnabled();
             expect(windowOpen).not.toHaveBeenCalled();
             expect(fileDownload).not.toHaveBeenCalled();
+            expect(message).not.toBeUndefined();
         });
     });
 
@@ -300,6 +305,15 @@ describe('report run page', () => {
         Object.keys(PERMISSION_GROUP_MAP).forEach((group) => {
             const permGroup = PERMISSION_GROUP_MAP[group as ReportConfiguration.group];
             it('404s when select and view not present', async () => {
+                let message;
+                vi.spyOn(console, 'error').mockImplementation((msg) => {
+                    message = msg;
+                });
+                let err;
+                vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
+                    err = `${chunk}`;
+                    return true;
+                });
                 const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, group });
                 const { findByText, queryByText } = renderWithRouter({
                     ...BASE_MOCK_USER,
@@ -313,9 +327,20 @@ describe('report run page', () => {
                 expect(await findByText(/404/)).toBeVisible();
                 expect(await findByText(/Not found/)).toBeVisible();
                 expect(queryByText(MOCK_CONFIG.title)).toBeNull();
+                expect(message).not.toBeUndefined();
+                expect(err).toMatch(/Not Found/);
             });
 
             it('404s when select not present', async () => {
+                let message;
+                vi.spyOn(console, 'error').mockImplementation((msg) => {
+                    message = msg;
+                });
+                let err;
+                vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
+                    err = `${chunk}`;
+                    return true;
+                });
                 const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, group });
                 const { findByText, queryByText } = renderWithRouter({
                     ...BASE_MOCK_USER,
@@ -327,9 +352,20 @@ describe('report run page', () => {
                 expect(await findByText(/404/)).toBeVisible();
                 expect(await findByText(/Not found/)).toBeVisible();
                 expect(queryByText(MOCK_CONFIG.title)).toBeNull();
+                expect(message).not.toBeUndefined();
+                expect(err).toMatch(/Not Found/);
             });
 
             it('404s when view not present', async () => {
+                let message;
+                vi.spyOn(console, 'error').mockImplementation((msg) => {
+                    message = msg;
+                });
+                let err;
+                vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
+                    err = `${chunk}`;
+                    return true;
+                });
                 const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, group });
                 const { findByText, queryByText } = renderWithRouter({
                     ...BASE_MOCK_USER,
@@ -341,6 +377,8 @@ describe('report run page', () => {
                 expect(await findByText(/404/)).toBeVisible();
                 expect(await findByText(/Not found/)).toBeVisible();
                 expect(queryByText(MOCK_CONFIG.title)).toBeNull();
+                expect(message).not.toBeUndefined();
+                expect(err).toMatch(/Not Found/);
             });
         });
 
@@ -2786,13 +2824,6 @@ describe('report run page', () => {
             reportFilterUid: 1001,
             defaultValue: undefined,
         };
-
-        beforeEach(() => {
-            // Spy on console.error and force it to throw an error
-            vi.spyOn(console, 'error').mockImplementation((message) => {
-                throw new Error(`Test failed due to console.error: ${message}`);
-            });
-        });
 
         it('renders the empty filter builder when no default value', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });

@@ -83,12 +83,14 @@ export const QuestionSearchTable = ({
                     title:
                         expanded === question.id ? (
                             <Icon.ExpandLess
+                                aria-label="collapse"
                                 className={styles.expandButton}
                                 onClick={() => setExpanded(undefined)}
                                 size={4}
                             />
                         ) : (
                             <Icon.ExpandMore
+                                aria-label="expand"
                                 className={styles.expandButton}
                                 onClick={() => setExpanded(question.id)}
                                 size={4}
@@ -145,7 +147,7 @@ export const QuestionSearchTable = ({
                                 type="button"
                                 onClick={() => onQuerySubmit?.('')}
                             >
-                                <Icon.Close />
+                                <Icon.Close aria-label="close" />
                             </Button>
                         </div>
                     )}

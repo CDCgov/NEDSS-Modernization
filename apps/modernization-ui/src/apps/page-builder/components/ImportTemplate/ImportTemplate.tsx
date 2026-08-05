@@ -10,10 +10,11 @@ import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
 type ImportTemplateProps = {
+    id: string;
     onTemplateCreated: (template: Template) => void;
     onCancel: () => void;
 };
-export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplateProps) => {
+export const ImportTemplate = ({ id, onTemplateCreated, onCancel }: ImportTemplateProps) => {
     const [file, setFile] = useState<File | undefined>();
     const [fileDrag, setFileDrag] = useState(false);
     const { error, isLoading, imported, reset, importTemplate } = useImportTemplate();
@@ -79,10 +80,10 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                     </div>
                 )}
 
-                <div className="heading">
+                <div id={`${id}-header`} className="heading">
                     <h2>Import a new template</h2>
                 </div>
-                <label htmlFor="importTempId">
+                <label id={`${id}-content`} htmlFor="importTempId">
                     <input
                         value=""
                         onChange={handleFileChange}
@@ -101,7 +102,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                                 </div>
                             )}
                         </div>
-                        <Icon.Logout size={4} />
+                        <Icon.Logout aria-hidden={true} size={4} />
                         <label htmlFor="importTempId">
                             Drag & drop or <span>Choose file</span> to upload
                         </label>

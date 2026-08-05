@@ -7,6 +7,27 @@ import { PagesQuestion, PagesResponse, PagesSection, PagesSubSection, PagesTab }
 import { PageManagementProvider } from '../../usePageManagement';
 import { PageContent } from '../content/PageContent';
 
+vi.mock('apps/page-builder/generated');
+
+vi.mock('apps/page-builder/hooks/api/useFindValueset', () => {
+    return {
+        useFindValuesets: () => ({
+            isLoading: false,
+            search: vi.fn(),
+            response: undefined,
+        }),
+    };
+});
+
+vi.mock('apps/page-builder/hooks/api/useFindAvailableQuestions', () => {
+    return {
+        useFindAddableQuestions: () => ({
+            isLoading: false,
+            search: vi.fn(),
+        }),
+    };
+});
+
 const page: PagesResponse = {
     id: 12039120,
     name: 'test page',
@@ -65,8 +86,8 @@ const tabs: PagesTab = {
 };
 
 describe('when page loads', () => {
-    it('date input should have calendar next to input field', () => {
-        const { getByTestId } = render(
+    it('date input should have calendar next to input field', async () => {
+        const { getByTestId, findByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
@@ -77,6 +98,7 @@ describe('when page loads', () => {
         );
 
         expect(getByTestId('calendar-icon')).toBeInTheDocument();
+        expect(await findByLabelText('calendar')).toBeVisible();
     });
 
     it('drop down input should be true for display component 1007', () => {

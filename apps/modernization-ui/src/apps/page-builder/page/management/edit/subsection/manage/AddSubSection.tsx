@@ -17,6 +17,7 @@ import { validSubsectionNameRule } from 'validation/entry/validSubsectionNameRul
 import styles from './addsubsection.module.scss';
 
 type subSectionProps = {
+    id: string;
     sectionId?: number;
     pageId?: number;
     onCancel?: () => void;
@@ -26,6 +27,7 @@ type subSectionProps = {
 };
 
 export const AddSubSection = ({
+    id,
     sectionId,
     pageId,
     onCancel,
@@ -66,11 +68,12 @@ export const AddSubSection = ({
 
     return (
         <div className={styles.subSection}>
-            <div className={styles.header}>
+            <div id={`${id}-header`} className={styles.header}>
                 <div className={styles.headerContent}>
                     {isEdit ? <h2>Edit subsection</h2> : <h2>Add subsection</h2>}
                 </div>
                 <Icon.Close
+                    aria-label="close"
                     size={3}
                     onClick={() => {
                         form.reset();
@@ -80,7 +83,7 @@ export const AddSubSection = ({
                 />
             </div>
             <Form onSubmit={onSubmit} className={styles.form}>
-                <div className={styles.content}>
+                <div id={`${id}-content`} className={styles.content}>
                     <Controller
                         control={form.control}
                         name="name"

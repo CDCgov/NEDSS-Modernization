@@ -95,7 +95,7 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
             <CloseableHeader
                 title={
                     <div className={styles.addQuestionHeader}>
-                        <Icon.ArrowBack onClick={onBack} /> Add question
+                        <Icon.ArrowBack aria-label="back" onClick={onBack} /> Add question
                     </div>
                 }
                 onClose={onClose}

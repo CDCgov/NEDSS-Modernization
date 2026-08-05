@@ -119,7 +119,14 @@ export const QuestionContent = ({
                     )}
                 </div>
 
-                {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />}
+                {type === 'DATE' && (
+                    <Icon.CalendarToday
+                        aria-label="calendar"
+                        size={4}
+                        className={styles.icon}
+                        data-testid="calendar-icon"
+                    />
+                )}
             </div>
             {valueSet && !isStandard && (
                 <div className="margin-top-1em">
@@ -129,7 +136,7 @@ export const QuestionContent = ({
                         onClick={() => onEditValueset(valueSet)}
                         unstyled={true}
                     >
-                        <Icon.Edit className="margin-right-2px" />
+                        <Icon.Edit aria-label="edit" className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
                     {!isPublished && (
@@ -140,7 +147,7 @@ export const QuestionContent = ({
                             unstyled={true}
                             disabled={isPublished}
                         >
-                            <Icon.Edit className="margin-right-2px" />
+                            <Icon.Edit aria-label="edit" className="margin-right-2px" />
                             <span> Change value set</span>
                         </Button>
                     )}
@@ -151,7 +158,7 @@ export const QuestionContent = ({
     return (
         <div className={styles.question}>
             <div className={styles.reorderIcon}>
-                <NbsIcon name="drag" />
+                <NbsIcon alt="drag handle" name="drag" />
             </div>
             {!staticTypes.includes(displayComponent ?? 0) ? (
                 renderLabelWithComponent

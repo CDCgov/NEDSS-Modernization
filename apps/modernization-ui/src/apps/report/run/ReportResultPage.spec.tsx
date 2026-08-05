@@ -199,6 +199,10 @@ describe('report result page', () => {
 
         it('shows an error when saving fails', async () => {
             const user = userEvent.setup();
+            let message;
+            vi.spyOn(console, 'error').mockImplementation((msg) => {
+                message = msg;
+            });
             vi.mocked(generated.ReportControllerService.saveReport).mockRejectedValue(
                 new Error('Issue with saving report')
             );
@@ -216,6 +220,7 @@ describe('report result page', () => {
             expect(await findByText('Issue with saving report')).toBeVisible();
             expect(await findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
+            expect(message).not.toBeUndefined();
         });
 
         it('closes on escape key', async () => {
@@ -273,6 +278,10 @@ describe('report result page', () => {
 
         it('shows an error when save as fails', async () => {
             const user = userEvent.setup();
+            let message;
+            vi.spyOn(console, 'error').mockImplementation((msg) => {
+                message = msg;
+            });
             vi.mocked(generated.ReportControllerService.saveAsReport).mockRejectedValue(
                 new Error('Issue with saving report as new')
             );
@@ -285,6 +294,7 @@ describe('report result page', () => {
             expect(await render.findByText('Issue with saving report as new')).toBeVisible();
             expect(await render.findByText(/There was an error saving this report/)).toBeVisible();
             expect(window.location.href).not.toBe('/nbs/ManageReports.do');
+            expect(message).not.toBeUndefined();
         });
 
         it('closes on escape key', async () => {
