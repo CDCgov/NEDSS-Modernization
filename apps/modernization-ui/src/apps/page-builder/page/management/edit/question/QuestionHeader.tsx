@@ -63,7 +63,7 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
                     type="button"
                     onClick={onEditQuestion}
                 >
-                    <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
+                    <Icon.Edit aria-label="edit" style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
                 {!question.isStandard && !question.isPublished && (
                     <DeleteQuestion
