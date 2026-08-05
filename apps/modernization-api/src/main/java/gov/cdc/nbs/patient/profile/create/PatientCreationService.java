@@ -28,10 +28,10 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.Collection;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 class PatientCreationService {
 
   private final SoundexResolver soudexResolver;

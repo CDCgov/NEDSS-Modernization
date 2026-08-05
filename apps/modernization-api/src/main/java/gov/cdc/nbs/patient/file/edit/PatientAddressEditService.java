@@ -12,9 +12,9 @@ import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.address.AddressDemographic;
 import java.util.Collection;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientAddressEditService {
 
   private static long identifiedBy(final PostalEntityLocatorParticipation participation) {

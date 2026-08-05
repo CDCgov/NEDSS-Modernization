@@ -12,9 +12,9 @@ import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.phone.PhoneDemographic;
 import java.util.Collection;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientPhoneEditService {
 
   private static long identifiedBy(final TeleEntityLocatorParticipation participation) {
