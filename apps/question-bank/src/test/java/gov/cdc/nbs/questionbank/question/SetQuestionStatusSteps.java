@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
@@ -14,6 +15,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
@@ -28,6 +30,9 @@ public class SetQuestionStatusSteps {
   private final QuestionMother questionMother;
 
   private final WaQuestionHistRepository histRepository;
+
+  private final NbsUserDetails user =
+      new NbsUserDetails(103L, "username", "first", "last", Set.of(), true, 1L);
 
   SetQuestionStatusSteps(
       final QuestionController controller,
@@ -62,7 +67,7 @@ public class SetQuestionStatusSteps {
     WaQuestion question = questionMother.one();
     try {
       controller.setQuestionStatus(
-          question.getId(), new QuestionStatusRequest("Active".equals(status)));
+          user, question.getId(), new QuestionStatusRequest("Active".equals(status)));
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }

@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
@@ -25,8 +24,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +43,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
 
   private final QuestionCreator creator;
-  private final UserDetailsProvider userDetailsProvider;
   private final QuestionUpdater updater;
   private final QuestionFinder finder;
 
@@ -69,80 +67,72 @@ public class QuestionController {
 
   @PostMapping("text")
   @ResponseStatus(HttpStatus.CREATED)
-  public TextQuestion createTextQuestion(@RequestBody CreateTextQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+  public TextQuestion createTextQuestion(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @RequestBody CreateTextQuestionRequest request) {
     Long userId = user.getId();
     return creator.create(userId, request);
   }
 
   @PostMapping("numeric")
   @ResponseStatus(HttpStatus.CREATED)
-  public NumericQuestion createNumericQuestion(@RequestBody CreateNumericQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+  public NumericQuestion createNumericQuestion(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @RequestBody CreateNumericQuestionRequest request) {
     Long userId = user.getId();
     return creator.create(userId, request);
   }
 
   @PostMapping("coded")
   @ResponseStatus(HttpStatus.CREATED)
-  public CodedQuestion createCodedQuestion(@RequestBody CreateCodedQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+  public CodedQuestion createCodedQuestion(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @RequestBody CreateCodedQuestionRequest request) {
     Long userId = user.getId();
     return creator.create(userId, request);
   }
 
   @PostMapping("date")
   @ResponseStatus(HttpStatus.CREATED)
-  public DateQuestion createDateQuestion(@RequestBody CreateDateQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+  public DateQuestion createDateQuestion(
+      @AuthenticationPrincipal NbsUserDetails user,
+      @RequestBody CreateDateQuestionRequest request) {
     Long userId = user.getId();
     return creator.create(userId, request);
   }
 
   @PutMapping("text/{id}")
   public Question updateTextQuestion(
-      @PathVariable Long id, @RequestBody UpdateTextQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long id,
+      @RequestBody UpdateTextQuestionRequest request) {
     Long userId = user.getId();
     return updater.update(userId, id, request);
   }
 
   @PutMapping("numeric/{id}")
   public Question updateNumericQuestion(
-      @PathVariable Long id, @RequestBody UpdateNumericQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long id,
+      @RequestBody UpdateNumericQuestionRequest request) {
     Long userId = user.getId();
     return updater.update(userId, id, request);
   }
 
   @PutMapping("coded/{id}")
   public Question updateCodedQuestion(
-      @PathVariable Long id, @RequestBody UpdateCodedQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long id,
+      @RequestBody UpdateCodedQuestionRequest request) {
     Long userId = user.getId();
     return updater.update(userId, id, request);
   }
 
   @PutMapping("date/{id}")
   public Question updateDateQuestion(
-      @PathVariable Long id, @RequestBody UpdateDateQuestionRequest request) {
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long id,
+      @RequestBody UpdateDateQuestionRequest request) {
     Long userId = user.getId();
     return updater.update(userId, id, request);
   }
@@ -157,11 +147,10 @@ public class QuestionController {
 
   @PutMapping("{id}/status")
   public Question setQuestionStatus(
-      @PathVariable Long id, @RequestBody QuestionStatusRequest request) {
+      @AuthenticationPrincipal NbsUserDetails user,
+      @PathVariable Long id,
+      @RequestBody QuestionStatusRequest request) {
     log.debug("Received update question status request");
-    NbsUserDetails user = userDetailsProvider.getCurrentUserDetails();
-    // shouldn't happen in practice
-    if (user == null) throw new AccessDeniedException("No user found");
     Long userId = user.getId();
     Question question = updater.setStatus(userId, id, request.active());
     log.debug("Successfully updated question status");
