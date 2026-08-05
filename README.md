@@ -138,15 +138,17 @@ again to apply the changes.
    password:
    ```
 
-4. View `modernization-api` traces in the [Jaeger UI](http://localhost:16686).
-
-5. To stop the containers, use docker compose
+4. To stop the containers, use docker compose
 
 ```sh
 docker compose down
 # OR to also reset DB volume
 docker compose down -v
 ```
+
+#### Tracing
+The `modernization-api` backend is also set up with [Micrometer Tracing ](https://docs.micrometer.io/tracing/reference/), specifically for [OpenTelemetry](https://opentelemetry.io/) with [OTLP](https://opentelemetry.io/docs/specs/otlp/).  It's enabled by default in our local Docker environments
+
 
 #### Running NBS 6 local containers instead
 
