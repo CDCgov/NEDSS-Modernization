@@ -3,7 +3,7 @@ import "cypress-xpath";
 import UtilityFunctions from "@pages/utilityFunctions.page";
 import { faker } from "@faker-js/faker";
 
-When("I Generate HL7 messages to api and mark as review", (string) => {
+When("I Generate HL7 messages to api and mark as review", () => {
   let currentMessage;
   let messageID;
   let fakeRandomData;

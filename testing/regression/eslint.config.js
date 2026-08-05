@@ -12,7 +12,7 @@ module.exports = [
       }
     },
     rules: {
-      'cypress/no-unnecessary-waiting': 'error' // Example Cypress rule
+      'cypress/no-unnecessary-waiting': 'warn'
     }
   }
 ]

@@ -2,7 +2,7 @@ import { When } from "@badeball/cypress-cucumber-preprocessor";
 import "cypress-xpath";
 import UtilityFunctions from "@pages/utilityFunctions.page";
 
-When("I Seed HL7 {string} messages to api", (string) => {
+When("I Seed HL7 {string} messages to api", () => {
   
   let currentMessage;
   let messageID;

@@ -84,7 +84,7 @@ class ClassicHomePage {
   selectUsersToMerge() {
     cy.get('.selectCheckBoxMerge').click({ multiple: true })
     cy.get('input[type="button"][value="Merge"]').eq(0).click()
-    cy.on('window:confirm', (text) => {
+    cy.on('window:confirm', () => {
         return true
     })
   }
