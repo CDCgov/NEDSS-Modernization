@@ -10,7 +10,20 @@ class ClassicPatientSearchPage {
   }
 
   clickSearchBtnInClassicPatientSearchPane() {
-    cy.get('input[type="button"][name="Submit"][value="Submit"]').eq(0).click()
+    // Wait for spinner to disappear first
+    cy.get('span._loading_rd9r9_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    // Now find and click the search button
+    cy.get('input[type="submit"], input[type="button"][name="Submit"], input[type="button"][value="Submit"], button[type="submit"], button[type="button"]')
+      .filter(':visible')
+      .then(($buttons) => {
+        if ($buttons.length) {
+          cy.wrap($buttons.first()).click({ force: true })
+        } else {
+          cy.contains('button', 'Search').filter(':visible').first().click({ force: true })
+        }
+      })
   }
 
   selectPatientToEdit() {

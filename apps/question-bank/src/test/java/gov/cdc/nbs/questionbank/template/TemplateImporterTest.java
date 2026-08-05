@@ -42,7 +42,8 @@ class TemplateImporterTest {
   void should_import_template() {
     // Given a template to import
     MultipartFile mockFile = mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(mock(Resource.class));
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
     HttpHeaders headers = mock(HttpHeaders.class);
@@ -65,7 +66,8 @@ class TemplateImporterTest {
   void should_fail_already_exists() {
     // Given a template to import that already exists
     MultipartFile mockFile = mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(mock(Resource.class));
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
     HttpHeaders headers = mock(HttpHeaders.class);
@@ -84,7 +86,8 @@ class TemplateImporterTest {
   void should_fail_bad_file() {
     // Given a template to import that already exists
     MultipartFile mockFile = mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(mock(Resource.class));
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
     HttpHeaders headers = mock(HttpHeaders.class);
@@ -103,7 +106,8 @@ class TemplateImporterTest {
   void should_fail_null_location() {
     // Given a template to import that already exists
     MultipartFile mockFile = mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(mock(Resource.class));
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
     HttpHeaders headers = mock(HttpHeaders.class);
@@ -122,7 +126,8 @@ class TemplateImporterTest {
   void should_fail_bad_id() {
     // Given a template to import that already exists
     MultipartFile mockFile = mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(mock(Resource.class));
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
     HttpHeaders headers = mock(HttpHeaders.class);

@@ -2,7 +2,7 @@ Feature: View PHDCs
 
   Background:
     Given I import PHDC documents
-    Given I am logged in as secure user and stay on classic
+    And I am logged in as secure user and stay on classic
 
   Scenario: View an eCR
     Given I navigate to the DRSA Queue

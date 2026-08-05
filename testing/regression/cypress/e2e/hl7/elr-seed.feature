@@ -3,7 +3,7 @@ Feature: End to end testing of ELR processing
 
   Background:
     Given I am authenticated with the DI API
-    Given I am logged in as secure user
+    And I am logged in as secure user
 
 #  Scenario: A Hepatitis B seed notification is created automatically when ingesting #an ELR
 #    Given I have a HL7 seed with: gender "F", test type "Hepatitis B", first #"Zzzalice", last "Zzzratkey", middle "ZzzBennice", suffix "ESQ", ssn "123456789", email "Zzzalice@gmail.com", street "856 Zz Zzanda", state "WY", #city "Cheyenne", zipcode "82001", building "unit 492", dob "1955"
