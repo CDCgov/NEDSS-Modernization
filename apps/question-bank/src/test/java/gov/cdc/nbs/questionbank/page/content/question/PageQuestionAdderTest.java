@@ -2,6 +2,8 @@ package gov.cdc.nbs.questionbank.page.content.question;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,11 +36,11 @@ class PageQuestionAdderTest {
   @Test
   void should_add_question_to_page() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
     WaUiMetadata meta = new WaUiMetadata();
     meta.setId(97l);
-    when(page.addQuestion(Mockito.any())).thenReturn(meta);
+    when(page.addQuestion(any())).thenReturn(meta);
 
     // And a question
     TextQuestionEntity textQuestion = QuestionEntityMother.textQuestion();
@@ -85,7 +86,7 @@ class PageQuestionAdderTest {
   @Test
   void should_not_question_to_page_no_question_found() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
 
     // And a null question

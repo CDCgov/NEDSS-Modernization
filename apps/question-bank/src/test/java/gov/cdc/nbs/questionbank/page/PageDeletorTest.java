@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -9,7 +10,6 @@ import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.response.PageDeleteResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import jakarta.persistence.EntityManager;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -74,7 +74,7 @@ class PageDeletorTest {
     WaTemplate page = new WaTemplate();
     page.setId(requestId);
     when(entityManager.find(WaTemplate.class, page.getId())).thenReturn(null);
-    Assert.assertThrows(PageNotFoundException.class, () -> pageDeletor.deletePageDraft(requestId));
+    assertThrows(PageNotFoundException.class, () -> pageDeletor.deletePageDraft(requestId));
   }
 
   @Test
@@ -84,6 +84,6 @@ class PageDeletorTest {
     page.setTemplateType(PageConstants.PUBLISHED);
     page.setId(requestId);
     when(entityManager.find(WaTemplate.class, page.getId())).thenReturn(page);
-    Assert.assertThrows(PageUpdateException.class, () -> pageDeletor.deletePageDraft(requestId));
+    assertThrows(PageUpdateException.class, () -> pageDeletor.deletePageDraft(requestId));
   }
 }

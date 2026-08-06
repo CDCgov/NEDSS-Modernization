@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -24,7 +25,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
@@ -96,7 +96,7 @@ class QuestionFinderTest {
     // and a question exists
     ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
     when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
-            eq("123"), captor.capture(), Mockito.anyString(), Mockito.any()))
+            eq("123"), captor.capture(), anyString(), any()))
         .thenReturn(new PageImpl<>(new ArrayList<>()));
 
     // when a query is run
@@ -114,7 +114,7 @@ class QuestionFinderTest {
     // and a question exists
     ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
     when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
-            eq("abc"), captor.capture(), Mockito.anyString(), Mockito.any()))
+            eq("abc"), captor.capture(), anyString(), any()))
         .thenReturn(new PageImpl<>(new ArrayList<>()));
 
     // when a query is run

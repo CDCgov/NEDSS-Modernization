@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +44,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -258,7 +258,7 @@ class ReportControllerTest {
     @BeforeEach
     void setUp() {
       when(user.getId()).thenReturn(userId);
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -279,9 +279,7 @@ class ReportControllerTest {
       when(report.getOwnerUid()).thenReturn(userId);
       when(report.getShared()).thenReturn('P');
 
-      Mockito.lenient()
-          .when(reportRepository.findById(reportId))
-          .thenReturn(java.util.Optional.of(report));
+      lenient().when(reportRepository.findById(reportId)).thenReturn(java.util.Optional.of(report));
     }
 
     @Test
@@ -318,7 +316,7 @@ class ReportControllerTest {
     @Test
     void saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_private_report() {
       when(report.getShared()).thenReturn('P');
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -342,7 +340,7 @@ class ReportControllerTest {
     @Test
     void saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_public_report() {
       when(report.getShared()).thenReturn('S');
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -364,7 +362,7 @@ class ReportControllerTest {
         saveReport_should_throw_403_if_user_does_not_have_permission_to_edit_reporting_facility_report() {
       when(report.getShared()).thenReturn('R');
 
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -395,7 +393,7 @@ class ReportControllerTest {
     @BeforeEach
     void setUp() {
       when(user.getId()).thenReturn(userId);
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -416,14 +414,14 @@ class ReportControllerTest {
       when(existingReport.getOwnerUid()).thenReturn(userId);
       when(existingReport.getShared()).thenReturn('P');
 
-      Mockito.lenient()
+      lenient()
           .when(reportRepository.findById(reportId))
           .thenReturn(java.util.Optional.of(existingReport));
     }
 
     @Test
     void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_private_report() {
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -451,7 +449,7 @@ class ReportControllerTest {
 
     @Test
     void saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_public_report() {
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(
@@ -480,7 +478,7 @@ class ReportControllerTest {
     @Test
     void
         saveAsReport_should_throw_403_if_user_does_not_have_permission_to_create_reporting_facility_report() {
-      Mockito.lenient()
+      lenient()
           .when(user.getAuthorities())
           .thenReturn(
               Set.of(

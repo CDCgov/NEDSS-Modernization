@@ -7,6 +7,7 @@ import gov.cdc.nbs.questionbank.page.summary.search.PageSummary.EventType;
 import gov.cdc.nbs.questionbank.question.model.ConditionSummary;
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +22,7 @@ class PageSummaryCsvCreatorTest {
 
   @Test
   void should_create_csv() {
-    LocalDate date = LocalDate.of(2023, 12, 9);
+    LocalDate date = LocalDate.of(2023, Month.DECEMBER, 9);
     // Given page summaries
     Page<PageSummary> summaries =
         new PageImpl<>(

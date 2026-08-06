@@ -2,8 +2,10 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.audit.Status;
@@ -37,7 +39,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -56,7 +57,7 @@ class ReportFilterBuilderTest {
 
   @BeforeEach
   void setUp() {
-    Mockito.lenient()
+    lenient()
         .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(new IdGeneratorService.GeneratedId(47L));
   }
@@ -103,7 +104,7 @@ class ReportFilterBuilderTest {
 
       ReportFilter result = builder.build(filter, report);
       // once for filter, once for validation
-      Mockito.verify(idGenerator, times(2)).getNextValidId(IdGeneratorService.EntityType.NBS);
+      verify(idGenerator, times(2)).getNextValidId(IdGeneratorService.EntityType.NBS);
 
       ReportFilterValidation validation = result.getFilterValidation();
       assertThat(validation).isNotNull();
