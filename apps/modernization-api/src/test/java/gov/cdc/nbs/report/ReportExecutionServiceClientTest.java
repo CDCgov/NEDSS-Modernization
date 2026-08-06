@@ -3,6 +3,7 @@ package gov.cdc.nbs.report;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.verify;
@@ -26,7 +27,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -96,9 +96,7 @@ class ReportExecutionServiceClientTest {
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
     ReportConfiguration reportConfig = mockReportConfiguration(false);
 
-    Mockito.lenient()
-        .when(reportFetcher.getReport(reportUid, dataSourceUid))
-        .thenReturn(reportConfig);
+    lenient().when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
@@ -123,11 +121,11 @@ class ReportExecutionServiceClientTest {
     ReportConfiguration reportConfig = mock(ReportConfiguration.class);
     Library library = mock(Library.class);
 
-    Mockito.lenient().when(library.isBuiltin()).thenReturn(true);
-    Mockito.lenient().when(library.runner()).thenReturn(isPython ? "python" : "sas");
+    lenient().when(library.isBuiltin()).thenReturn(true);
+    lenient().when(library.runner()).thenReturn(isPython ? "python" : "sas");
 
-    Mockito.lenient().when(reportConfig.isPython()).thenReturn(isPython);
-    Mockito.lenient().when(reportConfig.library()).thenReturn(library);
+    lenient().when(reportConfig.isPython()).thenReturn(isPython);
+    lenient().when(reportConfig.library()).thenReturn(library);
 
     return reportConfig;
   }

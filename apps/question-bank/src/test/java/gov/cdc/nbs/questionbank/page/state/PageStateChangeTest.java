@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.state;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
@@ -25,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,8 +50,8 @@ class PageStateChangeTest {
   void pageStateUpdateTest() {
     Long requestId = 1L;
     WaTemplate before = getTemplate(requestId, "TestPage", "Pblished");
-    when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(before));
-    when(templateRepository.save(Mockito.any())).thenReturn(before);
+    when(templateRepository.findById(anyLong())).thenReturn(Optional.of(before));
+    when(templateRepository.save(any())).thenReturn(before);
     PageStateResponse response = pageStateChanger.savePageAsDraft(requestId);
     assertEquals(requestId, response.getTemplateId());
     assertEquals(PageConstants.SAVE_DRAFT_SUCCESS, response.getMessage());
@@ -59,7 +60,7 @@ class PageStateChangeTest {
   @Test
   void pageStateExceptionTest() {
     Long requestId = 1L;
-    when(templateRepository.findById(Mockito.anyLong())).thenThrow(new IllegalArgumentException());
+    when(templateRepository.findById(anyLong())).thenThrow(new IllegalArgumentException());
     var exception =
         assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
     assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
@@ -68,7 +69,7 @@ class PageStateChangeTest {
   @Test
   void pageStateNotFoundTest() {
     Long requestId = 1L;
-    when(templateRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+    when(templateRepository.findById(anyLong())).thenReturn(Optional.empty());
     var exception =
         assertThrows(PageUpdateException.class, () -> pageStateChanger.savePageAsDraft(requestId));
     assertEquals(PageConstants.SAVE_DRAFT_FAIL, exception.getMessage());
@@ -87,7 +88,7 @@ class PageStateChangeTest {
   @Test
   void testCopyWaTemplateUIMetaData() {
     WaTemplate oldPage = getTemplate(10L, "testName", "Published");
-    when(waUiMetadataRepository.findAllByWaTemplateUid(Mockito.any()))
+    when(waUiMetadataRepository.findAllByWaTemplateUid(any()))
         .thenReturn(List.of(getwaUiMetaDtum(oldPage)));
     WaTemplate newPage = pageStateChanger.createDraftCopy(oldPage);
     List<WaUiMetadata> result = pageStateChanger.copyWaTemplateUIMetaData(oldPage, newPage);
@@ -99,7 +100,7 @@ class PageStateChangeTest {
   void testCopyRules() {
     WaTemplate oldPage = getTemplate(10L, "testName", "Published");
 
-    when(waRuleMetaDataRepository.findByWaTemplateUid(Mockito.any()))
+    when(waRuleMetaDataRepository.findByWaTemplateUid(any()))
         .thenReturn(List.of(getWaRuleMetadata(oldPage)));
 
     List<WaRuleMetadata> result = pageStateChanger.copyRules(oldPage.getId(), 11L);

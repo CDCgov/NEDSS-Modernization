@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.template;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -50,7 +50,7 @@ class TemplateImporterTest {
     ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(SUCESS_LOCATION);
-    when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
+    when(restTemplate.exchange(any(), eq(String.class))).thenReturn(response);
     Template createdTemplate = template();
     when(finder.find(1000380l)).thenReturn(createdTemplate);
 
@@ -74,7 +74,7 @@ class TemplateImporterTest {
     ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(EXISTS_LOCATION);
-    when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
+    when(restTemplate.exchange(any(), eq(String.class))).thenReturn(response);
 
     // when a template is imported
     // then an exception is thrown
@@ -94,7 +94,7 @@ class TemplateImporterTest {
     ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(BAD_FILE_LOCATION);
-    when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
+    when(restTemplate.exchange(any(), eq(String.class))).thenReturn(response);
 
     // when a template is imported
     // then an exception is thrown
@@ -114,7 +114,7 @@ class TemplateImporterTest {
     ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(null);
-    when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
+    when(restTemplate.exchange(any(), eq(String.class))).thenReturn(response);
 
     // when a template is imported
     // then an exception is thrown
@@ -135,7 +135,7 @@ class TemplateImporterTest {
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location"))
         .thenReturn("srcTemplateNm=AARBOVIRAL_1_3_INV_NBS_5_4&src=Import&templateUid=abcD");
-    when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
+    when(restTemplate.exchange(any(), eq(String.class))).thenReturn(response);
 
     // when a template is imported
     // then an exception is thrown

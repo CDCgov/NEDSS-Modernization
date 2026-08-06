@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.classic.redirect.incoming;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
@@ -26,11 +26,11 @@ class IncomingEditPageRedirectorTest {
   @Test
   void should_redirect_edit_page() {
     // Given a user
-    NbsUserDetails details = Mockito.mock(NbsUserDetails.class);
+    NbsUserDetails details = mock(NbsUserDetails.class);
     when(details.getId()).thenReturn(1l);
 
     // and a request with a valid page id cookie
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("Return-Page", "1234")});
 
     // When a request is processed return to the edit page
@@ -46,11 +46,11 @@ class IncomingEditPageRedirectorTest {
   @Test
   void should_redirect_page_library() {
     // Given a user
-    NbsUserDetails details = Mockito.mock(NbsUserDetails.class);
+    NbsUserDetails details = mock(NbsUserDetails.class);
     when(details.getId()).thenReturn(1l);
 
     // and a request with no page id cookie
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getCookies()).thenReturn(new Cookie[] {});
 
     // and no recently created pages
@@ -67,11 +67,11 @@ class IncomingEditPageRedirectorTest {
   @Test
   void should_redirect_recently_created() {
     // Given a user
-    NbsUserDetails details = Mockito.mock(NbsUserDetails.class);
+    NbsUserDetails details = mock(NbsUserDetails.class);
     when(details.getId()).thenReturn(1l);
 
     // and a request with no page id cookie
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getCookies()).thenReturn(new Cookie[] {});
 
     // and a recently created pages

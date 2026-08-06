@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.summary.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.querydsl.core.Tuple;
@@ -9,7 +10,6 @@ import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mockito;
 
 class PageSummaryMapperTest {
 
@@ -23,7 +23,7 @@ class PageSummaryMapperTest {
     "Published,0,Published",
   })
   void should_set_status(String templateType, String versionNbr, String expected) {
-    Tuple tuple = Mockito.mock(Tuple.class);
+    Tuple tuple = mock(Tuple.class);
     when(tuple.get(this.tables.page().id)).thenReturn(1L);
     when(tuple.get(this.tables.page().templateType)).thenReturn(templateType);
 
@@ -38,7 +38,7 @@ class PageSummaryMapperTest {
   @Test
   void should_map_page_summary_from_result_set() {
 
-    Tuple tuple = Mockito.mock(Tuple.class);
+    Tuple tuple = mock(Tuple.class);
     when(tuple.get(this.tables.page().id)).thenReturn(17L);
     when(tuple.get(this.tables.page().templateNm)).thenReturn("template name");
     when(tuple.get(this.tables.page().descTxt)).thenReturn("template description");
@@ -67,7 +67,7 @@ class PageSummaryMapperTest {
   @Test
   void should_throw_error_when_identifier_is_not_present() {
 
-    Tuple tuple = Mockito.mock(Tuple.class);
+    Tuple tuple = mock(Tuple.class);
 
     assertThatThrownBy(() -> mapper.map(tuple))
         .hasMessageContaining("A Page Summary ID is required");

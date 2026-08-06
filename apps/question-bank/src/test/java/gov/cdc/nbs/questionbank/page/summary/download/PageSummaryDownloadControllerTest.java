@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.summary.download;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.page.PageMetaDataDownloader;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -36,7 +36,7 @@ class PageSummaryDownloadControllerTest {
     // Given a request to download a csv
     PageSummaryRequest request = new PageSummaryRequest("", new ArrayList<>());
     PageRequest pageable = PageRequest.of(0, 100, Sort.by(Direction.ASC, "name"));
-    InputStreamResource mockedInputStream = Mockito.mock(InputStreamResource.class);
+    InputStreamResource mockedInputStream = mock(InputStreamResource.class);
     when(summaryDownloader.createCsv(request, pageable)).thenReturn(mockedInputStream);
 
     // When the request is processed
@@ -74,7 +74,7 @@ class PageSummaryDownloadControllerTest {
   @Test
   void proper_return_type_metadata() throws IOException {
     // Given a request to download metadata
-    ByteArrayInputStream metaMock = Mockito.mock(ByteArrayInputStream.class);
+    ByteArrayInputStream metaMock = mock(ByteArrayInputStream.class);
     when(metadataDownloader.downloadPageMetadataByWaTemplateUid(1l)).thenReturn(metaMock);
 
     // When the request is processed

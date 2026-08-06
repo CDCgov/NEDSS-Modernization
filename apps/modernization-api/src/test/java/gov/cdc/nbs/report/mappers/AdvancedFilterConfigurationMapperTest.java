@@ -11,6 +11,7 @@ import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ class AdvancedFilterConfigurationMapperTest {
           .displayable('Y')
           .filterable('N')
           .statusCd('A')
-          .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+          .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
           .build();
   FilterCode filterCode =
       FilterCode.builder()

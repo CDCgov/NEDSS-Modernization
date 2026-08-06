@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +19,6 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +36,7 @@ class ValueSetUpdaterTest {
     final UpdateValueSetRequest request = new UpdateValueSetRequest("new_name", "new description");
 
     // and a valid value set
-    Codeset codeset = Mockito.mock(Codeset.class);
+    Codeset codeset = mock(Codeset.class);
     when(entityManager.find(Codeset.class, new CodesetId("code_value_general", "valueset")))
         .thenReturn(codeset);
 
