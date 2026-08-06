@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
-import { Sizing } from 'design-system/field';
 import { axe } from 'jest-axe';
+
+import { Sizing } from 'design-system/field';
 
 import { DataTable } from './DataTable';
 import { Column } from './header/column';

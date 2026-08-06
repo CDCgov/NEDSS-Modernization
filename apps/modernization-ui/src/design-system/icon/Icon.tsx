@@ -2,6 +2,7 @@ import { SVGProps as ReactSVGProps } from 'react';
 
 import uswds from '@uswds/uswds/img/sprite.svg';
 import classNames from 'classnames';
+
 import { Sizing } from 'design-system/field';
 
 import extended from './extended-sprite.svg';

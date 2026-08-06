@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { Button } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { GroupRequest, useGroupSubsection } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { Spinner } from 'components/Spinner';
 import { useAlert } from 'libs/alert';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { RepeatingBlock } from '../RepeatingBlock';
 import { SubsectionDetails } from '../SubsectionDetails';

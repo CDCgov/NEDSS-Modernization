@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { AlertProvider } from 'alert';
 import { MemoryRouter } from 'react-router';
+
+import { AlertProvider } from 'alert';
 
 import { DataElements } from '../api/model/DataElement';
 

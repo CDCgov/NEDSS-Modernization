@@ -1,9 +1,10 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { EntryFieldsProps } from 'design-system/entry';
-import { Controller, useFormContext } from 'react-hook-form';
 
 export const Contact = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();

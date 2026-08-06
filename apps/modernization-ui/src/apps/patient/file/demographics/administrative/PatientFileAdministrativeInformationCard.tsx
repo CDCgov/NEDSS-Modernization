@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+import { Await } from 'react-router';
+
 import { LoadingOverlay } from 'libs/loading';
 import {
     AdministrativeInformation,
@@ -7,7 +9,6 @@ import {
     AdministrativeInformationCardProps,
 } from 'libs/patient/demographics/administrative';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 
 type PatientFileAdministrativeInformationCardProps = {
     provider: MemoizedSupplier<Promise<AdministrativeInformation>>;

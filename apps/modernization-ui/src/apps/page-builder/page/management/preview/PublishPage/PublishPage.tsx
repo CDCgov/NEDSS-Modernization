@@ -1,9 +1,10 @@
 import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
 
 import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
+import { Controller, useForm } from 'react-hook-form';
+
 import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
 import { useAlert } from 'libs/alert';
-import { Controller, useForm } from 'react-hook-form';
 import { logErrorToUserConsole } from 'utils/logging';
 import { maxLengthRule } from 'validation/entry';
 

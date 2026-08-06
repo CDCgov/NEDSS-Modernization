@@ -2,9 +2,10 @@ import { ReactNode } from 'react';
 
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router';
+
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { FilterProvider } from 'design-system/filter/useFilter';
-import { MemoryRouter } from 'react-router';
 
 import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
 

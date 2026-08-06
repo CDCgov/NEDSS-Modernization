@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { LabReport } from 'generated/graphql/schema';
 import { MemoryRouter } from 'react-router';
+
+import { LabReport } from 'generated/graphql/schema';
 
 import { LaboratoryReportSearchResultListItem } from './LaboratoryReportSearchResultListItem';
 

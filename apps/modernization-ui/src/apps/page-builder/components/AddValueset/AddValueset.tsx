@@ -1,7 +1,8 @@
 import { Button, Icon } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { CreateValuesetRequest, Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 import { useAlert } from 'libs/alert';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';

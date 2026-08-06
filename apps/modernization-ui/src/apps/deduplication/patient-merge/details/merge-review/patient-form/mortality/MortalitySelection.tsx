@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { useFormContext, useWatch } from 'react-hook-form';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 
 import { PatientMergeForm } from '../../model/PatientMergeForm';
 import { Section } from '../shared/section/Section';

@@ -1,6 +1,8 @@
 import { Suspense, useMemo } from 'react';
 
 import { format } from 'date-fns';
+import { Await } from 'react-router';
+
 import { Card } from 'design-system/card';
 import { Section } from 'design-system/card/section/Section';
 import { Column, SortableDataTable } from 'design-system/table';
@@ -8,7 +10,6 @@ import { Tag } from 'design-system/tag';
 import { permissions, Permitted } from 'libs/permission';
 import { MemoizedSupplier } from 'libs/supplying';
 import { displayName } from 'name/displayName';
-import { Await } from 'react-router';
 
 import { Patient } from '../../patient';
 

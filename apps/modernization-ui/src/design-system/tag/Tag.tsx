@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import { Sizing } from 'design-system/field';
 
 import styles from './tag.module.scss';

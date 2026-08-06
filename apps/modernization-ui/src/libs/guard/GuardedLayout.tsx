@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router';
+
 import { RedirectHome } from 'routes';
 
 import { Guarded, GuardedProps } from './Guarded';

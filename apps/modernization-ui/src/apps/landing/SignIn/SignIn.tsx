@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
 import { Button } from '@trussworks/react-uswds';
-import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import classNames from 'classnames';
+
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { LinkButton } from 'design-system/button';
 import { AlertMessage } from 'design-system/message';
 

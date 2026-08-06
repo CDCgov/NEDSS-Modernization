@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+import { Await } from 'react-router';
+
 import { Shown } from 'conditional-render';
 import { LinkButton } from 'design-system/button';
 import { TableCard, TableCardProps } from 'design-system/card';
@@ -12,7 +14,6 @@ import { displayInvestigator, displayNotificationStatus, displayStatus } from 'l
 import { LoadingOverlay } from 'libs/loading';
 import { permissions, Permitted } from 'libs/permission';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 import { either, not } from 'utils/predicate';
 
 import { PatientFileInvestigation } from './investigation';

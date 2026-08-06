@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Card } from 'design-system/card';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { getLogOdds } from '../matching-criteria/getLogOdds';
 

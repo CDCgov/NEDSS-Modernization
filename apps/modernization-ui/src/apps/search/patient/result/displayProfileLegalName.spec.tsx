@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router';
+
 import { Features } from 'configuration';
 import { defaultConfiguration } from 'configuration/defaults';
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { BrowserRouter } from 'react-router';
 
 import { displayProfileLegalName } from './displayProfileLegalName';
 

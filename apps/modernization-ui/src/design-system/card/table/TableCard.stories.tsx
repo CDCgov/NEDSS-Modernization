@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { MemoryRouter } from 'react-router';
+
 import { Button } from 'design-system/button';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { MemoryRouter } from 'react-router';
 
 import { TableCard } from './TableCard';
 

@@ -1,8 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
 

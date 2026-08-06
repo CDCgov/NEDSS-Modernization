@@ -1,10 +1,11 @@
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input/text/TextInputField';
 import { SingleSelect } from 'design-system/select';
 import { useConceptOptions } from 'options/concepts';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 export const Id = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();

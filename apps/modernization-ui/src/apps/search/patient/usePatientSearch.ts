@@ -1,6 +1,7 @@
+import { UseFormReturn } from 'react-hook-form';
+
 import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } from 'generated/graphql/schema';
-import { UseFormReturn } from 'react-hook-form';
 import { maybeMap } from 'utils/mapping';
 
 import { initial as defaultValues, PatientCriteriaEntry } from './criteria';

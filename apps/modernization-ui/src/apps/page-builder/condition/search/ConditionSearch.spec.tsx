@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { Condition } from 'apps/page-builder/generated';
 import { MemoryRouter } from 'react-router';
+
+import { Condition } from 'apps/page-builder/generated';
 
 import { ConditionSearch } from './ConditionSearch';
 

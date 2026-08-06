@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router';
+
 import { useAlert } from 'alert';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { Shown } from 'conditional-render';
@@ -15,8 +18,6 @@ import {
 } from 'libs/patient/demographics';
 import { defaultTo } from 'libs/supplying';
 import { maybeDisplayName } from 'name';
-import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router';
 import { exists } from 'utils/exists';
 
 import { PatientFileLayout } from '../PatientFileLayout';

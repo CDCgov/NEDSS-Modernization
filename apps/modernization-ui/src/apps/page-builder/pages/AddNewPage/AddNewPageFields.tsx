@@ -1,12 +1,13 @@
 import { ChangeEvent, RefObject } from 'react';
 
 import { ErrorMessage, Icon, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Option } from 'generated';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
 

@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { BirthEntry, MortalityEntry, SexEntry } from 'apps/patient/data/entry';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOf, displayAgeAsOfToday } from 'date';
@@ -8,7 +10,6 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { useLocationOptions } from 'options/location';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 import { useSexBirthCodedValues } from './useSexBirthCodedValues';

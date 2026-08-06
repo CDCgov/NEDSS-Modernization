@@ -1,9 +1,10 @@
 import { FocusEventHandler, useState } from 'react';
 
 import classNames from 'classnames';
+import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
+
 import { Field, FieldProps } from 'design-system/field';
 import { asValue as asSelectableValue, Selectable } from 'options';
-import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
 
 import { CheckboxOption } from './CheckboxOption';
 import { DropdownIndicator } from './DropdownIndicator';
