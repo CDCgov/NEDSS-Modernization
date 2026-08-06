@@ -68,7 +68,7 @@ Note: Containers do not need to be running to execute tests, but the images must
 
 ```shell
 # Install dependencies
-cd apps/modernization-ui && npm ci
+cd apps/modernization-ui && npm ci --ignore-scripts
 
 # Build the API (from root)
 ./gradlew :modernization-api:buildDependents

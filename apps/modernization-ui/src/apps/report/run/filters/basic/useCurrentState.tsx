@@ -30,10 +30,10 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
 
     // If there isn't a state set when the config first loads, set it to the default state
     useEffect(() => {
-        if (ready && stateFilterId && !state && properties.entries.NBS_STATE_CODE) {
+        if (ready && stateFilterId && !stateFilter.defaultValues?.[0] && properties.entries.NBS_STATE_CODE) {
             setValue(formName, [properties.entries.NBS_STATE_CODE]);
         }
-    }, [ready]);
+    }, [formName, properties.entries.NBS_STATE_CODE, ready, setValue, stateFilter?.defaultValues, stateFilterId]);
 
     return <CurrentStateContext.Provider value={state}>{children}</CurrentStateContext.Provider>;
 };

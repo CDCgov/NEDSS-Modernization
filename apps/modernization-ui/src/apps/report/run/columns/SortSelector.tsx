@@ -34,6 +34,7 @@ const SortSelector = ({
         name: 'sort.column',
         defaultValue: defaultSort?.columnUid.toString(),
     });
+
     const selectedColumns =
         useWatch<ReportExecuteForm, 'columns'>({
             name: 'columns',
@@ -46,7 +47,7 @@ const SortSelector = ({
         if (!!value && !selectedColumns.includes(value)) {
             onChange(null);
         }
-    }, [selectedColumns, value]);
+    }, [onChange, selectedColumns, value]);
 
     return (
         <EntryWrapper

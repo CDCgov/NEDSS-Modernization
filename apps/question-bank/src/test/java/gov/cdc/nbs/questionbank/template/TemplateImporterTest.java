@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.template;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.template.exception.TemplateImportException;
@@ -40,12 +41,13 @@ class TemplateImporterTest {
   @SuppressWarnings("unchecked")
   void should_import_template() {
     // Given a template to import
-    MultipartFile mockFile = Mockito.mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(Mockito.mock(Resource.class));
+    MultipartFile mockFile = mock(MultipartFile.class);
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
-    HttpHeaders headers = Mockito.mock(HttpHeaders.class);
-    ResponseEntity<String> response = Mockito.mock(ResponseEntity.class);
+    HttpHeaders headers = mock(HttpHeaders.class);
+    ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(SUCESS_LOCATION);
     when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
@@ -63,12 +65,13 @@ class TemplateImporterTest {
   @SuppressWarnings("unchecked")
   void should_fail_already_exists() {
     // Given a template to import that already exists
-    MultipartFile mockFile = Mockito.mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(Mockito.mock(Resource.class));
+    MultipartFile mockFile = mock(MultipartFile.class);
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
-    HttpHeaders headers = Mockito.mock(HttpHeaders.class);
-    ResponseEntity<String> response = Mockito.mock(ResponseEntity.class);
+    HttpHeaders headers = mock(HttpHeaders.class);
+    ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(EXISTS_LOCATION);
     when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
@@ -82,12 +85,13 @@ class TemplateImporterTest {
   @SuppressWarnings("unchecked")
   void should_fail_bad_file() {
     // Given a template to import that already exists
-    MultipartFile mockFile = Mockito.mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(Mockito.mock(Resource.class));
+    MultipartFile mockFile = mock(MultipartFile.class);
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
-    HttpHeaders headers = Mockito.mock(HttpHeaders.class);
-    ResponseEntity<String> response = Mockito.mock(ResponseEntity.class);
+    HttpHeaders headers = mock(HttpHeaders.class);
+    ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(BAD_FILE_LOCATION);
     when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
@@ -101,12 +105,13 @@ class TemplateImporterTest {
   @SuppressWarnings("unchecked")
   void should_fail_null_location() {
     // Given a template to import that already exists
-    MultipartFile mockFile = Mockito.mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(Mockito.mock(Resource.class));
+    MultipartFile mockFile = mock(MultipartFile.class);
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
-    HttpHeaders headers = Mockito.mock(HttpHeaders.class);
-    ResponseEntity<String> response = Mockito.mock(ResponseEntity.class);
+    HttpHeaders headers = mock(HttpHeaders.class);
+    ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location")).thenReturn(null);
     when(restTemplate.exchange(Mockito.any(), eq(String.class))).thenReturn(response);
@@ -120,12 +125,13 @@ class TemplateImporterTest {
   @SuppressWarnings("unchecked")
   void should_fail_bad_id() {
     // Given a template to import that already exists
-    MultipartFile mockFile = Mockito.mock(MultipartFile.class);
-    when(mockFile.getResource()).thenReturn(Mockito.mock(Resource.class));
+    MultipartFile mockFile = mock(MultipartFile.class);
+    Resource mockResource = mock(Resource.class);
+    when(mockFile.getResource()).thenReturn(mockResource);
 
     // and a working Classic endpoint
-    HttpHeaders headers = Mockito.mock(HttpHeaders.class);
-    ResponseEntity<String> response = Mockito.mock(ResponseEntity.class);
+    HttpHeaders headers = mock(HttpHeaders.class);
+    ResponseEntity<String> response = mock(ResponseEntity.class);
     when(response.getHeaders()).thenReturn(headers);
     when(headers.getFirst("Location"))
         .thenReturn("srcTemplateNm=AARBOVIRAL_1_3_INV_NBS_5_4&src=Import&templateUid=abcD");

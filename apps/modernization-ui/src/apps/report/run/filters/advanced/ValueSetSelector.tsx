@@ -90,7 +90,7 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
                     setOptions([]);
                 });
         }
-    }, [ready]);
+    }, [codeDescCd, codesetNm, columnUid, properties.entries.NBS_STATE_CODE, props.field, ready]);
 
     const getValue = (v: Selectable) => (codeDescCd?.toLowerCase() === CODE_DESC_CD.CODE ? v.value : v.name);
 

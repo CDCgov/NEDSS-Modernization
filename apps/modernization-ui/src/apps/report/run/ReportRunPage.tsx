@@ -146,7 +146,7 @@ const ReportRunPage = () => {
                 .catch(setError)
                 .finally(() => setStatus('complete'));
         },
-        [config]
+        [config?.dataSource.name, config?.title, dataSourceUid, reportUid]
     );
 
     return !config ? (

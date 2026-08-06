@@ -39,7 +39,7 @@ cd testing/regression
 ### 2. Install Project Dependencies
 
 ```bash
-npm ci
+npm ci --ignore-scripts
 ```
 
 ### 3. Create and Configure `cypress.env.json`

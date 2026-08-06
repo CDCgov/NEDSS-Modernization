@@ -10,7 +10,7 @@ Feature: Patient Search by Address
     Then I should see Results with the last name "Singh"
 
   Scenario: Address - Search by State
-    Then I select "Georgia" state
+    When I select "Georgia" state
     Then I should see Results with for text "GA"
 
   Scenario: Address - Search by Zip Code

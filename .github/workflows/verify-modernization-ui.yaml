@@ -29,7 +29,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./apps/modernization-ui
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Lint
         working-directory: ./apps/modernization-ui

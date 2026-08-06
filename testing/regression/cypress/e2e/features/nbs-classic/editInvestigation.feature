@@ -6,7 +6,7 @@ Feature: EDit Open Investigation
   Scenario: Accessing and editing and Open Investigation
     When Click on Open Investigation in the main menu bar
     Then Should land on the Open Investigation Queue page
-    Then Click and view an Investigation
-    Then Click Edit button in Open Investigation
-    Then Edit info in the form in Open Investigation
-    Then Click submit on edit page in Open Investigation
+    When Click and view an Investigation
+    And Click Edit button in Open Investigation
+    And Edit info in the form in Open Investigation
+    And Click submit on edit page in Open Investigation
