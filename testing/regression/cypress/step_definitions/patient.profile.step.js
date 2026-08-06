@@ -77,3 +77,7 @@ When("I click on the stored Investigation ID in the Events tab", () => {
 Then("the stored morbidity report ID should not appear in the Documents Requiring Review section", () => {
     PatientProfilePage.verifyMorbidityEventIdNotInDocumentsRequiringReview();
 });
+
+Then("the stored morbidity report ID should not appear in the Morbidity Reports section of the Events tab", () => {
+    eventsTabPage.verifyMorbidityEventIdNotInMorbidityReports();
+});

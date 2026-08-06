@@ -17,6 +17,7 @@ class MorbidityReportPage {
   cancelButton = "#Cancel";
   editButton = '#Edit';
   printButton = "#Print";
+  deleteButton = "#Delete";
   transferOwnershipButton = "input[id='Transfer Ownership']";
   createInvestigationButton = "input[id='Create Investigation']";
   associateInvestigationButton = "input[id='Associate Investigation']";
@@ -169,6 +170,10 @@ class MorbidityReportPage {
     cy.get(this.submitAndCreateInvestigationButton).eq(0).click();
   }
 
+  clickDelete() {
+    cy.get(this.deleteButton).first().click();
+  }
+
   confirmSubmission() {
     cy.on("window:confirm", () => true); // Automatically confirm the popup
     // small buffer
@@ -194,6 +199,32 @@ class MorbidityReportPage {
           throw new Error('Could not extract Investigation ID from: ' + text);
         }
       });
+  }
+
+  clickMarkAsReviewedAndHandlePopup() {
+    // Wait for page to load
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    // Intercept the window.open call for the Mark as Reviewed popup
+    cy.window().then(win => {
+      const originalOpen = win.open;
+      cy.stub(win, 'open').callsFake((url, target, features) => {
+        cy.log('Mark as Reviewed popup URL intercepted: ' + url);
+        
+        // Instead of opening a new window, navigate to the URL in the same window
+        // This effectively "stubs" the popup and loads it on the same page
+        cy.visit(url);
+        win.markAsReviewed(); // Call the function to mark as reviewed
+        
+      });
+    });
+    
+    // Click the Mark as Reviewed button
+    cy.get('#Mark\\ as\\ Reviewed')
+      .should('be.visible')
+      .first()
+      .click();
   }
 
   // Patient entry methods

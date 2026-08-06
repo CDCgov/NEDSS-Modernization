@@ -268,6 +268,35 @@ class EventsTabPage {
       .should('be.visible')
       .click();
   }
+
+  verifyMorbidityEventIdNotInMorbidityReports() {
+    // Wait for page to load
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    const eventId = Cypress.env('morbidityEventId');  
+    // Check the Morbidity Reports table
+    cy.get('#morbidity-reports-table')
+      .should('be.visible')
+      .within(() => {
+        // Check all Event ID links (first column)
+        cy.get('tbody tr td:first-child a')
+          .then($links => {
+            let found = false;
+            $links.each((index, link) => {
+              const linkText = Cypress.$(link).text().trim();
+              if (linkText === eventId) {
+                found = true;
+              }
+            });
+            
+            expect(found, 'Morbidity event ID should NOT appear in Morbidity Reports table')
+              .to.be.false;
+            
+          });
+      });
+  }
+
 }
 
 export default new EventsTabPage();

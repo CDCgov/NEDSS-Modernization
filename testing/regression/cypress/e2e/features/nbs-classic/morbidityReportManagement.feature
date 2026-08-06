@@ -109,5 +109,31 @@ Feature: Patient File - Event Management - Morbidity Report
         And user clicks the "View File" link, the user is returned to Patient profile summary page
         Then the stored morbidity report ID should not appear in the Documents Requiring Review section
    
-    # Scenario: Mark morbidity report as reviewed - STD
-    # Scenario: Delete morbidity report
+   @skip-broken
+   # Unsure how to handle the popup for the Mark as Reviewed button, so skipping this test for now
+    Scenario: Mark morbidity report as reviewed - STD
+        When user clicks on the "Add morbidity report" button within the Events tab
+        And I select "AIDS" from the Condition dropdown menu
+        And I select "Cobb County" from the Jurisdiction dropdown menu
+        And I enter the current date in the Date of Morbidity Report field
+        And I enter "2" in the Facility and Provider Information field
+        And I click on the Code Lookup button
+        And I select "No" from the Pregnant dropdown menu
+        And I click the Submit button
+        And Click Events tab on Patient Profile Page
+        And I click on the first morbidity report link in the Events tab and store its Event ID
+        And I click the Mark as Reviewed button on the Morbidity Report page and handle the popup
+
+    Scenario: Delete morbidity report
+        When user clicks on the "Add morbidity report" button within the Events tab
+        And I select "Botulism, foodborne" from the Condition dropdown menu
+        And I select "Cobb County" from the Jurisdiction dropdown menu
+        And I enter the current date in the Date of Morbidity Report field
+        And I enter "2" in the Facility and Provider Information field
+        And I click on the Code Lookup button
+        And I select "No" from the Pregnant dropdown menu
+        And I click the Submit button
+        And Click Events tab on Patient Profile Page
+        And I click on the first morbidity report link in the Events tab and store its Event ID
+        And I click the delete button on the Morbidity Report page
+        Then the stored morbidity report ID should not appear in the Morbidity Reports section of the Events tab

@@ -268,6 +268,14 @@ When("I click the Mark as Reviewed button on the Morbidity Report page", () => {
   morbidityReportPage.clickMarkAsReviewed();
 });
 
+When("I click the Mark as Reviewed button on the Morbidity Report page and handle the popup", () => {
+  morbidityReportPage.clickMarkAsReviewedAndHandlePopup();
+});
+
+When("I click the delete button on the Morbidity Report page", () => {
+  morbidityReportPage.clickDelete();
+});
+
 // 6: Verification Steps
 
 When("I go to the Home page", () => {
