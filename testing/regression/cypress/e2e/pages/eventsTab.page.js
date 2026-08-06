@@ -200,30 +200,20 @@ class EventsTabPage {
       });
   }
 
-  clickFirstUnassociatedMorbidityReport() {
+  clickStoredMorbidityReport() {
     this.waitForSpinner();
     
-    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
-      .filter((index, row) => {
-        const associatedText = Cypress.$(row)
-          .find('td:nth-child(' + EventsTabPage.ASSOCIATED_COLUMN + ')')
-          .text()
-          .trim();
-        return associatedText === '---';
-      })
-      .first()
+    const eventId = Cypress.env('morbidityEventId');
+    
+    cy.log('Looking for morbidity report with Event ID: ' + eventId);
+    
+    this.findRowByEventId(eventId)
+      .find('td:first-child a')
       .scrollIntoView()
       .should('be.visible')
-      .within(() => {
-        cy.get('td:first-child a')
-          .scrollIntoView()
-          .should('be.visible')
-          .then($link => {
-            this.extractAndStoreEventId($link);
-            this.clickLink($link);
-          });
-      });
+      .click();
   }
+
 
   verifySavedMorbidityReportJurisdiction(expectedJurisdiction) {
     this.waitForSpinner();
@@ -262,6 +252,21 @@ class EventsTabPage {
         expect(associatedText, 'Associated with should have an investigation ID')
           .to.match(/CAS\d+/);
       });
+  }
+
+  clickStoredInvestigationId() {
+    // Get the stored investigation ID
+    const investigationId = Cypress.env('investigationId');
+    
+    // Wait for page to load
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    // Find and click the investigation link in the Investigations table
+    cy.get('#investigations-table tbody tr')
+      .contains('td a', investigationId)
+      .should('be.visible')
+      .click();
   }
 }
 

@@ -54,11 +54,9 @@ Feature: Patient File - Event Management - Morbidity Report
         And Click Events tab on Patient Profile Page
         Then the treatment count should increase by 1 in the stored morbidity report
    
-   @skip-broken
-   #Not sure how to test this scenario, as it opens a new window and Cypress does not support multiple windows
     Scenario: Print morbidity report
-        When I click on the first morbidity report link in the Events tab
-        And I click the Print button on the Morbidity Report page
+        When I click on the first morbidity report link in the Events tab and store its Event ID
+        Then clicking the Print button should display the print preview
 
     Scenario: Transfer ownership of morbidity report
         When I click on the first morbidity report link in the Events tab and store its Event ID
@@ -77,8 +75,24 @@ Feature: Patient File - Event Management - Morbidity Report
         Then the saved morbidity report should be associated with an investigation
    
     Scenario: Associate investigation from morbidity report
-        When I click on the first unassociated morbidity report link in the Events tab and store its Event ID
+        When user clicks on the "Add morbidity report" button within the Events tab
+        And I select "Botulism, foodborne" from the Condition dropdown menu
+        And I select "Cobb County" from the Jurisdiction dropdown menu
+        And I enter the current date in the Date of Morbidity Report field
+        And I enter "2" in the Facility and Provider Information field
+        And I click on the Code Lookup button
+        And I select "No" from the Pregnant dropdown menu
+        And I click the Submit button
+        And Click Events tab on Patient Profile Page
+        And I click on the first morbidity report link in the Events tab and store its Event ID
         And I click the Associate Investigation button on the Morbidity Report page
+        And I check an investigation with the condition "Botulism, foodborne"
+        And I click the Submit button
+        And I store the Investigation ID from the association message
+        And user clicks the "View File" link, the user is returned to Patient profile summary page
+        And Click Events tab on Patient Profile Page
+        And I click on the stored Investigation ID in the Events tab
+        Then the stored morbidity report should be associated with the investigation
 
     # Scenario: Mark morbidity report as reviewed
     # Scenario: Mark morbidity report as reviewed - STD

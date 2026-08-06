@@ -223,8 +223,8 @@ When("I click the Edit button on the Morbidity Report page", () => {
   morbidityReportPage.clickEdit();
 });
 
-When("I click the Print button on the Morbidity Report page", () => {
-  morbidityReportPage.clickPrint();
+Then("clicking the Print button should display the print preview", () => {
+  morbidityReportPage.clickAndVerifyPrint();
 });
 
 When("I enter the current date in the Treatment Date field", () => {
@@ -250,6 +250,18 @@ When("I click the Create Investigation button on the Morbidity Report page", () 
 
 When("I click the Associate Investigation button on the Morbidity Report page", () => {
   morbidityReportPage.clickAssociateInvestigation();
+});
+
+When("I store the morbidity report's condition", () => {
+  morbidityReportPage.storeCondition();
+});
+
+When("I check an investigation with the condition {string}", (condition) => {
+  morbidityReportPage.checkFirstInvestigationWithCondition(condition);
+});
+
+When("I store the Investigation ID from the association message", () => {
+  morbidityReportPage.storeInvestigationIdFromAssociationMessage();
 });
 
 // 6: Verification Steps

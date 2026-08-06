@@ -54,10 +54,6 @@ When("I click on the first morbidity report link in the Events tab and store its
     eventsTabPage.clickFirstMorbidityReportLinkStoreEventID();
 });
 
-When("I click on the first unassociated morbidity report link in the Events tab and store its Event ID", () => {
-    eventsTabPage.clickFirstUnassociatedMorbidityReport();
-});
-
 When("I count the number of treatments in the first morbidity report", () => {
     eventsTabPage.saveInitialTreatmentCount();
 });
@@ -72,4 +68,8 @@ Then("the saved morbidity report should have jurisdiction {string}", (expectedJu
 
 Then("the saved morbidity report should be associated with an investigation", () => {
     eventsTabPage.verifyStoredMorbidityReportHasAssociation();
+});
+
+When("I click on the stored Investigation ID in the Events tab", () => {
+    eventsTabPage.clickStoredInvestigationId();
 });

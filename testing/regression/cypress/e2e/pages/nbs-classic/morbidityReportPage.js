@@ -20,6 +20,7 @@ class MorbidityReportPage {
   transferOwnershipButton = "input[id='Transfer Ownership']";
   createInvestigationButton = "input[id='Create Investigation']";
   associateInvestigationButton = "input[id='Associate Investigation']";
+  conditionCode = "#conditionCd";
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -49,6 +50,35 @@ class MorbidityReportPage {
 
   selectJurisdiction(jurisdiction) {
     cy.get(this.jurisdictionField).select(jurisdiction, {force: true});
+  }
+
+  storeCondition() {
+    cy.get(this.conditionCode)
+      .invoke('text')
+      .then(condition => {
+        Cypress.env('morbidityCondition', condition);
+        cy.log('Stored morbidity condition: ' + condition);
+      });
+  }
+
+  checkFirstInvestigationWithCondition(condition) {
+    // Find the first row with the matching condition
+    cy.get('table.dtTable tbody tr')
+      .filter((index, row) => {
+        // Find the condition column (4th column, index 3)
+        const conditionText = Cypress.$(row).find('td:nth-child(4)').text().trim();
+        return conditionText === condition;
+      })
+      .first()
+      .scrollIntoView()
+      .should('be.visible')
+      .within(() => {
+        // Find and check the checkbox in the first column
+        cy.get('td:first-child input[type="checkbox"]')
+          .should('exist')
+          .and('be.visible')
+          .check({ force: true });
+      });
   }
 
   clearJurisdiction() {
@@ -89,8 +119,6 @@ class MorbidityReportPage {
     cy.get(this.addTreatmentButton).click();
   }
 
-
-
   clickCodeLookup() {
     cy.get(this.codeLookupButton).first().click();
   }
@@ -107,8 +135,17 @@ class MorbidityReportPage {
     cy.get(this.editButton).click();
   }
 
-  clickPrint() {
+  clickAndVerifyPrint() {
+    let printURL = '/nbs/LoadViewObservationMorb1.do?ContextAction=PrintPage';
+    cy.window().then(win => {
+      cy.stub(win, 'open').as('open')
+    });
     cy.get(this.printButton).click();
+    cy.get("@open").should("have.been.calledWith", printURL);
+    cy.request(printURL, { method: 'GET' }).then((response) => {
+      const contentType = response.headers['content-type'];
+      expect(contentType).to.include('application/pdf');
+    });
   }
 
   clickTransferOwnership() {
@@ -131,6 +168,27 @@ class MorbidityReportPage {
     cy.on("window:confirm", () => true); // Automatically confirm the popup
     // small buffer
     cy.wait(500);
+  }
+
+  storeInvestigationIdFromAssociationMessage() {
+    // Wait for the success message to appear
+    cy.get('#error1', { timeout: 10000 })
+      .should('be.visible')
+      .invoke('text')
+      .then(text => {
+        // Extract the Investigation ID from parentheses
+        // Example: "Morbidity Report successfully associated to investigation: Botulism, foodborne (CAS10001000GA01)"
+        const match = text.match(/\(([^)]+)\)/);
+        
+        if (match && match[1]) {
+          const investigationId = match[1].trim();
+          Cypress.env('investigationId', investigationId);
+          cy.log('Stored Investigation ID: ' + investigationId);
+        } else {
+          cy.log('No Investigation ID found in parentheses');
+          throw new Error('Could not extract Investigation ID from: ' + text);
+        }
+      });
   }
 
   // Patient entry methods
@@ -188,4 +246,5 @@ class MorbidityReportPage {
     cy.get("body").should("be.visible");
   }
 }
+
 export const morbidityReportPage = new MorbidityReportPage();
