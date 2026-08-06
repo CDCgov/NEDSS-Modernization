@@ -14,9 +14,9 @@ import gov.cdc.nbs.patient.demographic.name.SoundexResolver;
 import gov.cdc.nbs.patient.demographics.name.NameDemographic;
 import java.util.Collection;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientNameEditService {
   private final SoundexResolver soundexResolver;
 

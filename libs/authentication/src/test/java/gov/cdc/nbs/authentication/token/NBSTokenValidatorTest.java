@@ -2,6 +2,7 @@ package gov.cdc.nbs.authentication.token;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.auth0.jwt.JWTVerifier;
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,11 +30,11 @@ class NBSTokenValidatorTest {
   @Test
   void should_be_valid_auth_header() {
     // Given a request with a valid Authorization header
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getHeader("Authorization")).thenReturn("Bearer validtoken");
 
     // And a valid token
-    DecodedJWT decodedJWT = Mockito.mock(DecodedJWT.class);
+    DecodedJWT decodedJWT = mock(DecodedJWT.class);
     when(verifier.verify("validtoken")).thenReturn(decodedJWT);
     when(decodedJWT.getSubject()).thenReturn("someUser");
 
@@ -49,12 +49,12 @@ class NBSTokenValidatorTest {
   @Test
   void should_be_valid_nbs_token() {
     // Given a request with a valid nbs_token cookie
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getHeader("Authorization")).thenReturn(null);
     when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("nbs_token", "validtoken")});
 
     // And a valid token
-    DecodedJWT decodedJWT = Mockito.mock(DecodedJWT.class);
+    DecodedJWT decodedJWT = mock(DecodedJWT.class);
     when(verifier.verify("validtoken")).thenReturn(decodedJWT);
     when(decodedJWT.getSubject()).thenReturn("someUser");
 
@@ -68,7 +68,7 @@ class NBSTokenValidatorTest {
   @Test
   void should_be_expired() {
     // Given a request with a valid Authorization header
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getHeader("Authorization")).thenReturn("Bearer expiredToken");
 
     // And an expired token
@@ -86,7 +86,7 @@ class NBSTokenValidatorTest {
   @Test
   void should_be_invalid() {
     // Given a request with a valid Authorization header
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getHeader("Authorization")).thenReturn("Bearer invalidToken");
 
     // And an invalid token
@@ -103,7 +103,7 @@ class NBSTokenValidatorTest {
   @Test
   void should_be_unset() {
     // Given a request with a empty Authorization header
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getHeader("Authorization")).thenReturn(null);
     when(request.getCookies()).thenReturn(new Cookie[] {});
 
@@ -118,7 +118,7 @@ class NBSTokenValidatorTest {
   @Test
   void should_be_unset_invalid_auth() {
     // Given a request with an invalid Authorization header
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getHeader("Authorization")).thenReturn("bad");
     when(request.getCookies()).thenReturn(new Cookie[] {});
 

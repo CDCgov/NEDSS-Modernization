@@ -245,6 +245,10 @@ When("I select input id {string} with type {string}", (id, type) => {
 });
 
 Then("I fill input id {string} with text {string}", (id, text) => {
+    // Wait for URL to contain 'search/patients'
+    cy.url().should('include', 'search/patients');
+    
+    // Then fill the input
     classicSearchPatientPage.fillIdInputWithText(id, text);
 });
 

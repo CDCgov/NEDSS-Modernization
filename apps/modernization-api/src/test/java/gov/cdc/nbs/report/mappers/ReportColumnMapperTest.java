@@ -7,6 +7,7 @@ import gov.cdc.nbs.entity.odse.DataSourceCodeset;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportColumn;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ class ReportColumnMapperTest {
             .displayable('Y')
             .filterable('N')
             .statusCd('A')
-            .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+            .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
             .codesets(
                 List.of(
                     DataSourceCodeset.builder()
@@ -67,7 +68,7 @@ class ReportColumnMapperTest {
             .descTxt("Some description")
             .codesets(List.of())
             .statusCd('A')
-            .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+            .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
             .build();
 
     ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);

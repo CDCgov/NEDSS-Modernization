@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -17,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,13 +31,13 @@ class SubsectionUpdaterTest {
   @Test
   void should_update_subsection() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    WaUiMetadata subSectionMock = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata subSectionMock = mock(WaUiMetadata.class);
     when(subSectionMock.getId()).thenReturn(98l);
     ArgumentCaptor<PageContentCommand.UpdateSubsection> captor =
         ArgumentCaptor.forClass(PageContentCommand.UpdateSubsection.class);
-    when(page.updateSubSection(captor.capture(), Mockito.any())).thenReturn(subSectionMock);
+    when(page.updateSubSection(captor.capture(), any())).thenReturn(subSectionMock);
 
     // When a valid request is made to update the section
     UpdateSubSectionRequest request = new UpdateSubSectionRequest("New name", false);
@@ -90,10 +91,10 @@ class SubsectionUpdaterTest {
   @Test
   void should_find_subsection() {
     // given a valid subsection
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata subsection = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata subsection = mock(WaUiMetadata.class);
     when(subsection.getWaTemplateUid()).thenReturn(page);
     when(subsection.getNbsUiComponentUid()).thenReturn(1016l);
 
@@ -111,10 +112,10 @@ class SubsectionUpdaterTest {
   @Test
   void should_not_find_subsection_bad_component() {
     // given a subsection with a bad component id
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata subsection = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata subsection = mock(WaUiMetadata.class);
     when(subsection.getWaTemplateUid()).thenReturn(page);
     when(subsection.getNbsUiComponentUid()).thenReturn(1009l);
 
@@ -125,10 +126,10 @@ class SubsectionUpdaterTest {
   @Test
   void should_not_find_subsection_bad_page() {
     // given a subsection with the wrong page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(3l);
 
-    WaUiMetadata subsection = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata subsection = mock(WaUiMetadata.class);
     when(subsection.getWaTemplateUid()).thenReturn(page);
 
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(subsection);

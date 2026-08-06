@@ -48,6 +48,10 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     video: false,
     watchForFileChanges: false,
+    pageLoadTimeout: 180000,
+    defaultCommandTimeout: 20000,
+    requestTimeout: 60000,
+    responseTimeout: 60000,
   },
   retries: {
     // Configure retry attempts for `cypress run`

@@ -1,8 +1,8 @@
 package gov.cdc.nbs.report;
 
-import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,7 +12,6 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.exception.ForbiddenException;
-import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
@@ -39,7 +38,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -70,8 +68,8 @@ class WhereClauseServiceTest {
       List<ReportColumn> columns,
       ReportConstants.ReportGroup group) {
     return new ReportConfiguration(
-        Mockito.mock(ReportDataSource.class),
-        Mockito.mock(Library.class),
+        mock(ReportDataSource.class),
+        mock(Library.class),
         "Test Report",
         null,
         0L,
@@ -147,28 +145,28 @@ class WhereClauseServiceTest {
 
   private ReportColumn mockReportColumn(
       Long id, String columnSourceTypeCode, String columnName, String codesetName) {
-    ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
+    ReportColumn reportColumn = mock(ReportColumn.class);
 
-    Mockito.lenient().when(reportColumn.id()).thenReturn(id);
-    Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn(columnSourceTypeCode);
-    Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
-    Mockito.lenient().when(reportColumn.codesetNm()).thenReturn(codesetName);
+    lenient().when(reportColumn.id()).thenReturn(id);
+    lenient().when(reportColumn.sourceTypeCode()).thenReturn(columnSourceTypeCode);
+    lenient().when(reportColumn.name()).thenReturn(columnName);
+    lenient().when(reportColumn.codesetNm()).thenReturn(codesetName);
 
     return reportColumn;
   }
 
   private void mockAuthenticatedUser(Long externalOrgUid) {
 
-    NbsUserDetails mockUserDetails = Mockito.mock(NbsUserDetails.class);
-    Mockito.lenient().when(mockUserDetails.getExternalOrgUid()).thenReturn(externalOrgUid);
+    NbsUserDetails mockUserDetails = mock(NbsUserDetails.class);
+    lenient().when(mockUserDetails.getExternalOrgUid()).thenReturn(externalOrgUid);
 
     // Mock the Authentication and return our user as the Principal
-    Authentication mockAuthentication = Mockito.mock(Authentication.class);
-    Mockito.lenient().when(mockAuthentication.getPrincipal()).thenReturn(mockUserDetails);
+    Authentication mockAuthentication = mock(Authentication.class);
+    lenient().when(mockAuthentication.getPrincipal()).thenReturn(mockUserDetails);
 
     // Mock the Security Context container and have it return the auth token
-    SecurityContext mockSecurityContext = Mockito.mock(SecurityContext.class);
-    Mockito.lenient().when(mockSecurityContext.getAuthentication()).thenReturn(mockAuthentication);
+    SecurityContext mockSecurityContext = mock(SecurityContext.class);
+    lenient().when(mockSecurityContext.getAuthentication()).thenReturn(mockAuthentication);
 
     // Bind the context to the execution thread
     SecurityContextHolder.setContext(mockSecurityContext);
@@ -648,20 +646,20 @@ class WhereClauseServiceTest {
     mockAuthenticatedUser(54321L);
 
     // Stub the permission scope resolver for jurisdiction tracking (program_jurisdiction_oid IN
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L));
     when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     // Wrap in the execution request
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters())
         .thenReturn(
             List.of(
                 new BasicFilterRequest(filterUid, List.of("A"), false),
                 new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
         whereClauseService.buildWhereClause(
@@ -783,14 +781,14 @@ class WhereClauseServiceTest {
     ReportConfiguration reportConfig =
         createReportConfig(
             List.of(config, config2), advFilterConfig, reportCols, ReportGroup.PUBLIC);
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.TRUE);
 
     mockAuthenticatedUser(54321L);
 
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
     when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
@@ -802,7 +800,7 @@ class WhereClauseServiceTest {
                 new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
     when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup2));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
     when(mockDataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report"))
         .thenReturn("[RDB].[dbo].[lab_test_report]");
 
@@ -917,7 +915,7 @@ class WhereClauseServiceTest {
         List.of(reportColumn, reportColumn2, labResultReportColumn, labResultReportColumn2));
     ReportConfiguration reportConfig =
         createReportConfig(List.of(config, config2), advFilterConfig, reportCols, null);
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
 
     when(executionRequest.basicFilters())
         .thenReturn(
@@ -926,7 +924,7 @@ class WhereClauseServiceTest {
                 new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
     when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup2));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
     when(mockDataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report"))
         .thenReturn("[RDB].[dbo].[lab_test_report]");
 
@@ -1076,7 +1074,7 @@ class WhereClauseServiceTest {
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.FALSE);
 
     // Stub the permission scope resolver data
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L, 102L));
 
     Permission expectedPermission = new Permission("VIEWREPORTPRIVATE", "REPORTING");
@@ -1097,7 +1095,7 @@ class WhereClauseServiceTest {
 
     mockAuthenticatedUser(54321L);
 
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
     when(scopeResolver.resolve(new Permission("VIEWREPORTTEMPLATE", "REPORTING")))
         .thenReturn(mockScope);
@@ -1130,7 +1128,7 @@ class WhereClauseServiceTest {
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
 
-    PermissionScope emptyScope = Mockito.mock(PermissionScope.class);
+    PermissionScope emptyScope = mock(PermissionScope.class);
     when(emptyScope.any()).thenReturn(List.of()); // Empty list
     when(scopeResolver.resolve(new Permission("VIEWREPORTREPORTINGFACILITY", "REPORTING")))
         .thenReturn(emptyScope);
@@ -1178,11 +1176,11 @@ class WhereClauseServiceTest {
     mockAuthenticatedUser(8888L);
 
     // Assemble execution payload matching the configured filter UID
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters())
         .thenReturn(List.of(new BasicFilterRequest(filterUid, List.of("GA"), false)));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     // Run the full orchestrator
     String result =
@@ -1203,16 +1201,16 @@ class WhereClauseServiceTest {
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.FALSE);
 
     // Stub the permission context return mapping
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(77L));
     when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     // Setup user context requesting a report with no filters
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters()).thenReturn(List.of()); // Wide open request
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
         whereClauseService.buildWhereClause(

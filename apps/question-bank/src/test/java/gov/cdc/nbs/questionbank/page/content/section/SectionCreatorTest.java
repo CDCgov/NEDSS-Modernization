@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,12 +32,11 @@ class SectionCreatorTest {
   @Test
   void should_create_section() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    WaUiMetadata newSectionMock = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata newSectionMock = mock(WaUiMetadata.class);
     when(newSectionMock.getId()).thenReturn(98l);
-    when(page.addSection(Mockito.any(PageContentCommand.AddSection.class)))
-        .thenReturn(newSectionMock);
+    when(page.addSection(any(PageContentCommand.AddSection.class))).thenReturn(newSectionMock);
 
     // And a working id generator
     when(idGenerator.next()).thenReturn("someId");

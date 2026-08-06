@@ -5,9 +5,9 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.PatientService;
 import gov.cdc.nbs.patient.RequestContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientDeletionService {
 
   private final PatientAssociationCountFinder finder;

@@ -1,6 +1,7 @@
 package gov.cdc.nbs.report.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,7 +36,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -65,16 +65,16 @@ class ReportMapperTest {
   @BeforeEach
   void setUp() {
     user = mock(NbsUserDetails.class);
-    Mockito.lenient().when(user.getId()).thenReturn(userId);
+    lenient().when(user.getId()).thenReturn(userId);
 
-    Mockito.lenient().when(dataSource.getId()).thenReturn(dataSourceId);
+    lenient().when(dataSource.getId()).thenReturn(dataSourceId);
 
-    Mockito.lenient()
+    lenient()
         .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(new IdGeneratorService.GeneratedId(47L));
 
-    Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("hello.sas");
-    Mockito.lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('Y');
+    lenient().when(reportLibrary.getLibraryName()).thenReturn("hello.sas");
+    lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('Y');
   }
 
   @Nested
@@ -85,7 +85,7 @@ class ReportMapperTest {
           buildAdminReportRequest(ReportConstants.ReportGroup.REPORTING_FACILITY);
 
       Long nextReportId = 100L;
-      Mockito.lenient()
+      lenient()
           .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
           .thenReturn(new IdGeneratorService.GeneratedId(nextReportId));
 
@@ -183,7 +183,7 @@ class ReportMapperTest {
 
     @Test
     void fromAdminReportRequest_should_set_report_type_code_to_html_when_no_column_select() {
-      Mockito.lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('N');
+      lenient().when(reportLibrary.getColumnSelectInd()).thenReturn('N');
       AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
 
       Report result =
@@ -194,7 +194,7 @@ class ReportMapperTest {
 
     @Test
     void fromAdminReportRequest_should_not_set_report_type_code_or_location_if_not_sas() {
-      Mockito.lenient().when(reportLibrary.getLibraryName()).thenReturn("py_lib");
+      lenient().when(reportLibrary.getLibraryName()).thenReturn("py_lib");
       AdminReportRequest request = buildAdminReportRequest(ReportConstants.ReportGroup.TEMPLATE);
 
       Report result =

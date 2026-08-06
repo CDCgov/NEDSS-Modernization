@@ -4,22 +4,22 @@ Feature: User can add a patient profile
         Given I am logged in as secure user
 
     Scenario: User add a patient
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I create a new patient
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I create a new patient
         Then I should see profile of new patient
 
 
     Scenario: User add a patient without enter field 
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I clear the Information as of Date field
-        Then I create a new patient without enter field and get error message
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I clear the Information as of Date field
+        And I create a new patient without enter field and get error message
 
     Scenario: User add a patient to enter 'information as of Date' field only 
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I create a new patient to enter information as of Date field only
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I create a new patient to enter information as of Date field only
         Then I should see profile of new patient
 
     # Scenario: User add a patient to enter 1 year later date in 'information as of Date' field  
@@ -29,10 +29,9 @@ Feature: User can add a patient profile
     #     Then I should see "You have successfully added"
 
     Scenario: User add a patient create and delete profile
-        Scenario: View the patient detail of new created patient profile
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I create a new patient
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I create a new patient
         Then I should see profile of new patient
         # Then delete the patient profile
         # Then I should see "Perform a search to see results"
@@ -49,15 +48,15 @@ Feature: User can add a patient profile
         ## no result is found 
 
     Scenario: User add a patient to enter numeric and special character in name field
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I create a new patient to enter numeric and special character in name field
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I create a new patient to enter numeric and special character in name field
         Then I should see profile of new patient
 
     Scenario: User add a patient to enter other information with Information as of Date field
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I create a new patient to enter other information with Information as of Date
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I create a new patient to enter other information with Information as of Date
         Then I should see profile of new patient
 
     # Selecting state doesn't work, so county doesn't work
@@ -69,9 +68,9 @@ Feature: User can add a patient profile
         Then I should see profile of new patient
 
     Scenario: View the patient detail of new created patient profile
-        Then the user has searched for a patient by "Person number" as "63506872864"
-        When nagivate to add new patient page
-        Then I create a new patient
+        When the user has searched for a patient by "Person number" as "63506872864"
+        And nagivate to add new patient page
+        And I create a new patient
         Then I should see profile of new patient
         Then I should see on Patient Profile "Patient ID: "
 
