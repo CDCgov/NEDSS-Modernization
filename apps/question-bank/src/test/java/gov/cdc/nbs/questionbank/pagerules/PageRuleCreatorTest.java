@@ -2,6 +2,8 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,7 +58,7 @@ class PageRuleCreatorTest {
     RuleRequest request =
         new RuleRequest(
             null, null, null, false, null, null, null, Arrays.asList("test"), null, null);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Published");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
 
@@ -92,11 +93,11 @@ class PageRuleCreatorTest {
 
   @Test
   void enable() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99l)).thenReturn(mockRule);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
     when(repository.findNextAvailableID()).thenReturn(99l);
@@ -113,18 +114,18 @@ class PageRuleCreatorTest {
             "Source question",
             Arrays.asList("Target quest"));
     when(enableDisableCreator.create(99l, request, 1l, 2l)).thenReturn(command(99l));
-    when(repository.save(Mockito.any())).thenReturn(rule);
+    when(repository.save(any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
-    verify(repository).save(Mockito.any());
+    verify(repository).save(any());
   }
 
   @Test
   void disable() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99l)).thenReturn(mockRule);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
     when(repository.findNextAvailableID()).thenReturn(99l);
@@ -141,18 +142,18 @@ class PageRuleCreatorTest {
             "Source question",
             Arrays.asList("Target quest"));
     when(enableDisableCreator.create(99l, request, 1l, 2l)).thenReturn(command(99l));
-    when(repository.save(Mockito.any())).thenReturn(rule);
+    when(repository.save(any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
-    verify(repository).save(Mockito.any());
+    verify(repository).save(any());
   }
 
   @Test
   void date_compare() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99l)).thenReturn(mockRule);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
     when(repository.findNextAvailableID()).thenReturn(99l);
@@ -169,18 +170,18 @@ class PageRuleCreatorTest {
             "Source question",
             Arrays.asList("Target quest"));
     when(dateCompareCreator.create(99l, request, 1l, 2l)).thenReturn(command(99l));
-    when(repository.save(Mockito.any())).thenReturn(rule);
+    when(repository.save(any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
-    verify(repository).save(Mockito.any());
+    verify(repository).save(any());
   }
 
   @Test
   void hide() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99l)).thenReturn(mockRule);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
     when(repository.findNextAvailableID()).thenReturn(99l);
@@ -197,18 +198,18 @@ class PageRuleCreatorTest {
             "Source question",
             Arrays.asList("Target quest"));
     when(hideUnhideCreator.create(99l, request, 1l, 2l)).thenReturn(command(99l));
-    when(repository.save(Mockito.any())).thenReturn(rule);
+    when(repository.save(any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
-    verify(repository).save(Mockito.any());
+    verify(repository).save(any());
   }
 
   @Test
   void unhide() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99l)).thenReturn(mockRule);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
     when(repository.findNextAvailableID()).thenReturn(99l);
@@ -225,18 +226,18 @@ class PageRuleCreatorTest {
             "Source question",
             Arrays.asList("Target quest"));
     when(hideUnhideCreator.create(99l, request, 1l, 2l)).thenReturn(command(99l));
-    when(repository.save(Mockito.any())).thenReturn(rule);
+    when(repository.save(any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
-    verify(repository).save(Mockito.any());
+    verify(repository).save(any());
   }
 
   @Test
   void require_if() {
-    WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
+    WaRuleMetadata rule = mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
-    Rule mockRule = Mockito.mock(Rule.class);
+    Rule mockRule = mock(Rule.class);
     when(finder.findByRuleId(99l)).thenReturn(mockRule);
-    WaTemplate template = Mockito.mock(WaTemplate.class);
+    WaTemplate template = mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
     when(repository.findNextAvailableID()).thenReturn(99l);
@@ -253,9 +254,9 @@ class PageRuleCreatorTest {
             "Source question",
             Arrays.asList("Target quest"));
     when(requireIfCreator.create(99l, request, 1l, 2l)).thenReturn(command(99l));
-    when(repository.save(Mockito.any())).thenReturn(rule);
+    when(repository.save(any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
-    verify(repository).save(Mockito.any());
+    verify(repository).save(any());
   }
 
   @Test

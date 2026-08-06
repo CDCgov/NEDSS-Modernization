@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +30,10 @@ class NBSAuthenticationFilterTest {
   @Test
   void should_set_auth_valid_token() throws ServletException, IOException {
     // Given a valid filter chain
-    FilterChain chain = Mockito.mock(FilterChain.class);
+    FilterChain chain = mock(FilterChain.class);
 
     // And a request with a valid token
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(tokenValidator.validate(request))
         .thenReturn(new TokenValidation(TokenStatus.VALID, "user"));
 
@@ -48,10 +47,10 @@ class NBSAuthenticationFilterTest {
   @Test
   void should_try_session_unset_token() throws ServletException, IOException {
     // Given a valid filter chain
-    FilterChain chain = Mockito.mock(FilterChain.class);
+    FilterChain chain = mock(FilterChain.class);
 
     // And a request with no token
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(tokenValidator.validate(request)).thenReturn(new TokenValidation(TokenStatus.UNSET));
 
     // when the filter is applied
@@ -67,10 +66,10 @@ class NBSAuthenticationFilterTest {
   @Test
   void should_try_session_expired_token() throws ServletException, IOException {
     // Given a valid filter chain
-    FilterChain chain = Mockito.mock(FilterChain.class);
+    FilterChain chain = mock(FilterChain.class);
 
     // And a request with an expired token
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(tokenValidator.validate(request)).thenReturn(new TokenValidation(TokenStatus.EXPIRED));
 
     // when the filter is applied

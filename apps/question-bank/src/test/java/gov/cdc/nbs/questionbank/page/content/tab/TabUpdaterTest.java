@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.page.content.tab;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -17,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,13 +30,13 @@ class TabUpdaterTest {
   @Test
   void should_update_section() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    WaUiMetadata sectionMock = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata sectionMock = mock(WaUiMetadata.class);
     when(sectionMock.getId()).thenReturn(98l);
     ArgumentCaptor<PageContentCommand.UpdateTab> captor =
         ArgumentCaptor.forClass(PageContentCommand.UpdateTab.class);
-    when(page.updateTab(captor.capture(), Mockito.any())).thenReturn(sectionMock);
+    when(page.updateTab(captor.capture(), any())).thenReturn(sectionMock);
 
     // When a valid request is made to update the tab
     UpdateTabRequest request = new UpdateTabRequest("New name", false);
@@ -89,10 +90,10 @@ class TabUpdaterTest {
   @Test
   void should_find_tab() {
     // given a valid tab
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata tab = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata tab = mock(WaUiMetadata.class);
     when(tab.getWaTemplateUid()).thenReturn(page);
     when(tab.getNbsUiComponentUid()).thenReturn(1010l);
 
@@ -110,10 +111,10 @@ class TabUpdaterTest {
   @Test
   void should_not_find_tab_bad_component() {
     // given a tab with a bad component id
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata tab = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata tab = mock(WaUiMetadata.class);
     when(tab.getWaTemplateUid()).thenReturn(page);
     when(tab.getNbsUiComponentUid()).thenReturn(1011l);
 
@@ -124,10 +125,10 @@ class TabUpdaterTest {
   @Test
   void should_not_find_tab_bad_page() {
     // given a tab with the wrong page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(3l);
 
-    WaUiMetadata tab = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata tab = mock(WaUiMetadata.class);
     when(tab.getWaTemplateUid()).thenReturn(page);
 
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(tab);

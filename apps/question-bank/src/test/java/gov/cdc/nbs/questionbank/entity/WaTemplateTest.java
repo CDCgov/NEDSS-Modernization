@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
@@ -14,7 +15,6 @@ import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import java.time.Instant;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 class WaTemplateTest {
 
@@ -943,7 +943,7 @@ class WaTemplateTest {
     WaUiMetadata tab =
         new WaUiMetadata(
             page, new PageContentCommand.AddTab("tab", true, "tab", 999L, Instant.now()), orderNbr);
-    tab = Mockito.spy(tab);
+    tab = spy(tab);
     when(tab.getId()).thenReturn(id);
     return tab;
   }
@@ -954,7 +954,7 @@ class WaTemplateTest {
             page,
             new PageContentCommand.AddSection("section", true, "section", 0, 999L, Instant.now()),
             orderNbr);
-    section = Mockito.spy(section);
+    section = spy(section);
     when(section.getId()).thenReturn(id);
     return section;
   }
@@ -966,7 +966,7 @@ class WaTemplateTest {
             new PageContentCommand.AddSubsection(
                 "subsection", true, "subsection", 0, 999L, Instant.now()),
             orderNbr);
-    subsection = Mockito.spy(subsection);
+    subsection = spy(subsection);
     when(subsection.getId()).thenReturn(id);
     return subsection;
   }

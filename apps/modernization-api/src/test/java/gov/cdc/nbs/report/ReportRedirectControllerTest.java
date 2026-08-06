@@ -2,11 +2,11 @@ package gov.cdc.nbs.report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.web.servlet.view.RedirectView;
 
 class ReportRedirectControllerTest {
@@ -16,7 +16,7 @@ class ReportRedirectControllerTest {
   @Test
   void should_issue_redirect() {
     // Given a request with a redirect header
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getRequestURL())
         .thenReturn(
             new StringBuffer(

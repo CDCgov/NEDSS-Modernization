@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,11 +31,11 @@ class TabCreatorTest {
   @Test
   void should_create_tab() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    WaUiMetadata newTabMock = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata newTabMock = mock(WaUiMetadata.class);
     when(newTabMock.getId()).thenReturn(98l);
-    when(page.addTab(Mockito.any(PageContentCommand.AddTab.class))).thenReturn(newTabMock);
+    when(page.addTab(any(PageContentCommand.AddTab.class))).thenReturn(newTabMock);
 
     // And a working id generator
     when(idGenerator.next()).thenReturn("someId");

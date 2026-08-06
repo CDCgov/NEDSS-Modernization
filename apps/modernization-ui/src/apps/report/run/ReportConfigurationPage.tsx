@@ -93,11 +93,11 @@ const SECTIONS = [
                 collapsible={true}
                 subtext={
                     <span>
-                        Add <strong>rules</strong> and <strong>rule groups</strong> to narrow your results.
-                        Use <strong>AND</strong> to require all connected rules or groups to match, or{' '}
-                        <strong>OR</strong> to require only one to match. Your advanced filter combines with your basic
-                        filters using <strong>AND</strong> logic. The <strong>WHERE</strong> clause preview shows your
-                        advanced filter as you build it.
+                        Add <strong>rules</strong> and <strong>rule groups</strong> to narrow your results. Use{' '}
+                        <strong>AND</strong> to require all connected rules or groups to match, or <strong>OR</strong>{' '}
+                        to require only one to match. Your advanced filter combines with your basic filters using{' '}
+                        <strong>AND</strong> logic. The <strong>WHERE</strong> clause preview shows your advanced filter
+                        as you build it.
                     </span>
                 }
                 contentMaxWidth="widescreen"
