@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { LocationOptions } from 'options/location';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { LocationOptions } from 'options/location';
 
 import { AddressDemographic } from '../address';
 

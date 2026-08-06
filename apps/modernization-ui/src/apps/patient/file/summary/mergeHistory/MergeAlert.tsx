@@ -1,7 +1,8 @@
+import { useNavigate } from 'react-router';
+
 import { AlertMessage } from 'design-system/message';
 import { FeatureToggle } from 'feature';
 import { permissions, Permitted } from 'libs/permission';
-import { useNavigate } from 'react-router';
 
 import { usePatientMergeQueueStatus } from './api/usePatientMergeQueueStatus';
 

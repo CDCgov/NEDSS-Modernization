@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 
+import { MemoryRouter } from 'react-router';
+
 import { SortingSettings } from 'libs/sorting';
 import { PaginationSettings } from 'pagination';
-import { MemoryRouter } from 'react-router';
 
 import { TableProvider } from '../TableProvider';
 

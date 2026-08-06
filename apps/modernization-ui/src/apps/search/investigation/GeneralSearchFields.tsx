@@ -1,3 +1,5 @@
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { SearchCriteria } from 'apps/search/criteria';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
@@ -9,7 +11,6 @@ import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { useConditionOptions } from 'options/condition';
 import { useJurisdictionOptions } from 'options/jurisdictions';
 import { useProgramAreaOptions } from 'options/program-areas';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import {
     dateTypeOptions,

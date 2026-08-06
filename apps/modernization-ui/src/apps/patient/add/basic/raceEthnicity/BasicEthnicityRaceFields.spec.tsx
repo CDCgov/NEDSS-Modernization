@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Selectable } from 'options';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { Selectable } from 'options';
 
 import { BasicEthnicityRace } from '../entry';
 

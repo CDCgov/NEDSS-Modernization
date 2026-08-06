@@ -9,9 +9,6 @@ import {
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import { createPragmaticDndAdapter } from '@react-querybuilder/dnd/pragmatic-dnd';
 import classNames from 'classnames';
-import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
-import { AlertMessage } from 'design-system/message/index.ts';
-import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 import { useController } from 'react-hook-form';
 import {
     Rule as DefaultRule,
@@ -27,6 +24,10 @@ import {
     splitBy,
     ValidationResult,
 } from 'react-querybuilder';
+
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError.tsx';
+import { AlertMessage } from 'design-system/message/index.ts';
+import { AdvancedFilterConfiguration, ReportColumn, Rule, RuleGroup } from 'generated';
 
 import { ReportExecuteForm } from '../../ReportRunPage';
 

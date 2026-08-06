@@ -1,7 +1,8 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { Card } from 'design-system/card';
 import { useComponentSizing } from 'design-system/sizing';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import styles from './add-patient-basic-form.module.scss';
 import { BasicAddressFields } from './address/BasicAddressFields';

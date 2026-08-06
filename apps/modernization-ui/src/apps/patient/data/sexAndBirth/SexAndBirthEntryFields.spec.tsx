@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
 
 import { SexAndBirthEntryFields } from './SexAndBirthEntryFields';
 import { SexBirthCodedValues } from './useSexBirthCodedValues';

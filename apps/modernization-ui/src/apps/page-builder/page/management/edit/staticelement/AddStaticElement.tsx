@@ -1,6 +1,8 @@
 import { RefObject } from 'react';
 
 import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import {
     AddDefault,
     AddHyperlink,
@@ -10,7 +12,6 @@ import {
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useAlert } from 'libs/alert';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
 
 import { usePageManagement } from '../../usePageManagement';

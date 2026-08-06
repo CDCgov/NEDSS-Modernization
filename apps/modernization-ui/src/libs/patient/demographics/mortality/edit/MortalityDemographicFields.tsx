@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
@@ -7,7 +9,6 @@ import { TextInputField } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
 import { isEqual, Selectable } from 'options';
 import { indicators } from 'options/indicator';
-import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 import { HasMortalityDemographic, labels, MortalityDemographic } from '../mortality';

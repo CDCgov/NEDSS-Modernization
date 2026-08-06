@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
 import { Button, Form, Icon } from '@trussworks/react-uswds';
+import { Controller, useForm } from 'react-hook-form';
+
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import {
     CreateSubSectionRequest,
@@ -9,7 +11,6 @@ import {
     UpdateSubSectionRequest,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { Controller, useForm } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { validSubsectionNameRule } from 'validation/entry/validSubsectionNameRule';
 

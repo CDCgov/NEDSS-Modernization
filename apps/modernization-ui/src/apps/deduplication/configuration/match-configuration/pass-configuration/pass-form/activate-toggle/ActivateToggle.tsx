@@ -1,6 +1,7 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Toggle } from 'design-system/toggle/Toggle';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import styles from './activate-toggle.module.scss';
 

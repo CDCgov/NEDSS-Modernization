@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
+import { Outlet } from 'react-router';
+
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { SignIn } from 'apps/landing/SignIn/SignIn';
 import { SignUp } from 'apps/landing/SignUp/SignUp';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { TopBanner } from 'components/TopBanner/TopBanner';
 import { PageProvider } from 'page';
-import { Outlet } from 'react-router';
 
 import { LoginWrapper } from './LoginWrapper';
 import logo from './cdc.svg';

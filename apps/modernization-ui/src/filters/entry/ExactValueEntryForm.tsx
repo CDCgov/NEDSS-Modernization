@@ -1,7 +1,8 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { MultiSelectAutocomplete } from 'components/selection/multi';
 import { ValueProperty } from 'filters/properties';
 import { Selectable } from 'options';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import { FilterEntry } from './FilterEntry';
 

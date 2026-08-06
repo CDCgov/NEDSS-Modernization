@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import type { Column } from 'design-system/table';
 import { MemoryRouter } from 'react-router';
+
+import type { Column } from 'design-system/table';
 
 import { MergePreviewTableCard } from './MergePreviewTableCard';
 

@@ -1,4 +1,5 @@
 import { format, parseISO } from 'date-fns';
+
 import { PatientDescriptor } from 'libs/patient/PatientDescriptor';
 
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';

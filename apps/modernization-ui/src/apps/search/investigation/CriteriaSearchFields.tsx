@@ -1,8 +1,9 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { SearchCriteria } from 'apps/search/criteria';
 import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import {
     caseStatusOptions,

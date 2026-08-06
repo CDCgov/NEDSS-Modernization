@@ -1,5 +1,6 @@
-import { MemoizedSupplier } from 'libs/supplying';
 import { Params } from 'react-router';
+
+import { MemoizedSupplier } from 'libs/supplying';
 
 import { demographics } from './demographics';
 import { description } from './description';

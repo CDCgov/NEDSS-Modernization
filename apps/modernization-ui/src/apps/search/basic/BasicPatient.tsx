@@ -1,8 +1,9 @@
+import { Link } from 'react-router';
+
 import { SortingSelectable } from 'design-system/sorting/preferences';
 import { Direction } from 'libs/sorting';
 import { displayName } from 'name';
 import { asSelectableGender } from 'options/gender';
-import { Link } from 'react-router';
 import { Mapping, Maybe } from 'utils';
 
 type BasicPatient = {

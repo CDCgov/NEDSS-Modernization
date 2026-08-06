@@ -1,6 +1,7 @@
+import { UseFormReturn } from 'react-hook-form';
+
 import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { LabReport, LabReportFilter, useFindLabReportsByFilterLazyQuery } from 'generated/graphql/schema';
-import { UseFormReturn } from 'react-hook-form';
 
 import {
     initial as defaultValues,
