@@ -276,6 +276,25 @@ class PatientProfilePage {
     cy.get("img[name='INV107_button']").type('Cobb County');
     cy.get("#SubmitTop").click();
   }
+
+  verifyMorbidityEventIdNotInDocumentsRequiringReview() {
+    // Wait for page to load
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    const eventId = Cypress.env('morbidityEventId');
+
+    // Check if the event ID exists in the Documents Requiring Review table
+    cy.get('#documents-requiring-review-table')
+      .should('be.visible')
+      .then($table => {
+        const tableText = $table.text();
+        expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
+          .to.not.include(eventId);
+        
+      });
+  }
+
 }
 
 export default new PatientProfilePage();

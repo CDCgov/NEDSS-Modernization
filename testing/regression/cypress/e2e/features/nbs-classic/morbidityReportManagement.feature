@@ -94,6 +94,20 @@ Feature: Patient File - Event Management - Morbidity Report
         And I click on the stored Investigation ID in the Events tab
         Then the stored morbidity report should be associated with the investigation
 
-    # Scenario: Mark morbidity report as reviewed
+    Scenario: Mark morbidity report as reviewed
+        When user clicks on the "Add morbidity report" button within the Events tab
+        And I select "Botulism, foodborne" from the Condition dropdown menu
+        And I select "Cobb County" from the Jurisdiction dropdown menu
+        And I enter the current date in the Date of Morbidity Report field
+        And I enter "2" in the Facility and Provider Information field
+        And I click on the Code Lookup button
+        And I select "No" from the Pregnant dropdown menu
+        And I click the Submit button
+        And Click Events tab on Patient Profile Page
+        And I click on the first morbidity report link in the Events tab and store its Event ID
+        And I click the Mark as Reviewed button on the Morbidity Report page
+        And user clicks the "View File" link, the user is returned to Patient profile summary page
+        Then the stored morbidity report ID should not appear in the Documents Requiring Review section
+   
     # Scenario: Mark morbidity report as reviewed - STD
     # Scenario: Delete morbidity report

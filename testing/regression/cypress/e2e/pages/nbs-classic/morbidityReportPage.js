@@ -20,6 +20,7 @@ class MorbidityReportPage {
   transferOwnershipButton = "input[id='Transfer Ownership']";
   createInvestigationButton = "input[id='Create Investigation']";
   associateInvestigationButton = "input[id='Associate Investigation']";
+  markAsReviewedButton = "input[id='Mark as Reviewed']";
   conditionCode = "#conditionCd";
 
   // Patient entry fields
@@ -133,6 +134,10 @@ class MorbidityReportPage {
 
   clickEdit() {
     cy.get(this.editButton).click();
+  }
+
+  clickMarkAsReviewed() {
+    cy.get(this.markAsReviewedButton).first().click();
   }
 
   clickAndVerifyPrint() {

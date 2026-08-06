@@ -73,3 +73,7 @@ Then("the saved morbidity report should be associated with an investigation", ()
 When("I click on the stored Investigation ID in the Events tab", () => {
     eventsTabPage.clickStoredInvestigationId();
 });
+
+Then("the stored morbidity report ID should not appear in the Documents Requiring Review section", () => {
+    PatientProfilePage.verifyMorbidityEventIdNotInDocumentsRequiringReview();
+});

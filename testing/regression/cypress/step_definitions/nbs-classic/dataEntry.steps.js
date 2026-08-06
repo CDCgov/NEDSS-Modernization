@@ -264,6 +264,10 @@ When("I store the Investigation ID from the association message", () => {
   morbidityReportPage.storeInvestigationIdFromAssociationMessage();
 });
 
+When("I click the Mark as Reviewed button on the Morbidity Report page", () => {
+  morbidityReportPage.clickMarkAsReviewed();
+});
+
 // 6: Verification Steps
 
 When("I go to the Home page", () => {
