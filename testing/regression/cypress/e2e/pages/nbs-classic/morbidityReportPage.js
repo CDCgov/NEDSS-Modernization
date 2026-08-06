@@ -19,6 +19,7 @@ class MorbidityReportPage {
   printButton = "#Print";
   transferOwnershipButton = "input[id='Transfer Ownership']";
   createInvestigationButton = "input[id='Create Investigation']";
+  associateInvestigationButton = "input[id='Associate Investigation']";
 
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
@@ -116,6 +117,10 @@ class MorbidityReportPage {
 
   clickCreateInvestigation() {
     cy.get(this.createInvestigationButton).first().click();
+  }
+
+  clickAssociateInvestigation() {
+    cy.get(this.associateInvestigationButton).first().click();
   }
 
   clickSubmitAndCreateInvestigation() {

@@ -248,6 +248,10 @@ When("I click the Create Investigation button on the Morbidity Report page", () 
   morbidityReportPage.clickCreateInvestigation();
 });
 
+When("I click the Associate Investigation button on the Morbidity Report page", () => {
+  morbidityReportPage.clickAssociateInvestigation();
+});
+
 // 6: Verification Steps
 
 When("I go to the Home page", () => {

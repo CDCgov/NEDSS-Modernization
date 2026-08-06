@@ -76,7 +76,10 @@ Feature: Patient File - Event Management - Morbidity Report
         And Click Events tab on Patient Profile Page
         Then the saved morbidity report should be associated with an investigation
    
-    # Scenario: Associate investigation from morbidity report
+    Scenario: Associate investigation from morbidity report
+        When I click on the first unassociated morbidity report link in the Events tab and store its Event ID
+        And I click the Associate Investigation button on the Morbidity Report page
+
     # Scenario: Mark morbidity report as reviewed
     # Scenario: Mark morbidity report as reviewed - STD
     # Scenario: Delete morbidity report
