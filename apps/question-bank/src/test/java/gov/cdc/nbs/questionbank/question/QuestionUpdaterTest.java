@@ -29,7 +29,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -116,7 +115,7 @@ class QuestionUpdaterTest {
 
     // and an existing question
     WaQuestion inactive = inactiveQuestion();
-    when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(inactive));
+    when(repository.findById(anyLong())).thenReturn(Optional.of(inactive));
 
     // when i send an update then an exception is thrown
     assertThrows(UpdateQuestionException.class, () -> updater.update(1L, 2L, request));
@@ -253,20 +252,20 @@ class QuestionUpdaterTest {
     UpdateQuestionRequest request = QuestionRequestMother.updateTextQuestionRequest();
     DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
     // and an existign question
-    when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
+    when(repository.findById(anyLong())).thenReturn(Optional.of(spy));
 
     // and a question that is in use
     when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
         .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
     // and the question can be saved
-    when(repository.save(Mockito.any())).thenReturn(spy);
+    when(repository.save(any())).thenReturn(spy);
 
     // when i send an update
     updater.update(1L, 2L, request);
 
     // then set data type is not called
-    verify(repository, times(0)).setDataType(Mockito.anyString(), Mockito.anyLong());
+    verify(repository, times(0)).setDataType(anyString(), anyLong());
   }
 
   @Test
@@ -275,19 +274,19 @@ class QuestionUpdaterTest {
     UpdateQuestionRequest request = QuestionRequestMother.updateTextQuestionRequest();
     // and an existign question
     DateQuestionEntity spy = QuestionEntityMother.dateQuestion();
-    when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(spy));
+    when(repository.findById(anyLong())).thenReturn(Optional.of(spy));
 
     // and a question that is in use
     when(metadatumRepository.findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
         .thenReturn(Collections.emptyList());
 
     // and the question can be saved
-    when(repository.save(Mockito.any())).thenReturn(spy);
+    when(repository.save(any())).thenReturn(spy);
 
     // when i send an update
     updater.update(1L, 2L, request);
 
     // then set data type is not called
-    verify(repository, times(1)).setDataType(Mockito.anyString(), Mockito.anyLong());
+    verify(repository, times(1)).setDataType(anyString(), anyLong());
   }
 }

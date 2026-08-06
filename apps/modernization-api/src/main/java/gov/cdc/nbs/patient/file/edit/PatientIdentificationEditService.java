@@ -11,9 +11,9 @@ import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographics.identification.IdentificationDemographic;
 import java.util.Collection;
 import java.util.Objects;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientIdentificationEditService {
 
   private static long identifiedBy(final IdentificationDemographic demographic) {

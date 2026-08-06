@@ -10,9 +10,9 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographics.race.RaceDemographic;
 import java.util.Collection;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientRaceEditService {
 
   private static final ChangeResolver<PatientRace, RaceDemographic, String> resolver =

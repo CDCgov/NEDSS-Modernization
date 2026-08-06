@@ -1609,7 +1609,7 @@ class PersonTest {
         new PatientCommand.UpdateBirth(
             121L,
             LocalDate.parse("2023-06-01"),
-            LocalDate.of(1949, 10, 15),
+            LocalDate.of(1949, Month.OCTOBER, 15),
             Gender.U.value(),
             Indicator.NO.getId(),
             null,
@@ -1646,7 +1646,7 @@ class PersonTest {
         new PatientCommand.UpdateBirth(
             1049L,
             LocalDate.parse("2023-06-01"),
-            LocalDate.of(1949, 10, 15),
+            LocalDate.of(1949, Month.OCTOBER, 15),
             Gender.U.value(),
             Indicator.YES.getId(),
             17,

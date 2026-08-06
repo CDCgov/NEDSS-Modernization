@@ -1,6 +1,7 @@
 package gov.cdc.nbs.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -11,7 +12,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 class TokenCreatorTest {
 
@@ -24,7 +24,7 @@ class TokenCreatorTest {
 
     Algorithm algorithm = mock(Algorithm.class);
 
-    when(algorithm.sign(Mockito.any(), Mockito.any())).thenReturn("SomeBytes".getBytes());
+    when(algorithm.sign(any(), any())).thenReturn("SomeBytes".getBytes());
 
     TokenCreator creator = new TokenCreator(clock, algorithm, properties);
 

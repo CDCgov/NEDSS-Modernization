@@ -2,7 +2,10 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.valueset.exception.CreateValuesetException;
@@ -13,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -32,12 +34,10 @@ class ValuesetCreatorTest {
     CreateValuesetRequest request = validRequest();
 
     // And the code is not already in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("CODE")))
-        .thenReturn(0L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("CODE"))).thenReturn(0L);
 
     // And the name is not already in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("name")))
-        .thenReturn(0L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("name"))).thenReturn(0L);
 
     // When a create valueset request is processed
     Valueset valueset = creator.create(request, 1l);
@@ -88,12 +88,10 @@ class ValuesetCreatorTest {
     CreateValuesetRequest request = validRequest();
 
     // And the code is in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("CODE")))
-        .thenReturn(1L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("CODE"))).thenReturn(1L);
 
     // And the name is not already in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("name")))
-        .thenReturn(0L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("name"))).thenReturn(0L);
 
     // When a create valueset request is processed
     // Then an exception is thrown
@@ -106,8 +104,7 @@ class ValuesetCreatorTest {
     CreateValuesetRequest request = validRequest();
 
     // And the name is not already in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("name")))
-        .thenReturn(1L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("name"))).thenReturn(1L);
 
     // When a create valueset request is processed
     // Then an exception is thrown
@@ -120,15 +117,13 @@ class ValuesetCreatorTest {
     CreateValuesetRequest request = validRequest();
 
     // And the code is not already in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("CODE")))
-        .thenReturn(0L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("CODE"))).thenReturn(0L);
 
     // And the name is not already in use
-    when(template.queryForObject(Mockito.anyString(), Mockito.eq(Long.class), Mockito.eq("name")))
-        .thenReturn(0L);
+    when(template.queryForObject(anyString(), eq(Long.class), eq("name"))).thenReturn(0L);
 
     // And a failing database persistance
-    doThrow(new RuntimeException()).when(entityManager).persist(Mockito.any());
+    doThrow(new RuntimeException()).when(entityManager).persist(any());
 
     // When a create valueset request is processed
     // Then an exception is thrown

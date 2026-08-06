@@ -86,9 +86,8 @@ class PageHistoryFinderTest {
   void getPageHistory_invalidTemplateName_returnEmptyList() {
     Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Collections.EMPTY_LIST;
-    Mockito.when(
-            jdbcTemplate.query(
-                anyString(), any(Object[].class), any(int[].class), any(RowMapper.class)))
+    when(jdbcTemplate.query(
+            anyString(), any(Object[].class), any(int[].class), any(RowMapper.class)))
         .thenReturn(expectedPageHistory);
     when(jdbcTemplate.query(
             any(String.class),

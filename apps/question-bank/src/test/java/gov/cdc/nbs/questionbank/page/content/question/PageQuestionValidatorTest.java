@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.querydsl.jpa.impl.JPAQuery;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +31,7 @@ class PageQuestionValidatorTest {
   @Test
   @SuppressWarnings("unchecked")
   void should_fail_already_exists() {
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(table.id.count())).thenReturn(query);
     when(query.from(table)).thenReturn(query);
     when(query.where(
@@ -51,7 +51,7 @@ class PageQuestionValidatorTest {
   @Test
   @SuppressWarnings("unchecked")
   void should_succeed() {
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(table.id.count())).thenReturn(query);
     when(query.from(table)).thenReturn(query);
     when(query.where(
