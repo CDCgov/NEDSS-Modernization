@@ -1,6 +1,7 @@
 import { render, within } from '@testing-library/react';
-import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 
 import { Mortality } from './Mortality';
 

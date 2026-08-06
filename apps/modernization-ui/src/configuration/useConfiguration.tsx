@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
 
 import merge from 'lodash.merge';
+
 import { logWarnToUserConsole } from 'utils/logging';
 
 import { Configuration } from './configuration';

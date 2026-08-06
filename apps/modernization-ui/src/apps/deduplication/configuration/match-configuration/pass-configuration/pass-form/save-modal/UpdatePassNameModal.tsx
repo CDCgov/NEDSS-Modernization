@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 
+import { Controller, useForm } from 'react-hook-form';
+
 import { Input } from 'components/FormInputs/Input';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Modal } from 'design-system/modal';
-import { Controller, useForm } from 'react-hook-form';
 
 import styles from './save-pass-modal.module.scss';
 

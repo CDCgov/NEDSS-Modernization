@@ -1,10 +1,11 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Mock } from 'vitest';
+
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { useSearchInteraction } from 'apps/search';
 import { Term } from 'apps/search/terms';
 import { focusedTarget } from 'utils/focusedTarget';
-import { Mock } from 'vitest';
 
 import { SearchTerms } from './SearchTerms';
 

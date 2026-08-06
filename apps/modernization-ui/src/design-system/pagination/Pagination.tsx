@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+
 import { Button } from 'components/button';
 
 import styles from './pagination.module.scss';

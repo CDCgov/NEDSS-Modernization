@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { LabTestSummary } from 'generated/graphql/schema';
 
 import { ResultedTestDisplay } from './ResultedTestDisplay';

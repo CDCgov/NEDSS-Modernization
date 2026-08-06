@@ -1,9 +1,10 @@
 import { ReactNode, useCallback, useState } from 'react';
 
 import classNames from 'classnames';
+import { createPortal } from 'react-dom';
+
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
-import { createPortal } from 'react-dom';
 
 import { HintPanel } from './HintPanel';
 import styles from './hint.module.scss';

@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { NameEntry } from 'apps/patient/data/name';
 import { asSelectable } from 'options/selectable';
 

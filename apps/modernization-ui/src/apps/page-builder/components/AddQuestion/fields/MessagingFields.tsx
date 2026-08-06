@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 
 import { ToggleButton } from '../../ToggleButton';

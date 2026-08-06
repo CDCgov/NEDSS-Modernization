@@ -1,4 +1,5 @@
 import { isRuleGroupType, ValidationResult } from 'react-querybuilder';
+
 import { logErrorToUserConsole } from 'utils/logging.ts';
 
 import { getRangeValErrorMsg, isDateFormat, validateDateRange, validateNumericRange } from '../utils/rangeValidator.ts';

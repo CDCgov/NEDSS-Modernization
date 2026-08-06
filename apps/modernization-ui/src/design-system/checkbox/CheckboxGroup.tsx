@@ -1,6 +1,7 @@
 import { FocusEvent as ReactFocusEvent, useEffect } from 'react';
 
 import classNames from 'classnames';
+
 import { Orientation, Sizing } from 'components/Entry';
 import { Field } from 'design-system/field';
 import { Selectable, useMultiSelection } from 'options';

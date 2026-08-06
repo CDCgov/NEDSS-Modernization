@@ -1,5 +1,7 @@
 import { Suspense, useState } from 'react';
 
+import { Await, NavLink } from 'react-router';
+
 import { Shown } from 'conditional-render';
 import { internalizeDate, internalizeDateTime } from 'date';
 import { Card, TableCardProps } from 'design-system/card';
@@ -15,7 +17,6 @@ import { AssociatedWith } from 'libs/events/investigations/associated';
 import { LoadingOverlay } from 'libs/loading';
 import { MemoizedSupplier } from 'libs/supplying';
 import { maybeDisplayName } from 'name';
-import { Await, NavLink } from 'react-router';
 import { exists } from 'utils';
 import { maybeMap } from 'utils/mapping';
 

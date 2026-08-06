@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FacilityOptionsService, ProviderOptionsService, UserOptionsService } from 'generated';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { FacilityOptionsService, ProviderOptionsService, UserOptionsService } from 'generated';
 
 import GeneralSearchFields from './GeneralSearchFields';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';

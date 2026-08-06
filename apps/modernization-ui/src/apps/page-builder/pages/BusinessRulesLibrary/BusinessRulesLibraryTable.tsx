@@ -1,6 +1,8 @@
 import { Fragment, RefObject, useEffect, useState } from 'react';
 
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Link } from 'react-router';
+
 import { Rule } from 'apps/page-builder/generated';
 import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
@@ -8,7 +10,6 @@ import { TableBody, TableComponent } from 'components/Table/Table';
 import { NavLinkButton } from 'design-system/button';
 import { Direction } from 'libs/sorting';
 import { usePagination } from 'pagination';
-import { Link } from 'react-router';
 
 import './BusinessRulesLibraryTable.scss';
 import { RuleSearchBar } from './RuleSearchBar';

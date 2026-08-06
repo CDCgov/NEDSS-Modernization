@@ -1,7 +1,8 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
-import { Confirmation } from 'design-system/modal';
 import debounce from 'lodash.debounce';
+
+import { Confirmation } from 'design-system/modal';
 
 import { useCountdown } from './useCountdown';
 import { useTimeout } from './useTimeout';

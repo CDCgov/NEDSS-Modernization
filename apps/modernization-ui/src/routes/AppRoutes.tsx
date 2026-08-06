@@ -1,3 +1,5 @@
+import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router';
+
 import { routing as deduplicationRouting } from 'apps/deduplication';
 import { routing as welcomeRouting } from 'apps/landing';
 import { Expired } from 'apps/landing/Expired/Expired';
@@ -14,7 +16,6 @@ import { routing as logoutRouting } from 'logout';
 import { PageProvider } from 'page';
 import { ErrorPage } from 'pages/error/ErrorPage';
 import { Login } from 'pages/login';
-import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router';
 
 import { RedirectHome } from './RedirectHome';
 

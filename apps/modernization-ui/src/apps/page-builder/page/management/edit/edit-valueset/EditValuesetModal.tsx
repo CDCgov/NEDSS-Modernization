@@ -1,6 +1,7 @@
 import { RefObject, useEffect } from 'react';
 
 import { Modal, ModalRef } from '@trussworks/react-uswds';
+
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { EditValueset } from 'apps/page-builder/components/EditValueset/EditValueset';
 import { useValueset } from 'apps/page-builder/hooks/api/useValueset';

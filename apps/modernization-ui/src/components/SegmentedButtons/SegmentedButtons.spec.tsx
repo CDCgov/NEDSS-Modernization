@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { Option } from 'generated';
 
 import { SegmentedButtons } from './SegmentedButtons';

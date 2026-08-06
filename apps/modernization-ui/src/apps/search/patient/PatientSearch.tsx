@@ -1,3 +1,5 @@
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { SearchInteractionProvider } from 'apps/search';
 import { sorting } from 'apps/search/basic';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
@@ -7,7 +9,6 @@ import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
 import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Direction } from 'libs/sorting';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { PatientSearchActions } from './PatientSearchActions';

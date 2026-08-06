@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { Investigation } from 'generated/graphql/schema';
 import { MemoryRouter } from 'react-router';
+
+import { Investigation } from 'generated/graphql/schema';
 
 import { InvestigationSearchResultListItem } from './InvestigationSearchResultListItem';
 

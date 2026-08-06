@@ -1,12 +1,13 @@
 import { ReactNode } from 'react';
 
+import { useLocation } from 'react-router';
+
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { Shown } from 'conditional-render';
 import { Button, NavLinkButton } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 import { BackToTop } from 'libs/page/back-to-top';
 import { permissions, Permitted } from 'libs/permission';
-import { useLocation } from 'react-router';
 
 import { PatientFileLayout } from './PatientFileLayout';
 import { DeleteAction } from './delete';

@@ -1,4 +1,5 @@
 import { format, isAfter, parseISO } from 'date-fns';
+
 import { Column } from 'design-system/table';
 
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
