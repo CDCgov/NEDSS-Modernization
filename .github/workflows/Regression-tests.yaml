@@ -1,6 +1,7 @@
 name: Regression tests
 on:
   pull_request:
+    types: synchronize
   push:
     branches:
       - main
@@ -10,7 +11,7 @@ on:
         description: "Spec to run"
         required: false
         type: string
-        default: "cypress/**"
+        default: "cypress/**/*.feature"
 
 jobs:
   cypress-run:
