@@ -1,9 +1,10 @@
 import { act } from 'react';
 
 import { renderHook, waitFor } from '@testing-library/react';
-import { decrypt, encrypt } from 'cryptography';
 import { useSearchParams } from 'react-router';
 import { Mock } from 'vitest';
+
+import { decrypt, encrypt } from 'cryptography';
 
 import { useSearchCriteria } from './useSearchCriteria';
 

@@ -1,9 +1,10 @@
 import { render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SortingProvider } from 'libs/sorting';
-import { PaginationProvider } from 'pagination';
 import { MemoryRouter, useSearchParams } from 'react-router';
 import { Mock } from 'vitest';
+
+import { SortingProvider } from 'libs/sorting';
+import { PaginationProvider } from 'pagination';
 
 import { useExportMatches } from '../../api/useExportMatches';
 

@@ -1,7 +1,9 @@
 import { useCallback, useRef } from 'react';
 
-import { SkipLink } from 'SkipLink';
 import classNames from 'classnames';
+import { UseFormReturn, useWatch } from 'react-hook-form';
+
+import { SkipLink } from 'SkipLink';
 import { asOfAgeResolver } from 'date';
 import {
     PendingEntryAlert,
@@ -11,7 +13,6 @@ import {
 import { Sizing } from 'design-system/field';
 import { InPageNavigation } from 'design-system/inPageNavigation';
 import { BackToTop } from 'libs/page/back-to-top';
-import { UseFormReturn, useWatch } from 'react-hook-form';
 
 import { EditAddressDemographicsCard } from './address';
 import { EditAdministrativeInformationCard } from './administrative';

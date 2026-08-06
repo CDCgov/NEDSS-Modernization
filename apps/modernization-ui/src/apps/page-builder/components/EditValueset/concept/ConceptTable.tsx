@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { Concept } from 'apps/page-builder/generated';
 import { ConceptSort, SortField } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { TableBody, TableComponent } from 'components/Table';

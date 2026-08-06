@@ -1,6 +1,8 @@
 import { RefObject, useEffect } from 'react';
 
 import { Button, Modal, ModalRef } from '@trussworks/react-uswds';
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
+
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesQuestion } from 'apps/page-builder/generated';
@@ -8,7 +10,6 @@ import { useFetchEditableQuestion } from 'apps/page-builder/hooks/api/useFetchEd
 import { useUpdatePageQuestion } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
 import { Spinner } from 'components/Spinner';
 import { useAlert } from 'libs/alert';
-import { FormProvider, useForm, useFormState } from 'react-hook-form';
 
 import { usePageManagement } from '../../usePageManagement';
 

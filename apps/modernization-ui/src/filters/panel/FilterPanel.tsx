@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { Filter } from 'filters';
 import { AppliedFilters } from 'filters/applied/AppliedFilters';
 import { asFilter } from 'filters/asDisplayableFilter';

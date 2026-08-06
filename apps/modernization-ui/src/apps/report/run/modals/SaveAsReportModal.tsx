@@ -1,6 +1,8 @@
 import { RefObject } from 'react';
 
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Controller, useForm } from 'react-hook-form';
+
 import { ModalComponent } from 'components/ModalComponent/ModalComponent.tsx';
 import { Button, ButtonGroup } from 'design-system/button';
 import { TextAreaField, TextInputField } from 'design-system/input/text';
@@ -11,7 +13,6 @@ import { permits } from 'libs/permission';
 import { usePermissions } from 'libs/permission/usePermissions';
 import { Selectable } from 'options';
 import { useReportSections } from 'options/report';
-import { Controller, useForm } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 
 import { GROUP_OPTIONS, PERMISSION_GROUP_MAP, SIZING } from '../../constants.ts';

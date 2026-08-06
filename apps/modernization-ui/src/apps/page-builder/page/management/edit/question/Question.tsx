@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { ModalRef } from '@trussworks/react-uswds';
+
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { ConfirmationModal } from 'confirmation';
 

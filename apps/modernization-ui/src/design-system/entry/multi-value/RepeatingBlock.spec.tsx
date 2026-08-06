@@ -1,8 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Input } from 'components/FormInputs/Input';
 import { axe } from 'jest-axe';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { Input } from 'components/FormInputs/Input';
 
 import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
 

@@ -1,6 +1,7 @@
+import classNames from 'classnames';
+
 import { View } from 'apps/search';
 import { Term } from 'apps/search/terms';
-import classNames from 'classnames';
 import { Sizing } from 'design-system/field';
 
 import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';

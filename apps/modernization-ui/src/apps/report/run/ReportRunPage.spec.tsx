@@ -1,16 +1,17 @@
 import { fireEvent, render, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as generated from 'generated';
-import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { axe } from 'jest-axe';
 import fileDownload from 'js-file-download';
+import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
+
+import * as generated from 'generated';
+import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { Layout } from 'layout';
 import { LoadingBlock } from 'libs/loading/block';
 import { permissions } from 'libs/permission';
 import { ConceptOptions, useConceptOptions } from 'options/concepts';
 import * as options from 'options/selectableResolver';
 import { ErrorPage } from 'pages/error';
-import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
 import { UserContextProvider } from 'user';
 
 import { PERMISSION_GROUP_MAP } from '../constants';

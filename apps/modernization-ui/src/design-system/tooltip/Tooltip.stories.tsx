@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { Icon } from 'design-system/icon';
 
 import { Tooltip } from './Tooltip';

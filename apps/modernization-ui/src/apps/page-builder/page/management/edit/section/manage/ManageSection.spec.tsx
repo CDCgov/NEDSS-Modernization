@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
 

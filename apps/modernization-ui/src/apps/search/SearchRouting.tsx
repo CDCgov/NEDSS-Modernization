@@ -1,5 +1,6 @@
-import { ApolloWrapper } from 'providers/ApolloContext';
 import { Navigate } from 'react-router';
+
+import { ApolloWrapper } from 'providers/ApolloContext';
 
 import { SearchPage } from './SearchPage';
 import { InvestigationSearch } from './investigation';

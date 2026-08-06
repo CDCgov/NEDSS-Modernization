@@ -1,6 +1,7 @@
 import { RefObject } from 'react';
 
 import { Modal, ModalRef } from '@trussworks/react-uswds';
+
 import { PagesSubSection } from 'apps/page-builder/generated';
 
 import { usePageManagement } from '../../../usePageManagement';

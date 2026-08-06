@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
 import { Button, Icon } from '@trussworks/react-uswds';
-import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import classNames from 'classnames';
+
+import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 
 import styles from './section.module.scss';
 

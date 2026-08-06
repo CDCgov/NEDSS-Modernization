@@ -1,7 +1,8 @@
 import { useEffect, useReducer } from 'react';
 
-import { PageRuleControllerService, Rule } from 'apps/page-builder/generated';
 import { useParams } from 'react-router';
+
+import { PageRuleControllerService, Rule } from 'apps/page-builder/generated';
 
 type State =
     | { status: 'idle' }

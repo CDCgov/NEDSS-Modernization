@@ -1,6 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
-import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router';
+
+import { AlertProvider } from 'alert';
 
 import { CreateCondition } from './CreateCondition';
 

@@ -1,10 +1,11 @@
 import { ReactNode, useId } from 'react';
 
 import classNames from 'classnames';
+import { Controller, ControllerRenderProps, RegisterOptions, useFormContext } from 'react-hook-form';
+
 import { Checkbox } from 'design-system/checkbox';
 import { Field } from 'design-system/field';
 import { BasicFilterConfiguration, ReportColumn } from 'generated';
-import { Controller, ControllerRenderProps, RegisterOptions, useFormContext } from 'react-hook-form';
 import { Validator } from 'validation';
 import { validateRequiredRule } from 'validation/entry';
 

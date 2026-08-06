@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 
 import { ModalRef } from '@trussworks/react-uswds';
+import { useLoaderData, useParams } from 'react-router';
+
 import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import styles from 'apps/report/layout/layout.module.scss';
 import { ConfirmationModal } from 'confirmation';
@@ -8,7 +10,6 @@ import { Button, NavLinkButton } from 'design-system/button';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import { ReportConfiguration, ReportControllerService } from 'generated';
 import { LoadingBlock } from 'libs/loading/block';
-import { useLoaderData, useParams } from 'react-router';
 import { redirectToNBS6 } from 'utils';
 
 import { ReportConfigurationContent } from './ReportConfigurationContent';

@@ -1,8 +1,9 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { Controller, useFormContext } from 'react-hook-form';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 
 import { NameEntry } from './entry';

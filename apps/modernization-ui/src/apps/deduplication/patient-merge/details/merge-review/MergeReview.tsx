@@ -1,9 +1,10 @@
+import { useLocation, useNavigate, useParams } from 'react-router';
+
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 import { Heading } from 'components/heading';
 import { Button } from 'design-system/button';
 import { useAlert } from 'libs/alert';
-import { useLocation, useNavigate, useParams } from 'react-router';
 
 import styles from './merge-review.module.scss';
 import { AddressSelection } from './patient-form/address/AddressSelection';
