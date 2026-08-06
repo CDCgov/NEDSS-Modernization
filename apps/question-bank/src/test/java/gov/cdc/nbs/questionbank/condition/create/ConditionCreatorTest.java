@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.condition.create;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -45,9 +46,9 @@ class ConditionCreatorTest {
     CreateConditionRequest request = getCreateConditionRequest();
     ConditionCode conditionDb =
         new ConditionCode(conditionCreator.conditionAdd(request, USER_ID, 123));
-    when(conditionCodeRepository.save(Mockito.any(ConditionCode.class))).thenReturn(conditionDb);
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(0L);
-    when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(0L);
+    when(conditionCodeRepository.save(any(ConditionCode.class))).thenReturn(conditionDb);
+    when(conditionCodeRepository.checkId(anyString())).thenReturn(0L);
+    when(conditionCodeRepository.checkConditionName(anyString())).thenReturn(0L);
     Condition response = conditionCreator.createCondition(request, USER_ID);
     assertEquals(conditionDb.getId(), response.id());
   }
@@ -96,7 +97,7 @@ class ConditionCreatorTest {
     CreateConditionRequest request =
         new CreateConditionRequest(
             "1L", "null", "null", "null", null, null, null, null, null, null);
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
+    when(conditionCodeRepository.checkId(anyString())).thenReturn((1L));
     assertThrows(
         ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
@@ -106,14 +107,14 @@ class ConditionCreatorTest {
     CreateConditionRequest request =
         new CreateConditionRequest(
             "null", "null", "condition name", "null", null, null, null, null, null, null);
-    when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1L);
+    when(conditionCodeRepository.checkConditionName(anyString())).thenReturn(1L);
     assertThrows(
         ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
   void checkIdExists() {
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(1L);
+    when(conditionCodeRepository.checkId(anyString())).thenReturn(1L);
     boolean val = conditionCreator.checkId("1L");
     assertTrue(val);
   }
@@ -126,7 +127,7 @@ class ConditionCreatorTest {
 
   @Test
   void checkConditionNameExists() {
-    when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1L);
+    when(conditionCodeRepository.checkConditionName(anyString())).thenReturn(1L);
     boolean val = conditionCreator.checkConditionNm("condition name");
     assertTrue(val);
   }

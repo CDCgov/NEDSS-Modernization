@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.id.IdGeneratorService;
@@ -37,7 +39,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,8 +75,7 @@ class QuestionCreatorTest {
   @Test
   void should_return_generated_local_id_null() {
     // given the idGenerator will return a generated Id
-    when(idGenerator.getNextValidId(Mockito.any()))
-        .thenReturn(new GeneratedId(1000L, "PREFIX", "SUFFIX"));
+    when(idGenerator.getNextValidId(any())).thenReturn(new GeneratedId(1000L, "PREFIX", "SUFFIX"));
 
     // and the configRepository will return a NBS_CLASS_CODE
     NbsConfiguration configEntry = new NbsConfiguration();
@@ -95,8 +95,7 @@ class QuestionCreatorTest {
   @Test
   void should_return_generated_local_id_empty() {
     // given the idGenerator will return a generated Id
-    when(idGenerator.getNextValidId(Mockito.any()))
-        .thenReturn(new GeneratedId(1000L, "PREFIX", "SUFFIX"));
+    when(idGenerator.getNextValidId(any())).thenReturn(new GeneratedId(1000L, "PREFIX", "SUFFIX"));
 
     // and the configRepository will return a NBS_CLASS_CODE
     NbsConfiguration configEntry = new NbsConfiguration();
@@ -195,9 +194,9 @@ class QuestionCreatorTest {
   @Test
   void should_save_to_db() {
     // given the database will return an entity with an Id
-    TextQuestionEntity tq = Mockito.mock(TextQuestionEntity.class);
+    TextQuestionEntity tq = mock(TextQuestionEntity.class);
     when(tq.getId()).thenReturn(999l);
-    when(repository.save(Mockito.any())).thenReturn(tq);
+    when(repository.save(any())).thenReturn(tq);
 
     // and that entity will be mapped to a question
     when(mapper.toTextQuestion(tq))
@@ -219,7 +218,7 @@ class QuestionCreatorTest {
   @Test
   void should_verify_valueset_exists() {
     // given a value set that exists
-    Codeset mockCodeset = Mockito.mock(Codeset.class);
+    Codeset mockCodeset = mock(Codeset.class);
     when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.of(mockCodeset));
 
     // when querying for the value set then no exception is thrown
@@ -247,9 +246,9 @@ class QuestionCreatorTest {
   @Test
   void should_create_date_question() {
     // given the database will return an entity with an Id
-    DateQuestionEntity dq = Mockito.mock(DateQuestionEntity.class);
+    DateQuestionEntity dq = mock(DateQuestionEntity.class);
     when(dq.getId()).thenReturn(999l);
-    when(repository.save(Mockito.any())).thenReturn(dq);
+    when(repository.save(any())).thenReturn(dq);
 
     // and that entity will be mapped to a question
     when(mapper.toDateQuestion(dq))
@@ -271,9 +270,9 @@ class QuestionCreatorTest {
   @Test
   void should_create_numeric_question() {
     // given the database will return an entity with an Id
-    NumericQuestionEntity nq = Mockito.mock(NumericQuestionEntity.class);
+    NumericQuestionEntity nq = mock(NumericQuestionEntity.class);
     when(nq.getId()).thenReturn(999l);
-    when(repository.save(Mockito.any())).thenReturn(nq);
+    when(repository.save(any())).thenReturn(nq);
 
     // and that entity will be mapped to a question
     when(mapper.toNumericQuestion(nq))
@@ -295,9 +294,9 @@ class QuestionCreatorTest {
   @Test
   void should_create_coded_question() {
     // given the database will return an entity with an Id
-    CodedQuestionEntity cq = Mockito.mock(CodedQuestionEntity.class);
+    CodedQuestionEntity cq = mock(CodedQuestionEntity.class);
     when(cq.getId()).thenReturn(999l);
-    when(repository.save(Mockito.any())).thenReturn(cq);
+    when(repository.save(any())).thenReturn(cq);
 
     // and an existing value set
     when(codesetRepository.findOneByCodeSetGroupId(123l)).thenReturn(Optional.of(new Codeset()));

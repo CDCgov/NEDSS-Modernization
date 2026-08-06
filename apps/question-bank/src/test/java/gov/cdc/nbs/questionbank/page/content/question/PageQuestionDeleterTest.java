@@ -1,6 +1,9 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -16,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -36,7 +38,7 @@ class PageQuestionDeleterTest {
   @Test
   void should_delete_question_from_page() {
     // Given a question
-    WaUiMetadata metadata = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata metadata = mock(WaUiMetadata.class);
     when(entityManager.find(WaUiMetadata.class, 2l)).thenReturn(metadata);
 
     // Given a page
@@ -62,7 +64,7 @@ class PageQuestionDeleterTest {
   @Test
   void should_not_delete_question_the_page_does_not_contain_the_question() {
     // Given a question
-    WaUiMetadata metadata = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata metadata = mock(WaUiMetadata.class);
     when(entityManager.find(WaUiMetadata.class, 2l)).thenReturn(metadata);
 
     // Given a page
@@ -86,7 +88,7 @@ class PageQuestionDeleterTest {
   @Test
   void should_not_delete_question_the_page_does_not_contain_the_question_id_null() {
     // Given a question
-    WaUiMetadata metadata = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata metadata = mock(WaUiMetadata.class);
     when(entityManager.find(WaUiMetadata.class, 2l)).thenReturn(metadata);
 
     // Given a page
@@ -115,7 +117,7 @@ class PageQuestionDeleterTest {
   @Test
   void should_not_delete_question_from_page_the_question_is_standard() {
     // Given a question
-    WaUiMetadata metadata = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata metadata = mock(WaUiMetadata.class);
     when(entityManager.find(WaUiMetadata.class, 2l)).thenReturn(metadata);
 
     // Given a page
@@ -141,7 +143,7 @@ class PageQuestionDeleterTest {
   @Test
   void should_not_delete_question_from_page_no_page_found() {
     // Given a question
-    WaUiMetadata metadata = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata metadata = mock(WaUiMetadata.class);
     when(entityManager.find(WaUiMetadata.class, 2l)).thenReturn(metadata);
 
     // Given a null page
@@ -166,16 +168,13 @@ class PageQuestionDeleterTest {
   @SuppressWarnings("unchecked")
   void should_not_delete_question_associated_with_rule() {
     // Given a question that is associated with a rule
-    WaUiMetadata metadata = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata metadata = mock(WaUiMetadata.class);
     when(metadata.getQuestionIdentifier()).thenReturn("identifier2");
     when(entityManager.find(WaUiMetadata.class, 2l)).thenReturn(metadata);
 
     List<String> identifiersFound = new ArrayList<>();
     identifiersFound.add("identifier1,identifier2");
-    when(template.query(
-            Mockito.anyString(),
-            Mockito.any(PreparedStatementSetter.class),
-            Mockito.any(RowMapper.class)))
+    when(template.query(anyString(), any(PreparedStatementSetter.class), any(RowMapper.class)))
         .thenReturn(identifiersFound);
 
     // When a request is processed to delete a question ,

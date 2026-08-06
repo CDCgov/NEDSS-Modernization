@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -48,13 +47,13 @@ class FilterValueMapperTest {
   void setup() {
     mockReportFilter = mock(ReportFilter.class);
     long reportFilterId = 832L;
-    Mockito.lenient().when(mockReportFilter.getId()).thenReturn(reportFilterId);
+    lenient().when(mockReportFilter.getId()).thenReturn(reportFilterId);
 
     generatedId = 100L;
 
     GeneratedId mockValidId = mock(GeneratedId.class);
-    Mockito.lenient().when(mockValidId.getId()).thenReturn(generatedId);
-    Mockito.lenient()
+    lenient().when(mockValidId.getId()).thenReturn(generatedId);
+    lenient()
         .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(mockValidId);
   }
@@ -64,9 +63,9 @@ class FilterValueMapperTest {
     @BeforeEach
     void setUp() {
       FilterCode mockFilterCode = mock(FilterCode.class);
-      Mockito.lenient().when(mockFilterCode.getFilterType()).thenReturn("BAS_TXT");
+      lenient().when(mockFilterCode.getFilterType()).thenReturn("BAS_TXT");
 
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(mockFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(mockFilterCode);
     }
 
     @Test
@@ -110,7 +109,7 @@ class FilterValueMapperTest {
       FilterCode basTxtFilterCode = buildBasicTextFilterCode();
 
       List<String> values = List.of("value1", "value2", "value3");
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
 
@@ -133,7 +132,7 @@ class FilterValueMapperTest {
       String date2 = "06/29/2026";
       List<String> values = List.of(date1, date2);
 
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
 
@@ -156,9 +155,7 @@ class FilterValueMapperTest {
       String year2 = "2026";
       List<String> values = List.of(year1, year2);
 
-      Mockito.lenient()
-          .when(mockReportFilter.getFilterCode())
-          .thenReturn(basTimRangeListFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeListFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, true);
 
@@ -212,7 +209,7 @@ class FilterValueMapperTest {
     void fromBasicFilterRequest_should_return_empty_list_if_no_values_and_includeNulls_is_false() {
       FilterCode filterCode = buildBasicTimeRangeListFilterCode();
 
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(filterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(filterCode);
 
       BasicFilterRequest request =
           new BasicFilterRequest(mockReportFilter.getId(), Collections.emptyList(), false);
@@ -249,7 +246,7 @@ class FilterValueMapperTest {
       FilterCode basTxtFilterCode = buildBasicTextFilterCode();
 
       List<String> values = List.of(searchText);
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTxtFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
@@ -286,7 +283,7 @@ class FilterValueMapperTest {
               .build();
 
       List<String> values = List.of(numDays);
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basDaysFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basDaysFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
@@ -312,9 +309,7 @@ class FilterValueMapperTest {
       String endYear = "2026";
       List<String> values = List.of(beginYear, endYear);
 
-      Mockito.lenient()
-          .when(mockReportFilter.getFilterCode())
-          .thenReturn(basTimRangeListFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeListFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
@@ -347,9 +342,7 @@ class FilterValueMapperTest {
       String year2 = "2017";
       String year3 = "2026";
 
-      Mockito.lenient()
-          .when(mockReportFilter.getFilterCode())
-          .thenReturn(basTimRangeListFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeListFilterCode);
 
       BasicFilterRequest requestWithThreeVals =
           new BasicFilterRequest(mockReportFilter.getId(), List.of(year1, year2, year3), false);
@@ -374,7 +367,7 @@ class FilterValueMapperTest {
       String endDate = "06/29/2026";
       List<String> values = List.of(beginDate, endDate);
 
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
 
       BasicFilterRequest request = new BasicFilterRequest(mockReportFilter.getId(), values, false);
 
@@ -407,7 +400,7 @@ class FilterValueMapperTest {
       String date2 = "06/29/2026";
       String date3 = "06/29/2026";
 
-      Mockito.lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
+      lenient().when(mockReportFilter.getFilterCode()).thenReturn(basTimRangeFilterCode);
 
       BasicFilterRequest requestWithThreeVals =
           new BasicFilterRequest(mockReportFilter.getId(), List.of(date1, date2, date3), false);

@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +34,7 @@ class QuestionControllerTest {
     CreateTextQuestionRequest request = QuestionRequestMother.localTextRequest();
 
     // and the creator will create the question
-    when(creator.create(eq(user.getId()), Mockito.any(CreateTextQuestionRequest.class)))
+    when(creator.create(eq(user.getId()), any(CreateTextQuestionRequest.class)))
         .thenReturn(
             new TextQuestion(
                 19L, null, null, null, null, null, null, null, null, null, null, null, null, null,

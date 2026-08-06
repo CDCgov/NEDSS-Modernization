@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.condition.delete;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.condition.ConditionStatus;
@@ -10,7 +11,6 @@ import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 class ConditionStatusTest {
@@ -28,7 +28,7 @@ class ConditionStatusTest {
 
   @Test
   void activateConditionTest() {
-    when(conditionCodeRepository.activateCondition(Mockito.anyString())).thenReturn(1);
+    when(conditionCodeRepository.activateCondition(anyString())).thenReturn(1);
     ConditionStatusResponse response = conditionStatus.activateCondition(id);
     ldfPageSetRepository.updateStatusBasedOnConditionCode();
     assertEquals(id, response.getId());
@@ -36,7 +36,7 @@ class ConditionStatusTest {
 
   @Test
   void inactivateConditionTest() {
-    when(conditionCodeRepository.inactivateCondition(Mockito.anyString())).thenReturn(1);
+    when(conditionCodeRepository.inactivateCondition(anyString())).thenReturn(1);
     ConditionStatusResponse response = conditionStatus.inactivateCondition(id);
     ldfPageSetRepository.updateStatusBasedOnConditionCode();
     assertEquals(id, response.getId());
