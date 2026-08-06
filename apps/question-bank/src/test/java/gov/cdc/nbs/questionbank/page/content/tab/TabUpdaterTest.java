@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
@@ -99,7 +99,7 @@ class TabUpdaterTest {
 
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(tab);
 
-    assertNotNull(updater.findTab(1l, 2l));
+    assertThat(updater.findTab(1l, 2l)).isNotNull();
   }
 
   @Test
