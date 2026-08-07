@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from 'react';
 
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+
 import { SearchInteraction, SearchResultSettings, useSearchResults } from 'apps/search';
 import { removeTerm, Term } from 'apps/search/terms';
-import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 type Settings<C extends FieldValues, A, R> = { form: UseFormReturn<C> } & SearchResultSettings<C, A, R>;
 

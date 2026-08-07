@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 
 import { Button } from '@trussworks/react-uswds';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Property } from 'filters/properties';
 import { operators } from 'filters/selectables';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 
 import { DataRangeEntryForm } from './DataRangeEntryForm';
 import { ExactValueEntryForm } from './ExactValueEntryForm';

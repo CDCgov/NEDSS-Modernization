@@ -1,3 +1,5 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { SkipLink } from 'SkipLink';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
@@ -8,7 +10,6 @@ import { TextInputField } from 'design-system/input';
 import { TextCriteriaField } from 'design-system/input/text/criteria';
 import { SingleSelect } from 'design-system/select';
 import { Permitted } from 'libs/permission';
-import { Controller, useFormContext } from 'react-hook-form';
 import { validNameRule } from 'validation/entry';
 
 import { searchableGenders } from './searchableGenders';

@@ -1,6 +1,7 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { AdminComments } from 'apps/deduplication/api/model/MergeCandidate';
 import { Radio } from 'design-system/radio';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';

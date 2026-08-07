@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 
-import { Checkbox } from 'design-system/checkbox';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { Checkbox } from 'design-system/checkbox';
 
 import { DataElements } from '../../../api/model/DataElement';
 import { TableNumericInput } from '../TableNumericInput/TableNumericInput';

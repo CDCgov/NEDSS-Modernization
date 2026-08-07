@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
 
+import { Outlet } from 'react-router';
+
 import { FilterProvider } from 'design-system/filter';
 import { ComponentSizingProvider } from 'design-system/sizing';
 import { SortingProvider, SortingSettings } from 'libs/sorting';
 import { PaginationProvider, PaginationSettings } from 'pagination';
-import { Outlet } from 'react-router';
 
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 

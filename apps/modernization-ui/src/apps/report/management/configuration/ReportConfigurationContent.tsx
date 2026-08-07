@@ -1,6 +1,9 @@
 import { ReactNode, useId, useRef, useState } from 'react';
 
 import { ModalRef } from '@trussworks/react-uswds';
+import { ReactComponentLike } from 'prop-types';
+import { Controller, useFormState, useWatch } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
@@ -20,8 +23,6 @@ import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
 import { useUserOptions } from 'options/users';
-import { ReactComponentLike } from 'prop-types';
-import { Controller, useFormState, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
 
 import { GROUP_OPTIONS, SIZING } from '../../constants.ts';

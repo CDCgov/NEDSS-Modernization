@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 
 import { ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 
 import { CreateQuestionForm } from '../QuestionForm';

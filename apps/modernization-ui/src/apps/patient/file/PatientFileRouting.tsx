@@ -1,4 +1,5 @@
 import { Navigate, RouteObject } from 'react-router';
+
 import { RedirectHome } from 'routes';
 
 const routing: RouteObject[] = [

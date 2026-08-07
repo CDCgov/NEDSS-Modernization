@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import classNames from 'classnames';
+
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 
 import styles from './search-navigation.module.scss';

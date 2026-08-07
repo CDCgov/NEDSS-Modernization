@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 import { PagesTab } from 'apps/page-builder/generated';
 import { deleteTab, updateTab } from 'apps/page-builder/services/tabsAPI';

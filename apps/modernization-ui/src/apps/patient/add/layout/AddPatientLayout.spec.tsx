@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 import { PageProvider } from 'page';
-import { MemoryRouter } from 'react-router';
 
 import { AddPatientLayout } from './AddPatientLayout';
 

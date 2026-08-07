@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 import { Shown } from 'conditional-render';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';

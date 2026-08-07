@@ -1,7 +1,8 @@
 import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect } from 'react';
 
-import { Icon } from 'design-system/icon';
 import { DragHandleProps } from 'react-querybuilder';
+
+import { Icon } from 'design-system/icon';
 
 import { AnyEventBinding, EventBinding } from './eventTypes';
 import * as keyCodes from './keyCodes';

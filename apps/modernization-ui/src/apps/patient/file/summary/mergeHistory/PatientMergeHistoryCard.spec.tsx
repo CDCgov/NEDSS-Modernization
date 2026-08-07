@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { MemoizedSupplier } from 'libs/supplying';
 import { MemoryRouter } from 'react-router';
+
+import { MemoizedSupplier } from 'libs/supplying';
 
 import { PatientMergeHistoryCard } from './PatientMergeHistoryCard';
 import type { PatientFileMergeHistory } from './model/mergeHistory';

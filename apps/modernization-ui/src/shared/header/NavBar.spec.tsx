@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
+import { Mock } from 'vitest';
+
 import { permissions } from 'libs/permission';
 import { usePage } from 'page';
-import { Mock } from 'vitest';
 
 import { NavBar } from './NavBar';
 

@@ -1,6 +1,7 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { AddReadOnlyComments, UpdateReadOnlyComments } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 
 export const CommentsFields = () => {

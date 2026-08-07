@@ -1,6 +1,7 @@
 import { RefObject } from 'react';
 
 import { ModalRef } from '@trussworks/react-uswds';
+
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 

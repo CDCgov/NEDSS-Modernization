@@ -2,6 +2,7 @@ import { useId } from 'react';
 
 import { Select } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 export type Selectable = { name: string; value: string };

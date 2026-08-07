@@ -1,10 +1,11 @@
 import { RefObject } from 'react';
 
 import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Controller, useForm } from 'react-hook-form';
+
 import { CreateTemplateRequest, PagesService } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { useAlert } from 'libs/alert';
-import { Controller, useForm } from 'react-hook-form';
 import { logErrorToUserConsole } from 'utils/logging';
 import { maxLengthRule } from 'validation/entry';
 

@@ -1,5 +1,6 @@
-import { Sizing } from 'design-system/field';
 import { Controller, UseFormReturn } from 'react-hook-form';
+
+import { Sizing } from 'design-system/field';
 
 import { PatientDemographicsDefaults } from '../../demographics';
 import { RaceDemographicRepeatingBlock, RaceDemographicRepeatingBlockProps } from '../RaceDemographicRepeatingBlock';
