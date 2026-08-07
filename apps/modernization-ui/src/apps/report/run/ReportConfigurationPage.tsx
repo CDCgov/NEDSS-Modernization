@@ -95,6 +95,7 @@ const SECTIONS = [
                 subtext={
                     <span>
                         Add <strong>rules</strong> and <strong>rule groups</strong> to narrow your results. Use{' '}
+                        {/*eslint-disable-next-line max-len*/}
                         <strong>AND</strong> to require all connected rules or groups to match, or <strong>OR</strong>{' '}
                         to require only one to match. Your advanced filter combines with your basic filters using{' '}
                         <strong>AND</strong> logic. The <strong>WHERE</strong> clause preview shows your advanced filter
