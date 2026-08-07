@@ -24,7 +24,8 @@ class IllegalURICharacterChannelHandler extends ChannelInboundHandlerAdapter {
     entry("`", "%60"),
     entry("<", "%3C"),
     entry(">", "%3E"),
-    entry("\"", "%22")
+    entry("\"", "%22"),
+    entry("'", "%27")
   );
 
   @Override
