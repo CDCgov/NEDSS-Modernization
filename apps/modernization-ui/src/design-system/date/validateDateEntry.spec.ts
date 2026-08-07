@@ -1,5 +1,7 @@
 import { add } from 'date-fns';
 
+import { internalizeDate } from 'date';
+
 import { validateDateEntry } from './validateDateEntry';
 
 const mockNow = vi.fn();
