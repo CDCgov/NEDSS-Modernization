@@ -1,5 +1,6 @@
 name: Build and Push elasticsearch image to ECR
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -12,7 +13,7 @@ jobs:
       id-token: write
       contents: read
       security-events: write
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@main
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@Nuel/dev-389-provenance-attestation
     with:
       microservice_name: nbs7-elasticsearch
       dockerfile_relative_path: ./cdc-sandbox/elasticsearch
