@@ -1,6 +1,8 @@
 import { ChangeEvent, RefObject, useEffect, useState } from 'react';
 
 import { Button, Form, ModalRef, ModalToggleButton, Radio } from '@trussworks/react-uswds';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+
 import { createCondition } from 'apps/page-builder/services/conditionAPI';
 import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaAPI';
 import {
@@ -12,7 +14,6 @@ import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useConfiguration } from 'configuration';
 import { useAlert } from 'libs/alert';
-import { Controller, useForm, useWatch } from 'react-hook-form';
 import { logErrorToUserConsole } from 'utils/logging';
 
 import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';

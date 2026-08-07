@@ -1,5 +1,7 @@
 import { BaseSyntheticEvent, ReactNode } from 'react';
 
+import { FieldErrors, useFormState } from 'react-hook-form';
+
 import { FullPageBlock } from 'components/FullPageBlock';
 import { Heading } from 'components/heading';
 import { Button, NavLinkButton } from 'design-system/button';
@@ -10,7 +12,6 @@ import { InPageNavigation } from 'design-system/inPageNavigation';
 import { ReportConfiguration } from 'generated';
 import { permissions, Permitted } from 'libs/permission';
 import { usePermissions } from 'libs/permission/usePermissions';
-import { FieldErrors, useFormState } from 'react-hook-form';
 
 import { NBS_MANAGE_REPORT_PAGE } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
@@ -93,11 +94,12 @@ const SECTIONS = [
                 collapsible={true}
                 subtext={
                     <span>
-                        Add <strong>rules</strong> and <strong>rule groups</strong> to narrow or broaden your results.
-                        Use <strong>AND</strong> to require all connected rules or groups to match, or{' '}
-                        <strong>OR</strong> to require only one to match. Your advanced filter combines with your basic
-                        filters using <strong>AND</strong> logic. The <strong>WHERE</strong> clause preview shows your
-                        advanced filter as you build it.
+                        Add <strong>rules</strong> and <strong>rule groups</strong> to narrow your results. Use{' '}
+                        {/*eslint-disable-next-line max-len*/}
+                        <strong>AND</strong> to require all connected rules or groups to match, or <strong>OR</strong>{' '}
+                        to require only one to match. Your advanced filter combines with your basic filters using{' '}
+                        <strong>AND</strong> logic. The <strong>WHERE</strong> clause preview shows your advanced filter
+                        as you build it.
                     </span>
                 }
                 contentMaxWidth="widescreen"

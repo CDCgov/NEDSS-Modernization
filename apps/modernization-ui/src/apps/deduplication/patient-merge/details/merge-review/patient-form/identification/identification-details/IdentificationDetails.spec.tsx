@@ -1,4 +1,5 @@
 import { render, within } from '@testing-library/react';
+
 import { MergeIdentification } from 'apps/deduplication/api/model/MergeCandidate';
 
 import { IdentificationDetails } from './IdentificationDetails';

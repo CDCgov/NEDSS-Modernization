@@ -1,8 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
+import { useParams } from 'react-router';
+
 import { PageRule, PageRuleControllerService, SearchPageRuleRequest } from 'apps/page-builder/generated';
 import { Direction } from 'libs/sorting';
-import { useParams } from 'react-router';
 
 export type FetchBusinessRules = {
     pageId?: number;

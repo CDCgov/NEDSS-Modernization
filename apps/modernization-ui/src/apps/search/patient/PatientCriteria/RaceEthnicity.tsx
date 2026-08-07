@@ -1,10 +1,11 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { useConceptOptions } from 'options/concepts';
 import { useRaceCategoryOptions } from 'options/race';
-import { Controller, useFormContext } from 'react-hook-form';
 
 export const RaceEthnicity = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();

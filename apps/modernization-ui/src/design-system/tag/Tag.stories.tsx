@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+
 import { DataTable } from 'design-system/table';
 
 import { Tag, TagProps } from './Tag';

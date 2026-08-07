@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { MergeInvestigation } from 'apps/deduplication/api/model/MergeCandidate';
 
 import { Investigation } from './Investigation';

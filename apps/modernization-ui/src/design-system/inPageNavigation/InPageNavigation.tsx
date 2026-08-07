@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router';
+
 import { logErrorToUserConsole } from 'utils/logging';
 
 import styles from './InPageNavigation.module.scss';

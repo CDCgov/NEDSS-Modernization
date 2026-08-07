@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
 import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';
@@ -9,7 +11,6 @@ import { Card } from 'design-system/card';
 import { DirtySectionErrorMessage } from 'design-system/errors/ValidationError';
 import { AlertMessage } from 'design-system/message';
 import { useComponentSizing } from 'design-system/sizing';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import styles from './add-patient-extended-form.module.scss';
 import { ExtendedNewPatientEntry } from './entry';

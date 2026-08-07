@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { PatientSearchResult } from 'generated/graphql/schema';
 import { MemoryRouter } from 'react-router';
+
+import { PatientSearchResult } from 'generated/graphql/schema';
 
 import { PatientSearchResultListItem } from './PatientSearchResultListItem';
 

@@ -1,3 +1,5 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { BasicEthnicityRace } from 'apps/patient/add/basic/entry';
 import { useEthnicityCodedValues } from 'apps/patient/data/ethnicity/useEthnicityCodedValues';
 import { CheckboxGroup } from 'design-system/checkbox';
@@ -5,7 +7,6 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import { MULTI_RACE, useRaceCategoryOptions } from 'options/race';
-import { Controller, useFormContext } from 'react-hook-form';
 
 const categoryFilter = (race: Selectable) => race.value !== MULTI_RACE.value;
 

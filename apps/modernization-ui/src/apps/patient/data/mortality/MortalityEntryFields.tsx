@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { MortalityEntry } from 'apps/patient/data/entry';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput, validDateRule } from 'design-system/date';
@@ -7,7 +9,6 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { indicators } from 'options/indicator';
 import { useLocationOptions } from 'options/location';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 const AS_OF_DATE_LABEL = 'Mortality information as of';

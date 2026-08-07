@@ -2,8 +2,9 @@ import { FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent, use
 
 import { DatePicker } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { isFuture } from 'date-fns';
+
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 import { EN_US } from './datePickerLocalization';
 

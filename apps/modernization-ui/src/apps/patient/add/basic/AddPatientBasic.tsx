@@ -1,10 +1,11 @@
 import { useCallback, useEffect } from 'react';
 
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLocation } from 'react-router';
+
 import { SkipLink } from 'SkipLink';
 import { Button } from 'components/button';
 import { NavigationGuard } from 'design-system/entry/navigation-guard';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useLocation } from 'react-router';
 
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { AddPatientLayout } from '../layout';

@@ -1,8 +1,9 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { useNameCodedValues } from 'apps/patient/data/name/useNameCodedValues';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { Controller, useFormContext } from 'react-hook-form';
 import { validateExtendedNameRule } from 'validation/entry';
 
 import { NameInformationEntry } from '../entry';

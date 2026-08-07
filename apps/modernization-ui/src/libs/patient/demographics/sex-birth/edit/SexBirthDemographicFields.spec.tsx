@@ -2,11 +2,12 @@ import { useCallback } from 'react';
 
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useForm, useWatch } from 'react-hook-form';
+
 import { asOfAgeResolver } from 'date';
 import { genders } from 'options/gender';
 import { indicators } from 'options/indicator';
 import { LocationOptions } from 'options/location';
-import { useForm, useWatch } from 'react-hook-form';
 
 import { PatientDemographics } from '../../demographics';
 

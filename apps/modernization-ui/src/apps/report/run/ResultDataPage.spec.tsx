@@ -1,6 +1,7 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
-import { ReportExecutionResult } from 'generated';
 import { LoaderFunctionArgs, useLoaderData } from 'react-router';
+
+import { ReportExecutionResult } from 'generated';
 
 import { loadReportResult, ResultDataPage } from './ResultDataPage';
 

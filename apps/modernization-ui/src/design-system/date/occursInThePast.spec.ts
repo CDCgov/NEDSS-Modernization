@@ -1,5 +1,6 @@
-import { internalizeDate } from 'date';
 import { add, isFuture } from 'date-fns';
+
+import { internalizeDate } from 'date';
 
 import { occursInThePast } from './occursInThePast';
 

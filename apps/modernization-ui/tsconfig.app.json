@@ -25,7 +25,9 @@
 
         /* nbs additions */
         "plugins": [{ "name": "typescript-plugin-css-modules" }],
-        "baseUrl": "src"
+        "paths": {
+            "*": ["./src/*"]
+        }
     },
     "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/setupTests.ts"],
     "include": ["src"]

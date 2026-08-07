@@ -2,6 +2,7 @@ import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 
 import { Checkbox, Pagination, Table } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import { Loading } from 'components/Spinner';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { NoData } from 'design-system/data';

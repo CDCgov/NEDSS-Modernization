@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import classNames from 'classnames';
+
 import { Orientation } from 'design-system/field';
 
 import styles from './labeled-value.module.scss';

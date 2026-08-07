@@ -1,6 +1,7 @@
+import { UseFormReturn } from 'react-hook-form';
+
 import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { Investigation, InvestigationFilter, useFindInvestigationsByFilterLazyQuery } from 'generated/graphql/schema';
-import { UseFormReturn } from 'react-hook-form';
 
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { investigationTermsResolver as termResolver } from './investigationTermsResolver';
