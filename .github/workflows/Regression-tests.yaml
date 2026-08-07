@@ -1,7 +1,6 @@
 name: Regression tests
 on:
   pull_request:
-    types: synchronize
   push:
     branches:
       - main
@@ -34,14 +33,19 @@ jobs:
         working-directory: apps/modernization-ui
         run: npm ci && npm run generate && git diff --exit-code && npm run lint
 
-      - name: Install dependencies and lint
-        working-directory: testing/regression/
-        run: npm ci && npm run lint
+      - name: Install dependencies
+        uses: cypress-io/github-action@v7
+        with:
+          runTests: false
 
-      # Install npm dependencies, cache them, run tests
+      - name: Lint
+        working-directory: testing/regression/
+        run: npm run lint
+
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
+          install: false
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
           browser: chrome
