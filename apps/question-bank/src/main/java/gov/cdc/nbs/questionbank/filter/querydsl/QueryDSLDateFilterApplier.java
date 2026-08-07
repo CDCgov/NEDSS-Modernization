@@ -5,6 +5,7 @@ import static gov.cdc.nbs.questionbank.filter.querydsl.LocalDateConverter.asInst
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.TemporalExpression;
 import gov.cdc.nbs.questionbank.filter.DateFilter;
+import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -17,7 +18,7 @@ class QueryDSLDateFilterApplier {
 
       TemporalExpression<Instant> instant = (TemporalExpression<Instant>) expression;
 
-      LocalDate from = LocalDate.now();
+      LocalDate from = LocalDate.now(Clock.systemDefaultZone());
 
       return switch (filter.operator()) {
         case TODAY -> instant.after(asInstant(from));
