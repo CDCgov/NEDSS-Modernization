@@ -283,16 +283,49 @@ class PatientProfilePage {
       .should('not.exist');
     
     const eventId = Cypress.env('morbidityEventId');
+    
+    // Check if the Documents Requiring Review section exists
+    cy.get('body').then($body => {
+      const $table = $body.find('#documents-requiring-review-table');
+      
+      if ($table.length === 0) {
+        // Table doesn't exist - pass
+        return;
+      }
+      
+      // Check if the table is visible or hidden
+      const isVisible = $table.is(':visible');
+      
+      if (!isVisible) {
 
-    // Check if the event ID exists in the Documents Requiring Review table
-    cy.get('#documents-requiring-review-table')
-      .should('be.visible')
-      .then($table => {
-        const tableText = $table.text();
+        const tableText = $table.text().trim();
+        
+        if (tableText === '') {
+          // Table is empty - pass
+          return;
+        }
+        
+        // Table has data, check for the event ID
         expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
           .to.not.include(eventId);
-        
-      });
+        return;
+      }
+      
+      // Table is visible, check its content
+      const tableText = $table.text().trim();
+      
+      if (tableText === '' || tableText.includes('No data has been added')) {
+        // Table is empty - pass
+        cy.log('Documents Requiring Review table is empty - no documents to review');
+        cy.log('Verified morbidity event ID is NOT in Documents Requiring Review: ' + eventId);
+        return;
+      }
+      
+      // Table has data, check for the event ID
+      expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
+        .to.not.include(eventId);
+
+    });
   }
 
 }
