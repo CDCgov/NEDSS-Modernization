@@ -269,6 +269,31 @@ class EventsTabPage {
       .click();
   }
 
+  clickFirstUnassociatedMorbidityReport() {
+    this.waitForSpinner();
+    
+    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
+      .filter((index, row) => {
+        const associatedText = Cypress.$(row)
+          .find('td:nth-child(' + EventsTabPage.ASSOCIATED_COLUMN + ')')
+          .text()
+          .trim();
+        return associatedText === '---';
+      })
+      .first()
+      .scrollIntoView()
+      .should('be.visible')
+      .within(() => {
+        cy.get('td:first-child a')
+          .scrollIntoView()
+          .should('be.visible')
+          .then($link => {
+            this.extractAndStoreEventId($link);
+            this.clickLink($link);
+          });
+      });
+  }
+
   verifyMorbidityEventIdNotInMorbidityReports() {
     // Wait for page to load
     cy.get('._indicator_1vvtd_1', { timeout: 10000 })

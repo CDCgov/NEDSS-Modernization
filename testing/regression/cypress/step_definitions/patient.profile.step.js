@@ -74,6 +74,10 @@ When("I click on the stored Investigation ID in the Events tab", () => {
     eventsTabPage.clickStoredInvestigationId();
 });
 
+When("I click on the first unassociated morbidity report link in the Events tab and store its Event ID", () => {
+    eventsTabPage.clickFirstUnassociatedMorbidityReport();
+});
+
 Then("the stored morbidity report ID should not appear in the Documents Requiring Review section", () => {
     PatientProfilePage.verifyMorbidityEventIdNotInDocumentsRequiringReview();
 });
