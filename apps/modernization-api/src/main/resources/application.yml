@@ -84,6 +84,8 @@ management:
       access: read_only
 
 spring:
+  application:
+    name: modernization-api
   profiles:
     include: ui,oidc
   graphql:

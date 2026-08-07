@@ -146,6 +146,12 @@ docker compose down
 docker compose down -v
 ```
 
+#### Tracing
+The `modernization-api` backend is also set up with [Micrometer Tracing](https://docs.micrometer.io/tracing/reference/), specifically for [OpenTelemetry](https://opentelemetry.io/) with [OTLP](https://opentelemetry.io/docs/specs/otlp/).  It's enabled by default in our local Docker environments (see [application-development.yml](apps/modernization-api/src/main/resources/application-development.yml)), with [Jaegar](https://www.jaegertracing.io/) specified as the tracing backend.
+
+To view traces within the Jaeger UI during local development, navigate to http://localhost:16686.
+
+
 #### Running NBS 6 local containers instead
 
 The docker compose uses published packages of the NBS 6 application (`wildfly`) and DB (`nbs-mssql`) by default. To

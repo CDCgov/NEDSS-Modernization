@@ -1,4 +1,10 @@
 services:
+  jaeger:
+    image: jaegertracing/jaeger:2.5.0
+    container_name: jaeger
+    ports:
+      - "16686:16686"
+
   modernization-api:
     build:
       context: ./
@@ -34,6 +40,8 @@ services:
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_PROFILES_ACTIVE=default,development,local
+    depends_on:
+      - jaeger
     ports:
       - "8080:8080"
 
