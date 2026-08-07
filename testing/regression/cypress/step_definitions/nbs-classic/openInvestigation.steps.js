@@ -155,3 +155,7 @@ Then('Click Create Notifications button from top action button group', () => {
 Then('Click Submit button in newly opened window Create Notification Page', () => {
   openInvestigationPage.clickSubmitBtnInCreateNotificationPage();
 });
+
+Then("the stored morbidity report should be associated with the investigation", () => {
+  openInvestigationPage.verifyMorbidityReportAssociation();
+});

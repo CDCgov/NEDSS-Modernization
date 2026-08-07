@@ -187,7 +187,20 @@ class OpenInvestigationPage {
     clickSubmitBtnInCreateNotificationPage() {
         cy.get('#topcreatenotId input[type="button"][value="Submit"]').eq(0).click({ force: true })
     }
-  }
+
+    verifyMorbidityReportAssociation() {
+      const eventId = Cypress.env('morbidityEventId');
+      cy.log('event ID is {}', eventId);
+      
+      // Find the second table in the Botulism tab (the Morbidity Reports table)
+      cy.get('#tabControlN108A0')
+        .find('table.TableInner')
+        .eq(1) // Second table (index 1)
+        .contains(eventId)
+        .should('exist')
+    }
+    
+}
   
   export const openInvestigationPage = new OpenInvestigationPage();
   
