@@ -73,7 +73,7 @@ describe('Race entry fields', () => {
 
         await user.selectOptions(race, 'selected');
 
-        expect(mockDetailResolver).toBeCalledWith('selected');
+        expect(mockDetailResolver).toHaveBeenCalledWith('selected');
     });
 
     it('detailed race values should clear when the category changes', async () => {
@@ -103,7 +103,7 @@ describe('Race entry fields', () => {
 
         await user.selectOptions(race, 'other').then(() => user.click(detailed));
 
-        expect(mockDetailResolver).toBeCalledWith('other');
+        expect(mockDetailResolver).toHaveBeenCalledWith('other');
         expect(detailed).toHaveValue('');
     });
 
@@ -176,7 +176,7 @@ describe('Race entry fields', () => {
             .then(() => user.tab());
 
         expect(getByText('category not valid')).toBeInTheDocument();
-        expect(validator).toBeCalledWith(19, expect.objectContaining({ value: 'other' }));
+        expect(validator).toHaveBeenCalledWith(19, expect.objectContaining({ value: 'other' }));
     });
     it('should have accessibility description for the as of date field', () => {
         const { getByLabelText } = render(<Fixture />);

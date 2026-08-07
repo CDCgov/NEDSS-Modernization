@@ -1,7 +1,7 @@
 import { PagePageSummary, PageSummaryService } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = async (
-    token: string,
+    _token: string,
     search?: string,
     sort?: string,
     currentPage?: number,

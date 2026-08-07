@@ -82,11 +82,15 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
         onSelectionChange(selected);
     }, [selected]);
 
-    const handleSelect = (event: ChangeEvent<HTMLInputElement>, item: { id: number }) => {
+    const handleSelect = (event: ChangeEvent<HTMLInputElement>, item: TableBody) => {
+        if (item.id === undefined || item.id === null) return;
+
+        const itemId = typeof item.id === 'number' ? item.id : Number(item.id);
+
         if (event.target.checked) {
-            setSelected((current) => [...current, item.id]);
+            setSelected((current) => [...current, itemId]);
         } else {
-            setSelected((current) => current.filter((id) => id !== item.id));
+            setSelected((current) => current.filter((id) => id !== itemId));
         }
     };
 

@@ -180,7 +180,7 @@ export const TargetQuestion = ({
                                                 setTargetList([]);
                                             }}
                                         >
-                                            <Icon name="group" size="m" />
+                                            <Icon name="group" size="m" alt="" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -203,7 +203,7 @@ export const TargetQuestion = ({
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name="group" size="m" />
+                                                    <Icon name="group" size="m" alt="" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''

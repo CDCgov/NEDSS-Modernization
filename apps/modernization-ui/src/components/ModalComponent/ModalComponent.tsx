@@ -11,7 +11,7 @@ type ModalProps = {
     isLarge?: boolean;
     size?: string;
     forceAction?: boolean;
-    id: string;
+    id?: string;
     className?: string;
     disabled?: boolean;
 };
@@ -33,7 +33,7 @@ export const ModalComponent = ({
             forceAction={disabled}
             ref={modalRef}
             isLarge={isLarge}
-            id={id}
+            id={id ?? ''}
             aria-labelledby={`${id}-heading`}
             className={`padding-0 ${size} ${className}`}
             aria-describedby={`${id}-description`}

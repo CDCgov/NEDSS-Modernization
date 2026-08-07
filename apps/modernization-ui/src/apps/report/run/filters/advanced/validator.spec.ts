@@ -1,5 +1,4 @@
-import { RuleGroupType, RuleType } from 'react-querybuilder';
-
+import { QbQuery } from './AdvancedFilter.tsx';
 import { validateRule, ValidationResultMap } from './validator';
 
 describe('validateRule', () => {
@@ -19,7 +18,7 @@ describe('validateRule', () => {
                 field: '~',
                 operator: '~',
                 value: '',
-            } as RuleType,
+            } as QbQuery,
             mockResult
         );
 
@@ -40,7 +39,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 
@@ -62,7 +61,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 
@@ -85,7 +84,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 
@@ -115,7 +114,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 
@@ -149,7 +148,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 
@@ -187,7 +186,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 
@@ -218,7 +217,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            } as QbQuery,
             mockResult
         );
 

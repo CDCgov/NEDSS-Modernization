@@ -101,6 +101,6 @@ describe('CloseablePanel', () => {
 
         await user.click(closer);
 
-        expect(onClose).toBeCalled();
+        expect(onClose).toHaveBeenCalled();
     });
 });

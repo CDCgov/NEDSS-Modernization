@@ -100,7 +100,7 @@ const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Int
                 .then((criteria) => dispatch({ type: 'wait', criteria }));
         } else if (state.status === 'preparing') {
             //  encrypt the new criteria
-            encrypt(state.criteria)
+            encrypt(state.criteria as Record<string, unknown>)
                 .then((encrypted) => encrypted.value)
                 .then((encrypted) => {
                     if (encrypted) {

@@ -30,9 +30,9 @@ describe('when removing search terms', () => {
 
         remove({ ...DEFAULT_TERM, source: 'value' });
 
-        expect(after).toBeCalled();
-        expect(setValue).toBeCalledWith('value', null);
-        expect(resetField).toBeCalledWith('value');
+        expect(after).toHaveBeenCalled();
+        expect(setValue).toHaveBeenCalledWith('value', null);
+        expect(resetField).toHaveBeenCalledWith('value');
     });
 
     it('should remove a term with multi values', () => {
@@ -48,7 +48,7 @@ describe('when removing search terms', () => {
             remove({ ...DEFAULT_TERM, source: 'values' });
         });
 
-        expect(after).toBeCalled();
+        expect(after).toHaveBeenCalled();
 
         const actual = result.current.getValues();
 
@@ -67,7 +67,7 @@ describe('when removing search terms', () => {
             remove({ ...DEFAULT_TERM, source: 'values' });
         });
 
-        expect(after).toBeCalled();
+        expect(after).toHaveBeenCalled();
 
         const actual = result.current.getValues();
 
@@ -87,7 +87,7 @@ describe('when removing search terms', () => {
             remove({ ...DEFAULT_TERM, source: 'value', value: 'two', partial: true });
         });
 
-        expect(after).toBeCalled();
+        expect(after).toHaveBeenCalled();
 
         const actual = result.current.getValues();
 
@@ -109,7 +109,7 @@ describe('when removing search terms', () => {
             remove({ ...DEFAULT_TERM, source: 'nested.value' });
         });
 
-        expect(after).toBeCalled();
-        expect(resetField).toBeCalledWith('nested.value');
+        expect(after).toHaveBeenCalled();
+        expect(resetField).toHaveBeenCalledWith('nested.value');
     });
 });

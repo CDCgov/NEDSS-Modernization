@@ -66,10 +66,10 @@ export const ManageSectionTile = ({
                             <div className={styles.warningModalContent}>
                                 <div className={styles.content}>
                                     <div className={styles.warningDrag} {...provided.dragHandleProps}>
-                                        <IconComponent name="drag" size="3" />
+                                        <IconComponent name="drag" size="3" alt="Drag handle to reorder section" />
                                     </div>
                                     <div className={styles.warningGroup}>
-                                        <IconComponent name="group" size="3" />
+                                        <IconComponent name="group" size="3" alt="" />
                                     </div>
                                     <div>{`${section.name} (${section.subSections.length})`}</div>
                                 </div>
@@ -112,10 +112,10 @@ export const ManageSectionTile = ({
                     ) : (
                         <div className={styles.manageSectionTile}>
                             <div className={styles.handle} {...provided.dragHandleProps}>
-                                <IconComponent name="drag" size="3" />
+                                <IconComponent name="drag" size="3" alt="Drag handle to reorder section" />
                             </div>
                             <div className={styles.label}>
-                                <IconComponent name="group" size="3" />
+                                <IconComponent name="group" size="3" alt="" />
                                 <span data-testid="manageSectionTileId">
                                     {`${section.name} (${section.subSections.length})`}
                                 </span>

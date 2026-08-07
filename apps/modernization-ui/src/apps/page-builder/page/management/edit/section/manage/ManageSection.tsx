@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Button, Icon } from '@trussworks/react-uswds';
@@ -13,7 +13,7 @@ import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import styles from './managesection.module.scss';
 
 type ManageSectionProps = {
-    id: string;
+    id?: string;
     pageId: number;
     tab?: PagesTab;
     onCancel?: () => void;
@@ -41,6 +41,9 @@ export const ManageSection = ({
     onHiddenSection,
     onUnhiddenSection,
 }: ManageSectionProps) => {
+    const generatedId = useId();
+    const activeId = id ?? generatedId;
+
     const [sectionState, setSectionState] = useState<'manage' | 'add' | 'edit'>('manage');
 
     const [confirmDelete, setConfirmDelete] = useState<PagesSection | undefined>(undefined);
@@ -83,7 +86,7 @@ export const ManageSection = ({
         <>
             {sectionState === 'add' && (
                 <AddSection
-                    id={id}
+                    id={activeId}
                     pageId={pageId}
                     onSectionTouched={() => {
                         onContentChange?.();
@@ -97,7 +100,7 @@ export const ManageSection = ({
             )}
             {sectionState === 'edit' && (
                 <AddSection
-                    id={id}
+                    id={activeId}
                     pageId={pageId}
                     onSectionTouched={() => {
                         onContentChange?.();

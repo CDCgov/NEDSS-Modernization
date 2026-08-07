@@ -15,7 +15,7 @@ const mockUseClassicModal = {
 };
 
 vi.mock('./useClassicModal', async (importOriginal) => {
-    const actual = await importOriginal();
+    const actual = await importOriginal<typeof import('./useClassicModal')>();
     return {
         ...actual,
         useClassicModal: () => mockUseClassicModal,
