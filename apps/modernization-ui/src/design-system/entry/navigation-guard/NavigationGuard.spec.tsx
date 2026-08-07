@@ -1,8 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Mock } from 'vitest';
+
 import * as navigation from 'navigation';
 import * as storage from 'storage';
-import { Mock } from 'vitest';
 
 import { NavigationGuard } from './NavigationGuard';
 

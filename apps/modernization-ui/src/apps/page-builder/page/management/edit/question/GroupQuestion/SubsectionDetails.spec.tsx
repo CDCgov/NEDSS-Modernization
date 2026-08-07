@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 
 import { render } from '@testing-library/react';
-import { GroupSubSectionRequest, PagesSubSection } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { GroupSubSectionRequest, PagesSubSection } from 'apps/page-builder/generated';
 
 import { SubsectionDetails } from './SubsectionDetails';
 

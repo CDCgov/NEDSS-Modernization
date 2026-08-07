@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Selectable } from 'options';
 
 import { SelectableCheckbox } from './SelectableCheckbox';

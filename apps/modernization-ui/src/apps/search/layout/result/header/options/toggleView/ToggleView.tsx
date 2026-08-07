@@ -1,5 +1,6 @@
-import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import classNames from 'classnames';
+
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { Button } from 'components/button';
 import { ButtonGroup } from 'design-system/button';
 import { Sizing } from 'design-system/field';

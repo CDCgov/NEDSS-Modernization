@@ -1,11 +1,12 @@
 import { ReactNode, useEffect, useId, useRef, useState } from 'react';
 
 import { Button, Icon, Modal, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { PagesTab, Tab } from 'apps/page-builder/generated';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
 import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { FormProvider, useForm } from 'react-hook-form';
 import { logErrorToUserConsole } from 'utils/logging';
 
 import './ManageTabModal.scss';

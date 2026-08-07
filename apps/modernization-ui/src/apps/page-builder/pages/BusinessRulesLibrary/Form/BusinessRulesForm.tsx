@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useParams } from 'react-router';
+
 import { PagesQuestion, PagesSubSection, Rule, RuleRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
 import { MultiSelectInput } from 'components/selection/multi';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useParams } from 'react-router';
 
 import { SourceValueProp } from '../Add/AddBusinessRules';
 import { SourceQuestion } from '../SourceQuestion/SourceQuestion';

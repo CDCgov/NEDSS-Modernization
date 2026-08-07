@@ -1,12 +1,13 @@
 import { ChangeEvent, useEffect } from 'react';
 
 import { Label, Radio, Textarea } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { CreateConceptRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { isAfter } from 'validation/date/isAfter';
 import { maxLengthRule } from 'validation/entry';
 

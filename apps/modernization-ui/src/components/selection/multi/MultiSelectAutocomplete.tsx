@@ -1,9 +1,10 @@
 import { FocusEventHandler, useState } from 'react';
 
-import { EntryWrapper } from 'components/Entry';
-import { Selectable } from 'options';
 import { components, MultiValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
+
+import { EntryWrapper } from 'components/Entry';
+import { Selectable } from 'options';
 import 'design-system/select/multi/multi-select.scss';
 
 const CheckedOption: typeof components.Option = (props) => {

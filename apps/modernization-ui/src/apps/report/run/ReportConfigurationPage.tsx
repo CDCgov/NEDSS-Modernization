@@ -1,5 +1,7 @@
 import { BaseSyntheticEvent, ReactNode } from 'react';
 
+import { FieldErrors, useFormState } from 'react-hook-form';
+
 import { FullPageBlock } from 'components/FullPageBlock';
 import { Heading } from 'components/heading';
 import { Button, NavLinkButton } from 'design-system/button';
@@ -10,7 +12,6 @@ import { InPageNavigation } from 'design-system/inPageNavigation';
 import { ReportConfiguration } from 'generated';
 import { permissions, Permitted } from 'libs/permission';
 import { usePermissions } from 'libs/permission/usePermissions';
-import { FieldErrors, useFormState } from 'react-hook-form';
 
 import { NBS_MANAGE_REPORT_PAGE } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';

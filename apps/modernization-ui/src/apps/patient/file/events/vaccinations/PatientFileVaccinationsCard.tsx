@@ -1,5 +1,7 @@
 import { Suspense, useState } from 'react';
 
+import { Await } from 'react-router';
+
 import { Shown } from 'conditional-render';
 import { internalizeDate, internalizeDateTime } from 'date';
 import { TableCard, TableCardProps } from 'design-system/card';
@@ -13,7 +15,6 @@ import { LoadingOverlay } from 'libs/loading';
 import { permissions, Permitted } from 'libs/permission';
 import { displayProvider } from 'libs/provider';
 import { MemoizedSupplier } from 'libs/supplying';
-import { Await } from 'react-router';
 import { exists } from 'utils';
 
 import styles from './patient-file-vaccinations.module.scss';

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router';
+
 import {
     PageRuleControllerService,
     PagesQuestion,
@@ -15,8 +18,6 @@ import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Breadcrumb } from 'breadcrumb/Breadcrumb';
 import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'libs/alert';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router';
 
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
 import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';

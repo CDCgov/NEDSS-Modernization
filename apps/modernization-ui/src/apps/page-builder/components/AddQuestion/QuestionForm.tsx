@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 
-import { CreateQuestionRequest } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import { useFormContext, useWatch } from 'react-hook-form';
+
+import { CreateQuestionRequest } from 'apps/page-builder/hooks/api/useCreateQuestion';
 
 import { HorizontalRule } from '../FormDivider/HorizontalRule';
 

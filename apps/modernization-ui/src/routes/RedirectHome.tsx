@@ -1,5 +1,6 @@
-import { useConfiguration } from 'configuration';
 import { Navigate } from 'react-router';
+
+import { useConfiguration } from 'configuration';
 
 const RedirectHome = () => {
     const {

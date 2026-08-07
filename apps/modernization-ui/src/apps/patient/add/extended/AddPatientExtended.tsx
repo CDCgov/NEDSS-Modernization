@@ -1,3 +1,5 @@
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { SkipLink } from 'SkipLink';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
 import { AddPatientLayout } from 'apps/patient/add/layout';
@@ -5,7 +7,6 @@ import { usePatientDataEntryMethod } from 'apps/patient/add/usePatientDataEntryM
 import { Button } from 'design-system/button';
 import { NavigationGuard } from 'design-system/entry/navigation-guard';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
-import { FormProvider, useForm } from 'react-hook-form';
 
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { ExtendedNewPatientEntry } from './entry';

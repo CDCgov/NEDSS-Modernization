@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { AgeResolver } from 'date';
 import { DatePickerInput, validDateRule } from 'design-system/date';
@@ -8,7 +10,6 @@ import { ValueField } from 'design-system/field';
 import { NumericInput, TextInputField } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
 import { isEqual, Selectable } from 'options';
-import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
 
 import { HasSexBirthDemographic, labels, SexBirthDemographic } from '../sexBirth';

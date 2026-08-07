@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 import { DataElementsTable } from './DataElementsTable';

@@ -24,7 +24,9 @@
         "noUncheckedSideEffectImports": true,
 
         /* nbs additions */
-        "baseUrl": "src",
+        "paths": {
+            "*": ["./src/*"]
+        },
         "types": ["vitest/globals"]
     },
     "include": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/setupTests.ts"]

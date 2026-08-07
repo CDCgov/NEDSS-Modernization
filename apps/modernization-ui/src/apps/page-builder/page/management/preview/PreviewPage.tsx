@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { useNavigate } from 'react-router';
+
 import { PagesTab } from 'apps/page-builder/generated';
 import {
     PageHeader,
@@ -16,7 +18,6 @@ import { ConfirmationModal } from 'confirmation';
 import { LinkButton } from 'design-system/button';
 import { NavLinkButton } from 'design-system/button';
 import { useAlert } from 'libs/alert';
-import { useNavigate } from 'react-router';
 import { logErrorToUserConsole } from 'utils/logging';
 
 import { PageControllerService } from '../../../generated/services/PageControllerService';

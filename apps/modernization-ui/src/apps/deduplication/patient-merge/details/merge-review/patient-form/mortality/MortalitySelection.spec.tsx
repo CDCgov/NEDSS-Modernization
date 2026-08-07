@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 
 import { MortalitySelection } from './MortalitySelection';
 

@@ -1,6 +1,7 @@
 import { act, ReactNode } from 'react';
 
 import { renderHook } from '@testing-library/react';
+
 import { Direction } from 'libs/sorting';
 
 import { ActiveSorting, SortingPreferenceProvider, useSortingPreferences } from './useSortingPreferences';

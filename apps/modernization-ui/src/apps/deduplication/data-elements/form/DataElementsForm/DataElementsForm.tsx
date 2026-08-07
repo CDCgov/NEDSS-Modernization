@@ -1,9 +1,10 @@
+import { useFormContext, useWatch } from 'react-hook-form';
+
 import { DataElementToMatchingAttribute } from 'apps/deduplication/api/model/Conversion';
 import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 import { Card } from 'design-system/card/Card';
 import { Checkbox } from 'design-system/checkbox';
 import { Hint } from 'design-system/hint';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 import { DataElements } from '../../../api/model/DataElement';
 import { DataElementRow } from '../DataElementRow/DataElementRow';

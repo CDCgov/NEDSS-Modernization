@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { FieldValues, UseFormReturn } from 'react-hook-form';
+
 import { exists } from 'utils';
 
 import { NavigationBlockInteraction, NavigationBlockSettings, useNavigationBlock } from './useNavigationBlock';
