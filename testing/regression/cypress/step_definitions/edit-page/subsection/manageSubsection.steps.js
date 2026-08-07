@@ -1,5 +1,4 @@
 import {Then} from "@badeball/cypress-cucumber-preprocessor";
-import {addEditSearchDeleteQuestion} from "@pages/edit-page/addEditSearchDeleteQuestion.page";
 import {manageSubsectionPage} from "@pages/edit-page/subsection/manageSubsection.page";
 
 Then("User navigates to Edit page and views Edit page and is at Manage Subsection window", () => {
@@ -58,8 +57,8 @@ Then("user clicks ok link", () => {
     manageSubsectionPage.clickOkLink();
 });
 
-Then("given options {string} and {string}", (text, text1) => {
-    manageSubsectionPage.checkButtonsAreVisible(text, text1);
+Then("given options {string} and {string}", (text) => {
+    manageSubsectionPage.checkButtonsAreVisible(text);
 });
 
 Then("user clicks on hide or unhide icon", () => {

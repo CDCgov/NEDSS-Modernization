@@ -2,7 +2,7 @@ import { labReportPage } from '../../e2e/pages/nbs-classic/dataEntry.page';
 import { patientEntitySearch } from '../../e2e/pages/nbs-classic/patientEntitySearch.page';
 import { searchPage } from '../../e2e/pages/search.page';
 import { morbidityReportPage } from '../../e2e/pages/nbs-classic/morbidityReportPage';
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { clickSubmitButton, clickHome } from '../../e2e/pages/nbs-classic/utils';
 
 When("I search for patient {string} {string}", (patientFirstName, patientLastName) => {
