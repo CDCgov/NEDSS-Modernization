@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 
+import { parseISO } from 'date-fns/fp';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLocation, useNavigate, useParams } from 'react-router';
+
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { useMergeDetails } from 'apps/deduplication/api/useMergeDetails';
 import { usePatientMerge } from 'apps/deduplication/api/usePatientMerge';
 import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
-import { parseISO } from 'date-fns/fp';
 import { Confirmation } from 'design-system/modal';
 import { useAlert } from 'libs/alert';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useLocation, useNavigate, useParams } from 'react-router';
 
 import styles from './MergeDetails.module.scss';
 import { MergePreview } from './merge-preview/MergePreview';

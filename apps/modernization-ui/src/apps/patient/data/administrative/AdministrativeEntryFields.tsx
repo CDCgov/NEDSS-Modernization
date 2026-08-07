@@ -1,8 +1,9 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 const AS_OF_DATE_LABEL = 'Information as of date';

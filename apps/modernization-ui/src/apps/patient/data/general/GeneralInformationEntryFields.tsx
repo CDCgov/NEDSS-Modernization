@@ -1,10 +1,11 @@
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { NumericInput } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
 import { Permitted } from 'libs/permission';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
 
 import { GeneralInformationEntry } from '../entry';

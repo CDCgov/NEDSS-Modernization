@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { PaginationProvider } from 'pagination';
 import { BrowserRouter } from 'react-router';
+
+import { PaginationProvider } from 'pagination';
 
 import { ViewBusinessRule } from './ViewBusinessRule';
 

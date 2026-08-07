@@ -2,10 +2,11 @@ import { ReactNode } from 'react';
 
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+
 import * as generated from 'generated';
 import { Layout } from 'layout';
 import * as options from 'options/selectableResolver';
-import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
 
 import { AddReportConfiguration } from './AddReportConfiguration';
 

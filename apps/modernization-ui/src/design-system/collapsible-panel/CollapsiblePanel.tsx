@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
 
 import classNames from 'classnames';
+
 import { Icon } from 'design-system/icon';
 
 import styles from './collapsible-panel.module.scss';

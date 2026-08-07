@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router';
+
 import { AlertProvider } from 'alert';
 import { PagesQuestion, PagesResponse } from 'apps/page-builder/generated';
-import { BrowserRouter } from 'react-router';
 
 import { PageManagementProvider } from '../../usePageManagement';
 

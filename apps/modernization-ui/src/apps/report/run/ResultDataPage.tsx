@@ -1,15 +1,16 @@
 import { useEffect, useId } from 'react';
 
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
+import { parse } from 'papaparse';
+import { LoaderFunction, useLoaderData } from 'react-router';
+
 import { Card } from 'design-system/card';
 import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import { NoDataRow } from 'design-system/table/NoDataRow';
-import DOMPurify from 'dompurify';
 import { ReportExecutionResult } from 'generated';
-import { marked } from 'marked';
-import { parse } from 'papaparse';
-import { LoaderFunction, useLoaderData } from 'react-router';
 
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';

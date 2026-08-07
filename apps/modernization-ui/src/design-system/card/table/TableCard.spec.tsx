@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 
 import { render } from '@testing-library/react';
-import { Column } from 'design-system/table';
 import { axe } from 'jest-axe';
 import { MemoryRouter } from 'react-router';
+
+import { Column } from 'design-system/table';
 
 import { TableCard, TableCardProps } from './TableCard';
 

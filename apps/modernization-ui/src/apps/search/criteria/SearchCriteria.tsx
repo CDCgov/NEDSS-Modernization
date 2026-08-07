@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import classNames from 'classnames';
+
 import { Sizing } from 'design-system/field';
 
 import styles from './search-criteria.module.scss';

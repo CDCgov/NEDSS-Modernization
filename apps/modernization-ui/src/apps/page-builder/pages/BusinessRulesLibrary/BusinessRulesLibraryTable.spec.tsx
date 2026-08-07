@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router';
+
 import { Rule } from 'apps/page-builder/generated';
 import { PaginationProvider } from 'pagination';
-import { BrowserRouter } from 'react-router';
 
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 

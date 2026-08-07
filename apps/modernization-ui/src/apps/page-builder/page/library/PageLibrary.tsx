@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import fileDownload from 'js-file-download';
+
 import {
     Date,
     DateRange,
@@ -13,7 +15,6 @@ import { useConfiguration } from 'configuration';
 import { LinkButton } from 'design-system/button';
 import { NavLinkButton } from 'design-system/button';
 import { externalize, Filter } from 'filters';
-import fileDownload from 'js-file-download';
 import { useSorting } from 'libs/sorting';
 import { downloadPageLibraryPdf } from 'utils/ExportUtil';
 

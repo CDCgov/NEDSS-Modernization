@@ -1,4 +1,5 @@
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
+
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { Icon } from 'components/Icon/Icon';
 

@@ -2,6 +2,7 @@ import { KeyboardEvent as ReactKeyboardEvent, ReactNode, useEffect, useRef, useS
 
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
 import { Selectable } from 'options/selectable';

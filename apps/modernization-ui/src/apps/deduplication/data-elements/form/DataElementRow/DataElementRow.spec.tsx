@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 import { DataElementRow } from './DataElementRow';
 

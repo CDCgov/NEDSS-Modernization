@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { LocationOptions } from 'options/location';
 import { useForm } from 'react-hook-form';
+
+import { LocationOptions } from 'options/location';
 
 import { HasMortalityDemographic, initial } from '../mortality';
 
