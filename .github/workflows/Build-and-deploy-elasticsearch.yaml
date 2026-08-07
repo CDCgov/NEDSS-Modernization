@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - nuel/test-dev-389-provenance
     paths:
       - "cdc-sandbox/elasticsearch/**"
 
