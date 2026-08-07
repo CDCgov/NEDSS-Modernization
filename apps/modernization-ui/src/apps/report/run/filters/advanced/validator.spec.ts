@@ -18,7 +18,7 @@ describe('validateRule', () => {
                 field: '~',
                 operator: '~',
                 value: '',
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -39,7 +39,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -61,7 +61,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -84,7 +84,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -114,7 +114,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -148,7 +148,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -186,7 +186,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 
@@ -217,7 +217,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as unknown as QbQuery,
+            } as QbQuery,
             mockResult
         );
 

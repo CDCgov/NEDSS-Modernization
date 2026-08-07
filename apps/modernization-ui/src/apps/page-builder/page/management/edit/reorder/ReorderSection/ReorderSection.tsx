@@ -46,13 +46,13 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
                             {subsectionsOpen ? (
-                                <Icon name="expand-more" size="s" alt="" />
+                                <Icon name="expand-more" size="s" alt="Collapse section" />
                             ) : (
-                                <Icon name="navigate-next" size="s" alt="" />
+                                <Icon name="navigate-next" size="s" alt="Expand section" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
-                            <Icon name="drag" size="m" alt="" />
+                            <Icon name="drag" size="m" alt="Drag handle to reorder section" />
                         </div>
                         <Icon name="group" size="m" alt="" />
                         <p>{section.name}</p>
