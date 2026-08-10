@@ -622,14 +622,15 @@ public class PageMetaDataDownloader {
     }
   }
 
-    /**
-     * This method introduces the Sonar issue {@code java:S2143} ({@code Use the "java.time" API for date and time}).
-     * It's been marked as Accepted in Sonar simply to avoid any changes in behavior for the time being, and because
-     * we've been unable to suppress this specific warning in code.
-     * <a href="https://sonarcloud.io/project/issues?open=AZ6TSzsKT1SJECLXWyFj&id=CDCgov_NEDSS-Modernization"></a>
-     * <p>
-     * TODO: Replace {@code java.util.Date} with {@code java.time.*} and unaccept Sonar issue // NOSONAR
-     */
+  /**
+   * This method introduces the Sonar issue {@code java:S2143} ({@code Use the "java.time" API for
+   * date and time}). It's been marked as Accepted in Sonar simply to avoid any changes in behavior
+   * for the time being, and because we've been unable to suppress this specific warning in code. <a
+   * href="https://sonarcloud.io/project/issues?open=AZ6TSzsKT1SJECLXWyFj&id=CDCgov_NEDSS-Modernization"></a>
+   *
+   * <p>TODO: Replace {@code java.util.Date} with {@code java.time.*} and unaccept Sonar issue //
+   * NOSONAR
+   */
   public void printSheet(
       XSSFWorkbook workbook, Sheet sheet, String[] header, List<Object[]> dataList) {
     Cell cell = null;
