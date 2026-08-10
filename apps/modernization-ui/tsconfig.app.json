@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         /* base vite config */
-        "allowJs": true,
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
         "target": "ES2020",
         "useDefineForClassFields": true,
@@ -26,11 +25,10 @@
 
         /* nbs additions */
         "plugins": [{ "name": "typescript-plugin-css-modules" }],
-        "ignoreDeprecations": "6.0",
         "paths": {
             "*": ["./src/*"]
         },
-        "types": ["vite/client", "node"]
+        "types": ["vite/client"]
     },
     "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/setupTests.ts"],
     "include": ["src"]
