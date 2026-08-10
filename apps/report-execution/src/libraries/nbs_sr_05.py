@@ -61,8 +61,8 @@ def execute(
     -- exists for all diseases and median is correct
     disease_year as (
         SELECT phc_code_short_desc,
-               {month} as month, 
-               year, 
+               {month} as month,
+               year,
                0 as cases
         FROM diseases,
         (VALUES {', '.join([f'({y})' for y in years])}) as year_values(year)
@@ -70,9 +70,9 @@ def execute(
 
     -- base_data_raw CTE
     base_data_raw as (
-        SELECT phc_code_short_desc, 
+        SELECT phc_code_short_desc,
                MONTH(event_date) as month,
-               YEAR(event_date) as year, 
+               YEAR(event_date) as year,
                sum(group_case_cnt) as cases
         FROM subset
         WHERE event_date is not NULL

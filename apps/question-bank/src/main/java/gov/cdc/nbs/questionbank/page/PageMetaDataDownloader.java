@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.page; // NOSONAR
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -622,10 +622,6 @@ public class PageMetaDataDownloader {
     }
   }
 
-  /**
-   * Suppressing `Use the "java.time" API for date and time` simply to avoid any changes in behavior
-   * for the time being
-   */
   @SuppressWarnings("java:S2143")
   public void printSheet(
       XSSFWorkbook workbook, Sheet sheet, String[] header, List<Object[]> dataList) {
