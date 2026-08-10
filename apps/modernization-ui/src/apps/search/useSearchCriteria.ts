@@ -59,7 +59,7 @@ type Interaction<V> = {
  * @param {Options<C>} options Object containing defaultValues field
  * @return {Interaction<C>} Interaction result
  */
-const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Interaction<C> => {
+const useSearchCriteria = <C extends Record<string, unknown>>({ defaultValues }: Options<C>): Interaction<C> => {
     const [_searchParams, setSearchParams] = useSearchParams();
 
     const { found } = useSearchCriteriaEncrypted();
@@ -100,7 +100,7 @@ const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Int
                 .then((criteria) => dispatch({ type: 'wait', criteria }));
         } else if (state.status === 'preparing') {
             //  encrypt the new criteria
-            encrypt(state.criteria as Record<string, unknown>)
+            encrypt(state.criteria)
                 .then((encrypted) => encrypted.value)
                 .then((encrypted) => {
                     if (encrypted) {
