@@ -20,7 +20,7 @@ type RangeInputProps = BaseNumericInputProps & {
 };
 
 type SingleInputProps = BaseNumericInputProps & {
-    value?: number;
+    value?: number | null;
 };
 
 const NumericInput = ({

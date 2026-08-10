@@ -1,5 +1,5 @@
 import './ModalComponent.scss';
-import { ReactNode, RefObject } from 'react';
+import {ReactNode, RefObject, useId} from 'react';
 
 import { Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 
@@ -33,7 +33,7 @@ export const ModalComponent = ({
             forceAction={disabled}
             ref={modalRef}
             isLarge={isLarge}
-            id={id ?? ''}
+            id={id ?? useId()}
             aria-labelledby={`${id}-heading`}
             className={`padding-0 ${size} ${className}`}
             aria-describedby={`${id}-description`}
