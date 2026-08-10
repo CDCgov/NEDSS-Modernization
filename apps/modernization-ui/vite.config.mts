@@ -1,11 +1,10 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import legacy from '@vitejs/plugin-legacy';
 import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
-    // note: Will load ports from .env file in root (of the project)
-
     const env = loadEnv(mode, process.cwd(), '');
     const NBS_API_PORT = env.VITE_NBS_API_PORT || 8080;
     const DEDUPLICATION_PORT = env.VITE_DEDUPLICATION_PORT || 8083;
@@ -14,12 +13,16 @@ export default defineConfig(({ mode }) => {
     return {
         appType: 'spa',
         define: {
-            //  Disable Apollo development mode checks/warnings in production
             'globalThis.__DEV__': JSON.stringify(mode !== 'production'),
         },
-        plugins: [react(), tsconfigPaths()],
+        plugins: [
+            react(),
+            tsconfigPaths(),
+            legacy({
+                targets: ['>0.2%', 'not dead', 'not op_mini all'],
+            }),
+        ],
         publicDir: 'public',
-        // Only needed for scss imports
         resolve: {
             alias: {
                 styles: resolve('src/styles'),
