@@ -47,3 +47,5 @@ ENV PATH /deployment/runtime/bin:$PATH
 WORKDIR /deployment/application
 
 CMD ["java", "-jar", "api.jar"]
+
+# DEV-389 provenance test trigger
