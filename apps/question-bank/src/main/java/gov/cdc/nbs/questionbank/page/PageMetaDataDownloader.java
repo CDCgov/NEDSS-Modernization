@@ -628,6 +628,7 @@ public class PageMetaDataDownloader {
    * for the time being, and because we've been unable to suppress this specific warning in code. <a
    * href="https://sonarcloud.io/project/issues?open=AZ6TSzsKT1SJECLXWyFj&id=CDCgov_NEDSS-Modernization"></a>
    * <br>
+   * <br>
    * TODO: Replace {@code java.util.Date} with {@code java.time.*} and unaccept issue // NOSONAR
    */
   public void printSheet(
