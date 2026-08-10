@@ -627,9 +627,8 @@ public class PageMetaDataDownloader {
    * date and time}). It's been marked as Accepted in Sonar simply to avoid any changes in behavior
    * for the time being, and because we've been unable to suppress this specific warning in code. <a
    * href="https://sonarcloud.io/project/issues?open=AZ6TSzsKT1SJECLXWyFj&id=CDCgov_NEDSS-Modernization"></a>
-   *
-   * <p>TODO: Replace {@code java.util.Date} with {@code java.time.*} and unaccept Sonar issue //
-   * NOSONAR
+   * <br>
+   * TODO: Replace {@code java.util.Date} with {@code java.time.*} and unaccept issue // NOSONAR
    */
   public void printSheet(
       XSSFWorkbook workbook, Sheet sheet, String[] header, List<Object[]> dataList) {
