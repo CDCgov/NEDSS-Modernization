@@ -69,18 +69,18 @@ def execute(
     )
     -- Calculate days since previous and until next event
     , datediff_calc AS (
-        SELECT 
+        SELECT
             *,
-            DATEDIFF(day, 
+            DATEDIFF(day,
                 LAG([{col_dict['EVENT_DATE']}]) OVER (
                     PARTITION BY
                     [{col_dict['PATIENT_LOCAL_ID']}],
-                    [{col_dict['DISEASE_CD']}] 
+                    [{col_dict['DISEASE_CD']}]
                     ORDER BY [{col_dict['EVENT_DATE']}]
                 ),
                 [{col_dict['EVENT_DATE']}]
             ) AS days_since_prev,
-            DATEDIFF(day, 
+            DATEDIFF(day,
                 [{col_dict['EVENT_DATE']}],
                 LEAD([{col_dict['EVENT_DATE']}]) OVER (
                     PARTITION BY [{col_dict['PATIENT_LOCAL_ID']}],
@@ -92,7 +92,7 @@ def execute(
     )
     -- Count events for each patient and disease to identify potential duplicates
     , event_counts AS (
-        SELECT 
+        SELECT
             [{col_dict['PATIENT_LOCAL_ID']}],
             [{col_dict['DISEASE_CD']}],
             COUNT(*) AS event_count
@@ -102,7 +102,7 @@ def execute(
     -- Final selection of potential duplicates based on days thresholds
     SELECT {select_clause}
     FROM datediff_calc d
-    JOIN event_counts c 
+    JOIN event_counts c
         ON d.[{col_dict['PATIENT_LOCAL_ID']}] = c.[{col_dict['PATIENT_LOCAL_ID']}]
         AND d.[{col_dict['DISEASE_CD']}] = c.[{col_dict['DISEASE_CD']}]
     WHERE c.event_count > 1
