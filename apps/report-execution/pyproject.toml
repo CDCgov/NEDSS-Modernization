@@ -45,6 +45,8 @@ select = [
     "I",
     # pydocstyle
     "D",
+    # trailing whitespace
+    "W291",
 ]
 
 ignore = [
