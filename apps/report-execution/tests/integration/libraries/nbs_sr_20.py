@@ -136,14 +136,14 @@ class TestIntegrationNbsSr20Library:
     def test_execute_report_handles_null_and_diverse_statuses(self):
         """Verifies that null status and alternate text fall into non_counted_cases."""
         status_query = """
-            SELECT 
-                CAST('2025-06-01' AS DATE) AS COUNT_DATE, 
+            SELECT
+                CAST('2025-06-01' AS DATE) AS COUNT_DATE,
                 'Count as a TB Case' AS count_status
             UNION ALL
             SELECT CAST('2025-06-02' AS DATE) AS COUNT_DATE, NULL AS count_status
             UNION ALL
-            SELECT 
-                CAST('2025-06-03' AS DATE) AS COUNT_DATE, 
+            SELECT
+                CAST('2025-06-03' AS DATE) AS COUNT_DATE,
                 'Suspected Case' AS count_status
         """
         report_spec = ReportSpec.model_validate(
