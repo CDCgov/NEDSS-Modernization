@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.page; // NOSONAR
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,11 +13,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-/**
- * Suppressing `Use the "java.time" API for date and time` simply to avoid any changes in behavior
- * for the time being
- */
-@SuppressWarnings("java:S2143")
 @Service
 @RequiredArgsConstructor
 public class PageMetaDataDownloader {
