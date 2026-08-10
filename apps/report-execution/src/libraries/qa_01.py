@@ -46,11 +46,11 @@ def execute(
         '13' AS [i], -- the sas library included a column with the count of the columns
         shd.patient_age_reported AS [age]
     FROM Shd_Filtered shd
-        LEFT JOIN {nbs_rdb}.dbo.investigation i 
+        LEFT JOIN {nbs_rdb}.dbo.investigation i
             ON shd.investigation_key = i.investigation_key
-        LEFT JOIN {nbs_rdb}.dbo.event_metric em 
+        LEFT JOIN {nbs_rdb}.dbo.event_metric em
             ON i.case_uid = em.event_uid
-        LEFT JOIN {nbs_rdb}.dbo.user_profile up 
+        LEFT JOIN {nbs_rdb}.dbo.user_profile up
             ON em.add_user_id = up.nedss_entry_id
     ORDER BY [PATIENT_NAME], [DIAGNOSIS_CD], [INVESTIGATION_KEY];
     """

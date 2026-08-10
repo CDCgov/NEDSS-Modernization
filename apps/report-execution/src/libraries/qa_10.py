@@ -39,11 +39,11 @@ def execute(
         SUBSTRING(shd.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [patient_id],
         TRY_CAST(
             LEFT(
-                TRIM(PATIENT_AGE_REPORTED), 
+                TRIM(PATIENT_AGE_REPORTED),
                 CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ')) AS INT
         ) AS [age]
     FROM
-        shd 
+        shd
             INNER JOIN {nbs_rdb}.DBO.INVESTIGATION inv
                        ON shd.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
     WHERE shd.DIAGNOSIS_CD IS NOT NULL

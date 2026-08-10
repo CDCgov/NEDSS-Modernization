@@ -28,10 +28,10 @@ def execute(
         WITH subset AS (
             {subset_query}
         ),
-        
+
         -- Find the first month/year and last month/year from the subset
         boundaries AS (
-            SELECT 
+            SELECT
                 MIN(DATEFROMPARTS(
                     YEAR({date_column}), MONTH({date_column}), 1)
                 ) AS start_date,
@@ -41,41 +41,41 @@ def execute(
             FROM subset
             WHERE {date_column} IS NOT NULL
         ),
-        
+
         -- compile list of month/years filling in missing months
         calendar AS (
-            SELECT start_date AS month_date, end_date 
-            FROM boundaries 
+            SELECT start_date AS month_date, end_date
+            FROM boundaries
             WHERE start_date IS NOT NULL
             UNION ALL
-            SELECT DATEADD(month, 1, month_date), end_date 
-            FROM calendar 
+            SELECT DATEADD(month, 1, month_date), end_date
+            FROM calendar
             WHERE month_date < end_date
         ),
-        
+
         -- compile the case counts
         monthly_aggregates AS (
-            SELECT 
+            SELECT
                 YEAR({date_column}) AS case_year,
                 MONTH({date_column}) AS case_month,
-                SUM(CASE 
-                        WHEN count_status = 'Count as a TB Case' 
-                            THEN 1 
+                SUM(CASE
+                        WHEN count_status = 'Count as a TB Case'
+                            THEN 1
                         ELSE 0 END
                     ) AS counted_cases,
-                SUM(CASE 
-                        WHEN count_status != 'Count as a TB Case' 
-                            OR count_status IS NULL 
-                                THEN 1 
+                SUM(CASE
+                        WHEN count_status != 'Count as a TB Case'
+                            OR count_status IS NULL
+                                THEN 1
                         ELSE 0 END
                     ) AS non_counted_cases
             FROM subset
             WHERE {date_column} IS NOT NULL
             GROUP BY YEAR({date_column}), MONTH({date_column})
         )
-        
+
         -- join to fill in missing months
-        SELECT 
+        SELECT
             UPPER(FORMAT(c.month_date, 'MMMyyyy')) AS monthYear,
             DATEDIFF(day, '1960-01-01', c.month_date) AS sasdate,
             COALESCE(a.counted_cases, 0) AS counted_cases,
@@ -83,8 +83,8 @@ def execute(
             COALESCE(a.counted_cases, 0) + COALESCE(a.non_counted_cases, 0)
                 AS total_cases
         FROM calendar c
-        LEFT JOIN monthly_aggregates a 
-            ON YEAR(c.month_date) = a.case_year 
+        LEFT JOIN monthly_aggregates a
+            ON YEAR(c.month_date) = a.case_year
            AND MONTH(c.month_date) = a.case_month
         ORDER BY c.month_date
         OPTION (MAXRECURSION 0);
