@@ -20,6 +20,7 @@ Feature: Patient File - Event Management - Morbidity Report
     
     Scenario: Add new morbidity report and create investigation
         When I check the current count of "Investigations" in the Events tab
+        And I check the current count of "Morbidity reports" in the Events tab
         And user clicks on the "Add morbidity report" button within the Events tab
         And I select "Botulism, foodborne" from the Condition dropdown menu
         And I select "Cobb County" from the Jurisdiction dropdown menu
@@ -32,6 +33,7 @@ Feature: Patient File - Event Management - Morbidity Report
         And user clicks the "View File" link, the user is returned to Patient profile summary page
         And Click Events tab on Patient Profile Page
         Then the "Investigations" count should increase by 1 in the Events tab
+        And the "Morbidity reports" count should increase by 1 in the Events tab
 
     Scenario: Cancel creation of a new morbidity report
         When I check the current count of "Morbidity reports" in the Events tab

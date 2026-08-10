@@ -113,7 +113,7 @@ class EventsTabPage {
       .invoke('text')
       .then(text => {
         const count = parseInt(text.trim());
-        Cypress.env('reportCount', count);
+        Cypress.env(ReportType.trim() + 'Count', count);
         cy.log('Saved ' + ReportType + ' count: ' + count);
       });
   }
@@ -122,7 +122,7 @@ class EventsTabPage {
     const reportIndex = this.reportTypeIndexMap[ReportType];
     this.waitForSpinner();
     
-    const initialCount = Cypress.env('reportCount');
+    const initialCount = Cypress.env(ReportType.trim() + 'Count');
     
     this.getCountBadge(reportIndex)
       .invoke('text')
@@ -138,7 +138,7 @@ class EventsTabPage {
     const reportIndex = this.reportTypeIndexMap[ReportType];
     this.waitForSpinner();
     
-    const initialCount = Cypress.env('reportCount');
+    const initialCount = Cypress.env(ReportType.trim() + 'Count');
     
     this.getCountBadge(reportIndex)
       .invoke('text')
