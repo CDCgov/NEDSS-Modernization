@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;  // NOSONAR
+package gov.cdc.nbs.questionbank.page; // NOSONAR
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
