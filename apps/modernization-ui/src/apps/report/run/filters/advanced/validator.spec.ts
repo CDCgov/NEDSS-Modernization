@@ -1,4 +1,3 @@
-import { QbQuery } from './AdvancedFilter.tsx';
 import { validateRule, ValidationResultMap } from './validator';
 
 describe('validateRule', () => {
@@ -18,7 +17,7 @@ describe('validateRule', () => {
                 field: '~',
                 operator: '~',
                 value: '',
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -39,7 +38,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -61,7 +60,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -84,7 +83,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -114,7 +113,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -148,7 +147,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -186,7 +185,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
@@ -217,7 +216,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as QbQuery,
+            },
             mockResult
         );
 
