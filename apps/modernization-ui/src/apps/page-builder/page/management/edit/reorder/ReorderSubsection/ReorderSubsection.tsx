@@ -53,7 +53,7 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                         <div className={styles.handle} {...provided.dragHandleProps}>
                             <Icon name="drag" size="m" alt="Drag handle to reorder subsection" />
                         </div>
-                        <Icon name="subsection" size="m" alt="" />
+                        <Icon name="subsection" size="m" alt="Subsection icon" />
                         {subsection.name}
                     </div>
                     <div className={`${styles.questions} ${!questionsOpen ? styles.closed : ''}`}>

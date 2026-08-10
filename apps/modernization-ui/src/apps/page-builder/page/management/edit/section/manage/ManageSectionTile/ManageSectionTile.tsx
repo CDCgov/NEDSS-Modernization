@@ -69,7 +69,7 @@ export const ManageSectionTile = ({
                                         <IconComponent name="drag" size="3" alt="Drag handle to reorder section" />
                                     </div>
                                     <div className={styles.warningGroup}>
-                                        <IconComponent name="group" size="3" alt="" />
+                                        <IconComponent name="group" size="3" alt="Group Icon" />
                                     </div>
                                     <div>{`${section.name} (${section.subSections.length})`}</div>
                                 </div>
@@ -115,7 +115,7 @@ export const ManageSectionTile = ({
                                 <IconComponent name="drag" size="3" alt="Drag handle to reorder section" />
                             </div>
                             <div className={styles.label}>
-                                <IconComponent name="group" size="3" alt="" />
+                                <IconComponent name="group" size="3" alt="Group icon" />
                                 <span data-testid="manageSectionTileId">
                                     {`${section.name} (${section.subSections.length})`}
                                 </span>

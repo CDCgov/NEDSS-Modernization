@@ -24,9 +24,9 @@ export const ReorderQuestion = ({ question, index, visible }: Props) => {
                 >
                     <div className={styles.tile}>
                         <div className={styles.handle} {...prov.dragHandleProps}>
-                            <Icon name="drag" size="m" alt="" />
+                            <Icon name="drag" size="m" alt="Drag handle to reorder question" />
                         </div>
-                        <Icon name="question" size="m" alt="" />
+                        <Icon name="question" size="m" alt="Question icon" />
                         {question.displayComponent === 1003 ? (
                             <p> &#60; Hyperlink &#62;</p>
                         ) : question.displayComponent === 1012 ? (

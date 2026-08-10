@@ -39,8 +39,10 @@ const columnToSortMap = new Map<string, ConditionSortField>([
     [ConditionColumn.Status, ConditionSortField.STATUS],
 ]);
 
-const asTableRow = (condition: Condition): TableBody => ({
-    id: condition.id,
+type ConditionTableBody = TableBody & { id: number };
+
+const asTableRow = (condition: Condition): ConditionTableBody => ({
+    id: Number(condition.id),
     expanded: false,
     selectable: true,
     tableDetails: [
@@ -70,7 +72,7 @@ type Props = {
 };
 export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSort }: Props) => {
     const { page, request } = usePagination();
-    const [tableRows, setTableRows] = useState<TableBody[]>([]);
+    const [tableRows, setTableRows] = useState<ConditionTableBody[]>([]);
     const [selected, setSelected] = useState<number[]>([]);
 
     useEffect(() => {
@@ -83,14 +85,14 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
     }, [selected]);
 
     const handleSelect = (event: ChangeEvent<HTMLInputElement>, item: TableBody) => {
-        if (item.id === undefined || item.id === null) return;
+        if (typeof item.id !== 'number' || Number.isNaN(item.id)) return;
 
-        const itemId = typeof item.id === 'number' ? item.id : Number(item.id);
+        const itemId = item.id;
 
         if (event.target.checked) {
             setSelected((current) => [...current, itemId]);
         } else {
-            setSelected((current) => current.filter((id) => id !== itemId));
+            setSelected((current) => current.filter((id) => id !== item.id));
         }
     };
 
