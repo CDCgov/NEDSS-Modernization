@@ -48,10 +48,10 @@ const ValueInput = <FullFieldExtended extends FullField = FullField>(props: Valu
     // adapted from https://github.com/mcmcgrath13/react-querybuilder/blob/87a991b124fa9060431ac8e1e8f42b789a5ddecb/packages/react-querybuilder/src/components/ValueEditor.tsx#L312-L322
     useEffect(() => {
         // clear input when changing from between to other operators
-        if (BETWEEN_OPERATOR_NAME !== operator && value.includes(',')) {
+        if (BETWEEN_OPERATOR_NAME !== operator && inputType !== 'text' && value.includes(',')) {
             handleOnChange('');
         }
-    }, [handleOnChange, operator, value]);
+    }, [handleOnChange, operator, value, inputType]);
 
     const handleSingleOnChange = (newValue: number | string | undefined) => {
         if (newValue !== undefined) {
