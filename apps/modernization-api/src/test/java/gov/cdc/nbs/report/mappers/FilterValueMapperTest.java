@@ -557,24 +557,40 @@ class FilterValueMapperTest {
       AdvancedQuery.Rule rule3 =
           new AdvancedQuery.Rule(
               UUID.randomUUID().toString(), 3L, ReportConstants.Operator.NE.toString(), "value3");
+      AdvancedQuery.Rule rule4 =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(), 3L, ReportConstants.Operator.NE.toString(), "value4");
+      AdvancedQuery.Rule rule5 =
+          new AdvancedQuery.Rule(
+              UUID.randomUUID().toString(), 3L, ReportConstants.Operator.NE.toString(), "value5");
 
-      AdvancedQuery.RuleGroup nestedGroup =
+      AdvancedQuery.RuleGroup nestedGroup1 =
           new AdvancedQuery.RuleGroup(
               UUID.randomUUID().toString(),
               ReportConstants.QueryCombinators.OR,
               List.of(rule2, rule3));
 
+      AdvancedQuery.RuleGroup nestedGroup2 =
+          new AdvancedQuery.RuleGroup(
+              UUID.randomUUID().toString(),
+              ReportConstants.QueryCombinators.OR,
+              List.of(rule4, rule5));
+
       AdvancedQuery.RuleGroup rootGroup =
           new AdvancedQuery.RuleGroup(
               UUID.randomUUID().toString(),
               ReportConstants.QueryCombinators.AND,
-              new ArrayList<>(List.of(rule1, nestedGroup)));
+              new ArrayList<>(List.of(rule1, nestedGroup1, nestedGroup2)));
 
       AdvancedFilterRequest request = new AdvancedFilterRequest(1L, rootGroup);
 
       List<FilterValue> result = mapper.fromAdvancedFilterRequest(mockReportFilter, request);
 
-      assertThat(result).hasSize(9);
+      assertThat(result).hasSize(15);
+
+      for (int i = 1; i <= result.size(); i++) {
+        assertThat(result.get(i - 1).getSequenceNumber()).isEqualTo(i);
+      }
 
       assertMatchingOperatorValue(result.getFirst(), "(", 1);
 
@@ -586,8 +602,16 @@ class FilterValueMapperTest {
       assertMatchingOperatorValue(result.get(5), ReportConstants.QueryCombinators.OR.toString(), 6);
       assertMatchingClauseValue(result.get(6), rule3, 7);
       assertMatchingOperatorValue(result.get(7), ")", 8);
+      assertMatchingOperatorValue(
+          result.get(8), ReportConstants.QueryCombinators.AND.toString(), 9);
+      assertMatchingOperatorValue(result.get(9), "(", 10);
+      assertMatchingClauseValue(result.get(10), rule4, 11);
+      assertMatchingOperatorValue(
+          result.get(11), ReportConstants.QueryCombinators.OR.toString(), 12);
+      assertMatchingClauseValue(result.get(12), rule5, 13);
+      assertMatchingOperatorValue(result.get(13), ")", 14);
 
-      assertMatchingOperatorValue(result.getLast(), ")", 9);
+      assertMatchingOperatorValue(result.getLast(), ")", 15);
     }
 
     @Test

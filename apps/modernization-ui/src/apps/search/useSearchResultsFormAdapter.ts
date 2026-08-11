@@ -40,7 +40,7 @@ type Settings<C extends FieldValues, A, R> = { form: UseFormReturn<C> } & Search
  *   termResolver
  * });
  */
-const useSearchResultsFormAdapter = <C extends object, A extends object, R extends object>({
+const useSearchResultsFormAdapter = <C extends Record<string, unknown>, A extends object, R extends object>({
     form,
     ...settings
 }: Settings<C, A, R>): SearchInteraction<R> => {

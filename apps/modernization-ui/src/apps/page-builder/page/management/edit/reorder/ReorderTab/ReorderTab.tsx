@@ -45,15 +45,15 @@ export const ReorderTab = ({ tab, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSectionsOpen(!sectionsOpen)}>
                             {sectionsOpen ? (
-                                <Icon name="expand-more" size="s" />
+                                <Icon name="expand-more" size="s" alt="Collapse sections" />
                             ) : (
-                                <Icon name="navigate-next" size="s" />
+                                <Icon name="navigate-next" size="s" alt="Expand sections" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
-                            <Icon name="drag" size="m" />
+                            <Icon name="drag" size="m" alt="Drag to reorder" />
                         </div>
-                        <Icon name="folder" size="m" />
+                        <Icon name="folder" size="m" alt="Tab folder" />
                         <p>{tab.name}</p>
                     </div>
                     <div className={`${styles.sections} ${sectionsOpen ? '' : styles.closed}`}>

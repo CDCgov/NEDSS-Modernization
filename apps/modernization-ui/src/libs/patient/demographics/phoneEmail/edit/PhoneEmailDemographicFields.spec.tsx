@@ -138,7 +138,7 @@ describe('when entering patient phone & email demographics', () => {
     });
 
     it('should not allow country codes over 20 characters', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText } = render(<Fixture />);
         const user = userEvent.setup();
         const country = getByLabelText('Country code');
 

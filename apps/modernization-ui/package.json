@@ -64,6 +64,7 @@
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^8.34.0",
         "@typescript-eslint/parser": "^8.34.0",
+        "@vitejs/plugin-legacy": "^8.2.3",
         "@vitejs/plugin-react": "^6.0.1",
         "@vitest/coverage-v8": "^4.1.0",
         "eslint": "9.31.0",
@@ -92,6 +93,8 @@
     "scripts": {
         "start": "vite",
         "build": "vite build",
+        "typecheck": "tsc -b --noEmit",
+        "typecheck:watch": "tsc -b --noEmit --watch",
         "preview": "vite preview",
         "test": "vitest --changed",
         "test:all": "vitest run",

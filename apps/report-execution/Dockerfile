@@ -22,7 +22,7 @@ COPY uv.toml uv.toml
 COPY uv.lock uv.lock
 
 # Install dependencies
-RUN uv sync
+RUN uv sync --no-build
 
 # Copy application code
 COPY src src

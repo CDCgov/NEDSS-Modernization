@@ -8,7 +8,7 @@ describe('not', () => {
 
         expect(actual).toBe(false);
 
-        expect(predicate).toBeCalledWith(7);
+        expect(predicate).toHaveBeenCalledWith(7);
     });
 
     it('should return true when the given predicate returns false', () => {
@@ -18,6 +18,6 @@ describe('not', () => {
 
         expect(actual).toBe(true);
 
-        expect(predicate).toBeCalledWith(7);
+        expect(predicate).toHaveBeenCalledWith(7);
     });
 });

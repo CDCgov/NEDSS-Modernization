@@ -3,8 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 
-import { SexAndBirthSelection } from '../sex-and-birth/SexAndBirthSelection';
-
 import { GeneralSelection } from './GeneralSelection';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [

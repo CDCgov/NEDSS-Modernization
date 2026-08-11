@@ -111,7 +111,7 @@ describe('when paginating a large set of data', () => {
 
         await user.click(page);
 
-        expect(mockOnPrevious).toBeCalled();
+        expect(mockOnPrevious).toHaveBeenCalled();
     });
 
     it('should request the selected page when a page is clicked', async () => {
@@ -135,7 +135,7 @@ describe('when paginating a large set of data', () => {
 
         await user.click(page);
 
-        expect(mockOnSelectPage).toBeCalledWith(2);
+        expect(mockOnSelectPage).toHaveBeenCalledWith(2);
     });
 
     it('should request the next page when the "Next page" button is clicked', async () => {
@@ -159,6 +159,6 @@ describe('when paginating a large set of data', () => {
 
         await user.click(page);
 
-        expect(mockOnNext).toBeCalled();
+        expect(mockOnNext).toHaveBeenCalled();
     });
 });
