@@ -6,3 +6,5 @@ ENV xpack.security.enabled=false
 ENV discovery.type=single-node
 
 RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install analysis-phonetic
+
+# DEV-389 provenance test trigger
