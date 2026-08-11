@@ -88,7 +88,7 @@ describe('when a search is performed', () => {
         // select the first condition
         const user = userEvent.setup();
         await user.click(row1Checkbox);
-        expect(mockOnSelectionChange).toHaveBeenLastCalledWith(["1"]);
+        expect(mockOnSelectionChange).toHaveBeenLastCalledWith(['1']);
 
         const newConditions = [
             {
