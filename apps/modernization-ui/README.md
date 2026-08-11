@@ -16,6 +16,10 @@
     npm run start
     ```
 
+## Linting
+
+Formatting, linting, and typechecking are enforced on the codebase. Run `npm run check:fix` to run all checks locally with automatic fixes applied where possible.
+
 ## Auto Generating Endpoints
 
 The UI code utilizes [gql-typescript-generator](https://github.com/TheBrainFamily/gql-typescript-generator) and [graphql-code-generator](https://github.com/dotansimha/graphql-code-generator) to auto generate GraphQL API requests.
