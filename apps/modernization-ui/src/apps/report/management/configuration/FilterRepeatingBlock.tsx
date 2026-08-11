@@ -241,7 +241,11 @@ const FilterConfigForm = ({
             />
             <Controller
                 name="selectType"
-                rules={needsSelectType ? validateRequiredRule('Selection type') : undefined}
+                // use function instead of boolean to make sure it reacts to changing filter
+                rules={{
+                    validate: (val) =>
+                        !needsSelectType || val ? true : validateRequiredRule('Selection type').required.message,
+                }}
                 // ignoring the ref as it does not pass down well and isn't critical
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
@@ -263,7 +267,13 @@ const FilterConfigForm = ({
             />
             <Controller
                 name="associatedColumn"
-                rules={needsColumnAndRequired ? validateRequiredRule('Associated column') : undefined}
+                // use function instead of boolean to make sure it reacts to changing filter
+                rules={{
+                    validate: (val) =>
+                        !needsColumnAndRequired || val
+                            ? true
+                            : validateRequiredRule('Associated column').required.message,
+                }}
                 // ignoring the ref as it does not pass down well and isn't critical
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (

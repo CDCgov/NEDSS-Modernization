@@ -202,6 +202,12 @@ describe('add report configuration page', () => {
         // should add to table and form reset
         expect(await findByRole('cell', { name: 'My filter' })).toBeVisible();
         expect(await findByLabelText('Filter')).toHaveValue('');
+        // add another filter and then change it
+        await user.selectOptions(await findByLabelText('Filter'), '1');
+        await user.selectOptions(await findByLabelText('Filter'), '7');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findByRole('cell', { name: 'Where Clause Builder' })).toBeVisible();
+        expect(await findByLabelText('Filter')).toHaveValue('');
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 
