@@ -1,21 +1,36 @@
+import { useState } from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe } from 'jest-axe';
 
-import { NumberRangeField } from './NumberRangeField.tsx';
+import { EMPTY_NUMBER_BETWEEN_CRITERIA, NumberBetweenCriteria, NumberRangeField } from './NumberRangeField.tsx';
+
+const Fixture = ({
+    value,
+    onChange,
+}: {
+    value?: NumberBetweenCriteria;
+    onChange?: (v: NumberBetweenCriteria) => void;
+}) => {
+    const [val, setVal] = useState<NumberBetweenCriteria>(value ?? EMPTY_NUMBER_BETWEEN_CRITERIA);
+
+    const handleChange = (v: NumberBetweenCriteria) => {
+        setVal(v);
+        onChange?.(v);
+    };
+    return <NumberRangeField id="testing-number-range" value={val} onChange={handleChange} />;
+};
 
 describe('NumberRangeField Component', () => {
     it('should render the component with initial values', () => {
         const { getByLabelText } = render(
-            <NumberRangeField
-                id="testing-number-range"
+            <Fixture
                 value={{
                     between: {
                         from: 1,
                         to: 2,
                     },
                 }}
-                onChange={vi.fn()}
             />
         );
         const from = getByLabelText('From');
@@ -27,9 +42,7 @@ describe('NumberRangeField Component', () => {
 
     it('should call from input change handler when the from number is entered', async () => {
         const mockOnChange = vi.fn();
-        const { getByLabelText } = render(
-            <NumberRangeField id="testing-number-range-from-entered" onChange={mockOnChange} />
-        );
+        const { getByLabelText } = render(<Fixture onChange={mockOnChange} />);
 
         const from = getByLabelText('From');
 
@@ -43,11 +56,11 @@ describe('NumberRangeField Component', () => {
     it('should call from input change handler when the from number is changed', async () => {
         const mockOnChange = vi.fn();
         const { getByLabelText } = render(
-            <NumberRangeField
-                id="testing-number-range-from-change"
+            <Fixture
                 value={{
                     between: {
                         from: 999,
+                        to: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -66,7 +79,7 @@ describe('NumberRangeField Component', () => {
     it('should call from input change handler when the to number is entered', async () => {
         const mockOnChange = vi.fn();
         const { getByLabelText } = render(
-            <NumberRangeField id="testing-number-range-to-entered" onChange={mockOnChange} />
+            <Fixture  onChange={mockOnChange} />
         );
 
         const to = getByLabelText('To');
@@ -81,8 +94,7 @@ describe('NumberRangeField Component', () => {
     it('should call from input change handler when the to number is changed', async () => {
         const mockOnChange = vi.fn();
         const { getByLabelText } = render(
-            <NumberRangeField
-                id="testing-number-range-to-change"
+            <Fixture
                 value={{
                     between: {
                         from: 10,
