@@ -11,7 +11,7 @@ import styles from './condition-search.module.scss';
 
 type Props = {
     id: string;
-    onConditionSelect: (ids: number[]) => void;
+    onConditionSelect: (ids: string[]) => void;
     onCancel: () => void;
     onCreateNew: () => void;
 };
@@ -32,7 +32,7 @@ const ConditionSearchContent = ({ id, onConditionSelect, onCancel, onCreateNew }
     const { search, response, isLoading, keyword, reset } = useConditionSearch();
     const { page, ready, request } = usePagination();
     const [sort, setSort] = useState<ConditionSort | undefined>();
-    const [selected, setSelected] = useState<number[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
     const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
