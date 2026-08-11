@@ -2847,7 +2847,7 @@ describe('report run page', () => {
             await user.selectOptions(opSelect, 'contains');
             const valueBox = await findByLabelText('Value');
             expect(valueBox).toHaveValue('');
-            await user.type(valueBox, 'hi');
+            await user.type(valueBox, 'hi, world');
 
             expect(await axe(container)).toHaveNoViolations();
 
@@ -2867,7 +2867,7 @@ describe('report run page', () => {
                                     id: expect.stringMatching(/[0-9-]+/),
                                     columnId: 2001,
                                     operator: 'CO',
-                                    value: 'hi',
+                                    value: 'hi, world',
                                 },
                             ],
                         },
