@@ -2,35 +2,32 @@ import classNames from 'classnames';
 
 import { Field, Orientation, Sizing } from 'design-system/field';
 
-import { Numeric } from '../numeric/Numeric.tsx';
+import { Numeric } from '../Numeric.tsx';
 
 import styles from './number-range-field.module.scss';
 
 type NumberRange = {
-    from?: number;
-    to?: number;
+    from: number | null;
+    to: number | null;
 };
 
 export type NumberBetweenCriteria = {
     between: NumberRange;
 };
 
+const EMPTY_NUMBER_BETWEEN_CRITERIA = { between: { from: null, to: null } };
+
 export type NumberRangeFieldProps = {
     id: string;
-    value?: NumberBetweenCriteria;
+    value: NumberBetweenCriteria;
     sizing?: Sizing;
-    onChange?: (value?: NumberBetweenCriteria) => void;
+    onChange: (value: NumberBetweenCriteria) => void;
     onBlur?: () => void;
     label?: string;
     required?: boolean;
     orientation?: Orientation;
     helperText?: string;
     error?: string;
-};
-
-const parseValue = (value: number | undefined | null) => {
-    if (value === undefined || value === null) return undefined;
-    return value;
 };
 
 const NumberRangeField = ({
@@ -45,13 +42,13 @@ const NumberRangeField = ({
     helperText,
     error,
 }: NumberRangeFieldProps) => {
-    const handleFieldOnChange = (v: number | null | undefined, type: 'to' | 'from') => {
+    const handleFieldOnChange = (v: number | null, type: 'to' | 'from') => {
         if (type === 'to') {
-            onChange?.({ between: { from: parseValue(value?.between.from), to: parseValue(v) } });
+            onChange({ between: { from: value.between.from, to: v } });
         }
 
         if (type === 'from') {
-            onChange?.({ between: { from: parseValue(v), to: parseValue(value?.between.to) } });
+            onChange({ between: { from: v, to: value.between.to } });
         }
     };
 
@@ -69,7 +66,7 @@ const NumberRangeField = ({
                 >
                     <Numeric
                         id={`${id}-from`}
-                        value={parseValue(value?.between?.from)}
+                        value={value.between.from}
                         onChange={(v) => handleFieldOnChange(v, 'from')}
                         onBlur={onBlur}
                         required={required}
@@ -88,8 +85,8 @@ const NumberRangeField = ({
                 >
                     <Numeric
                         id={`${id}-to`}
-                        min={parseValue(value?.between?.from)}
-                        value={parseValue(value?.between?.to)}
+                        min={value.between.from ?? undefined}
+                        value={value.between.to}
                         onChange={(v) => handleFieldOnChange(v, 'to')}
                         onBlur={onBlur}
                         required={required}
@@ -100,4 +97,4 @@ const NumberRangeField = ({
     );
 };
 
-export { NumberRangeField };
+export { NumberRangeField, EMPTY_NUMBER_BETWEEN_CRITERIA };

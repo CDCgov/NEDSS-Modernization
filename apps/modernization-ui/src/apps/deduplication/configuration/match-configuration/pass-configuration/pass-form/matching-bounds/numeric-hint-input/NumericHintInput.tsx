@@ -17,7 +17,7 @@ type Props = {
     min?: number;
     max?: number;
     step?: number;
-    value?: number;
+    value: number | null;
     tooltip: ReactNode;
     disabled?: boolean;
     className?: string;

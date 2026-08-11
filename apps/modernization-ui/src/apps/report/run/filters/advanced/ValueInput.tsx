@@ -8,7 +8,7 @@ import { DatePickerInput } from 'design-system/date';
 import { DateBetweenCriteria } from 'design-system/date/criteria';
 import { DatePickerRange } from 'design-system/date/range/DatePickerRange.tsx';
 import { NumericInput, NumericRangeInput, TextInputField } from 'design-system/input';
-import { NumberBetweenCriteria } from 'design-system/input/range/NumberRangeField.tsx';
+import { NumberBetweenCriteria } from 'design-system/input/numeric/range/NumberRangeField.tsx';
 
 import { BETWEEN_OPERATOR } from './operators.ts';
 
