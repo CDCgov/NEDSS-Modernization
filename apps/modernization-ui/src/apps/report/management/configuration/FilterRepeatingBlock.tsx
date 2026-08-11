@@ -295,7 +295,7 @@ const SelectTypeField = ({
 
     // reset when showability changes
     useEffect(() => {
-        onChange(null);
+        if (!needsSelectType) onChange(null);
     }, [needsSelectType]);
 
     return (
@@ -335,7 +335,7 @@ const AssociatedColumnField = ({
 
     // reset when showability changes
     useEffect(() => {
-        onChange(null);
+        if (!needsColumnAndRequired) onChange(null);
     }, [needsColumnAndRequired]);
 
     return (
@@ -372,7 +372,7 @@ const RequiredToggleField = ({
 
     // reset when showability changes
     useEffect(() => {
-        onChange(false);
+        if (!needsColumnAndRequired) onChange(false);
     }, [needsColumnAndRequired]);
 
     return (
