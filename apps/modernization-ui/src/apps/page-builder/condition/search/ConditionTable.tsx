@@ -55,7 +55,6 @@ const asTableRow = (condition: Condition): TableBody => ({
             title: condition.conditionFamily,
         },
         { id: 5, title: condition.coinfectionGroup },
-
         { id: 6, title: condition.nndInd },
         { id: 7, title: condition.page },
         { id: 8, title: condition.status === 'A' ? 'Active' : 'Inactive' },
@@ -65,13 +64,14 @@ const asTableRow = (condition: Condition): TableBody => ({
 type Props = {
     conditions: Condition[];
     isLoading: boolean;
-    onSelectionChange: (selection: number[]) => void;
+    onSelectionChange: (selection: string[]) => void;
     onSort?: (sort?: ConditionSort) => void;
 };
+
 export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSort }: Props) => {
     const { page, request } = usePagination();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [selected, setSelected] = useState<number[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
 
     useEffect(() => {
         setSelected([]);
@@ -82,11 +82,15 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
         onSelectionChange(selected);
     }, [selected]);
 
-    const handleSelect = (event: ChangeEvent<HTMLInputElement>, item: { id: number }) => {
+    const handleSelect = (event: ChangeEvent<HTMLInputElement>, item: TableBody) => {
+        if (item.id === undefined || item.id === null) return;
+
+        const itemId = String(item.id);
+
         if (event.target.checked) {
-            setSelected((current) => [...current, item.id]);
+            setSelected((current) => [...current, itemId]);
         } else {
-            setSelected((current) => current.filter((id) => id !== item.id));
+            setSelected((current) => current.filter((id) => id !== itemId));
         }
     };
 

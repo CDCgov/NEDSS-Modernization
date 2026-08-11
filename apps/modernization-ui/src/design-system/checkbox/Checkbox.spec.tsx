@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 
@@ -19,18 +19,19 @@ describe('Checkbox testing', () => {
     });
 
     it('should render unchecked', () => {
-        render(<Checkbox id="test" label="Test Label" />);
+        const { getByRole } = render(<Checkbox id="test" label="Test Label" />);
 
-        const checkbox = screen.getByRole('checkbox', { name: 'Test Label' });
+        const checkbox = getByRole('checkbox', { name: 'Test Label' });
 
         expect(checkbox).not.toBeChecked();
         expect(checkbox).toHaveAttribute('aria-checked', 'false');
     });
 
     it('should render checked', () => {
-        const { container } = render(<Checkbox id="test" label="Test Label" selected={true} />);
+        const { getByRole } = render(<Checkbox id="test" label="Test Label" selected={true} />);
 
-        const checkbox = screen.getByRole('checkbox', { name: 'Test Label' });
+        const checkbox = getByRole('checkbox', { name: 'Test Label' });
+
         expect(checkbox).toBeChecked();
         expect(checkbox).toHaveAttribute('aria-checked', 'true');
     });

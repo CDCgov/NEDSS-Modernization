@@ -17,10 +17,10 @@ describe('anyOf', () => {
 
         expect(actual).toBe(false);
 
-        expect(first).toBeCalledWith(6);
-        expect(second).toBeCalledWith(6);
-        expect(third).toBeCalledWith(6);
-        expect(fourth).toBeCalledWith(6);
+        expect(first).toHaveBeenCalledWith(6);
+        expect(second).toHaveBeenCalledWith(6);
+        expect(third).toHaveBeenCalledWith(6);
+        expect(fourth).toHaveBeenCalledWith(6);
     });
 
     it('should return true,  when the first predicate succeeds', () => {
@@ -33,9 +33,9 @@ describe('anyOf', () => {
 
         expect(actual).toBe(true);
 
-        expect(first).toBeCalledWith(6);
-        expect(second).toBeCalledWith(6);
-        expect(third).not.toBeCalled();
-        expect(fourth).not.toBeCalled();
+        expect(first).toHaveBeenCalledWith(6);
+        expect(second).toHaveBeenCalledWith(6);
+        expect(third).not.toHaveBeenCalled();
+        expect(fourth).not.toHaveBeenCalled();
     });
 });
