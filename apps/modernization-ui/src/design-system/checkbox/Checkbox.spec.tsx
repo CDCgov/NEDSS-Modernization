@@ -29,7 +29,7 @@ describe('Checkbox testing', () => {
 
     it('should render checked', () => {
         const { container } = render(<Checkbox id="test" label="Test Label" selected={true} />);
-        
+
         expect(container).toBeChecked();
         expect(container).toHaveAttribute('aria-checked', 'true');
     });
