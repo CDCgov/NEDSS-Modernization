@@ -26,16 +26,16 @@ const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
 export interface FilterConfig {
     id?: number;
     filter: Selectable;
-    selectType?: EnumSelectable<BasicFilterConfiguration.selectType>;
-    associatedColumn?: Selectable;
+    selectType: EnumSelectable<BasicFilterConfiguration.selectType> | null;
+    associatedColumn: Selectable | null;
     isRequired: boolean;
 }
 
 const EMPTY_FILTER_CONFIG: Partial<FilterConfig> = {
     id: undefined,
     filter: undefined,
-    selectType: undefined,
-    associatedColumn: undefined,
+    selectType: null,
+    associatedColumn: null,
     isRequired: false,
 };
 
@@ -72,8 +72,8 @@ const FilterRepeatingBlock = ({
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
             filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType),
-            associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()),
+            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType) ?? null,
+            associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()) ?? null,
             isRequired: f.isRequired,
         })) ?? [];
 
@@ -82,6 +82,8 @@ const FilterRepeatingBlock = ({
             id: config.advancedFilter.reportFilterUid,
             filter: filterOptions.find(({ value }) => value === '7')!,
             isRequired: false,
+            selectType: null,
+            associatedColumn: null,
         });
     }
 
@@ -287,7 +289,7 @@ const SelectTypeField = ({
 }: {
     name: string;
     error?: FieldError;
-    value?: Selectable | null;
+    value: Selectable | null;
     onChange: (v: Selectable | null) => void;
 }) => {
     const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
@@ -326,7 +328,7 @@ const AssociatedColumnField = ({
 }: {
     name: string;
     error?: FieldError;
-    value?: Selectable | null;
+    value: Selectable | null;
     onChange: (v: Selectable | null) => void;
     columnOptions: Selectable[];
 }) => {
@@ -364,7 +366,7 @@ const RequiredToggleField = ({
 }: {
     name: string;
     error?: FieldError;
-    value?: boolean;
+    value: boolean;
     onChange: (v: boolean) => void;
 }) => {
     const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
