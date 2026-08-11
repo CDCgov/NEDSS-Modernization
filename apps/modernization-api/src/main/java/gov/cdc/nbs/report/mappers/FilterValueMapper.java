@@ -99,8 +99,6 @@ public class FilterValueMapper {
   private List<FilterValue> mapRuleGroupToFilterValues(
       ReportFilter advancedFilter, AdvancedQuery.RuleGroup ruleGroup) {
     List<FilterValue> filterValues = new ArrayList<>();
-    FilterValue operator =
-        buildOperatorFilterValue(advancedFilter, ruleGroup.combinator().toString());
 
     FilterValue openParen = buildOpenParenFilterValue(advancedFilter);
     filterValues.add(openParen);
@@ -117,6 +115,9 @@ public class FilterValueMapper {
       }
 
       if (i < ruleGroup.rules().size() - 1) {
+        // can't hoist this as we need unique operators for each DB row
+        FilterValue operator =
+            buildOperatorFilterValue(advancedFilter, ruleGroup.combinator().toString());
         filterValues.add(operator);
       }
     }
