@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
-import { Controller, FieldError, useWatch } from 'react-hook-form';
+import { Controller, useWatch } from 'react-hook-form';
 
 import { Shown } from 'conditional-render';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
@@ -25,7 +25,7 @@ const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
 
 export interface FilterConfig {
     id?: number;
-    filter: Selectable;
+    filter: Selectable | null;
     selectType: EnumSelectable<BasicFilterConfiguration.selectType> | null;
     associatedColumn: Selectable | null;
     isRequired: boolean;
@@ -33,7 +33,7 @@ export interface FilterConfig {
 
 const EMPTY_FILTER_CONFIG: Partial<FilterConfig> = {
     id: undefined,
-    filter: undefined,
+    filter: null,
     selectType: null,
     associatedColumn: null,
     isRequired: false,
@@ -42,7 +42,7 @@ const EMPTY_FILTER_CONFIG: Partial<FilterConfig> = {
 type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;
 
 const filterColumns: FilterColumn[] = [
-    { id: 'filter', name: 'Filter', value: (v) => v.filter.name },
+    { id: 'filter', name: 'Filter', value: (v) => v.filter?.name },
     { id: 'type', name: 'Selection type', value: (v) => v.selectType?.name },
     {
         id: 'column',
@@ -216,17 +216,15 @@ const FilterConfigForm = ({
     // parent report config form
 
     const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
-    const needsSelectType = SELECTABLE_FILTER_IDS.has(filterVal?.value);
-    const needsColumnAndRequired = COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value);
+    const needsSelectType = !!filterVal && SELECTABLE_FILTER_IDS.has(filterVal.value);
+    const needsColumnAndRequired = !!filterVal && COLUMN_REQUIRED_FILTER_IDS.has(filterVal.value);
 
     return (
         <section>
-            <Controller
+            <Controller<FilterConfig, 'filter'>
                 name="filter"
                 rules={validateRequiredRule('Filter')}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
                     <SingleSelect
                         id={`filter-${name}`}
                         label="Filter"
@@ -237,24 +235,37 @@ const FilterConfigForm = ({
                         error={error?.message}
                         required={true}
                         sizing={SIZING}
-                        {...remaining}
+                        value={value}
+                        onChange={onChange}
                     />
                 )}
             />
-            <Controller
+            <Controller<FilterConfig, 'selectType'>
                 name="selectType"
                 // use function instead of boolean to make sure it reacts to changing filter
                 rules={{
                     validate: (val) =>
                         !needsSelectType || val ? true : validateRequiredRule('Selection type').required.message,
                 }}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <SelectTypeField name={name} error={error} {...remaining} />
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
+                    <ConditionalField shown={needsSelectType} reset={() => onChange(null)}>
+                        <SingleSelect
+                            id={`filter-${name}`}
+                            label="Selection type"
+                            helperText="Allow one or multiple selections"
+                            name={name}
+                            options={SELECT_OPTIONS}
+                            orientation="horizontal"
+                            error={error?.message}
+                            required={true}
+                            sizing={SIZING}
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </ConditionalField>
                 )}
             />
-            <Controller
+            <Controller<FilterConfig, 'associatedColumn'>
                 name="associatedColumn"
                 // use function instead of boolean to make sure it reacts to changing filter
                 rules={{
@@ -263,134 +274,51 @@ const FilterConfigForm = ({
                             ? true
                             : validateRequiredRule('Associated column').required.message,
                 }}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <AssociatedColumnField name={name} error={error} columnOptions={columnOptions} {...remaining} />
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
+                    <ConditionalField shown={needsColumnAndRequired} reset={() => onChange(null)}>
+                        <SingleSelect
+                            id={`filter-${name}`}
+                            label="Associated column"
+                            name={name}
+                            options={columnOptions}
+                            orientation="horizontal"
+                            error={error?.message}
+                            required={true}
+                            sizing={SIZING}
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </ConditionalField>
                 )}
             />
-            <Controller
+            <Controller<FilterConfig, 'isRequired'>
                 name="isRequired"
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <RequiredToggleField name={name} error={error} {...remaining} />
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
+                    <ConditionalField shown={needsColumnAndRequired} reset={() => onChange(false)}>
+                        <ToggleField
+                            id={`filter-${name}`}
+                            orientation="horizontal"
+                            sizing={SIZING}
+                            label="Required as basic filter?"
+                            className="height-full"
+                            error={error?.message}
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </ConditionalField>
                 )}
             />
         </section>
     );
 };
 
-const SelectTypeField = ({
-    name,
-    error,
-    value,
-    onChange,
-}: {
-    name: string;
-    error?: FieldError;
-    value: Selectable | null;
-    onChange: (v: Selectable | null) => void;
-}) => {
-    const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
-    const needsSelectType = SELECTABLE_FILTER_IDS.has(filterVal?.value);
-
+const ConditionalField = ({ reset, shown, children }: { reset: () => void; shown: boolean; children: ReactNode }) => {
     // reset when showability changes
     useEffect(() => {
-        if (!needsSelectType) onChange(null);
-    }, [needsSelectType]);
+        if (!shown) reset();
+    }, [shown]);
 
-    return (
-        <Shown when={needsSelectType}>
-            <SingleSelect
-                id={`filter-${name}`}
-                label="Selection type"
-                helperText="Allow one or multiple selections"
-                name={name}
-                options={SELECT_OPTIONS}
-                orientation="horizontal"
-                error={error?.message}
-                required={true}
-                sizing={SIZING}
-                value={value}
-                onChange={onChange}
-            />
-        </Shown>
-    );
-};
-
-const AssociatedColumnField = ({
-    name,
-    error,
-    value,
-    onChange,
-    columnOptions,
-}: {
-    name: string;
-    error?: FieldError;
-    value: Selectable | null;
-    onChange: (v: Selectable | null) => void;
-    columnOptions: Selectable[];
-}) => {
-    const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
-    const needsColumnAndRequired = COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value);
-
-    // reset when showability changes
-    useEffect(() => {
-        if (!needsColumnAndRequired) onChange(null);
-    }, [needsColumnAndRequired]);
-
-    return (
-        <Shown when={needsColumnAndRequired}>
-            <SingleSelect
-                id={`filter-${name}`}
-                label="Associated column"
-                name={name}
-                options={columnOptions}
-                orientation="horizontal"
-                error={error?.message}
-                required={true}
-                sizing={SIZING}
-                value={value}
-                onChange={onChange}
-            />
-        </Shown>
-    );
-};
-
-const RequiredToggleField = ({
-    name,
-    error,
-    value,
-    onChange,
-}: {
-    name: string;
-    error?: FieldError;
-    value: boolean;
-    onChange: (v: boolean) => void;
-}) => {
-    const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
-    const needsColumnAndRequired = COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value);
-
-    // reset when showability changes
-    useEffect(() => {
-        if (!needsColumnAndRequired) onChange(false);
-    }, [needsColumnAndRequired]);
-
-    return (
-        <Shown when={needsColumnAndRequired}>
-            <ToggleField
-                id={`filter-${name}`}
-                orientation="horizontal"
-                sizing={SIZING}
-                label="Required as basic filter?"
-                className="height-full"
-                error={error?.message}
-                value={value}
-                onChange={onChange}
-            />
-        </Shown>
-    );
+    return <Shown when={shown}>{children}</Shown>;
 };
 
 export { FilterRepeatingBlock };

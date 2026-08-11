@@ -51,7 +51,7 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
         sectionCode: data.sectionCode.value,
         filterRequests: data.filterRequests.map((fc) => ({
             id: fc.id,
-            filterCodeUid: parseInt(fc.filter.value),
+            filterCodeUid: parseInt(fc.filter!.value),
             selectType: fc.selectType?.value,
             columnUid: fc.associatedColumn?.value ? parseInt(fc.associatedColumn.value) : undefined,
             isRequired: fc.isRequired,
