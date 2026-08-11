@@ -65,7 +65,7 @@ export const AddNewPage = () => {
         });
     }, [watch.eventType]);
 
-    const handleAddConditions = (conditions: number[]) => {
+    const handleAddConditions = (conditions: string[]) => {
         const newConditions = conditions
             .map((id) => String(id))
             .filter((id) => !form.getValues('conditionIds').includes(id));
