@@ -17,10 +17,10 @@ def execute(
     content = trx.query(
         f"""
         WITH subset as ({subset_query})
-        SELECT COALESCE(state_cd, 'N/A') as [State Code], 
-        COALESCE(state, 'N/A') as [State], 
+        SELECT COALESCE(state_cd, 'N/A') as [State Code],
+        COALESCE(state, 'N/A') as [State],
         COALESCE(county, 'N/A') as [County],
-        phc_code_short_desc as [Condition], 
+        phc_code_short_desc as [Condition],
         YEAR(event_date) as [Year],
         SUM(group_case_cnt) as [Cases]
         FROM subset
@@ -46,7 +46,7 @@ def execute(
 
 * Is filtered based on the state, diseases, time frame and advanced criteria selected by user
 
-* Will not include Investigations that do not have a value for the State 
+* Will not include Investigations that do not have a value for the State
 selected by the user
 
 * Is based on the year of the calculated Event Date (not the MMWR Year defined by the user)

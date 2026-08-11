@@ -77,7 +77,7 @@ describe('when a modal is displayed', () => {
 
         await user.click(closer);
 
-        expect(onClose).toBeCalled();
+        expect(onClose).toHaveBeenCalled();
     });
 
     it('should render without a footer', () => {
@@ -124,6 +124,6 @@ describe('when a modal is displayed', () => {
 
         await user.click(closer);
 
-        expect(onClose).toBeCalled();
+        expect(onClose).toHaveBeenCalled();
     });
 });

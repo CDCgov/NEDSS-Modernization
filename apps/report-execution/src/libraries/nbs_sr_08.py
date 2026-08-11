@@ -20,7 +20,7 @@ def execute(
     content = trx.query(
         f"""
         WITH subset AS ({subset_query})
-        SELECT 
+        SELECT
             state_cd AS [State Code],
             state AS [State],
             county AS [County],

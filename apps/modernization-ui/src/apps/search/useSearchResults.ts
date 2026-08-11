@@ -198,7 +198,7 @@ type SearchResultSettings<C, A, R> = {
     noInputCheck?: Predicate<Term[]>;
 };
 
-const useSearchResults = <C extends object, A extends object, R extends object>({
+const useSearchResults = <C extends Record<string, unknown>, A extends object, R extends object>({
     transformer,
     resultResolver,
     termResolver,

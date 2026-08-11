@@ -3,6 +3,8 @@ import { validateEmail } from './validateEmail';
 describe('when validating an email entered at text', () => {
     it('should allow a value with a username and a domain', () => {
         const actual = validateEmail('valid email')('username@domain.com');
+
+        expect(actual).toBeTruthy();
     });
 
     it('should not allow a value that does not contain a domain', () => {

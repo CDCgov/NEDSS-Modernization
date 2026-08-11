@@ -88,14 +88,14 @@ describe('when ManageSectionTile renders', () => {
                                 <ManageSectionTile
                                     section={section}
                                     index={1}
-                                    setSelectedForDelete={vi.fn}
+                                    setSelectedForDelete={vi.fn()}
                                     selectedForDelete={undefined}
-                                    handleDelete={vi.fn}
-                                    setOnAction={vi.fn}
+                                    handleDelete={vi.fn()}
+                                    setOnAction={vi.fn()}
                                     onAction={false}
-                                    setSectionState={vi.fn}
-                                    setSelectedForEdit={vi.fn}
-                                    onChangeVisibility={vi.fn}
+                                    setSectionState={vi.fn()}
+                                    setSelectedForEdit={vi.fn()}
+                                    onChangeVisibility={vi.fn()}
                                 />
                             </div>
                         )}

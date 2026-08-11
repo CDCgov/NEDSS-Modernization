@@ -12,7 +12,7 @@ describe('when mapping over an array that could result in undefined elements', (
 
         expect(actual).toEqual([]);
 
-        expect(mapping).not.toBeCalled();
+        expect(mapping).not.toHaveBeenCalled();
     });
 
     it('should map an empty array to an empty array', () => {
@@ -21,7 +21,7 @@ describe('when mapping over an array that could result in undefined elements', (
         const actual = maybeMapAll(mapping)([]);
 
         expect(actual).toEqual([]);
-        expect(mapping).not.toBeCalled();
+        expect(mapping).not.toHaveBeenCalled();
     });
 
     it('should only include element that maps to defined values', () => {

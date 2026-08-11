@@ -1,7 +1,5 @@
 import { add } from 'date-fns';
 
-import { internalizeDate } from 'date';
-
 import { validateDateEntry } from './validateDateEntry';
 
 const mockNow = vi.fn();
@@ -45,8 +43,6 @@ describe('when validating a date entered in parts', () => {
         });
 
         it('should not allow months after today', () => {
-            const today = new Date('2017-05-23T00:00:00');
-
             mockNow.mockReturnValue(new Date('2017-05-23T00:00:00'));
 
             const actual = validateDateEntry('Date in the future')({

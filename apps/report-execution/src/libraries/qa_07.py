@@ -83,7 +83,7 @@ def execute(
         LEFT JOIN lab_max lab ON s.INVESTIGATION_KEY = lab.INVESTIGATION_KEY
         LEFT JOIN {nbs_rdb}.dbo.MORBIDITY_REPORT_EVENT mre
         ON s.INVESTIGATION_KEY = mre.INVESTIGATION_KEY
-        LEFT JOIN {nbs_rdb}.dbo.MORBIDITY_REPORT mr 
+        LEFT JOIN {nbs_rdb}.dbo.MORBIDITY_REPORT mr
         ON mre.MORB_RPT_KEY = mr.MORB_RPT_KEY
         WHERE s.INV_LOCAL_ID IS NOT NULL
           AND s.DIAGNOSIS IS NOT NULL

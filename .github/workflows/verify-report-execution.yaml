@@ -31,23 +31,23 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./apps/report-execution
-        run: uv sync --frozen
+        run: uv sync --no-build --frozen
 
       - name: Validate formatting
         working-directory: ./apps/report-execution
-        run: uv run ruff format --check
+        run: uv run --no-build ruff format --check
 
       - name: Run linter
         working-directory: ./apps/report-execution
-        run: uv run ruff check
+        run: uv run --no-build ruff check
         
       - name: Run type check
         working-directory: ./apps/report-execution
-        run: uv run pyrefly check --output-format=github
+        run: uv run --no-build pyrefly check --output-format=github
 
       - name: Run tests
         working-directory: ./apps/report-execution
-        run: uv run pytest -m "not integration"
+        run: uv run --no-build pytest -m "not integration"
 
   integration_test:
     name: Integration Test
