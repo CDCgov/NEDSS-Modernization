@@ -164,7 +164,7 @@ describe('add report configuration page', () => {
         vi.mocked(generated.ReportControllerService.createReport).mockResolvedValue({ reportUid: 1, dataSourceUid: 2 });
         const navigate = vi.fn();
         vi.mocked(useNavigate).mockReturnValue(navigate);
-        const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+        const { getByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -204,6 +204,8 @@ describe('add report configuration page', () => {
         expect(await findByLabelText('Filter')).toHaveValue('');
         // add another filter and then change it
         await user.selectOptions(await findByLabelText('Filter'), '1');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findAllByText(/The Associated column is required./)).toHaveLength(2);
         await user.selectOptions(await findByLabelText('Filter'), '7');
         await user.click(await findByRole('button', { name: 'Add filter' }));
         expect(await findByRole('cell', { name: 'Where Clause Builder' })).toBeVisible();
