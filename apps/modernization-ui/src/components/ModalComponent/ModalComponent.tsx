@@ -1,5 +1,5 @@
 import './ModalComponent.scss';
-import { ReactNode, RefObject } from 'react';
+import { ReactNode, RefObject, useId } from 'react';
 
 import { Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 
@@ -11,7 +11,7 @@ type ModalProps = {
     isLarge?: boolean;
     size?: string;
     forceAction?: boolean;
-    id: string;
+    id?: string;
     className?: string;
     disabled?: boolean;
 };
@@ -27,18 +27,21 @@ export const ModalComponent = ({
     id,
     disabled = false,
 }: ModalProps) => {
+    const generatedId = useId();
+    const modalId = id ?? generatedId;
+
     return (
         <Modal
             // allow escape to cancel unless interaction is disabled
             forceAction={disabled}
             ref={modalRef}
             isLarge={isLarge}
-            id={id}
-            aria-labelledby={`${id}-heading`}
+            id={modalId}
+            aria-labelledby={`${modalId}-heading`}
             className={`padding-0 ${size} ${className}`}
-            aria-describedby={`${id}-description`}
+            aria-describedby={`${modalId}-description`}
         >
-            {modalHeading ? <ModalHeading id={`${id}-heading`}>{modalHeading}</ModalHeading> : null}
+            {modalHeading ? <ModalHeading id={`${modalId}-heading`}>{modalHeading}</ModalHeading> : null}
             {modalBody}
             {modalFooter ? <ModalFooter>{modalFooter}</ModalFooter> : null}
         </Modal>

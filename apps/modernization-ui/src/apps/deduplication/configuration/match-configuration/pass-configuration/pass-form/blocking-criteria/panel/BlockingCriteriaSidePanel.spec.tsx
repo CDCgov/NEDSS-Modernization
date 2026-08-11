@@ -162,7 +162,7 @@ describe('BlockingCriteriaSidePanel', () => {
         expect(cancel).toHaveTextContent('Cancel');
         await user.click(cancel);
 
-        expect(onCancel).toBeCalledTimes(1);
+        expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger onAccept when Add attribute(s) is clicked', async () => {
@@ -177,6 +177,6 @@ describe('BlockingCriteriaSidePanel', () => {
 
         await user.click(add);
 
-        expect(onAccept).toBeCalledTimes(1);
+        expect(onAccept).toHaveBeenCalledTimes(1);
     });
 });

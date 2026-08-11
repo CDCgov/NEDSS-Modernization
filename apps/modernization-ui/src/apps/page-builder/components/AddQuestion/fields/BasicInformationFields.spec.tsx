@@ -1,17 +1,10 @@
-import { render, renderHook } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CreateQuestionForm } from '../QuestionForm';
 
 import { BasicInformationFields } from './BasicInformationFields';
-
-const { result } = renderHook(() =>
-    useForm<CreateQuestionForm>({
-        mode: 'onBlur',
-        defaultValues: { uniqueId: 'duplicateUniqueId', uniqueName: 'duplicateUniqueName' },
-    })
-);
 
 const setError = vi.fn();
 const validate = vi.fn();

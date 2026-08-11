@@ -25,7 +25,9 @@ const SINGLE_COMPONENTS: Record<string, ReactComponentLike> = {
 
 const BETWEEN_OPERATOR_NAME = BETWEEN_OPERATOR.name;
 
-const getConvertedRange = (props: ValueEditorProps<FullField>): DateBetweenCriteria | NumberBetweenCriteria => {
+const getConvertedRange = <FullFieldExtended extends FullField = FullField>(
+    props: ValueEditorProps<FullFieldExtended>
+): DateBetweenCriteria | NumberBetweenCriteria => {
     if (props.operator === BETWEEN_OPERATOR_NAME && typeof props.value === 'string' && props.value) {
         const [from = '', to = ''] = props.value.split(',');
         return { between: { from, to } };
@@ -33,7 +35,7 @@ const getConvertedRange = (props: ValueEditorProps<FullField>): DateBetweenCrite
     return { between: { from: '', to: '' } };
 };
 
-const ValueInput = (props: ValueEditorProps<FullField>) => {
+const ValueInput = <FullFieldExtended extends FullField = FullField>(props: ValueEditorProps<FullFieldExtended>) => {
     const id = useId();
     const { handleOnChange, inputType, operator, title, value } = props;
     const labelName = title ?? '';

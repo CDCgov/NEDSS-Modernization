@@ -109,15 +109,16 @@ public class FilterValueMapper {
       if (rule instanceof AdvancedQuery.Rule r) {
         FilterValue clause = buildClauseFilterValue(advancedFilter, r);
         filterValues.add(clause);
-
-        if (i < ruleGroup.rules().size() - 1) {
-          FilterValue operator =
-              buildOperatorFilterValue(advancedFilter, ruleGroup.combinator().toString());
-          filterValues.add(operator);
-        }
       } else if (rule instanceof AdvancedQuery.RuleGroup r) {
         List<FilterValue> ruleGroupValues = mapRuleGroupToFilterValues(advancedFilter, r);
         filterValues.addAll(ruleGroupValues);
+      }
+
+      if (i < ruleGroup.rules().size() - 1) {
+        // can't hoist this as we need unique operators for each DB row
+        FilterValue operator =
+            buildOperatorFilterValue(advancedFilter, ruleGroup.combinator().toString());
+        filterValues.add(operator);
       }
     }
 
