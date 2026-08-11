@@ -1,30 +1,23 @@
-import { useCallback } from 'react';
-
 import classNames from 'classnames';
 
-import { DateEntry } from 'design-system/date/entry';
+import { MonthYearEntry } from 'design-system/date/entry';
 import { Sizing } from 'design-system/field';
 import Select from 'design-system/select/single/Select';
 import { Selectable } from 'options';
-import { withoutProperty, withProperty } from 'utils/object';
-
-import { DateEqualsCriteria } from '../dateCriteria';
 
 import styles from './exact-date-field.module.scss';
 
-type Field = keyof DateEntry;
-
-const next = (field: Field, value: Selectable | null) =>
-    value ? withProperty<DateEntry, string>(field, value.value) : withoutProperty<DateEntry>(field);
+type MonthYearEqualsCriteria = { equals: MonthYearEntry };
+type Field = keyof MonthYearEntry;
 
 const selectable = (v: number | string): Selectable => ({ value: v.toString(), name: v.toString() });
 
 type MonthYearFieldProps = {
     id: string;
-    value?: DateEqualsCriteria;
+    value: MonthYearEqualsCriteria;
     startYear: number;
     endYear: number;
-    onChange: (value?: DateEqualsCriteria) => void;
+    onChange: (value: MonthYearEqualsCriteria) => void;
     onBlur?: () => void;
     label?: string;
     required?: boolean;
@@ -51,21 +44,13 @@ const MonthYearField = ({
         months.push(selectable(m));
     }
 
-    const monthValue = value?.equals?.month ? selectable(value.equals.month) : undefined;
-    const yearValue = value?.equals?.year ? selectable(value.equals.year) : undefined;
+    const monthValue = value.equals.month ? selectable(value.equals.month) : null;
+    const yearValue = value.equals.year ? selectable(value.equals.year) : null;
 
-    const handleFieldOnChange = useCallback(
-        (field: Field) => (changed: Selectable | null) => {
-            const equals = next(field, changed)(value?.equals);
-
-            if (equals) {
-                onChange({ equals });
-            } else {
-                onChange();
-            }
-        },
-        [value?.equals, onChange]
-    );
+    const handleFieldOnChange = (field: Field) => (changed: Selectable | null) => {
+        const equals = { ...value.equals, [field]: changed };
+        onChange({ equals });
+    };
 
     return (
         <div role="group" id={id} className={styles['exact-date-entry']} aria-label={label}>
@@ -98,3 +83,4 @@ const MonthYearField = ({
 };
 
 export { MonthYearField };
+export type { MonthYearEqualsCriteria };

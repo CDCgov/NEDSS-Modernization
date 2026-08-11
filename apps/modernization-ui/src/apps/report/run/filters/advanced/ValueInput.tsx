@@ -1,7 +1,7 @@
 import { useEffect, useId } from 'react';
 
 import { ReactComponentLike } from 'prop-types';
-import { FullField, ValueEditorProps } from 'react-querybuilder';
+import { FullField, FullOperator, ValueEditorProps } from 'react-querybuilder';
 
 import { SIZING } from 'apps/report/constants.ts';
 import { DatePickerInput } from 'design-system/date';
@@ -13,6 +13,7 @@ import {
     NumberBetweenCriteria,
 } from 'design-system/input/numeric/range/NumberRangeField.tsx';
 
+import { ValueSetMetadata } from './AdvancedFilter.tsx';
 import { BETWEEN_OPERATOR } from './operators.ts';
 
 const RANGE_COMPONENTS: Record<string, ReactComponentLike> = {
@@ -26,17 +27,17 @@ const SINGLE_COMPONENTS: Record<string, ReactComponentLike> = {
     text: TextInputField,
 } as const;
 
-const getConvertedDateRange = (props: ValueEditorProps<FullField>): DateBetweenCriteria => {
-    if (typeof props.value === 'string' && props.value && props.value.includes(',')) {
-        const [from, to] = props.value.split(',');
+const getConvertedDateRange = (value: unknown): DateBetweenCriteria => {
+    if (typeof value === 'string' && value && value.includes(',')) {
+        const [from, to] = value.split(',');
         return { between: { from, to } };
     }
     return { between: { from: '', to: '' } };
 };
 
-const getConvertedNumberRange = (props: ValueEditorProps<FullField>): NumberBetweenCriteria => {
-    if (typeof props.value === 'string' && props.value && props.value.includes(',')) {
-        const [from, to] = props.value
+const getConvertedNumberRange = (value: unknown): NumberBetweenCriteria => {
+    if (typeof value === 'string' && value && value.includes(',')) {
+        const [from, to] = value
             .split(',')
             .map((v) => Number.parseInt(v))
             .map((v) => (Number.isNaN(v) ? null : v));
@@ -45,7 +46,7 @@ const getConvertedNumberRange = (props: ValueEditorProps<FullField>): NumberBetw
     return EMPTY_NUMBER_BETWEEN_CRITERIA;
 };
 
-const ValueInput = (props: ValueEditorProps<FullField>) => {
+const ValueInput = (props: ValueEditorProps<ValueSetMetadata & FullField & FullOperator>) => {
     const id = useId();
     const { handleOnChange, inputType, operator, title, value } = props;
     const labelName = title ?? '';
@@ -54,8 +55,8 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
 
     const convertedValue = isBetween
         ? inputType === 'number'
-            ? getConvertedNumberRange(props)
-            : getConvertedDateRange(props)
+            ? getConvertedNumberRange(value)
+            : getConvertedDateRange(value)
         : (value ?? '');
 
     // eslint-disable-next-line max-len

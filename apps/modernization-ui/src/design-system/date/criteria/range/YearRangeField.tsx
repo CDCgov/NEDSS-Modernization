@@ -1,11 +1,8 @@
-import { useCallback } from 'react';
-
 import classNames from 'classnames';
 
 import { Sizing } from 'design-system/field';
 import Select from 'design-system/select/single/Select';
 import { Selectable } from 'options';
-import { withoutProperty, withProperty } from 'utils/object';
 
 import { DateBetweenCriteria, DateRange } from '../dateCriteria';
 
@@ -13,18 +10,15 @@ import styles from './date-range-field.module.scss';
 
 type Field = keyof DateRange;
 
-const next = (field: Field, value: Selectable | null) =>
-    value ? withProperty<DateRange, string>(field, value.value) : withoutProperty<DateRange>(field);
-
 const selectable = (v: number | string): Selectable => ({ value: v.toString(), name: v.toString() });
 
 export type YearRangeFieldProps = {
     id: string;
     startYear: number;
     endYear: number;
-    value?: DateBetweenCriteria;
+    value: DateBetweenCriteria;
     sizing?: Sizing;
-    onChange: (value?: DateBetweenCriteria) => void;
+    onChange: (value: DateBetweenCriteria) => void;
     onBlur?: () => void;
     label?: string;
     required?: boolean;
@@ -45,20 +39,13 @@ const YearRangeField = ({
     for (let y = endYear; y >= startYear; y--) {
         years.push(selectable(y));
     }
-    const fromValue = value?.between?.from ? selectable(value.between.from) : undefined;
-    const toValue = value?.between?.to ? selectable(value.between.to) : undefined;
+    const fromValue = value.between.from ? selectable(value.between.from) : null;
+    const toValue = value.between.to ? selectable(value.between.to) : null;
 
-    const handleFieldOnChange = useCallback(
-        (field: Field) => (changed: Selectable | null) => {
-            const between = next(field, changed)(value?.between);
-            if (between) {
-                onChange({ between });
-            } else {
-                onChange({ between: { from: undefined, to: undefined } });
-            }
-        },
-        [onChange, value?.between]
-    );
+    const handleFieldOnChange = (field: Field) => (changed: Selectable | null) => {
+        const between = { ...value.between, [field]: changed };
+        onChange({ between });
+    };
 
     return (
         <div id={id} role="group" className={classNames(styles['date-range-entry'])} aria-label={label}>

@@ -9,9 +9,9 @@ import styles from './date-range-field.module.scss';
 
 export type DateRangeFieldProps = {
     id: string;
-    value?: DateBetweenCriteria;
+    value: DateBetweenCriteria;
     sizing?: Sizing;
-    onChange: (value?: DateBetweenCriteria) => void;
+    onChange: (value: DateBetweenCriteria) => void;
     onBlur?: () => void;
     label?: string;
     required?: boolean;
@@ -20,11 +20,11 @@ export type DateRangeFieldProps = {
 const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: DateRangeFieldProps) => {
     const handleFieldOnChange = (v: string | undefined, type: string) => {
         if (type === 'to') {
-            onChange({ between: { to: v, from: value?.between.from } });
+            onChange({ between: { to: v ?? null, from: value.between.from } });
         }
 
         if (type === 'from') {
-            onChange({ between: { to: value?.between.to, from: v } });
+            onChange({ between: { to: value.between.to, from: v ?? null } });
         }
     };
 
@@ -34,8 +34,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
             data-testid="date-range-editor"
             role="group"
             className={classNames('usa-date-range-picker', styles['date-range-entry'])}
-            aria-label={label}
-        >
+            aria-label={label}>
             <div className={classNames(styles['range-wrapper'], 'from')}>
                 <label htmlFor={`${id}-from`}>From</label>
                 <DatePicker
@@ -53,8 +52,8 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
                     sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-to`}
-                    minDate={value?.between?.from}
-                    value={value?.between?.to}
+                    minDate={value.between.from ?? undefined}
+                    value={value.between?.to}
                     onChange={(v) => handleFieldOnChange(v, 'to')}
                     required={required}
                 />

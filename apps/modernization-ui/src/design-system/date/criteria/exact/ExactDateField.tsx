@@ -1,10 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
-
 import classNames from 'classnames';
 
 import { DateEntry } from 'design-system/date/entry';
 import { Numeric } from 'design-system/input/numeric/Numeric';
-import { withoutProperty, withProperty } from 'utils/object';
 
 import { DateEqualsCriteria } from '../dateCriteria';
 
@@ -12,38 +9,21 @@ import styles from './exact-date-field.module.scss';
 
 type Field = keyof DateEntry;
 
-const next = (field: Field, value: number | undefined | null) =>
-    value !== undefined ? withProperty<DateEntry, number>(field, value) : withoutProperty<DateEntry>(field);
-
 type ExactDateFieldProps = {
     id: string;
-    value?: DateEqualsCriteria;
-    onChange: (value?: DateEqualsCriteria) => void;
+    value: DateEqualsCriteria;
+    onChange: (value: DateEqualsCriteria) => void;
     onBlur?: () => void;
     label?: string;
 };
 
 const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldProps) => {
-    const [criteria, setCriteria] = useState<DateEntry | undefined>(value?.equals);
+    const criteria = value.equals;
 
-    useEffect(() => {
-        setCriteria(value?.equals);
-    }, [value]);
-
-    const handleFieldOnChange = useCallback(
-        (field: Field) => (value: number | undefined | null) => {
-            const equals = next(field, value)(criteria);
-
-            if (equals) {
-                onChange({ equals });
-            } else {
-                onChange();
-            }
-
-            setCriteria(equals);
-        },
-        [criteria, setCriteria, onChange]
-    );
+    const handleFieldOnChange = (field: Field) => (value: number | null) => {
+        const equals = { ...criteria, [field]: value };
+        onChange({ equals });
+    };
 
     return (
         <div role="group" id={id} className={styles['exact-date-entry']} aria-label={label}>
@@ -52,7 +32,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                 <Numeric
                     id={`${id}-month`}
                     name="month"
-                    value={criteria?.month}
+                    value={criteria.month}
                     onChange={handleFieldOnChange('month')}
                     onBlur={onBlur}
                     min={1}
@@ -64,7 +44,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                 <Numeric
                     id={`${id}-day`}
                     name="day"
-                    value={criteria?.day}
+                    value={criteria.day}
                     onChange={handleFieldOnChange('day')}
                     onBlur={onBlur}
                     min={1}
@@ -76,7 +56,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                 <Numeric
                     id={`${id}-year`}
                     name="year"
-                    value={criteria?.year}
+                    value={criteria.year}
                     onChange={handleFieldOnChange('year')}
                     onBlur={onBlur}
                     min={1875}

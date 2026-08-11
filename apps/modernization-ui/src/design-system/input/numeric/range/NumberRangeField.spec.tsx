@@ -78,9 +78,7 @@ describe('NumberRangeField Component', () => {
 
     it('should call from input change handler when the to number is entered', async () => {
         const mockOnChange = vi.fn();
-        const { getByLabelText } = render(
-            <Fixture  onChange={mockOnChange} />
-        );
+        const { getByLabelText } = render(<Fixture onChange={mockOnChange} />);
 
         const to = getByLabelText('To');
 

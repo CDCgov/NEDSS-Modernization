@@ -13,7 +13,7 @@ type Props = {
     label: string;
     error?: string;
     onBlur: () => void;
-    onChange: () => void;
+    onChange: (v: number | null) => void;
     min?: number;
     max?: number;
     step?: number;
