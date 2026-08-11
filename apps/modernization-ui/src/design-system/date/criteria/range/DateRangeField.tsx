@@ -34,7 +34,8 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
             data-testid="date-range-editor"
             role="group"
             className={classNames('usa-date-range-picker', styles['date-range-entry'])}
-            aria-label={label}>
+            aria-label={label}
+        >
             <div className={classNames(styles['range-wrapper'], 'from')}>
                 <label htmlFor={`${id}-from`}>From</label>
                 <DatePicker

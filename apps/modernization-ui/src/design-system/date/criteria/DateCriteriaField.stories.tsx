@@ -25,7 +25,7 @@ export const Default: Story = {
     args: {
         id: 'datecriteriafield-default',
         value: {
-            equals: { year: null, month: null, day: null},
+            equals: { year: null, month: null, day: null },
         },
         label: 'Date Criteria',
         onChange: handleChange,

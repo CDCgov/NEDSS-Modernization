@@ -3,7 +3,7 @@ import { internalizeDate } from 'date';
 import { now } from './clock';
 import { DateEntry } from './entry';
 
-type RequiredProperty<T> = { [P in keyof T]: Required<NonNullable<T[P]>>; };
+type RequiredProperty<T> = { [P in keyof T]: Required<NonNullable<T[P]>> };
 
 type FullDate = RequiredProperty<DateEntry>;
 
@@ -18,7 +18,7 @@ const isFullDate = (value: DateEntry): value is FullDate =>
 
 const resolveDate = (value: FullDate) => new Date(value.year, value.month - 1, value.day);
 
-type MonthYear = Omit<FullDate, 'day'> & { day: null};
+type MonthYear = Omit<FullDate, 'day'> & { day: null };
 
 const isMonthYear = (value: DateEntry): value is MonthYear => value.month !== null && value.year !== null;
 
