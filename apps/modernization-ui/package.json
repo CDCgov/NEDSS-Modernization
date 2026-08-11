@@ -28,8 +28,7 @@
         "react-hook-form": "7.54.2",
         "react-querybuilder": "^8.15.0",
         "react-router": "7.18.2",
-        "react-select": "^5.10.2",
-        "web-vitals": "^5.2.0"
+        "react-select": "^5.10.2"
     },
     "overrides": {
         "react-refresh": "^0.14.2",
@@ -66,6 +65,7 @@
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^8.34.0",
         "@typescript-eslint/parser": "^8.34.0",
+        "@vitejs/plugin-legacy": "^8.2.3",
         "@vitejs/plugin-react": "^6.0.1",
         "@vitest/coverage-v8": "^4.1.0",
         "eslint": "9.31.0",
@@ -94,6 +94,8 @@
     "scripts": {
         "start": "vite",
         "build": "vite build",
+        "typecheck": "tsc -b --noEmit",
+        "typecheck:watch": "tsc -b --noEmit --watch",
         "preview": "vite preview",
         "test": "vitest --changed",
         "test:all": "vitest run",

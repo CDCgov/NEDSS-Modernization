@@ -92,8 +92,8 @@ describe('when a confirmation is displayed', () => {
         const user = userEvent.setup();
         await user.click(cancel);
 
-        expect(onCancel).toBeCalled();
-        expect(onConfirm).not.toBeCalled();
+        expect(onCancel).toHaveBeenCalled();
+        expect(onConfirm).not.toHaveBeenCalled();
     });
 
     it('should invoke onCancel when the close icon is clicked', async () => {
@@ -113,8 +113,8 @@ describe('when a confirmation is displayed', () => {
         const user = userEvent.setup();
         await user.click(cancel);
 
-        expect(onCancel).toBeCalled();
-        expect(onConfirm).not.toBeCalled();
+        expect(onCancel).toHaveBeenCalled();
+        expect(onConfirm).not.toHaveBeenCalled();
     });
 
     it('should render a confirmation with the default "Confirm" button', () => {
@@ -158,8 +158,8 @@ describe('when a confirmation is displayed', () => {
         const user = userEvent.setup();
         await user.click(confirm);
 
-        expect(onConfirm).toBeCalled();
-        expect(onCancel).not.toBeCalled();
+        expect(onConfirm).toHaveBeenCalled();
+        expect(onCancel).not.toHaveBeenCalled();
     });
 
     it('should render close icon by default', () => {
