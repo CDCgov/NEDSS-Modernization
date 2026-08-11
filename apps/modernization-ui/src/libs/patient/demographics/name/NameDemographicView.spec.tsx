@@ -3,20 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { asSelectable } from 'options/selectable';
 
 import { NameDemographicView } from './NameDemographicView';
-import { NameDemographic } from './names';
-
-const entry: NameDemographic = {
-    asOf: '12/25/2020',
-    type: asSelectable('AN', 'Adopted name'),
-    prefix: asSelectable('MS', 'Miss'),
-    first: 'test first',
-    middle: 'test middle',
-    secondMiddle: 'second middle',
-    last: 'test last',
-    secondLast: 'second last',
-    suffix: asSelectable('SR', 'test 2'),
-    degree: asSelectable('BA', 'test ba'),
-};
 
 describe('NameDemographicView', () => {
     it('should display the as of', () => {

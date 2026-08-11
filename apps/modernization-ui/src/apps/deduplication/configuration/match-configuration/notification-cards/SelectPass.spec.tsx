@@ -31,7 +31,7 @@ describe('SelectPass', () => {
         const { getAllByText } = render(<SelectPass passCount={0} />);
         expect(
             getAllByText(
-                (content, element) =>
+                (_content, element) =>
                     element?.textContent === 'To get started, select "Add pass configuration" from the left panel.'
             )[0]
         ).toBeInTheDocument();

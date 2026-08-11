@@ -51,7 +51,7 @@ describe('when a warning is displayed', () => {
         const user = userEvent.setup();
         await user.click(closer);
 
-        expect(onClose).toBeCalled();
+        expect(onClose).toHaveBeenCalled();
     });
 
     it('should invoke onClose when the close icon is clicked', async () => {
@@ -66,6 +66,6 @@ describe('when a warning is displayed', () => {
         const user = userEvent.setup();
         await user.click(closer);
 
-        expect(onClose).toBeCalled();
+        expect(onClose).toHaveBeenCalled();
     });
 });
