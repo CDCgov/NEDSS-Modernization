@@ -35,15 +35,6 @@ logging:
         nbs:
           search: INFO
           report: INFO
-# OTLP Tracing config for local development; used to send traces to Jaeger.
-management:
-  otlp:
-    tracing:
-      endpoint: http://jaeger:4318/v1/traces
-  tracing:
-    enabled: true
-    sampling:
-      probability: 1.0  # 1.0 means 100% of traces are sampled
 
 nbs:
   primary-language: English
