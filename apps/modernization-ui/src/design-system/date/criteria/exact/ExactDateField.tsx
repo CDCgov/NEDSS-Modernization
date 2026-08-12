@@ -67,3 +67,4 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
 };
 
 export { ExactDateField };
+export type { ExactDateFieldProps };
