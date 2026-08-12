@@ -1,4 +1,5 @@
 import { Button } from 'design-system/button';
+
 import styles from './BackToTopButton.module.scss';
 
 export const BackToTopButton = () => {

@@ -1,6 +1,8 @@
 import classNames from 'classnames';
+
 import { DatePicker } from 'design-system/date/picker';
 import { Sizing } from 'design-system/field';
+
 import { DateBetweenCriteria } from '../dateCriteria';
 
 import styles from './date-range-field.module.scss';
@@ -16,7 +18,7 @@ export type DateRangeFieldProps = {
 };
 
 const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: DateRangeFieldProps) => {
-    const handleFieldOnChange = (v, type) => {
+    const handleFieldOnChange = (v: string | undefined, type: string) => {
         if (type === 'to') {
             onChange({ between: { to: v, from: value?.between.from } });
         }

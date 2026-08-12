@@ -1,6 +1,8 @@
-import { Option } from 'generated';
-import { SegmentedButtons } from './SegmentedButtons';
 import { render } from '@testing-library/react';
+
+import { Option } from 'generated';
+
+import { SegmentedButtons } from './SegmentedButtons';
 
 describe('when SegmentedButtons renders', () => {
     it('should display three buttons', () => {

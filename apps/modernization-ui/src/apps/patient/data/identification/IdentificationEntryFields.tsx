@@ -1,11 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { useIdentificationCodedValues } from './useIdentificationCodedValues';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { IdentificationEntry } from './entry';
+import { useIdentificationCodedValues } from './useIdentificationCodedValues';
 
 const AS_OF_DATE_LABEL = 'Identification as of';
 const TYPE_LABEL = 'Type';

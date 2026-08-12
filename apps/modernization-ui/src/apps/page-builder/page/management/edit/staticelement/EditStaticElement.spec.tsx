@@ -1,9 +1,12 @@
+import { render } from '@testing-library/react';
+import { BrowserRouter } from 'react-router';
+
 import { AlertProvider } from 'alert';
 import { PagesQuestion, PagesResponse } from 'apps/page-builder/generated';
-import { BrowserRouter } from 'react-router';
+
 import { PageManagementProvider } from '../../usePageManagement';
+
 import { EditStaticElement } from './EditStaticElement';
-import { render } from '@testing-library/react';
 
 const page: PagesResponse = {
     id: 12039120,

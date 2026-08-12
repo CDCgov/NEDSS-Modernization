@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
+
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+
 import styles from './blocking-criteria-attribute.module.scss';
 
 type AttributeProps = {

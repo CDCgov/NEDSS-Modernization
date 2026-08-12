@@ -1,10 +1,12 @@
-import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 import { parseISO } from 'date-fns';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 import { calculateAge } from 'utils/util';
+
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;

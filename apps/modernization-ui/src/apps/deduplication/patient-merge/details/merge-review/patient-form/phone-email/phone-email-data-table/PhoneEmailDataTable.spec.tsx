@@ -1,8 +1,10 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
-import { PhoneEmailDataTable } from './PhoneEmailDataTable';
 import { render, within } from '@testing-library/react';
-import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
+import { PhoneEmailDataTable } from './PhoneEmailDataTable';
 
 const patientData: Partial<MergeCandidate> = {
     phoneEmails: [

@@ -1,5 +1,7 @@
-import { Sizing } from 'design-system/field';
 import classNames from 'classnames';
+
+import { Sizing } from 'design-system/field';
+
 import styles from './tag.module.scss';
 
 export type TagVariant = 'default' | 'success' | 'warning' | 'error' | 'info' | 'gray' | 'accent';

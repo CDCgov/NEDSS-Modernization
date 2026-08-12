@@ -1,9 +1,12 @@
+import classNames from 'classnames';
+import { ControllerRenderProps } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { Radio } from 'design-system/radio';
-import { ControllerRenderProps } from 'react-hook-form';
+
 import { GroupLine } from '../group-line/GroupLine';
+
 import styles from './merge-data-display.module.scss';
-import classNames from 'classnames';
 
 type Props = {
     label: string;

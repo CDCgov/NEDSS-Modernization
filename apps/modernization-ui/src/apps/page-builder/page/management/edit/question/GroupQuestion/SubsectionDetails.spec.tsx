@@ -1,7 +1,10 @@
-import { render } from '@testing-library/react';
-import { GroupSubSectionRequest, PagesSubSection } from 'apps/page-builder/generated';
 import { ReactNode } from 'react';
+
+import { render } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { GroupSubSectionRequest, PagesSubSection } from 'apps/page-builder/generated';
+
 import { SubsectionDetails } from './SubsectionDetails';
 
 type Additional = {
@@ -17,13 +20,13 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
             name: 'subsection.name',
             batches: [
                 {
-                    appearsInTable: undefined,
-                    width: undefined,
-                    label: undefined,
+                    appearsInTable: true,
+                    width: 0,
+                    label: 'test',
                     id: 1234,
                 },
             ],
-            blockName: undefined,
+            blockName: '',
             id: 1234,
             visibleText: 'Y',
             repeatNumber: 1,

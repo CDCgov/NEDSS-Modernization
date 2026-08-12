@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
-import { BlockingCriteria } from './BlockingCriteria';
-import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+
+import { BlockingCriteria } from './BlockingCriteria';
 
 const onAddAttributes = vi.fn();
 const Fixture = () => {

@@ -1,10 +1,13 @@
+import { useFieldArray, useFormContext } from 'react-hook-form';
+
 import { MergeCandidate, MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
 import { Column } from 'design-system/table';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+
+import { formatPhone } from '../../../../shared/formatPhone';
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataTable } from '../../shared/merge-data-table/MergeDataTable';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
-import { formatPhone } from '../../../../shared/formatPhone';
+
 import styles from './phone-email-data-table.module.scss';
 
 type Props = {

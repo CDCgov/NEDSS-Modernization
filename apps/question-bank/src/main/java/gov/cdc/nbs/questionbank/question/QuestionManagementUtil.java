@@ -42,7 +42,7 @@ public class QuestionManagementUtil {
       return switch (codeSet) {
         case PHIN -> new QuestionOid("2.16.840.1.114222.4.5.232", "PHIN Questions");
         case LOCAL -> new QuestionOid("L", "Local");
-        default -> null;
+        case null, default -> null;
       };
     }
   }

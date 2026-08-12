@@ -1,15 +1,17 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { SearchCriteria } from 'apps/search/criteria';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
-import { MultiSelect, SingleSelect } from 'design-system/select';
-import { EntryFieldsProps } from 'design-system/entry';
-import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
-import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { EntryFieldsProps } from 'design-system/entry';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { useJurisdictionOptions } from 'options/jurisdictions';
 import { useProgramAreaOptions } from 'options/program-areas';
-import { SearchCriteria } from 'apps/search/criteria';
+
 import {
     dateTypes,
     enteredByTypes,

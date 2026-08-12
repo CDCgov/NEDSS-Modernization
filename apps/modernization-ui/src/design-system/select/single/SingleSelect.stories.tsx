@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { SingleSelect } from './SingleSelect';
+
 import { asSelectable, Selectable } from 'options';
+
+import { SingleSelect } from './SingleSelect';
 
 const meta = {
     title: 'Design System/Select/Single',

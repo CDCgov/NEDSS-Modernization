@@ -1,22 +1,24 @@
 import { Suspense, useState } from 'react';
+
 import { Await } from 'react-router';
+
+import { Shown } from 'conditional-render';
 import { internalizeDate, internalizeDateTime } from 'date';
-import { MemoizedSupplier } from 'libs/supplying';
-import { displayProvider } from 'libs/provider';
-import { LoadingOverlay } from 'libs/loading';
-import { permissions, Permitted } from 'libs/permission';
-import { ClassicModalButton } from 'libs/classic';
-import { Column } from 'design-system/table';
 import { TableCard, TableCardProps } from 'design-system/card';
+import { displayNoData } from 'design-system/data';
+import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
 import { MaybeLabeledValue } from 'design-system/value';
+import { ClassicModalButton } from 'libs/classic';
 import { Associations } from 'libs/events/investigations/associated';
-import { PatientFileVaccinations } from './vaccinations';
+import { LoadingOverlay } from 'libs/loading';
+import { permissions, Permitted } from 'libs/permission';
+import { displayProvider } from 'libs/provider';
+import { MemoizedSupplier } from 'libs/supplying';
+import { exists } from 'utils';
 
 import styles from './patient-file-vaccinations.module.scss';
-import { Shown } from 'conditional-render';
-import { exists } from 'utils';
-import { displayNoData } from 'design-system/data';
+import { PatientFileVaccinations } from './vaccinations';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'created-on', name: 'Date created' };

@@ -1,6 +1,8 @@
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-import { Numeric, NumericProps } from './Numeric';
+
 import { NumberBetweenCriteria, NumberRangeField } from '../range/NumberRangeField.tsx';
+
+import { Numeric, NumericProps } from './Numeric';
 
 type BaseNumericInputProps = {
     id: string;
@@ -18,7 +20,7 @@ type RangeInputProps = BaseNumericInputProps & {
 };
 
 type SingleInputProps = BaseNumericInputProps & {
-    value?: number;
+    value?: number | null;
 };
 
 const NumericInput = ({

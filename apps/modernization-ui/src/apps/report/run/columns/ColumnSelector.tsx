@@ -1,19 +1,22 @@
+import { useState } from 'react';
+
+import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
+import { useController } from 'react-hook-form';
+
+import { SIZING } from 'apps/report/constants';
+import { LiveSearch } from 'components/Search/LiveSearch';
+import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { Checkbox } from 'design-system/checkbox';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
+import { Icon } from 'design-system/icon';
 import { ReportColumn } from 'generated';
 import { Selectable } from 'options';
+
 import { ReportExecuteForm } from '../ReportRunPage';
-import { useController } from 'react-hook-form';
-import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
-import { Icon } from 'design-system/icon';
-import { Button } from 'design-system/button';
-import { useState } from 'react';
-import { LiveSearch } from 'components/Search/LiveSearch';
 
 import styles from './column-selector.module.scss';
 import { toSelectable } from './utils';
-import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
-import { SIZING } from 'apps/report/constants';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {

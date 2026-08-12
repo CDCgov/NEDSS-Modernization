@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
+
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { CreateTextQuestionRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 
 type Props = {

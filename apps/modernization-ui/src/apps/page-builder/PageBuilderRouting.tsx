@@ -1,5 +1,6 @@
-import { FeatureLayout } from 'feature';
 import { Navigate, RouteObject } from 'react-router';
+
+import { FeatureLayout } from 'feature';
 
 const routing: RouteObject[] = [
     {

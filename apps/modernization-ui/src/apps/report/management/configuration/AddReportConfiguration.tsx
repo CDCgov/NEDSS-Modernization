@@ -1,14 +1,16 @@
-import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button, LinkButton } from 'design-system/button';
 import { useState } from 'react';
-import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
+
 import { FormProvider, useForm } from 'react-hook-form';
-import { ReportControllerService } from 'generated';
-import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 import { useNavigate } from 'react-router';
 
+import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import styles from 'apps/report/layout/layout.module.scss';
+import { Button, LinkButton } from 'design-system/button';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
+import { ReportControllerService } from 'generated';
+
+import { ConfigForm, formToRequest, ReportConfigurationContent } from './ReportConfigurationContent';
+import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 
 const AddReportConfiguration = () => {
     const [error, setError] = useState<unknown | null>(null);

@@ -1,17 +1,18 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { SearchInteractionProvider } from 'apps/search';
-import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { LabReport } from 'generated/graphql/schema';
-import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
-import { sorting } from 'apps/search/basic';
-import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
-import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
-import { LaboratoryReportSearchResultListItem } from './result/list';
-import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
 
-import { useJurisdictionOptions } from 'options/jurisdictions';
-import { LaboratoryReportSearchResultsTable, preferences } from './result/table';
+import { SearchInteractionProvider } from 'apps/search';
+import { sorting } from 'apps/search/basic';
+import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
 import { ColumnPreferenceProvider } from 'design-system/table/preferences';
+import { LabReport } from 'generated/graphql/schema';
+import { useJurisdictionOptions } from 'options/jurisdictions';
+
+import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
+import { initial as defaultValues, LabReportFilterEntry } from './labReportFormTypes';
+import { LaboratoryReportSearchResultListItem } from './result/list';
+import { LaboratoryReportSearchResultsTable, preferences } from './result/table';
+import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
 
 const LaboratoryReportSearch = () => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({

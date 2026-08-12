@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import styles from './helper-text.module.scss';
 
 type HelperTextProps = {

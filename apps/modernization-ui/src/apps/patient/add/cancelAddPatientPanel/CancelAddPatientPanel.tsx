@@ -1,6 +1,9 @@
-import { Checkbox } from '@trussworks/react-uswds';
-import { Confirmation } from 'design-system/modal';
 import { ChangeEvent, useCallback, useState } from 'react';
+
+import { Checkbox } from '@trussworks/react-uswds';
+
+import { Confirmation } from 'design-system/modal';
+
 import { useShowCancelModal } from './useShowCancelModal';
 
 type CancelAddPatientPanelProps = {

@@ -1,9 +1,8 @@
+import { displayAddress } from 'address/display';
+import { displayAgeAsOfToday, internalizeDate } from 'date';
+import { ItemGroup } from 'design-system/item';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { displayNameElement, matchesLegalName } from 'name';
-import { displayAddress } from 'address/display';
-
-import { ItemGroup } from 'design-system/item';
-import { internalizeDate, displayAgeAsOfToday } from 'date';
 
 // Displays Other names, that are not the legal name
 const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element | null => {

@@ -1,6 +1,8 @@
 import { Link } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import { Hint } from 'design-system/hint';
+
 import styles from './patient-search-header.module.scss';
 
 type Props = {

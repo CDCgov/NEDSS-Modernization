@@ -1,5 +1,6 @@
 import { Icon } from '@trussworks/react-uswds';
 import { useNavigate } from 'react-router';
+
 import './PagesBreadcrumb.scss';
 
 type Props = {
@@ -20,7 +21,7 @@ export const PagesBreadcrumb = ({ currentPage, path }: Props) => {
     return (
         <div className="pages-breadcrumb">
             <div onClick={goBack} id="pageLibraryLink">
-                <Icon.ArrowBack size={3} />
+                <Icon.ArrowBack aria-label="back" size={3} />
                 <h4>Page library</h4>
             </div>
             {currentPage ? <h5>/ {currentPage}</h5> : null}

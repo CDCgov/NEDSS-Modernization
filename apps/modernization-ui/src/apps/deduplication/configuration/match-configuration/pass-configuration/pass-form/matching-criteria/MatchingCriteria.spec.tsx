@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
-import { MatchingCriteria } from './MatchingCriteria';
-import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
+
+import { MatchingCriteria } from './MatchingCriteria';
 
 const onAddAttributes = vi.fn();
 const Fixture = () => {

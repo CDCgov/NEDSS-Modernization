@@ -5,7 +5,7 @@ Feature: User access the Patient Profile Summary page.
 
     Scenario: User accesses patient profile
         Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Summary" tab
+        When user clicks on a patient's profile "Summary" tab
         Then I should see the following elements
             | Patient ID     |
             | PHONE          |

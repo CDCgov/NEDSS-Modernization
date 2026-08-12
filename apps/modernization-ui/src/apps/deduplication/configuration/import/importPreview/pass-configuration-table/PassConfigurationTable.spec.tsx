@@ -1,6 +1,8 @@
-import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
-import { PassConfigurationTable } from './PassConfigurationTable';
 import { render, within } from '@testing-library/react';
+
+import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
+
+import { PassConfigurationTable } from './PassConfigurationTable';
 
 const algorithm: { passes: Pass[] } = {
     passes: [

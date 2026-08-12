@@ -1,6 +1,8 @@
-import { MergeGeneralInfo } from 'apps/deduplication/api/model/MergeCandidate';
 import { render, within } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeGeneralInfo } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { GeneralInfo } from './GeneralInfo';
 
 let mockPermissions: string[] = [];

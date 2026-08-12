@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RadioGroup } from './RadioGroup';
 import { axe } from 'jest-axe';
+
+import { RadioGroup } from './RadioGroup';
 
 const mockOnChange = vi.fn();
 

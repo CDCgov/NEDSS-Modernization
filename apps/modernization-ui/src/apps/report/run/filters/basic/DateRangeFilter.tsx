@@ -1,8 +1,10 @@
-import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
-import { BasicFilterConfiguration } from 'generated';
 import { DatePickerRange } from 'design-system/date/range/DatePickerRange';
+import { BasicFilterConfiguration } from 'generated';
 import { validateRequiredRule } from 'validation/entry';
+
 import { validateDateRange } from '../utils/rangeValidator.ts';
+
+import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 
 // Don't need `filter` for this component, but don't want to pass it down
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,7 +32,10 @@ const dateRangeValidator = (filter: BasicFilterConfiguration, label: string) => 
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
         }
 
-        const errorMsg = validateDateRange(value, label);
+        const errorMsg = validateDateRange(
+            value.map((v) => v ?? ''),
+            label
+        );
 
         if (errorMsg) return errorMsg;
 

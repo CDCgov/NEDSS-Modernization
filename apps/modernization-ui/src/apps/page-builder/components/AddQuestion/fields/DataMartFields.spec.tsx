@@ -1,20 +1,9 @@
-import { render, renderHook } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreateQuestionForm } from '../QuestionForm';
-import { DataMartFields } from './DataMartFields';
 
-const { result } = renderHook(() =>
-    useForm<CreateQuestionForm>({
-        mode: 'onBlur',
-        defaultValues: {
-            subgroup: 'RSK',
-            dataMartInfo: {
-                dataMartColumnName: 'duplicateDataMartColumnName',
-                rdbColumnName: 'duplicateRdbColumnName',
-            },
-        },
-    })
-);
+import { CreateQuestionForm } from '../QuestionForm';
+
+import { DataMartFields } from './DataMartFields';
 
 const setError = vi.fn();
 const validate = vi.fn();

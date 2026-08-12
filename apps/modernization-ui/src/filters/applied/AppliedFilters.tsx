@@ -1,7 +1,8 @@
 import { Icon } from '@trussworks/react-uswds';
-import { Filter } from 'filters';
 
+import { Filter } from 'filters';
 import { asString } from 'filters/asDisplayableFilter';
+
 import styles from './applied-filters.module.scss';
 
 type AppliedFiltersProps = {

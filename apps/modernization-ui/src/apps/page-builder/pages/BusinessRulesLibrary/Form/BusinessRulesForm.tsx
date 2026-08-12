@@ -1,22 +1,27 @@
-import { Button, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
-import { RuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import styles from './BusinessRulesForm.module.scss';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelectInput } from 'components/selection/multi';
-import { Input } from 'components/FormInputs/Input';
 import { useEffect, useRef, useState } from 'react';
-import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
-import { SourceValueProp } from '../Add/AddBusinessRules';
-import { TargetQuestion } from '../TargetQuestion/TargetQuestion';
-import { mapComparatorToString } from '../helpers/mapComparatorToString';
-import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
-import SubSectionsDropdown from '../SubSectionDropdown';
+
+import { Button, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router';
-import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
-import './ModalWidth.scss';
-import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
+
+import { PagesQuestion, PagesSubSection, Rule, RuleRequest } from 'apps/page-builder/generated';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
+import { MultiSelectInput } from 'components/selection/multi';
+
+import { SourceValueProp } from '../Add/AddBusinessRules';
+import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
+import SubSectionsDropdown from '../SubSectionDropdown';
+import { TargetQuestion } from '../TargetQuestion/TargetQuestion';
+import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
+import { mapComparatorToString } from '../helpers/mapComparatorToString';
+import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
+import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
+
+import './ModalWidth.scss';
+
+import styles from './BusinessRulesForm.module.scss';
 
 type Props = {
     isEdit: boolean;
@@ -325,6 +330,7 @@ export const BusinessRulesForm = ({
                                     </div>
                                     <div className={styles.closeBtn}>
                                         <Icon.Close
+                                            aria-label="close"
                                             onClick={() => {
                                                 setSourceQuestion(undefined);
                                                 setTargetQuestion([]);
@@ -477,7 +483,7 @@ export const BusinessRulesForm = ({
                                     <div className={styles.title}>
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
-                                                <Icon.Check />
+                                                <Icon.Check aria-label="check" />
                                                 {/* eslint-disable-next-line max-len */}
                                                 {`${checkForSemicolon(removeNumericAndSymbols(question.name ?? question.componentName))} (${
                                                     question.question
@@ -493,7 +499,7 @@ export const BusinessRulesForm = ({
                                             onClick={handleOpenTargetQuestion}
                                             className={styles.btn}
                                         >
-                                            <Icon.Edit />
+                                            <Icon.Edit aria-label="edit" />
                                             <span>Edit</span>
                                         </Button>
                                     </div>

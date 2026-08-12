@@ -1,7 +1,9 @@
-import { AlertMessage } from 'design-system/message';
 import { useNavigate } from 'react-router';
-import { permissions, Permitted } from 'libs/permission';
+
+import { AlertMessage } from 'design-system/message';
 import { FeatureToggle } from 'feature';
+import { permissions, Permitted } from 'libs/permission';
+
 import { usePatientMergeQueueStatus } from './api/usePatientMergeQueueStatus';
 
 type MergeAlertProps = {

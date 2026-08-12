@@ -1,11 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { BasicEthnicityRace } from 'apps/patient/add/basic/entry';
+import { useEthnicityCodedValues } from 'apps/patient/data/ethnicity/useEthnicityCodedValues';
+import { CheckboxGroup } from 'design-system/checkbox';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { CheckboxGroup } from 'design-system/checkbox';
-import { useRaceCategoryOptions, MULTI_RACE } from 'options/race';
-import { BasicEthnicityRace } from 'apps/patient/add/basic/entry';
 import { Selectable } from 'options';
-import { useEthnicityCodedValues } from 'apps/patient/data/ethnicity/useEthnicityCodedValues';
+import { MULTI_RACE, useRaceCategoryOptions } from 'options/race';
 
 const categoryFilter = (race: Selectable) => race.value !== MULTI_RACE.value;
 

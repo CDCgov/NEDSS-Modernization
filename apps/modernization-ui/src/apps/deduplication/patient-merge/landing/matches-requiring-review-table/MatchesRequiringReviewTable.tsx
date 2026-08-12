@@ -1,17 +1,20 @@
+import { useEffect, useState } from 'react';
+
+import { format, parseISO } from 'date-fns';
+import { useNavigate } from 'react-router';
+
 import { MatchRequiringReview } from 'apps/deduplication/api/model/MatchRequiringReview';
 import { useMatchesRequiringReview } from 'apps/deduplication/api/useMatchesRequiringReview';
 import { SearchResultPageSizeSelect } from 'apps/search/layout/result/pagination/page-size-select';
 import { SearchResultsShowing } from 'apps/search/layout/result/pagination/showing';
 import { Loading } from 'components/Spinner';
-import { format, parseISO } from 'date-fns';
+import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Pagination } from 'design-system/pagination';
 import { Column, DataTable } from 'design-system/table';
-import { Status, usePagination } from 'pagination';
-import { useEffect, useState } from 'react';
-import { Shown } from 'conditional-render';
 import { Direction, useSorting } from 'libs/sorting';
-import { useNavigate } from 'react-router';
+import { Status, usePagination } from 'pagination';
+
 import styles from './matches-requiring-review.module.scss';
 
 const DATE_FORMAT = 'MM/dd/yyyy h:mm a';

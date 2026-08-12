@@ -1,6 +1,7 @@
+import { useCallback } from 'react';
+
 import { Selectable } from 'options';
 import { useDetailedRaceOptions, useRaceCategoryOptions } from 'options/race';
-import { useCallback } from 'react';
 
 type RaceOptions = {
     categories: Selectable[];

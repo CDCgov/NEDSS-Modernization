@@ -1,6 +1,8 @@
 import { asValue } from 'options';
 import { exists, orUndefined } from 'utils';
+
 import { PhoneEmailDemographic } from '../phoneEmails';
+
 import { PhoneEmailDemographicRequest } from './phoneEmailRequest';
 
 const asPhoneEmail = (demographic: Partial<PhoneEmailDemographic>): PhoneEmailDemographicRequest | undefined => {

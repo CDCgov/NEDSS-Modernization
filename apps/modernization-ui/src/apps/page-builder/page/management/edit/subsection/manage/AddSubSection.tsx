@@ -1,19 +1,23 @@
+import { useEffect } from 'react';
+
+import { Button, Form, Icon } from '@trussworks/react-uswds';
+import { Controller, useForm } from 'react-hook-form';
+
+import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import {
     CreateSubSectionRequest,
     PagesSubSection,
     SubSectionControllerService,
     UpdateSubSectionRequest,
 } from 'apps/page-builder/generated';
-import { Controller, useForm } from 'react-hook-form';
-import styles from './addsubsection.module.scss';
-import { Button, Form, Icon } from '@trussworks/react-uswds';
-import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { useEffect } from 'react';
+import { maxLengthRule } from 'validation/entry';
 import { validSubsectionNameRule } from 'validation/entry/validSubsectionNameRule';
 
+import styles from './addsubsection.module.scss';
+
 type subSectionProps = {
+    id: string;
     sectionId?: number;
     pageId?: number;
     onCancel?: () => void;
@@ -23,6 +27,7 @@ type subSectionProps = {
 };
 
 export const AddSubSection = ({
+    id,
     sectionId,
     pageId,
     onCancel,
@@ -63,11 +68,12 @@ export const AddSubSection = ({
 
     return (
         <div className={styles.subSection}>
-            <div className={styles.header}>
+            <div id={`${id}-header`} className={styles.header}>
                 <div className={styles.headerContent}>
                     {isEdit ? <h2>Edit subsection</h2> : <h2>Add subsection</h2>}
                 </div>
                 <Icon.Close
+                    aria-label="close"
                     size={3}
                     onClick={() => {
                         form.reset();
@@ -77,7 +83,7 @@ export const AddSubSection = ({
                 />
             </div>
             <Form onSubmit={onSubmit} className={styles.form}>
-                <div className={styles.content}>
+                <div id={`${id}-content`} className={styles.content}>
                     <Controller
                         control={form.control}
                         name="name"

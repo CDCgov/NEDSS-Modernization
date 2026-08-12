@@ -1,5 +1,6 @@
-import { ReportConfiguration, ReportControllerService } from 'generated';
 import { LoaderFunction } from 'react-router';
+
+import { ReportConfiguration, ReportControllerService } from 'generated';
 
 const loadReportConfiguration: LoaderFunction = async (request): Promise<ReportConfiguration> => {
     const { reportUid, dataSourceUid } = request.params;

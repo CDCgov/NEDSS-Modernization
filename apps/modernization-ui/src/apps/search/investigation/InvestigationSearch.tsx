@@ -1,16 +1,18 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { Investigation } from 'generated/graphql/schema';
-import { useConceptOptions } from 'options/concepts';
-import { findByValue } from 'options';
+
 import { SearchInteractionProvider } from 'apps/search';
 import { sorting } from 'apps/search/basic';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { InvestigationSearchResultListItem } from './result/list';
 import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
-import { InvestigationSearchResultsTable, preferences } from './result/table';
 import { ColumnPreferenceProvider } from 'design-system/table/preferences';
+import { Investigation } from 'generated/graphql/schema';
+import { findByValue } from 'options';
+import { useConceptOptions } from 'options/concepts';
+
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { InvestigationSearchForm } from './InvestigationSearchForm';
+import { InvestigationSearchResultListItem } from './result/list';
+import { InvestigationSearchResultsTable, preferences } from './result/table';
 import { useInvestigationSearch } from './useInvestigationSearch';
 
 const InvestigationSearch = () => {

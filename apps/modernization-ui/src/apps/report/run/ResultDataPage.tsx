@@ -1,18 +1,20 @@
+import { useEffect, useId } from 'react';
+
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
+import { parse } from 'papaparse';
+import { LoaderFunction, useLoaderData } from 'react-router';
+
 import { Card } from 'design-system/card';
 import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
-import Papa from 'papaparse';
-import { ReportLayout } from '../layout/ReportLayout';
-import { ReportExecutionResult } from 'generated';
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
 import { NoDataRow } from 'design-system/table/NoDataRow';
-import { LoaderFunction, useLoaderData } from 'react-router';
+import { ReportExecutionResult } from 'generated';
 
-import layoutStyes from '../layout/layout.module.scss';
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
-import { useEffect, useId } from 'react';
+import { ReportLayout } from '../layout/ReportLayout';
+import layoutStyes from '../layout/layout.module.scss';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -77,7 +79,7 @@ const ResultDataPage = () => {
         dataSourceName,
     } = result;
 
-    const { data, errors, meta } = Papa.parse<Record<string, string>>(content, {
+    const { data, errors, meta } = parse<Record<string, string>>(content, {
         header: true,
         skipEmptyLines: true,
         delimiter: ',',

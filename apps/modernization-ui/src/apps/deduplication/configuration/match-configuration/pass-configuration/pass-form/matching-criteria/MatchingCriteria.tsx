@@ -1,14 +1,17 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
+import { useEffect, useState } from 'react';
+
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
+import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
-import { useEffect, useState } from 'react';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+
 import { MatchingCriteriaAttribute } from './attribute/MatchingCriteriaAttribute';
 import { getLogOdds } from './getLogOdds';
 import styles from './matching-criteria.module.scss';
-import { MatchingAttributeLabels } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     dataElements: DataElements;

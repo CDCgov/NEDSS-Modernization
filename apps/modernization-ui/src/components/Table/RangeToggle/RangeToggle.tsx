@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+
 import classNames from 'classnames';
+
 import { usePagination } from 'pagination';
+
 import styles from './range-toggle.module.scss';
 
 export type SupportedContext = 'pages' | 'conditions' | 'questions' | 'valuesets' | 'templates' | 'businessRules';

@@ -1,10 +1,11 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
-import { GeneralCodedValues } from './useGeneralCodedValues';
-
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { ExtendedNewPatientEntry } from 'apps/patient/add/extended';
+
 import { GeneralInformationEntryFields } from './GeneralInformationEntryFields';
+import { GeneralCodedValues } from './useGeneralCodedValues';
 
 let mockPermissions: string[] = [];
 

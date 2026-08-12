@@ -1,12 +1,15 @@
-import { Button, Icon } from '@trussworks/react-uswds';
 import { useState } from 'react';
-import { FilterEntryForm } from 'filters/entry/FilterEntryForm';
-import { FilterEntry } from 'filters/entry/FilterEntry';
+
+import { Button, Icon } from '@trussworks/react-uswds';
+
 import { Filter } from 'filters';
 import { AppliedFilters } from 'filters/applied/AppliedFilters';
-import styles from './filter-panel.module.scss';
-import { Property } from 'filters/properties';
 import { asFilter } from 'filters/asDisplayableFilter';
+import { FilterEntry } from 'filters/entry/FilterEntry';
+import { FilterEntryForm } from 'filters/entry/FilterEntryForm';
+import { Property } from 'filters/properties';
+
+import styles from './filter-panel.module.scss';
 
 type State = 'view' | 'add';
 

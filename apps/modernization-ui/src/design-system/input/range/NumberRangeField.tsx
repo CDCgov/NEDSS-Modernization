@@ -1,8 +1,10 @@
+import classNames from 'classnames';
+
 import { Field, Orientation, Sizing } from 'design-system/field';
 
-import styles from './number-range-field.module.scss';
-import classNames from 'classnames';
 import { Numeric } from '../numeric/Numeric.tsx';
+
+import styles from './number-range-field.module.scss';
 
 type NumberRange = {
     from?: number;

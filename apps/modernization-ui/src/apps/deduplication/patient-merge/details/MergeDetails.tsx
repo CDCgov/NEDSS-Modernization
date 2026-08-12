@@ -1,11 +1,19 @@
+import { useEffect, useState } from 'react';
+
+import { parseISO } from 'date-fns/fp';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLocation, useNavigate, useParams } from 'react-router';
+
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { useMergeDetails } from 'apps/deduplication/api/useMergeDetails';
+import { usePatientMerge } from 'apps/deduplication/api/usePatientMerge';
+import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
 import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
-import { parseISO } from 'date-fns/fp';
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams, useLocation } from 'react-router';
+import { Confirmation } from 'design-system/modal';
+import { useAlert } from 'libs/alert';
+
+import styles from './MergeDetails.module.scss';
 import { MergePreview } from './merge-preview/MergePreview';
 import { MergeReview } from './merge-review/MergeReview';
 import {
@@ -16,11 +24,6 @@ import {
     PhoneEmailId,
     RaceId,
 } from './merge-review/model/PatientMergeForm';
-import styles from './MergeDetails.module.scss';
-import { useRemoveMerge } from 'apps/deduplication/api/useRemoveMerge';
-import { useAlert } from 'libs/alert';
-import { Confirmation } from 'design-system/modal';
-import { usePatientMerge } from 'apps/deduplication/api/usePatientMerge';
 
 export const MergeDetails = () => {
     const [pageState, setPageState] = useState<'review' | 'preview'>('review');

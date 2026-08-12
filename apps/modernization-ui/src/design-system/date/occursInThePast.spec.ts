@@ -1,6 +1,8 @@
-import { add, isFuture } from 'date-fns';
-import { occursInThePast } from './occursInThePast';
+import { add } from 'date-fns';
+
 import { internalizeDate } from 'date';
+
+import { occursInThePast } from './occursInThePast';
 
 const mockNow = vi.fn();
 

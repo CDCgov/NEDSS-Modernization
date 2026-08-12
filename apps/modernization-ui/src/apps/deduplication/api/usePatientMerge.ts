@@ -1,6 +1,7 @@
 import { Config } from 'config';
-import { PatientMergeForm } from '../patient-merge/details/merge-review/model/PatientMergeForm';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { PatientMergeForm } from '../patient-merge/details/merge-review/model/PatientMergeForm';
 
 export const usePatientMerge = () => {
     const mergePatients = (

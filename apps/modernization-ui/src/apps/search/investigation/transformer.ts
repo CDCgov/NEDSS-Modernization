@@ -10,8 +10,9 @@ import {
     PregnancyStatus,
     ProcessingStatus,
 } from 'generated/graphql/schema';
-import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
 import { asNumericValues, asValue, asValues } from 'options/selectable';
+
+import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
 
 export const transformObject = (data: InvestigationFilterEntry): InvestigationFilter => {
     const { ...remaining } = data;

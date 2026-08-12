@@ -1,15 +1,17 @@
 import { useCallback } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { Permitted } from 'libs/permission';
-import { indicators } from 'options/indicator';
-import { genders } from 'options/gender';
-import { useConceptOptions } from 'options/concepts';
+
+import { asOfAgeResolver } from 'date';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { ValueField } from 'design-system/field';
 import { EntryFieldsProps } from 'design-system/entry';
+import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
-import { asOfAgeResolver } from 'date';
+import { Permitted } from 'libs/permission';
+import { useConceptOptions } from 'options/concepts';
+import { genders } from 'options/gender';
+import { indicators } from 'options/indicator';
 import { maxLengthRule } from 'validation/entry';
 
 import { BasicPersonalDetailsEntry } from '../entry';

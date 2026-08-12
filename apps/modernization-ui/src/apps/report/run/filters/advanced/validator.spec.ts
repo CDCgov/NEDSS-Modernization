@@ -1,5 +1,4 @@
 import { validateRule, ValidationResultMap } from './validator';
-import { RuleGroupType, RuleType } from 'react-querybuilder';
 
 describe('validateRule', () => {
     let mockResult: ValidationResultMap;
@@ -18,7 +17,7 @@ describe('validateRule', () => {
                 field: '~',
                 operator: '~',
                 value: '',
-            } as RuleType,
+            },
             mockResult
         );
 
@@ -39,7 +38,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 
@@ -61,7 +60,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 
@@ -84,7 +83,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 
@@ -114,7 +113,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 
@@ -148,7 +147,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 
@@ -186,7 +185,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 
@@ -217,7 +216,7 @@ describe('validateRule', () => {
                 ],
                 combinator: 'and',
                 not: false,
-            } as RuleGroupType,
+            },
             mockResult
         );
 

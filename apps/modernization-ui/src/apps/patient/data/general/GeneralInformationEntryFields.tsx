@@ -1,13 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { Permitted } from 'libs/permission';
-import { GeneralInformationEntry } from '../entry';
-import { NumericInput } from 'design-system/input';
-import { EntryFieldsProps } from 'design-system/entry';
-import { SingleSelect } from 'design-system/select';
-import { useGeneralCodedValues } from './useGeneralCodedValues';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
+
 import { Input } from 'components/FormInputs/Input';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { NumericInput } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
+import { Permitted } from 'libs/permission';
+import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
+
+import { GeneralInformationEntry } from '../entry';
+
+import { useGeneralCodedValues } from './useGeneralCodedValues';
 
 const AS_OF_DATE_LABEL = 'General information as of';
 const MATERNAL_MAIDEN_NAME_LABEL = "Mother's maiden name";

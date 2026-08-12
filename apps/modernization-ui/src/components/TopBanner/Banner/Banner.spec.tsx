@@ -1,4 +1,5 @@
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
+
 import { Banner } from './banner';
 
 describe('Banner component tests', () => {

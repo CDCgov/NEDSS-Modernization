@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Route, Routes } from 'react-router';
+
 import { AlertProvider } from 'alert';
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
-import { MemoryRouter, Route, Routes } from 'react-router';
+
 import { MergeDetails } from './MergeDetails';
-import userEvent from '@testing-library/user-event';
 
 const mockResponse: MergeCandidate[] = [
     {

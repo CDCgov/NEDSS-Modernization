@@ -1,7 +1,8 @@
 import { asValue, asValues } from 'options';
-import { EthnicityEntry } from './entry';
-import { Ethnicity } from './api';
 import { exists } from 'utils';
+
+import { Ethnicity } from './api';
+import { EthnicityEntry } from './entry';
 
 const asEthnicity = (entry: EthnicityEntry): Ethnicity | undefined => {
     const { ethnicGroup, detailed, unknownReason, asOf } = entry;

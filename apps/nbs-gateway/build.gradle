@@ -45,8 +45,6 @@ dependencies {
     // latest related CVEs: CVE-2026-47838/55831/55833/56745/56746/56816/59898/59899/59900/59901/59921, GHSA-mfg7-5gfp-c4w3
     implementation platform('io.netty:netty-bom:4.2.16.Final')
 
-    implementation platform('com.fasterxml.jackson:jackson-bom:2.21.5') // CVE-2026-54515
-
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux:4.3.5'
     implementation libs.bundles.security
     implementation libs.bundles.oidc

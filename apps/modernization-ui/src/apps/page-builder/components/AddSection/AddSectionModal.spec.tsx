@@ -1,8 +1,8 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import React from 'react';
-import AddSectionModal from './AddSectionModal';
 import { SectionControllerService } from 'apps/page-builder/generated';
+
+import AddSectionModal from './AddSectionModal';
 
 const props = {
     modalRef: { current: null },
@@ -11,7 +11,7 @@ const props = {
     onAddSection: vi.fn(),
 };
 
-const mockAddSectionUsingPost = vi.spyOn(SectionControllerService, 'createSection');
+const mockAddSectionUsingPost = vi.spyOn(SectionControllerService, 'createSection').mockResolvedValue({});
 
 describe('AddSectionModal', () => {
     it('should render successfully', () => {

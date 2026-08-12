@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
+
 import { ApiError } from 'generated';
+
 import { ApiErrorBanner } from './ApiError';
 
 describe('ApiError', () => {

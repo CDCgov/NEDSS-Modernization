@@ -1,13 +1,17 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { useEffect, useRef, useState } from 'react';
+import { useAlert } from 'libs/alert';
+
 import { ConfirmationModal } from '../../../../../../confirmation';
 import { usePageManagement } from '../../usePageManagement';
 import { Subsection } from '../subsection/Subsection';
 import { AddSubSection } from '../subsection/manage/AddSubSection';
 import { ManageSubsection } from '../subsection/manage/ManageSubsection';
+
 import { SectionHeader } from './SectionHeader';
 import { AddSection } from './manage/AddSection';
 import { AlertInLineProps } from './manage/ManageSectionModal';
@@ -165,8 +169,16 @@ export const Section = ({
                     ))}
                 </div>
             )}
-            <Modal id="add-section-modal" ref={editSectionModalRef} className="add-section-modal" isLarge={true}>
+            <Modal
+                id="add-section-modal"
+                ref={editSectionModalRef}
+                className="add-section-modal"
+                isLarge={true}
+                aria-labelledby="add-section-modal-header"
+                aria-describedby="add-section-modal-content"
+            >
                 <AddSection
+                    id="add-section-modal"
                     pageId={page.id}
                     tabId={selected?.id}
                     onSectionTouched={() => {
@@ -181,13 +193,16 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id="add-section-modal"
+                id="add-subsection-modal"
                 ref={addSubsectionModalRef}
                 className="add-section-modal"
                 isLarge={true}
                 forceAction={true}
+                aria-labelledby="add-subsection-modal-header"
+                aria-describedby="add-subsection-modal-content"
             >
                 <AddSubSection
+                    id="add-subsection-modal"
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={onCloseAddSubSection}
@@ -200,13 +215,16 @@ export const Section = ({
             </Modal>
 
             <Modal
-                id="add-section-modal"
+                id="edit-subsection-modal"
                 ref={editSubsectionModalRef}
                 className="add-section-modal"
                 isLarge={true}
                 forceAction={true}
+                aria-labelledby="edit-subsection-modal-header"
+                aria-describedby="edit-subsection-modal-content"
             >
                 <AddSubSection
+                    id="edit-subsection-modal"
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={onCloseEditSubsectionModal}
@@ -226,9 +244,12 @@ export const Section = ({
                 className="manage-section-modal"
                 forceAction={true}
                 isLarge={true}
+                aria-labelledby="manage-section-modal-header"
+                aria-describedby="manage-section-modal-content"
             >
                 <DragDropProvider pageData={page} successCallBack={handleReorderSubsection}>
                     <ManageSubsection
+                        id="manage-section-modal"
                         section={section}
                         alert={alert}
                         onResetAlert={() => setAlert(undefined)}

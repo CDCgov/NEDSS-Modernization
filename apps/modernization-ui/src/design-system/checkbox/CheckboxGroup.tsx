@@ -1,10 +1,13 @@
 import { FocusEvent as ReactFocusEvent, useEffect } from 'react';
+
+import classNames from 'classnames';
+
+import { Orientation, Sizing } from 'components/Entry';
+import { Field } from 'design-system/field';
 import { Selectable, useMultiSelection } from 'options';
+
 import { SelectableCheckbox } from './SelectableCheckbox';
 import styles from './checkboxGroup.module.scss';
-import { Orientation, Sizing } from 'components/Entry';
-import classNames from 'classnames';
-import { Field } from 'design-system/field';
 
 type Props = {
     name: string;

@@ -1,6 +1,6 @@
-import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/graphql/schema';
-
+import { IdentificationCriteria, PersonFilter, RecordStatus } from 'generated/graphql/schema';
 import { asValue, asValues } from 'options/selectable';
+
 import { PatientCriteriaEntry } from './criteria';
 
 const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>

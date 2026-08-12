@@ -3,10 +3,10 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.entity.odse.Person;
 import jakarta.persistence.EntityManager;
 import java.util.function.Consumer;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class PatientService {
 
   private final EntityManager entityManager;

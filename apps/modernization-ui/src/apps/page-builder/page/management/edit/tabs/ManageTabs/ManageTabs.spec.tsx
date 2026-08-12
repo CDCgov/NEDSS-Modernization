@@ -1,7 +1,9 @@
-import { ManageTabs } from './ManageTabs';
 import { render } from '@testing-library/react';
-import { PagesResponse } from 'apps/page-builder/generated';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse } from 'apps/page-builder/generated';
+
+import { ManageTabs } from './ManageTabs';
 
 const content: PagesResponse = {
     id: 123,

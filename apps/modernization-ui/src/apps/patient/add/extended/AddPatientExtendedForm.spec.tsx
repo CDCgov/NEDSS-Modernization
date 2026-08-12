@@ -1,10 +1,12 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen, within } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { internalizeDate } from 'date';
+import { Selectable } from 'options';
+
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { ExtendedNewPatientEntry, initial } from './entry';
-import { internalizeDate } from 'date';
 import { ValidationErrors } from './useAddExtendedPatientInteraction';
-import { Selectable } from 'options';
 
 const mockLocationOptions = {
     states: [{ name: 'StateName', value: '1' }],
@@ -15,6 +17,18 @@ const mockLocationOptions = {
 
 vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions,
+}));
+
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'test', value: '2' }] }),
+}));
+
+vi.mock('options/language', () => ({
+    usePrimaryLanguageOptions: () => ({ options: [{ name: 'english', value: '2' }] }),
+}));
+
+vi.mock('options/occupations', () => ({
+    useOccupationOptions: () => ({ options: [{ name: 'job', value: '2' }] }),
 }));
 
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
@@ -51,8 +65,8 @@ const Fixture = ({ asOf, validationErrors }: Props) => {
     );
 };
 describe('AddPatientExtendedForm', () => {
-    it('should render the sections with appropriate help text', () => {
-        render(<Fixture />);
+    it('should render the sections with appropriate help text', async () => {
+        const { findByRole } = render(<Fixture />);
 
         const administrative = screen.getByLabelText('Administrative');
 
@@ -93,10 +107,13 @@ describe('AddPatientExtendedForm', () => {
         const general = screen.getByLabelText('Sex & birth');
 
         expect(within(general).getByText('Required')).toBeInTheDocument();
+
+        // ensure rendering settles
+        expect(await findByRole('heading', { name: 'Administrative' })).toBeVisible();
     });
 
-    it('should set default date for as of fields', () => {
-        const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
+    it('should set default date for as of fields', async () => {
+        const { getByLabelText, findByRole } = render(<Fixture asOf="05/07/1977" />);
 
         //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());
@@ -120,10 +137,13 @@ describe('AddPatientExtendedForm', () => {
         expect(getByLabelText('Mortality information as of')).toHaveValue('05/07/1977');
 
         expect(getByLabelText('General information as of')).toHaveValue('05/07/1977');
+
+        // ensure rendering settles
+        expect(await findByRole('heading', { name: 'Administrative' })).toBeVisible();
     });
 
-    it('should display validation errors', () => {
-        const { getAllByText, getAllByRole } = render(
+    it('should display validation errors', async () => {
+        const { getAllByText, getAllByRole, findByRole } = render(
             <Fixture
                 validationErrors={{
                     dirtySections: { name: true, phone: true, address: true, identification: true, race: true },
@@ -174,5 +194,8 @@ describe('AddPatientExtendedForm', () => {
         link = within(errors[4]).getByRole('link');
         expect(link).toHaveTextContent('Race');
         expect(link).toHaveAttribute('href', '#races');
+
+        // ensure rendering settles
+        expect(await findByRole('heading', { name: 'Administrative' })).toBeVisible();
     });
 });

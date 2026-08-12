@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
+
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { EntryFieldsProps } from 'design-system/entry';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { validateRequiredRule } from 'validation/entry';
+
 import { HasEthnicityDemographic, labels } from '../ethnicity';
+
 import { EthnicityOptions } from './useEthnicityOptions';
 
 const UNKNOWN = 'UNK';

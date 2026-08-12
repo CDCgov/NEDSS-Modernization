@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.question;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -19,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -179,10 +179,10 @@ class PageQuestionUpdaterTest {
   @Test
   void should_find_question() {
     // given a valid question
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata question = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata question = mock(WaUiMetadata.class);
     when(question.getWaTemplateUid()).thenReturn(page);
 
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(question);
@@ -199,10 +199,10 @@ class PageQuestionUpdaterTest {
   @Test
   void should_not_find_question_bad_page() {
     // given a question with the wrong page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(3l);
 
-    WaUiMetadata question = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata question = mock(WaUiMetadata.class);
     when(question.getWaTemplateUid()).thenReturn(page);
 
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(question);

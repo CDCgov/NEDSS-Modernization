@@ -1,22 +1,23 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { SearchCriteria } from 'apps/search/criteria';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
+import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { useConditionOptions } from 'options/condition';
-import { useProgramAreaOptions } from 'options/program-areas';
 import { useJurisdictionOptions } from 'options/jurisdictions';
-import { SearchCriteria } from 'apps/search/criteria';
+import { useProgramAreaOptions } from 'options/program-areas';
 
 import {
-    InvestigationFilterEntry,
     dateTypeOptions,
     investigationEventTypeOptions,
+    InvestigationFilterEntry,
     pregnancyStatusOptions,
 } from './InvestigationFormTypes';
-import { EntryFieldsProps } from 'design-system/entry';
 
 const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
     const { all: jurisdictions } = useJurisdictionOptions();

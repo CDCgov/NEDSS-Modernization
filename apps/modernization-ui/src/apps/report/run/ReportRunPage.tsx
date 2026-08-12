@@ -1,4 +1,11 @@
-import React from 'react';
+import { BaseSyntheticEvent } from 'react';
+import { useCallback, useState } from 'react';
+
+import fileDownload from 'js-file-download';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useLoaderData, useParams } from 'react-router';
+
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import {
     AdvancedFilterRequest,
     BasicFilterRequest,
@@ -7,20 +14,17 @@ import {
     ReportExecutionRequest,
     SortSpec,
 } from 'generated';
-import { useCallback, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router';
-import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { openNewTab } from '../utils/openNewTab';
-import fileDownload from 'js-file-download';
-import { ReportResultPage } from './ReportResultPage';
-import { FormProvider, useForm } from 'react-hook-form';
-import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-import { usePermissions } from 'libs/permission/usePermissions';
-import { LOCAL_STORAGE_RESULT_PREFIX, PERMISSION_GROUP_MAP } from '../constants';
 import { LoadingBlock } from 'libs/loading/block';
-import { NotFoundError } from 'pages/error/NotFoundError';
 import { permissions, permitsAll } from 'libs/permission';
-import { ApiErrorBanner } from 'design-system/errors/ApiError';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { NotFoundError } from 'pages/error/NotFoundError';
+
+import { LOCAL_STORAGE_RESULT_PREFIX, PERMISSION_GROUP_MAP } from '../constants';
+import { openNewTab } from '../utils/openNewTab';
+
+import { ReportConfigurationPage } from './ReportConfigurationPage';
+import { ReportResultPage } from './ReportResultPage';
+import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
 export type ReportExecuteForm = {
     // key is the report's ID
@@ -70,7 +74,7 @@ const ReportRunPage = () => {
         reValidateMode: 'onSubmit',
     });
 
-    const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
+    const onSubmit = (event: BaseSyntheticEvent, isExport: boolean) => {
         form.handleSubmit((data) => {
             const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
                 .map(([id, { value, includeNulls }]) => {
@@ -142,7 +146,7 @@ const ReportRunPage = () => {
                 .catch(setError)
                 .finally(() => setStatus('complete'));
         },
-        [config]
+        [config?.dataSource.name, config?.title, dataSourceUid, reportUid]
     );
 
     return !config ? (

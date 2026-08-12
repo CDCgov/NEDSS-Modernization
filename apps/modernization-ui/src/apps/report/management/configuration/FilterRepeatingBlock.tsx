@@ -1,19 +1,22 @@
+import { ReactNode, useEffect, useState } from 'react';
+
+import { Controller, useWatch } from 'react-hook-form';
+
+import { Shown } from 'conditional-render';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
 import { ValueField } from 'design-system/field';
+import { SingleSelect } from 'design-system/select';
 import { HasValueFunction, NamedColumn } from 'design-system/table/header/column';
+import { ToggleField } from 'design-system/toggle/ToggleField';
+import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
 import { LoadingIndicator } from 'libs/loading/indicator';
+import { Selectable } from 'options';
 import { useReportFilters } from 'options/report';
 import { useReportDataSourceFilterableColumnOptions } from 'options/report/useReportDataSourceColumnOptions';
-import { useEffect, useState } from 'react';
-import { BasicFilterConfiguration, ReportConfiguration } from 'generated';
-import { Selectable } from 'options';
-import { addLabelToName, EnumSelectable } from '../../utils';
-import { SIZING } from '../../constants';
-import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
-import { SingleSelect } from 'design-system/select';
-import { Shown } from 'conditional-render';
-import { ToggleField } from 'design-system/toggle/ToggleField';
+
+import { SIZING } from '../../constants';
+import { addLabelToName, EnumSelectable } from '../../utils';
 
 const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
     { value: BasicFilterConfiguration.selectType.SINGLE, name: 'Single-select filter' },
@@ -22,24 +25,24 @@ const SELECT_OPTIONS: EnumSelectable<BasicFilterConfiguration.selectType>[] = [
 
 export interface FilterConfig {
     id?: number;
-    filter: Selectable;
-    selectType?: EnumSelectable<BasicFilterConfiguration.selectType>;
-    associatedColumn?: Selectable;
+    filter: Selectable | null;
+    selectType: EnumSelectable<BasicFilterConfiguration.selectType> | null;
+    associatedColumn: Selectable | null;
     isRequired: boolean;
 }
 
 const EMPTY_FILTER_CONFIG: Partial<FilterConfig> = {
     id: undefined,
-    filter: undefined,
-    selectType: undefined,
-    associatedColumn: undefined,
+    filter: null,
+    selectType: null,
+    associatedColumn: null,
     isRequired: false,
 };
 
 type FilterColumn = NamedColumn<FilterConfig, string> & HasValueFunction<FilterConfig, string>;
 
 const filterColumns: FilterColumn[] = [
-    { id: 'filter', name: 'Filter', value: (v) => v.filter.name },
+    { id: 'filter', name: 'Filter', value: (v) => v.filter?.name },
     { id: 'type', name: 'Selection type', value: (v) => v.selectType?.name },
     {
         id: 'column',
@@ -69,8 +72,8 @@ const FilterRepeatingBlock = ({
         config?.basicFilters.map((f) => ({
             id: f.reportFilterUid,
             filter: filterOptions.find(({ value }) => parseInt(value) === f.filterType.id)!,
-            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType),
-            associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()),
+            selectType: SELECT_OPTIONS.find(({ value }) => value === f.selectType) ?? null,
+            associatedColumn: columnOptions.find(({ value }) => value === f.reportColumnUid?.toString()) ?? null,
             isRequired: f.isRequired,
         })) ?? [];
 
@@ -79,6 +82,8 @@ const FilterRepeatingBlock = ({
             id: config.advancedFilter.reportFilterUid,
             filter: filterOptions.find(({ value }) => value === '7')!,
             isRequired: false,
+            selectType: null,
+            associatedColumn: null,
         });
     }
 
@@ -121,7 +126,7 @@ const useColumnOptions = (dataSource?: Selectable | string) => {
 
     useEffect(() => {
         load(typeof dataSource === 'string' ? dataSource : dataSource?.value);
-    }, [dataSource]);
+    }, [dataSource, load]);
 
     return options;
 };
@@ -211,17 +216,15 @@ const FilterConfigForm = ({
     // parent report config form
 
     const filterVal = useWatch<FilterConfig, 'filter'>({ name: 'filter' });
-    const needsSelectType = SELECTABLE_FILTER_IDS.has(filterVal?.value);
-    const needsColumnAndRequired = COLUMN_REQUIRED_FILTER_IDS.has(filterVal?.value);
+    const needsSelectType = !!filterVal && SELECTABLE_FILTER_IDS.has(filterVal.value);
+    const needsColumnAndRequired = !!filterVal && COLUMN_REQUIRED_FILTER_IDS.has(filterVal.value);
 
     return (
         <section>
-            <Controller
+            <Controller<FilterConfig, 'filter'>
                 name="filter"
                 rules={validateRequiredRule('Filter')}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
                     <SingleSelect
                         id={`filter-${name}`}
                         label="Filter"
@@ -232,17 +235,20 @@ const FilterConfigForm = ({
                         error={error?.message}
                         required={true}
                         sizing={SIZING}
-                        {...remaining}
+                        value={value}
+                        onChange={onChange}
                     />
                 )}
             />
-            <Controller
+            <Controller<FilterConfig, 'selectType'>
                 name="selectType"
-                rules={needsSelectType ? validateRequiredRule('Selection type') : undefined}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <Shown when={needsSelectType}>
+                // use function instead of boolean to make sure it reacts to changing filter
+                rules={{
+                    validate: (val) =>
+                        !needsSelectType || val ? true : validateRequiredRule('Selection type').required.message,
+                }}
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
+                    <ConditionalField shown={needsSelectType} reset={() => onChange(null)}>
                         <SingleSelect
                             id={`filter-${name}`}
                             label="Selection type"
@@ -253,18 +259,23 @@ const FilterConfigForm = ({
                             error={error?.message}
                             required={true}
                             sizing={SIZING}
-                            {...remaining}
+                            value={value}
+                            onChange={onChange}
                         />
-                    </Shown>
+                    </ConditionalField>
                 )}
             />
-            <Controller
+            <Controller<FilterConfig, 'associatedColumn'>
                 name="associatedColumn"
-                rules={needsColumnAndRequired ? validateRequiredRule('Associated column') : undefined}
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <Shown when={needsColumnAndRequired}>
+                // use function instead of boolean to make sure it reacts to changing filter
+                rules={{
+                    validate: (val) =>
+                        !needsColumnAndRequired || val
+                            ? true
+                            : validateRequiredRule('Associated column').required.message,
+                }}
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
+                    <ConditionalField shown={needsColumnAndRequired} reset={() => onChange(null)}>
                         <SingleSelect
                             id={`filter-${name}`}
                             label="Associated column"
@@ -274,17 +285,16 @@ const FilterConfigForm = ({
                             error={error?.message}
                             required={true}
                             sizing={SIZING}
-                            {...remaining}
+                            value={value}
+                            onChange={onChange}
                         />
-                    </Shown>
+                    </ConditionalField>
                 )}
             />
-            <Controller
+            <Controller<FilterConfig, 'isRequired'>
                 name="isRequired"
-                // ignoring the ref as it does not pass down well and isn't critical
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref, name, ...remaining }, fieldState: { error } }) => (
-                    <Shown when={needsColumnAndRequired}>
+                render={({ field: { name, value, onChange }, fieldState: { error } }) => (
+                    <ConditionalField shown={needsColumnAndRequired} reset={() => onChange(false)}>
                         <ToggleField
                             id={`filter-${name}`}
                             orientation="horizontal"
@@ -292,13 +302,23 @@ const FilterConfigForm = ({
                             label="Required as basic filter?"
                             className="height-full"
                             error={error?.message}
-                            {...remaining}
+                            value={value}
+                            onChange={onChange}
                         />
-                    </Shown>
+                    </ConditionalField>
                 )}
             />
         </section>
     );
+};
+
+const ConditionalField = ({ reset, shown, children }: { reset: () => void; shown: boolean; children: ReactNode }) => {
+    // reset when showability changes
+    useEffect(() => {
+        if (!shown) reset();
+    }, [shown]);
+
+    return <Shown when={shown}>{children}</Shown>;
 };
 
 export { FilterRepeatingBlock };

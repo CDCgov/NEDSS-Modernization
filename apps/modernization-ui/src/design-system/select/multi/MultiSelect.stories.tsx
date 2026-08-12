@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { MultiSelect } from './MultiSelect';
+
 import { asSelectable, Selectable } from 'options';
+
+import { MultiSelect } from './MultiSelect';
 
 const meta = {
     title: 'Design System/Select/MultiSelect',

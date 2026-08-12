@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
+
 import { AddressEntry } from 'apps/patient/data';
+
 import { AddressView } from './AddressView';
 
 const entry: AddressEntry = {

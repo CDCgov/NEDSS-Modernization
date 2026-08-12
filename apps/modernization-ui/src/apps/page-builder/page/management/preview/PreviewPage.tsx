@@ -1,5 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { useNavigate } from 'react-router';
+
+import { PagesTab } from 'apps/page-builder/generated';
 import {
     PageHeader,
     PageManagementLayout,
@@ -10,20 +14,20 @@ import {
 } from 'apps/page-builder/page/management';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { Loading } from 'components/Spinner';
+import { ConfirmationModal } from 'confirmation';
 import { LinkButton } from 'design-system/button';
 import { NavLinkButton } from 'design-system/button';
-import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useAlert } from 'libs/alert';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { PageControllerService } from '../../../generated/services/PageControllerService';
+
 import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
 import { PageInformation } from './information/PageInformation';
 import styles from './preview-page.module.scss';
 import { StaticTabContent } from './staticTabContent/StaticTabContent';
 import { PreviewTab } from './tab';
-import { PagesTab } from 'apps/page-builder/generated';
-import { logErrorToUserConsole } from 'utils/logging';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();

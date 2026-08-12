@@ -1,8 +1,9 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { TextCriteriaField, TextCriteriaFieldProps } from './TextCriteriaField';
 import { TextCriteria } from 'options/operator';
+
+import { TextCriteriaField, TextCriteriaFieldProps } from './TextCriteriaField';
 
 const renderComponent = (props: Partial<TextCriteriaFieldProps> = {}) => {
     const combinedProps: TextCriteriaFieldProps = {

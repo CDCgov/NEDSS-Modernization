@@ -1,4 +1,4 @@
-import { PagesQuestion, PagesTab, PagesSection, PagesSubSection, PagesResponse } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesResponse, PagesSection, PagesSubSection, PagesTab } from 'apps/page-builder/generated';
 
 export const findTargetQuestion = (targets: string[], page: PagesResponse | undefined): PagesQuestion[] => {
     const targetQuestions: PagesQuestion[] = [];

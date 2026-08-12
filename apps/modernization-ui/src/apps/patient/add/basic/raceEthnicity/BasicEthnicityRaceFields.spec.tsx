@@ -1,9 +1,12 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BasicRaceEthnicityFields } from './BasicEthnicityRaceFields';
-import { BasicEthnicityRace } from '../entry';
+
 import { Selectable } from 'options';
+
+import { BasicEthnicityRace } from '../entry';
+
+import { BasicRaceEthnicityFields } from './BasicEthnicityRaceFields';
 
 let mockRaceCategories: Selectable[] = [];
 

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe } from 'jest-axe';
+
 import { NumberRangeField } from './NumberRangeField.tsx';
 
 describe('NumberRangeField Component', () => {

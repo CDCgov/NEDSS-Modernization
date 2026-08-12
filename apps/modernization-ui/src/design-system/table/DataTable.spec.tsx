@@ -1,8 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import { axe } from 'jest-axe';
+
+import { Sizing } from 'design-system/field';
+
 import { DataTable } from './DataTable';
 import { Column } from './header/column';
-import { Sizing } from 'design-system/field';
 
 type TestData = {
     id: number;

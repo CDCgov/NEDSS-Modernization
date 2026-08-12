@@ -1,6 +1,6 @@
+import { asFilter } from './asDisplayableFilter';
 import { DatePeriodFilterEntry, DateRangeFilterEntry, ExactValueEntry, PartialValueEntry } from './entry/FilterEntry';
 import { Property } from './properties';
-import { asFilter } from './asDisplayableFilter';
 
 Object.defineProperty(globalThis, 'crypto', {
     value: {

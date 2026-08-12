@@ -1,9 +1,12 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
+
 import { Sizing } from 'design-system/field';
+
 import { PatientDemographicsDefaults } from '../../demographics';
-import { HasPhoneEmailDemographics, initial, PhoneEmailDemographic } from '../phoneEmails';
 import { PhoneEmailDemographicCardProps } from '../PhoneEmailDemographicCard';
 import { PhoneEmailDemographicRepeatingBlock } from '../PhoneEmailDemographicRepeatingBlock';
+import { HasPhoneEmailDemographics, initial, PhoneEmailDemographic } from '../phoneEmails';
+
 import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
 import { usePhoneEmailOptions } from './usePhoneEmailOptions';
 

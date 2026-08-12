@@ -1,8 +1,11 @@
-import { Mock } from 'vitest';
 import { ReactNode } from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Mock } from 'vitest';
+
 import { Permitted } from 'libs/permission';
+
 import { DeleteAction } from './DeleteAction';
 import { useDeletePatient } from './useDeletePatient';
 

@@ -1,21 +1,23 @@
 import { Suspense } from 'react';
+
 import { Await } from 'react-router';
-import { LoadingOverlay } from 'libs/loading';
-import { MemoizedSupplier } from 'libs/supplying';
-import { Column } from 'design-system/table';
-import { ColumnPreference } from 'design-system/table/preferences';
+
 import { Shown } from 'conditional-render';
-import { permissions, Permitted } from 'libs/permission';
+import { internalizeDateTime } from 'date';
 import { LinkButton } from 'design-system/button';
 import { TableCard, TableCardProps } from 'design-system/card';
-import { internalizeDateTime } from 'date';
+import { Column } from 'design-system/table';
+import { ColumnPreference } from 'design-system/table/preferences';
 import { MaybeLabeledValue } from 'design-system/value';
-import { PatientFileLaboratoryReport } from './laboratory-report';
-import { displayProvider } from 'libs/provider';
 import { Associations } from 'libs/events/investigations/associated';
 import { ResultedTests } from 'libs/events/tests';
+import { LoadingOverlay } from 'libs/loading';
+import { permissions, Permitted } from 'libs/permission';
+import { displayProvider } from 'libs/provider';
+import { MemoizedSupplier } from 'libs/supplying';
 
 import styles from './lab-reports.module.scss';
+import { PatientFileLaboratoryReport } from './laboratory-report';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_RECEIVED = { id: 'received-on', name: 'Date received' };

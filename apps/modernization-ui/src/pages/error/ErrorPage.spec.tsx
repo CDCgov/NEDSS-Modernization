@@ -1,12 +1,25 @@
 import { render } from '@testing-library/react';
-import { ApiError } from 'generated';
 import { useRouteError } from 'react-router';
+
+import { ApiError } from 'generated';
+
 import { ErrorPage } from './ErrorPage';
 import { NotFoundError } from './NotFoundError';
 
 vi.mock('react-router');
 
 describe('ErrorPage', () => {
+    let message: unknown;
+    beforeEach(() => {
+        vi.spyOn(console, 'error').mockImplementation((msg) => {
+            message = msg;
+        });
+    });
+    afterEach(() => {
+        expect(message).not.toBeUndefined();
+        message = undefined;
+    });
+
     it('handles ApiError with string body', () => {
         const error = new ApiError(
             { method: 'GET', url: '/test' },

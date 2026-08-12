@@ -1,5 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router';
+
 import {
     PageRuleControllerService,
     PagesQuestion,
@@ -13,12 +17,12 @@ import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Breadcrumb } from 'breadcrumb/Breadcrumb';
 import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router';
+import { useAlert } from 'libs/alert';
+
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
-import styles from './EditBusinessRule.module.scss';
 import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
+
+import styles from './EditBusinessRule.module.scss';
 
 export const EditBusinessRule = () => {
     const form = useForm<RuleRequest>();

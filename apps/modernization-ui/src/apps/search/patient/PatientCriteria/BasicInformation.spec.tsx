@@ -1,10 +1,12 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BasicInformation } from './BasicInformation';
-import { PatientCriteriaEntry } from '../criteria';
+
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { error } from 'console';
+
+import { PatientCriteriaEntry } from '../criteria';
+
+import { BasicInformation } from './BasicInformation';
 
 const mockAllows = vi.fn();
 

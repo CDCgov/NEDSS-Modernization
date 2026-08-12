@@ -7,6 +7,7 @@ import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.patient.PatientCommand;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import org.junit.jupiter.api.Test;
 
 class PatientSexBirthTest {
@@ -101,7 +102,7 @@ class PatientSexBirthTest {
         new PatientCommand.UpdateBirth(
             121L,
             LocalDate.parse("2023-06-01"),
-            LocalDate.of(1949, 10, 15),
+            LocalDate.of(1949, Month.OCTOBER, 15),
             null,
             null,
             null,

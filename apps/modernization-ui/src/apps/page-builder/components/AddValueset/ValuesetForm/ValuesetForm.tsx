@@ -1,8 +1,10 @@
 import { Radio } from '@trussworks/react-uswds';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { CreateValuesetRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import styles from './valueset-form.module.scss';
 
 type Props = {

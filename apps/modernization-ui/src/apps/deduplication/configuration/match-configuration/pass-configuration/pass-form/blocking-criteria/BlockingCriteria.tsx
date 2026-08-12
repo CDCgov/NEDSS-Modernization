@@ -1,11 +1,13 @@
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
-import { useFormContext, useWatch } from 'react-hook-form';
+
 import { BlockingCriteriaAttribute } from './attribute/BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
-import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     onAddAttributes: () => void;

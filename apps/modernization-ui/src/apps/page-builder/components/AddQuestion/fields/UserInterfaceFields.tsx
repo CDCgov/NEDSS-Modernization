@@ -1,9 +1,11 @@
 import { ErrorMessage, Label, Textarea } from '@trussworks/react-uswds';
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { CreateQuestionForm } from '../QuestionForm';
+
+import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { maxLengthRule } from 'validation/entry';
+
+import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 
 type SelectOption = { name: string; value: string };

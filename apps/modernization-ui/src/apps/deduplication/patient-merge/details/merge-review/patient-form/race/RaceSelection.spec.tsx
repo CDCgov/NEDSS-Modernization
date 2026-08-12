@@ -1,6 +1,8 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { RaceSelection } from './RaceSelection';
 
 const mergeCandidates: Partial<MergeCandidate>[] = [

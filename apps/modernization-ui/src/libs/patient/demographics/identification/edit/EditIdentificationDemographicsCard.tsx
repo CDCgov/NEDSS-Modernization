@@ -1,11 +1,14 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
+
 import { Sizing } from 'design-system/field';
+
 import { PatientDemographicsDefaults } from '../../demographics';
-import { HasIdentificationDemographics, IdentificationDemographic, initial } from '../identifications';
 import {
     IdentificationDemographicRepeatingBlock,
     IdentificationDemographicRepeatingBlockProps,
 } from '../IdentificationDemographicRepeatingBlock';
+import { HasIdentificationDemographics, IdentificationDemographic, initial } from '../identifications';
+
 import { IdentificationDemographicFields } from './IdentificationDemographicFields';
 import { useIdentificationOptions } from './useIdentificationOptions';
 

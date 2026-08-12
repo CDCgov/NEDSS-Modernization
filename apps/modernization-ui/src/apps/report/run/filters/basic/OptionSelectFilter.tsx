@@ -1,15 +1,17 @@
-import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
-import { BasicFilterConfiguration } from 'generated';
-import { MultiSelect } from 'design-system/select';
-import { useCountyOptions, useStateOptions } from 'options/location';
-import { useConditionOptions } from 'options/condition';
-import { useConceptOptions } from 'options/concepts';
-import { useStdHivWorkerNameOptions } from 'options/person';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useEffect } from 'react';
-import { useCurrentState } from './useCurrentState';
+
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { MultiSelect } from 'design-system/select';
+import { BasicFilterConfiguration } from 'generated';
 import { Selectable } from 'options';
+import { useConceptOptions } from 'options/concepts';
+import { useConditionOptions } from 'options/condition';
+import { useCountyOptions, useStateOptions } from 'options/location';
+import { useStdHivWorkerNameOptions } from 'options/person';
 import { validateRequiredRule } from 'validation/entry';
+
+import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
+import { useCurrentState } from './useCurrentState';
 
 export const STATE_FILTER_CODE = 'J_S01';
 export const COUNTY_FILTER_CODE = 'J_C01';
@@ -18,10 +20,7 @@ export const DISEASE_FILTER_CODE = 'CVG_CUSTOM_N01';
 export const STD_HIV_WORKERS_FILTER_CODE = 'STD_HIV_WRKR';
 
 const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
-    const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
-    // ignore include nulls indicator here
-    const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
-    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [];
+    const options = useFilterOptions(filter);
 
     useEffect(() => {
         // options have changed and the value is no longer in the option set
@@ -32,7 +31,7 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
         ) {
             onChange(null);
         }
-    }, [options, value]);
+    }, [options, value, onChange]);
 
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
@@ -59,8 +58,13 @@ const useCurrentStateCountyOptions = () => {
 
     useEffect(() => {
         load(state);
-    }, [state]);
+    }, [state, load]);
 
+    return options;
+};
+
+const useDiseaseOptions = (filterCodeSetName: string) => {
+    const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
     return options;
 };
 
@@ -74,8 +78,12 @@ const OPTIONS_HOOK_MAP: Record<string, (filterCodeSetName: string) => Selectable
     [STD_HIV_WORKERS_FILTER_CODE]: useStdHivWorkerNameOptions,
 };
 
-const useDiseaseOptions = (filterCodeSetName: string) => {
-    const { options } = useConceptOptions(filterCodeSetName, { lazy: false });
+const useFilterOptions = (filter: BasicFilterConfiguration): Selectable[] => {
+    const filterCodeFull = filter?.filterType?.code ?? ''; // should never be empty in practice
+    // ignore include nulls indicator here
+    const filterCode = filterCodeFull.endsWith('_N') ? filterCodeFull.slice(0, -2) : filterCodeFull;
+    const options = OPTIONS_HOOK_MAP[filterCode]?.(filter?.filterType?.codeSetName ?? '') ?? [];
+
     return options;
 };
 

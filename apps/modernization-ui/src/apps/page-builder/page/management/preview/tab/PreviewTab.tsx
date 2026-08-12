@@ -1,4 +1,5 @@
 import { PagesTab } from 'apps/page-builder/generated';
+
 import { PreviewSection } from './section/PreviewSection';
 
 type PreviewTabProps = {

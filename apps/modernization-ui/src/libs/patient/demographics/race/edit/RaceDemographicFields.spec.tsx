@@ -1,7 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { RaceDemographic } from '../race';
+
 import { RaceDemographicFields, RaceDemographicFieldsProps } from './RaceDemographicFields';
 import { RaceOptions } from './useRaceOptions';
 
@@ -93,7 +95,7 @@ describe('Race entry fields', () => {
         const race = screen.getByRole('combobox', { name: 'Race' });
         await user.selectOptions(race, 'other');
 
-        expect(mockSelected).toBeCalledWith({ value: 'other', name: 'other name' });
+        expect(mockSelected).toHaveBeenCalledWith({ value: 'other', name: 'other name' });
 
         rerender(
             <Fixture
@@ -184,7 +186,7 @@ describe('Race entry fields', () => {
             .then(() => user.tab());
 
         expect(getByText('category not valid')).toBeInTheDocument();
-        expect(validator).toBeCalledWith(19, expect.objectContaining({ value: 'other' }));
+        expect(validator).toHaveBeenCalledWith(19, expect.objectContaining({ value: 'other' }));
     });
     it('should have accessibility description for the as of date field', () => {
         const { getByLabelText } = render(<Fixture />);

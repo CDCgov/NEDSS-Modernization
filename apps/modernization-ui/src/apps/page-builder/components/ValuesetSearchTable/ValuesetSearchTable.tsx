@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { ValueSetOption } from 'apps/page-builder/generated';
 import { SortField, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
 import { Search } from 'components/Search/Search';
 import { TableBody, TableComponent } from 'components/Table';
-import { Status, usePagination } from 'pagination';
-import { useEffect, useState } from 'react';
 import { Direction } from 'libs/sorting';
+import { Status, usePagination } from 'pagination';
+
 import styles from './valueset-search-table.module.scss';
 
 const enum Header {

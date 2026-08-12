@@ -1,12 +1,14 @@
 import { FocusEventHandler, useState } from 'react';
+
 import classNames from 'classnames';
 import Select, { ActionMeta, FilterOptionOption, MultiValue } from 'react-select';
-import { Selectable, asValue as asSelectableValue } from 'options';
+
 import { Field, FieldProps } from 'design-system/field';
-import { styles, theme } from './design';
+import { asValue as asSelectableValue, Selectable } from 'options';
+
 import { CheckboxOption } from './CheckboxOption';
 import { DropdownIndicator } from './DropdownIndicator';
-
+import { styles, theme } from './design';
 import './multi-select.scss';
 
 type MultiSelectProps = {

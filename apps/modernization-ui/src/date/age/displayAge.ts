@@ -1,5 +1,6 @@
-import { now } from 'design-system/date/clock';
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
+
+import { now } from 'design-system/date/clock';
 import { Maybe } from 'utils';
 
 /**

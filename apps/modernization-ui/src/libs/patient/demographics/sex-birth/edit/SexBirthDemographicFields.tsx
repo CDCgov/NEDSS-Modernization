@@ -1,15 +1,19 @@
 import { useEffect } from 'react';
+
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { AgeResolver } from 'date';
-import { isEqual, Selectable } from 'options';
+
 import { Shown } from 'conditional-render';
+import { AgeResolver } from 'date';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
-import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
-import { NumericInput, TextInputField } from 'design-system/input';
 import { ValueField } from 'design-system/field';
-import { HasSexBirthDemographic, SexBirthDemographic, labels } from '../sexBirth';
+import { NumericInput, TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
+import { isEqual, Selectable } from 'options';
+import { maxLengthRule, numericRangeRule, validateRequiredRule } from 'validation/entry';
+
+import { HasSexBirthDemographic, labels, SexBirthDemographic } from '../sexBirth';
+
 import { SexBirthOptions } from './useSexBirthOptions';
 
 type SexBirthDemographicFieldsProps = {
@@ -221,7 +225,7 @@ const SexBirthDemographicFields = ({
                             label={labels.order}
                             id={name}
                             name={name}
-                            value={value}
+                            value={value ?? null}
                             min="0"
                             max="9999"
                             onChange={onChange}

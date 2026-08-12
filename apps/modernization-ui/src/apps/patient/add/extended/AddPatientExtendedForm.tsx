@@ -1,23 +1,25 @@
 import { useEffect, useRef } from 'react';
+
 import { Controller, useFormContext } from 'react-hook-form';
-import { useComponentSizing } from 'design-system/sizing';
-import { Card } from 'design-system/card';
-import { AlertMessage } from 'design-system/message';
-import { DirtySectionErrorMessage } from 'design-system/errors/ValidationError';
-import { ExtendedNewPatientEntry } from './entry';
+
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
 import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';
 import { MortalityEntryFields } from 'apps/patient/data/mortality/MortalityEntryFields';
 import { SexAndBirthEntryFields } from 'apps/patient/data/sexAndBirth/SexAndBirthEntryFields';
+import { Card } from 'design-system/card';
+import { DirtySectionErrorMessage } from 'design-system/errors/ValidationError';
+import { AlertMessage } from 'design-system/message';
+import { useComponentSizing } from 'design-system/sizing';
+
+import styles from './add-patient-extended-form.module.scss';
+import { ExtendedNewPatientEntry } from './entry';
 import { AddressRepeatingBlock } from './inputs/address/AddressRepeatingBlock';
 import { IdentificationRepeatingBlock } from './inputs/identification/IdentificationRepeatingBlock';
 import { NameRepeatingBlock } from './inputs/name/NameRepeatingBlock';
 import { PhoneAndEmailRepeatingBlock } from './inputs/phone/PhoneAndEmailRepeatingBlock';
 import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
-
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
-import styles from './add-patient-extended-form.module.scss';
 
 type Props = {
     validationErrors?: ValidationErrors;

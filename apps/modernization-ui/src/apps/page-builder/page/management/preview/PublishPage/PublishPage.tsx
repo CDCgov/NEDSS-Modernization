@@ -1,12 +1,16 @@
-import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
-import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
 import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
+
+import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
 import { Controller, useForm } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { usePageManagement } from '../../usePageManagement';
-import styles from './publish-page.module.scss';
+
+import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
+import { useAlert } from 'libs/alert';
 import { logErrorToUserConsole } from 'utils/logging';
+import { maxLengthRule } from 'validation/entry';
+
+import { usePageManagement } from '../../usePageManagement';
+
+import styles from './publish-page.module.scss';
 
 type Props = {
     modalRef: RefObject<ModalRef>;

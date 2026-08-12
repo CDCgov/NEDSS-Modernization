@@ -1,6 +1,7 @@
-import { PatientFileDocument } from 'generated';
-import { PatientFileDocument as Document } from './documents';
 import { maybeDate } from 'date';
+import { PatientFileDocument } from 'generated';
+
+import { PatientFileDocument as Document } from './documents';
 
 const transformer = (response: PatientFileDocument): Document => ({
     ...response,

@@ -1,6 +1,7 @@
+import { ReactNode } from 'react';
+
 import { HeadingLevel } from 'components/heading';
 import { AlertMessage } from 'design-system/message';
-import { ReactNode } from 'react';
 
 const ValidationErrorBanner = ({
     level,

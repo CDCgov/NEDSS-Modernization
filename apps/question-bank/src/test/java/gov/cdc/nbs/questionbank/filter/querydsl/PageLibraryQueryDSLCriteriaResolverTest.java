@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.filter.querydsl;
 
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -10,7 +11,6 @@ import gov.cdc.nbs.questionbank.filter.ValueFilter.Operator;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,7 +30,7 @@ class PageLibraryQueryDSLCriteriaResolverTest {
             Collections.singletonList("2019 Novel Coronavirus"));
     resolver.resolve(filter, QConditionCode.conditionCode.conditionCodesetNm);
 
-    verify(resolver).conditionNotIn(Mockito.any());
+    verify(resolver).conditionNotIn(any());
   }
 
   @Test
@@ -41,7 +41,7 @@ class PageLibraryQueryDSLCriteriaResolverTest {
             Operator.STARTS_WITH,
             Collections.singletonList("2019 Novel Coronavirus"));
     resolver.resolve(filter, QConditionCode.conditionCode.conditionCodesetNm);
-    verify(resolver, times(0)).conditionNotIn(Mockito.any());
+    verify(resolver, times(0)).conditionNotIn(any());
   }
 
   @Test
@@ -49,7 +49,7 @@ class PageLibraryQueryDSLCriteriaResolverTest {
     SingleValueFilter filter =
         new SingleValueFilter("conditions", Operator.NOT_EQUAL_TO, "2019 Novel Coronavirus");
     resolver.resolve(filter, QConditionCode.conditionCode.conditionCodesetNm);
-    verify(resolver, times(0)).conditionNotIn(Mockito.any());
+    verify(resolver, times(0)).conditionNotIn(any());
   }
 
   @Test
@@ -60,6 +60,6 @@ class PageLibraryQueryDSLCriteriaResolverTest {
             Operator.NOT_EQUAL_TO,
             Collections.singletonList("2019 Novel Coronavirus"));
     resolver.resolve(filter, QConditionCode.conditionCode.nbsUid);
-    verify(resolver, times(0)).conditionNotIn(Mockito.any());
+    verify(resolver, times(0)).conditionNotIn(any());
   }
 }

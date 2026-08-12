@@ -19,7 +19,7 @@ def execute(
     content = trx.query(
         f"""
         WITH subset AS ({subset_query})
-        SELECT 
+        SELECT
             COALESCE(state, 'N/A') AS [State],
             COALESCE(county, 'N/A') AS [County],
             phc_code_short_desc AS [Condition],

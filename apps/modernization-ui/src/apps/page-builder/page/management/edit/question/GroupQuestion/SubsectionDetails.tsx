@@ -1,9 +1,12 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import { Input } from 'components/FormInputs/Input';
-import { Radio } from '@trussworks/react-uswds';
-import styles from './subsection-details.module.scss';
-import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { useEffect, useState } from 'react';
+
+import { Radio } from '@trussworks/react-uswds';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { Input } from 'components/FormInputs/Input';
+
+import styles from './subsection-details.module.scss';
 
 export const SubsectionDetails = () => {
     const { control, setValue } = useFormContext<GroupRequest>();
@@ -57,7 +60,7 @@ export const SubsectionDetails = () => {
                                     name={name}
                                     value="true"
                                     id="visible"
-                                    checked={control._formValues.visible}
+                                    checked={!!control._formValues.visible}
                                     onChange={() => setVisibleToggle('true')}
                                     label="Yes"
                                 />

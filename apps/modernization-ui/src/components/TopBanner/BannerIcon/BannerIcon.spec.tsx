@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { BannerIcon } from './BannerIcon';
 
 describe('BannerIcon component tests', () => {

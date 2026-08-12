@@ -1,20 +1,24 @@
+import { useEffect, useState } from 'react';
+
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { useMatchConfiguration } from 'apps/deduplication/api/useMatchConfiguration';
-import { DataElements } from 'apps/deduplication/api/model/DataElement';
+import { Loading } from 'components/Spinner';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm, useFormState } from 'react-hook-form';
+import { useAlert } from 'libs/alert';
 import { exists } from 'utils';
+
 import { UnsavedChangesConfirmation } from '../confirmation/UnsavedChangesConfirmation';
+import { PersonMatchHeader } from '../header/PersonMatchHeader';
 import { SelectPass } from '../notification-cards/SelectPass';
+
 import styles from './pass-configuration.module.scss';
 import { PassForm } from './pass-form/PassForm';
 import { SavePassModal } from './pass-form/save-modal/SavePassModal';
 import { PassList } from './pass-list/PassList';
-import { Loading } from 'components/Spinner';
-import { PersonMatchHeader } from '../header/PersonMatchHeader';
-import { useNavigate } from 'react-router';
-import { useAlert } from 'libs/alert';
 
 type Props = {
     dataElements: DataElements;

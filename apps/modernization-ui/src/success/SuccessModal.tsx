@@ -1,6 +1,8 @@
 import { ReactNode, RefObject } from 'react';
+
 import { Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import styles from './successModal.module.scss';
 
 type Props = {

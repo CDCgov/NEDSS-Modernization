@@ -1,7 +1,10 @@
+import { UseFormReturn } from 'react-hook-form';
+
 import { Card, CardProps } from 'design-system/card';
 import { EntryFieldsProps, Required } from 'design-system/entry';
-import { UseFormReturn } from 'react-hook-form';
+
 import { HasGeneralInformationDemographic } from '../general';
+
 import { GeneralInformationDemographicFields } from './GeneralInformationDemographicFields';
 import { useGeneralInformationOptions } from './useGeneralInformationOptions';
 

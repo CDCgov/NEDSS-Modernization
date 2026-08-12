@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NameDemographicFields } from './NameDemographicFields';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { HasNameDemographics } from '../names';
+
+import { NameDemographicFields } from './NameDemographicFields';
 
 const Fixture = () => {
     const form = useForm<HasNameDemographics>({

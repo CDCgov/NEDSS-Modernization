@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
-import { ActivateToggle } from './ActivateToggle';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Pass } from 'apps/deduplication/api/model/Pass';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { Pass } from 'apps/deduplication/api/model/Pass';
+
+import { ActivateToggle } from './ActivateToggle';
 
 const Fixture = () => {
     const form = useForm<Pass>({

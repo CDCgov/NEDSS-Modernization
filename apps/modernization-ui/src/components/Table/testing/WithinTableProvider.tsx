@@ -1,7 +1,10 @@
 import { ReactNode } from 'react';
-import { PaginationSettings } from 'pagination';
-import { SortingSettings } from 'libs/sorting';
+
 import { MemoryRouter } from 'react-router';
+
+import { SortingSettings } from 'libs/sorting';
+import { PaginationSettings } from 'pagination';
+
 import { TableProvider } from '../TableProvider';
 
 type WithinTableProviderProps = {

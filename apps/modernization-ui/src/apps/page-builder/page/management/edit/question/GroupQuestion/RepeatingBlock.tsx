@@ -1,10 +1,13 @@
-import styles from './repeating-block.module.scss';
-import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Input } from 'components/FormInputs/Input';
-import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { useEffect, useState } from 'react';
+
+import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+
+import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+
+import styles from './repeating-block.module.scss';
 
 type Props = {
     questions: PagesQuestion[];
@@ -69,7 +72,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     </tr>
                 </thead>
                 <tbody data-testid="group-questions-tbody">
-                    {fields.map((item: Batch, index: number) => (
+                    {fields.map((_item: Batch, index: number) => (
                         <tr className={styles.row} key={index}>
                             <td className={styles.number}>
                                 <p>{index + 1}</p>

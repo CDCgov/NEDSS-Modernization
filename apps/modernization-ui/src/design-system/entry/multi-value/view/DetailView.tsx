@@ -1,7 +1,10 @@
 import { Fragment, ReactElement, useId } from 'react';
+
 import classNames from 'classnames';
-import { Orientation } from 'design-system/field';
+
 import { OrElseNoData } from 'design-system/data';
+import { Orientation } from 'design-system/field';
+
 import styles from './detail-view.module.scss';
 
 type Children = ReactElement<DetailValueProps>;

@@ -1,8 +1,9 @@
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
-import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
-import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+
 import { SearchCriteria } from 'apps/search/criteria';
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+import { Input } from 'components/FormInputs/Input';
+import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { EntryFieldsProps } from 'design-system/entry';
 
 export const Contact = ({ sizing, orientation }: EntryFieldsProps) => {

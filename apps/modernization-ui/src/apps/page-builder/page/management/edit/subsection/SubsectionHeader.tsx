@@ -1,16 +1,20 @@
+import { useId, useRef, useState } from 'react';
+
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { ConfirmationModal } from 'confirmation';
-import { useRef, useState } from 'react';
-import { usePageManagement } from '../../usePageManagement';
-import styles from './subsection.module.scss';
-import { staticElementTypes } from '../staticelement/EditStaticElement';
+import { useAlert } from 'libs/alert';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import { usePageManagement } from '../../usePageManagement';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
+
+import styles from './subsection.module.scss';
 
 type Props = {
     subsection: PagesSubSection;
@@ -36,6 +40,7 @@ export const SubsectionHeader = ({
     const addStaticElementModalRef = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
     const [closeOptions, setCloseOptions] = useState(false);
+    const id = useId();
 
     const handleUngroup = () => {
         SubSectionControllerService.unGroupSubSection({
@@ -95,7 +100,9 @@ export const SubsectionHeader = ({
                     Add question
                 </Button>
                 <MoreOptions
-                    header={<Icon.MoreVert role="menu" size={4} onClick={() => setCloseOptions(false)} />}
+                    header={
+                        <Icon.MoreVert aria-label="menu" role="menu" size={4} onClick={() => setCloseOptions(false)} />
+                    }
                     // eslint-disable-next-line max-len
                     className={`subsectionOptionsWithGrouped-${subsection.isGrouped ? 'grouped' : subsection.questions.length > 2 ? 'ungrouped' : ''}`}
                     close={closeOptions}
@@ -105,7 +112,7 @@ export const SubsectionHeader = ({
                         data-testid="editSubsectionOption"
                         onClick={() => closeThenAct(onEditSubsection)}
                     >
-                        <Icon.Edit size={3} /> Edit subsection
+                        <Icon.Edit aria-label="edit" size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped &&
                         page.status !== 'Published' &&
@@ -116,7 +123,7 @@ export const SubsectionHeader = ({
                                 data-testid="ungroupQuestionsOption"
                                 onClick={() => setCloseOptions(true)}
                             >
-                                <IconComponent name="group" size="s" /> Ungroup questions
+                                <IconComponent name="group" size="s" alt="group" /> Ungroup questions
                             </ModalToggleButton>
                         )}
                     {!subsection.isGrouped &&
@@ -133,13 +140,13 @@ export const SubsectionHeader = ({
                                         data-testid="groupQuestionsOption"
                                         onClick={() => closeThenAct(onGroupQuestion)}
                                     >
-                                        <IconComponent name="group" size="s" /> Group questions
+                                        <IconComponent name="group" size="s" alt="group" /> Group questions
                                     </Button>
                                 )}
                             </>
                         )}
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
-                        <Icon.Add size={3} /> Add static element
+                        <Icon.Add size={3} aria-label="add" /> Add static element
                     </ModalToggleButton>
                     <Button
                         type="button"
@@ -148,13 +155,18 @@ export const SubsectionHeader = ({
                         }}
                         className="deleteSubsectionBtn"
                     >
-                        <Icon.Delete size={3} /> Delete subsection
+                        <Icon.Delete size={3} aria-label="delete" /> Delete subsection
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (
-                    <Icon.ExpandLess className="iconExpandLess" size={4} onClick={() => onExpandedChange(false)} />
+                    <Icon.ExpandLess
+                        aria-label="collapase"
+                        className="iconExpandLess"
+                        size={4}
+                        onClick={() => onExpandedChange(false)}
+                    />
                 ) : (
-                    <Icon.ExpandMore size={4} onClick={() => onExpandedChange(true)} />
+                    <Icon.ExpandMore aria-label="expand" size={4} onClick={() => onExpandedChange(true)} />
                 )}
             </div>
             <ConfirmationModal
@@ -170,6 +182,7 @@ export const SubsectionHeader = ({
                 }}
             />
             <ModalComponent
+                id={id}
                 modalRef={addStaticElementModalRef}
                 modalHeading="Add static element"
                 modalBody={<AddStaticElement modalRef={addStaticElementModalRef} subsectionId={subsection.id} />}

@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+
 import { SearchResultPageSizeSelect } from './SearchResultPageSizeSelect';
 
 describe('when changing the number of results per page', () => {
@@ -46,6 +47,6 @@ describe('when changing the number of results per page', () => {
         const user = userEvent.setup();
         await user.selectOptions(toggle, '50');
 
-        expect(mockOnPageSizeChanged).toBeCalledWith(50);
+        expect(mockOnPageSizeChanged).toHaveBeenCalledWith(50);
     });
 });

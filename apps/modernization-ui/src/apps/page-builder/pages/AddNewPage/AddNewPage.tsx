@@ -1,5 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Button, Form, Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+
 import { CreateCondition } from 'apps/page-builder/components/CreateCondition/CreateCondition';
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
@@ -11,9 +15,8 @@ import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useConfiguration } from 'configuration';
-import { useEffect, useRef, useState } from 'react';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { useAlert } from 'libs/alert';
+
 import './AddNewPage.scss';
 import { AddNewPageFields } from './AddNewPageFields';
 
@@ -62,10 +65,8 @@ export const AddNewPage = () => {
         });
     }, [watch.eventType]);
 
-    const handleAddConditions = (conditions: number[]) => {
-        const newConditions = conditions
-            .map((id) => String(id))
-            .filter((id) => !form.getValues('conditionIds').includes(id));
+    const handleAddConditions = (conditions: string[]) => {
+        const newConditions = conditions.filter((id) => !form.getValues('conditionIds').includes(id));
         form.setValue('conditionIds', newConditions.concat(form.getValues('conditionIds')));
         conditionLookupModal.current?.toggleModal();
     };
@@ -202,13 +203,21 @@ export const AddNewPage = () => {
             </Form>
 
             <ModalComponent
+                id="create-new-condition-modal"
                 isLarge={true}
                 modalRef={createConditionModal}
                 modalHeading="Create new condition"
                 modalBody={<CreateCondition conditionCreated={handleConditionCreated} modal={createConditionModal} />}
             />
-            <Modal id="import-template-modal" isLarge={true} ref={importTemplateModal}>
+            <Modal
+                id="import-template-modal"
+                isLarge={true}
+                ref={importTemplateModal}
+                aria-labelledby="import-template-modal-header"
+                aria-describedby="import-template-modal-content"
+            >
                 <ImportTemplate
+                    id="import-template-modal"
                     onCancel={() => importTemplateModal.current?.toggleModal()}
                     onTemplateCreated={handleTemplateImported}
                 />
@@ -219,8 +228,11 @@ export const AddNewPage = () => {
                 className="add-condition-modal"
                 isLarge={true}
                 ref={conditionLookupModal}
+                aria-labelledby="condition-lookup-modal-header"
+                aria-describedby="condition-lookup-modal-content"
             >
                 <ConditionSearch
+                    id="condition-lookup-modal"
                     onCancel={() => conditionLookupModal.current?.toggleModal()}
                     onConditionSelect={handleAddConditions}
                     onCreateNew={handleCreateCondition}

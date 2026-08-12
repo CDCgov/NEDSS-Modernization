@@ -1,7 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { EthnicitySelection } from './EthnicitySelection';
 import { render } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
+import { EthnicitySelection } from './EthnicitySelection';
 
 const data: Partial<MergeCandidate> = {
     personUid: '123',

@@ -39,14 +39,14 @@ def execute(
         ) AS [PROVIDER],
        CAST(SUBSTRING(PATIENT_LOCAL_ID, 4, 8) AS INT) - 10000000 AS PATIENTID
     FROM shd
-    INNER JOIN 
-        [{nbs_rdb}].[dbo].[INVESTIGATION] i 
+    INNER JOIN
+        [{nbs_rdb}].[dbo].[INVESTIGATION] i
             ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
-    LEFT OUTER JOIN 
-        [{nbs_rdb}].[dbo].[D_PROVIDER] dp 
+    LEFT OUTER JOIN
+        [{nbs_rdb}].[dbo].[D_PROVIDER] dp
             ON shd.PHYSICIAN_KEY = dp.PROVIDER_KEY
-    LEFT OUTER JOIN 
-        [{nbs_rdb}].[dbo].[D_ORGANIZATION] o 
+    LEFT OUTER JOIN
+        [{nbs_rdb}].[dbo].[D_ORGANIZATION] o
             ON shd.ORDERING_FACILITY_KEY = o.ORGANIZATION_KEY
     WHERE
         shd.INV_LOCAL_ID IS NOT NULL

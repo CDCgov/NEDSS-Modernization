@@ -1,10 +1,13 @@
-import { EntryFieldsProps } from 'design-system/entry';
 import { Controller, useFormContext } from 'react-hook-form';
-import { IdentificationDemographic, labels } from '../identifications';
-import { validDateRule, DatePickerInput } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { SingleSelect } from 'design-system/select';
+
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { IdentificationDemographic, labels } from '../identifications';
+
 import { IdentificationOptions } from './useIdentificationOptions';
 
 type IdentificationDemographicFieldsProps = { options: IdentificationOptions } & EntryFieldsProps;

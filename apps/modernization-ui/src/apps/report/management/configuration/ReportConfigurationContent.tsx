@@ -1,9 +1,19 @@
+import { ReactNode, useId, useRef, useState } from 'react';
+
 import { ModalRef } from '@trussworks/react-uswds';
+import { ReactComponentLike } from 'prop-types';
+import { Controller, useFormState, useWatch } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
+import {
+    DirtySectionErrorMessage,
+    ValidationErrorBanner,
+    ValidationErrorSection,
+} from 'design-system/errors/ValidationError';
 import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text';
@@ -13,18 +23,12 @@ import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
 import { useUserOptions } from 'options/users';
-import { ReactComponentLike } from 'prop-types';
-import { ReactNode, useId, useRef, useState } from 'react';
-import { Controller, useFormState, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
-import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
-import { addLabelToName, EnumSelectable } from '../../utils';
+
 import { GROUP_OPTIONS, SIZING } from '../../constants.ts';
-import {
-    DirtySectionErrorMessage,
-    ValidationErrorBanner,
-    ValidationErrorSection,
-} from 'design-system/errors/ValidationError';
+import { addLabelToName, EnumSelectable } from '../../utils';
+
+import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 
 export type ConfigForm = {
     dataSourceId: Selectable;
@@ -47,7 +51,7 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
         sectionCode: data.sectionCode.value,
         filterRequests: data.filterRequests.map((fc) => ({
             id: fc.id,
-            filterCodeUid: parseInt(fc.filter.value),
+            filterCodeUid: parseInt(fc.filter!.value),
             selectType: fc.selectType?.value,
             columnUid: fc.associatedColumn?.value ? parseInt(fc.associatedColumn.value) : undefined,
             isRequired: fc.isRequired,

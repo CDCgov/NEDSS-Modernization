@@ -14,7 +14,7 @@
         "@uswds/uswds": "3.13.0",
         "classnames": "^2.5.1",
         "date-fns": "4.3.0",
-        "dompurify": "^3.4.12",
+        "dompurify": "^3.4.13",
         "globals": "^16.0.0",
         "graphql": "^16.13.0",
         "js-file-download": "^0.4.12",
@@ -27,17 +27,15 @@
         "react-dom": "^18",
         "react-hook-form": "7.54.2",
         "react-querybuilder": "^8.15.0",
-        "react-router": "7.18.0",
-        "react-select": "^5.10.2",
-        "web-vitals": "^5.2.0"
+        "react-router": "7.18.2",
+        "react-select": "^5.10.2"
     },
     "overrides": {
         "react-refresh": "^0.14.2",
         "typescript": "6.0.3",
         "prop-types": "^15.8.1",
         "nth-check": "^2.0.1 ",
-        "postcss": "^8.4.31",
-        "js-yaml": "4.3.0"
+        "postcss": "^8.4.31"
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -66,9 +64,12 @@
         "@types/react-dom": "^18",
         "@typescript-eslint/eslint-plugin": "^8.34.0",
         "@typescript-eslint/parser": "^8.34.0",
+        "@vitejs/plugin-legacy": "^8.2.3",
         "@vitejs/plugin-react": "^6.0.1",
         "@vitest/coverage-v8": "^4.1.0",
         "eslint": "9.31.0",
+        "eslint-import-resolver-typescript": "^4.4.5",
+        "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-jsdoc": "^51.4.1",
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^7.1.1",
@@ -86,6 +87,7 @@
         "vite": "^8.0.16",
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.0",
+        "vitest-fail-on-console": "^0.10.1",
         "webpack": "^5.108.3"
     },
     "scripts": {
@@ -99,10 +101,13 @@
         "test:coveragePatient": "vitest --coverage --include=src/apps/patient/**/*.{js,jsx,ts,tsx}",
         "test:coveragePageBuilder": "vitest --coverage --include=src/apps/page-builder/**/*.{js,jsx,ts,tsx}",
         "test:coverageSearch": "vitest --coverage --include=src/apps/search/**/*.{js,jsx,ts,tsx}",
+        "typecheck": "tsc -b --noEmit",
+        "typecheck:watch": "tsc -b --noEmit --watch",
         "lint": "eslint . --max-warnings=0",
-        "lint:fix": "eslint --fix",
+        "lint:fix": "eslint --fix .",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
+        "check:fix": "npm run format && npm run lint:fix && npm run typecheck",
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
         "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../modernization-api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
         "graphql:gql": "npx gqlg --schemaFilePath src/generated/schema.graphqls --destDirPath ./src/generated/gql",

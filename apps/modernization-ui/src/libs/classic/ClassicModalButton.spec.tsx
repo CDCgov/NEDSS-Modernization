@@ -1,8 +1,9 @@
-import { ClassicModalButton } from './ClassicModalButton';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import { ClassicModalButton } from './ClassicModalButton';
 import { ClassicModalProvider } from './ClassicModalContext';
 import { Status } from './useClassicModal';
-import userEvent from '@testing-library/user-event';
 
 const openMock = vi.fn();
 const resetMock = vi.fn();
@@ -14,7 +15,7 @@ const mockUseClassicModal = {
 };
 
 vi.mock('./useClassicModal', async (importOriginal) => {
-    const actual = await importOriginal();
+    const actual = await importOriginal<typeof import('./useClassicModal')>();
     return {
         ...actual,
         useClassicModal: () => mockUseClassicModal,

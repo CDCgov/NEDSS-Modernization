@@ -1,17 +1,20 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+
 import {
-    PageStaticControllerService,
     PagesQuestion,
+    PageStaticControllerService,
     UpdateDefault,
     UpdateHyperlink,
     UpdateReadOnlyComments,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useAlert } from 'libs/alert';
 import { maxLengthRule } from 'validation/entry';
+
 import { usePageManagement } from '../../usePageManagement';
+
 import { CommentsFields } from './CommentsFields';
 import { HyperlinkFields } from './HyperlinkFields';
 import styles from './staticelement.module.scss';

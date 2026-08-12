@@ -1,8 +1,11 @@
 import { FormEvent, useEffect, useState } from 'react';
+
 import { Button, ErrorMessage, Fieldset, Form, FormGroup, Label, TextInput } from '@trussworks/react-uswds';
-import { ApiError, LoginService } from 'generated';
-import './Login.scss';
 import { useNavigate } from 'react-router';
+
+import { ApiError, LoginService } from 'generated';
+
+import './Login.scss';
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);

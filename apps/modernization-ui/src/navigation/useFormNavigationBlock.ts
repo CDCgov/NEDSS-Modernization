@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
+
 import { FieldValues, UseFormReturn } from 'react-hook-form';
-import { NavigationBlockInteraction, NavigationBlockSettings, useNavigationBlock } from './useNavigationBlock';
+
 import { exists } from 'utils';
+
+import { NavigationBlockInteraction, NavigationBlockSettings, useNavigationBlock } from './useNavigationBlock';
 
 type FormNavigationBlockSettings<V extends FieldValues, C, D extends FieldValues | undefined = undefined> = {
     /** The form that controls the blocking of navigation  */

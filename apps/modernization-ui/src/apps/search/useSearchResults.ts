@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { usePagination, Status as PageStatus } from 'pagination';
-import { useSorting } from 'libs/sorting';
-import { Predicate } from 'utils';
+
 import { Filter, useFilterMaybe } from 'design-system/filter';
+import { useSorting } from 'libs/sorting';
+import { Status as PageStatus, usePagination } from 'pagination';
+import { Predicate } from 'utils';
+
+import { Term } from './terms';
 import { useSearchCriteria } from './useSearchCriteria';
 import { SearchInteractionStatus, SearchResults } from './useSearchInteraction';
-import { Term } from './terms';
 
 type Page = { number: number; size: number };
 type Filtering = { overallTotal: number; filtering: boolean };
@@ -196,7 +198,7 @@ type SearchResultSettings<C, A, R> = {
     noInputCheck?: Predicate<Term[]>;
 };
 
-const useSearchResults = <C extends object, A extends object, R extends object>({
+const useSearchResults = <C extends Record<string, unknown>, A extends object, R extends object>({
     transformer,
     resultResolver,
     termResolver,

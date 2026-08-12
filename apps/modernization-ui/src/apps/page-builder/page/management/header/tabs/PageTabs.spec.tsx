@@ -1,8 +1,11 @@
 import { render } from '@testing-library/react';
-import { PagesResponse } from 'apps/page-builder/generated';
-import { PageTabs } from './PageTabs';
-import { PageManagementProvider } from '../../usePageManagement';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse } from 'apps/page-builder/generated';
+
+import { PageManagementProvider } from '../../usePageManagement';
+
+import { PageTabs } from './PageTabs';
 
 const content: PagesResponse = {
     id: 123,

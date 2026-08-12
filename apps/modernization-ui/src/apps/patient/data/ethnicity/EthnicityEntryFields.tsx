@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { MultiSelect, SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { validateRequiredRule } from 'validation/entry';
+
 import { EthnicityEntry } from './entry';
 import { useEthnicityCodedValues } from './useEthnicityCodedValues';
 

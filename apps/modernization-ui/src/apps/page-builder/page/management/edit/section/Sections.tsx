@@ -1,10 +1,14 @@
-import { ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
-import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
 import { useRef, useState } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+
+import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
+import { useAlert } from 'libs/alert';
+
 import { ConfirmationModal } from '../../../../../../confirmation';
 import { StatusModal } from '../../status/StatusModal';
 import { usePageManagement } from '../../usePageManagement';
+
 import { Section } from './Section';
 import styles from './section.module.scss';
 

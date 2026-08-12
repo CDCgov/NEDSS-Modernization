@@ -1,12 +1,15 @@
 import { useCallback } from 'react';
+
 import classNames from 'classnames';
-import { withoutProperty, withProperty } from 'utils/object';
+
 import { Sizing } from 'design-system/field';
+import Select from 'design-system/select/single/Select';
+import { Selectable } from 'options';
+import { withoutProperty, withProperty } from 'utils/object';
+
 import { DateBetweenCriteria, DateRange } from '../dateCriteria';
 
 import styles from './date-range-field.module.scss';
-import Select from 'design-system/select/single/Select';
-import { Selectable } from 'options';
 
 type Field = keyof DateRange;
 

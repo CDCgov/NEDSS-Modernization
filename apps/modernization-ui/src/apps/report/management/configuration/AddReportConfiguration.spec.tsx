@@ -1,11 +1,14 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
-import * as generated from 'generated';
-import * as options from 'options/selectableResolver';
-import { Layout } from 'layout';
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
-import { AddReportConfiguration } from './AddReportConfiguration';
+
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+
+import * as generated from 'generated';
+import { Layout } from 'layout';
+import * as options from 'options/selectableResolver';
+
+import { AddReportConfiguration } from './AddReportConfiguration';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -161,7 +164,7 @@ describe('add report configuration page', () => {
         vi.mocked(generated.ReportControllerService.createReport).mockResolvedValue({ reportUid: 1, dataSourceUid: 2 });
         const navigate = vi.fn();
         vi.mocked(useNavigate).mockReturnValue(navigate);
-        const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+        const { getByRole, queryByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -198,6 +201,16 @@ describe('add report configuration page', () => {
         await user.click(await findByRole('button', { name: 'Add filter' }));
         // should add to table and form reset
         expect(await findByRole('cell', { name: 'My filter' })).toBeVisible();
+        expect(await findByLabelText('Filter')).toHaveValue('');
+        // add another filter partially and then change it to something that doesn't use those fields
+        await user.selectOptions(await findByLabelText('Filter'), '1');
+        await user.selectOptions(await findByLabelText('Selection type'), 'Multi-select filter');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findAllByText(/The Associated column is required./)).toHaveLength(2);
+        await user.selectOptions(await findByLabelText('Filter'), '7');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findByRole('cell', { name: 'Where Clause Builder' })).toBeVisible();
+        expect(queryByRole('cell', { name: 'Multi-select filter' })).toBeNull();
         expect(await findByLabelText('Filter')).toHaveValue('');
 
         await user.click(await findByRole('button', { name: 'Submit' }));

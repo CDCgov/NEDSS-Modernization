@@ -26,12 +26,13 @@ import gov.cdc.nbs.patient.demographic.phone.PhoneIdentifierGenerator;
 import gov.cdc.nbs.patient.demographics.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import jakarta.persistence.EntityManager;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collection;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 class PatientCreationService {
 
   private final SoundexResolver soudexResolver;
@@ -40,6 +41,7 @@ class PatientCreationService {
   private final PhoneIdentifierGenerator phoneIdentifierGenerator;
   private final PermissionScopeResolver permissionScopeResolver;
   private final EntityManager entityManager;
+  private final Clock clock;
 
   PatientCreationService(
       final SoundexResolver soudexResolver,
@@ -47,13 +49,15 @@ class PatientCreationService {
       final AddressIdentifierGenerator addressIdentifierGenerator,
       final PhoneIdentifierGenerator phoneIdentifierGenerator,
       final PermissionScopeResolver permissionScopeResolver,
-      final EntityManager entityManager) {
+      final EntityManager entityManager,
+      final Clock clock) {
     this.soudexResolver = soudexResolver;
     this.patientIdentifierGenerator = patientIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.phoneIdentifierGenerator = phoneIdentifierGenerator;
     this.permissionScopeResolver = permissionScopeResolver;
     this.entityManager = entityManager;
+    this.clock = clock;
   }
 
   @Transactional
@@ -133,7 +137,7 @@ class PatientCreationService {
     this.entityManager.persist(patient);
 
     CreatedPatient.Name legalName =
-        patient.legalName(LocalDate.now()).map(this::asName).orElse(null);
+        patient.legalName(LocalDate.now(clock)).map(this::asName).orElse(null);
 
     return new CreatedPatient(identifier.id(), identifier.shortId(), identifier.local(), legalName);
   }

@@ -1,6 +1,8 @@
-import { useConfiguration } from 'configuration';
-import { PostHogConfig } from 'posthog-js';
 import { useEffect, useState } from 'react';
+
+import { PostHogConfig } from 'posthog-js';
+
+import { useConfiguration } from 'configuration';
 
 type AnalyticsSettings = {
     enabled: boolean;

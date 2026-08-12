@@ -1,7 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { Mortality } from './Mortality';
-import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
 import { render, within } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeMortality } from 'apps/deduplication/api/model/MergeCandidate';
+
+import { Mortality } from './Mortality';
 
 const data: MergeMortality = {
     asOf: '2025-05-27T00:00:00',

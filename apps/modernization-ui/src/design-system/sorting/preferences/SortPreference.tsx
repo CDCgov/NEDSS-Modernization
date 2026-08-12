@@ -1,9 +1,10 @@
-import { Icon } from 'design-system/icon';
 import classNames from 'classnames';
-import { SortingSelectable } from './selectable';
 
-import styles from './sort-preference.module.scss';
 import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
+
+import { SortingSelectable } from './selectable';
+import styles from './sort-preference.module.scss';
 
 type Props = {
     className?: string;

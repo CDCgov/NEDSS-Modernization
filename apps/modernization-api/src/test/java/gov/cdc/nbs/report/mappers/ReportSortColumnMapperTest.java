@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -42,8 +41,8 @@ class ReportSortColumnMapperTest {
     expectedTime = LocalDateTime.now(clock);
 
     GeneratedId mockGeneratedId = mock(GeneratedId.class);
-    Mockito.lenient().when(mockGeneratedId.getId()).thenReturn(generatedId);
-    Mockito.lenient()
+    lenient().when(mockGeneratedId.getId()).thenReturn(generatedId);
+    lenient()
         .when(idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS))
         .thenReturn(mockGeneratedId);
   }

@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
-import { internalizeDate } from 'date';
-import { AddressRepeatingBlock } from './AddressRepeatingBlock';
+
 import { AddressEntry } from 'apps/patient/data';
+import { internalizeDate } from 'date';
 import { LocationOptions } from 'options/location';
+
+import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 
 const mockState = vi.fn();
 
@@ -15,6 +17,10 @@ const mockLocationOptions: LocationOptions = {
 
 vi.mock('options/location', () => ({
     useLocationOptions: () => mockLocationOptions,
+}));
+
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'test', value: '2' }] }),
 }));
 
 const onChange = vi.fn();
@@ -30,7 +36,7 @@ const Fixture = ({ values }: FixtureProps) => (
 
 describe('when entering multiple address demographics', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(
+        const { getAllByRole, findByText } = render(
             <Fixture
                 values={[
                     {
@@ -42,6 +48,8 @@ describe('when entering multiple address demographics', () => {
             />
         );
 
+        expect(await findByText('07/11/1997')).toBeVisible();
+
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
         expect(headers[1]).toHaveTextContent('Type');
@@ -52,7 +60,9 @@ describe('when entering multiple address demographics', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
+
+        expect(await findByText('No data has been added.')).toBeVisible();
 
         const dateInput = getByLabelText('Address as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));

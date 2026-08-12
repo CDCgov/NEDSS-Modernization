@@ -1,10 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { useIdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 import { Input } from 'components/FormInputs/Input';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { BasicIdentificationEntry } from '../entry';
-import { useIdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 
 const TYPE_LABEL = 'Type';
 const ID_VALUE_LABEL = 'ID value';

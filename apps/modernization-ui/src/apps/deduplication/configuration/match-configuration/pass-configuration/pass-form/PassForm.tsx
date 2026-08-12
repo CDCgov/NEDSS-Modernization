@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
+
+import { useFormContext, useFormState, useWatch } from 'react-hook-form';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { BlockingAttribute, MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { useEffect, useState } from 'react';
-import { useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { exists } from 'utils';
+
 import { ActivateToggle } from './activate-toggle/ActivateToggle';
 import { BlockingCriteria } from './blocking-criteria/BlockingCriteria';
 import { BlockingCriteriaSidePanel } from './blocking-criteria/panel/BlockingCriteriaSidePanel';

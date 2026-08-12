@@ -1,11 +1,15 @@
-import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { PaginationProvider, usePagination } from 'pagination';
 import { RefObject, useEffect, useState } from 'react';
+
+import { Modal, ModalRef } from '@trussworks/react-uswds';
+
+import { AddQuestion } from 'apps/page-builder/components/AddQuestion/AddQuestion';
+import { PaginationProvider, usePagination } from 'pagination';
+
 import { usePageManagement } from '../../../usePageManagement';
 import { QuestionSearch } from '../search/QuestionSearch';
+
 import './AddQuestionModal.scss';
 import styles from './add-question-modal.module.scss';
-import { AddQuestion } from 'apps/page-builder/components/AddQuestion/AddQuestion';
 
 type Props = {
     modal: RefObject<ModalRef>;

@@ -1,9 +1,10 @@
-import { MediaBlockBody } from './MediaBlockBody';
 import { render } from '@testing-library/react';
+
+import { MediaBlockBody } from './MediaBlockBody';
 
 describe('MediaBlockBody component tests', () => {
     it('should render media block children inside the div tag', () => {
-        const { container, getByLabelText } = render(
+        const { container } = render(
             <MediaBlockBody className="custom-class">
                 <p>Some content</p>
             </MediaBlockBody>

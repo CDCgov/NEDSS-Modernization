@@ -1,15 +1,20 @@
+import { ReactNode, useEffect, useId, useRef, useState } from 'react';
+
 import { Button, Icon, Modal, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { PagesTab, Tab } from 'apps/page-builder/generated';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
 import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import './ManageTabModal.scss';
-import { ManageTabsHeader } from './header/ManageTabsHeader';
-import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
-import styles from './manageTabs.module.scss';
 import { logErrorToUserConsole } from 'utils/logging';
+
+import './ManageTabModal.scss';
+
+import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
+
+import { ManageTabsHeader } from './header/ManageTabsHeader';
+import styles from './manageTabs.module.scss';
 
 type Props = {
     pageId: number;
@@ -22,6 +27,8 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const [message, setMessage] = useState<AlertMessage | undefined>(undefined);
     const [addEdit, setAddEdit] = useState(false);
     const [selectedForEdit, setSelectedForEdit] = useState<PagesTab | undefined>(undefined);
+    const headerId = useId();
+    const contentId = useId();
 
     const form = useForm<Tab>({
         mode: 'onBlur',
@@ -136,13 +143,21 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 modalRef={modalRef}
                 data-testid="openManageTabs"
             >
-                <Icon.Edit />
+                <Icon.Edit aria-label="edit" />
                 <h2>Manage tabs</h2>
             </ModalToggleButton>
-            <Modal id="manage-tab-modal" ref={modalRef} className="manage-tab-modal" isLarge={true} forceAction={true}>
+            <Modal
+                id="manage-tab-modal"
+                ref={modalRef}
+                className="manage-tab-modal"
+                isLarge={true}
+                forceAction={true}
+                aria-labelledby={headerId}
+                aria-describedby={contentId}
+            >
                 <div className={styles.manageTabModal}>
-                    <ManageTabsHeader showAddTab={!addEdit} onAddNew={addNew} />
-                    <div className={styles.modalBody}>
+                    <ManageTabsHeader id={headerId} showAddTab={!addEdit} onAddNew={addNew} />
+                    <div id={contentId} className={styles.modalBody}>
                         {message && (
                             <AlertBanner
                                 type={message.type}

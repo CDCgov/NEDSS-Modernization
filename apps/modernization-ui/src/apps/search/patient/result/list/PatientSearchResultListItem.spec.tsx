@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { PatientSearchResultListItem } from './PatientSearchResultListItem';
+
 import { PatientSearchResult } from 'generated/graphql/schema';
+
+import { PatientSearchResultListItem } from './PatientSearchResultListItem';
 
 const mockNow = vi.fn();
 

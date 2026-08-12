@@ -1,4 +1,8 @@
-import { Form, ModalRef, Button, ModalToggleButton } from '@trussworks/react-uswds';
+import { RefObject } from 'react';
+
+import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import {
     AddDefault,
     AddHyperlink,
@@ -7,14 +11,14 @@ import {
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { RefObject } from 'react';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry/maxLengthRule';
-import { HyperlinkFields } from './HyperlinkFields';
-import { CommentsFields } from './CommentsFields';
-import { usePageManagement } from '../../usePageManagement';
-import styles from './staticelement.module.scss';
 import { useAlert } from 'libs/alert';
+import { maxLengthRule } from 'validation/entry/maxLengthRule';
+
+import { usePageManagement } from '../../usePageManagement';
+
+import { CommentsFields } from './CommentsFields';
+import { HyperlinkFields } from './HyperlinkFields';
+import styles from './staticelement.module.scss';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },

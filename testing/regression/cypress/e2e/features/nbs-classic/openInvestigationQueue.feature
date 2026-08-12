@@ -30,7 +30,7 @@ Feature: Verify Open Investigation Queue functionality
 
   Scenario: Removing filters and sorts
     When I click on "Open Investigation" in the menu bar
-    When I click on the Remove All Filters Sorts link
+    And I click on the Remove All Filters Sorts link
     Then all filters and sorts should be cleared
 
   @skip-broken

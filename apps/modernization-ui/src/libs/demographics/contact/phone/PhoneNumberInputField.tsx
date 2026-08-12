@@ -1,5 +1,5 @@
-import { MaskedTextInputFieldProps, MaskedTextInputField } from 'design-system/input/text';
 import { onlyNumericKeys } from 'design-system/input/numeric';
+import { MaskedTextInputField, MaskedTextInputFieldProps } from 'design-system/input/text';
 
 type PhoneNumberInputFieldProps = Omit<
     MaskedTextInputFieldProps,

@@ -1,9 +1,12 @@
-import { ReactNode, act } from 'react';
+import { act, ReactNode } from 'react';
+
 import { renderHook, waitFor } from '@testing-library/react';
-import { SearchResultSettings, useSearchResults } from './useSearchResults';
-import { Page, Status as PageStatus } from 'pagination';
-import { SearchResultDisplayProvider } from './useSearchResultDisplay';
+
 import { Filter } from 'design-system/filter';
+import { Page, Status as PageStatus } from 'pagination';
+
+import { SearchResultDisplayProvider } from './useSearchResultDisplay';
+import { SearchResultSettings, useSearchResults } from './useSearchResults';
 
 let mockCriteria: Criteria | undefined = undefined;
 const mockClearCriteria = vi.fn();
@@ -245,7 +248,7 @@ describe('when searching using useSearchResults', () => {
         });
 
         await waitFor(() =>
-            expect(resultResolver).toBeCalledWith(
+            expect(resultResolver).toHaveBeenCalledWith(
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );
@@ -267,7 +270,7 @@ describe('when searching using useSearchResults', () => {
         });
 
         await waitFor(() =>
-            expect(resultResolver).toBeCalledWith(
+            expect(resultResolver).toHaveBeenCalledWith(
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );
@@ -289,7 +292,7 @@ describe('when searching using useSearchResults', () => {
         });
 
         await waitFor(() =>
-            expect(resultResolver).toBeCalledWith(
+            expect(resultResolver).toHaveBeenCalledWith(
                 expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
             )
         );

@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { Column, DataTable } from 'design-system/table';
-import { Checkbox } from 'design-system/checkbox';
+
 import { Button } from 'design-system/button';
+import { Checkbox } from 'design-system/checkbox';
+import { Column, DataTable } from 'design-system/table';
+
 import styles from './merge-data-table.module.scss';
 
 type Props<V> = {

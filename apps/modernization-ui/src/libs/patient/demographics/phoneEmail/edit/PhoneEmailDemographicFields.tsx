@@ -1,14 +1,17 @@
-import { EntryFieldsProps } from 'design-system/entry';
 import { Controller, useFormContext } from 'react-hook-form';
-import { validDateRule, DatePickerInput } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { SingleSelect } from 'design-system/select';
+
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
-import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { MaskedTextInputField } from 'design-system/input/text';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { SingleSelect } from 'design-system/select';
 import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
 import { Verification } from 'libs/verification';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { labels, PhoneEmailDemographic } from '../phoneEmails';
+
 import { PhoneEmailOptions } from './usePhoneEmailOptions';
 
 type PhoneEmailDemographicFieldsProps = { options: PhoneEmailOptions } & EntryFieldsProps;

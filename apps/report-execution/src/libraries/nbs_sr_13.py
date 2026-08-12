@@ -22,13 +22,13 @@ def execute(
     nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
 
     sql_query = f"""
-    SELECT 
+    SELECT
         SUM(group_case_cnt) as "Case Count",
         phc_code_short_desc as "Condition",
         cvg.code_short_desc_txt as "Case Status"
     FROM ({subset_query}) phc
-    LEFT JOIN {nbs_srt}.dbo.code_value_general cvg 
-        ON phc.case_class_cd = cvg.code 
+    LEFT JOIN {nbs_srt}.dbo.code_value_general cvg
+        ON phc.case_class_cd = cvg.code
         AND cvg.code_set_nm = 'PHC_CLASS'
     WHERE cvg.code_short_desc_txt IS NOT NULL
     GROUP BY phc_code_short_desc, cvg.code_short_desc_txt

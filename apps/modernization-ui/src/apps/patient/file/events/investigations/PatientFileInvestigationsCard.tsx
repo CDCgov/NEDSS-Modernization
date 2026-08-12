@@ -1,22 +1,24 @@
 import { Suspense } from 'react';
+
 import { Await } from 'react-router';
-import { LoadingOverlay } from 'libs/loading';
-import { MemoizedSupplier } from 'libs/supplying';
+
+import { Shown } from 'conditional-render';
+import { LinkButton } from 'design-system/button';
+import { TableCard, TableCardProps } from 'design-system/card';
+import { Checkbox } from 'design-system/checkbox';
+import { Hint } from 'design-system/hint';
 import { Column } from 'design-system/table';
 import { ColumnPreference } from 'design-system/table/preferences';
-import { TableCard, TableCardProps } from 'design-system/card';
-import { permissions, Permitted } from 'libs/permission';
-import { LinkButton } from 'design-system/button';
-import { Checkbox } from 'design-system/checkbox';
-import { displayNotificationStatus, displayStatus, displayInvestigator } from 'libs/events/investigations';
-import { PatientFileInvestigation } from './investigation';
-import { useCompareInvestigation } from './useCompareInvestigation';
-import { either, not } from 'utils/predicate';
-import { Shown } from 'conditional-render';
-import { Hint } from 'design-system/hint';
 import { LabeledValue } from 'design-system/value';
+import { displayInvestigator, displayNotificationStatus, displayStatus } from 'libs/events/investigations';
+import { LoadingOverlay } from 'libs/loading';
+import { permissions, Permitted } from 'libs/permission';
+import { MemoizedSupplier } from 'libs/supplying';
+import { either, not } from 'utils/predicate';
 
+import { PatientFileInvestigation } from './investigation';
 import styles from './investigations.module.scss';
+import { useCompareInvestigation } from './useCompareInvestigation';
 
 const SELECTION = { id: 'selection', label: 'Select to compare' };
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };

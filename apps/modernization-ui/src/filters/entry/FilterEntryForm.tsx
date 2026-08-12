@@ -1,14 +1,17 @@
 import { useMemo } from 'react';
-import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import { Button } from '@trussworks/react-uswds';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Property } from 'filters/properties';
-import { FilterEntry } from './FilterEntry';
-import { DataRangeEntryForm } from './DataRangeEntryForm';
-import { PartialValueEntryForm } from './PartialValueEntryForm';
-import { ExactValueEntryForm } from './ExactValueEntryForm';
-import styles from './filter-entry-form.module.scss';
 import { operators } from 'filters/selectables';
+
+import { DataRangeEntryForm } from './DataRangeEntryForm';
+import { ExactValueEntryForm } from './ExactValueEntryForm';
+import { FilterEntry } from './FilterEntry';
+import { PartialValueEntryForm } from './PartialValueEntryForm';
+import styles from './filter-entry-form.module.scss';
 
 type FilterEditViewProps = {
     properties: Property[];

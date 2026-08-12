@@ -16,9 +16,8 @@
   directs incoming requests to the appropriate backend services (such as Modernization UI, Modernization API, and
   Question bank), enabling seamless integration between both the modernized and pre-existing frontend, and multiple
   backend services.
-- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the
-- management and execution of various reports, both standard and custom. To be used as the eventual replacement for
-- SAS-based reports.
+- [Report Execution API](apps/report-execution/README.md) - A Python-based FastAPI server that facilitates the management
+  and execution of various reports, both standard and custom. To be used as the eventual replacement for SAS-based reports.
 
 ### Libraries
 
@@ -145,6 +144,12 @@ docker compose down
 # OR to also reset DB volume
 docker compose down -v
 ```
+
+#### Tracing
+The `modernization-api` backend is also set up with [Micrometer Tracing](https://docs.micrometer.io/tracing/reference/), specifically for [OpenTelemetry](https://opentelemetry.io/) with [OTLP](https://opentelemetry.io/docs/specs/otlp/).  It's enabled by default in our local Docker environments (see [application-development.yml](apps/modernization-api/src/main/resources/application-development.yml)), with [Jaegar](https://www.jaegertracing.io/) specified as the tracing backend.
+
+To view traces within the Jaeger UI during local development, navigate to http://localhost:16686.
+
 
 #### Running NBS 6 local containers instead
 

@@ -1,18 +1,22 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+
 import { PagesQuestion, PagesSubSection, PagesTab } from 'apps/page-builder/generated';
 import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';
-import { useEffect, useRef, useState } from 'react';
+import { useAlert } from 'libs/alert';
+
 import { usePageManagement } from '../../usePageManagement';
 import { AddQuestionModal } from '../add-question/modal/AddQuestionModal';
 import { ChangeValuesetModal } from '../change-valueset/ChangeValuesetModal';
 import { EditQuestionModal } from '../edit-question/EditQuestionModal';
 import { EditStaticElementModal } from '../edit-staticelement/EditStaticElementModal';
 import { EditValuesetModal } from '../edit-valueset/EditValuesetModal';
+import { GroupQuestionModal } from '../question/GroupQuestion/GroupQuestionModal';
 import { Sections } from '../section/Sections';
+
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
-import { GroupQuestionModal } from '../question/GroupQuestion/GroupQuestionModal';
 
 type Props = {
     tab: PagesTab;

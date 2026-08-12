@@ -1,5 +1,7 @@
 import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { Section } from '../shared/section/Section';
+
 import { Investigation } from './investigation/Investigation';
 
 type Props = {

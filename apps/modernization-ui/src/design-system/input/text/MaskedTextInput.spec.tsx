@@ -1,5 +1,6 @@
-import userEvent from '@testing-library/user-event';
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { MaskedTextInput, MaskedTextInputProps } from './MaskedTextInput';
 
 const Fixture = ({

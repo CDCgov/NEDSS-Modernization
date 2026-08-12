@@ -1,9 +1,10 @@
 import { Link } from 'react-router';
+
+import { SortingSelectable } from 'design-system/sorting/preferences';
+import { Direction } from 'libs/sorting';
 import { displayName } from 'name';
 import { asSelectableGender } from 'options/gender';
 import { Mapping, Maybe } from 'utils';
-import { SortingSelectable } from 'design-system/sorting/preferences';
-import { Direction } from 'libs/sorting';
 
 type BasicPatient = {
     birthTime?: string | null;

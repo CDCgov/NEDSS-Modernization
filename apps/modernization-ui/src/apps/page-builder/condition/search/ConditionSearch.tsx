@@ -1,20 +1,25 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { ConditionSort, useConditionSearch } from 'apps/page-builder/condition/search/useConditionSearch';
 import { Search } from 'components/Search';
 import { PaginationProvider, Status, usePagination } from 'pagination';
-import { useEffect, useState } from 'react';
+
 import { ConditionTable } from './ConditionTable';
 import styles from './condition-search.module.scss';
 
 type Props = {
-    onConditionSelect: (ids: number[]) => void;
+    id: string;
+    onConditionSelect: (ids: string[]) => void;
     onCancel: () => void;
     onCreateNew: () => void;
 };
-export const ConditionSearch = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
+export const ConditionSearch = ({ id, onConditionSelect, onCancel, onCreateNew }: Props) => {
     return (
         <PaginationProvider>
             <ConditionSearchContent
+                id={id}
                 onCreateNew={onCreateNew}
                 onCancel={onCancel}
                 onConditionSelect={onConditionSelect}
@@ -23,11 +28,11 @@ export const ConditionSearch = ({ onConditionSelect, onCancel, onCreateNew }: Pr
     );
 };
 
-const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Props) => {
+const ConditionSearchContent = ({ id, onConditionSelect, onCancel, onCreateNew }: Props) => {
     const { search, response, isLoading, keyword, reset } = useConditionSearch();
     const { page, ready, request } = usePagination();
     const [sort, setSort] = useState<ConditionSort | undefined>();
-    const [selected, setSelected] = useState<number[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
     const [resetTable, setResetTable] = useState<boolean>(false);
 
     useEffect(() => {
@@ -81,11 +86,11 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
 
     return (
         <div className={styles.conditionSearch}>
-            <div className={styles.header}>
+            <div id={`${id}-header`} className={styles.header}>
                 <h2>Search and add condition(s)</h2>
-                <Icon.Close size={4} onClick={handleCancel} data-testid="closeSearchModalBtn" />
+                <Icon.Close aria-label="close" size={4} onClick={handleCancel} data-testid="closeSearchModalBtn" />
             </div>
-            <div className={styles.content}>
+            <div id={`${id}-content`} className={styles.content}>
                 <h3>You can search for existing condition(s) or create a new one.</h3>
                 <div className={styles.controls}>
                     {resetTable === false && (

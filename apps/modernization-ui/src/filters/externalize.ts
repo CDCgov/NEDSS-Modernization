@@ -1,17 +1,18 @@
+import { FilterJSON } from 'apps/page-builder/generated';
 import { externalizeDate } from 'date';
+
 import {
     DatePeriodFilter,
     DateRange,
     DateRangeFilter,
-    Filter,
     ExactValue,
     ExactValueFilter,
+    Filter,
     PartialValue,
     PartialValueFilter,
     Value,
 } from './filter';
 import { DatePeriodOperator, ExactValueOperator, PartialValueOperator } from './operators';
-import { FilterJSON } from 'apps/page-builder/generated';
 
 type Base = {
     property: string;

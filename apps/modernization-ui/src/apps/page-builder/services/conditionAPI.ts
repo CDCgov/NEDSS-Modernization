@@ -21,7 +21,6 @@ export const findConditions = async (page: number, size: number, sort: string) =
 };
 
 export const searchConditions = async (
-    token: string,
     page: number,
     size: number,
     sort: string,

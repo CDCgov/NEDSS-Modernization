@@ -172,7 +172,7 @@ class TestIntegrationExecuteReport:
                 trx.execute("""
                     INSERT INTO NBS_ODSE..NBS_configuration (
                         config_key, config_value, default_value, version_ctrl_nbr,
-                        add_user_id, add_time, last_chg_user_id, last_chg_time, 
+                        add_user_id, add_time, last_chg_user_id, last_chg_time,
                         status_cd, status_time
                     ) VALUES ('REPORT_MAX_ROW_LIMIT_RUN', '10000', '10000', 1, 1,
                               GETDATE(), 1, GETDATE(), 'A', GETDATE())

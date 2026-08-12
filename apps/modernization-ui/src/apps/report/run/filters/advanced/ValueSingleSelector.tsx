@@ -1,8 +1,10 @@
 import { useId } from 'react';
+
 import { FullOption, ValueSelectorProps } from 'react-querybuilder';
+
+import { SIZING } from 'apps/report/constants';
 import { SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
-import { SIZING } from 'apps/report/constants';
 
 const ValueSingleSelector = (props: ValueSelectorProps<FullOption>) => {
     const id = useId();

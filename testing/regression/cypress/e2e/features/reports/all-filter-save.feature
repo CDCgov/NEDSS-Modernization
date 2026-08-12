@@ -8,29 +8,29 @@ Feature: View report configuration
         And I click the "Create button" button
         Then I should see the "Add" configuration page
         # == Data source selecting ==
-        Then The "Confirm data source" "button" should be disabled
+        And The "Confirm data source" "button" should be disabled
         When I select value "nbs_ods.PHCDemographic (Disease Counts by County)" in the "Data source" field
-        When I click the "Confirm data source" button
+        And I click the "Confirm data source" button
         Then I should see a modal labelled "Confirm data source: nbs_ods.PHCDemographic (Disease Counts by County)"
         When I click the "Cancel" button
-        When I select value "nbs_ods.PHCDemographic (Line List of Diseases with NBS Security)" in the "Data source" field
-        When I click the "Confirm data source" button
+        And I select value "nbs_ods.PHCDemographic (Line List of Diseases with NBS Security)" in the "Data source" field
+        And I click the "Confirm data source" button
         Then I should see a modal labelled "Confirm data source: nbs_ods.PHCDemographic (Line List of Diseases with NBS Security)"
         When I click the "Confirm" button
         Then The "Data source" "combobox" should be disabled
         # == General fields ==
         When I type "All filter test" into the "Name" field
-        When I type "All filter test is the best report" into the "Description" field
-        When I select value "System" in the "Owner" field
-        When I select radio "Public" in the "Group" field
-        When I select value "Default Report Section" in the "Section name" field
-        When I select value "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" field
+        And I type "All filter test is the best report" into the "Description" field
+        And I select value "System" in the "Owner" field
+        And I select radio "Public" in the "Group" field
+        And I select value "Default Report Section" in the "Section name" field
+        And I select value "nbs_custom (Recommended default. Basic tabular report. Executes the query described by the data source and filters and returns the table)" in the "Report execution library" field
         # == Filters ==
-        When I add all filters
+        And I add all filters
         Then I should see 20 available filters
         When I click the "Submit" button
         Then I should see the "View" configuration page
-        And I navigate to list reports
+        When I navigate to list reports
         And I click on the "Expand Subsections" link
         And I click on the "Expand Subsections" link
         And I click the "All filter test" report
@@ -48,7 +48,7 @@ Feature: View report configuration
         And I should see "Private" radio selected in the "Group" field
         And I click the "Save as new" button
         Then I am redirected to "/nbs/ManageReports.do"
-        And I click on the "Expand Subsections" link
+        When I click on the "Expand Subsections" link
         And I click the "Test save as all filter report" report
         Then All filters should be filled out with 1
 
@@ -72,7 +72,7 @@ Feature: View report configuration
         And I should see "Private" radio selected in the "Group" field
         And I click the "Save as new" button
         Then I am redirected to "/nbs/ManageReports.do"
-        And I click on the "Expand Subsections" link
+        When I click on the "Expand Subsections" link
         And I click the "Test include nulls report" report
         Then I should see a "heading" labelled "Test include nulls report"
         And All include nulls checkboxes should be checked
