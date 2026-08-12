@@ -42,14 +42,8 @@ const NumberRangeField = ({
     helperText,
     error,
 }: NumberRangeFieldProps) => {
-    const handleFieldOnChange = (v: number | null, type: 'to' | 'from') => {
-        if (type === 'to') {
-            onChange({ between: { from: value.between.from, to: v } });
-        }
-
-        if (type === 'from') {
-            onChange({ between: { from: v, to: value.between.to } });
-        }
+    const handleFieldOnChange = (v: number | null, field: keyof NumberRange) => {
+        onChange({ between: { ...value.between, [field]: v } });
     };
 
     return (

@@ -44,8 +44,7 @@ const YearRangeField = ({
 
     const handleFieldOnChange = (field: Field) => (changed: Selectable | null) => {
         const val = changed?.value ?? null;
-        const between = { ...value.between, [field]: val };
-        onChange({ between });
+        onChange({ between: { ...value.between, [field]: val } });
     };
 
     return (

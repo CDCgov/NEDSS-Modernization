@@ -21,8 +21,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
     const criteria = value.equals;
 
     const handleFieldOnChange = (field: Field) => (value: number | null) => {
-        const equals = { ...criteria, [field]: value };
-        onChange({ equals });
+        onChange({ equals: { ...criteria, [field]: value } });
     };
 
     return (

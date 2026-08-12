@@ -48,8 +48,7 @@ const MonthYearRangeField = ({
     const toValue = parseDateString(value.between.to);
 
     const handleFieldOnChange = (field: Field) => (changed: MonthYearEqualsCriteria) => {
-        const between = { ...value.between, [field]: toDateString(changed) };
-        onChange({ between });
+        onChange({ between: { ...value.between, [field]: toDateString(changed) } });
     };
 
     return (

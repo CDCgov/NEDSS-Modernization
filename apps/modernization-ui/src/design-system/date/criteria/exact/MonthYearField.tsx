@@ -49,8 +49,7 @@ const MonthYearField = ({
 
     const handleFieldOnChange = (field: Field) => (changed: Selectable | null) => {
         const val = changed?.value ?? null;
-        const equals = { ...value.equals, [field]: val };
-        onChange({ equals });
+        onChange({ equals: { ...value.equals, [field]: val } });
     };
 
     return (
