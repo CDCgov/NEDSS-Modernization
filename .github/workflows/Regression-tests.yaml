@@ -37,6 +37,7 @@ jobs:
         uses: cypress-io/github-action@v7
         with:
           runTests: false
+          working-directory: testing/regression/
 
       - name: Lint
         working-directory: testing/regression/
