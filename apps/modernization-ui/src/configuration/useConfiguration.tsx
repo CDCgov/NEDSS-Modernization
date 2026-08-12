@@ -1,8 +1,11 @@
 import { createContext, ReactNode, useContext } from 'react';
+
 import merge from 'lodash.merge';
+
+import { logWarnToUserConsole } from 'utils/logging';
+
 import { Configuration } from './configuration';
 import { defaultConfiguration } from './defaults';
-import { logWarnToUserConsole } from 'utils/logging';
 
 const initial = defaultConfiguration;
 const ConfigurationContext = createContext<Configuration>(initial);
