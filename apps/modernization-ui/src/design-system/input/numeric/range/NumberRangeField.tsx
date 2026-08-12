@@ -15,7 +15,7 @@ export type NumberBetweenCriteria = {
     between: NumberRange;
 };
 
-const EMPTY_NUMBER_BETWEEN_CRITERIA = { between: { from: null, to: null } };
+const initialNumberBetweenCriteria = { between: { from: null, to: null } };
 
 export type NumberRangeFieldProps = {
     id: string;
@@ -97,4 +97,4 @@ const NumberRangeField = ({
     );
 };
 
-export { NumberRangeField, EMPTY_NUMBER_BETWEEN_CRITERIA };
+export { NumberRangeField, initialNumberBetweenCriteria };

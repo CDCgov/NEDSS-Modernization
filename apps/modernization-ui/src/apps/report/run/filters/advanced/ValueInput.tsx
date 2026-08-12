@@ -9,7 +9,7 @@ import { DateBetweenCriteria } from 'design-system/date/criteria';
 import { DatePickerRange } from 'design-system/date/range/DatePickerRange.tsx';
 import { NumericInput, NumericRangeInput, TextInputField } from 'design-system/input';
 import {
-    EMPTY_NUMBER_BETWEEN_CRITERIA,
+    initialNumberBetweenCriteria,
     NumberBetweenCriteria,
 } from 'design-system/input/numeric/range/NumberRangeField.tsx';
 
@@ -43,7 +43,7 @@ const getConvertedNumberRange = (value: unknown): NumberBetweenCriteria => {
             .map((v) => (Number.isNaN(v) ? null : v));
         return { between: { from, to } };
     }
-    return EMPTY_NUMBER_BETWEEN_CRITERIA;
+    return initialNumberBetweenCriteria;
 };
 
 const ValueInput = (props: ValueEditorProps<ValueSetMetadata & FullField & FullOperator>) => {

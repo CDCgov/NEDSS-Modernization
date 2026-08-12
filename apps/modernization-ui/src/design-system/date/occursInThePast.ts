@@ -14,7 +14,7 @@ const isFullDateInThePast = (name: string, date: Date) => {
 };
 
 const isFullDate = (value: DateEntry): value is FullDate =>
-    value.month !== undefined && value.day !== undefined && value.year !== undefined;
+    value.month !== null && value.day !== null && value.year !== null;
 
 const resolveDate = (value: FullDate) => new Date(value.year, value.month - 1, value.day);
 

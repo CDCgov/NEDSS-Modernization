@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 
 import { NumericInput, NumericRangeInput } from './NumericInput';
-import { EMPTY_NUMBER_BETWEEN_CRITERIA } from './range/NumberRangeField';
+import { initialNumberBetweenCriteria } from './range/NumberRangeField';
 
 describe('when entering numeric values for a field', () => {
     it('should render with no accessibility violations on single input', async () => {
@@ -19,7 +19,7 @@ describe('when entering numeric values for a field', () => {
                 id="testing-date-range-accessibility"
                 label="Numeric Range Input test"
                 onChange={vi.fn()}
-                value={EMPTY_NUMBER_BETWEEN_CRITERIA}
+                value={initialNumberBetweenCriteria}
             />
         );
 

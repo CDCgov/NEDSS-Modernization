@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { EMPTY_NUMBER_BETWEEN_CRITERIA, NumberBetweenCriteria, NumberRangeField } from './NumberRangeField.tsx';
+import { initialNumberBetweenCriteria, NumberBetweenCriteria, NumberRangeField } from './NumberRangeField.tsx';
 
 const Fixture = ({
     value,
@@ -12,7 +12,7 @@ const Fixture = ({
     value?: NumberBetweenCriteria;
     onChange?: (v: NumberBetweenCriteria) => void;
 }) => {
-    const [val, setVal] = useState<NumberBetweenCriteria>(value ?? EMPTY_NUMBER_BETWEEN_CRITERIA);
+    const [val, setVal] = useState<NumberBetweenCriteria>(value ?? initialNumberBetweenCriteria);
 
     const handleChange = (v: NumberBetweenCriteria) => {
         setVal(v);
