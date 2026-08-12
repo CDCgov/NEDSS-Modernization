@@ -1,5 +1,6 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import PatientProfilePage from "cypress/e2e/pages/patientProfile.page";
+import eventsTabPage from "cypress/e2e/pages/eventsTab.page";
 
 Then("I explor the patient profile", () => {
     PatientProfilePage.navigatePatinet()
@@ -31,4 +32,56 @@ Then("I add invstigation - Amebiassis of patient", () => {
 
 Then("I add invstigation - Anaplasma phagocytophilum of patient", () => {
     PatientProfilePage.addPatientInvestigations_AnaplasmaPhagocytophilum()
+});
+
+When("user clicks on the {string} button within the Events tab", (buttonValue) => {
+    eventsTabPage.clickAddButton(buttonValue);
+});
+
+When("I check the current count of {string} in the Events tab", (reportType) => {
+    eventsTabPage.getReportCount(reportType);
+});
+
+Then("the {string} count should increase by 1 in the Events tab", (reportType) => {
+    eventsTabPage.verifyReportCountIncreased(reportType);
+});
+
+Then("the {string} count should remain the same in the Events tab", (reportType) => {
+    eventsTabPage.verifyReportCountUnchanged(reportType);
+});
+
+When("I click on the first morbidity report link in the Events tab and store its Event ID", () => {
+    eventsTabPage.clickFirstMorbidityReportLinkStoreEventID();
+});
+
+When("I count the number of treatments in the first morbidity report", () => {
+    eventsTabPage.saveInitialTreatmentCount();
+});
+
+Then("the treatment count should increase by 1 in the stored morbidity report", () => {
+    eventsTabPage.verifyTreatmentCountIncreased();
+});
+
+Then("the saved morbidity report should have jurisdiction {string}", (expectedJurisdiction) => {
+    eventsTabPage.verifySavedMorbidityReportJurisdiction(expectedJurisdiction);
+});
+
+Then("the saved morbidity report should be associated with an investigation", () => {
+    eventsTabPage.verifyStoredMorbidityReportHasAssociation();
+});
+
+When("I click on the stored Investigation ID in the Events tab", () => {
+    eventsTabPage.clickStoredInvestigationId();
+});
+
+When("I click on the first unassociated morbidity report link in the Events tab and store its Event ID", () => {
+    eventsTabPage.clickFirstUnassociatedMorbidityReport();
+});
+
+Then("the stored morbidity report ID should not appear in the Documents Requiring Review section", () => {
+    PatientProfilePage.verifyMorbidityEventIdNotInDocumentsRequiringReview();
+});
+
+Then("the stored morbidity report ID should not appear in the Morbidity Reports section of the Events tab", () => {
+    eventsTabPage.verifyMorbidityEventIdNotInMorbidityReports();
 });

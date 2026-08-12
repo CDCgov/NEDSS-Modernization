@@ -257,6 +257,58 @@ class PatientProfilePage {
     cy.get("img[name='INV107_button']").type('Cobb County');
     cy.get("#SubmitTop").click();
   }
+
+  verifyMorbidityEventIdNotInDocumentsRequiringReview() {
+    // Wait for page to load
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    const eventId = Cypress.env('morbidityEventId');
+    
+    // Check if the Documents Requiring Review section exists
+    cy.get('body').then($body => {
+      const $table = $body.find('#documents-requiring-review-table');
+      
+      if ($table.length === 0) {
+        // Table doesn't exist - pass
+        return;
+      }
+      
+      // Check if the table is visible or hidden
+      const isVisible = $table.is(':visible');
+      
+      if (!isVisible) {
+
+        const tableText = $table.text().trim();
+        
+        if (tableText === '') {
+          // Table is empty - pass
+          return;
+        }
+        
+        // Table has data, check for the event ID
+        expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
+          .to.not.include(eventId);
+        return;
+      }
+      
+      // Table is visible, check its content
+      const tableText = $table.text().trim();
+      
+      if (tableText === '' || tableText.includes('No data has been added')) {
+        // Table is empty - pass
+        cy.log('Documents Requiring Review table is empty - no documents to review');
+        cy.log('Verified morbidity event ID is NOT in Documents Requiring Review: ' + eventId);
+        return;
+      }
+      
+      // Table has data, check for the event ID
+      expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
+        .to.not.include(eventId);
+
+    });
+  }
+
 }
 
 export default new PatientProfilePage();
