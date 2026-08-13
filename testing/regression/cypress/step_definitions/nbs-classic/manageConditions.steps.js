@@ -1,4 +1,4 @@
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicManageConditionsPage from "@pages/nbs-classic/manageConditions.page";
 
 Then("Navigate to Condition Library", () => {
