@@ -17,7 +17,7 @@ Then(
 
 Then(
   "user is able to click the {string} link to return to Patient Profile Summary page",
-  (string) => {
+  () => {
     summaryTabPage.returnToSummary();
   }
 );
@@ -26,7 +26,7 @@ Then(
   "user clicks the {string} link, the user is returned to Patient profile summary page",
   (string) => {
     cy.contains("a", string).click();
-    cy.wait(1000);
+    // cy.wait(1000);
   }
 );
 
