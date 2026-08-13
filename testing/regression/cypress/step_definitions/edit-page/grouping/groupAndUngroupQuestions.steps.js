@@ -125,10 +125,6 @@ Then("Data mart repeat number as 0", () => {
     groupAndUngroupQuestions.updateDatamartValue(0);
 });
 
-Then("verify below field in Repeating block section {string} and {string}", (text, text1) => {
-    groupAndUngroupQuestions.shouldSee(text);
-});
-
 Then("user enter percentage for each question eg 50 for each when 2 questions to make {string}", () => {
     groupAndUngroupQuestions.fillTableColumnWidths();
 });

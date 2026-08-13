@@ -1,11 +1,11 @@
 @mixin expanded($property) {
-    transition-duration: 0.3s;
+    transition-duration: 0.1s;
     transition-property: #{$property};
     transition-timing-function: ease-out;
 }
 
 @mixin collapsed($property) {
-    transition-duration: 0.3s;
+    transition-duration: 0.1s;
     transition-property: #{$property};
     transition-timing-function: ease-in;
 }
