@@ -24,11 +24,6 @@ jobs:
         with:
           node-version: 22.x
 
-      # Check graphql types are up to date (definition and usage)
-      - name: Check Graphql generated types are still correct
-        working-directory: apps/modernization-ui
-        run: npm ci && npm run generate && git diff --exit-code && npm run lint && npm run typecheck
-
       - name: Install dependencies
         uses: cypress-io/github-action@v7
         with:
@@ -42,6 +37,12 @@ jobs:
       - name: Run containers
         working-directory: ./cdc-sandbox
         run: ./build_all.sh
+
+      # Check graphql types are up to date (definition and usage)
+      # needs to be run after containers are running
+      - name: Check Graphql generated types are still correct
+        working-directory: apps/modernization-ui
+        run: npm ci && npm run generate && git diff --exit-code && npm run lint && npm run typecheck
 
       - name: Cypress run
         uses: cypress-io/github-action@v7
