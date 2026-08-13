@@ -18,6 +18,10 @@ Then("Click on Add New button in patient Search pane", () => {
     classicHomePage.clickAddNewBtnInPatientSearchPane()
 });
 
+Then("Click on Save in patient Search pane", () => {
+    classicHomePage.clickSaveBtnInPatientSearchPane()
+});
+
 Then("Click on Add new lab report in patient Search pane", () => {
     classicHomePage.clickAddNewLabReportBtnInPatientSearchPane()
 });

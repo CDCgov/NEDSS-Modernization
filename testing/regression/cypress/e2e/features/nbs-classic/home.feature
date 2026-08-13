@@ -8,14 +8,15 @@ Feature: Classic NBS - User can view data in NBS Home
     And Enter Last Name text box input "Smith"
     Then Click on Search in Patient Search pane
 
-  @skip-broken
+#  @skip-broken
   Scenario: Add new lab report
-    Then Navigate to Patient Search pane
+    When Navigate to Patient Search pane
     And Enter First Name text box input "A"
-    Then Click on Search in Patient Search pane
+    And Click on Search in Patient Search pane
     And Click on Add New button in patient Search pane
-    Then Click on Add new lab report in patient Search pane
-    And Verify Add Lab Report page displayed
+    And Click on Save in patient Search pane
+    And Click on Add new lab report in patient Search pane
+    Then Verify Add Lab Report page displayed
 
   Scenario Outline: Display selected home page queue
     Then Click each of the following "<Default Queues>"
