@@ -142,7 +142,7 @@ class MorbidityReportPage {
   }
 
   clickAndVerifyPrint() {
-    let printURL = '/nbs/LoadViewObservationMorb1.do?ContextAction=PrintPage';
+    const printURL = '/nbs/LoadViewObservationMorb1.do?ContextAction=PrintPage';
     cy.window().then(win => {
       cy.stub(win, 'open').as('open')
     });

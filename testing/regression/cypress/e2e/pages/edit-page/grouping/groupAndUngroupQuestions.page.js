@@ -123,10 +123,10 @@ class GroupAndUngroupQuestions {
 
     updateAppearsInTableValueToNo() {
         cy.get('[name="batches.0.width"]').eq(0).invoke('val').then(value => {
-            let columnWidth = value;
+            const columnWidth = value;
             cy.get('[name="batches.0.appearsInTable"]').eq(0).select('N');
             cy.get('[name="batches.1.width"]').eq(0).invoke('val').then(value2 => {
-                let updatedWidth = parseInt(value2) + parseInt(columnWidth)
+                const updatedWidth = parseInt(value2) + parseInt(columnWidth)
                 cy.get('[name="batches.1.width"]').eq(0).clear().type(updatedWidth);
             });
         });

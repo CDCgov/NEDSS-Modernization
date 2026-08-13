@@ -8,6 +8,9 @@ const baseRules = {
   'max-len': ['warn', { code: 120 }],
   'dot-notation': 'error',
   eqeqeq: 'error',
+  'no-var': 'error',
+  'prefer-const': 'error',
+  'object-shorthand': 'error',
 };
 
 
