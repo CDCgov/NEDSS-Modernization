@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicManageTemplatePage from "@pages/nbs-classic/manageTemplates.page";
 
 Then("Navigate to Template Library", () => {

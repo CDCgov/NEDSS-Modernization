@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import addPatientPage from "cypress/e2e/pages/add-patient.page";
 
 Then("I create a new patient", () => {

@@ -43,8 +43,6 @@ module.exports = defineConfig({
     setupNodeEvents,
     specPattern: "./cypress/**/**/*.feature",
     baseUrl: "http://localhost:8000/",
-    //baseUrl: "https://app.test.nbspreview.com/",
-    //baseUrl: "https://app.int1.nbspreview.com/",
     chromeWebSecurity: false,
     video: false,
     watchForFileChanges: false,
