@@ -118,7 +118,7 @@ again to apply the changes.
 
 ## Verifying container image provenance
 
-For information about verifying container image provenance, see Container Image Verification.
+For information about verifying container image provenance, see [Container Image Verification](documentation/Container-Image-Verification.md).
 
 ### Running everything inside docker
 
