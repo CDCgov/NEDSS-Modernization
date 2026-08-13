@@ -15,7 +15,7 @@ class LoginPage {
       if (body.find("input[id='id_UserName']").length > 0) {
         cy.intercept("POST", "/graphql").as("loginRequest");
         cy.get("#id_UserName").type(username);
-        if (pass != "") {
+        if (pass !== "") {
           cy.get("#id_Password").type(pass);
         }
         cy.get("#id_Submit_bottom_ToolbarButtonGraphic").click();
@@ -24,7 +24,7 @@ class LoginPage {
       } else {
         cy.intercept("POST", "/graphql").as("loginRequest");
         cy.get("#username").type(username);
-        if (pass != "") {
+        if (pass !== "") {
           cy.get("#password").type(pass);
         }
         cy.get("#kc-login").click();
@@ -40,14 +40,14 @@ class LoginPage {
        if (body.find("input[id='id_UserName']").length > 0) {
          cy.intercept("POST", "/graphql").as("loginRequest");
          cy.get("#id_UserName").type(user);
-         if (pass != "") {
+         if (pass !== "") {
            cy.get("#id_Password").type(pass);
          }
          cy.get("#id_Submit_bottom_ToolbarButtonGraphic").click();
        } else {
          cy.intercept("POST", "/graphql").as("loginRequest");
          cy.get("#username").type(user);
-         if (pass != "") {
+         if (pass !== "") {
            cy.get("#password").type(pass);
          }
          cy.get("#kc-login").click();
