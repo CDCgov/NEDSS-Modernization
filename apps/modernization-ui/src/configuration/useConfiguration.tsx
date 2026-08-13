@@ -24,7 +24,7 @@ const ConfigurationProvider = ({ configuration, children }: ConfigurationProvide
 const useConfiguration = (): Configuration => {
     const config = useContext(ConfigurationContext);
 
-    if (config === initial) {
+    if (config === undefined) {
         logWarnToUserConsole(
             'useConfiguration used without a ConfigurationProvider. Only the default configuration will be provided.'
         );
