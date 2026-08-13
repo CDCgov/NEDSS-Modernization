@@ -19,10 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Run containers
-        working-directory: ./cdc-sandbox
-        run: ./build_all.sh
-
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
@@ -42,6 +38,10 @@ jobs:
       - name: Lint
         working-directory: testing/regression/
         run: npm run lint
+
+      - name: Run containers
+        working-directory: ./cdc-sandbox
+        run: ./build_all.sh
 
       - name: Cypress run
         uses: cypress-io/github-action@v7

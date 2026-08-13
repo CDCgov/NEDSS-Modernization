@@ -1,5 +1,9 @@
 class ClassicOpenerPage {
 
+  isUniqueElementName() {
+    return true;
+  }
+
   submitForm() {
     document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
     document.forms[0].submit();
@@ -7,7 +11,7 @@ class ClassicOpenerPage {
 
   submitNewTab() {
     var opener = {};
-    opener.isUniqueElementName = true;
+    opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=tab");
     cy.get("#tabNameTd").type("NEWTAB");
@@ -121,7 +125,7 @@ class ClassicOpenerPage {
 
   submitNewSection() {
     var opener = {};
-    opener.isUniqueElementName = true;
+    opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=section");
     cy.window().then((win) => {
@@ -133,7 +137,7 @@ class ClassicOpenerPage {
 
   submitNewSubSection() {
     var opener = {};
-    opener.isUniqueElementName = true;
+    opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=subSection");
     cy.window().then((win) => {

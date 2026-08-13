@@ -6,7 +6,7 @@ Then("User navigates to Edit page and views Manage section pop-up window", () =>
     manageSectionPage.openManageSectionsPopup();
 });
 
-Then("User will see the following by {string} {string} {string}", (content, type) => {
+Then("User will see the following by {string} {string}", (content, type) => {
     manageSectionPage.seeElementOnManageSection(content, type);
 });
 
