@@ -116,6 +116,10 @@ source ./check_env.sh
 If you need to customize these values, edit the .env file created in the root directory and run `source ./check_env.sh`
 again to apply the changes.
 
+## Verifying container image provenance
+
+For information about verifying container image provenance, see Container Image Verification.
+
 ### Running everything inside docker
 
 1. Navigate to the `cdc-sandbox` directory
