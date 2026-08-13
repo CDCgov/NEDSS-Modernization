@@ -43,5 +43,13 @@ class ClassicManageQuestionsPage {
   newName() {
     return Math.random().toString(36).substring(2, 8);
   }
+
+  checkSuccessMessageQuestionAdded() {
+    cy.get('div[class="infoBox success"]').should('contain.text', 'has been successfully added to the system.')
+  }
+
+  checkSuccessMessageQuestionSaved() {
+    cy.get('div[class="infoBox success"]').should('contain.text', 'has been successfully saved in the system.')
+  }
 }
 export default new ClassicManageQuestionsPage();
