@@ -105,24 +105,40 @@ const ResultDataPage = () => {
                         </ul>
                     </AlertMessage>
                 )}
-                <Card id="report-details" title="Report details">
+
+                <Card id="report-details" title="Report details" collapsible={true} open={false}>
                     <ValueField sizing={SIZING} label="Data source">
                         {dataSourceName}
+                    </ValueField>
+                    <ValueField sizing={SIZING} label="Report run date">
+                        {formattedTime}
                     </ValueField>
                     <ValueField sizing={SIZING} label="Description">
                         {descriptionHtml && (
                             <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} className="text-wrap" />
                         )}
                     </ValueField>
-                    <ValueField sizing={SIZING} label="Report run date">
-                        {formattedTime}
+                </Card>
+
+                <Card id="report-criteria" title="Report criteria" collapsible={true} open={false}>
+                    <ValueField sizing={SIZING} label="Base SQL query">
+                        {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
+                        <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
+                            {styledQuery}
+                        </span>
                     </ValueField>
                 </Card>
+
                 <Card
                     id="report-result"
                     title="Report result"
                     flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
                 >
+                    {data.length === 0 && (
+                        <AlertMessage type="information">
+                            <p className="font-sans-md margin-0 margin-top-1">No results match your criteria.</p>
+                        </AlertMessage>
+                    )}
                     {meta.fields && (
                         // set tab-index to ensure there's a focusable item on the page/enable keyboard scroll
                         <section className="overflow-auto" tabIndex={0}>
@@ -139,15 +155,6 @@ const ResultDataPage = () => {
                             />
                         </section>
                     )}
-                </Card>
-
-                <Card id="report-criteria" title="Report criteria" collapsible={true} open={false}>
-                    <ValueField sizing={SIZING} label="Base SQL query">
-                        {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
-                        <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
-                            {styledQuery}
-                        </span>
-                    </ValueField>
                 </Card>
             </div>
         </ReportLayout>
