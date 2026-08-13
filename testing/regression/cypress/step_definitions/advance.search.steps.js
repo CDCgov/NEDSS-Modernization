@@ -265,3 +265,11 @@ Given("create a new patient profile", () => {
   addPatientPage.addSimplePatient()
   addPatientPage.clickViewPatientProfile();
 });
+
+Given("I check the Lab reports count on the Events tab", () => {
+  eventsTabPage.storeLabReportsCount();
+});
+
+Then("the Lab reports count should have increased by 1", () => {
+  eventsTabPage.verifyLabReportsCountIncreasedByOne();
+});

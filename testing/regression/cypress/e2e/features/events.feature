@@ -28,6 +28,21 @@ Feature: User accesses patient profile and can view existing patient data here.
         When user clicks on a patient's profile "Events" tab
         And user clicks on the "Add morbidity report" button
 
+    Scenario: Add new lab report without an investigation and confirm it appears in Lab reports
+        When user clicks on a patient's profile "Events" tab
+        And I check the Lab reports count on the Events tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And I select a random Program Area
+        And I select a random Jursidiction
+        And I select a random Resulted Test
+        And I select a random Coded Result
+        And I click the Add button under Resulted Tests
+        And I click the submit button
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        Then the Lab reports count should have increased by 1
+
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it

@@ -77,6 +77,30 @@ class EventsTabPage {
       });
   }
 
+  getSectionCount(sectionTitle) {
+    return cy
+      .contains('h2', sectionTitle)
+      .parent()
+      .find('div')
+      .first()
+      .invoke('text')
+      .then((text) => parseInt(text.trim(), 10));
+  }
+
+  storeLabReportsCount() {
+    this.getSectionCount('Lab reports').then((count) => {
+      cy.wrap(count).as('labReportsCount');
+    });
+  }
+
+  verifyLabReportsCountIncreasedByOne() {
+    this.getSectionCount('Lab reports').then((newCount) => {
+      cy.get('@labReportsCount').then((initialCount) => {
+        expect(newCount).to.equal(initialCount + 1);
+      });
+    });
+  }
+
   validateTableColumns(tableName, dataTable) {
     const myArray = [];    
     cy.contains("section", tableName).within(() => {
