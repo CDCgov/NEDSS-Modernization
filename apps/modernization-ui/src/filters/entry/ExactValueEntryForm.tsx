@@ -26,6 +26,8 @@ const ExactValueEntryForm = ({ property }: ExactValueEntryFormProps) => {
                 required: { value: true, message: 'At least one value is required.' },
             }}
             render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                // TODO: probably just replace this with the base multi-select and delete the auto complete?
+                // but look more into the auto complete situation
                 <MultiSelectAutocomplete
                     label="Value"
                     name={name}
@@ -36,6 +38,7 @@ const ExactValueEntryForm = ({ property }: ExactValueEntryFormProps) => {
                     onChange={onChange}
                     error={error?.message}
                     asValue={asFilterValue}
+                    orientation="vertical"
                 />
             )}
         />
