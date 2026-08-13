@@ -252,7 +252,7 @@ const FilterConfigForm = ({
                         <SingleSelect
                             id={`filter-${name}`}
                             label="Selection type"
-                            helperText="Allow one or multiple selections"
+                            helperText="Allow one or multiple selections."
                             name={name}
                             options={SELECT_OPTIONS}
                             orientation="horizontal"

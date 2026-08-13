@@ -143,7 +143,7 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                         if (!nbsCustom) return options;
                         return [nbsCustom, ...options];
                     }}
-                    helperText="The query logic for the report"
+                    helperText="The query logic for the report."
                 />
             </Card>
             <FilterRepeatingBlock config={config} isEditable={isEditable} dataSource={dataSource} />
