@@ -25,7 +25,9 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
   Scenario: Collapse or Expand subsections
     When Click on a Value set in Value Set library
     And Click Collapse Subsections to collapse the sections in Value Set library
+    Then the Value Set page should be collapsed
     And Click Expand Subsections to expand the sections in Value Set library
+    Then the Value Set page should be expanded
 
   Scenario: Add new concept in Value Set
     When Click on a Value set in Value Set library

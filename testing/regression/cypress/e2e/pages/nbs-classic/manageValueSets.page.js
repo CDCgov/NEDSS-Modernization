@@ -98,6 +98,17 @@ class ClassicManageValueSetsPage {
     });
   }
 
+  verifyValueSetPageExpanded() {
+    cy.get('a.toggleHref').should('have.text', 'Collapse Subsections');
+    cy.get('#subsec1 tbody').should('have.attr', 'style').and('not.include', 'display: none');
+    cy.get('#subsec2 tbody').should('have.attr', 'style').and('not.include', 'display: none');
+  }
+
+  verifyValueSetPageCollapsed() {
+    cy.get('a.toggleHref').should('have.text', 'Expand Subsections');
+    cy.get('#subsec1 tbody').should('have.attr', 'style', 'display: none;');
+    cy.get('#subsec2 tbody').should('have.attr', 'style', 'display: none;');
+  }
   newName() {
     return Math.random().toString(36).substring(2, 8);
   }

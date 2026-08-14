@@ -1,5 +1,4 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicManageConditionsPage from "@pages/nbs-classic/manageValueSets.page";
 import classicManageValueSetsPage from "@pages/nbs-classic/manageValueSets.page";
 
 Then("Navigate to Value Set Library", () => {
@@ -60,6 +59,14 @@ Then("Click on Make Inactive button to inactive the value set", () => {
 
 Then("Verify all value set names contain {string}", text => {
     classicManageValueSetsPage.verifyValueSetNamesContain(text)
+});
+
+Then("the Value Set page should be collapsed", () => {
+    classicManageValueSetsPage.verifyValueSetPageCollapsed()
+});
+
+Then("the Value Set page should be expanded", () => {
+    classicManageValueSetsPage.verifyValueSetPageExpanded()
 });
 
 
