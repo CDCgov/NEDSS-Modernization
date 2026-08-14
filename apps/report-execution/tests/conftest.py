@@ -2,6 +2,7 @@ import decimal
 import logging
 import os
 import shutil
+import subprocess
 from contextlib import contextmanager
 
 import pytest
@@ -115,9 +116,25 @@ def mock_db_connection(mocker):
 
 
 @pytest.fixture(scope='session')
+def download_custom_library():
+    """Downloads the example library file that is hosted in the
+    CDCgov/NEDSS-Custom-Library-Example repository so that we can run tests against it.
+    """
+    dir_path = os.path.dirname(__file__)
+    dir_path = f"{dir_path}/../scripts"
+    script_path = f"{dir_path}/pull_example_library.sh"
+
+    result = subprocess.run(script_path)
+
+    if result.returncode != 0:
+        raise RuntimeError('Script to pull down example library failed.')
+
+
+@pytest.fixture(scope='session')
 def setup_containers(request):
     """Set up DB and report execution containers."""
     logging.info('Setting up containers tests...')
+
     compose_path = os.path.join(os.path.dirname(__file__), '../../../cdc-sandbox')
     services = ['report-execution', 'nbs-mssql']
     compose_file_names = [
