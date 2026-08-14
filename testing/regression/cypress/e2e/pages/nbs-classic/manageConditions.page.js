@@ -26,14 +26,6 @@ class ClassicManageConditionsPage {
     cy.get('input[name="pAreaFld_textbox"]').type('ARBO')
   }
 
-  checkSuccessMessageConditionAdded() {
-    cy.get('div[class="infoBox success"]').should('contain.text', 'has been successfully added to the system.')
-  }
-
-  checkSuccessMessageConditionUpdated() {
-    cy.get('div[class="infoBox success"]').should('contain.text', 'has been successfully updated in the system.')
-  }
-
   clickSubmitBtnConditionInConditionLibrary() {
     cy.get('#submitB').eq(0).click()
   }

@@ -8,11 +8,13 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
     When Click on Add new in Value Set Library
     And Fill the details to create new "LOCAL" Value Set
     And Click submit button to create Value Set
-
+    Then I should see a green success message containing text "has been successfully added to the system"
+    
   Scenario: Add new Value Set PHIN
     When Click on Add new in Value Set Library
     And Fill the details to create new "PHIN" Value Set
     And Click submit button to create Value Set
+    Then I should see a green success message containing text "has been successfully added to the system"
 
   Scenario: Filter navigate result page
     When Click filter button in Value Set library

@@ -1,4 +1,5 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import classicManageConditionsPage from "@pages/nbs-classic/manageValueSets.page";
 import classicManageValueSetsPage from "@pages/nbs-classic/manageValueSets.page";
 
 Then("Navigate to Value Set Library", () => {
@@ -56,3 +57,5 @@ Then("Click submit button to create new concept in Value Set", () => {
 Then("Click on Make Inactive button to inactive the value set", () => {
     classicManageValueSetsPage.clickMakeInactiveInValueSet()
 });
+
+
