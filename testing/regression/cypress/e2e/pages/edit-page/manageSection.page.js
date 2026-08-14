@@ -1,3 +1,5 @@
+import {enterInput} from "../../../helpers/form.helper";
+
 class ManageSectionPage {
 
     navigateEditPage () {
@@ -114,7 +116,7 @@ class ManageSectionPage {
 
     modifySectionName() {
         const newSecName = Math.random().toString(36).substring(2, 12);
-        cy.get('.sectionName').eq(0).clear().type(`Modified text section name ${newSecName}`);
+        enterInput('.sectionName', `Modified text section name ${newSecName}`);
     }
 
     clickSaveBtn() {

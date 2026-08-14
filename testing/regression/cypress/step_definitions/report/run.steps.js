@@ -94,11 +94,14 @@ When('I fill out all filters with {int}', (index) => {
     // multi-selects
     cy.get('.multi-select')
       .each(($select) => {
-        cy
-          .wrap($select)
-          .click()
-          .then(() => cy.get('.multi-select__option').eqOrLast(index).click().then(() => cy.get('body').type('{esc}')))
-    });
+        cy.wrap($select).click();
+        cy.wrap($select)
+          .then(() => {
+            cy.get('.multi-select__option').eqOrLast(index).click()
+            cy.get('.multi-select__option').eqOrLast(index)
+              .then(() => cy.get('body').type('{esc}'))
+          })
+      });
 });
 
 Then('All filters should be filled out with {int}', (index) => {

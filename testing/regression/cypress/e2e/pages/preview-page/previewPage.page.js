@@ -37,12 +37,16 @@ class PreviewPagePage {
             cy.get('#range-toggle').select('100')
             cy.wait(2000);
             let isExist = false;
-            cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-                if($tr.find("td").eq(3).text() === "Published") {
-                    isExist = true;
-                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                    return false
-                }
+            cy.get("table[data-testid=table]").eq(0).find("tbody tr")
+              .then(($rows) => {
+                  cy.wrap($rows).each(($tr, index) => {
+                      const statusText = $tr.find("td").eq(3).text();
+                      if(statusText === "Published") {
+                          isExist = true;
+                          cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                          return false
+                      }
+              })
             }).then(() => {
                 if(!isExist) {
                     cy.contains('Next').eq(0).click()
@@ -51,19 +55,6 @@ class PreviewPagePage {
             })
         }
         search()
-    }
-
-    navigateToPreviewPageWithStatusPublishedWithDraft() {
-        cy.visit('/page-builder/pages');
-        cy.wait(2000);
-        cy.get('#range-toggle').select('100')
-        cy.wait(2000);
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Published with Draft") {
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
     }
 
     clickOnEditPageDetails() {

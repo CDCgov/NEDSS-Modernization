@@ -8,7 +8,8 @@ class PaginationPage {
     }
 
     selectNumberOfRows (numberOfRows) {
-        cy.get('#range-toggle').select(numberOfRows).should('have.value', numberOfRows);
+        cy.get('#range-toggle').select(numberOfRows);
+        cy.get('#range-toggle').should('have.value', numberOfRows);
     }
 
     checkDisplayingNumberOfRowsSubsequently(rowsPerPage, onlyOnNext, pageNumber) {

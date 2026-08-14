@@ -22,7 +22,8 @@ class ClassicOpenerPage {
       cy.wait(500);
       cy.get('body').then(($body) => {
         if ($body.find('img[title="Add New Tab"]').length > 0) {
-          cy.get('img[title="Add New Tab"]').eq(0).click().then(() => {
+          cy.get('img[title="Add New Tab"]').eq(0).click()
+          cy.get('img[title="Add New Tab"]').eq(0).then(() => {
             cy.get('body').then(() => {
               // to implement
               // function handleTabBodyEvents(elt) {

@@ -184,11 +184,9 @@ class EventsTabPage {
 
     cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
       .first()
-      .scrollIntoView()
       .should('be.visible')
       .within(() => {
         cy.get('td:first-child a')
-          .scrollIntoView()
           .should('be.visible')
           .then($link => {
             this.extractAndStoreEventId($link);
@@ -278,11 +276,9 @@ class EventsTabPage {
         return associatedText === '---';
       })
       .first()
-      .scrollIntoView()
       .should('be.visible')
       .within(() => {
         cy.get('td:first-child a')
-          .scrollIntoView()
           .should('be.visible')
           .then($link => {
             this.extractAndStoreEventId($link);

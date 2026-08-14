@@ -1,4 +1,5 @@
 import addCommentModule from "./addComment.module";
+import {enterInput} from "../../../helpers/form.helper";
 
 class AddPhoneModule {
   date() {
@@ -15,7 +16,7 @@ class AddPhoneModule {
 
   use() {
     cy.get(".usa-modal-wrapper.is-visible select[data-testid=dropdown]")
-      .eq(1)
+      .first()
       .select("Home");
     return this;
   }
@@ -30,16 +31,12 @@ class AddPhoneModule {
   }
 
   countryCode() {
-    cy.get(".usa-modal-wrapper.is-visible #countryCode")
-      .scrollIntoView()
-      .type("971");
+    cy.get(".usa-modal-wrapper.is-visible #countryCode").type("971");
     return this;
   }
 
   phoneNumber(phone) {
-    cy.get(".usa-modal-wrapper.is-visible #number")
-      .scrollIntoView()
-      .type(phone);
+    enterInput(".usa-modal-wrapper.is-visible #number", phone);
     return this;
   }
 

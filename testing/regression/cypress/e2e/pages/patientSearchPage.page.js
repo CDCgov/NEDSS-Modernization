@@ -1,3 +1,5 @@
+import {enterInput} from "../../helpers/form.helper";
+
 class PatientSearchPage {
     /**
      * Selects "Exact Date" for Date of Birth search.
@@ -16,10 +18,9 @@ class PatientSearchPage {
       const validDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, "0"); // Limits day to 28 for safety
   
       cy.log(`Entering Valid DOB: ${validMonth}/${validDay}/${validYear}`);
-  
-      cy.get("#bornOn-exact-date-month").should("be.visible").clear().type(validMonth);
-      cy.get("#bornOn-exact-date-day").should("be.visible").clear().type(validDay);
-      cy.get("#bornOn-exact-date-year").should("be.visible").clear().type(validYear);
+      enterInput('#bornOn-exact-date-month', validMonth);
+      enterInput('#bornOn-exact-date-day', validDay);
+      enterInput('#bornOn-exact-date-year', validYear);
     }
   
     /**
@@ -49,9 +50,8 @@ class PatientSearchPage {
     const endDate = `12/31/${endYear}`;
 
     cy.log(`Entering Date Range: From ${startDate} To ${endDate}`);
-
-    cy.get("#bornOn-range-entry-from").should("be.visible").clear().type(startDate);
-    cy.get("#bornOn-range-entry-to").should("be.visible").clear().type(endDate);
+    enterInput('#bornOn-range-entry-from', startDate);
+    enterInput('#bornOn-range-entry-to', endDate);
   }
 
   enterInvalidDateOfBirth() {
@@ -60,10 +60,9 @@ class PatientSearchPage {
     const invalidDay = "32"; // Invalid day
 
     cy.log(`Entering Invalid DOB: ${invalidMonth}/${invalidDay}/${futureYear}`);
-
-    cy.get("#bornOn-exact-date-month").should("be.visible").clear().type(invalidMonth);
-    cy.get("#bornOn-exact-date-day").should("be.visible").clear().type(invalidDay);
-    cy.get("#bornOn-exact-date-year").should("be.visible").clear().type(futureYear);
+    enterInput('#bornOn-exact-date-month', invalidMonth);
+    enterInput('#bornOn-exact-date-day', invalidDay);
+    enterInput('#bornOn-exact-date-year', futureYear);
   }
 
   verifyErrorMessage() {

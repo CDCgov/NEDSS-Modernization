@@ -1,13 +1,13 @@
+import {enterInput} from "../../../helpers/form.helper";
+
 class OpenInvestigationPage {
     openInvestigationLink = 'a[href="/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true"]';
     queueTitle = 'a[name="pageTop"]';
     nextLink = 'a[href*="d-446288-p=2"]';
     previousLink = 'a[href*="d-446288-p=1"]';
     sortMenu = 'img.multiSelect[title="Filter Select"]';
-    selectAllCheckbox = '.selectAll';
     confirmedOption = 'input[name="answerArray(CASESTATUS)"][value="C"]';
     probableOption = 'input[name="answerArray(CASESTATUS)"][value="P"]';
-    // okButton = '#b1';
     cancelButton = '#b2';
     removeFiltersLink = 'font.hyperLink';
     sortedResult = '#parent > tbody > :nth-child(1) > :nth-child(7)';
@@ -110,7 +110,7 @@ class OpenInvestigationPage {
     }
   
     enterTreatmentComments(comment) {
-      cy.get(this.treatmentCommentsField).clear().type(comment);
+      enterInput(this.treatmentCommentsField, comment);
     }
   
     clickSubmitButton() {

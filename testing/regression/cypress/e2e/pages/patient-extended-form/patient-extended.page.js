@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import {enterInput} from "../../../helpers/form.helper";
 
 class NameEntryPage {
   enterValidFirstAndLastName() {
@@ -10,8 +11,8 @@ class NameEntryPage {
     cy.wrap(lastName).as("lastName");
 
     // Enter the names into the respective fields
-    cy.get("#first").clear().type(firstName);
-    cy.get("#last").clear().type(lastName);
+    enterInput('#first', firstName);
+    enterInput('#last', lastName);
 
     // Select "Legal" from the Name Type dropdown
     cy.get("#name-type").select("L");
@@ -41,10 +42,10 @@ class NameEntryPage {
     cy.get("#phone-use").select("MC");
 
     // Enter the generated phone number
-    cy.get("#phoneNumber").clear().type(phoneNumber);
+    enterInput('#phoneNumber', phoneNumber);
 
     // Enter the extension
-    cy.get("#extension").clear().type(extension);
+    enterInput('#extension', extension);
 
     // Click the "Add phone & email" button
     cy.contains("button", "Add phone & email").click();
@@ -62,11 +63,11 @@ class NameEntryPage {
      const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}/${today.getFullYear()}`;
  
      // Enter the formatted date
-     cy.get("#mortality\\.deceasedOn").clear().type(formattedDate);
+     enterInput('#mortality\\.deceasedOn', formattedDate);
 
     // Enter a random city for Death City
     const randomCity = faker.location.city();
-    cy.get("#mortality\\.city").clear().type(randomCity);
+    enterInput('#mortality\\.city', randomCity);
 
     // Select a random state from the Death State dropdown
     cy.get("#mortality\\.state")

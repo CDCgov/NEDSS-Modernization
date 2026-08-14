@@ -1,4 +1,5 @@
 import addCommentModule from "./addComment.module";
+import {enterInput} from "../../../helpers/form.helper";
 
 class AddIdentificationModule {
   date() {
@@ -18,16 +19,7 @@ class AddIdentificationModule {
   }
 
   id(idNumber) {
-    cy.get('input[data-testid="textInput"]').scrollIntoView().type(idNumber);
-    return this;
-  }
-
-  issuedState() {
-    cy.get(".usa-modal-wrapper.is-visible select")
-      .eq(1)
-      .scrollIntoView()
-      .select("AL");
-    return this;
+    return enterInput('input[data-testid="textInput"]', idNumber);
   }
 
   isSuccessfullyAdded() {

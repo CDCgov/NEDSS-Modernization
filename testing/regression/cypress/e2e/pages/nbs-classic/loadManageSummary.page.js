@@ -1,3 +1,5 @@
+import {enterInput} from "../../../helpers/form.helper";
+
 class LoadManageSummaryPage {
   openDataEntryLink = 'a[href="/nbs/LoadNavbar.do?ContextAction=DataEntry"]'
   summaryLink = 'a[href="/nbs/LoadManageSummary1.do?ContextAction=GlobalSummaryData"]'
@@ -19,7 +21,7 @@ class LoadManageSummaryPage {
   }
 
   selectMMWRYear(year) {
-    cy.get('input[name="MMWRYear_textbox"]').clear().type(year);
+    enterInput('input[name="MMWRYear_textbox"]', year);
     cy.get('input[value="Get Summary Reports"]').click();
   }
 

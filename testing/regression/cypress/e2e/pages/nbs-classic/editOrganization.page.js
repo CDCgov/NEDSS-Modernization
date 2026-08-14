@@ -1,4 +1,5 @@
 import { selectRandomDropdownValue } from "./utils";
+import {enterInput} from "../../../helpers/form.helper";
 
 class EditOrganizationPage {
   selectEditReason(reasonValue) {
@@ -15,10 +16,7 @@ class EditOrganizationPage {
     cy.log(`Generated quick code: ${quickCode}`);
     
     // Find the Quick Code input field and type the generated code
-    cy.get('input[name="quickCodeIdDT.rootExtensionTxt"]', { timeout: 10000 })
-      .should('be.visible')
-      .clear()
-      .type(quickCode);
+    this.enterInputWithTimeout('input[name="quickCodeIdDT.rootExtensionTxt"]', quickCode);
     
     // Store the generated quick code for later verification if needed
     cy.wrap(quickCode).as('generatedQuickCode');
@@ -45,11 +43,8 @@ class EditOrganizationPage {
     cy.log(`Random ID Value: ${randomId}`);
     
     // Find the ID Value textbox and type the random string
-    cy.get('[id="organization.entityIdDT_s[i].rootExtensionTxt"]', { timeout: 10000 })
-      .should('be.visible')
-      .clear()
-      .type(randomId);
-    
+    this.enterInputWithTimeout('[id="organization.entityIdDT_s[i].rootExtensionTxt"]', randomId);
+
     cy.wrap(randomId).as('generatedIdValue');
   }
 
@@ -81,11 +76,8 @@ class EditOrganizationPage {
     cy.get('[name="organization.entityIdDT_s[i].assigningAuthorityCd_button"]').click()
     cy.wait(500);
     cy.get('select[name="organization.entityIdDT_s[i].assigningAuthorityCd"]').select(idDetails.authority, { force: true });
-    
-    cy.get('[id="organization.entityIdDT_s[i].rootExtensionTxt"]', { timeout: 10000 })
-      .should('be.visible')
-      .clear()
-      .type(idDetails.idValue);
+
+    this.enterInputWithTimeout('[id="organization.entityIdDT_s[i].rootExtensionTxt"]', idDetails.idValue);
     this.clickAddIdentificationButton();
   }
 
@@ -124,12 +116,18 @@ class EditOrganizationPage {
     cy.get('select[name="telephone[i].cd"]').select(telephoneDetails.type, { force: true });
     
     // Find empty phone number fields and fill them
-    cy.get('input[id*="phoneNbrTxt1"]').filter((i, el) => !el.value).first()
-      .clear().type(telephoneDetails.areaCode);
-    cy.get('input[id*="phoneNbrTxt2"]').filter((i, el) => !el.value).first()
-      .clear().type(telephoneDetails.prefix);
-    cy.get('input[id*="phoneNbrTxt3"]').filter((i, el) => !el.value).first()
-      .clear().type(telephoneDetails.lineNumber);
+    cy.get('input[id*="phoneNbrTxt1"]').filter((i, el) => !el.value).first().then(($input) => {
+      cy.wrap($input).clear();
+      cy.wrap($input).type(telephoneDetails.areaCode);
+    })
+    cy.get('input[id*="phoneNbrTxt2"]').filter((i, el) => !el.value).first().then(($input) => {
+      cy.wrap($input).clear();
+      cy.wrap($input).type(telephoneDetails.prefix);
+    })
+    cy.get('input[id*="phoneNbrTxt3"]').filter((i, el) => !el.value).first().then(($input) => {
+      cy.wrap($input).clear();
+      cy.wrap($input).type(telephoneDetails.lineNumber);
+    })
     
     // Click Add Telephone button
     cy.get('#BatchEntryAddButtonTelephone').click();
@@ -148,9 +146,9 @@ class EditOrganizationPage {
 
   enterTelephoneNumber(areaCode, prefix, lineNumber) {
     cy.log(`Entering telephone: ${areaCode}-${prefix}-${lineNumber}`);
-    cy.get('input[id*="phoneNbrTxt1"]').clear().type(areaCode);
-    cy.get('input[id*="phoneNbrTxt2"]').clear().type(prefix);
-    cy.get('input[id*="phoneNbrTxt3"]').clear().type(lineNumber);
+    enterInput('input[id*="phoneNbrTxt1"]', areaCode);
+    enterInput('input[id*="phoneNbrTxt2"]', prefix);
+    enterInput('input[id*="phoneNbrTxt3"]', lineNumber);
   }
 
   clickAddTelephoneButton() {
@@ -173,26 +171,17 @@ class EditOrganizationPage {
 
   enterStreetAddress1(address) {
     cy.log(`Entering street address: ${address}`);
-    cy.get('input[name="address[i].thePostalLocatorDT_s.streetAddr1"]')
-      .should('be.visible')
-      .clear()
-      .type(address);
+    enterInput('input[name="address[i].thePostalLocatorDT_s.streetAddr1"]', address);
   }
 
   enterCity(city) {
     cy.log(`Entering city: ${city}`);
-    cy.get('input[name="address[i].thePostalLocatorDT_s.cityDescTxt"]')
-      .should('be.visible')
-      .clear()
-      .type(city);
+    enterInput('input[name="address[i].thePostalLocatorDT_s.cityDescTxt"]', city);
   }
 
   enterZipCode(zip) {
     cy.log(`Entering zip code: ${zip}`);
-    cy.get('input[name="address[i].thePostalLocatorDT_s.zipCd"]')
-      .should('be.visible')
-      .clear()
-      .type(zip);
+    enterInput('input[name="address[i].thePostalLocatorDT_s.zipCd"]', zip);
   }
 
   clickAddAddressButton() {
@@ -203,7 +192,10 @@ class EditOrganizationPage {
     cy.wait(500);
   }
 
-
+  enterInputWithTimeout(inputSelector, value) {
+    cy.get(inputSelector, { timeout: 2000 }).clear();
+    cy.get(inputSelector).type(value);
+  }
 }
 
 export default new EditOrganizationPage();

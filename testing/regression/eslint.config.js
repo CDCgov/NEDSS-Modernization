@@ -15,6 +15,7 @@ const baseRules = {
 
 
 const cypressRules = {
+  ...eslintPluginCypress.configs.recommended.rules,
   'cypress/no-unnecessary-waiting': 'warn' // change to error once resolved
 };
 

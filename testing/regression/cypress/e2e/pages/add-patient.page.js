@@ -53,20 +53,10 @@ class AddPatientPage {
   }
 
   addPatientSingleDeteNextYear() {
-    cy.get("input[data-testid=date-picker-external-input]")
-      .first()
-      .clear()
-      .type(this.getNextYearDate());
+    cy.get("input[data-testid=date-picker-external-input]").first().clear();
+    cy.get("input[data-testid=date-picker-external-input]").first().type(this.getNextYearDate());
     this.clickSumbitSaveButton();
     this.clickViewPatientLink();
-  }
-
-  getCurrentDate() {
-    const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    const year = today.getFullYear();
-    return `${month}/${day}/${year}`;
   }
 
   getNextYearDate() {

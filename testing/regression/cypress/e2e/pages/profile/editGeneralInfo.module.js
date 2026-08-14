@@ -23,9 +23,8 @@ class EditGeneralInfoModule {
   }
 
   save() {
-    cy.get(this.section).contains('button', 'Save')
-      .scrollIntoView()
-      .click()
+    cy.get(this.section).contains('button', 'Save');
+    cy.get(this.section).click();
   }
 
   isGeneralInformationAdded(motherName) {
