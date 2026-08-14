@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Pulls the example library from the NEDSS-Custom-Library repo so we can run an tests 
-# against it and make sure it actually runs.
+# Pulls the example library from the NEDSS-Custom-Library-Example repo so we can run 
+# tests against it and make sure it actually runs.
 
 set -e
 
