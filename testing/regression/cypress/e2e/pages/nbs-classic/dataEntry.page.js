@@ -161,6 +161,26 @@ class LabReportPage {
     cy.get('input[name="Cancel"]').first().click();
   }
 
+  // View Lab Report screen - reuses the same field ids as the Add screen, but
+  // rendered as read-only <span>s instead of inputs/selects.
+  verifyViewedReportingFacility(text) {
+    cy.get('#NBS_LAB365').should('contain.text', text);
+  }
+
+  verifyViewedProgramArea(text) {
+    cy.get('#INV108').should('contain.text', text);
+  }
+
+  verifyViewedJurisdiction(text) {
+    cy.get('#INV107').should('contain.text', text);
+  }
+
+  verifyViewedResultedTest(text) {
+    // The resulted test row's span id has a row-specific numeric suffix
+    // (e.g. tableNBS_LAB22079), so we match on the container's text instead.
+    cy.get('#RESULTED_TEST_CONTAINER').should('contain.text', text);
+  }
+
   //Ordered Test
 
   searchForOrderedTestInPopup() {

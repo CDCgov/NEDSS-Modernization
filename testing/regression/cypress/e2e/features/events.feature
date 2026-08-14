@@ -74,6 +74,24 @@ Feature: User accesses patient profile and can view existing patient data here.
         And user clicks the Cancel button on the Lab Report page and confirms
         Then the Lab reports count should not have changed
 
+    Scenario: View an existing lab report and confirm it matches the entered data
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And user selects "STD" from the Program Area dropdown
+        And user selects "Fulton County" from the Jurisdiction dropdown
+        And user selects "Syphilis serology" from the Resulted Test dropdown
+        And user selects "positive" from the Coded Result dropdown
+        And I click the Add button under Resulted Tests
+        And I click the submit button
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        And user clicks the newest Lab report link
+        Then the Lab Report view should show Reporting Facility "CHOA - Scottish Rite"
+        And the Lab Report view should show Program Area "STD"
+        And the Lab Report view should show Jurisdiction "Fulton County"
+        And the Lab Report view should show Resulted Test "Syphilis serology"
+
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it

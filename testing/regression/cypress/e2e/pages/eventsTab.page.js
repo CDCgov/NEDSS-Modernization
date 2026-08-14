@@ -87,6 +87,20 @@ class EventsTabPage {
       .then((text) => parseInt(text.trim(), 10));
   }
 
+  // Each card is a <section role="group" aria-labelledby="<heading id>">
+  // (see design-system Card.tsx), so this scopes reliably to just one card's
+  // table even though several cards on this page all render similar tables.
+  getSectionCard(sectionTitle) {
+    return cy
+      .contains('h2', sectionTitle)
+      .invoke('attr', 'id')
+      .then((headingId) => cy.get(`section[aria-labelledby="${headingId}"]`));
+  }
+
+  clickNewestLabReportLink() {
+    this.getSectionCard('Lab reports').find('table tbody tr').first().find('a').first().click();
+  }
+
   storeLabReportsCount() {
     this.getSectionCount('Lab reports').then((count) => {
       cy.wrap(count).as('labReportsCount');

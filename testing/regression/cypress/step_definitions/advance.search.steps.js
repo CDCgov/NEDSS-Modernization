@@ -278,6 +278,10 @@ Then("the Lab reports count should not have changed", () => {
   eventsTabPage.verifyLabReportsCountUnchanged();
 });
 
+When("user clicks the newest Lab report link", () => {
+  eventsTabPage.clickNewestLabReportLink();
+});
+
 Given("I check the Open investigations count on the Summary tab", () => {
   eventsTabPage.storeOpenInvestigationsCount();
 });

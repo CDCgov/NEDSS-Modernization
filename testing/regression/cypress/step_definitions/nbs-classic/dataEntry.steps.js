@@ -339,6 +339,22 @@ When("user clicks the Cancel button on the Lab Report page and confirms", () => 
   labReportPage.clickCancelAndConfirm();
 });
 
+Then("the Lab Report view should show Reporting Facility {string}", (text) => {
+  labReportPage.verifyViewedReportingFacility(text);
+});
+
+Then("the Lab Report view should show Program Area {string}", (text) => {
+  labReportPage.verifyViewedProgramArea(text);
+});
+
+Then("the Lab Report view should show Jurisdiction {string}", (text) => {
+  labReportPage.verifyViewedJurisdiction(text);
+});
+
+Then("the Lab Report view should show Resulted Test {string}", (text) => {
+  labReportPage.verifyViewedResultedTest(text);
+});
+
 When("user selects {string} as the condition for the new investigation", (conditionText) => {
   addLabReportInvestigationPage.selectCondition(conditionText);
 });
