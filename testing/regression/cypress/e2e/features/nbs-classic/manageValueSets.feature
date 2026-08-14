@@ -9,7 +9,7 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
     And Fill the details to create new "LOCAL" Value Set
     And Click submit button to create Value Set
     Then I should see a green success message containing text "has been successfully added to the system"
-    
+
   Scenario: Add new Value Set PHIN
     When Click on Add new in Value Set Library
     And Fill the details to create new "PHIN" Value Set
@@ -18,8 +18,9 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
 
   Scenario: Filter navigate result page
     When Click filter button in Value Set library
-    And Enter filter text in the input in Value Set library
+    And Enter filter text "NBS" in the input in Value Set library
     And Click OK button to filter in Value Set library
+    Then Verify all value set names contain "NBS"
 
   Scenario: Collapse or Expand subsections
     When Click on a Value set in Value Set library

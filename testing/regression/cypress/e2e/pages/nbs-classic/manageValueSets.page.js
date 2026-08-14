@@ -32,8 +32,8 @@ class ClassicManageValueSetsPage {
     cy.get('.multiSelect').eq(2).click()
   }
 
-  enterFilterTextValueSetLibrary() {
-    cy.get('#SearchText2').eq(0).type('NBS')
+  enterFilterTextValueSetLibrary(text) {
+    cy.get('#SearchText2').eq(0).type(text)
   }
 
   clickFilterOkBtnValueSetLibrary() {
@@ -88,6 +88,14 @@ class ClassicManageValueSetsPage {
             cy.get('input[type="button"][value="Make Inactive"]').eq(0).click()
         }
     })
+  }
+
+  verifyValueSetNamesContain(text) {
+    cy.get('table.dtTable tbody tr td:nth-child(5)').each($td => {
+      const valueSetName = $td.text().trim();
+      cy.log('Value Set Name: ' + valueSetName);
+      expect(valueSetName, 'Value Set Name should contain "' + text + '"').to.include(text);
+    });
   }
 
   newName() {

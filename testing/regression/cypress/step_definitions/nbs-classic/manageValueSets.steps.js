@@ -22,8 +22,8 @@ Then("Click filter button in Value Set library", () => {
     classicManageValueSetsPage.clickFilterBtnValueSetLibrary()
 });
 
-Then("Enter filter text in the input in Value Set library", () => {
-    classicManageValueSetsPage.enterFilterTextValueSetLibrary()
+Then("Enter filter text {string} in the input in Value Set library", (text) => {
+    classicManageValueSetsPage.enterFilterTextValueSetLibrary(text)
 });
 
 Then("Click OK button to filter in Value Set library", () => {
@@ -56,6 +56,10 @@ Then("Click submit button to create new concept in Value Set", () => {
 
 Then("Click on Make Inactive button to inactive the value set", () => {
     classicManageValueSetsPage.clickMakeInactiveInValueSet()
+});
+
+Then("Verify all value set names contain {string}", text => {
+    classicManageValueSetsPage.verifyValueSetNamesContain(text)
 });
 
 
