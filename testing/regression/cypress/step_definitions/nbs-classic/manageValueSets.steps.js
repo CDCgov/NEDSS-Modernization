@@ -14,7 +14,7 @@ When("I store the Value Set count", () => {
 
 });
 
-Then("The Value Set count should increase by 1", () => {
+Then("the Value Set count should increase by 1", () => {
     classicManageValueSetsPage.verifyValueSetIncreased()
 });
 
