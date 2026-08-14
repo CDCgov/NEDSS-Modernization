@@ -24,3 +24,8 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Providers
     And Click New Provider Edit Radio Option
     And Type new name for Edit Provider first name
     And Click Submit button on provider add page
+    And Navigate to classic provider search page
+    And Enter first name "TestFirstName"
+    And Enter last name "test"
+    And I click on the Submit button
+    Then provider "test", "TestFirstName" should appear in search results
