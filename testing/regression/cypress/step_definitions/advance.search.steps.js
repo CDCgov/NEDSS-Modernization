@@ -274,6 +274,10 @@ Then("the Lab reports count should have increased by 1", () => {
   eventsTabPage.verifyLabReportsCountIncreasedByOne();
 });
 
+Then("the Lab reports count should not have changed", () => {
+  eventsTabPage.verifyLabReportsCountUnchanged();
+});
+
 Given("I check the Open investigations count on the Summary tab", () => {
   eventsTabPage.storeOpenInvestigationsCount();
 });

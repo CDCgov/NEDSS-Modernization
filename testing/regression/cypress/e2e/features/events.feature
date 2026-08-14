@@ -64,6 +64,16 @@ Feature: User accesses patient profile and can view existing patient data here.
         And the user navigate to the patient profile page for "63000"
         Then the Open investigations count should have increased by 1
 
+    Scenario: Cancel creation of new lab report and confirm none was created
+        When user clicks on a patient's profile "Events" tab
+        And I check the Lab reports count on the Events tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And I select a random Program Area
+        And I select a random Jursidiction
+        And user clicks the Cancel button on the Lab Report page and confirms
+        Then the Lab reports count should not have changed
+
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it

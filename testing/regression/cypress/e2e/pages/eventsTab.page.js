@@ -101,6 +101,14 @@ class EventsTabPage {
     });
   }
 
+  verifyLabReportsCountUnchanged() {
+    this.getSectionCount('Lab reports').then((newCount) => {
+      cy.get('@labReportsCount').then((initialCount) => {
+        expect(newCount).to.equal(initialCount);
+      });
+    });
+  }
+
   storeOpenInvestigationsCount() {
     this.getSectionCount('Open investigations').then((count) => {
       cy.wrap(count).as('openInvestigationsCount');

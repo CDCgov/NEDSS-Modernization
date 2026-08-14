@@ -154,6 +154,13 @@ class LabReportPage {
     cy.get('input[name="SubmitAndCreateInvestiation"]').first().click();
   }
 
+  // cancelContextForm() (the button's onclick) uses a real window.confirm(), which
+  // Cypress can handle natively - no popup-window workaround needed here.
+  clickCancelAndConfirm() {
+    cy.on('window:confirm', () => true);
+    cy.get('input[name="Cancel"]').first().click();
+  }
+
   //Ordered Test
 
   searchForOrderedTestInPopup() {

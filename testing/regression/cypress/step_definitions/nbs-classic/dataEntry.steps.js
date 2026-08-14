@@ -335,6 +335,10 @@ When("user clicks the Submit and Create Investigation button", () => {
   labReportPage.clickSubmitAndCreateInvestigation();
 });
 
+When("user clicks the Cancel button on the Lab Report page and confirms", () => {
+  labReportPage.clickCancelAndConfirm();
+});
+
 When("user selects {string} as the condition for the new investigation", (conditionText) => {
   addLabReportInvestigationPage.selectCondition(conditionText);
 });
