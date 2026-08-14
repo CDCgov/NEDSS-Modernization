@@ -4,10 +4,18 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Providers
     Given I am logged in as secure user and stay on classic
 
   Scenario: Add Provider
-    When Navigate to classic provider add page
+    When Navigate to classic provider search page
+    And Enter last name "Pepper"
+    And Enter first name "Doctor"
+    And I click on the Submit button
     And Click on Add button on provider add page
     And Enter quick code for new provider
     And Click Submit button on provider add page
+    And Navigate to classic provider search page
+    And Enter last name "Pepper"
+    And Enter first name "Doctor"
+    And I click on the Submit button
+    Then provider "Pepper", "Doctor" should appear in search results
 
   Scenario: Edit Provider
     When Navigate to classic provider edit page
