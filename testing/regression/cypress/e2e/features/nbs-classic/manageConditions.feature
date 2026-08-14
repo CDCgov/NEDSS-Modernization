@@ -14,4 +14,4 @@ Feature: Classic NBS - User can view and manage data in NBS Conditions
     When Navigate to Condition Library
     And Click a condition in Condition Library
     And Click submit button to create condition
-    Then I should see a green success message containing text "the condition has been updated in the system"
+    Then I should see a green success message containing text "has been successfully updated in the system"
