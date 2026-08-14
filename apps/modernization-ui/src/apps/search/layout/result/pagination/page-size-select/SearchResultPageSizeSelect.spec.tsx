@@ -47,6 +47,6 @@ describe('when changing the number of results per page', () => {
         const user = userEvent.setup();
         await user.selectOptions(toggle, '50');
 
-        expect(mockOnPageSizeChanged).toBeCalledWith(50);
+        expect(mockOnPageSizeChanged).toHaveBeenCalledWith(50);
     });
 });

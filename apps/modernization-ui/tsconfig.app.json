@@ -4,7 +4,7 @@
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
         "target": "ES2020",
         "useDefineForClassFields": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "lib": ["ES2023", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
 
@@ -27,7 +27,8 @@
         "plugins": [{ "name": "typescript-plugin-css-modules" }],
         "paths": {
             "*": ["./src/*"]
-        }
+        },
+        "types": ["vite/client"]
     },
     "exclude": ["src/**/*.spec.ts", "src/**/*.spec.tsx", "src/setupTests.ts"],
     "include": ["src"]

@@ -25,6 +25,7 @@ dependencies {
 
     implementation(platform('tools.jackson:jackson-bom:3.1.5'))                     // CVE-2026-59889 (Jackson 3, via elasticsearch-java 9.4)
     implementation(platform('io.opentelemetry:opentelemetry-bom:1.62.0'))           // CVE-2026-45292
+    implementation('org.apache.httpcomponents.core5:httpcore5:5.4.3')               // CVE-2026-54399
 
     implementation(project(':audit'))
     implementation(project(':accumulation'))

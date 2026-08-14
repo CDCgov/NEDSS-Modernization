@@ -17,8 +17,6 @@ class PatientProfilePage {
   print() {
     cy.wait(1000);
     cy.get('button[aria-label="Delete"]').click({ force: true })
-    // cy.get("button").contains("Delete patient").invoke("removeAttr", "target").click({ force: true });
-    
   }
 
   setPatientProfileENVID() {
@@ -33,14 +31,6 @@ class PatientProfilePage {
 
   isDemographicPageDisplayed() {
     cy.wait(1000);
-
-    // cy.window().then((win) => {
-    //   cy.wait(1000);
-    //   cy.window({ timeout: 10000 }).should((newWin) => {
-    //     expect(newWin).to.not.equal(win);
-    //     win = newWin;
-    //   });
-    // });
   }
 
   delete() {
@@ -50,13 +40,11 @@ class PatientProfilePage {
   confirmDelete() {
     cy.wait(1000);
     cy.get("button").contains("Delete").click()
-    // cy.get("dialog[class=usa-modal] button").eq(1).click();
   }
 
   cancelDelete() {
     cy.wait(1000);
     cy.get("button").contains("Cancel").click()
-    // cy.get("dialog[class=usa-modal] button").eq(0).click();
   }
 
   navigatePatinet() {
@@ -67,12 +55,6 @@ class PatientProfilePage {
     cy.contains("button", "Back to top").scrollIntoView();
     cy.window().its("scrollY").should("be.greaterThan", 0);
     cy.contains("button", "Back to top").click();
-  }
-
-  clickOnTab(tabName) {
-    cy.intercept("POST", "/graphql").as("graphqlRequest");
-    cy.contains("button", tabName).click();
-    // cy.wait("@graphqlRequest");
   }
 
   clickOnButton(buttonName) {
@@ -89,10 +71,9 @@ class PatientProfilePage {
 
   addName(fName) {
     addNameModule.date().type().first(fName).last().add();
-    // cy.wait("@graphqlRequest");
   }
 
-  isNameAdded(fName) {
+  isNameAdded() {
     addNameModule.isSuccessfullyAdded();
   }
 
@@ -276,6 +257,58 @@ class PatientProfilePage {
     cy.get("img[name='INV107_button']").type('Cobb County');
     cy.get("#SubmitTop").click();
   }
+
+  verifyMorbidityEventIdNotInDocumentsRequiringReview() {
+    // Wait for page to load
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+      .should('not.exist');
+    
+    const eventId = Cypress.env('morbidityEventId');
+    
+    // Check if the Documents Requiring Review section exists
+    cy.get('body').then($body => {
+      const $table = $body.find('#documents-requiring-review-table');
+      
+      if ($table.length === 0) {
+        // Table doesn't exist - pass
+        return;
+      }
+      
+      // Check if the table is visible or hidden
+      const isVisible = $table.is(':visible');
+      
+      if (!isVisible) {
+
+        const tableText = $table.text().trim();
+        
+        if (tableText === '') {
+          // Table is empty - pass
+          return;
+        }
+        
+        // Table has data, check for the event ID
+        expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
+          .to.not.include(eventId);
+        return;
+      }
+      
+      // Table is visible, check its content
+      const tableText = $table.text().trim();
+      
+      if (tableText === '' || tableText.includes('No data has been added')) {
+        // Table is empty - pass
+        cy.log('Documents Requiring Review table is empty - no documents to review');
+        cy.log('Verified morbidity event ID is NOT in Documents Requiring Review: ' + eventId);
+        return;
+      }
+      
+      // Table has data, check for the event ID
+      expect(tableText, 'Morbidity event ID should NOT appear in Documents Requiring Review')
+        .to.not.include(eventId);
+
+    });
+  }
+
 }
 
 export default new PatientProfilePage();

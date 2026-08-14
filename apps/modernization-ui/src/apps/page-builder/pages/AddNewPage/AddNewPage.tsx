@@ -65,10 +65,8 @@ export const AddNewPage = () => {
         });
     }, [watch.eventType]);
 
-    const handleAddConditions = (conditions: number[]) => {
-        const newConditions = conditions
-            .map((id) => String(id))
-            .filter((id) => !form.getValues('conditionIds').includes(id));
+    const handleAddConditions = (conditions: string[]) => {
+        const newConditions = conditions.filter((id) => !form.getValues('conditionIds').includes(id));
         form.setValue('conditionIds', newConditions.concat(form.getValues('conditionIds')));
         conditionLookupModal.current?.toggleModal();
     };

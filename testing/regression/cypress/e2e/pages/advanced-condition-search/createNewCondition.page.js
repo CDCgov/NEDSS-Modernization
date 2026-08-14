@@ -4,8 +4,10 @@ class CreateNewConditionPage {
     }
 
     selectEventTypeInvestigation() {
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
         cy.get('#eventType').eq(0).select('INV');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
     }
 
@@ -33,7 +35,6 @@ class CreateNewConditionPage {
     }
 
     clickCreateAndAddToPageBtn() {
-        cy.wait(2000)
         cy.get('.cancel-btn').eq(0).click({ force: true });
     }
 
@@ -57,8 +58,7 @@ class CreateNewConditionPage {
     }
 
     navigateToClassicDesign () {
-        cy.wait(2000)
-        cy.contains('New Test Page');
+        cy.contains('New Test Page', { timeout: 5000 }).should('be.visible');
     }
 }
 

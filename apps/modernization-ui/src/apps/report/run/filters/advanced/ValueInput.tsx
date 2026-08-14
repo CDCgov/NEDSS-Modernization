@@ -25,7 +25,9 @@ const SINGLE_COMPONENTS: Record<string, ReactComponentLike> = {
 
 const BETWEEN_OPERATOR_NAME = BETWEEN_OPERATOR.name;
 
-const getConvertedRange = (props: ValueEditorProps<FullField>): DateBetweenCriteria | NumberBetweenCriteria => {
+const getConvertedRange = <FullFieldExtended extends FullField = FullField>(
+    props: ValueEditorProps<FullFieldExtended>
+): DateBetweenCriteria | NumberBetweenCriteria => {
     if (props.operator === BETWEEN_OPERATOR_NAME && typeof props.value === 'string' && props.value) {
         const [from = '', to = ''] = props.value.split(',');
         return { between: { from, to } };
@@ -33,7 +35,7 @@ const getConvertedRange = (props: ValueEditorProps<FullField>): DateBetweenCrite
     return { between: { from: '', to: '' } };
 };
 
-const ValueInput = (props: ValueEditorProps<FullField>) => {
+const ValueInput = <FullFieldExtended extends FullField = FullField>(props: ValueEditorProps<FullFieldExtended>) => {
     const id = useId();
     const { handleOnChange, inputType, operator, title, value } = props;
     const labelName = title ?? '';
@@ -46,10 +48,10 @@ const ValueInput = (props: ValueEditorProps<FullField>) => {
     // adapted from https://github.com/mcmcgrath13/react-querybuilder/blob/87a991b124fa9060431ac8e1e8f42b789a5ddecb/packages/react-querybuilder/src/components/ValueEditor.tsx#L312-L322
     useEffect(() => {
         // clear input when changing from between to other operators
-        if (BETWEEN_OPERATOR_NAME !== operator && value.includes(',')) {
+        if (BETWEEN_OPERATOR_NAME !== operator && inputType !== 'text' && value.includes(',')) {
             handleOnChange('');
         }
-    }, [handleOnChange, operator, value]);
+    }, [handleOnChange, operator, value, inputType]);
 
     const handleSingleOnChange = (newValue: number | string | undefined) => {
         if (newValue !== undefined) {
