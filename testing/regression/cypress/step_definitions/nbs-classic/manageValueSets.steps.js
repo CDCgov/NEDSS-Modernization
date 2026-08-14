@@ -42,6 +42,10 @@ Then("Click on a Value set in Value Set library", () => {
     classicManageValueSetsPage.clickValueSetInValueSetList()
 });
 
+When("I click on an active Value set in Value Set Library", () => {
+    classicManageValueSetsPage.clickActiveValueSet()
+});
+
 Then("Click Collapse Subsections to collapse the sections in Value Set library", () => {
     classicManageValueSetsPage.clickCollapseSubsectionsInValueSetList()
 });

@@ -44,6 +44,19 @@ class ClassicManageValueSetsPage {
     cy.get('#parent tbody tr td a').eq(0).click()
   }
 
+
+  clickActiveValueSet() {
+    cy.get('._indicator_1vvtd_1', { timeout: 10000 }).should('not.exist');
+    
+    cy.get('table.dtTable tbody tr').each($row => {
+      const status = Cypress.$($row).find('td:last-child').text().trim();
+      if (status === 'Active') {
+        cy.wrap($row).find('td:first-child a img[src="page_white_text.gif"]').click();
+        return false; // Stop iteration after clicking
+      }
+    });
+  }
+
   clickCollapseSubsectionsInValueSetList() {
     cy.wait(2000)
     cy.contains('Collapse Subsections').click()

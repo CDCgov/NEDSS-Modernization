@@ -38,5 +38,6 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
     Then the Value Set count should increase by 1
 
   Scenario: Make inactive
-    When Click on a Value set in Value Set library
+    When I click on an active Value set in Value Set Library
     And Click on Make Inactive button to inactive the value set
+    Then I should see a green success message containing text "has been made inactive"
