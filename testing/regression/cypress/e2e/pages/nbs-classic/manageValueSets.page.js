@@ -64,8 +64,45 @@ class ClassicManageValueSetsPage {
     cy.get('#submitCr').click()
   }
 
+  storeValueSetCount() {
+    cy.get('.pagebanner')
+      .first()
+      .invoke('text')
+      .then(text => {
+        // Extract the count from text like "Results 1 to 20 of 1003"
+        const match = text.match(/of\s+(\d+)/);
+        if (match && match[1]) {
+          const count = parseInt(match[1], 10);
+          Cypress.env('valueSetCount', count);
+          cy.log('Stored value set count: ' + count);
+        } else {
+          cy.log('Could not extract count from: ' + text);
+          throw new Error('Value set count not found');
+        }
+      });
+  }
+
+  verifyValueSetIncreased() {
+    const initialCount = Cypress.env('valueSetCount');
+  
+    cy.get('.pagebanner')
+      .first()
+      .invoke('text')
+      .then(text => {
+        const match = text.match(/of\s+(\d+)/);
+        if (match && match[1]) {
+          const newCount = parseInt(match[1], 10);
+          cy.log('Initial count: ' + initialCount + ', New count: ' + newCount);
+          expect(newCount, 'Value set count should increase by 1').to.equal(initialCount + 1);
+        } else {
+          throw new Error('Could not extract count from: ' + text);
+        }
+      });
+  }
+
   fillTheDetailsNewValueSetConcept() {
     const newName = this.newName()
+    Cypress.env("newValueSet", newName)
     cy.get('#ValLC').type(`local code ${newName}`)
     cy.get('#ValLDN').type(`display name ${newName}`)
     cy.get('#ValSDN').type(`short name ${newName}`)

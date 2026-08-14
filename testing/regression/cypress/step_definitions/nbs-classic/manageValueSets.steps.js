@@ -1,4 +1,4 @@
-import { Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import classicManageValueSetsPage from "@pages/nbs-classic/manageValueSets.page";
 
 Then("Navigate to Value Set Library", () => {
@@ -7,6 +7,15 @@ Then("Navigate to Value Set Library", () => {
 
 Then("Click on Add new in Value Set Library", () => {
     classicManageValueSetsPage.clickAddNewBtn()
+});
+
+When("I store the Value Set count", () => {
+    classicManageValueSetsPage.storeValueSetCount()
+
+});
+
+Then("The Value Set count should increase by 1", () => {
+    classicManageValueSetsPage.verifyValueSetIncreased()
 });
 
 Then("Fill the details to create new {string} Value Set", (type) => {
