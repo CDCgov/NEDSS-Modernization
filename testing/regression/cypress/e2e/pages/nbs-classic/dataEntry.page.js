@@ -68,6 +68,14 @@ class LabReportPage {
     selectRandomDropdownValue(this.codedResultField);
   }
 
+  selectResultedTestByText(text) {
+    cy.get(this.resultedTestField).select(text, { force: true });
+  }
+
+  selectCodedResultByText(text) {
+    cy.get(this.codedResultField).select(text, { force: true });
+  }
+
   enterNumericResult(value) {
     cy.get(this.numericResultField).type(value);
   }
@@ -132,6 +140,18 @@ class LabReportPage {
 
   selectJurisdiction() {
     selectRandomDropdownValue(this.jurisdictionField);
+  }
+
+  selectProgramAreaByText(text) {
+    cy.get(this.programAreaField).select(text, { force: true });
+  }
+
+  selectJurisdictionByText(text) {
+    cy.get(this.jurisdictionField).select(text, { force: true });
+  }
+
+  clickSubmitAndCreateInvestigation() {
+    cy.get('input[name="SubmitAndCreateInvestiation"]').first().click();
   }
 
   //Ordered Test

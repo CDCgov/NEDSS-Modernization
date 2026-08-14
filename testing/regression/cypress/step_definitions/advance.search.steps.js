@@ -273,3 +273,11 @@ Given("I check the Lab reports count on the Events tab", () => {
 Then("the Lab reports count should have increased by 1", () => {
   eventsTabPage.verifyLabReportsCountIncreasedByOne();
 });
+
+Given("I check the Open investigations count on the Summary tab", () => {
+  eventsTabPage.storeOpenInvestigationsCount();
+});
+
+Then("the Open investigations count should have increased by 1", () => {
+  eventsTabPage.verifyOpenInvestigationsCountIncreasedByOne();
+});

@@ -2,6 +2,7 @@ import { labReportPage } from '../../e2e/pages/nbs-classic/dataEntry.page';
 import { patientEntitySearch } from '../../e2e/pages/nbs-classic/patientEntitySearch.page';
 import { searchPage } from '../../e2e/pages/search.page';
 import { morbidityReportPage } from '../../e2e/pages/nbs-classic/morbidityReportPage';
+import addLabReportInvestigationPage from '../../e2e/pages/events/add-lab-report-investigation.page';
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { clickSubmitButton, clickHome } from '../../e2e/pages/nbs-classic/utils';
 
@@ -310,4 +311,57 @@ Then("I should see a validation error for the Jurisdiction field", () => {
 // Form state verification steps
 Then("the patient first name field should contain {string}", (value) => {
   morbidityReportPage.verifyPatientFirstNameContains(value);
+});
+
+// Row 118: Add new lab report and create investigation
+
+When("user selects {string} from the Program Area dropdown", (text) => {
+  labReportPage.selectProgramAreaByText(text);
+});
+
+When("user selects {string} from the Jurisdiction dropdown", (text) => {
+  labReportPage.selectJurisdictionByText(text);
+});
+
+When("user selects {string} from the Resulted Test dropdown", (text) => {
+  labReportPage.selectResultedTestByText(text);
+});
+
+When("user selects {string} from the Coded Result dropdown", (text) => {
+  labReportPage.selectCodedResultByText(text);
+});
+
+When("user clicks the Submit and Create Investigation button", () => {
+  labReportPage.clickSubmitAndCreateInvestigation();
+});
+
+When("user selects {string} as the condition for the new investigation", (conditionText) => {
+  addLabReportInvestigationPage.selectCondition(conditionText);
+});
+
+When(
+  "user sets the processing decision to {string} for a {string} investigation and submits",
+  (decisionCode, investigationType) => {
+    addLabReportInvestigationPage.selectProcessingDecisionAndSubmit(decisionCode, investigationType);
+  }
+);
+
+When("user fills the Field Follow-up investigator with Quick Code {string}", (quickCode) => {
+  addLabReportInvestigationPage.fillFieldFollowUpInvestigator(quickCode);
+});
+
+When("user sets the Field Follow-up date assigned to match the investigation start date", () => {
+  addLabReportInvestigationPage.fillFieldFollowUpDateAssignedToMatchStartDate();
+});
+
+When("user selects {string} for Patient Eligible for Notification of Exposure", (text) => {
+  addLabReportInvestigationPage.selectNotificationEligibility(text);
+});
+
+When("user clicks the Submit button on the investigation", () => {
+  addLabReportInvestigationPage.clickSubmit();
+});
+
+Then("the investigation should be saved successfully", () => {
+  addLabReportInvestigationPage.verifyInvestigationSavedSuccessfully();
 });

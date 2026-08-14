@@ -101,6 +101,20 @@ class EventsTabPage {
     });
   }
 
+  storeOpenInvestigationsCount() {
+    this.getSectionCount('Open investigations').then((count) => {
+      cy.wrap(count).as('openInvestigationsCount');
+    });
+  }
+
+  verifyOpenInvestigationsCountIncreasedByOne() {
+    this.getSectionCount('Open investigations').then((newCount) => {
+      cy.get('@openInvestigationsCount').then((initialCount) => {
+        expect(newCount).to.equal(initialCount + 1);
+      });
+    });
+  }
+
   validateTableColumns(tableName, dataTable) {
     const myArray = [];    
     cy.contains("section", tableName).within(() => {
