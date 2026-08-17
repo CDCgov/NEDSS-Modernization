@@ -103,6 +103,15 @@ Feature: User accesses patient profile and can view existing patient data here.
         And user clicks the newest Lab report link
         Then the Lab Report view should show the updated Specimen Collection Date
 
+    Scenario: Delete existing lab report and confirm it is removed
+        When user clicks on a patient's profile "Events" tab
+        And I check the Lab reports count on the Events tab
+        And user clicks the newest Lab report link
+        And user clicks the Delete button on the Lab Report page and confirms
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        Then the Lab reports count should have decreased by 1
+
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it

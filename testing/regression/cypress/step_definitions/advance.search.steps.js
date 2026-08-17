@@ -278,6 +278,10 @@ Then("the Lab reports count should not have changed", () => {
   eventsTabPage.verifyLabReportsCountUnchanged();
 });
 
+Then("the Lab reports count should have decreased by 1", () => {
+  eventsTabPage.verifyLabReportsCountDecreasedByOne();
+});
+
 When("user clicks the newest Lab report link", () => {
   eventsTabPage.clickNewestLabReportLink();
 });

@@ -339,6 +339,10 @@ When("user clicks the Cancel button on the Lab Report page and confirms", () => 
   labReportPage.clickCancelAndConfirm();
 });
 
+When("user clicks the Delete button on the Lab Report page and confirms", () => {
+  labReportPage.clickDeleteLabReportAndConfirm();
+});
+
 Then("the Lab Report view should show Reporting Facility {string}", (text) => {
   labReportPage.verifyViewedReportingFacility(text);
 });

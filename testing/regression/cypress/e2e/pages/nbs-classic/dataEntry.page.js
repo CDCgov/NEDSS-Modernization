@@ -161,6 +161,13 @@ class LabReportPage {
     cy.get('input[name="Cancel"]').first().click();
   }
 
+  // deleteContextForm() (the View screen's Delete button onclick) also uses a
+  // real window.confirm(), same pattern as Cancel.
+  clickDeleteLabReportAndConfirm() {
+    cy.on('window:confirm', () => true);
+    cy.get('input[name="Delete"]').first().click();
+  }
+
   // View Lab Report screen - reuses the same field ids as the Add screen, but
   // rendered as read-only <span>s instead of inputs/selects.
   verifyViewedReportingFacility(text) {
