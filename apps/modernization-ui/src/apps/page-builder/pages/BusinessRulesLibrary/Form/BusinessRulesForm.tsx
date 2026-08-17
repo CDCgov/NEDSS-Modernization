@@ -309,7 +309,8 @@ export const BusinessRulesForm = ({
                                     outline={true}
                                     onClick={handleOpenSourceQuestion}
                                     data-testid="searchSourceQuestionBtn"
-                                    className={styles.sourceBtn}>
+                                    className={styles.sourceBtn}
+                                >
                                     Search source question
                                 </Button>
                             ) : (
@@ -393,7 +394,7 @@ export const BusinessRulesForm = ({
 
                     {watch.ruleFunction && watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE && (
                         <>
-                            <Controller<RuleRequest, "sourceValues">
+                            <Controller<RuleRequest, 'sourceValues'>
                                 control={form.control}
                                 name="sourceValues"
                                 rules={{
@@ -410,7 +411,7 @@ export const BusinessRulesForm = ({
                                         onChange={(values) =>
                                             onChange(values.map((value) => ({ id: value.value, text: value.name })))
                                         }
-                                        value={sourceValues.filter((c) => value?.some(v => v.id === c.value))}
+                                        value={sourceValues.filter((c) => value?.some((v) => v.id === c.value))}
                                         options={sourceValues}
                                         required={true}
                                         disabled={form.watch('anySourceValue')}
@@ -482,7 +483,8 @@ export const BusinessRulesForm = ({
                                             outline={true}
                                             data-testid="targetQuestionEditBtn"
                                             onClick={handleOpenTargetQuestion}
-                                            className={styles.btn}>
+                                            className={styles.btn}
+                                        >
                                             <Icon.Edit aria-label="edit" />
                                             <span>Edit</span>
                                         </Button>
@@ -496,7 +498,8 @@ export const BusinessRulesForm = ({
                                     type="button"
                                     outline={true}
                                     onClick={handleOpenTargetQuestion}
-                                    disabled={sourceQuestion === undefined}>
+                                    disabled={sourceQuestion === undefined}
+                                >
                                     Search target question
                                 </Button>
                             )}
