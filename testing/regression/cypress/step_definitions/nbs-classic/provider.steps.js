@@ -5,10 +5,6 @@ Then("Navigate to classic provider add page", () => {
     classicProviderPage.navigateToAddProvider()
 });
 
-Then("Navigate to classic provider edit page", () => {
-    classicProviderPage.navigateToEditProvider()
-});
-
 When("Enter last name {string}", (text) => {
     classicProviderPage.enterLastName(text)
 })

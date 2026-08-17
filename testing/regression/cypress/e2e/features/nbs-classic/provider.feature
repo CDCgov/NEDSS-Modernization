@@ -18,7 +18,11 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Providers
     Then provider "Pepper", "Doctor" should appear in search results
 
   Scenario: Edit Provider
-    When Navigate to classic provider edit page
+    When Navigate to classic provider search page
+    And Enter last name "Pepper"
+    And Enter first name "Doctor"
+    And I click on the Submit button
+    And I click View on the search results
     And Click Edit button on provider page
     And Check Edit Provider on the page
     And Click New Provider Edit Radio Option
@@ -26,6 +30,5 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Providers
     And Click Submit button on provider add page
     And Navigate to classic provider search page
     And Enter first name "TestFirstName"
-    And Enter last name "test"
     And I click on the Submit button
-    Then provider "test", "TestFirstName" should appear in search results
+    Then provider "Pepper", "TestFirstName" should appear in search results

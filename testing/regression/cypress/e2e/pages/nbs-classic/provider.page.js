@@ -17,19 +17,6 @@ class ClassicProviderSearchPage {
     cy.get('td[class="boldTwelveBlack"]').contains('Edit Provider')
   }
 
-  navigateToAddProvider() {
-    this.navigateToClassicProviderSearchPane()
-    this.enterNameInClassicSearchProviderPage('test')
-    this.clickSearchBtnInClassicProviderSearchPane()
-  }
-
-  navigateToEditProvider() {
-    this.navigateToClassicProviderSearchPane()
-    this.enterNameInClassicSearchProviderPage('test')
-    this.clickSearchBtnInClassicProviderSearchPane()
-    cy.get('a').contains("View").eq(0).click()
-  }
-
   clickAddButtonOnAddProvider() {
     cy.get('#Add').eq(0).click()
   }
@@ -66,7 +53,7 @@ class ClassicProviderSearchPage {
   clickEditProviderAddName() {
     cy.get('select[id="provider.nmPrefix"]').select("Brother", {force: true});
     cy.get('input[name="provider.nmPrefix_textbox"]').type("Brother", {force: true});
-    cy.get('input[id="provider.firstNm"]').type("TestFirstName");
+    cy.get('input[id="provider.firstNm"]').clear().type("TestFirstName");
     cy.get('input[name="Submit"][id="Submit"]').eq(0).click()
   }
 
