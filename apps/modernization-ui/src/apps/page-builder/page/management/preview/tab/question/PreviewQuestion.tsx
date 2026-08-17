@@ -57,7 +57,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     displayComponent === 1027 ||
                     displayComponent === 1028 ||
                     displayComponent === 1031) && (
-                    <SelectInput
+                    <SingleSelect
                         onChange={() => {}}
                         defaultValue=""
                         options={conceptState}

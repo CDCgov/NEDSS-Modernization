@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { MatchingAttribute, MatchMethod, Pass } from 'apps/deduplication/api/model/Pass';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+import { SingleSelect } from 'design-system/select';
 
 import { NumericHintInput } from '../../matching-bounds/numeric-hint-input/NumericHintInput';
 
@@ -18,6 +18,12 @@ type AttributeProps = {
     logOdds: number;
     onRemove: (index: number) => void;
 };
+
+const MATCH_METHOD_OPTIONS = [
+                                    { name: 'Exact match', value: MatchMethod.EXACT },
+                                    { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER },
+                                ];
+
 export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, onRemove }: AttributeProps) => {
     const form = useFormContext<Pass>();
     const { matchingCriteria } = useWatch<Pass>(form);
@@ -56,20 +62,17 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                         name={`matchingCriteria.${index}.method`}
                         rules={{ required: { value: true, message: 'Matching method is required.' } }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                            <SelectInput
-                                defaultValue={value}
+                            <SingleSelect
+                                value={MATCH_METHOD_OPTIONS.find(v => v.value === value)}
                                 label="Method"
                                 onBlur={onBlur}
-                                onChange={(e) => {
-                                    onChange(e);
+                                onChange={(v) => {
+                                    onChange(v?.value ?? null);
                                     onBlur();
                                 }}
                                 id={name}
                                 name={name}
-                                options={[
-                                    { name: 'Exact match', value: MatchMethod.EXACT },
-                                    { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER },
-                                ]}
+                                options={MATCH_METHOD_OPTIONS}
                                 error={error?.message}
                             />
                         )}

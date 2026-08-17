@@ -128,7 +128,7 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                             name="type"
                             rules={{ required: { value: true, message: 'Static element type is required.' } }}
                             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                                <SelectInput
+                                <SingleSelect
                                     label="Choose a static element"
                                     options={staticType}
                                     required={true}

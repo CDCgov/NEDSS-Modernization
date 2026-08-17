@@ -6,7 +6,7 @@ describe('SelectInput component tests', () => {
     describe('when default value is provided', () => {
         it('should render DropDown which has a label as Test Label and preselected option as the default value passed', () => {
             const { container } = render(
-                <SelectInput
+                <SingleSelect
                     id="test-id"
                     label="Test Label"
                     options={[
@@ -29,7 +29,7 @@ describe('SelectInput component tests', () => {
     describe('when default value is not provided', () => {
         it('should render DropDown which has a label as Test Label and should show - Select - as the placeholder/default selected option', () => {
             const { container } = render(
-                <SelectInput
+                <SingleSelect
                     id="test-id"
                     label="Test Label"
                     options={[
@@ -51,7 +51,7 @@ describe('SelectInput component tests', () => {
     describe('when one of the options is clicked upon', () => {
         it('should mark that option as checked', async () => {
             const { container, getByTestId } = render(
-                <SelectInput
+                <SingleSelect
                     id="test-id"
                     label="Test Label"
                     options={[

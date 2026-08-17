@@ -106,7 +106,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     required: { value: true, message: 'Template is required.' },
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Template"
                         name={name}
                         defaultValue={value}
@@ -137,7 +137,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Reporting mechanism"
                         name={name}
                         id={name}

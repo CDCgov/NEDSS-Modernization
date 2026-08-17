@@ -63,7 +63,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                                 id="select-column"
                                 name={name}
                                 label="Select a field"
-                                value={properties.find(p => p.value === value)}
+                                value={properties.find((p) => p.value === value)}
                                 onBlur={onBlur}
                                 onChange={(v) => onChange(v?.value ?? null)}
                                 options={properties}
@@ -82,7 +82,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                                     id="select-operator"
                                     name={name}
                                     label="Operator"
-                                    value={operators(property).find(p => p.value === value)}
+                                    value={operators(property).find((p) => p.value === value)}
                                     onBlur={onBlur}
                                     onChange={(v) => onChange(v?.value ?? null)}
                                     options={operators(property)}
