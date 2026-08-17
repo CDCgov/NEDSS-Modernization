@@ -9,6 +9,7 @@ type NumericOnChange = (value: number | null) => void;
 type NumericProps = {
     id: string;
     inputMode?: 'decimal' | 'numeric';
+    // don't allow undefined to avoid control<=>uncontrolled switching
     value: number | null;
     onChange: NumericOnChange;
     onBlur?: () => void;

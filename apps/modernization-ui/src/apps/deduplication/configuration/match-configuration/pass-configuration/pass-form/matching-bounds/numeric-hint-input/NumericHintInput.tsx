@@ -17,6 +17,7 @@ type Props = {
     min?: number;
     max?: number;
     step?: number;
+    // don't allow undefined to avoid control<=>uncontrolled switching
     value: number | null;
     tooltip: ReactNode;
     disabled?: boolean;
