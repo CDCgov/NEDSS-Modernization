@@ -98,8 +98,7 @@ When('I fill out all filters with {int}', (index) => {
         cy.wrap($select)
           .then(() => {
             cy.get('.multi-select__option').eqOrLast(index).click()
-            cy.get('.multi-select__option').eqOrLast(index)
-              .then(() => cy.get('body').type('{esc}'))
+            cy.get('.multi-select__option').eqOrLast(index).blur()
           })
       });
 });
