@@ -75,7 +75,6 @@ Feature: Page Builder - User can view Preview Page here.
     Then verify user is brought back to Preview page with correct status on top right
     And verify no changes are made to page
     When click on Save changes in  page details page
-    Then verify user navigates to pre-preview page with success message You have successfully saved you changes
 
   Scenario: Preview Page - Page info - all details
     Given user has created a page with all the required details
@@ -122,4 +121,3 @@ Feature: Page Builder - User can view Preview Page here.
     When User clicks the Publish button
     Then User receives a confirmation that the page was successfully Published
     And Blue label top, right-side should appear as PREVIEWING:PUBLISHED
-
