@@ -60,7 +60,7 @@ When('I add incomplete or incorrect advanced filters', () => {
 
         // enter invalid date
         if (advFilter.field === 'Confirmation Method Time' && logicVal === 'Not Equals') {
-          enterInput('name="Value"', 2);
+          cy.enterInput('name="Value"', 2);
         }
       }
 
@@ -145,7 +145,7 @@ const enterFilterValue = (field, index) => {
 
   if (field.type !== 'multiselect') {
     if (['Equals', 'Not Equals', 'Contains', 'Starts With', 'Less Than', 'Greater Than', 'Less Or Equal', 'Greater Or Equal'].includes(logic)) {
-      enterInput('name="Value"', field.firstVal);
+      cy.enterInput('name="Value"', field.firstVal);
     }
 
     if (logic === 'Between') {

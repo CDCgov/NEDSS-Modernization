@@ -1,5 +1,4 @@
 import addCommentModule from "./addComment.module";
-import {enterInput} from "../../../helpers/form.helper";
 
 class AddNameModule {
   date() {
@@ -15,11 +14,11 @@ class AddNameModule {
   }
 
   first(fName) {
-    return enterInput('.usa-modal-wrapper.is-visible #first', fName);
+    return cy.enterInput('.usa-modal-wrapper.is-visible #first', fName);
   }
 
   last() {
-    return enterInput('.usa-modal-wrapper.is-visible #last', this.getRandomName());
+    return cy.enterInput('.usa-modal-wrapper.is-visible #last', this.getRandomName());
   }
 
   comment() {

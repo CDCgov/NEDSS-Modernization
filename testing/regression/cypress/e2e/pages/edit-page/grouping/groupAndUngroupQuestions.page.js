@@ -1,5 +1,3 @@
-import {enterInput} from "../../../../helpers/form.helper";
-
 class GroupAndUngroupQuestions {
 
     navigateEditPage () {
@@ -109,16 +107,16 @@ class GroupAndUngroupQuestions {
     }
 
     renameSubsection() {
-        enterInput('[data-testid="editSubsectionModalSubsectionName"]',`Edited section name ${this.newName()}`);
+        cy.enterInput('[data-testid="editSubsectionModalSubsectionName"]',`Edited section name ${this.newName()}`);
     }
 
     renameBlockName(newName) {
         const value = newName ? newName : `BLOCKNAME${this.newName()}`;
-        enterInput('[data-testid="editSubsectionModalBlockName"]', value);
+        cy.enterInput('[data-testid="editSubsectionModalBlockName"]', value);
     }
 
     updateDatamartValue(num) {
-        enterInput('[data-testid="editSubsectionModalDataMart"]', num);
+        cy.enterInput('[data-testid="editSubsectionModalDataMart"]', num);
     }
 
     updateAppearsInTableValueToNo() {
@@ -127,7 +125,7 @@ class GroupAndUngroupQuestions {
             cy.get('[name="batches.0.appearsInTable"]').eq(0).select('N');
             cy.get('[name="batches.1.width"]').eq(0).invoke('val').then(value2 => {
                 const updatedWidth = parseInt(value2) + parseInt(columnWidth)
-                enterInput('[name="batches.1.width"]', updatedWidth);
+                cy.enterInput('[name="batches.1.width"]', updatedWidth);
             });
         });
     }

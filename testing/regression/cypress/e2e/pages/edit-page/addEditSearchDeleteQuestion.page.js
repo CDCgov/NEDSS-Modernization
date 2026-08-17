@@ -1,5 +1,3 @@
-import {enterInput} from "../../../helpers/form.helper";
-
 class AddEditSearchDeleteQuestion {
 
     navigateEditPage () {
@@ -85,8 +83,8 @@ class AddEditSearchDeleteQuestion {
     }
 
     updateQuestionDetails() {
-        enterInput('#label', 'question label edited');
-        enterInput('#tooltip', 'question tooltip edited');
+        cy.enterInput('#label', 'question label edited');
+        cy.enterInput('#tooltip', 'question tooltip edited');
     }
 
     clickEditQuestionSaveBtn() {

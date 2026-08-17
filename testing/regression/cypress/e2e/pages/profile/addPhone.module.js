@@ -1,5 +1,4 @@
 import addCommentModule from "./addComment.module";
-import {enterInput} from "../../../helpers/form.helper";
 
 class AddPhoneModule {
   date() {
@@ -36,7 +35,7 @@ class AddPhoneModule {
   }
 
   phoneNumber(phone) {
-    enterInput(".usa-modal-wrapper.is-visible #number", phone);
+    cy.enterInput(".usa-modal-wrapper.is-visible #number", phone);
     return this;
   }
 

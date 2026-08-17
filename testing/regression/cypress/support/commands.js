@@ -64,3 +64,16 @@ Cypress.Commands.add(
         return cy.wrap($subject).eq(i);
     }
 );
+
+/**
+ * Enter a value for a specified input selector
+ * @param {string} inputSelector - Selector for the input element
+ * @param {string} value - Value to enter for the input
+ * @param {number} [index = 0] - Index of the element, default is first element
+ * @param {Object} [options = {}] - Options to pass to get method
+ * @returns {Cypress.Chainable<JQuery<HTMLElement>>} - The selected input
+ */
+Cypress.Commands.add('enterInput', (inputSelector, value, index = 0, options = {}) => {
+  cy.get(inputSelector, options).eqOrLast(index).clear();
+  return cy.get(inputSelector).eqOrLast(index).type(value);
+})

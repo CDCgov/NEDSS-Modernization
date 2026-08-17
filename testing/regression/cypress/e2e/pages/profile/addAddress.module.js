@@ -1,5 +1,4 @@
 import addCommentModule from "./addComment.module";
-import {enterInput} from "../../../helpers/form.helper";
 
 class AddAddressModule {
   date() {
@@ -22,11 +21,11 @@ class AddAddressModule {
   }
 
   street1(address1) {
-    return enterInput('.usa-modal-wrapper.is-visible #address1', address1);
+    return cy.enterInput('.usa-modal-wrapper.is-visible #address1', address1);
   }
 
   city() {
-    return enterInput('.usa-modal-wrapper.is-visible #city', 'houston');
+    return cy.enterInput('.usa-modal-wrapper.is-visible #city', 'houston');
   }
 
   state() {

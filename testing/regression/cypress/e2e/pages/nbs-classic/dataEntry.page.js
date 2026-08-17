@@ -1,5 +1,4 @@
 import { selectRandomDropdownValue } from "./utils";
-import {enterInput} from "../../../helpers/form.helper";
 
 class LabReportPage {
   dataEntryNavigation = 'a[href="/nbs/LoadNavbar.do?ContextAction=DataEntry"]';
@@ -270,7 +269,7 @@ class LabReportPage {
 
   // Dropdown selector
   _selectFromDropdown(fieldSelector, value) {
-    enterInput(fieldSelector, value + '{enter}');
+    cy.enterInput(fieldSelector, value + '{enter}');
   }
 }
 

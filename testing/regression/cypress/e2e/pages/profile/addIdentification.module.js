@@ -1,5 +1,4 @@
 import addCommentModule from "./addComment.module";
-import {enterInput} from "../../../helpers/form.helper";
 
 class AddIdentificationModule {
   date() {
@@ -19,7 +18,7 @@ class AddIdentificationModule {
   }
 
   id(idNumber) {
-    return enterInput('input[data-testid="textInput"]', idNumber);
+    return cy.enterInput('input[data-testid="textInput"]', idNumber);
   }
 
   isSuccessfullyAdded() {

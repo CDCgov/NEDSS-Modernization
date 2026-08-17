@@ -1,5 +1,3 @@
-import {enterInput} from "../../../helpers/form.helper";
-
 class ClassicOrganizationPage {
 
   // Navigation methods
@@ -30,7 +28,7 @@ class ClassicOrganizationPage {
   // Retrieve the name from the alias and use it
     cy.get('@createdOrgName').then((orgName) => {
       cy.log(`Using stored organization name in search pane: ${orgName}`);
-      enterInput('input[id="organizationSearch.nmTxt"]', orgName);
+      cy.enterInput('input[id="organizationSearch.nmTxt"]', orgName);
     });
   }
 

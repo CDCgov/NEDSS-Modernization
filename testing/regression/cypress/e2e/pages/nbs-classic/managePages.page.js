@@ -1,5 +1,3 @@
-import {enterInput} from "../../../helpers/form.helper";
-
 class ClassicManagePagesPage {
     
   navigateToPageLibrary() {
@@ -107,7 +105,7 @@ class ClassicManagePagesPage {
   }
 
   enterDescription () {
-    enterInput('textarea[name="selection.waTemplateDT.descTxt"]', 'description edited');
+    cy.enterInput('textarea[name="selection.waTemplateDT.descTxt"]', 'description edited');
   }
 
   clickPageRulesBtn () {

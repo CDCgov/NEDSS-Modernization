@@ -1,5 +1,3 @@
-import {enterInput} from "../../../helpers/form.helper";
-
 class AddComment {
   date() {
     const currentDate = new Date();
@@ -17,7 +15,7 @@ class AddComment {
   }
 
   comment() {
-    return enterInput('.usa-modal-wrapper.is-visible #comment', "sample comments");
+    return cy.enterInput('.usa-modal-wrapper.is-visible #comment', "sample comments");
   }
 
   add() {

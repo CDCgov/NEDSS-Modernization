@@ -1,5 +1,3 @@
-import {enterInput} from "../../../helpers/form.helper";
-
 class OpenInvestigationPage {
     openInvestigationLink = 'a[href="/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true"]';
     queueTitle = 'a[name="pageTop"]';
@@ -110,7 +108,7 @@ class OpenInvestigationPage {
     }
   
     enterTreatmentComments(comment) {
-      enterInput(this.treatmentCommentsField, comment);
+      cy.enterInput(this.treatmentCommentsField, comment);
     }
   
     clickSubmitButton() {

@@ -1,5 +1,3 @@
-import {enterInput} from "../../helpers/form.helper";
-
 class SearchPage {
 
   enterLastName(lastName) {
@@ -95,9 +93,9 @@ class SearchPage {
 
   enterDob(dateOfBirth) { 
     const [month, day, year] = dateOfBirth.split('/');
-    enterInput('#bornOn-exact-date-month', month);
-    enterInput('#bornOn-exact-date-day', day);
-    enterInput('#bornOn-exact-date-year', year);
+    cy.enterInput('#bornOn-exact-date-month', month);
+    cy.enterInput('#bornOn-exact-date-day', day);
+    cy.enterInput('#bornOn-exact-date-year', year);
   }
 
   clearAll() {
