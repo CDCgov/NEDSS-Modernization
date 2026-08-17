@@ -116,18 +116,31 @@ def mock_db_connection(mocker):
 
 
 @pytest.fixture(scope='session')
-def download_custom_library():
+def download_custom_library(request):
     """Downloads the example library file that is hosted in the
     CDCgov/NEDSS-Custom-Library-Example repository so that we can run tests against it.
     """
-    dir_path = os.path.dirname(__file__)
-    dir_path = f"{dir_path}/../scripts"
-    script_path = f"{dir_path}/pull_example_library.sh"
+    file_dir = os.path.dirname(__file__)
+    script_path = f"{file_dir}/../scripts/pull_example_library.sh"
 
-    result = subprocess.run(script_path)
+    try:
+        result = subprocess.run(script_path, capture_output=True, text=True)
 
-    if result.returncode != 0:
-        raise RuntimeError('Script to pull down example library failed.')
+        if result.returncode != 0:
+            msg = 'Shell script to pull down example library failed. Script STDERR:\n'
+            msg += result.stderr
+
+            raise RuntimeError(msg)
+    except:
+        logging.exception(
+            'Downloading custom library from NEDSS-Custom-Library-Example repo failed'
+        )
+
+    def teardown():
+        logging.info('Removing downloaded custom library file...\n')
+        os.remove(f'{file_dir}/integration/assets/custom_lib_repo_example.py')
+
+    request.addfinalizer(teardown)
 
 
 @pytest.fixture(scope='session')
