@@ -355,6 +355,28 @@ Then("the Lab Report view should show Resulted Test {string}", (text) => {
   labReportPage.verifyViewedResultedTest(text);
 });
 
+When("user clicks the Edit button on the Lab Report page", () => {
+  labReportPage.clickEditLabReport();
+});
+
+When("user changes the Specimen Collection Date to today's date on the Lab Report edit page", () => {
+  const today = new Date().toLocaleDateString("en-US");
+  labReportPage.changeSpecimenCollectionDateOnEdit(today);
+  cy.wrap(today).as('editedCollectionDate');
+});
+
+When("user clicks the Submit button on the Lab Report edit page", () => {
+  labReportPage.clickSubmitOnEditLabReport();
+});
+
+Then("the Lab Report view should show the updated Specimen Collection Date", () => {
+  cy.get('@editedCollectionDate').then((today) => {
+    const [month, day, year] = today.split('/');
+    const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+    labReportPage.verifyViewedCollectionDate(formattedDate);
+  });
+});
+
 When("user selects {string} as the condition for the new investigation", (conditionText) => {
   addLabReportInvestigationPage.selectCondition(conditionText);
 });

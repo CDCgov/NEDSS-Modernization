@@ -181,6 +181,33 @@ class LabReportPage {
     cy.get('#RESULTED_TEST_CONTAINER').should('contain.text', text);
   }
 
+  // Edit Lab Report screen.
+  clickEditLabReport() {
+    cy.on('window:confirm', () => true);
+    // cy.contains() requires an *exact* match on an input's value, and the real
+    // value is padded ("  Edit  "), so match on the name attribute instead.
+    cy.get('input[name="edit"]').first().click();
+  }
+
+  // Program Area and Jurisdiction are locked to plain read-only text on the Edit
+  // screen (rendered next to a hidden input just to resubmit the existing value),
+  // so they can't be changed here. Specimen Collection Date/Time is a genuine
+  // editable text field on this screen and accepts the same typed mm/dd/yyyy
+  // input (via the field's live input mask) as the Add screen.
+  changeSpecimenCollectionDateOnEdit(date) {
+    const [month, day, year] = date.split('/');
+    const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
+    cy.get(this.specimenCollectionDate).clear().type(formattedDate);
+  }
+
+  verifyViewedCollectionDate(text) {
+    cy.contains('span.label', 'Collection Date').next('span.value').should('contain.text', text);
+  }
+
+  clickSubmitOnEditLabReport() {
+    cy.get('input[name="Submit"]').first().click();
+  }
+
   //Ordered Test
 
   searchForOrderedTestInPopup() {

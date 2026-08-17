@@ -92,6 +92,17 @@ Feature: User accesses patient profile and can view existing patient data here.
         And the Lab Report view should show Jurisdiction "Fulton County"
         And the Lab Report view should show Resulted Test "Syphilis serology"
 
+    Scenario: Edit an existing lab report and confirm the change is present
+        When user clicks on a patient's profile "Events" tab
+        And user clicks the newest Lab report link
+        And user clicks the Edit button on the Lab Report page
+        And user changes the Specimen Collection Date to today's date on the Lab Report edit page
+        And user clicks the Submit button on the Lab Report edit page
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        And user clicks the newest Lab report link
+        Then the Lab Report view should show the updated Specimen Collection Date
+
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it
