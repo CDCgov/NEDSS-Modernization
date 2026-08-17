@@ -85,7 +85,6 @@ class UtilityFunctions {
       let status = response.body.transportStatus;
       if(status === null) {
         cy.wait(35000);
-        cy.log(counter);
         if(counterApi === 4) {
           cy.log("Status null, retry");
           this.checkTransportRequestAPI(apiID);

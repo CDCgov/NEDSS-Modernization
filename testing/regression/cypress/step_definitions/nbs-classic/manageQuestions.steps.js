@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicManageQuestionsPage from "@pages/nbs-classic/manageQuestions.page";
 
 Then("Navigate to Question Library", () => {

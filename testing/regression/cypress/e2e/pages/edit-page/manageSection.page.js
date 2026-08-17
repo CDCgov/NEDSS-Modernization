@@ -20,7 +20,7 @@ class ManageSectionPage {
         cy.get('.manageSections').eq(0).click();
     }
 
-    seeElementOnManageSection(content, type, description) {
+    seeElementOnManageSection(content, type) {
         if (type === "title" || type === "heading" || type === "button") {
             cy.contains(content);
         } else if (type === "icon") {
