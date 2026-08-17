@@ -56,15 +56,15 @@ class SearchAndFilterPage {
     }
 
     selectColumn(columnName) {
-        cy.get('#select-column').select(this.getColumnValueByName(columnName), { force: true });
+        cy.selectDropdownByLabel("Select a field", this.getColumnValueByName(columnName))
     }
 
     selectOperator(operatorValue) {
-        cy.get('#select-operator').select(operatorValue);
+        cy.selectDropdownByLabel("Operator", operatorValue)
     }
 
     enterValue(value) {
-        cy.get('#value').type(value);
+        cy.findByLabelText("Value").type(value);
     }
 
     clickDone() {
