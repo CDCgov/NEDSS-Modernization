@@ -80,7 +80,10 @@ class SearchAndFilterPage {
     }
 
     enterTextInMultiInputValue(value) {
-        cy.selectDropdownByLabel("Value", value);
+        cy.get('.multi-select__input').type(value);
+        cy.get('.multi-select__option--is-focused').should('be.visible')
+        cy.press(Cypress.Keyboard.Keys.TAB)
+        cy.get('.multi-select__input').type('{esc}');
     }
 
     showingContainedResults(text, columnName) {
@@ -100,7 +103,7 @@ class SearchAndFilterPage {
     }
 
     get openInvestigationTable() {
-        cy.wait(1500);
+        cy.wait(500);
         return cy.get(this.table).eq(0);
     }
 }
