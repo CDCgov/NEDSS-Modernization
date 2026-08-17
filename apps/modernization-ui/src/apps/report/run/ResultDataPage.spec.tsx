@@ -1,4 +1,5 @@
 import { getByText, queryByRole, render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 
 import { ReportExecutionResult } from 'generated';
@@ -15,7 +16,7 @@ vi.mock('react-router', async () => {
 });
 
 describe('ResultDataPage', () => {
-    it('renders bare bones report result', () => {
+    it('renders bare bones report result', async () => {
         const result: ReportExecutionResult = {
             result: {
                 content: 'a,b,c',
@@ -25,7 +26,7 @@ describe('ResultDataPage', () => {
         };
 
         vi.mocked(useLoaderData).mockReturnValue({ result, title: 'My report', dataSourceName: 'nbs_db.My_Table' });
-        const { getByRole, getByText } = render(<ResultDataPage />);
+        const { getByRole, getByText, container } = render(<ResultDataPage />);
 
         expect(getByRole('table')).toBeVisible();
         expect(getByRole('cell', { name: 'No data found.' })).toBeVisible();
@@ -38,9 +39,11 @@ describe('ResultDataPage', () => {
             'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]'
         );
         expect(getByText('(0 rows)')).toBeVisible();
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 
-    it('renders full report result', () => {
+    it('renders full report result', async () => {
         const result: ReportExecutionResult = {
             result: {
                 content: 'a,b,c\n1,2,3',
@@ -67,13 +70,17 @@ describe('ResultDataPage', () => {
             'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]'
         );
         expect(getByText(container, '(1 row)')).toBeVisible();
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 
-    it('renders warning when no result', () => {
+    it('renders warning when no result', async () => {
         vi.mocked(useLoaderData).mockReturnValue(null);
-        const { getByRole } = render(<ResultDataPage />);
+        const { getByRole, container } = render(<ResultDataPage />);
 
         expect(getByRole('heading', { name: 'No result found' })).toBeVisible();
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 
     describe('loadReportResult', () => {

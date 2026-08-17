@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicManageValueSetsPage from "@pages/nbs-classic/manageValueSets.page";
 
 Then("Navigate to Value Set Library", () => {

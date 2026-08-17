@@ -1,5 +1,5 @@
 import { openInvestigationPage } from '@pages/nbs-classic/openInvestigation.page';
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 // Accessing and verifying Open Investigation Queue page
 When('I click on "Open Investigation" in the menu bar', () => {

@@ -208,8 +208,7 @@ class MorbidityReportPage {
     
     // Intercept the window.open call for the Mark as Reviewed popup
     cy.window().then(win => {
-      const originalOpen = win.open;
-      cy.stub(win, 'open').callsFake((url, target, features) => {
+      cy.stub(win, 'open').callsFake((url) => {
         cy.log('Mark as Reviewed popup URL intercepted: ' + url);
         
         // Instead of opening a new window, navigate to the URL in the same window

@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 
 Then("user submits {string} vaccination with a popup and deletes it", (string) => {
   const vaccinationUrl = Cypress.config().baseUrl + "nbs/PageAction.do?method=createGenericLoad&businessObjectType=VAC&Action=DSFilePath";
