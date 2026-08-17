@@ -78,10 +78,8 @@ class ClassicPatientSearchPage {
   fillCommentsField(type) {
     let commentText;
     if(type === 'empty') {
-      return commentText = ''
-    }
-
-    if(type === 'invalid') {
+      commentText = ''
+    } else if(type === 'invalid') {
         commentText = 'A'.repeat(2001)
     } else if(type === '2000') {
         commentText = 'A'.repeat(2000)
