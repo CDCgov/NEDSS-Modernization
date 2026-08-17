@@ -31,6 +31,12 @@ class ClassicHomePage {
     cy.contains('button', 'Add new lab report').eq(0).click()
   }
 
+
+  clickAddLabReportBtn() {
+    // cy.get('.modal', { timeout: 10000 }).should('be.visible')
+    cy.contains('button', 'Add lab report').eq(0).click()
+  }
+
   verifyAddLabReport() {
     cy.contains('Add Lab Report')
   }

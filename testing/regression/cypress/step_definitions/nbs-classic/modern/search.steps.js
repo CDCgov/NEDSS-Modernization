@@ -26,6 +26,10 @@ Then("Click on Add new lab report in patient Search pane", () => {
     classicHomePage.clickAddNewLabReportBtnInPatientSearchPane()
 });
 
+When("Click on Add lab report in modal", () => {
+    classicHomePage.clickAddLabReportBtn()
+});
+
 Then("Sort Search results by {string}", (string) => {
     classicHomePage.clickSortTableOption(string);
 });
