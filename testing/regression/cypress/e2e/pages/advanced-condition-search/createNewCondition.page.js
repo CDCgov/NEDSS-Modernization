@@ -1,6 +1,6 @@
 class CreateNewConditionPage {
-    navigateToCreateNewPage () {
-        cy.visit('/page-builder/pages/add')
+    navigateToCreateNewPage() {
+        cy.visit('/page-builder/pages/add');
     }
 
     selectEventTypeInvestigation() {
@@ -10,7 +10,7 @@ class CreateNewConditionPage {
     }
 
     additionalFieldsDisplayed() {
-        cy.contains("Create a new condition here");
+        cy.contains('Create a new condition here');
     }
 
     clickCreateNewConditionBtn() {
@@ -18,7 +18,7 @@ class CreateNewConditionPage {
     }
 
     createNewConditionWindowDisplayed(show = true) {
-        if(show) {
+        if (show) {
             cy.contains('Create new condition');
         } else {
             cy.contains('Create new page');
@@ -37,27 +37,33 @@ class CreateNewConditionPage {
     }
 
     verifyConditionFieldHasValue() {
-        cy.contains("Condition");
+        cy.contains('Condition');
     }
 
     completeRemainingFormFields() {
         const num = Math.random().toString(36).substring(2, 8);
         cy.get('#name').type('New Test Page ' + num);
-        cy.get('#templateId').find('option').eq(1).then((option) => {
-            cy.get('#templateId').select(option.attr('value'))
-            cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
-                cy.get('#messageMappingGuide').select(option.attr('value'))
+        cy.get('#templateId')
+            .find('option')
+            .eq(1)
+            .then((option) => {
+                cy.get('#templateId').select(option.attr('value'));
+                cy.get('#messageMappingGuide')
+                    .find('option')
+                    .eq(1)
+                    .then((option) => {
+                        cy.get('#messageMappingGuide').select(option.attr('value'));
+                    });
             });
-        });
     }
 
     clickCreatePageButton() {
-        cy.get('.createPage').eq(0).click()
+        cy.get('.createPage').eq(0).click();
     }
 
-    navigateToClassicDesign () {
+    navigateToClassicDesign() {
         cy.contains('New Test Page', { timeout: 5000 }).should('be.visible');
     }
 }
 
-export const createNewConditionPage = new CreateNewConditionPage()
+export const createNewConditionPage = new CreateNewConditionPage();

@@ -24,4 +24,4 @@ class SearchAndFilterPage {
     }
 }
 
-export const searchAndFilterPage = new SearchAndFilterPage()
+export const searchAndFilterPage = new SearchAndFilterPage();
