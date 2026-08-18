@@ -73,7 +73,7 @@ const PageLibraryContent = () => {
                 <section className={styles.library} id="pageLibrary">
                     <header>
                         <h1 aria-label="Page library">Page library</h1>
-                        {!config.loading && config.features.pageBuilder.page.management.create.enabled ? (
+                        {config.features.pageBuilder.page.management.create.enabled ? (
                             <NavLinkButton className="createNewPageButton" to="/page-builder/pages/add">
                                 Create new page
                             </NavLinkButton>
@@ -91,14 +91,12 @@ const PageLibraryContent = () => {
                         onDownloadCsv={handleDownloadCSV}
                         onDownloadPdf={handleDownloadPDF}
                     />
-                    {!config.loading && (
-                        <PageLibraryTable
-                            enableEdit={config.features.pageBuilder.page.management.edit.enabled}
-                            summaries={pages}
-                            searching={searching}
-                            onSort={sortBy}
-                        />
-                    )}
+                    <PageLibraryTable
+                        enableEdit={config.features.pageBuilder.page.management.edit.enabled}
+                        summaries={pages}
+                        searching={searching}
+                        onSort={sortBy}
+                    />
                 </section>
             </PageBuilder>
         </>

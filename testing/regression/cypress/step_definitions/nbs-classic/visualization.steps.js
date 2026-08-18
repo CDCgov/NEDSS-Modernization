@@ -1,5 +1,5 @@
 import { homePage } from '@pages/nbs-classic/homePage.page';
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 // Step to select a visualization
 When('I select {string} from the dropdown', (chartName) => {

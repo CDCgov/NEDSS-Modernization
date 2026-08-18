@@ -38,7 +38,7 @@ const CODE_DESC_CD = {
 const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>) => {
     const id = useId();
     const [options, setOptions] = useState<Selectable[] | null>(null);
-    const { ready, properties } = useConfiguration();
+    const { properties } = useConfiguration();
     const { codeDescCd, codesetNm, columnUid } = props.schema.fieldMap[props.field] ?? {};
     useEffect(() => {
         const getValues = async (): Promise<Selectable[]> => {
@@ -75,22 +75,20 @@ const ValueSetSelector = (props: ValueEditorProps<ValueSetMetadata & FullField>)
 
             return options;
         };
-        if (ready) {
-            getValues()
-                .then((res) => {
-                    if ('options' in res) {
-                        // the /concepts endpoint breaks the general pattern
-                        setOptions(res.options as Selectable[]);
-                    } else {
-                        setOptions(res);
-                    }
-                })
-                .catch((error) => {
-                    logErrorToUserConsole({ error });
-                    setOptions([]);
-                });
-        }
-    }, [codeDescCd, codesetNm, columnUid, properties.entries.NBS_STATE_CODE, props.field, ready]);
+        getValues()
+            .then((res) => {
+                if ('options' in res) {
+                    // the /concepts endpoint breaks the general pattern
+                    setOptions(res.options as Selectable[]);
+                } else {
+                    setOptions(res);
+                }
+            })
+            .catch((error) => {
+                logErrorToUserConsole({ error });
+                setOptions([]);
+            });
+    }, [codeDescCd, codesetNm, columnUid, properties.entries.NBS_STATE_CODE, props.field]);
 
     const getValue = (v: Selectable) => (codeDescCd?.toLowerCase() === CODE_DESC_CD.CODE ? v.value : v.name);
 

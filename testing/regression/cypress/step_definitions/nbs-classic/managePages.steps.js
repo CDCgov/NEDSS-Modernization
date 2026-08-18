@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicManagePagesPage from "@pages/nbs-classic/managePages.page";
 import classicOpener from "@pages/nbs-classic/classicOpener.page";
 

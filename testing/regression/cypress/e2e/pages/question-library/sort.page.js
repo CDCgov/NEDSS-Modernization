@@ -60,7 +60,7 @@ class SortPage {
         expect(isOrdered).to.be.true;
     }
 
-    isAscending(list, dataType) {
+    isAscending(list) {
         return list.every((value, index, array) => {
             if (index === 0) {
                 return true; // Skip the first element
@@ -69,7 +69,7 @@ class SortPage {
         });
     }
 
-    isDescending(list, dataType) {
+    isDescending(list) {
         return list.every((value, index, array) => {
             if (index === 0) {
                 return true; // Skip the first element

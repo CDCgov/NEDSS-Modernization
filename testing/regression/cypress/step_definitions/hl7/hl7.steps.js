@@ -1,13 +1,11 @@
-import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import { faker } from "@faker-js/faker";
 
-const { Given } = require("@badeball/cypress-cucumber-preprocessor");
-
-let hl7Message: string | undefined;
-let patientData: Patient | undefined;
-let messageId: string | undefined;
-let investigationId: string | undefined;
-let notificationId: string | undefined;
+let hl7Message;
+let patientData;
+let messageId;
+let investigationId;
+let notificationId;
 
 Given("I am authenticated with the DI API", () => {
   const clientid = Cypress.env("DI_CLIENT_ID");
@@ -30,7 +28,7 @@ Given("I am authenticated with the DI API", () => {
 });
 
 
-function replacePlaceholders(template: string, replacements: Record<string, string>): string {
+function replacePlaceholders(template, replacements) {
   return Object.entries(replacements).reduce((result, [placeholder, value]) => {
     const regex = new RegExp(placeholder, "g");
     return result.replace(regex, value);
@@ -40,22 +38,22 @@ function replacePlaceholders(template: string, replacements: Record<string, stri
 Given(
   "I have a HL7 seed with: gender {string}, test type {string}, first {string}, last {string}, middle {string}, suffix {string}, ssn {string}, email {string}, street {string}, state {string}, city {string}, zipcode {string}, building {string}, dob {string}",
   (
-    gender: string,
-    testType: string,
-    firstName: string,
-    lastName: string,
-    middleName: string,
-    suffix: string,
-    ssn: string,
-    email: string,
-    street: string,
-    state: string,
-    city: string,
-    zipcode: string,
-    buildingNumber: string,
-    dob: string
+    gender,
+    testType,
+    firstName,
+    lastName,
+    middleName,
+    suffix,
+    ssn,
+    email,
+    street,
+    state,
+    city,
+    zipcode,
+    buildingNumber,
+    dob
   ) => {
-    const fixtureName: string = (() => {
+    const fixtureName = (() => {
       switch (testType) {
         case "Hepatitis B":
           return "hepb";
@@ -101,7 +99,7 @@ Given(
     };
 
     cy.readFile(`cypress/fixtures/${fixtureName}.json`, "utf8").then(
-      (file: { data: string }[]) => {
+      (file) => {
         cy.log("updating HL7 patient data...");
         hl7Message = replacePlaceholders(file[0].data, replacements);       
       }
@@ -109,8 +107,8 @@ Given(
   }
 );
 
-Given("I have a HL7 message containing a {string} test", (testType: string) => {
-  const fixtureName: string = (() => {
+Given("I have a HL7 message containing a {string} test", (testType) => {
+  const fixtureName = (() => {
     switch (testType) {
       case "Hepatitis B":
         return "hepb";
@@ -138,7 +136,7 @@ Given("I have a HL7 message containing a {string} test", (testType: string) => {
 
   cy.log("loading base hl7...");
   cy.readFile(`cypress/fixtures/${fixtureName}.json`, "utf8").then(
-    (file: { data: string }[]) => {
+    (file) => {
       cy.log("updating hl7 patient data...");
       hl7Message = file[0].data
         .replace(/PATIENTFIRSTNAME/g, patientData.firstName)
@@ -180,7 +178,7 @@ When("I submit the HL7 message", () => {
       msgType: "HL7",
     },
     body: hl7Message,
-  }).then((response: { body: string }) => {
+  }).then((response) => {
     expect(response.body).not.to.be.null;
     messageId = response.body;
   });
@@ -209,7 +207,7 @@ Then("the HL7 message is processed by the data ingestion service", () => {
         clientid: clientid,
         clientsecret: secret,
       },
-    }).then((response: { body: string }) => {      
+    }).then((response) => {
       status = response.status;                  
       if (JSON.parse(response.body)[1].match(/Status:\s*(\S+)/) !== null ) {
         status = JSON.parse(response.body)[1].match(/Status:\s*(\S+)/)[1];
@@ -261,7 +259,7 @@ Then("an Investigation is created for the HL7 message", () => {
 
 Then(
   "the Investigation has a notification with a status of {string}",
-  (exectedStatus: string) => {
+  (exectedStatus) => {
     expect(investigationId, "Investigation Id").is.not.null;
 
     const transportstatusurl = Cypress.env("NOTIFICATION_STATUS_API").replace(
@@ -281,7 +279,7 @@ Then(
       cy.request({
         method: "GET",
         url: `${transportstatusurl}`,
-      }).then((response: { body: { status: string; localId: string } }) => {
+      }).then((response) => {
         status = response.body.status;
         cy.log("Recieved status of: " + response.body.status);
         if (status === exectedStatus) {
@@ -299,7 +297,7 @@ Then(
 );
 Then(
   "the Notification is copied onto the on-prem database with a status of {string}",
-  (exectedStatus: string) => {
+  (exectedStatus) => {
     expect(notificationId, "Investigation Id").is.not.null;
 
     const transportstatusurl = Cypress.env(
@@ -319,9 +317,7 @@ Then(
         method: "GET",
         url: `${transportstatusurl}`,
       }).then(
-        (response: {
-          body: { transportStatus: string; netssTransportStatus: string };
-        }) => {
+        (response) => {
           status = response.body.transportStatus
             ? response.body.transportStatus
             : response.body.netssTransportStatus;
@@ -340,7 +336,7 @@ Then(
   }
 );
 
-const getRandomLetters = (count: number): string => {
+const getRandomLetters = (count) => {
   let chars = "";
   for (let i = 0; i < count; i++) {
     // 97 === a, 122 === z
@@ -357,7 +353,7 @@ const generateRandomLastName = () => {
   ).replace(/[^0-9a-z]/gi, "");
 };
 
-const generateRandomNumbers = (count: number): string => {
+const generateRandomNumbers = (count) => {
   return Array(count)
     .fill([])
     .map(() => faker.number.int(9))
@@ -365,7 +361,7 @@ const generateRandomNumbers = (count: number): string => {
 };
 
 // creates a timestamp in YYYYMMddHHmm format
-const generateTimestamp = (): string => {
+const generateTimestamp = () => {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -373,20 +369,4 @@ const generateTimestamp = (): string => {
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
   return `${year}${month}${day}${hours}${minutes}`;
-};
-
-type Patient = {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  suffix: string;
-  ssn: string;
-  email: string;
-  street: string;
-  state: string;
-  city: string;
-  zipcode: string;
-  buildingNumber: string;
-  dob: string;
-  timestamp: string;
 };

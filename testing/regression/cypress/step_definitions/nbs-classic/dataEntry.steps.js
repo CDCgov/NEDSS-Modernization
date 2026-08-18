@@ -2,7 +2,7 @@ import { labReportPage } from '../../e2e/pages/nbs-classic/dataEntry.page';
 import { patientEntitySearch } from '../../e2e/pages/nbs-classic/patientEntitySearch.page';
 import { searchPage } from '../../e2e/pages/search.page';
 import { morbidityReportPage } from '../../e2e/pages/nbs-classic/morbidityReportPage';
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { clickSubmitButton, clickHome } from '../../e2e/pages/nbs-classic/utils';
 
 When("I search for patient {string} {string}", (patientFirstName, patientLastName) => {
@@ -73,6 +73,14 @@ When("I click the submit button", () => {
   clickSubmitButton();
 });
 
+When("I click the Cancel button on the Morbidity Report page", () => {
+  morbidityReportPage.clickCancel();
+});
+
+When("I click the Submit and Create Investigation button", () => {
+  morbidityReportPage.clickSubmitAndCreateInvestigation();
+});
+
 When("I click on the Morbidity Report link", () => {
   morbidityReportPage.clickMorbidityReport();
 });
@@ -103,6 +111,10 @@ When("I clear the Jurisdiction field", () => {
 When("I enter the current date in the Date of Morbidity Report field", () => {
   const today = new Date().toLocaleDateString("en-US");
   morbidityReportPage.enterMorbidityDate(today);
+});
+
+When("I select {string} from the Pregnant dropdown menu", (value) => {
+  morbidityReportPage.selectPregnant(value);
 });
 
 When(
@@ -205,6 +217,63 @@ When("I click the Add button under Resulted Tests", () => {
 
 When("I enter patient first name {string} and last name {string}", (firstName, lastName) => {
   morbidityReportPage.enterPatientBothNames(firstName, lastName);
+});
+
+When("I click the Edit button on the Morbidity Report page", () => {
+  morbidityReportPage.clickEdit();
+});
+
+Then("clicking the Print button should display the print preview", () => {
+  morbidityReportPage.clickAndVerifyPrint();
+});
+
+When("I enter the current date in the Treatment Date field", () => {
+  const today = new Date().toLocaleDateString("en-US");
+  morbidityReportPage.enterTreatmentDate(today);
+});
+
+When("I select {string} from the Treatment dropdown menu", (treatment) => {
+  morbidityReportPage.selectTreatment(treatment);
+});
+
+When("I click the Add Treatment button", () => {
+  morbidityReportPage.clickAddTreatment();
+});
+
+When("I click the Transfer Ownership button on the Morbidity Report page", () => {
+  morbidityReportPage.clickTransferOwnership();
+});
+
+When("I click the Create Investigation button on the Morbidity Report page", () => {
+  morbidityReportPage.clickCreateInvestigation();
+});
+
+When("I click the Associate Investigation button on the Morbidity Report page", () => {
+  morbidityReportPage.clickAssociateInvestigation();
+});
+
+When("I store the morbidity report's condition", () => {
+  morbidityReportPage.storeCondition();
+});
+
+When("I check an investigation with the condition {string}", (condition) => {
+  morbidityReportPage.checkFirstInvestigationWithCondition(condition);
+});
+
+When("I store the Investigation ID from the association message", () => {
+  morbidityReportPage.storeInvestigationIdFromAssociationMessage();
+});
+
+When("I click the Mark as Reviewed button on the Morbidity Report page", () => {
+  morbidityReportPage.clickMarkAsReviewed();
+});
+
+When("I click the Mark as Reviewed button on the Morbidity Report page and handle the popup", () => {
+  morbidityReportPage.clickMarkAsReviewedAndHandlePopup();
+});
+
+When("I click the delete button on the Morbidity Report page", () => {
+  morbidityReportPage.clickDelete();
 });
 
 // 6: Verification Steps

@@ -124,7 +124,7 @@ class AddEditSearchDeleteQuestion {
     }
 
     errorMessageForDuplicateUniqueID(text) {
-         cy.contains('Error');
+         cy.contains(text);
     }
 
     enterExistingQuestionUniqueID() {

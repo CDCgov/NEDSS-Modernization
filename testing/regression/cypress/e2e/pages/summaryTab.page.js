@@ -48,7 +48,7 @@ class SummaryTabPage {
     this.openInvestigationTable.find("tbody tr").each(($tr) => {
       list.push($tr.find("td").eq(index).text());
     });
-    let flag = false;
+    let flag;
     if (sortedBy === "ascending") {
       flag = this.isAscending(list);
     } else {
@@ -79,7 +79,7 @@ class SummaryTabPage {
     this.documentTable.find("tbody tr").each(($tr) => {
       list.push($tr.find("td").eq(index).text());
     });
-    let flag = false;
+    let flag;
     if (sortedBy === "ascending") {
       flag = this.isAscending(list);
     } else {

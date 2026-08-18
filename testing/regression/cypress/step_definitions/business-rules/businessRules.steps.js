@@ -67,7 +67,7 @@ Then("Function Enable is selected", () => {
 });
 
 Then("User enters all required and applicable fields with logic is equal to", () => {
-    businessRulesPage.completeAllRequiredFields('EQUAL_TO');
+    businessRulesPage.completeAllRequiredFields();
 });
 
 Then("User clicks the Add to library button in new business rules modal", () => {
@@ -83,7 +83,7 @@ Then("Function Disable is selected", () => {
 });
 
 Then("User enters all required and applicable fields with logic is not equal to", () => {
-    businessRulesPage.completeAllRequiredFields('NOT_EQUAL_TO');
+    businessRulesPage.completeAllRequiredFields();
 });
 
 Then("Function Hide is selected", () => {

@@ -7,7 +7,7 @@ const validateDateCriteria =
     (name: string) =>
     (value: DateCriteria): boolean | string => {
         if (isDateEqualsCriteria(value)) {
-            return validateDateEntry(name)(value?.equals);
+            return validateDateEntry(name)(value.equals);
         }
         if (isDateBetweenCriteria(value)) {
             return validateDateRange(name)(value);

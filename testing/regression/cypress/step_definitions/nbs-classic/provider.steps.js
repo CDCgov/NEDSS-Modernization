@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicProviderPage from "@pages/nbs-classic/provider.page";
 
 Then("Navigate to classic provider add page", () => {

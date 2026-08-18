@@ -145,8 +145,8 @@ Then("user adds the name {string}", (string) => {
 
 Then(
   "Name {string} information is displayed on the patient profile page",
-  (string) => {
-    patientProfilePage.isNameAdded(string);
+  () => {
+    patientProfilePage.isNameAdded();
   }
 );
 

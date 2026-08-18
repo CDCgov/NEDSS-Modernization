@@ -139,16 +139,15 @@ class SortPage {
         this.openInvestigationTable.find("tbody tr").each(($tr) => {
             list.push($tr.find("td").eq(index).text());
         });
-        let correctFormat = false;
         const check = () => {
-            return list.every((value, index, array) => {
+            return list.every((value, index) => {
                 if (index === 0) {
                     return true; // Skip the first element
                 }
                 return value.split("/").length === 3;
             });
         }
-        correctFormat = check();
+        const correctFormat = check();
         expect(correctFormat).to.be.true;
     }
 }

@@ -1,18 +1,17 @@
 class ClassicOpenerPage {
 
-  isUniqueElementName(eltType, eltName, eltId) {
+  isUniqueElementName() {
     return true;
   }
 
   submitForm() {
-    var unblock = false;
     document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
     document.forms[0].submit();
   }
 
   submitNewTab() {
     var opener = {};
-    opener.isUniqueElementName = this.isUniqueElementName;
+    opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=tab");
     cy.get("#tabNameTd").type("NEWTAB");
@@ -24,21 +23,22 @@ class ClassicOpenerPage {
       cy.get('body').then(($body) => {
         if ($body.find('img[title="Add New Tab"]').length > 0) {
           cy.get('img[title="Add New Tab"]').eq(0).click().then(() => {
-            cy.get('body').then(($body2) => {
-              function handleTabBodyEvents(elt) {
-                var aLink = Cypress.$(Cypress.$(elt).find("a.addSection")).get(0);
-                Cypress.$(aLink).click(() => fbRef.showAddElementDialog(elt, 'section'));
-                var tacLink = Cypress.$(Cypress.$(elt).find("a.toggleAllChildrenLink")).get(0);
-                Cypress.$(tacLink).click(() => fbRef.toggleAllChildren(tacLink));
-                var vtLink = Cypress.$(Cypress.$(elt).find("a.viewTabLink")).get(0);
-                Cypress.$(vtLink).click(() => fbRef.showViewElementDialog(elt, "tab"));
-                var elLink = Cypress.$(Cypress.$(elt).find("a.editTabLink")).get(0);
-                Cypress.$(elLink).click(() => fbRef.showEditElementDialog(elt, "tab"));
-                var dLink = Cypress.$(Cypress.$(elt).find("a.deleteLink")).get(0);
-                Cypress.$(dLink).click(() => fbRef.deleteElement(elt, "tab"));
-                Cypress.$(elt).mouseover(() => Cypress.$(elt).addClass("pageElementHover"))
-                  .mouseout(() => Cypress.$(elt).removeClass("pageElementHover"));
-              }
+            cy.get('body').then(() => {
+              // to implement
+              // function handleTabBodyEvents(elt) {
+              //   var aLink = Cypress.$(Cypress.$(elt).find("a.addSection")).get(0);
+              //   Cypress.$(aLink).click(() => fbRef.showAddElementDialog(elt, 'section'));
+              //   var tacLink = Cypress.$(Cypress.$(elt).find("a.toggleAllChildrenLink")).get(0);
+              //   Cypress.$(tacLink).click(() => fbRef.toggleAllChildren(tacLink));
+              //   var vtLink = Cypress.$(Cypress.$(elt).find("a.viewTabLink")).get(0);
+              //   Cypress.$(vtLink).click(() => fbRef.showViewElementDialog(elt, "tab"));
+              //   var elLink = Cypress.$(Cypress.$(elt).find("a.editTabLink")).get(0);
+              //   Cypress.$(elLink).click(() => fbRef.showEditElementDialog(elt, "tab"));
+              //   var dLink = Cypress.$(Cypress.$(elt).find("a.deleteLink")).get(0);
+              //   Cypress.$(dLink).click(() => fbRef.deleteElement(elt, "tab"));
+              //   Cypress.$(elt).mouseover(() => Cypress.$(elt).addClass("pageElementHover"))
+              //     .mouseout(() => Cypress.$(elt).removeClass("pageElementHover"));
+              // }
 
               function handleTabHandleEvents(elt) {
                 var aLink = Cypress.$(Cypress.$(elt).find("a")).get(0);
@@ -56,7 +56,7 @@ class ClassicOpenerPage {
 
               function handleEvents(elt, eltType) {
                 if (eltType === 'tabHandle') handleTabHandleEvents(elt);
-                if (eltType === 'tabBody') handleTabBodyEvents(elt);
+                // if (eltType === 'tabBody') handleTabBodyEvents(elt);
               }
 
               function getTabBody(pageElt, isActive) {
@@ -125,7 +125,7 @@ class ClassicOpenerPage {
 
   submitNewSection() {
     var opener = {};
-    opener.isUniqueElementName = this.UniqueElementName;
+    opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=section");
     cy.window().then((win) => {
@@ -137,7 +137,7 @@ class ClassicOpenerPage {
 
   submitNewSubSection() {
     var opener = {};
-    opener.isUniqueElementName = this.isUniqueElementName;
+    opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=subSection");
     cy.window().then((win) => {

@@ -1,4 +1,4 @@
-import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { searchEventPage } from "cypress/e2e/pages/searchEvent.page";
 
 Then("I navigate the event investigation", () => {

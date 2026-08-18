@@ -91,7 +91,7 @@ class BusinessRulesPage {
         cy.get('.fieldType-option-0').eq(0).click();
     }
 
-    completeAllRequiredFields(logic) {
+    completeAllRequiredFields() {
         cy.get('[data-testid="searchSourceQuestionBtn"]').eq(0).click();
         cy.get('[data-testid="listedSections"]').eq(0).click({ force: true });
         cy.get('[data-testid="listedSubsections"]').eq(0).click({ force: true });

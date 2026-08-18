@@ -1,5 +1,5 @@
 import { openInvestigationPage } from '@pages/nbs-classic/openInvestigation.page';
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 // Accessing and verifying Open Investigation Queue page
 When('I click on "Open Investigation" in the menu bar', () => {
@@ -154,4 +154,8 @@ Then('Click Create Notifications button from top action button group', () => {
 
 Then('Click Submit button in newly opened window Create Notification Page', () => {
   openInvestigationPage.clickSubmitBtnInCreateNotificationPage();
+});
+
+Then("the stored morbidity report should be associated with the investigation", () => {
+  openInvestigationPage.verifyMorbidityReportAssociation();
 });

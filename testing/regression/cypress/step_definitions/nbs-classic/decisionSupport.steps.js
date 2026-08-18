@@ -1,5 +1,5 @@
 import DecisionSupportPage from '@pages/nbs-classic/decisionSupport.page';
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 When('I click on the "System Management" link in the menu', () => {
   DecisionSupportPage.navigateToSystemManagement();

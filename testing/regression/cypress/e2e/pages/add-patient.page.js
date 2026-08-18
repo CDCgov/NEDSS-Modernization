@@ -1,10 +1,8 @@
-
 import { faker } from "@faker-js/faker";
 
 class AddPatientPage {
   clickViewPatientLink() {
     cy.get("a").contains("View patient").click();
-    // cy.get(".usa-modal__main button").eq(1).click();
   }
 
   clickSumbitSaveButton() {
@@ -40,24 +38,18 @@ class AddPatientPage {
   }
 
   clearInformationAsOfDate() {
-    // cy.get('#asOf').clear();
     cy.get('input[id="administrative.asOf"]').clear();
     
   }
 
   addPatientBlank() {
-    // cy.get('button[class="usa-button add-patient-button"]').click();
-
     this.clickSumbitSaveButton();
     cy.get('span[id="administrative.asOf-error"]').should('exist').and('have.text', 'The Information as of date is required.');
-    // cy.get('#form-error').should('exist').and('have.text', 'You have some invalid inputs. Please correct the invalid inputs before moving forward.');
   }
 
   addPatientSingleDetail() {
     this.clickSumbitSaveButton();
-    cy.wait(500)
     this.clickViewPatientLink();
-    cy.wait(500)
   }
 
   addPatientSingleDeteNextYear() {
@@ -223,7 +215,6 @@ class AddPatientPage {
 
     
     cy.get('select[id="ethnicityRace.ethnicity"]').select("Hispanic or Latino");
-    // cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
     cy.get("label[for='2028-9']").click();
     cy.get("label[for='2106-3']").click();    

@@ -1,27 +1,39 @@
+import { useState } from 'react';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 
-import { ExactDateField } from './ExactDateField';
+import { DateEqualsCriteria, initialDateEqualsCriteria } from '../dateCriteria';
+
+import { ExactDateField, ExactDateFieldProps } from './ExactDateField';
+
+const Fixture = ({ value, onChange }: Partial<ExactDateFieldProps>) => {
+    const [val, setVal] = useState<DateEqualsCriteria>(value ?? initialDateEqualsCriteria);
+    const handleOnChange = (v: DateEqualsCriteria) => {
+        setVal(v);
+        onChange?.(v);
+    };
+
+    return <ExactDateField id="testing-exact-date-entry" value={val} onChange={handleOnChange} />;
+};
 
 describe('ExactDateField Component', () => {
     it('should render with no accessibility violations', async () => {
-        const { container } = render(<ExactDateField id="testing-exact-date-entry" onChange={vi.fn()} />);
+        const { container } = render(<Fixture value={initialDateEqualsCriteria} onChange={vi.fn()} />);
 
         expect(await axe(container)).toHaveNoViolations();
     });
 
     it('should render inputs with correct default month', () => {
-        render(<ExactDateField id="test-id" value={{ equals: { month: 1 } }} onChange={vi.fn()} />);
+        render(<Fixture value={{ equals: { month: 1, day: null, year: null } }} />);
         const monthInput = screen.getByRole('spinbutton', { name: 'Month' });
 
         expect(monthInput).toHaveValue(1);
     });
 
     it('should render inputs with correct default values', () => {
-        const { getByRole } = render(
-            <ExactDateField id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={vi.fn()} />
-        );
+        const { getByRole } = render(<Fixture value={{ equals: { month: 1, day: 1, year: 1995 } }} />);
         const monthInput = getByRole('spinbutton', { name: 'Month' });
         const dayInput = getByRole('spinbutton', { name: 'Day' });
         const yearInput = getByRole('spinbutton', { name: 'Year' });
@@ -34,7 +46,7 @@ describe('ExactDateField Component', () => {
     it('should call onChange when day value is changed', async () => {
         const mockOnChange = vi.fn();
 
-        const { getByRole } = render(<ExactDateField id="test-day" onChange={mockOnChange} />);
+        const { getByRole } = render(<Fixture onChange={mockOnChange} value={initialDateEqualsCriteria} />);
 
         const user = userEvent.setup();
 
@@ -48,7 +60,7 @@ describe('ExactDateField Component', () => {
     it('should call onChange when month value is changed', async () => {
         const mockOnChange = vi.fn();
 
-        const { getByRole } = render(<ExactDateField id="test-month" onChange={mockOnChange} />);
+        const { getByRole } = render(<Fixture onChange={mockOnChange} value={initialDateEqualsCriteria} />);
 
         const user = userEvent.setup();
 
@@ -62,7 +74,7 @@ describe('ExactDateField Component', () => {
     it('should call onChange when year value is changed', async () => {
         const mockOnChange = vi.fn();
 
-        const { getByRole } = render(<ExactDateField id="test-year" onChange={mockOnChange} />);
+        const { getByRole } = render(<Fixture onChange={mockOnChange} value={initialDateEqualsCriteria} />);
         const user = userEvent.setup();
 
         const year = getByRole('spinbutton', { name: 'Year' });

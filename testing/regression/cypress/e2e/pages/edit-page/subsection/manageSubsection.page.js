@@ -90,7 +90,7 @@ class ManageSubsectionPage {
         });
     }
 
-    checkButtonsAreVisible(text, text1) {
+    checkButtonsAreVisible(text) {
         cy.contains('Subsection cannot be deleted').then((ele) => {
             if(ele.length < 1) {
                 cy.contains('Are you sure you want to delete').should('contain', text);
@@ -101,7 +101,6 @@ class ManageSubsectionPage {
 
     clickVisibilitySubsectionIcon(visibility) {
         const onOrOff = visibility ? 'on' : 'off'
-        const dataTestId = ``;
         cy.get('.subsectionHeader').eq(0)
             .then((ele) => {
                  if(ele.find(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).length > 0) {

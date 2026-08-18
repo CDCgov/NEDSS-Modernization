@@ -7,21 +7,21 @@ class SortingPage {
         this.checkOrder(0, type);
     }
 
-    checkOrder(index, sortType, dataType) {
+    checkOrder(index, sortType) {
         const list = [];
         cy.get("tbody tr").each(($tr) => {
             list.push($tr.find("td").eq(index).text());
         });
         let isOrdered = false;
         if (sortType === 'ASC') {
-            isOrdered = this.isAscending(list, dataType);
+            isOrdered = this.isAscending(list);
         } else if (sortType === 'DSC') {
-            isOrdered = this.isDescending(list, dataType);
+            isOrdered = this.isDescending(list);
         }
         expect(isOrdered).to.be.true;
     }
 
-    isAscending(list, dataType) {
+    isAscending(list) {
         return list.every((value, index, array) => {
             if (index === 0) {
                 return true;
@@ -30,7 +30,7 @@ class SortingPage {
         });
     }
 
-    isDescending(list, dataType) {
+    isDescending(list) {
         return list.every((value, index, array) => {
             if (index === 0) {
                 return true;

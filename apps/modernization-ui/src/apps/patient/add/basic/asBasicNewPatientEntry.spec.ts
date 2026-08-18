@@ -48,7 +48,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should not populate the date of birth from the date equals criteria with only a month', () => {
-        const criteria = { bornOn: { equals: { month: 6 } } };
+        const criteria = { bornOn: { equals: { month: 6, day: null, year: null } } };
 
         const actual = asBasicNewPatientEntry(defaults)(criteria);
 
@@ -56,7 +56,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should not populate the date of birth from the date equals criteria with only a day', () => {
-        const criteria = { bornOn: { equals: { day: 5 } } };
+        const criteria = { bornOn: { equals: { day: 5, month: null, year: null } } };
 
         const actual = asBasicNewPatientEntry(defaults)(criteria);
 
@@ -64,7 +64,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should not populate the date of birth from the date equals criteria with only a year', () => {
-        const criteria = { bornOn: { equals: { year: 2025 } } };
+        const criteria = { bornOn: { equals: { year: 2025, month: null, day: null } } };
 
         const actual = asBasicNewPatientEntry(defaults)(criteria);
 
