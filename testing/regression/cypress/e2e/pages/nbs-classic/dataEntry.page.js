@@ -151,6 +151,7 @@ class LabReportPage {
   }
 
   clickSubmitAndCreateInvestigation() {
+    // NOTE: this button name is misspelled in the wildfly application, so this is not a typo!
     cy.get('input[name="SubmitAndCreateInvestiation"]').first().click();
   }
 
