@@ -166,7 +166,9 @@ class UtilityFunctions {
     cy.get("input[name=SubmitTop]").first().click();
     cy.window().then(win => {
       win.createNotifications('Comment');
-      return cy.get("#successMessages").contains("A Notification has been created for this Investigation.").scrollIntoView().should("be.visible");
+      cy.get("#successMessages").contains("A Notification has been created for this Investigation.");
+      cy.get("#successMessages").scrollIntoView();
+      cy.get("#successMessages").should("be.visible");
     });
   }
 }

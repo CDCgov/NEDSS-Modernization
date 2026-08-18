@@ -12,15 +12,18 @@ class DecisionSupportPage {
     }
   
     selectCondition(condition) {
-      cy.get('input[name="sCondCd_textbox"]').type(condition).type('{enter}');
+      cy.get('input[name="sCondCd_textbox"]').type(condition);
+      cy.get('input[name="sCondCd_textbox"]').type('{enter}');
     }
   
     selectJurisdiction(jurisdiction) {
-      cy.get('input[name="sJurisCd_textbox"]').type(jurisdiction).type('{enter}');
+      cy.get('input[name="sJurisCd_textbox"]').type(jurisdiction);
+      cy.get('input[name="sJurisCd_textbox"]').type('{enter}');
     }
   
     selectEventType(eventType) {
-      cy.get('input[name="sEventCd_textbox"]').type(eventType).type('{enter}');
+      cy.get('input[name="sEventCd_textbox"]').type(eventType);
+      cy.get('input[name="sEventCd_textbox"]').type('{enter}');
     }
   
     clickSearchButton() {

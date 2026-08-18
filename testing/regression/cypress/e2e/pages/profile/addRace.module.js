@@ -16,17 +16,13 @@ class AddRaceModule {
   }
 
   race() {
-    cy.get(".usa-modal-wrapper.is-visible select")
-      .scrollIntoView()
-      .select("Asian");
+    cy.get(".usa-modal-wrapper.is-visible select").select("Asian");
     return this;
   }
 
   detailRace(detRace) {
-    cy.get(".usa-modal-wrapper.is-visible .multi-select__control")
-      .scrollIntoView()
-      .type(`${detRace}{enter}`)
-      .click();
+    cy.get(".usa-modal-wrapper.is-visible .multi-select__control").type(`${detRace}{enter}`)
+    cy.get(".usa-modal-wrapper.is-visible .multi-select__control").click();
     return this;
   }
 

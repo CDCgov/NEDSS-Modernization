@@ -94,11 +94,14 @@ When('I fill out all filters with {int}', (index) => {
     // multi-selects
     cy.get('.multi-select')
       .each(($select) => {
+        /* eslint-disable cypress/unsafe-to-chain-command */
         cy
           .wrap($select)
           .click()
           .then(() => cy.get('.multi-select__option').eqOrLast(index).click().then(() => cy.get('body').type('{esc}')))
-    });
+      });
+      /* eslint-enable cypress/unsafe-to-chain-command */
+
 });
 
 Then('All filters should be filled out with {int}', (index) => {

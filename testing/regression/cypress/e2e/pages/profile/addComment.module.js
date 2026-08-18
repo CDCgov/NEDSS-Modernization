@@ -15,17 +15,13 @@ class AddComment {
   }
 
   comment() {
-    cy.get(".usa-modal-wrapper.is-visible #comment")
-      .scrollIntoView()
-      .type("sample comments");
-    return this;
+    return cy.enterInput('.usa-modal-wrapper.is-visible #comment', "sample comments");
   }
 
   add() {
-    cy.get(".usa-modal-wrapper.is-visible button")
-      .contains("Save")
-      .click()
-      .wait(1000);
+    cy.get(".usa-modal-wrapper.is-visible button").contains("Save");
+    cy.get(".usa-modal-wrapper.is-visible button").click();
+    cy.wait(1000);
   }
 
   isPopupClosed() {

@@ -4,11 +4,13 @@ class PageBuilderPage {
     }
   
     selectTemplate(templateName) {
-      cy.get('input[name="existingTemplate_textbox"]').type(templateName).type('{enter}'); // Enter and select template name
+      cy.get('input[name="existingTemplate_textbox"]').type(templateName);
+      cy.get('input[name="existingTemplate_textbox"]').type('{enter}'); // Enter and select template name
     }
   
     selectMappingGuide(mappingGuideName) {
-      cy.get('input[name="mappingGuide_textbox"]').type(mappingGuideName).type('{enter}'); // Enter and select mapping guide
+      cy.get('input[name="mappingGuide_textbox"]').type(mappingGuideName);
+      cy.get('input[name="mappingGuide_textbox"]').type('{enter}'); // Enter and select mapping guide
     }
   
     enterPageName() {

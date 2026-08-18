@@ -27,10 +27,8 @@ class EditEthnicityModule {
   }
 
   save() {
-    cy.get(this.section).eq(2)
-      .contains('button', 'Save')
-      .scrollIntoView()
-      .click()
+    cy.get(this.section).eq(2).contains('button', 'Save');
+    cy.get(this.section).click();
   }
 
   isEthnicityAdded(ethnicity) {

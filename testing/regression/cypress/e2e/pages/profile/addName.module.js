@@ -14,13 +14,11 @@ class AddNameModule {
   }
 
   first(fName) {
-    cy.get(".usa-modal-wrapper.is-visible #first").scrollIntoView().type(fName);
-    return this;
+    return cy.enterInput('.usa-modal-wrapper.is-visible #first', fName);
   }
 
   last() {
-    cy.get(".usa-modal-wrapper.is-visible #last").type(this.getRandomName());
-    return this;
+    return cy.enterInput('.usa-modal-wrapper.is-visible #last', this.getRandomName());
   }
 
   comment() {
