@@ -65,8 +65,7 @@ public class ReportExceptionHandler {
 
   //  Currently limited to the ReportExecutionServiceClient
   @ExceptionHandler(RestClientResponseException.class)
-  public ResponseEntity<ErrorResponseBody> handleRestClientFailure(
-      RestClientResponseException ex) {
+  public ResponseEntity<ErrorResponseBody> handleRestClientFailure(RestClientResponseException ex) {
     ErrorResponseBody err = null;
 
     try {
