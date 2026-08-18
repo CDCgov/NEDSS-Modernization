@@ -18,7 +18,7 @@ Given("I am authenticated with the DI API", () => {
     url: `${baseUrl}/auth/token`,
     headers: {
       "Content-Type": "text/plain",
-      clientid: clientid,
+      clientid,
       clientsecret: secret,
     },
   }).then((response) => {
@@ -173,8 +173,8 @@ When("I submit the HL7 message", () => {
     headers: {
       "Content-Type": "text/plain",
       Authorization: `Bearer ${authToken}`,
-      clientid: clientid,
-      clientsecret: clientsecret,
+      clientid,
+      clientsecret,
       msgType: "HL7",
     },
     body: hl7Message,
@@ -204,7 +204,7 @@ Then("the HL7 message is processed by the data ingestion service", () => {
       url: `${baseUrl}/elrs/status/${messageId}`,
       headers: {
         Authorization: `Bearer ${authToken}`,
-        clientid: clientid,
+        clientid,
         clientsecret: secret,
       },
     }).then((response) => {
@@ -346,7 +346,7 @@ const getRandomLetters = (count) => {
 };
 
 const generateRandomLastName = () => {
-  let randomLastName =
+  const randomLastName =
     faker.person.lastName().toLowerCase() + getRandomLetters(5);
   return (
     randomLastName.charAt(0).toUpperCase() + randomLastName.slice(1)

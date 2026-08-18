@@ -116,9 +116,9 @@ When("I add a new telephone with use {string}, type {string}, number {string}-{s
     editOrganizationPage.addNewTelephoneEntry({
       use: maps.telephoneUseToValue(useDisplay),
       type: maps.telephoneTypeToValue(typeDisplay),
-      areaCode: areaCode,
-      prefix: prefix,
-      lineNumber: lineNumber
+      areaCode,
+      prefix,
+      lineNumber
     });
 });
 

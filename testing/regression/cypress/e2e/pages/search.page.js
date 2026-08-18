@@ -55,7 +55,7 @@ class SearchPage {
 
   selectName() {
     cy.wait(500);
-    let name = "label[for='lastName']";
+    const name = "label[for='lastName']";
     cy.get(name).click();
     cy.wait(1000);
   }
@@ -89,15 +89,6 @@ class SearchPage {
   closeErrorMsg() {
     cy.get(".usa-alert--error svg").click();
   }
-
-  // selectState() {
-  //   cy.wait(500);
-  //   let elemt = "div[id='2'] select[placeholder='-Select-']";
-  //   cy.get(elemt).scrollIntoView();
-  //   elemt = "option[value='15']";
-  //   cy.get(elemt).click();
-  //   cy.wait(1000);
-  // }
 
   selectState(string) {
     // cy.get('div[aria-label="Address"]').click({ force: true });
