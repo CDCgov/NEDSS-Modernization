@@ -8,7 +8,7 @@ class AddConditionPage {
     }
 
     createNewConditionWindowDisplayed(show = true) {
-        if(show) {
+        if (show) {
             cy.contains('Create new condition');
         } else {
             cy.contains('Create new page');
@@ -27,4 +27,4 @@ class AddConditionPage {
     }
 }
 
-export const addConditionPage = new AddConditionPage()
+export const addConditionPage = new AddConditionPage();
