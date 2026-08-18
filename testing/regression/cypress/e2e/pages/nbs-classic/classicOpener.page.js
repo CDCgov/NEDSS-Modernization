@@ -10,7 +10,7 @@ class ClassicOpenerPage {
   }
 
   submitNewTab() {
-    var opener = {};
+    const opener = {};
     opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=tab");
@@ -22,7 +22,8 @@ class ClassicOpenerPage {
       cy.wait(500);
       cy.get('body').then(($body) => {
         if ($body.find('img[title="Add New Tab"]').length > 0) {
-          cy.get('img[title="Add New Tab"]').eq(0).click().then(() => {
+          cy.get('img[title="Add New Tab"]').eq(0).click()
+          cy.get('img[title="Add New Tab"]').eq(0).then(() => {
             cy.get('body').then(() => {
               // to implement
               // function handleTabBodyEvents(elt) {
@@ -41,11 +42,11 @@ class ClassicOpenerPage {
               // }
 
               function handleTabHandleEvents(elt) {
-                var aLink = Cypress.$(Cypress.$(elt).find("a")).get(0);
+                const aLink = Cypress.$(Cypress.$(elt).find("a")).get(0);
                 Cypress.$(aLink).click((ev) => {
-                  var href = Cypress.$(aLink).attr("href");
-                  var id = href.substring(href.lastIndexOf("/") + 1);
-                  var jQueryBodyId = "div#" + id;
+                  const href = Cypress.$(aLink).attr("href");
+                  const id = href.substring(href.lastIndexOf("/") + 1);
+                  const jQueryBodyId = "div#" + id;
                   ev.preventDefault();
                   Cypress.$(Cypress.$(Cypress.$(aLink).parents("ul").get(0)).find("li.ui-tabs-selected").get(0)).removeClass("ui-tabs-selected");
                   Cypress.$(Cypress.$(aLink).parents("li").get(0)).addClass("ui-tabs-selected");
@@ -60,8 +61,8 @@ class ClassicOpenerPage {
               }
 
               function getTabBody(pageElt, isActive) {
-                var tabBodyClass = isActive ? "ui-tabs-panel nbsPageElementCssClass" : "ui-tabs-hide nbsPageElementCssClass";
-                var html = `<div id="${pageElt.pageElementUid}" class="${tabBodyClass}">
+                const tabBodyClass = isActive ? "ui-tabs-panel nbsPageElementCssClass" : "ui-tabs-hide nbsPageElementCssClass";
+                const html = `<div id="${pageElt.pageElementUid}" class="${tabBodyClass}">
                               <div style="width:200px; text-align:left; margin-top:10px; float:left;">
                                 <a class="toggleAllChildrenLink" title="Collapse All Sections " href="javascript:void(0)">
                                   &nbsp;&nbsp; <img src="CollapseAll.gif" alt="Collapse All Sections"/>
@@ -85,22 +86,22 @@ class ClassicOpenerPage {
                               <div class="ffClear"></div>
                               <ul class="sortableSections"></ul>
                             </div>`;
-                var elt = Cypress.$(html);
+                const elt = Cypress.$(html);
                 handleEvents(elt, 'tabBody');
                 return elt;
               }
 
               function getTabHandle(pageElt, isActive) {
-                var tabHandleClass = isActive ? "ui-tabs-selected" : "";
-                var html = `<li class="${tabHandleClass}">
+                const tabHandleClass = isActive ? "ui-tabs-selected" : "";
+                const html = `<li class="${tabHandleClass}">
                               <a href="${pageElt.pageElementUid}">${pageElt.elementLabel}</a>
                             </li>`;
-                var elt = Cypress.$(html);
+                const elt = Cypress.$(html);
                 handleEvents(elt, 'tabHandle');
                 return elt;
               }
 
-              var jsonObj = [{
+              const jsonObj = [{
                 "pageElementUid": -2,
                 "elementLabel": "Test Tabb",
                 "elementType": "Tab",
@@ -110,8 +111,8 @@ class ClassicOpenerPage {
               }];
 
               jsonObj.forEach((elt) => {
-                var tabHandle = getTabHandle(elt, true);
-                var tabBody = getTabBody(elt, true);
+                const tabHandle = getTabHandle(elt, true);
+                const tabBody = getTabBody(elt, true);
                 Cypress.$(".ui-tabs-nav").append(tabHandle);
                 Cypress.$(".div#tabContainer").append(tabBody);
                 tabHandle.find("a").get(0).click();
@@ -124,7 +125,7 @@ class ClassicOpenerPage {
   }
 
   submitNewSection() {
-    var opener = {};
+    const opener = {};
     opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=section");
@@ -136,7 +137,7 @@ class ClassicOpenerPage {
   }
 
   submitNewSubSection() {
-    var opener = {};
+    const opener = {};
     opener.isUniqueElementName = this.isUniqueElementName();
     opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=subSection");

@@ -58,7 +58,7 @@ class PatientProfilePage {
   }
 
   clickOnButton(buttonName) {
-    cy.contains("button", buttonName).scrollIntoView().click();
+    cy.contains("button", buttonName).click();
   }
 
   addComments() {

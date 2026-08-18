@@ -46,8 +46,8 @@ class ManageSubsectionPage {
             .filter(':visible')
             .eq(0)
             .then((btn) => {
-                cy.wrap(btn).clear()
-                    .type(`Subsection name edited ${newSubsectionName}`);
+                cy.wrap(btn).clear();
+                cy.wrap(btn).type(`Subsection name edited ${newSubsectionName}`);
             });
     }
 
@@ -162,8 +162,10 @@ class ManageSubsectionPage {
 
     checkDragAndDrop() {
         cy.get('.manage-sections').eq(0)
-            .get('[data-testid="dragAndDropIcon"]').eq(0)
-            .trigger('mousedown').trigger('mouseup');
+          .get('[data-testid="dragAndDropIcon"]').eq(0)
+          .as('dragAndDropIcon');
+        cy.get('@dragAndDropIcon').trigger('mousedown');
+        cy.get('@dragAndDropIcon').trigger('mouseup');
     }
 
     closeManageSubsectionWindow() {

@@ -60,7 +60,7 @@ When('I add incomplete or incorrect advanced filters', () => {
 
         // enter invalid date
         if (advFilter.field === 'Confirmation Method Time' && logicVal === 'Not Equals') {
-          cy.get('input[name="Value"]').last().clear().type('2');
+          enterInput('name="Value"', 2);
         }
       }
 
@@ -145,7 +145,7 @@ const enterFilterValue = (field, index) => {
 
   if (field.type !== 'multiselect') {
     if (['Equals', 'Not Equals', 'Contains', 'Starts With', 'Less Than', 'Greater Than', 'Less Or Equal', 'Greater Or Equal'].includes(logic)) {
-      cy.get('input[name="Value"]').clear().type(field.firstVal);
+      enterInput('name="Value"', field.firstVal);
     }
 
     if (logic === 'Between') {
@@ -153,17 +153,22 @@ const enterFilterValue = (field, index) => {
     }
   } else {
     if (logic === 'Equals' || logic === 'Not Equals') {
+      cy.get('.multi-select').click();
       cy.get('.multi-select')
-        .click()
         .then(() => cy.get('.multi-select__option').eqOrLast(field.firstVal).click())
       cy.get('input.multi-select__input').blur();
     }
   }
 }
 
+const enterInput = (inputSelector, value) => {
+  cy.get(`input[${inputSelector}]`).last().clear();
+  cy.get(`input[${inputSelector}]`).last().type(value);
+}
+
 const enterBetweenInput = (from, to) => {
-  cy.get('input[id$="-from"]').last().clear().type(from);
-  cy.get('input[id$="-to"]').last().clear().type(to);
+  enterInput('id$="-from"', from);
+  enterInput('id$="-to"', to);
 }
 
 const checkAlertForErrorMsg = (error) => {

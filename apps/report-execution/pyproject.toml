@@ -19,10 +19,10 @@ dev = [
     "pytest-snapshot>=0.9.0",
     "pyyaml>=6.0.3",
     "types-pyyaml>=6.0.12.20260518",
-    "ruff>=0.15.0,<1.0.0",
+    "ruff>=0.16.3,<1.0.0",
     "tablefaker>=1.11.1",
     "testcontainers>=4.15.0",
-    "time-machine>=3.3.1",
+    "time-machine>=3.4.0",
 ]
 
 [tool.ruff.lint]

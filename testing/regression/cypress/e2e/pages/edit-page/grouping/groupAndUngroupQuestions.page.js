@@ -107,27 +107,25 @@ class GroupAndUngroupQuestions {
     }
 
     renameSubsection() {
-        cy.get('[data-testid="editSubsectionModalSubsectionName"]').eq(0)
-            .clear().type(`Edited section name ${this.newName()}`);
+        cy.enterInput('[data-testid="editSubsectionModalSubsectionName"]',`Edited section name ${this.newName()}`);
     }
 
     renameBlockName(newName) {
-        cy.get('[data-testid="editSubsectionModalBlockName"]').eq(0)
-            .clear().type(newName ? newName : `BLOCKNAME${this.newName()}`);
+        const value = newName ? newName : `BLOCKNAME${this.newName()}`;
+        cy.enterInput('[data-testid="editSubsectionModalBlockName"]', value);
     }
 
     updateDatamartValue(num) {
-        cy.get('[data-testid="editSubsectionModalDataMart"]').eq(0)
-            .clear().type(num);
+        cy.enterInput('[data-testid="editSubsectionModalDataMart"]', num);
     }
 
     updateAppearsInTableValueToNo() {
         cy.get('[name="batches.0.width"]').eq(0).invoke('val').then(value => {
-            let columnWidth = value;
+            const columnWidth = value;
             cy.get('[name="batches.0.appearsInTable"]').eq(0).select('N');
             cy.get('[name="batches.1.width"]').eq(0).invoke('val').then(value2 => {
-                let updatedWidth = parseInt(value2) + parseInt(columnWidth)
-                cy.get('[name="batches.1.width"]').eq(0).clear().type(updatedWidth);
+                const updatedWidth = parseInt(value2) + parseInt(columnWidth)
+                cy.enterInput('[name="batches.1.width"]', updatedWidth);
             });
         });
     }
@@ -191,11 +189,14 @@ class GroupAndUngroupQuestions {
                 const distribution = distributeRandomly(100, length);
                 cy.get('tbody[data-testid="group-questions-tbody"] tr')
                     .each(($row, rowIndex) => {
-                    cy.get($row)
-                        .get('td:last-child [data-testid="group-questions-width"]')
-                        .eq(rowIndex)
-                        .clear()
-                        .type(rowIndex === length-1 ? distribution[1]: distribution[0]);
+                        cy.get($row)
+                            .get('td:last-child [data-testid="group-questions-width"]')
+                            .eq(rowIndex)
+                            .clear();
+                        cy.get($row)
+                            .get('td:last-child [data-testid="group-questions-width"]')
+                            .eq(rowIndex)
+                            .type(rowIndex === length-1 ? distribution[1]: distribution[0]);
                 });
             });
     }

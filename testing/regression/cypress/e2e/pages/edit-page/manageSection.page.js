@@ -114,7 +114,7 @@ class ManageSectionPage {
 
     modifySectionName() {
         const newSecName = Math.random().toString(36).substring(2, 12);
-        cy.get('.sectionName').eq(0).clear().type(`Modified text section name ${newSecName}`);
+        cy.enterInput('.sectionName', `Modified text section name ${newSecName}`);
     }
 
     clickSaveBtn() {

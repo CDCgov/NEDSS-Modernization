@@ -26,10 +26,8 @@ class EditMortalityModule {
   }
 
   save() {
-    cy.get(this.section).eq(1)
-      .contains('button', 'Save')
-      .scrollIntoView()
-      .click()
+    cy.get(this.section).eq(1).contains('button', 'Save');
+    cy.get(this.section).click();
   }
 
   isMortalityAdded(mortality) {

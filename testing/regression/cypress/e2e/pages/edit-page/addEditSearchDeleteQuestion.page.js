@@ -83,8 +83,8 @@ class AddEditSearchDeleteQuestion {
     }
 
     updateQuestionDetails() {
-        cy.get('#label').clear().type('question label edited');
-        cy.get('#tooltip').clear().type('question tooltip edited');
+        cy.enterInput('#label', 'question label edited');
+        cy.enterInput('#tooltip', 'question tooltip edited');
     }
 
     clickEditQuestionSaveBtn() {

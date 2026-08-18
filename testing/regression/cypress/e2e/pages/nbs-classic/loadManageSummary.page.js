@@ -19,7 +19,7 @@ class LoadManageSummaryPage {
   }
 
   selectMMWRYear(year) {
-    cy.get('input[name="MMWRYear_textbox"]').clear().type(year);
+    cy.enterInput('input[name="MMWRYear_textbox"]', year);
     cy.get('input[value="Get Summary Reports"]').click();
   }
 

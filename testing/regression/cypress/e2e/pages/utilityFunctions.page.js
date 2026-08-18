@@ -77,12 +77,12 @@ class UtilityFunctions {
       url: transportstatusurlapiUpdated,
       headers: {
         Authorization: `Bearer ${authToken}`,
-        clientid: clientid,
-        clientsecret: clientsecret,
+        clientid,
+        clientsecret,
       },
     }).then((response) => {
       expect(response.status).to.eq(200);
-      let status = response.body.transportStatus;
+      const status = response.body.transportStatus;
       if(status === null) {
         cy.wait(35000);
         if(counterApi === 4) {
@@ -119,15 +119,15 @@ class UtilityFunctions {
               url: updatedUrl,
               headers: {
                 Authorization: `Bearer ${authToken}`,
-                clientid: clientid,
-                clientsecret: clientsecret,
+                clientid,
+                clientsecret,
               },
             }).then((response) => {
               expect(response.status).to.eq(200);
-              let status = response.body.status;
+              const status = response.body.status;
               if(status === "UNPROCESSED") {
                 expect(status).to.eq("UNPROCESSED");
-                let localId = response.body.localId;
+                const localId = response.body.localId;
                 this.checkTransportRequestAPI(localId);                
               } else if(status === null) {
                 cy.log("Status null, retry");
@@ -166,7 +166,9 @@ class UtilityFunctions {
     cy.get("input[name=SubmitTop]").first().click();
     cy.window().then(win => {
       win.createNotifications('Comment');
-      return cy.get("#successMessages").contains("A Notification has been created for this Investigation.").scrollIntoView().should("be.visible");
+      cy.get("#successMessages").contains("A Notification has been created for this Investigation.");
+      cy.get("#successMessages").scrollIntoView();
+      cy.get("#successMessages").should("be.visible");
     });
   }
 }
