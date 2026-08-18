@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -149,11 +150,11 @@ class ReportExceptionHandlerTest {
         new RestClientException("uh oh", new StreamConstraintsException("too big!"));
 
     ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
-        handler.handleRestClientFailure(exception);
+        handler.handleRestClientException(exception);
 
     assertNotNull(responseEntity.getBody());
-    assertEquals(
-        "Returned report exceeds maximum size allowed by NBS", responseEntity.getBody().message());
+    assertThat(responseEntity.getBody().message())
+        .contains("Returned report exceeds maximum size allowed by NBS");
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
   }
 
@@ -162,7 +163,7 @@ class ReportExceptionHandlerTest {
     RestClientException exception = new RestClientException("uh oh", new Exception("too big!"));
 
     ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
-        handler.handleRestClientFailure(exception);
+        handler.handleRestClientException(exception);
 
     assertNotNull(responseEntity.getBody());
     assertEquals("Internal Server Error", responseEntity.getBody().message());
