@@ -201,7 +201,7 @@ def get_faker_sql(schema_name: str) -> list[str]:
     os.mkdir(target_file_path)
 
     try:
-        tablefaker.to_sql(faker_path, target_file_path=target_file_path)
+        tablefaker.to_csv(faker_path, target_file_path=target_file_path)
         results = []
 
         for file in os.listdir(target_file_path):
@@ -212,11 +212,12 @@ def get_faker_sql(schema_name: str) -> list[str]:
                 result = result.replace(' nan,', ' NULL,')
                 result = result.replace('(nan,', 'NULL,')
                 result = result.replace(' nan)', ' NULL)')
-                results.append(result)
+                # results.append(result)
 
         return results
     finally:
-        shutil.rmtree(target_file_path)
+        pass
+        # shutil.rmtree(target_file_path)
 
 
 def get_tables_from_faker(schema_name: str) -> tuple[list[str], list[str]]:
