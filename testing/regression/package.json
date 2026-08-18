@@ -13,7 +13,7 @@
     "PHCRImporter": "cd ../../cdc-sandbox && docker compose exec wildfly sh -c './nedssdomain/Nedss/BatchFiles/PHCRImporter.sh superuser'",
     "ELRImporter": "cd ../../cdc-sandbox && docker compose exec wildfly sh -c './nedssdomain/Nedss/BatchFiles/ELRImporter.sh'",
     "lint": "eslint \"cypress/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"cypress/step_definitions/**/*.{ts,tsx,js,jsx}\" --fix"
+    "lint:fix": "eslint \"cypress/**/*.{ts,tsx,js,jsx}\" --fix"
   },
   "keywords": [
     "cypress",
