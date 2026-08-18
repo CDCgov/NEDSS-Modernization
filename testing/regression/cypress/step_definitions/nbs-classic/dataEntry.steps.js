@@ -306,99 +306,99 @@ Then('the patient first name field should contain {string}', (value) => {
 
 // Row 118: Add new lab report and create investigation
 
-When("user selects {string} from the Program Area dropdown", (text) => {
-  labReportPage.selectProgramAreaByText(text);
+When('user selects {string} from the Program Area dropdown', (text) => {
+    labReportPage.selectProgramAreaByText(text);
 });
 
-When("user selects {string} from the Jurisdiction dropdown", (text) => {
-  labReportPage.selectJurisdictionByText(text);
+When('user selects {string} from the Jurisdiction dropdown', (text) => {
+    labReportPage.selectJurisdictionByText(text);
 });
 
-When("user selects {string} from the Resulted Test dropdown", (text) => {
-  labReportPage.selectResultedTestByText(text);
+When('user selects {string} from the Resulted Test dropdown', (text) => {
+    labReportPage.selectResultedTestByText(text);
 });
 
-When("user selects {string} from the Coded Result dropdown", (text) => {
-  labReportPage.selectCodedResultByText(text);
+When('user selects {string} from the Coded Result dropdown', (text) => {
+    labReportPage.selectCodedResultByText(text);
 });
 
-When("user clicks the Submit and Create Investigation button", () => {
-  labReportPage.clickSubmitAndCreateInvestigation();
+When('user clicks the Submit and Create Investigation button', () => {
+    labReportPage.clickSubmitAndCreateInvestigation();
 });
 
-When("user clicks the Cancel button on the Lab Report page and confirms", () => {
-  labReportPage.clickCancelAndConfirm();
+When('user clicks the Cancel button on the Lab Report page and confirms', () => {
+    labReportPage.clickCancelAndConfirm();
 });
 
-When("user clicks the Delete button on the Lab Report page and confirms", () => {
-  labReportPage.clickDeleteLabReportAndConfirm();
+When('user clicks the Delete button on the Lab Report page and confirms', () => {
+    labReportPage.clickDeleteLabReportAndConfirm();
 });
 
-Then("the Lab Report view should show Reporting Facility {string}", (text) => {
-  labReportPage.verifyViewedReportingFacility(text);
+Then('the Lab Report view should show Reporting Facility {string}', (text) => {
+    labReportPage.verifyViewedReportingFacility(text);
 });
 
-Then("the Lab Report view should show Program Area {string}", (text) => {
-  labReportPage.verifyViewedProgramArea(text);
+Then('the Lab Report view should show Program Area {string}', (text) => {
+    labReportPage.verifyViewedProgramArea(text);
 });
 
-Then("the Lab Report view should show Jurisdiction {string}", (text) => {
-  labReportPage.verifyViewedJurisdiction(text);
+Then('the Lab Report view should show Jurisdiction {string}', (text) => {
+    labReportPage.verifyViewedJurisdiction(text);
 });
 
-Then("the Lab Report view should show Resulted Test {string}", (text) => {
-  labReportPage.verifyViewedResultedTest(text);
+Then('the Lab Report view should show Resulted Test {string}', (text) => {
+    labReportPage.verifyViewedResultedTest(text);
 });
 
-When("user clicks the Edit button on the Lab Report page", () => {
-  labReportPage.clickEditLabReport();
+When('user clicks the Edit button on the Lab Report page', () => {
+    labReportPage.clickEditLabReport();
 });
 
 When("user changes the Specimen Collection Date to today's date on the Lab Report edit page", () => {
-  const today = new Date().toLocaleDateString("en-US");
-  labReportPage.changeSpecimenCollectionDateOnEdit(today);
-  cy.wrap(today).as('editedCollectionDate');
+    const today = new Date().toLocaleDateString('en-US');
+    labReportPage.changeSpecimenCollectionDateOnEdit(today);
+    cy.wrap(today).as('editedCollectionDate');
 });
 
-When("user clicks the Submit button on the Lab Report edit page", () => {
-  labReportPage.clickSubmitOnEditLabReport();
+When('user clicks the Submit button on the Lab Report edit page', () => {
+    labReportPage.clickSubmitOnEditLabReport();
 });
 
-Then("the Lab Report view should show the updated Specimen Collection Date", () => {
-  cy.get('@editedCollectionDate').then((today) => {
-    const [month, day, year] = today.split('/');
-    const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
-    labReportPage.verifyViewedCollectionDate(formattedDate);
-  });
+Then('the Lab Report view should show the updated Specimen Collection Date', () => {
+    cy.get('@editedCollectionDate').then((today) => {
+        const [month, day, year] = today.split('/');
+        const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+        labReportPage.verifyViewedCollectionDate(formattedDate);
+    });
 });
 
-When("user selects {string} as the condition for the new investigation", (conditionText) => {
-  addLabReportInvestigationPage.selectCondition(conditionText);
+When('user selects {string} as the condition for the new investigation', (conditionText) => {
+    addLabReportInvestigationPage.selectCondition(conditionText);
 });
 
 When(
-  "user sets the processing decision to {string} for a {string} investigation and submits",
-  (decisionCode, investigationType) => {
-    addLabReportInvestigationPage.selectProcessingDecisionAndSubmit(decisionCode, investigationType);
-  }
+    'user sets the processing decision to {string} for a {string} investigation and submits',
+    (decisionCode, investigationType) => {
+        addLabReportInvestigationPage.selectProcessingDecisionAndSubmit(decisionCode, investigationType);
+    }
 );
 
-When("user fills the Field Follow-up investigator with Quick Code {string}", (quickCode) => {
-  addLabReportInvestigationPage.fillFieldFollowUpInvestigator(quickCode);
+When('user fills the Field Follow-up investigator with Quick Code {string}', (quickCode) => {
+    addLabReportInvestigationPage.fillFieldFollowUpInvestigator(quickCode);
 });
 
-When("user sets the Field Follow-up date assigned to match the investigation start date", () => {
-  addLabReportInvestigationPage.fillFieldFollowUpDateAssignedToMatchStartDate();
+When('user sets the Field Follow-up date assigned to match the investigation start date', () => {
+    addLabReportInvestigationPage.fillFieldFollowUpDateAssignedToMatchStartDate();
 });
 
-When("user selects {string} for Patient Eligible for Notification of Exposure", (text) => {
-  addLabReportInvestigationPage.selectNotificationEligibility(text);
+When('user selects {string} for Patient Eligible for Notification of Exposure', (text) => {
+    addLabReportInvestigationPage.selectNotificationEligibility(text);
 });
 
-When("user clicks the Submit button on the investigation", () => {
-  addLabReportInvestigationPage.clickSubmit();
+When('user clicks the Submit button on the investigation', () => {
+    addLabReportInvestigationPage.clickSubmit();
 });
 
-Then("the investigation should be saved successfully", () => {
-  addLabReportInvestigationPage.verifyInvestigationSavedSuccessfully();
+Then('the investigation should be saved successfully', () => {
+    addLabReportInvestigationPage.verifyInvestigationSavedSuccessfully();
 });
