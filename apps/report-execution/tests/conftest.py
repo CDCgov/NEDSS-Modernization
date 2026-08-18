@@ -123,18 +123,15 @@ def download_custom_library(request):
     file_dir = os.path.dirname(__file__)
     script_path = f"{file_dir}/../scripts/pull_example_library.sh"
 
-    try:
-        result = subprocess.run(script_path, capture_output=True, text=True)
+    result = subprocess.run(script_path, capture_output=True, text=True)
 
-        if result.returncode != 0:
-            msg = 'Shell script to pull down example library failed. Script STDERR:\n'
-            msg += result.stderr
+    if result.returncode != 0:
+        msg = 'Shell script to pull down example library failed. Script STDERR:\n'
+        msg += result.stderr
 
-            raise RuntimeError(msg)
-    except RuntimeError:
-        logging.exception(
-            'Downloading custom library from NEDSS-Custom-Library-Example repo failed'
-        )
+        raise RuntimeError(msg)
+
+    logging.info('custom library finished downloading!')
 
     def teardown():
         logging.info('Removing downloaded custom library file...\n')
