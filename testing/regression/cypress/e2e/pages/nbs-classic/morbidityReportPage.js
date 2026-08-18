@@ -27,8 +27,6 @@ class MorbidityReportPage {
   // Patient entry fields
   patientLastNameField = "#entity\\.lastNm";
   patientFirstNameField = "#entity\\.firstNm";
-  patientSearchResults = "#searchResultsTable tbody tr";
-  patientSearchResultsTable = "#searchResultsTable";
 
   // Validation error selectors
   errorMessages =
@@ -47,7 +45,8 @@ class MorbidityReportPage {
   }
 
   selectCondition(condition) {
-    cy.get(this.conditionField).type(condition).type("{enter}");
+    cy.get(this.conditionField).type(condition);
+    cy.get(this.conditionField).type("{enter}");
   }
 
   selectJurisdiction(jurisdiction) {
@@ -72,7 +71,6 @@ class MorbidityReportPage {
         return conditionText === condition;
       })
       .first()
-      .scrollIntoView()
       .should('be.visible')
       .within(() => {
         // Find and check the checkbox in the first column
@@ -142,7 +140,7 @@ class MorbidityReportPage {
   }
 
   clickAndVerifyPrint() {
-    let printURL = '/nbs/LoadViewObservationMorb1.do?ContextAction=PrintPage';
+    const printURL = '/nbs/LoadViewObservationMorb1.do?ContextAction=PrintPage';
     cy.window().then(win => {
       cy.stub(win, 'open').as('open')
     });

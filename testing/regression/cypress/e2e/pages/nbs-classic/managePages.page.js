@@ -105,10 +105,7 @@ class ClassicManagePagesPage {
   }
 
   enterDescription () {
-    cy.get('textarea[name="selection.waTemplateDT.descTxt"]')
-      .eq(0)
-      .clear()
-      .type('description edited')
+    cy.enterInput('textarea[name="selection.waTemplateDT.descTxt"]', 'description edited');
   }
 
   clickPageRulesBtn () {

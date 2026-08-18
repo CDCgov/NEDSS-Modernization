@@ -4,10 +4,8 @@ class CreateNewConditionPage {
     }
 
     selectEventTypeInvestigation() {
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
         cy.get('#eventType').eq(0).select('INV');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(1000);
     }
 

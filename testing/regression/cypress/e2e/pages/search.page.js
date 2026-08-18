@@ -43,8 +43,7 @@ class SearchPage {
   }
 
   enterIdType(type) {
-    const elem = "#identificationType";
-    cy.get(elem).scrollIntoView().select(type);
+    cy.get('#identificationType').select(type);
   }
 
   enterId(id) {
@@ -55,7 +54,7 @@ class SearchPage {
 
   selectName() {
     cy.wait(500);
-    let name = "label[for='lastName']";
+    const name = "label[for='lastName']";
     cy.get(name).click();
     cy.wait(1000);
   }
@@ -66,15 +65,11 @@ class SearchPage {
   }
 
   enterEthnicity(type) {
-    cy.get('#ethnicity')
-      .scrollIntoView()
-      .select(type);
+    cy.get('#ethnicity').select(type);
   }
 
   enterRace(type) {
-    cy.get('#race')
-      .scrollIntoView()
-      .select(type);
+    cy.get('#race').select(type);
   }
 
   search() {
@@ -82,47 +77,25 @@ class SearchPage {
     cy.wait(100);
   }
 
-  verifySearchPage() {
-    cy.get('div.bottom-search button[type="submit"]').should("be.visible");
-  }
-
   closeErrorMsg() {
     cy.get(".usa-alert--error svg").click();
   }
 
-  // selectState() {
-  //   cy.wait(500);
-  //   let elemt = "div[id='2'] select[placeholder='-Select-']";
-  //   cy.get(elemt).scrollIntoView();
-  //   elemt = "option[value='15']";
-  //   cy.get(elemt).click();
-  //   cy.wait(1000);
-  // }
-
   selectState(string) {
-    // cy.get('div[aria-label="Address"]').click({ force: true });
-    cy.get("select[name='state']").select(string);    
+    cy.get("select[name='state']").select(string);
     cy.wait(500);
   }
 
   selectGender(gender) {
-    cy.get("#gender");
     cy.get("#gender").select(gender);
     cy.wait(500);
   }
 
-  selectDob() {
-    cy.get("#dateOfBirth");
-  }
-
   enterDob(dateOfBirth) { 
     const [month, day, year] = dateOfBirth.split('/');
-    cy.get("#bornOn-exact-date-month").focus().clear();
-    cy.get("#bornOn-exact-date-day").focus().clear();
-    cy.get("#bornOn-exact-date-year").focus().clear();
-    cy.get("#bornOn-exact-date-month").type(month);
-    cy.get("#bornOn-exact-date-day").type(day);
-    cy.get("#bornOn-exact-date-year").type(year);
+    cy.enterInput('#bornOn-exact-date-month', month);
+    cy.enterInput('#bornOn-exact-date-day', day);
+    cy.enterInput('#bornOn-exact-date-year', year);
   }
 
   clearAll() {
@@ -132,13 +105,11 @@ class SearchPage {
   selectDelete() {
     cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
     cy.get('label[for="status__checkbox__LOG_DEL"]').click({ force: true });
-    
   }
 
   selectSuperseded() {
     cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
     cy.get('label[for="status__checkbox__SUPERCEDED"]').click({ force: true });
-
   }
 
   clickAddressTab() {    

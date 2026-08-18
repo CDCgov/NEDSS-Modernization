@@ -13,8 +13,8 @@ Given("I login for HL7 API generate token", () => {
     url: `${baseUrl}/auth/token`,
     headers: {
       "Content-Type": "text/plain",
-      clientid: clientid,
-      clientsecret: clientsecret,
+      clientid,
+      clientsecret,
     },
   }).then((response) => {
     expect(response.status).to.eq(200);
@@ -26,7 +26,7 @@ Given("I login for HL7 API generate token", () => {
 });
 
 When("I Generate HL7 {string} messages to api", (string) => {
-  let messageCondition = string;
+  const messageCondition = string;
   let currentMessage;
   let messageID;
   let fakeRandomData;
@@ -63,8 +63,8 @@ When("I Generate HL7 {string} messages to api", (string) => {
       UUIDTIMESTAMP: randomData.faketimestamp,
     };
 
-    let modifiedmsg = jsonData[0].data;
-    let modifiedData = UtilityFunctions.replacePlaceholders(
+    const modifiedmsg = jsonData[0].data;
+    const modifiedData = UtilityFunctions.replacePlaceholders(
       modifiedmsg,
       replacements
     );
@@ -87,8 +87,8 @@ When("I Generate HL7 {string} messages to api", (string) => {
       headers: {
         "Content-Type": "text/plain",
         Authorization: `Bearer ${authToken}`,
-        clientid: clientid,
-        clientsecret: clientsecret,
+        clientid,
+        clientsecret,
         msgType: "HL7",
       },
       body: modifiedData,
@@ -102,8 +102,8 @@ When("I Generate HL7 {string} messages to api", (string) => {
           url: checkStatusUrl,
           headers: {
             Authorization: `Bearer ${authToken}`,
-            clientid: clientid,
-            clientsecret: clientsecret,
+            clientid,
+            clientsecret,
           },
         }).then((response) => {
           cy.wait(2000);

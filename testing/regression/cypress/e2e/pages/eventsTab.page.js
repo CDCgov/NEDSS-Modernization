@@ -18,9 +18,9 @@ class EventsTabPage {
     "Contacts named by patient": 7,
     "Patient named by contacts": 8,
   };
-  
+
   waitForSpinner(timeout = 10000) {
-    cy.get(EventsTabPage.SPINNER_SELECTOR, { timeout })
+    cy.get(EventsTabPage.SPINNER_SELECTOR, {timeout})
       .should('not.exist');
   }
 
@@ -58,7 +58,7 @@ class EventsTabPage {
 
   selectMultipleInvestigations() {
     const conditionText = "Acanthamoeba Disease (Excluding Keratitis)";
-    const conditionColumnIndex = 3;    
+    const conditionColumnIndex = 3;
     cy.get(this.table)
       .eq(0)
       .find("tbody tr")
@@ -71,31 +71,28 @@ class EventsTabPage {
             if (text.includes(conditionText)) {
               cy.wrap($row)
                 .find("input")
-                .check({ force: true });
+                .check({force: true});
             }
           });
       });
   }
 
   validateTableColumns(tableName, dataTable) {
-    const myArray = [];    
+    const myArray = [];
     cy.contains("section", tableName).within(() => {
       cy.get("th")
         .then((headerElements) => {
           const headers = Cypress.$.map(headerElements, (headerElement) => {
             return Cypress.$(headerElement).text().trim();
           }).filter(Boolean);
-          
+
           dataTable.rawTable.forEach((row) => {
             const label = row[0];
-            if ((label == "Investigation #") & (tableName === "Investigations")) {
+            if ((label === "Investigation #") & (tableName === "Investigations")) {
               myArray.push("");
             }
             myArray.push(label);
           });
-          
-          console.log("myArray", myArray);
-          console.log("headers", headers);
           expect(headers).to.deep.equal(myArray);
         });
     });
@@ -108,7 +105,7 @@ class EventsTabPage {
   getReportCount(ReportType) {
     const reportIndex = this.reportTypeIndexMap[ReportType];
     this.waitForSpinner();
-    
+
     this.getCountBadge(reportIndex)
       .invoke('text')
       .then(text => {
@@ -121,9 +118,9 @@ class EventsTabPage {
   verifyReportCountIncreased(ReportType) {
     const reportIndex = this.reportTypeIndexMap[ReportType];
     this.waitForSpinner();
-    
+
     const initialCount = Cypress.env(ReportType.trim() + 'Count');
-    
+
     this.getCountBadge(reportIndex)
       .invoke('text')
       .then(text => {
@@ -137,9 +134,9 @@ class EventsTabPage {
   verifyReportCountUnchanged(ReportType) {
     const reportIndex = this.reportTypeIndexMap[ReportType];
     this.waitForSpinner();
-    
+
     const initialCount = Cypress.env(ReportType.trim() + 'Count');
-    
+
     this.getCountBadge(reportIndex)
       .invoke('text')
       .then(text => {
@@ -152,7 +149,7 @@ class EventsTabPage {
 
   saveInitialTreatmentCount() {
     this.waitForSpinner();
-    
+
     cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
       .first()
       .find('td:nth-child(' + EventsTabPage.TREATMENT_COLUMN + ')')
@@ -165,12 +162,12 @@ class EventsTabPage {
 
   verifyTreatmentCountIncreased() {
     this.waitForSpinner();
-    
+
     const initialCount = Cypress.env('initialTreatmentCount');
     const eventId = Cypress.env('morbidityEventId');
-    
+
     cy.log('Looking for morbidity report with Event ID: ' + eventId);
-    
+
     this.findRowByEventId(eventId)
       .find('td:nth-child(' + EventsTabPage.TREATMENT_COLUMN + ')')
       .find('ul._treatments_t5nhh_1 li')
@@ -184,14 +181,12 @@ class EventsTabPage {
 
   clickFirstMorbidityReportLinkStoreEventID() {
     this.waitForSpinner();
-    
+
     cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
       .first()
-      .scrollIntoView()
       .should('be.visible')
       .within(() => {
         cy.get('td:first-child a')
-          .scrollIntoView()
           .should('be.visible')
           .then($link => {
             this.extractAndStoreEventId($link);
@@ -202,11 +197,11 @@ class EventsTabPage {
 
   clickStoredMorbidityReport() {
     this.waitForSpinner();
-    
+
     const eventId = Cypress.env('morbidityEventId');
-    
+
     cy.log('Looking for morbidity report with Event ID: ' + eventId);
-    
+
     this.findRowByEventId(eventId)
       .find('td:first-child a')
       .scrollIntoView()
@@ -217,11 +212,11 @@ class EventsTabPage {
 
   verifySavedMorbidityReportJurisdiction(expectedJurisdiction) {
     this.waitForSpinner();
-    
+
     const eventId = Cypress.env('morbidityEventId');
-    
+
     cy.log('Looking for morbidity report with Event ID: ' + eventId);
-    
+
     this.findRowByEventId(eventId)
       .find('td:nth-child(' + EventsTabPage.JURISDICTION_COLUMN + ')')
       .should('be.visible')
@@ -235,13 +230,13 @@ class EventsTabPage {
 
   verifyStoredMorbidityReportHasAssociation() {
     this.waitForSpinner();
-    
+
     const eventId = Cypress.env('morbidityEventId');
-    
+
     expect(eventId, 'Morbidity event ID should exist').to.not.be.empty;
-    
+
     cy.log('Looking for morbidity report with Event ID: ' + eventId);
-    
+
     this.findRowByEventId(eventId)
       .find('td:nth-child(' + EventsTabPage.ASSOCIATED_COLUMN + ')')
       .should('be.visible')
@@ -257,11 +252,11 @@ class EventsTabPage {
   clickStoredInvestigationId() {
     // Get the stored investigation ID
     const investigationId = Cypress.env('investigationId');
-    
+
     // Wait for page to load
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+    cy.get('._indicator_1vvtd_1', {timeout: 10000})
       .should('not.exist');
-    
+
     // Find and click the investigation link in the Investigations table
     cy.get('#investigations-table tbody tr')
       .contains('td a', investigationId)
@@ -271,7 +266,7 @@ class EventsTabPage {
 
   clickFirstUnassociatedMorbidityReport() {
     this.waitForSpinner();
-    
+
     cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
       .filter((index, row) => {
         const associatedText = Cypress.$(row)
@@ -281,11 +276,9 @@ class EventsTabPage {
         return associatedText === '---';
       })
       .first()
-      .scrollIntoView()
       .should('be.visible')
       .within(() => {
         cy.get('td:first-child a')
-          .scrollIntoView()
           .should('be.visible')
           .then($link => {
             this.extractAndStoreEventId($link);
@@ -296,10 +289,10 @@ class EventsTabPage {
 
   verifyMorbidityEventIdNotInMorbidityReports() {
     // Wait for page to load
-    cy.get('._indicator_1vvtd_1', { timeout: 10000 })
+    cy.get('._indicator_1vvtd_1', {timeout: 10000})
       .should('not.exist');
-    
-    const eventId = Cypress.env('morbidityEventId');  
+
+    const eventId = Cypress.env('morbidityEventId');
     // Check the Morbidity Reports table
     cy.get('#morbidity-reports-table')
       .should('be.visible')
@@ -314,10 +307,10 @@ class EventsTabPage {
                 found = true;
               }
             });
-            
+
             expect(found, 'Morbidity event ID should NOT appear in Morbidity Reports table')
               .to.be.false;
-            
+
           });
       });
   }

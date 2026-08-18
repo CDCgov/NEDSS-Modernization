@@ -65,9 +65,8 @@ class ClassicPatientSearchPage {
   }
 
   fillInformationAsOfDateField(date) {
-    const field = cy.get('input[id="administrative.asOf"]')
-    field.invoke('val', date || "01/20/2024").trigger('change')
-    field.click()
+    cy.get('input[id="administrative.asOf"]').invoke('val', date || "01/20/2024").trigger('change');
+    cy.get('input[id="administrative.asOf"]').click()
     cy.contains("a", "Administrative").click()
   }
 
@@ -95,7 +94,8 @@ class ClassicPatientSearchPage {
   }
 
   clearCommentsField() {
-    cy.get('textarea[id="administrative.comment"]').clear().blur()
+    cy.get('textarea[id="administrative.comment"]').clear();
+    cy.get('textarea[id="administrative.comment"]').blur();
   }
 
   fillExtendedAddressFormDetails(type) {
@@ -219,9 +219,8 @@ class ClassicPatientSearchPage {
   selectCondition() {
     cy.get('#ccd').eq(0).select('11065', {force: true})
     cy.get('#Submit').eq(0).click()
-    const field = cy.get('#NBS104')
-    field.invoke('val', "01/20/2024").trigger('change')
-    field.click()
+    cy.get('#NBS104').invoke('val', "01/20/2024").trigger('change')
+    cy.get('#NBS104').click()
     cy.contains("Comments").eq(0).click()
   }
 

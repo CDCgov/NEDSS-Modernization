@@ -26,6 +26,7 @@ When('I click the filter {int} {string} button', (filterInd, name) => {
 
 When('I add all filters', () => {
     const optionValues = [];
+    // eslint-disable-next-line cypress/unsafe-to-chain-command
     cy.findByRole('combobox', { name: 'Filter' })
         .findAllByRole('option')
         .each(($option) => {
