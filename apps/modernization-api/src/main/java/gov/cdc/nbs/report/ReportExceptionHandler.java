@@ -65,7 +65,7 @@ public class ReportExceptionHandler {
 
   //  Currently limited to the ReportExecutionServiceClient
   @ExceptionHandler(RestClientResponseException.class)
-  public ResponseEntity<ErrorResponseBody> handleRestClientException(
+  public ResponseEntity<ErrorResponseBody> handleRestClientFailure(
       RestClientResponseException ex) {
     ErrorResponseBody err = null;
 
@@ -91,7 +91,7 @@ public class ReportExceptionHandler {
   }
 
   @ExceptionHandler(RestClientException.class)
-  public ResponseEntity<ErrorResponseBody> handleRestClientFailure(RestClientException ex) {
+  public ResponseEntity<ErrorResponseBody> handleRestClientException(RestClientException ex) {
     Throwable cause = ex.getRootCause();
     if (cause instanceof StreamConstraintsException) {
       return defaultExceptionHandler(
