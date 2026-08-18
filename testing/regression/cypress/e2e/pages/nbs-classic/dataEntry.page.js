@@ -201,7 +201,8 @@ class LabReportPage {
   changeSpecimenCollectionDateOnEdit(date) {
     const [month, day, year] = date.split('/');
     const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
-    cy.get(this.specimenCollectionDate).clear().type(formattedDate);
+    cy.get(this.specimenCollectionDate).clear();
+    cy.get(this.specimenCollectionDate).type(formattedDate);
   }
 
   verifyViewedCollectionDate(text) {

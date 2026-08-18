@@ -252,14 +252,15 @@ class EventsTabPage {
 
   clickFirstMorbidityReportLinkStoreEventID() {
     this.waitForSpinner();
-    
-    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
-      .first()
-      .scrollIntoView()
+
+    cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR).first().as('morbidityRow');
+    cy.get('@morbidityRow').scrollIntoView();
+    cy.get('@morbidityRow')
       .should('be.visible')
       .within(() => {
-        cy.get('td:first-child a')
-          .scrollIntoView()
+        cy.get('td:first-child a').as('firstMorbidityLink');
+        cy.get('@firstMorbidityLink').scrollIntoView();
+        cy.get('@firstMorbidityLink')
           .should('be.visible')
           .then($link => {
             this.extractAndStoreEventId($link);
@@ -339,7 +340,7 @@ class EventsTabPage {
 
   clickFirstUnassociatedMorbidityReport() {
     this.waitForSpinner();
-    
+
     cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
       .filter((index, row) => {
         const associatedText = Cypress.$(row)
@@ -349,11 +350,14 @@ class EventsTabPage {
         return associatedText === '---';
       })
       .first()
-      .scrollIntoView()
+      .as('unassociatedMorbidityRow');
+    cy.get('@unassociatedMorbidityRow').scrollIntoView();
+    cy.get('@unassociatedMorbidityRow')
       .should('be.visible')
       .within(() => {
-        cy.get('td:first-child a')
-          .scrollIntoView()
+        cy.get('td:first-child a').as('firstUnassociatedLink');
+        cy.get('@firstUnassociatedLink').scrollIntoView();
+        cy.get('@firstUnassociatedLink')
           .should('be.visible')
           .then($link => {
             this.extractAndStoreEventId($link);
