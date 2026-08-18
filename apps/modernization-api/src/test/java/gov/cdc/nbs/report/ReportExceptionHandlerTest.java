@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.core.exc.StreamConstraintsException;
 import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import java.lang.reflect.Constructor;
@@ -21,8 +22,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
-
-import com.fasterxml.jackson.core.exc.StreamConstraintsException;
 
 class ReportExceptionHandlerTest {
 
@@ -143,20 +142,22 @@ class ReportExceptionHandlerTest {
     assertEquals("it went poorly", responseEntity.getBody().message());
     assertEquals(HttpStatus.SERVICE_UNAVAILABLE, responseEntity.getStatusCode());
   }
-  
-  @Test 
+
+  @Test
   void should_return_error_msg_and_status_code_for_max_size_exceeded_exception() {
-    RestClientException exception = new RestClientException("uh oh", new StreamConstraintsException("too big!"));
+    RestClientException exception =
+        new RestClientException("uh oh", new StreamConstraintsException("too big!"));
 
     ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
         handler.handleRestClientFailure(exception);
 
     assertNotNull(responseEntity.getBody());
-    assertEquals("Returned report exceeds maximum size allowed by NBS", responseEntity.getBody().message());
+    assertEquals(
+        "Returned report exceeds maximum size allowed by NBS", responseEntity.getBody().message());
     assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
   }
-  
-  @Test 
+
+  @Test
   void should_return_error_msg_and_status_code_for_unexpected_rest_exception() {
     RestClientException exception = new RestClientException("uh oh", new Exception("too big!"));
 
