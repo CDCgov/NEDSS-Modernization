@@ -22,7 +22,7 @@ dev = [
     "ruff>=0.15.0,<1.0.0",
     "tablefaker>=1.11.1",
     "testcontainers>=4.15.0",
-    "time-machine>=3.3.1",
+    "time-machine>=3.4.0",
 ]
 
 [tool.ruff.lint]
