@@ -16,7 +16,9 @@ public class ReportExecutionClientConfig {
 
   @Bean
   public RestClient reportExecutionClient(
-      @Value("${nbs.report.execution.url}") final String url, @Value("${nbs.report.execution.max_size}") final Integer size, RestClient.Builder builder) {
+      @Value("${nbs.report.execution.url}") final String url,
+      @Value("${nbs.report.execution.max_size}") final Integer size,
+      RestClient.Builder builder) {
     ObjectMapper largeResponseMapper =
         new ObjectMapper(
             JsonFactory.builder()
