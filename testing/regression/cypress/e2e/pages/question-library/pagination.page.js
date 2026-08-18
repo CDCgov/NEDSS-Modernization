@@ -1,7 +1,7 @@
 class PaginationPage {
     shouldHaveDefaultRows() {
-        cy.contains(10)
+        cy.contains(10);
     }
 }
 
-export const questionLibraryPaginationPage = new PaginationPage()
+export const questionLibraryPaginationPage = new PaginationPage();

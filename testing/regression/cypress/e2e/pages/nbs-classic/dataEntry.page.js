@@ -4,7 +4,6 @@ class LabReportPage {
   dataEntryNavigation = 'a[href="/nbs/LoadNavbar.do?ContextAction=DataEntry"]';
   homeNavigation = 'a[href="/nbs/HomePage.do?method=loadHomePage"]';
   labReportLink = 'font.boldEightBlack';
-  labReportTab = 'td#tabs0head1';
   reportingFacilityField = '#NBS_LAB365Text';
   quickCodeLookupButton = '#NBS_LAB365CodeLookupButton';
   sameAsReportingFacilityCheckbox = 'input[name="pageClientVO.answer(NBS_LAB267)"]';
@@ -16,10 +15,7 @@ class LabReportPage {
   unitsField = 'input[name="LAB115_textbox"]';
   textResultField = '#NBS_LAB208';
   addButton = '#AddButtonToggleRESULTED_TEST_CONTAINER > td > input';
-  patientSearchButton = 'input#NBS_UI_24L';
   nextLink = 'a[href="javascript:navigateTab(\'next\')"]';
-  reportingFacilitySearchButton = 'input[id="NBS_LAB365Icon"]';
-  orderedTestSearchButton = 'input[id="NBS_LAB112Search"]';
   resultedTestSearchButton = 'input[id="NBS_LAB220Search"]';
   specimenCollectionDate = 'input[id="LAB163"]';
   specimenSiteField = 'select#NBS_LAB166';
@@ -365,9 +361,7 @@ class LabReportPage {
 
   // Dropdown selector
   _selectFromDropdown(fieldSelector, value) {
-    cy.get(fieldSelector)
-      .clear()
-      .type(value + '{enter}');
+    cy.enterInput(fieldSelector, value + '{enter}');
   }
 }
 
