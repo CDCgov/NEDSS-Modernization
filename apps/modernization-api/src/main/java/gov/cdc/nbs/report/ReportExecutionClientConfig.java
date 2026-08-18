@@ -28,8 +28,8 @@ public class ReportExecutionClientConfig {
     } catch (Exception e) {
       LOGGER.log(
           System.Logger.Level.WARNING,
-          "Unable to parse `nbs.report.execution.max_size` (%s). Using Integer max value instead."
-              .formatted(rawSize),
+          "Unable to parse `nbs.report.execution.max_size` (%s). Using Integer max value (%s) instead."
+              .formatted(rawSize, size),
           e);
     }
 
