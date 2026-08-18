@@ -83,7 +83,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches.${index}.appearsInTable`}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
-                                        <SelectInput
+                                        <SingleSelect
                                             name={name}
                                             onChange={(e) => onChange(e.target.value === 'Y')}
                                             defaultValue={value ? 'Y' : 'N'}

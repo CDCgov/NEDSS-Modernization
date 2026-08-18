@@ -92,13 +92,13 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                     />
                 )}
             />
-            <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled={true} />
+            <SingleSelect label="Event type" value={eventType} options={eventTypeOptions} disabled={true} />
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Reporting mechanism"
                         name={name}
                         id={name}

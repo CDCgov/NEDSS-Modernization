@@ -377,7 +377,7 @@ export const BusinessRulesForm = ({
                                     </Label>
                                 </div>
                                 <div className={styles.content}>
-                                    <SelectInput
+                                    <SingleSelect
                                         className={styles.input}
                                         defaultValue={watch.anySourceValue ? Rule.comparator.EQUAL_TO : value}
                                         onChange={onChange}

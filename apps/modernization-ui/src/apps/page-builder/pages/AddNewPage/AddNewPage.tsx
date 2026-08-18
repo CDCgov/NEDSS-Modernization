@@ -150,7 +150,7 @@ export const AddNewPage = () => {
                             name="eventType"
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                                <SelectInput
+                                <SingleSelect
                                     label="Event type"
                                     dataTestid="eventTypeDropdown"
                                     value={value}

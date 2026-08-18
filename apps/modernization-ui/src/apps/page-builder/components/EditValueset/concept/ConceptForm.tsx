@@ -272,7 +272,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="codeSystem"
                     rules={{ required: { value: true, message: 'Code system name is required' } }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
-                        <SelectInput
+                        <SingleSelect
                             className={styles.wideInput}
                             label="Code system name"
                             defaultValue={value}

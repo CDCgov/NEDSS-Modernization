@@ -153,7 +153,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.container}>
                     <div className={styles.staticType}>
-                        <SelectInput
+                        <SingleSelect
                             label="Choose a static element"
                             options={staticType}
                             required={true}
