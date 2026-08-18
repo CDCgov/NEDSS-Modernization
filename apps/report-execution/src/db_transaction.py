@@ -65,10 +65,10 @@ class Transaction:
 
     def _fetch_rows(self):
         row_limit = get_row_limit(self.is_export)
-        data = self._cursor.fetchmany(row_limit)
+        data = self._cursor.fetchmany(row_limit + 1)
 
         # If there are any more rows to fetch beyond the limit, the result is too big
-        if self._cursor.fetchone() is not None:
+        if len(data) == row_limit + 1:
             raise errors.ResultTooBigError(
                 self.is_export, row_limit, f'over {row_limit}'
             )
