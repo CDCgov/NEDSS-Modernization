@@ -16,17 +16,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.StreamReadConstraints;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class ReportExecutionServiceClient {
   private static final System.Logger LOGGER =
       System.getLogger(ReportExecutionServiceClient.class.getName());
 
   private final Clock clock;
+  private final ObjectMapper largeContentMapper;
 
   private final RestClient restClient;
   private final DataSourceNameUtils dataSourceNameUtils;
   private final WhereClauseService whereClauseService;
   private final ReportFetcher reportFetcher;
+  
 
   public ReportExecutionServiceClient(
       final Clock clock,
@@ -39,6 +45,16 @@ public class ReportExecutionServiceClient {
     this.dataSourceNameUtils = dataSourceNameUtils;
     this.whereClauseService = whereClauseService;
     this.reportFetcher = reportFetcher;
+
+    JsonFactory factory = JsonFactory.builder()
+            .streamReadConstraints(
+                StreamReadConstraints.builder()
+                    .maxStringLength(50_000_000)
+                    .build()
+            )
+            .build();
+
+        this.largeContentMapper = new ObjectMapper(factory);
   }
 
   public ReportExecutionResult executeReport(ReportExecutionRequest request) {
