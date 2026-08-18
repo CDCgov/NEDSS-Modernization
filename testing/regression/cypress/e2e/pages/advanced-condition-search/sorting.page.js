@@ -9,8 +9,8 @@ class SortingPage {
 
     checkOrder(index, sortType) {
         const list = [];
-        cy.get("tbody tr").each(($tr) => {
-            list.push($tr.find("td").eq(index).text());
+        cy.get('tbody tr').each(($tr) => {
+            list.push($tr.find('td').eq(index).text());
         });
         let isOrdered = false;
         if (sortType === 'ASC') {
@@ -40,4 +40,4 @@ class SortingPage {
     }
 }
 
-export const sortingPage = new SortingPage()
+export const sortingPage = new SortingPage();

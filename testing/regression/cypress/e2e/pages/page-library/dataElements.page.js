@@ -1,29 +1,28 @@
 class DataElementsPage {
-
     userViewsColumnAndSeeList(columnName) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
-        this.openInvestigationTable.find("tbody tr").each(($tr) => {
-            list.push($tr.find("td").eq(index).text());
+        this.openInvestigationTable.find('tbody tr').each(($tr) => {
+            list.push($tr.find('td').eq(index).text());
         });
     }
 
     getColumnIndexByName(columnName) {
-        if (columnName === "Page name") {
+        if (columnName === 'Page name') {
             return 0;
-        } else if (columnName === "Event type") {
+        } else if (columnName === 'Event type') {
             return 1;
-        } else if (columnName === "Status") {
+        } else if (columnName === 'Status') {
             return 2;
-        } else if (columnName === "Last updated") {
+        } else if (columnName === 'Last updated') {
             return 3;
-        } else if (columnName === "Last updated by") {
+        } else if (columnName === 'Last updated by') {
             return 4;
         }
     }
 
     get table() {
-        return "table[data-testid=table]";
+        return 'table[data-testid=table]';
     }
 
     get openInvestigationTable() {
@@ -31,4 +30,4 @@ class DataElementsPage {
     }
 }
 
-export const pageLibraryDataElementsPage = new DataElementsPage()
+export const pageLibraryDataElementsPage = new DataElementsPage();

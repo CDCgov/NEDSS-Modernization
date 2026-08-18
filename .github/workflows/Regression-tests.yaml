@@ -34,6 +34,10 @@ jobs:
         working-directory: testing/regression/
         run: npm run lint
 
+      - name: Check formatting
+        working-directory: testing/regression/
+        run: npm run format:check
+
       - name: Run containers
         working-directory: ./cdc-sandbox
         run: ./build_all.sh
