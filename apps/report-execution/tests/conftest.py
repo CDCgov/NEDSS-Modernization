@@ -131,7 +131,7 @@ def download_custom_library(request):
             msg += result.stderr
 
             raise RuntimeError(msg)
-    except:
+    except RuntimeError:
         logging.exception(
             'Downloading custom library from NEDSS-Custom-Library-Example repo failed'
         )
