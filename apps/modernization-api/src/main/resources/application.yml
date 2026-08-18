@@ -21,6 +21,7 @@ nbs:
       host: localhost
       port: 8001
       url: http://${nbs.report.execution.host}:${nbs.report.execution.port}
+      max_size: 50000000
   datasource:
     server: localhost
     port: 1433
