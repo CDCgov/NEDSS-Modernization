@@ -15,7 +15,8 @@
         "lint": "eslint \"cypress/**/*.{js,jsx,ts,tsx}\"",
         "lint:fix": "eslint \"cypress/**/*.{ts,tsx,js,jsx}\" --fix",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "check:fix": "npm run format && npm run lint:fix"
     },
     "keywords": [
         "cypress",

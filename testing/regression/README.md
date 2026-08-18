@@ -104,3 +104,7 @@ npm run cy:open
 ```
 
 > **Note**: An error will show if `baseUrl` has not been changed or the local dev server is not running.
+
+## Linting & Formatting
+
+Formatting and linting are enforced on the codebase. Run `npm run check:fix` to run all checks locally with automatic fixes applied where possible.
