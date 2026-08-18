@@ -51,9 +51,7 @@ public class ReportExecutionClientConfig {
         .requestFactory(jdkClientHttpRequestFactory)
         .messageConverters(
             converters -> {
-              converters.removeIf(
-                  converter -> converter instanceof MappingJackson2HttpMessageConverter);
-
+              converters.removeIf(MappingJackson2HttpMessageConverter.class::isInstance);
               converters.add(new MappingJackson2HttpMessageConverter(largeResponseMapper));
             })
         .build();
