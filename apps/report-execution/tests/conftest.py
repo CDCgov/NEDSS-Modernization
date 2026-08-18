@@ -131,7 +131,7 @@ def download_custom_library(request):
 
         raise RuntimeError(msg)
 
-    logging.info('custom library finished downloading!')
+    logging.info('Custom library finished downloading!')
 
     def teardown():
         logging.info('Removing downloaded custom library file...\n')
