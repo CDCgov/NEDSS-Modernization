@@ -156,7 +156,7 @@ class EventsTabPage {
           
           dataTable.rawTable.forEach((row) => {
             const label = row[0];
-            if ((label == "Investigation #") & (tableName === "Investigations")) {
+            if ((label === "Investigation #") & (tableName === "Investigations")) {
               myArray.push("");
             }
             myArray.push(label);
