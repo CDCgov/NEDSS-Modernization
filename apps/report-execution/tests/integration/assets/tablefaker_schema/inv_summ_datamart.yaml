@@ -3,8 +3,7 @@ config:
 
 tables:
   - table_name: "[RDB].[dbo].[INV_SUMM_DATAMART]"
-    row_count: 100000
-    # export_file_count: 100
+    row_count: 200
     columns:
       - column_name: INVESTIGATION_KEY
         type: int
