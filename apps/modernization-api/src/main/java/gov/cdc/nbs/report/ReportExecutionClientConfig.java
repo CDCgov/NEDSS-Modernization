@@ -14,12 +14,24 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class ReportExecutionClientConfig {
 
+  private static final System.Logger LOGGER =
+      System.getLogger(ReportExecutionClientConfig.class.getName());
+
   @Bean
   public RestClient reportExecutionClient(
       @Value("${nbs.report.execution.url}") final String url,
       @Value("${nbs.report.execution.max_size}") final String rawSize,
       RestClient.Builder builder) {
-    Integer size = Integer.valueOf(rawSize);
+    Integer size = Integer.MAX_VALUE;
+    try {
+      size = Integer.valueOf(rawSize);
+    } catch (Exception e) {
+      LOGGER.log(
+          System.Logger.Level.WARNING,
+          "Unable to parse `nbs.report.execution.max_size` (%s). Using Integer max value instead."
+              .formatted(rawSize),
+          e);
+    }
 
     ObjectMapper largeResponseMapper =
         new ObjectMapper(
