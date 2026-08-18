@@ -145,7 +145,7 @@ const enterFilterValue = (field, index) => {
 
   if (field.type !== 'multiselect') {
     if (['Equals', 'Not Equals', 'Contains', 'Starts With', 'Less Than', 'Greater Than', 'Less Or Equal', 'Greater Or Equal'].includes(logic)) {
-      cy.enterInput('name="Value"', field.firstVal);
+      enterInput('name="Value"', field.firstVal);
     }
 
     if (logic === 'Between') {
