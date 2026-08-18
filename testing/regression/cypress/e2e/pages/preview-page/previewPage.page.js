@@ -16,12 +16,15 @@ class PreviewPagePage {
             cy.contains(content)
         }
     }
+    
+    loadPage() {
+        cy.visit('/page-builder/pages');
+        cy.get('#range-toggle').select('100')
+        cy.get('table[data-testid=table] tr').should('have.length.above', 38)
+    }
 
     navigateToPreviewPageWithStatusInitialDraft() {
-        cy.visit('/page-builder/pages');
-        cy.wait(2000);
-        cy.get('#range-toggle').select('100')
-        cy.wait(2000);
+        this.loadPage()
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
@@ -31,11 +34,8 @@ class PreviewPagePage {
     }
 
     navigateToPreviewPageWithStatusPublished() {
-        cy.visit('/page-builder/pages');
-        cy.wait(2000);
+        this.loadPage()
         function search () {
-            cy.get('#range-toggle').select('100')
-            cy.wait(2000);
             let isExist = false;
             cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
                 if($tr.find("td").eq(3).text() === "Published") {
@@ -54,10 +54,7 @@ class PreviewPagePage {
     }
 
     navigateToPreviewPageWithStatusPublishedWithDraft() {
-        cy.visit('/page-builder/pages');
-        cy.wait(2000);
-        cy.get('#range-toggle').select('100')
-        cy.wait(2000);
+        this.loadPage()
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Published with Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
@@ -75,7 +72,6 @@ class PreviewPagePage {
     }
 
     checkConditionsField() {
-        cy.wait(3000)
         cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
@@ -160,10 +156,6 @@ class PreviewPagePage {
         cy.contains('Save').click()
     }
 
-    checkSuccessMessage() {
-        cy.wait(2000)
-    }
-
     checkChangesOnPreviewPageStatusType() {
         cy.contains('PREVIEWING:')
     }
@@ -219,13 +211,8 @@ class PreviewPagePage {
         cy.get("#eventType")
     }
 
-    selectEventType(type) {
-        cy.wait(2000)
-        if(type) {
-            cy.get("#eventType").select(type)
-        } else {
-            cy.get("#eventType").select("INV")
-        }
+    selectEventType(type="INV") {
+        cy.get("#eventType").select(type)
     }
 
     viewTextOnPage(text) {
@@ -234,8 +221,7 @@ class PreviewPagePage {
 
     selectCondition() {
         this.selectEventType()
-        cy.get("#conditionIds").click()
-        cy.get('#conditionIds .multi-select__option').eq(0).click({ force: true })
+        cy.selectDropdownByLabel("Condition(s)", "African Tick Bite Fever")
     }
 
     selectPageName() {
@@ -261,7 +247,7 @@ class PreviewPagePage {
 
     clickCreatePageButton() {
         cy.get('.createPage').eq(0).click()
-        cy.wait(4000)
+        cy.findByRole('heading', {name: 'Create new page'}).should('be.visible');
     }
 
     clickPreviewAfterNewlyCreatedPage() {
@@ -274,13 +260,11 @@ class PreviewPagePage {
     }
 
     clickPublishBtnOnPublishPage() {
-        cy.wait(2000)
         cy.get('#notes').type('Version note test', { force: true });
         cy.get('form button[type="submit"]').eq(0).click({ force: true });
     }
 
     viewTextOnPageForStatus(text) {
-        cy.wait(2000)
         cy.contains(text)
     }
 

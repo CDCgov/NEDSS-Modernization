@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { Button } from '@trussworks/react-uswds';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { Property } from 'filters/properties';
 import { operators } from 'filters/selectables';
 
@@ -59,13 +59,13 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                         name="property"
                         rules={{ required: { value: true, message: 'A field is required.' } }}
                         render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
-                            <SelectInput
+                            <SingleSelect
                                 id="select-column"
                                 name={name}
                                 label="Select a field"
-                                defaultValue={value}
+                                value={properties.find(p => p.value === value)}
                                 onBlur={onBlur}
-                                onChange={onChange}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 options={properties}
                                 error={error?.message}
                             />
@@ -78,13 +78,13 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                             shouldUnregister={true}
                             rules={{ required: { value: true, message: 'An operator is required.' } }}
                             render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
-                                <SelectInput
+                                <SingleSelect
                                     id="select-operator"
                                     name={name}
                                     label="Operator"
-                                    defaultValue={value}
+                                    value={operators(property).find(p => p.value === value)}
                                     onBlur={onBlur}
-                                    onChange={onChange}
+                                    onChange={(v) => onChange(v?.value ?? null)}
                                     options={operators(property)}
                                     error={error?.message}
                                 />

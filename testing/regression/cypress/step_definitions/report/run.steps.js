@@ -53,17 +53,17 @@ When('I enter {string} to the To date', (date) => {
 });
 
 When('I enter From Month: {string} and From Year: {string}', (month, year) => {
-    cy.selectDropdownByLabel(0, 'From month', month);
-    cy.selectDropdownByLabel(0, 'From year', year);
+    cy.selectDropdownByLabel('From month', month);
+    cy.selectDropdownByLabel('From year', year);
 });
 
 When('I enter To Month: {string} and To Year: {string}', (month, year) => {
-    cy.selectDropdownByLabel(0, 'To month', month);
-    cy.selectDropdownByLabel(0, 'To year', year);
+    cy.selectDropdownByLabel('To month', month);
+    cy.selectDropdownByLabel('To year', year);
 });
 
 When('I select {string} from the {string} dropdown menu', (value, label) => {
-    cy.selectDropdownByLabel(0, label, value);
+    cy.selectDropdownByLabel(label, value);
 });
 
 When('I select the column {string}', (columnName) => {
