@@ -20,7 +20,7 @@ class ViewPHDCPage {
   }
 
   openECRViewer() {
-    let ecrViewerURL = "/nbs/LoadViewDocument2.do?method=originalDocumentView&eventType=eICR";
+    const ecrViewerURL = "/nbs/LoadViewDocument2.do?method=originalDocumentView&eventType=eICR";
     cy.window().then(win => {
       cy.stub(win, 'open').as('open')
     })

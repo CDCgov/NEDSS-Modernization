@@ -193,8 +193,8 @@ class ClassicHomePage {
 
 
           function categorizeAddresses(text) {
-              let categorized = [];
-              let lines = text.split(/\n+/).map(line => line.trim()).filter(line => line); // Remove blank lines
+              const categorized = [];
+              const lines = text.split(/\n+/).map(line => line.trim()).filter(line => line); // Remove blank lines
               let currentType = null;
               let currentValue = [];
 
@@ -222,8 +222,8 @@ class ClassicHomePage {
                   return { type, fullAddress: addressLines.join(", ") };
               }
 
-              let cityStateZip = addressLines.pop();
-              let match = cityStateZip.match(/^(.+),\s([A-Z]{2})\s(\d{5})$/);
+              const cityStateZip = addressLines.pop();
+              const match = cityStateZip.match(/^(.+),\s([A-Z]{2})\s(\d{5})$/);
 
               if (match) {
                   return {
@@ -240,8 +240,8 @@ class ClassicHomePage {
           }
 
           function categorizeEntries(text) {
-              let categorized = [];
-              let lines = text.split(/\n+/).map(line => line.trim()).filter(line => line); // Remove blank lines
+              const categorized = [];
+              const lines = text.split(/\n+/).map(line => line.trim()).filter(line => line); // Remove blank lines
               let currentType = null;
               let currentValue = [];
 
