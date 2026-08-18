@@ -94,7 +94,7 @@ public class ReportExceptionHandler {
     Throwable cause = ex.getRootCause();
     if (cause instanceof StreamConstraintsException) {
       return defaultExceptionHandler(
-          "Returned report exceeds maximum size allowed by NBS: %s.\n\n`nbs.report.execution.max_size` setting controls this limit and can be adjusted by your system administrator."
+          "Returned report exceeds maximum size allowed by NBS: %s.%n%n`nbs.report.execution.max_size` setting controls this limit and can be adjusted by your system administrator."
               .formatted(cause.getMessage()),
           ex,
           HttpStatus.UNPROCESSABLE_ENTITY,
