@@ -2,3 +2,5 @@ __pycache__/
 .ruff_cache/
 .pytest_cache/
 .venv/
+
+tests/fake_sql/

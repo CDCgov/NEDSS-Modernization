@@ -1,34 +1,35 @@
 class PaginationPage {
-    checkForDefaultRows () {
-        cy.get('#range-toggle').should('have.value', '10')
+    checkForDefaultRows() {
+        cy.get('#range-toggle').should('have.value', '10');
     }
 
     get table() {
-        return "table[data-testid=table]";
+        return 'table[data-testid=table]';
     }
 
-    selectNumberOfRows (numberOfRows) {
-        cy.get('#range-toggle').select(numberOfRows).should('have.value', numberOfRows);
+    selectNumberOfRows(numberOfRows) {
+        cy.get('#range-toggle').select(numberOfRows);
+        cy.get('#range-toggle').should('have.value', numberOfRows);
     }
 
     checkDisplayingNumberOfRowsSubsequently(rowsPerPage, onlyOnNext, pageNumber) {
         this.totalRowsCountFromDOM().then((totalRowsCount) => {
             const totalPages = Math.ceil(totalRowsCount / rowsPerPage);
             const lastPageRowsCount = totalRowsCount % rowsPerPage || rowsPerPage;
-            const arrayMapFun = (_, i) => i === totalPages - 1 ? lastPageRowsCount : rowsPerPage;
-            const rowsCountPerPage = Array.from({length: totalPages}, arrayMapFun);
+            const arrayMapFun = (_, i) => (i === totalPages - 1 ? lastPageRowsCount : rowsPerPage);
+            const rowsCountPerPage = Array.from({ length: totalPages }, arrayMapFun);
 
             if (onlyOnNext) {
-                this.openInvestigationTable.find("tbody tr").should('have.length', rowsCountPerPage[pageNumber-1]);
+                this.openInvestigationTable.find('tbody tr').should('have.length', rowsCountPerPage[pageNumber - 1]);
             } else {
                 rowsCountPerPage.forEach((countPerPage, i) => {
                     if (i !== 0) {
                         this.clickNextPage();
                     }
-                    this.openInvestigationTable.find("tbody tr").should('have.length', countPerPage);
+                    this.openInvestigationTable.find('tbody tr').should('have.length', countPerPage);
                 });
             }
-        })
+        });
     }
 
     clickNextPage() {
@@ -40,19 +41,23 @@ class PaginationPage {
         return cy.get(this.table).eq(0);
     }
 
-    totalRowsCountFromDOM(){
-        return cy.get('#totalRowCount').invoke('text')
-            .then(text => {
-                return parseInt(text, 10)
+    totalRowsCountFromDOM() {
+        return cy
+            .get('#totalRowCount')
+            .invoke('text')
+            .then((text) => {
+                return parseInt(text, 10);
             });
     }
 
-    navigateToCreatePage () {
-        cy.visit('/page-builder/pages/add')
+    navigateToCreatePage() {
+        cy.visit('/page-builder/pages/add');
     }
     clickByPageNumber(pageNumber) {
         if (pageNumber) {
-            cy.get('.usa-pagination__button').eq(pageNumber-1).click();
+            cy.get('.usa-pagination__button')
+                .eq(pageNumber - 1)
+                .click();
         } else {
             cy.get('.usa-pagination__button').each((button, index) => {
                 if (index !== 0) {
@@ -63,4 +68,4 @@ class PaginationPage {
     }
 }
 
-export const pageLibraryPaginationPage = new PaginationPage()
+export const pageLibraryPaginationPage = new PaginationPage();

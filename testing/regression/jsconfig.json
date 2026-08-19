@@ -2,9 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@pages/*": [
-                "cypress/e2e/pages/*"
-            ]
+            "@pages/*": ["cypress/e2e/pages/*"]
         }
     }
 }

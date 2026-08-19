@@ -18,4 +18,4 @@ class PaginationPage {
     }
 }
 
-export const paginationPage = new PaginationPage()
+export const paginationPage = new PaginationPage();

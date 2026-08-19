@@ -1,74 +1,74 @@
-import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import classicHomePage from "@pages/nbs-classic/home.page";
+import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import classicHomePage from '@pages/nbs-classic/home.page';
 
-When("I import ELR documents", () => {
-  classicHomePage.runELRImporter();
-})
-
-Then("Navigate to Patient Search pane", () => {
-    classicHomePage.navigateToPatientSearchPane()
+When('I import ELR documents', () => {
+    classicHomePage.runELRImporter();
 });
 
-Then("Verify Add Lab Report page displayed", () => {
-    classicHomePage.verifyAddLabReport()
+Then('Navigate to Patient Search pane', () => {
+    classicHomePage.navigateToPatientSearchPane();
 });
 
-Then("Click each of the following {string}", (queueName) => {
-    classicHomePage.clickDefaultQueue(queueName)
+Then('Verify Add Lab Report page displayed', () => {
+    classicHomePage.verifyAddLabReport();
 });
 
-Then("Create two users with same firstname and last name", () => {
-    classicHomePage.createTwoPatients()
+Then('Click each of the following {string}', (queueName) => {
+    classicHomePage.clickDefaultQueue(queueName);
 });
 
-Then("Click on Merge Patients tab on upper left side", () => {
-    classicHomePage.clickMergePatientTab()
+Then('Create two users with same firstname and last name', () => {
+    classicHomePage.createTwoPatients();
 });
 
-Then("Click on Manual Search tab", () => {
-    classicHomePage.clickOnManualSearch()
+Then('Click on Merge Patients tab on upper left side', () => {
+    classicHomePage.clickMergePatientTab();
 });
 
-Then("Verify user navigated to Find Patient page", () => {
-    classicHomePage.verifyFindPatientPage()
+Then('Click on Manual Search tab', () => {
+    classicHomePage.clickOnManualSearch();
 });
 
-Then("Search user to manual merge", () => {
-    classicHomePage.searchUser()
+Then('Verify user navigated to Find Patient page', () => {
+    classicHomePage.verifyFindPatientPage();
 });
 
-Then("Select users and merge", () => {
-    classicHomePage.selectUsersToMerge()
+Then('Search user to manual merge', () => {
+    classicHomePage.searchUser();
 });
 
-Then("Click on System Identified tab", () => {
-    classicHomePage.clickSystemIdentifiedTab()
+Then('Select users and merge', () => {
+    classicHomePage.selectUsersToMerge();
 });
 
-Then("Verify Merge Candidate List is displayed to user", () => {
-    classicHomePage.verifyMergeCandidateListDisplayed()
+Then('Click on System Identified tab', () => {
+    classicHomePage.clickSystemIdentifiedTab();
 });
 
-Then("Click on Reports tab on upper left side", () => {
-    classicHomePage.clickReportsTab()
+Then('Verify Merge Candidate List is displayed to user', () => {
+    classicHomePage.verifyMergeCandidateListDisplayed();
 });
 
-Then("Verify user navigated to Reports page", () => {
-    classicHomePage.verifyReportsPageDisplayed()
+Then('Click on Reports tab on upper left side', () => {
+    classicHomePage.clickReportsTab();
 });
 
-Then("Create and run a report", () => {
-    classicHomePage.createRunReports()
+Then('Verify user navigated to Reports page', () => {
+    classicHomePage.verifyReportsPageDisplayed();
 });
 
-Then("Verify Documents Requiring Security Assignment", () => {
-    classicHomePage.verifyDocumentsRequiringSecurityAssignment()
+Then('Create and run a report', () => {
+    classicHomePage.createRunReports();
 });
 
-Then("Verify Documents Requiring Review", () => {
-    classicHomePage.verifyDocumentsRequiringReview()
+Then('Verify Documents Requiring Security Assignment', () => {
+    classicHomePage.verifyDocumentsRequiringSecurityAssignment();
 });
 
-Then("Verify Open Investigations", () => {
-    classicHomePage.verifyOpenInvestigations()
+Then('Verify Documents Requiring Review', () => {
+    classicHomePage.verifyDocumentsRequiringReview();
+});
+
+Then('Verify Open Investigations', () => {
+    classicHomePage.verifyOpenInvestigations();
 });

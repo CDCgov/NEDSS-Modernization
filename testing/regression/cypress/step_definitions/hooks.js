@@ -1,33 +1,33 @@
-import { Before } from "@badeball/cypress-cucumber-preprocessor";
+import { Before } from '@badeball/cypress-cucumber-preprocessor';
 
-Before({ tags: "@skip-if-disabled-not-test" }, function () {
-  if (Cypress.config().baseUrl !== "https://app.test.nbspreview.com/") {
+Before({ tags: '@skip-if-disabled-not-test' }, function () {
+    if (Cypress.config().baseUrl !== 'https://app.test.nbspreview.com/') {
+        this.skip();
+    }
+});
+
+Before({ tags: '@skip-if-disabled-not-int' }, function () {
+    if (Cypress.config().baseUrl !== 'https://app.int1.nbspreview.com/') {
+        this.skip();
+    }
+});
+
+Before({ tags: '@skip-if-disabled-is-int' }, function () {
+    if (Cypress.config().baseUrl === 'https://app.int1.nbspreview.com/') {
+        this.skip();
+    }
+});
+
+Before({ tags: '@skip-broken' }, function () {
     this.skip();
-  }
 });
 
-Before({ tags: "@skip-if-disabled-not-int" }, function () {
-  if (Cypress.config().baseUrl !== "https://app.int1.nbspreview.com/") {
+Before({ tags: '@skip-flaky-and-low-priority' }, function () {
     this.skip();
-  }
 });
 
-Before({ tags: "@skip-if-disabled-is-int" }, function () {
-  if (Cypress.config().baseUrl === "https://app.int1.nbspreview.com/") {
-    this.skip();
-  }
-});
-
-Before({ tags: "@skip-broken" }, function () {
-  this.skip();
-});
-
-Before({ tags: "@skip-flaky-and-low-priority" }, function () {
-  this.skip();
-});
-
-Before({ tags: "@skip-if-no-di-api" }, function () {
-  if (!Cypress.env("DI_API")) {
-    this.skip();
-  }
+Before({ tags: '@skip-if-no-di-api' }, function () {
+    if (!Cypress.env('DI_API')) {
+        this.skip();
+    }
 });

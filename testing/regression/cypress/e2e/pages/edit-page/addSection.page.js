@@ -1,14 +1,14 @@
 class AddSectionPage {
-    navigateEditPage () {
+    navigateEditPage() {
         this.navigateToPreviewPageWithStatusInitialDraft();
-        cy.get("body").then($body => {
-            if ($body.find("#create-new-draft-button").length > 0) {
-                cy.get("create-new-draft-button").then($button => {
-                    if ($button.is(':visible')){
-                        $button.click()
+        cy.get('body').then(($body) => {
+            if ($body.find('#create-new-draft-button').length > 0) {
+                cy.get('create-new-draft-button').then(($button) => {
+                    if ($button.is(':visible')) {
+                        $button.click();
                         cy.get('.editDraftBtn').eq(0).click();
                     }
-                })
+                });
             } else {
                 cy.get('.editDraftBtn').eq(0).click();
             }
@@ -20,7 +20,7 @@ class AddSectionPage {
     }
 
     enterSectionName() {
-        cy.get('.sectionName').eq(0).type("test new section");
+        cy.get('.sectionName').eq(0).type('test new section');
     }
 
     clickAddSectionBtn() {
@@ -28,27 +28,29 @@ class AddSectionPage {
     }
 
     checkAlertIsShowing() {
-        cy.wait(1000)
-        cy.get('[role="alert"]')
+        cy.wait(1000);
+        cy.get('[role="alert"]');
     }
 
     checkNewlyCreatedSectionShowing() {
-        cy.contains("test new section")
+        cy.contains('test new section');
     }
 
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-        cy.get('#range-toggle').select('100')
+        cy.get('#range-toggle').select('100');
         cy.wait(2000);
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Initial Draft") {
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr, index) => {
+                if ($tr.find('td').eq(3).text() === 'Initial Draft') {
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false;
+                }
+            });
     }
-
 }
 
-export const addSectionPage = new AddSectionPage()
+export const addSectionPage = new AddSectionPage();
