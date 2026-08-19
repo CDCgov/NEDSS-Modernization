@@ -65,6 +65,14 @@ class LabReportPage {
         selectRandomDropdownValue(this.codedResultField);
     }
 
+    selectResultedTestByText(text) {
+        cy.get(this.resultedTestField).select(text, { force: true });
+    }
+
+    selectCodedResultByText(text) {
+        cy.get(this.codedResultField).select(text, { force: true });
+    }
+
     enterNumericResult(value) {
         cy.get(this.numericResultField).type(value);
     }
@@ -127,6 +135,81 @@ class LabReportPage {
 
     selectJurisdiction() {
         selectRandomDropdownValue(this.jurisdictionField);
+    }
+
+    selectProgramAreaByText(text) {
+        cy.get(this.programAreaField).select(text, { force: true });
+    }
+
+    selectJurisdictionByText(text) {
+        cy.get(this.jurisdictionField).select(text, { force: true });
+    }
+
+    clickSubmitAndCreateInvestigation() {
+        // NOTE: this button name is misspelled in the wildfly application, so this is not a typo!
+        cy.get('input[name="SubmitAndCreateInvestiation"]').first().click();
+    }
+
+    // cancelContextForm() (the button's onclick) uses a real window.confirm(), which
+    // Cypress can handle natively - no popup-window workaround needed here.
+    clickCancelAndConfirm() {
+        cy.on('window:confirm', () => true);
+        cy.get('input[name="Cancel"]').first().click();
+    }
+
+    // deleteContextForm() (the View screen's Delete button onclick) also uses a
+    // real window.confirm(), same pattern as Cancel.
+    clickDeleteLabReportAndConfirm() {
+        cy.on('window:confirm', () => true);
+        cy.get('input[name="Delete"]').first().click();
+    }
+
+    // View Lab Report screen - reuses the same field ids as the Add screen, but
+    // rendered as read-only <span>s instead of inputs/selects.
+    verifyViewedReportingFacility(text) {
+        cy.get('#NBS_LAB365').should('contain.text', text);
+    }
+
+    verifyViewedProgramArea(text) {
+        cy.get('#INV108').should('contain.text', text);
+    }
+
+    verifyViewedJurisdiction(text) {
+        cy.get('#INV107').should('contain.text', text);
+    }
+
+    verifyViewedResultedTest(text) {
+        // The resulted test row's span id has a row-specific numeric suffix
+        // (e.g. tableNBS_LAB22079), so we match on the container's text instead.
+        cy.get('#RESULTED_TEST_CONTAINER').should('contain.text', text);
+    }
+
+    // Edit Lab Report screen.
+    clickEditLabReport() {
+        cy.on('window:confirm', () => true);
+        // cy.contains() requires an *exact* match on an input's value, and the real
+        // value is padded ("  Edit  "), so match on the name attribute instead.
+        cy.get('input[name="edit"]').first().click();
+    }
+
+    // Program Area and Jurisdiction are locked to plain read-only text on the Edit
+    // screen (rendered next to a hidden input just to resubmit the existing value),
+    // so they can't be changed here. Specimen Collection Date/Time is a genuine
+    // editable text field on this screen and accepts the same typed mm/dd/yyyy
+    // input (via the field's live input mask) as the Add screen.
+    changeSpecimenCollectionDateOnEdit(date) {
+        const [month, day, year] = date.split('/');
+        const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
+        cy.get(this.specimenCollectionDate).clear();
+        cy.get(this.specimenCollectionDate).type(formattedDate);
+    }
+
+    verifyViewedCollectionDate(text) {
+        cy.contains('span.label', 'Collection Date').next('span.value').should('contain.text', text);
+    }
+
+    clickSubmitOnEditLabReport() {
+        cy.get('input[name="Submit"]').first().click();
     }
 
     //Ordered Test
@@ -227,6 +310,16 @@ class LabReportPage {
         const [month, day, year] = date.split('/');
         const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
         cy.get(this.specimenCollectionDate).type(formattedDate);
+    }
+
+    //Resulted Test
+
+    clickResultedTestSearchButton() {
+        cy.get(this.resultedTestSearchButton).click();
+    }
+
+    selectLabReportCodedResult(codedResult) {
+        this._selectFromDropdown(this.codedResultField, codedResult);
     }
 
     // Verification Steps

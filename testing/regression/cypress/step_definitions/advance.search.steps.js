@@ -234,3 +234,31 @@ Given('create a new patient profile', () => {
     addPatientPage.addSimplePatient();
     addPatientPage.clickViewPatientProfile();
 });
+
+Given('I check the Lab reports count on the Events tab', () => {
+    eventsTabPage.storeLabReportsCount();
+});
+
+Then('the Lab reports count should have increased by 1', () => {
+    eventsTabPage.verifyLabReportsCountIncreasedByOne();
+});
+
+Then('the Lab reports count should not have changed', () => {
+    eventsTabPage.verifyLabReportsCountUnchanged();
+});
+
+Then('the Lab reports count should have decreased by 1', () => {
+    eventsTabPage.verifyLabReportsCountDecreasedByOne();
+});
+
+When('user clicks the newest Lab report link', () => {
+    eventsTabPage.clickNewestLabReportLink();
+});
+
+Given('I check the Open investigations count on the Summary tab', () => {
+    eventsTabPage.storeOpenInvestigationsCount();
+});
+
+Then('the Open investigations count should have increased by 1', () => {
+    eventsTabPage.verifyOpenInvestigationsCountIncreasedByOne();
+});
