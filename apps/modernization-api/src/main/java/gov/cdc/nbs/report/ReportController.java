@@ -237,8 +237,16 @@ public class ReportController {
         @Header(name = "X-Report-Timestamp", schema = @Schema(type = "string")),
         @Header(name = "X-Report-Query", schema = @Schema(type = "string"))
       },
-      content = @Content(mediaType = "text/csv", schema = @Schema(type = "string")))
-  @PostMapping("/run")
+      content =
+          @Content(
+              mediaType = "text/csv",
+              schema = @Schema(type = "string"),
+              examples =
+                  @io.swagger.v3.oas.annotations.media.ExampleObject(
+                      name = "Example CSV",
+                      value =
+                          "column1,column2,column3\nvalue1,value2,value3\nvalue4,value5,value6")))
+  @PostMapping(value = "/run", produces = "text/csv")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<StreamingResponseBody> runReport(
       @Valid @RequestBody ReportExecutionRequest request,
@@ -253,7 +261,25 @@ public class ReportController {
     return executeReport(request);
   }
 
-  @PostMapping("/export")
+  @ApiResponse(
+      responseCode = "200",
+      description = "Export a report given an execution request and return a CSV plus metadata.",
+      headers = {
+        @Header(name = "X-Report-Description", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Context-Header", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Timestamp", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Query", schema = @Schema(type = "string"))
+      },
+      content =
+          @Content(
+              mediaType = "text/csv",
+              schema = @Schema(type = "string"),
+              examples =
+                  @io.swagger.v3.oas.annotations.media.ExampleObject(
+                      name = "Example CSV",
+                      value =
+                          "column1,column2,column3\nvalue1,value2,value3\nvalue4,value5,value6")))
+  @PostMapping(value = "/export", produces = "text/csv")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
   public ResponseEntity<StreamingResponseBody> exportReport(
       @Valid @RequestBody ReportExecutionRequest request,
@@ -270,7 +296,7 @@ public class ReportController {
 
   private ResponseEntity<StreamingResponseBody> executeReport(ReportExecutionRequest request) {
     ReportExecutionResult result = reportExecutionClient.executeReport(request);
-
+    
     StreamingResponseBody body =
         outputStream -> {
           result.result().content().transferTo(outputStream);

@@ -90,7 +90,6 @@ export type { SensitiveValue } from './models/SensitiveValue';
 export { SortSpec } from './models/SortSpec';
 export type { Specimen } from './models/Specimen';
 export type { StandardResponse } from './models/StandardResponse';
-export type { StreamingResponseBody } from './models/StreamingResponseBody';
 export type { Success } from './models/Success';
 export { UpsertFilterRequest } from './models/UpsertFilterRequest';
 

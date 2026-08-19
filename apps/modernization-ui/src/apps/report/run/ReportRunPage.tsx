@@ -10,7 +10,6 @@ import {
     AdvancedFilterRequest,
     BasicFilterRequest,
     ReportConfiguration,
-    ReportControllerService,
     ReportExecutionRequest,
     SortSpec,
 } from 'generated';
@@ -119,21 +118,41 @@ const ReportRunPage = () => {
             setWasExported(isExport);
             setStatus('submitting');
             setError(null);
-            const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
+
             const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
+
+            //  Manually invoking this endpoint instead of using the generated API client
+            //  because said API client doesn't correctly support the 'text/csv' media type
+            const runner = fetch(`/nbs/api/report/${isExport ? 'export' : 'run'}`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'text/csv',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    isExport,
+                    reportUid,
+                    dataSourceUid,
+                    basicFilters,
+                    advancedFilter,
+                    columnUids,
+                    sort,
+                }),
+            });
             setLastReportExecutionRequest(requestBody);
-            runner({ requestBody })
-                .then((res) => {
-                    console.log({res})
+            runner
+                .then(async (res) => {
                     try {
+                        const csvReport = await res.text(); 
+
                         if (isExport) {
-                            fileDownload(res, `${config?.title ?? 'ReportOutput'}.csv`);
+                            fileDownload(csvReport, `${config?.title ?? 'ReportOutput'}.csv`);
                         } else {
                             const resultId = crypto.randomUUID();
                             openNewTab(
                                 `/report/result/${resultId}`,
                                 {
-                                    result: res,
+                                    result: csvReport,
                                     title: config?.title ?? '',
                                     dataSourceName: config?.dataSource.name ?? '',
                                 },
