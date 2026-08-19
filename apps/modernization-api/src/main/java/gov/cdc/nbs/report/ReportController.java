@@ -12,16 +12,14 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -248,9 +246,10 @@ public class ReportController {
                           "column1,column2,column3\nvalue1,value2,value3\nvalue4,value5,value6")))
   @PostMapping(value = "/run", produces = "text/csv")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<StreamingResponseBody> runReport(
+  public void runReport(
       @Valid @RequestBody ReportExecutionRequest request,
-      @AuthenticationPrincipal NbsUserDetails user) {
+      @AuthenticationPrincipal NbsUserDetails user,
+      HttpServletResponse response) {
     LOGGER.log(
         System.Logger.Level.TRACE,
         "RUN report request received from user %s for report %s and datasource %s"
@@ -258,7 +257,7 @@ public class ReportController {
 
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
-    return executeReport(request);
+    reportExecutionClient.executeReport(request, response);
   }
 
   @ApiResponse(
@@ -281,9 +280,10 @@ public class ReportController {
                           "column1,column2,column3\nvalue1,value2,value3\nvalue4,value5,value6")))
   @PostMapping(value = "/export", produces = "text/csv")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
-  public ResponseEntity<StreamingResponseBody> exportReport(
+  public void exportReport(
       @Valid @RequestBody ReportExecutionRequest request,
-      @AuthenticationPrincipal NbsUserDetails user) {
+      @AuthenticationPrincipal NbsUserDetails user,
+      HttpServletResponse response) {
     LOGGER.log(
         System.Logger.Level.TRACE,
         "EXPORT report request received from user %s for report %s and datasource %s"
@@ -291,30 +291,6 @@ public class ReportController {
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    return executeReport(request);
-  }
-
-  private ResponseEntity<StreamingResponseBody> executeReport(ReportExecutionRequest request) {
-    ReportExecutionResult result = reportExecutionClient.executeReport(request);
-    
-    StreamingResponseBody body =
-        outputStream -> {
-          result.result().content().transferTo(outputStream);
-        };
-
-    BodyBuilder response =
-        ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
-            .header("X-Report-Query", result.query())
-            .header("X-Report-Timestamp", result.timestamp().toString());
-
-    if (result.result().description() != null) {
-      response = response.header("X-Report-Description", result.result().description());
-    }
-    if (result.result().contextHeader() != null) {
-      response = response.header("X-Report-Context-Header", result.result().contextHeader());
-    }
-
-    return response.body(body);
+    reportExecutionClient.executeReport(request, response);
   }
 }

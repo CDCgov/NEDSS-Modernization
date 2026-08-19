@@ -5,6 +5,8 @@ import fileDownload from 'js-file-download';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLoaderData, useParams } from 'react-router';
 
+import { ApiResult } from 'apps/page-builder/generated/core/ApiResult';
+import { catchErrorCodes, getResponseBody } from 'apps/page-builder/generated/core/request';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import {
     AdvancedFilterRequest,
@@ -120,39 +122,50 @@ const ReportRunPage = () => {
             setError(null);
 
             const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
+            setLastReportExecutionRequest(requestBody);
+
+            const url = `/nbs/api/report/${isExport ? 'export' : 'run'}`;
+            const method = 'POST';
 
             //  Manually invoking this endpoint instead of using the generated API client
             //  because said API client doesn't correctly support the 'text/csv' media type
-            const runner = fetch(`/nbs/api/report/${isExport ? 'export' : 'run'}`, {
-                method: 'POST',
+            fetch(url, {
+                method,
                 headers: {
                     Accept: 'text/csv',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    isExport,
-                    reportUid,
-                    dataSourceUid,
-                    basicFilters,
-                    advancedFilter,
-                    columnUids,
-                    sort,
-                }),
-            });
-            setLastReportExecutionRequest(requestBody);
-            runner
-                .then(async (res) => {
-                    try {
-                        const csvReport = await res.text(); 
+                body: JSON.stringify(requestBody),
+            })
+                .then(async (response) => {
+                    console.log({ response })
+                    console.log({ headers: response.headers.get('X-Report-Query') })
 
+
+                    const responseBody = await getResponseBody(response);
+                    console.log({ responseBody });
+
+                    // const text = await new Response(response.body).text();
+                    // console.log({ text });
+
+                    const result: ApiResult = {
+                        url,
+                        ok: response.ok,
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: responseBody,
+                    };
+                    catchErrorCodes({ url, method }, result);
+
+                    try {
                         if (isExport) {
-                            fileDownload(csvReport, `${config?.title ?? 'ReportOutput'}.csv`);
+                            fileDownload(responseBody, `${config?.title ?? 'ReportOutput'}.csv`);
                         } else {
                             const resultId = crypto.randomUUID();
                             openNewTab(
                                 `/report/result/${resultId}`,
                                 {
-                                    result: csvReport,
+                                    result: responseBody,
                                     title: config?.title ?? '',
                                     dataSourceName: config?.dataSource.name ?? '',
                                 },
