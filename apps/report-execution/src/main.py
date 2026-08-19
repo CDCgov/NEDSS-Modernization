@@ -34,7 +34,8 @@ def execute_report_api(report_spec: models.ReportSpec):
         'Content-Disposition': 'attachment; filename="out.csv"',
     }
     if result.description is not None:
-        headers['X-Report-Description'] = result.description
+        # Headers can't have new lines, we serialize them as %n, then undo in the ui
+        headers['X-Report-Description'] = result.description.strip().replace('\n', '%n')
 
     if result.context_header is not None:
         headers['X-Report-Context-Header'] = result.context_header
