@@ -3,10 +3,10 @@ import re
 from contextlib import contextmanager
 
 import mssql_python
+import pyarrow
 
 from . import errors
 from .config import get_cached_config_value
-from .models import Table
 
 INVALID_OBJECT_REGEX = re.compile("Invalid object name ('.*').")
 INVALID_COLUMN_REGEX = re.compile("Invalid column name ('.*').")
@@ -19,7 +19,7 @@ class Transaction:
         self._cursor = cursor
         self.is_export = is_export
 
-    def query(self, query: str, parameters: tuple = ()) -> Table:
+    def query(self, query: str, parameters: tuple = ()) -> pyarrow.Table:
         """Execute a query and have the data returned as a Table.
 
         DO NOT EXECUTE ANY PERMANENT CREATE, UPDATE, OR DELETE STATEMENTS
@@ -30,7 +30,7 @@ class Transaction:
         logging.debug(f'Querying: {query}')
 
         try:
-            res = self._cursor.execute(query, parameters)
+            self._cursor.execute(query, parameters)
         except mssql_python.ProgrammingError as e:
             datasource_match = INVALID_OBJECT_REGEX.search(e.message)
             if datasource_match is not None:
@@ -52,11 +52,10 @@ class Transaction:
         num_rows = self._cursor.rowcount
         check_row_limits(num_rows, self.is_export)
 
-        data = res.fetchall()
-        check_row_limits(len(data), self.is_export)
+        table = self._cursor.arrow()
+        check_row_limits(table.num_rows, self.is_export)
 
-        columns = self._column_names()
-        return Table(columns=columns, data=data)
+        return table
 
     def execute(self, query: str, parameters: tuple = ()) -> None:
         """Execute a SQL statement and do not return any result.

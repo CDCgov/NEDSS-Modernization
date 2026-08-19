@@ -2,6 +2,7 @@ from datetime import date, datetime
 from typing import Annotated, Any
 
 import pandas as pd
+import pyarrow
 from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
 
 from src.config import get_cached_config_value
@@ -114,6 +115,6 @@ class ReportResult(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content: Annotated[Table, PlainSerializer(serialize_table)]
+    content: Annotated[pyarrow.Table, PlainSerializer(serialize_table)]
     context_header: str | None = None
     description: str | None = None

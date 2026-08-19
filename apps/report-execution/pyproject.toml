@@ -8,6 +8,7 @@ dependencies = [
     "fastapi[standard]==0.141.1",
     "mssql-python==1.13.0",
     "pandas>=3.0.1",
+    "pyarrow>=24.0.0",
     "pydantic>=2.13.0,<3.0.0",
 ]
 
