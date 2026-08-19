@@ -54,7 +54,7 @@ class TestIntegrationExecuteReport:
         data = result.content.data
         assert result.content.num_rows == 11
         assert len(data[0]) == result.content.num_columns
-        for i in range(1, len(data)):
+        for i in range(1, result.content.num_rows):
             assert data[i - 1][1] <= data[i][1]
 
     def test_execute_report_invalid_query_syntax(self):
