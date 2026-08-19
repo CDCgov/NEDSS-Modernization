@@ -17,7 +17,7 @@ Then('I set patient id profile ENV', () => {
     patientProfilePage.setPatientProfileENVID();
 });
 
-Then('the user has enters for a patient by {string} as {string}', (string, string2) => {
+When('the user has enters for a patient by {string} as {string}', (string, string2) => {
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -89,6 +89,7 @@ Then('cancels the deletion of the patient', () => {
 });
 
 Then('the user remains on the same profile page', () => {
+    cy.wait(1500);
     cy.url().should('include', '/summary');
 });
 
@@ -221,8 +222,13 @@ When('the user has selected multiple investigations', () => {
     eventsTabPage.selectMultipleInvestigations();
 });
 
-Then('Add a new investigation', () => {
+Then('add a new investigation', () => {
+    addPatientPage.clickEventsTab();
+    cy.wait(1000);
+    addPatientPage.clickAddInvestigationBtn();
     addInvestigationPage.add();
+    addPatientPage.clickReturnToFileLink();
+    addPatientPage.clickSummaryTab();
 });
 
 Then('nagivate to add new patient page', () => {
