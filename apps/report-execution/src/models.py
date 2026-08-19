@@ -1,7 +1,9 @@
+import csv
+import decimal
+import io
 from datetime import date, datetime
 from typing import Annotated, Any
 
-import pandas as pd
 from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
 
 from src.config import get_cached_config_value
@@ -69,43 +71,29 @@ class Table(BaseModel):
 
 
 def serialize_table(table: Table) -> str:
-    """Turn a Table into a CSV for returning to the user.
+    """Turn a Table into a CSV for returning to the user."""
+    date_format = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
+    datetime_format = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
 
-    Standardizes Python date and datetime instances to the provided strftime constants,
-    defaulting to:
-     - datetime: mm/dd/yyyy hh:mm:ss
-     - date: mm/dd/yyyy
-    """
+    def convert(value: Any) -> Any:
+        if type(value) is date:
+            return value.strftime(date_format)
 
-    # properly format a given value if it's a date or datetime
-    def convert_dates(val: Any) -> Any:
-        if type(val) is date:
-            csv_date_strftime = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
-            return pd.to_datetime(val).strftime(csv_date_strftime)
-        elif type(val) is datetime:
-            csv_datetime_strftime = get_cached_config_value(
-                'REPORT_EXPORT_DATETIME_FORMAT'
-            )
-            return pd.to_datetime(val).strftime(csv_datetime_strftime)
+        if type(value) is datetime:
+            return value.strftime(datetime_format)
 
-        return val
+        if isinstance(value, (float, decimal.Decimal)):
+            return f'{value:.2f}'.rstrip('0').rstrip('.')
 
-    # update table data to have properly formatted dates and datetimes
-    data = [list(map(convert_dates, tpl)) for tpl in table.data]
+        return value
 
-    # Short cut to valid CSV - can swap out later if performance dictates
-    # or serialize to CSV at a different location
-    df = pd.DataFrame.from_records(data, columns=table.columns, coerce_float=True)
+    output = io.StringIO(newline='')
+    writer = csv.writer(output, lineterminator='\r\n')
 
-    csv_str = df.to_csv(
-        index=False,
-        # everything left of the decimal, up to 2 decimal places, no trailing 0s
-        float_format=lambda x: f'{x:.2f}'.rstrip('0').rstrip('.'),
-        lineterminator='\r\n',
-    )
+    writer.writerow(table.columns)
+    writer.writerows((convert(value) for value in row) for row in table.data)
 
-    # Remove trailing new line
-    return csv_str[:-2]
+    return output.getvalue().removesuffix('\r\n')
 
 
 # TODO: add other return types  # noqa: FIX002
