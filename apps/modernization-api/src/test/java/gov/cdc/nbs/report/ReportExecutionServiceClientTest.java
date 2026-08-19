@@ -93,13 +93,11 @@ class ReportExecutionServiceClientTest {
       assertThat(response.result()).isEqualTo(expectedResponse);
       ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
       verify(specBuilder).build();
-    } catch (IOException e) {
-      fail("IOException occurred while getting report execution response", e);
     }
   }
 
   @Test
-  void executeReport_should_set_context_and_description_from_response_headers() throws IOException {
+  void executeReport_should_set_context_and_description_from_response_headers() {
     ReportConfiguration reportConfig = mockReportConfiguration(true);
     RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockResponse =
         mockReportExecHttpResponse();
@@ -169,14 +167,21 @@ class ReportExecutionServiceClientTest {
         .hasMessage("Report not implemented for python");
   }
 
-  private ReportExecutionResult getReportExecutionResponse() throws IOException {
+  private ReportExecutionResult getReportExecutionResponse() {
     RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse httpResponse =
         mockReportExecHttpResponse();
     HttpHeaders headers = httpResponse.getHeaders();
 
+    String body = "";
+    try {
+      body = httpResponse.getBody().toString();
+    } catch (IOException e) {
+      fail("Failed to fetch report execution response: " + e.getMessage());
+    }
+
     return new ReportExecutionResult(
         new LibraryExecutionResult(
-            httpResponse.getBody().toString(),
+            body,
             headers.getFirst("X-Report-Context-Header"),
             headers.getFirst("X-Report-Description")),
         "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
@@ -204,14 +209,17 @@ class ReportExecutionServiceClientTest {
     return headers;
   }
 
-  private RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockReportExecHttpResponse()
-      throws IOException {
+  private RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockReportExecHttpResponse() {
     RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockResponse =
         mock(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse.class);
 
-    Mockito.lenient()
-        .when(mockResponse.getStatusCode())
-        .thenReturn(org.springframework.http.HttpStatus.OK);
+    try {
+      Mockito.lenient()
+          .when(mockResponse.getStatusCode())
+          .thenReturn(org.springframework.http.HttpStatus.OK);
+    } catch (IOException e) {
+      fail("Failed to mock status code in report execution response: " + e.getMessage());
+    }
 
     HttpHeaders headers = buildReportExecResponseHeaders();
 
@@ -221,7 +229,11 @@ class ReportExecutionServiceClientTest {
                 .getBytes());
 
     Mockito.lenient().when(mockResponse.getHeaders()).thenReturn(headers);
-    Mockito.lenient().when(mockResponse.getBody()).thenReturn(responseBody);
+    try {
+      Mockito.lenient().when(mockResponse.getBody()).thenReturn(responseBody);
+    } catch (IOException e) {
+      fail("Failed to mock body in report execution response: " + e.getMessage());
+    }
 
     return mockResponse;
   }
