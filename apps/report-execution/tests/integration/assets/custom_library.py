@@ -12,6 +12,10 @@ def execute(
 
     return ReportResult(
         content=content,
-        description='Custom pass through query',
+        description="""
+        Custom pass through query
+
+        It is many lines _with_ *markdown*
+        """,
         context_header='custom header',
     )
