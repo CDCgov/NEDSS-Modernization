@@ -7,7 +7,6 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
-import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import org.apache.commons.lang3.NotImplementedException;
@@ -73,13 +72,10 @@ public class ReportExecutionServiceClient {
                   }
 
                   HttpHeaders headers = resp.getHeaders();
-
                   String contextHeader = headers.getFirst("X-Report-Context-Header");
                   String description = headers.getFirst("X-Report-Description");
 
-                  String csv = new String(resp.getBody().readAllBytes(), StandardCharsets.UTF_8);
-
-                  return new LibraryExecutionResult(csv, contextHeader, description);
+                  return new LibraryExecutionResult(resp.getBody(), contextHeader, description);
                 });
 
     if (result == null) {

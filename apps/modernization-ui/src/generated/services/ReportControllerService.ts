@@ -5,9 +5,9 @@
 import type { AdminReportRequest } from '../models/AdminReportRequest';
 import type { ReportConfiguration } from '../models/ReportConfiguration';
 import type { ReportExecutionRequest } from '../models/ReportExecutionRequest';
-import type { ReportExecutionResult } from '../models/ReportExecutionResult';
 import type { ReportId } from '../models/ReportId';
 import type { SaveAsReportRequest } from '../models/SaveAsReportRequest';
+import type { StreamingResponseBody } from '../models/StreamingResponseBody';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -101,14 +101,14 @@ export class ReportControllerService {
         });
     }
     /**
-     * @returns ReportExecutionResult OK
+     * @returns StreamingResponseBody OK
      * @throws ApiError
      */
     public static runReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
-    }): CancelablePromise<ReportExecutionResult> {
+    }): CancelablePromise<StreamingResponseBody> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/report/run',
@@ -117,14 +117,14 @@ export class ReportControllerService {
         });
     }
     /**
-     * @returns ReportExecutionResult OK
+     * @returns StreamingResponseBody OK
      * @throws ApiError
      */
     public static exportReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
-    }): CancelablePromise<ReportExecutionResult> {
+    }): CancelablePromise<StreamingResponseBody> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/report/export',

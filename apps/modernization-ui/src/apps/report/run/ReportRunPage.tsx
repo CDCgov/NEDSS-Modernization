@@ -124,9 +124,10 @@ const ReportRunPage = () => {
             setLastReportExecutionRequest(requestBody);
             runner({ requestBody })
                 .then((res) => {
+                    console.log({res})
                     try {
                         if (isExport) {
-                            fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
+                            fileDownload(res, `${config?.title ?? 'ReportOutput'}.csv`);
                         } else {
                             const resultId = crypto.randomUUID();
                             openNewTab(

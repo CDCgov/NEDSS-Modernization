@@ -2,9 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type LibraryExecutionResult = {
-    content: string;
-    context_header?: string;
-    description?: string;
+export type StreamingResponseBody = {
 };
 

@@ -11,10 +11,13 @@ import gov.cdc.nbs.repository.ReportRepository;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -223,7 +226,7 @@ public class ReportController {
 
   @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<ReportExecutionResult> runReport(
+  public ResponseEntity<StreamingResponseBody> runReport(
       @Valid @RequestBody ReportExecutionRequest request,
       @AuthenticationPrincipal NbsUserDetails user) {
     LOGGER.log(
@@ -233,13 +236,12 @@ public class ReportController {
 
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
-
-    return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
+    return executeReport(request);
   }
 
   @PostMapping("/export")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
-  public ResponseEntity<ReportExecutionResult> exportReport(
+  public ResponseEntity<StreamingResponseBody> exportReport(
       @Valid @RequestBody ReportExecutionRequest request,
       @AuthenticationPrincipal NbsUserDetails user) {
     LOGGER.log(
@@ -249,6 +251,30 @@ public class ReportController {
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
+    return executeReport(request);
+  }
+
+  private ResponseEntity<StreamingResponseBody> executeReport(ReportExecutionRequest request) {
+    ReportExecutionResult result = reportExecutionClient.executeReport(request);
+
+    StreamingResponseBody body =
+        outputStream -> {
+          result.result().content().transferTo(outputStream);
+        };
+
+    BodyBuilder response =
+        ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
+            .header("X-Report-Query", result.query())
+            .header("X-Report-Timestamp", result.timestamp().toString());
+
+    if (result.result().description() != null) {
+      response = response.header("X-Report-Description", result.result().description());
+    }
+    if (result.result().contextHeader() != null) {
+      response = response.header("X-Report-Status", result.result().contextHeader());
+    }
+
+    return response.body(body);
   }
 }
