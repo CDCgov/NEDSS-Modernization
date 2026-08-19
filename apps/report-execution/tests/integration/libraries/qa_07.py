@@ -54,7 +54,7 @@ class TestIntegrationQa07Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
 
     def test_execute_report_different_days(self):
         """Test that the number of duplicate cases changes with the days parameter."""

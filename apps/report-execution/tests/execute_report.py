@@ -22,7 +22,7 @@ class TestExecuteReport:
         assert result.description is None
         assert result.content.columns == ['id', 'name']
 
-        assert len(result.content.data) == 4
+        assert result.content.num_rows == 4
         assert len(result.content.data[0]) == 2
 
     def test_execute_report_missing_library(self):
@@ -55,7 +55,7 @@ class TestExecuteReport:
         )
         result = execute_report(report_spec)
         assert result.content.columns == ['id', 'name']
-        assert len(result.content.data) == 4
+        assert result.content.num_rows == 4
 
     def test_execute_report_invalid_library_params_type(self):
         """Test that a non-JSON value for library_params raises validation error."""

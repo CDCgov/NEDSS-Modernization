@@ -106,7 +106,7 @@ class TestIntegrationTBSummaryCountLibrary:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
         assert result.content.columns == [
             'monthYearTxt',
             'monthYear',

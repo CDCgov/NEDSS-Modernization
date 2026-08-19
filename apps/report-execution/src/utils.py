@@ -1,6 +1,9 @@
 import logging
 import os
 from datetime import datetime
+from typing import Any
+
+import pyarrow
 
 from . import errors
 
@@ -85,3 +88,16 @@ def gen_context_header(
             parts.append(', '.join(clean_diseases))
 
     return ' | '.join(parts)
+
+def get_unique_column_pyarrow(table: pyarrow.Table, col_name: str) -> list[Any]:
+    """Extract unique values from a column, sorted with None at the beginning.
+
+    Args:
+        col_name: Name of the column to extract
+
+    Returns:
+        Sorted list of unique values with None placed first
+    """
+    values = set(table.column(col_name))
+    # Sort with None first (False < True, so None comes before non-None)
+    return sorted(values, key=lambda x: (x is not None, x))

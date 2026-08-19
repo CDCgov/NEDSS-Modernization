@@ -1,3 +1,5 @@
+import pyarrow
+
 from src.libraries.support.pa_01.models import Pa01Row, Pa01Worker
 from src.models import Table
 
@@ -2431,16 +2433,16 @@ def _calc_new_clusters_examined_day_buckets(
 
 
 # helpers
-def _rows_for_worker(table: Table, worker: Pa01Worker | None = None) -> list[dict]:
+def _rows_for_worker(table: pyarrow.Table, worker: Pa01Worker | None = None) -> list[dict]:
     """Filter a given table's data for the given worker.  If the given worker is None
     then return all rows.
     """
-    rows = table.data_as_dicts()
+    rows = table.to_pylist()
     return _filter_rows_for_worker(rows, worker) if worker else rows
 
 
 def _filter_rows_for_worker(rows: list[dict], worker: Pa01Worker) -> list[dict]:
-    """Given rows from a table (via table.data_as_dicts()), filter them so they only
+    """Given rows from a table (via pyarrow.table.to_pylist()), filter them so they only
     represent rows associated with the given worker.  Assumes necessary columns are
     available.
     """

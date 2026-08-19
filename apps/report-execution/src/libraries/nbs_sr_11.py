@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import gen_context_header
+from src.utils import gen_context_header, get_unique_column_pyarrow
 
 
 def execute(
@@ -30,8 +30,8 @@ def execute(
         """
     )
 
-    state_list = content.get_unique_column('State')
-    condition_list = content.get_unique_column('Condition')
+    state_list = get_unique_column_pyarrow(content, 'State')
+    condition_list = get_unique_column_pyarrow(content, 'Condition')
     context_header = gen_context_header(
         states=state_list,
         diseases=condition_list,

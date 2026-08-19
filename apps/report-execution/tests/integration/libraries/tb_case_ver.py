@@ -98,7 +98,7 @@ class TestIntegrationTbCaseVerLibrary:
 
         assert result is not None
         assert result.content.columns == self.column_names
-        assert len(result.content.data) > 0
+        assert result.content.num_rows > 0
 
         for row in result.content.data:
             assert row[0] is None or isinstance(row[0], str)
@@ -127,4 +127,4 @@ class TestIntegrationTbCaseVerLibrary:
 
         assert result is not None
         assert result.content.columns == self.column_names
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0

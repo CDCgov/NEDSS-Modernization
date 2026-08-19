@@ -52,7 +52,7 @@ def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec
     except ValidationError as e:
         raise errors.InvalidResultError(report_spec.library_name) from e
 
-    num_rows = len(result.content.data)
+    num_rows = result.content.num_rows
     check_row_limits(num_rows, report_spec.is_export)
 
     return None

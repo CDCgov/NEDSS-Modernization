@@ -143,7 +143,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         # Our data should have more results with 3650 days_value than 30, but
         # with a new snapshot where all potential duplicates are within 30 days,
         # this may not be the case.
-        assert len(result.content.data) > len(result_30.content.data)
+        assert result.content.num_rows > len(result_30.content.data)
 
     def test_execute_report_with_negative_days_value(self):
         """Test with a negative days value."""
@@ -155,7 +155,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         )
 
         # Based on current implementation, this should not return any results.
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
 
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
@@ -164,7 +164,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec.subset_query += ' WHERE 1 = 0'
 
         result = execute_report(report_spec)
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
 
     def test_execute_report_check_metadata(self):
         """Check the metadata is correctly formatted."""
@@ -180,8 +180,8 @@ class TestIntegrationNbsSrDupInvLibrary:
         result = execute_report(report_spec)
 
         # Count occurrences per patient/disease pair
-        patient_ids = result.content.get_column('Patient Local Id')
-        disease_cds = result.content.get_column('Disease Code')
+        patient_ids = result.content.column('Patient Local Id')
+        disease_cds = result.content.column('Disease Code')
 
         pairs = list(zip(patient_ids, disease_cds, strict=False))
         counts = Counter(pairs)

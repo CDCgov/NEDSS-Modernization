@@ -397,7 +397,7 @@ class TestIntegrationPa02Library:
             'Total',
         ]
         assert result.content.columns == expected_columns
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
 
     def test_execute_report_different_hiv_report_type(self):
         """Test HIV report type works."""

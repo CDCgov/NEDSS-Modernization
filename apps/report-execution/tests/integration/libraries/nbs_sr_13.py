@@ -28,7 +28,7 @@ class TestIntegrationNbsSr13Library:
 
         data = result.content.data
         assert len(data) == 6  # two combinations with no data, zeros not filled
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -55,7 +55,7 @@ class TestIntegrationNbsSr13Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
         assert result.content.columns == ['Case Count', 'Condition', 'Case Status']
 
     def test_execute_report_check_metadata(self):

@@ -29,7 +29,7 @@ class TestIntegrationQa06Library:
 
         data = result.content.data
         assert len(data[0]) == 13
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -70,7 +70,7 @@ class TestIntegrationQa06Library:
 
         data = result.content.data
         assert len(data) == 0
-        assert len(result.content.columns) == 13
+        assert result.content.num_columns == 13
 
     def test_execute_report_check_metadata(self):
         report_spec = ReportSpec.model_validate(

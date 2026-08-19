@@ -25,10 +25,10 @@ class TestIntegrationPa05Library:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(result.content.columns) == 7
+        assert result.content.num_columns == 7
         assert len(data) >= 23
         assert len(data) % 23 == 0
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -75,7 +75,7 @@ class TestIntegrationPa05Library:
 
         data = result.content.data
         assert len(data) == 23
-        assert len(result.content.columns) == 7
+        assert result.content.num_columns == 7
         assert all(row[0] == 'ALL' for row in data)
         assert all(row[4] == 0 for row in data)
         assert all(row[5] is None and row[6] is None for row in data)

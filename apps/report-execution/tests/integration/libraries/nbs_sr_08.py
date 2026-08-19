@@ -29,7 +29,7 @@ class TestIntegrationNbsSr08Library:
         data = result.content.data
         assert len(data) == 897
         assert len(data[0]) == 7
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -68,7 +68,7 @@ class TestIntegrationNbsSr08Library:
 
         data = result.content.data
         assert len(data) == 0
-        assert len(result.content.columns) == 7
+        assert result.content.num_columns == 7
 
         assert result.context_header == ''
 

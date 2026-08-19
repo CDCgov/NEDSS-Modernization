@@ -20,7 +20,7 @@ class Transaction:
         self.is_export = is_export
 
     def query(self, query: str, parameters: tuple = ()) -> pyarrow.Table:
-        """Execute a query and have the data returned as a Table.
+        """Execute a query and have the data returned as a pyarrow Table.
 
         DO NOT EXECUTE ANY PERMANENT CREATE, UPDATE, OR DELETE STATEMENTS
 

@@ -32,7 +32,7 @@ class TestIntegrationNbsQa01Library:
         data = result.content.data
         assert len(data) == 556
         assert len(data[0]) == 18
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -60,7 +60,7 @@ class TestIntegrationNbsQa01Library:
 
         data = result.content.data
         assert len(data) == 0
-        assert len(result.content.columns) == 18
+        assert result.content.num_columns == 18
 
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""

@@ -52,8 +52,8 @@ class TestIntegrationExecuteReport:
         ]
 
         data = result.content.data
-        assert len(data) == 11
-        assert len(data[0]) == len(result.content.columns)
+        assert result.content.num_rows == 11
+        assert len(data[0]) == result.content.num_columns
         for i in range(1, len(data)):
             assert data[i - 1][1] <= data[i][1]
 

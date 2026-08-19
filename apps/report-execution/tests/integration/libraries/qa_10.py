@@ -27,7 +27,7 @@ class TestIntegrationQa10Library:
         data = result.content.data
         assert len(data) == 30
         assert len(data[0]) == 20
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -54,7 +54,7 @@ class TestIntegrationQa10Library:
 
         data = result.content.data
         assert len(data) == 0
-        assert len(result.content.columns) == 20
+        assert result.content.num_columns == 20
 
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""

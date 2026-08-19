@@ -37,8 +37,8 @@ class TestIntegrationNbsSr05Library:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 3
-        assert len(data[0]) == len(result.content.columns)
+        assert result.content.num_rows == 3
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -76,8 +76,8 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) >= 1
-        assert len(result.content.data[0]) == len(result.content.columns)
+        assert result.content.num_rows >= 1
+        assert len(result.content.data[0]) == result.content.num_columns
 
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
@@ -111,8 +111,8 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) >= 1
-        assert len(result.content.data[0]) == len(result.content.columns)
+        assert result.content.num_rows >= 1
+        assert len(result.content.data[0]) == result.content.num_columns
 
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
@@ -146,8 +146,8 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) >= 1
-        assert len(result.content.data[0]) == len(result.content.columns)
+        assert result.content.num_rows >= 1
+        assert len(result.content.data[0]) == result.content.num_columns
 
         for disease in ['Pertussis', 'Measles', 'Salmonellosis']:
             record = None
@@ -181,8 +181,8 @@ class TestIntegrationNbsSr05Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
-        assert len(result.content.columns) == 8
+        assert result.content.num_rows == 0
+        assert result.content.num_columns == 8
 
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct with a frozen date."""

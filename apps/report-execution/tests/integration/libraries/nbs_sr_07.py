@@ -32,7 +32,7 @@ class TestIntegrationNbsSr07Library:
 
         data = result.content.data
         assert len(data) == 6
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -78,5 +78,5 @@ class TestIntegrationNbsSr07Library:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
         assert result.content.columns == ['Disease', 'type', 'Number of Cases']

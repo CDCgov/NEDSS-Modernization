@@ -25,9 +25,9 @@ class TestIntegrationNbsSr02Library:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 25  # two combinations with no data, zeros not filled
+        assert result.content.num_rows == 25  # two combinations with no data, zeros not filled
         assert len(data[0]) == 4
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -60,9 +60,8 @@ class TestIntegrationNbsSr02Library:
 
         result = execute_report(report_spec)
 
-        data = result.content.data
-        assert len(data) == 0
-        assert len(result.content.columns) == 4
+        assert result.content.num_rows == 0
+        assert result.content.num_columns == 4
 
         assert result.context_header == ''
 

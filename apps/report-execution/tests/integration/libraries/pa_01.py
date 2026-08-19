@@ -97,7 +97,7 @@ class TestIntegrationPa01Library:
             'Index',
         ]
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
 
     def test_execute_report_check_data_std(self, snapshot):
         report_spec = self.create_spec(
@@ -153,4 +153,4 @@ class TestIntegrationPa01Library:
             'Index',
         ]
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0

@@ -1,6 +1,6 @@
 from src.db_transaction import Transaction
 from src.models import ReportResult
-from src.utils import gen_context_header
+from src.utils import gen_context_header, get_unique_column_pyarrow
 
 
 def execute(
@@ -60,7 +60,7 @@ def execute(
         """
     )
 
-    state_list = content.get_unique_column('State')
+    state_list = get_unique_column_pyarrow(content, 'State')
     context_header = gen_context_header(states=state_list)
 
     description = """

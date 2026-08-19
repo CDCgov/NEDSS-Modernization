@@ -1,3 +1,5 @@
+import pyarrow
+
 from src.db_transaction import Transaction
 from src.libraries.support.pa_01.calculations import build_output_for_worker
 from src.libraries.support.pa_01.models import (
@@ -199,7 +201,7 @@ def execute(
     return ReportResult(content=content)
 
 
-def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
+def _get_workers(case_interview_rows: pyarrow.Table) -> list[Pa01Worker]:
     """Get all unique workers within the report's data.  A worker is defined as the
     combination of 'investigator_interview_key' and 'provider_quick_code'.
     """
@@ -208,7 +210,7 @@ def _get_workers(case_interview_rows: Table) -> list[Pa01Worker]:
             row['INVESTIGATOR_INTERVIEW_KEY'],
             row['PROVIDER_QUICK_CODE'],
         )
-        for row in case_interview_rows.data_as_dicts()
+        for row in case_interview_rows.to_pylist()
         if row['INVESTIGATOR_INTERVIEW_KEY'] is not None
         and row['PROVIDER_QUICK_CODE'] is not None
     }

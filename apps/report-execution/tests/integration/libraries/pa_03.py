@@ -27,7 +27,7 @@ class TestIntegrationPa03Library:
         data = result.content.data
         assert len(data) == 36
         assert len(data[0]) == 5
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -197,7 +197,7 @@ class TestIntegrationPa03Library:
 
         data = result.content.data
         assert len(data) == 36
-        assert len(result.content.columns) == 5
+        assert result.content.num_columns == 5
 
         assert data[0] == ('Total Number of Cases', None, None, 0, None)
         assert data[6] == ('No. Cases w/Internet Follow-up', None, None, 0, None)

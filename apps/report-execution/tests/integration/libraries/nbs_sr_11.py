@@ -27,7 +27,7 @@ class TestIntegrationNbsSr11Library:
         data = result.content.data
         assert len(data) == 144
         assert len(data[0]) == 6  # State Code, State, County, Condition, Year, Cases
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -59,7 +59,7 @@ class TestIntegrationNbsSr11Library:
 
         data = result.content.data
         assert len(data) == 0
-        assert len(result.content.columns) == 6
+        assert result.content.num_columns == 6
 
     def test_execute_report_check_metadata(self):
         """Check the metadata and column names are correct."""

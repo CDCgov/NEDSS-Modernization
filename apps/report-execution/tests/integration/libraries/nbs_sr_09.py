@@ -33,7 +33,7 @@ class TestIntegrationNbsSr09Library:
 
         data = result.content.data
         assert len(data) > 0
-        assert len(data[0]) == len(result.content.columns)
+        assert len(data[0]) == result.content.num_columns
 
         snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
@@ -90,7 +90,7 @@ class TestIntegrationNbsSr09Library:
         )
 
         result = execute_report(report_spec)
-        assert len(result.content.data) >= 0
+        assert result.content.num_rows >= 0
 
     def test_execute_report_empty_subset(self):
         """Test handling of empty result set."""
@@ -108,9 +108,9 @@ class TestIntegrationNbsSr09Library:
         result = execute_report(report_spec)
 
         # Should return empty dataset but with correct column structure
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
         # State Code, State, County, Condition, monyr, ord, Cases
-        assert len(result.content.columns) == 7
+        assert result.content.num_columns == 7
 
     def test_execute_report_check_column_order(self):
         """Verify column names and order match expected output."""

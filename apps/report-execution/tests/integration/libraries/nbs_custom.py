@@ -35,8 +35,8 @@ class TestIntegrationNbsCustomLibrary:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 500
-        assert len(data[0]) == len(result.content.columns)
+        assert result.content.num_rows == 500
+        assert len(data[0]) == result.content.num_columns
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'PATIENT_LOCAL_ID',
@@ -71,8 +71,8 @@ class TestIntegrationNbsCustomLibrary:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 500
-        assert len(data[0]) == len(result.content.columns)
+        assert result.content.num_rows == 500
+        assert len(data[0]) == result.content.num_columns
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'PATIENT_LOCAL_ID',
@@ -98,8 +98,8 @@ class TestIntegrationNbsCustomLibrary:
         result = execute_report(report_spec)
 
         data = result.content.data
-        assert len(data) == 500
-        assert len(data[0]) == len(result.content.columns)
+        assert result.content.num_rows == 500
+        assert len(data[0]) == result.content.num_columns
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'Patient Local Id',
@@ -124,7 +124,7 @@ class TestIntegrationNbsCustomLibrary:
 
         result = execute_report(report_spec)
 
-        assert len(result.content.data) == 0
+        assert result.content.num_rows == 0
         assert result.content.columns == [
             'PROGRAM_JURISDICTION_OID',
             'PATIENT_LOCAL_ID',
