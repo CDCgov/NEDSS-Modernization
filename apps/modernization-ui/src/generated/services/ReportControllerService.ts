@@ -101,14 +101,14 @@ export class ReportControllerService {
         });
     }
     /**
-     * @returns StreamingResponseBody OK
+     * @returns string Run a report
      * @throws ApiError
      */
     public static runReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
-    }): CancelablePromise<StreamingResponseBody> {
+    }): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/report/run',

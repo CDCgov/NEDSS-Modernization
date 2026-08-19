@@ -8,6 +8,10 @@ import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
@@ -224,6 +228,16 @@ public class ReportController {
     return new ResponseEntity<>(reportId, HttpStatus.OK);
   }
 
+  @ApiResponse(
+      responseCode = "200",
+      description = "Run a report given an execution request and return a CSV plus metadata.",
+      headers = {
+        @Header(name = "X-Report-Description", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Context-Header", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Timestamp", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Query", schema = @Schema(type = "string"))
+      },
+      content = @Content(mediaType = "text/csv", schema = @Schema(type = "string")))
   @PostMapping("/run")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
   public ResponseEntity<StreamingResponseBody> runReport(
@@ -272,7 +286,7 @@ public class ReportController {
       response = response.header("X-Report-Description", result.result().description());
     }
     if (result.result().contextHeader() != null) {
-      response = response.header("X-Report-Status", result.result().contextHeader());
+      response = response.header("X-Report-Context-Header", result.result().contextHeader());
     }
 
     return response.body(body);
