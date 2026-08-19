@@ -53,8 +53,6 @@ class Transaction:
         check_row_limits(num_rows, self.is_export)
 
         data = res.fetchall()
-        check_row_limits(len(data), self.is_export)
-
         columns = self._column_names()
         return Table(columns=columns, data=data)
 
