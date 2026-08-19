@@ -95,6 +95,43 @@ def serialize_table(table: Table) -> str:
 
     return output.getvalue().removesuffix('\r\n')
 
+def yield_table_csv(table: Table):
+    """Turn a Table into a CSV for returning to the user."""
+    date_format = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
+    datetime_format = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
+
+    def convert(value: Any) -> Any:
+        if type(value) is date:
+            return value.strftime(date_format)
+
+        if type(value) is datetime:
+            return value.strftime(datetime_format)
+
+        if isinstance(value, (float, decimal.Decimal)):
+            return f'{value:.2f}'.rstrip('0').rstrip('.')
+
+        return value
+
+    # only big files actually get chunked
+    chunk_size=10000
+    output = io.StringIO(newline='')
+    writer = csv.writer(output, lineterminator='\r\n')
+
+    writer.writerow(table.columns)
+
+    for i, row in enumerate(table.data, start=1):
+        writer.writerow(convert(value) for value in row)
+
+        if i % chunk_size == 0:
+            yield output.getvalue()
+
+            output.seek(0)
+            output.truncate(0)
+
+    # Yield whatever remains
+    if output.tell():
+        yield output.getvalue()
+
 
 # TODO: add other return types  # noqa: FIX002
 class ReportResult(BaseModel):

@@ -7,9 +7,12 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
+
+import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -56,21 +59,32 @@ public class ReportExecutionServiceClient {
             .post()
             .uri("/report/execute")
             .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.TEXT_PLAIN, MediaType.parseMediaType("text/csv"))
             .body(reportSpec)
-            .retrieve()
-            .onStatus(
-                status -> status.value() >= 400,
+            .exchange(
                 (req, resp) -> {
-                  throw new RestClientResponseException(
-                      "Error response from the report-execution service",
-                      resp.getStatusCode(),
-                      resp.getStatusText(),
-                      resp.getHeaders(),
-                      resp.getBody().readAllBytes(),
-                      null);
-                })
-            .toEntity(LibraryExecutionResult.class)
-            .getBody();
+                  if (resp.getStatusCode().isError()) {
+                    throw new RestClientResponseException(
+                        "Error response from the report-execution service",
+                        resp.getStatusCode(),
+                        resp.getStatusText(),
+                        resp.getHeaders(),
+                        resp.getBody().readAllBytes(),
+                        null);
+                  }
+
+                  HttpHeaders headers = resp.getHeaders();
+
+                  String contextHeader = headers.getFirst("X-Report-Context-Header");
+                  String description = headers.getFirst("X-Report-Description");
+                  
+                  String csv = new String(
+                    resp.getBody().readAllBytes(),
+                    StandardCharsets.UTF_8
+                );
+
+                  return new LibraryExecutionResult(csv, contextHeader, description);
+                });
 
     if (result == null) {
       throw new IllegalStateException(
