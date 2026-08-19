@@ -15,11 +15,8 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneId;
 import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
@@ -27,23 +24,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 
 @ExtendWith(MockitoExtension.class)
 class ReportExecutionServiceClientTest {
-  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(1000000), ZoneId.systemDefault());
-
   @Mock private RestClient client;
   @Mock private ReportFetcher reportFetcher;
 
   @Mock private RestClient.RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RestClient.RequestBodySpec requestBodySpec;
-  @Mock private RestClient.ResponseSpec responseSpec;
 
   @InjectMocks private ReportExecutionServiceClient reportExecutionClient;
 
@@ -73,20 +64,19 @@ class ReportExecutionServiceClientTest {
       when(client.post()).thenReturn(requestBodyUriSpec);
       when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
       when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
+      when(requestBodySpec.accept(any(MediaType[].class))).thenReturn(requestBodySpec);
       when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-      when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
 
-      ResponseEntity<LibraryExecutionResult> expectedResponse =
-          new ResponseEntity<>(getReportExecutionResponse().result(), HttpStatus.OK);
-      when(responseSpec.toEntity(LibraryExecutionResult.class)).thenReturn(expectedResponse);
+      LibraryExecutionResult expectedResponse = getReportExecutionResponse().result();
+      when(requestBodySpec.exchange(any(RestClient.RequestHeadersSpec.ExchangeFunction.class)))
+          .thenReturn(expectedResponse);
 
       ReportExecutionRequest request =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
       ReportExecutionResult response = reportExecutionClient.executeReport(request);
 
-      assertThat(response.result()).isEqualTo(expectedResponse.getBody());
+      assertThat(response.result()).isEqualTo(expectedResponse);
       ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
       verify(specBuilder).build();
     }
