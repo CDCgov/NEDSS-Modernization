@@ -1,8 +1,10 @@
+import io
 from datetime import date, datetime
 from typing import Annotated, Any
 
 import pandas as pd
 import pyarrow
+from pyarrow import csv
 from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
 
 from src.config import get_cached_config_value
@@ -109,12 +111,22 @@ def serialize_table(table: Table) -> str:
     return csv_str[:-2]
 
 
+def serialize_pyarrow_table(table: pyarrow.Table) -> str:
+    """Write to csv from pyarrow."""
+    buffer = io.BytesIO()
+    with csv.CSVWriter(buffer, table.schema) as writer:
+        writer.write_table(table)
+
+    csv_string = buffer.getvalue().decode("utf-8")
+
+    return csv_string
+
 # TODO: add other return types  # noqa: FIX002
 class ReportResult(BaseModel):
     """Report execution result."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content: Annotated[pyarrow.Table, PlainSerializer(serialize_table)]
+    content: Annotated[pyarrow.Table, PlainSerializer(serialize_pyarrow_table)]
     context_header: str | None = None
     description: str | None = None
