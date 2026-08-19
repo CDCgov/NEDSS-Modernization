@@ -28,5 +28,7 @@ class TestCustomLibrary:
         response = connection.getresponse()
         assert response.status == 200
 
-        result = json.loads(response.read())
-        assert result['description'] == 'Custom pass through query'
+        assert response.headers['X-Report-Description'] == 'Custom pass through query'
+        assert response.headers['X-Report-Context-Header'] == 'custom header'
+        body = response.read()
+        assert len(body) > 10
