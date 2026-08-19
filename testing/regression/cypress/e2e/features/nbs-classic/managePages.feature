@@ -1,5 +1,6 @@
-# already modernized?
-@skip-broken
+# already modernized.
+# TODO: Remove test file
+@skip
 Feature: Classic NBS - User can view and manage data in Manage Pages
 
   Background:
@@ -83,7 +84,6 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     And Click on Submit Button in Add Element page
     And Click on Close Button in Add Element page
 
-  @skip
   Scenario: Add a new tab to Investigation
     When Click on Last Updated to sort by most recent pages
     And Click on view icon to display the page details on classic
