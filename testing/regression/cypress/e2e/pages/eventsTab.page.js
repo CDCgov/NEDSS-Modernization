@@ -75,6 +75,74 @@ class EventsTabPage {
             });
     }
 
+    getSectionCount(sectionTitle) {
+        return cy
+            .contains('h2', sectionTitle)
+            .parent()
+            .find('div')
+            .first()
+            .invoke('text')
+            .then((text) => parseInt(text.trim(), 10));
+    }
+
+    // Each card is a <section role="group" aria-labelledby="<heading id>">
+    // (see design-system Card.tsx), so this scopes reliably to just one card's
+    // table even though several cards on this page all render similar tables.
+    getSectionCard(sectionTitle) {
+        return cy
+            .contains('h2', sectionTitle)
+            .invoke('attr', 'id')
+            .then((headingId) => cy.get(`section[aria-labelledby="${headingId}"]`));
+    }
+
+    clickNewestLabReportLink() {
+        this.getSectionCard('Lab reports').find('table tbody tr').first().find('a').first().click();
+    }
+
+    storeLabReportsCount() {
+        this.getSectionCount('Lab reports').then((count) => {
+            cy.wrap(count).as('labReportsCount');
+        });
+    }
+
+    verifyLabReportsCountIncreasedByOne() {
+        this.getSectionCount('Lab reports').then((newCount) => {
+            cy.get('@labReportsCount').then((initialCount) => {
+                expect(newCount).to.equal(initialCount + 1);
+            });
+        });
+    }
+
+    verifyLabReportsCountUnchanged() {
+        this.getSectionCount('Lab reports').then((newCount) => {
+            cy.get('@labReportsCount').then((initialCount) => {
+                expect(newCount).to.equal(initialCount);
+            });
+        });
+    }
+
+    verifyLabReportsCountDecreasedByOne() {
+        this.getSectionCount('Lab reports').then((newCount) => {
+            cy.get('@labReportsCount').then((initialCount) => {
+                expect(newCount).to.equal(initialCount - 1);
+            });
+        });
+    }
+
+    storeOpenInvestigationsCount() {
+        this.getSectionCount('Open investigations').then((count) => {
+            cy.wrap(count).as('openInvestigationsCount');
+        });
+    }
+
+    verifyOpenInvestigationsCountIncreasedByOne() {
+        this.getSectionCount('Open investigations').then((newCount) => {
+            cy.get('@openInvestigationsCount').then((initialCount) => {
+                expect(newCount).to.equal(initialCount + 1);
+            });
+        });
+    }
+
     validateTableColumns(tableName, dataTable) {
         const myArray = [];
         cy.contains('section', tableName).within(() => {
@@ -90,6 +158,9 @@ class EventsTabPage {
                     }
                     myArray.push(label);
                 });
+
+                console.log('myArray', myArray);
+                console.log('headers', headers);
                 expect(headers).to.deep.equal(myArray);
             });
         });
@@ -176,11 +247,14 @@ class EventsTabPage {
     clickFirstMorbidityReportLinkStoreEventID() {
         this.waitForSpinner();
 
-        cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
-            .first()
+        cy.get(EventsTabPage.MORBIDITY_TABLE_SELECTOR).first().as('morbidityRow');
+        cy.get('@morbidityRow').scrollIntoView();
+        cy.get('@morbidityRow')
             .should('be.visible')
             .within(() => {
-                cy.get('td:first-child a')
+                cy.get('td:first-child a').as('firstMorbidityLink');
+                cy.get('@firstMorbidityLink').scrollIntoView();
+                cy.get('@firstMorbidityLink')
                     .should('be.visible')
                     .then(($link) => {
                         this.extractAndStoreEventId($link);
@@ -268,9 +342,14 @@ class EventsTabPage {
                 return associatedText === '---';
             })
             .first()
+            .as('unassociatedMorbidityRow');
+        cy.get('@unassociatedMorbidityRow').scrollIntoView();
+        cy.get('@unassociatedMorbidityRow')
             .should('be.visible')
             .within(() => {
-                cy.get('td:first-child a')
+                cy.get('td:first-child a').as('firstUnassociatedLink');
+                cy.get('@firstUnassociatedLink').scrollIntoView();
+                cy.get('@firstUnassociatedLink')
                     .should('be.visible')
                     .then(($link) => {
                         this.extractAndStoreEventId($link);
