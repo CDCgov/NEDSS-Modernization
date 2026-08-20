@@ -67,6 +67,7 @@ class ReportExecutionServiceClientTest {
             null,
             null,
             null,
+            null,
             null);
 
     specBuilderMock =

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -686,7 +687,7 @@ class ReportControllerTest {
       long dataSourceUid = 2L;
 
       ReportSpec reportSpec = mock(ReportSpec.class);
-      when(reportSpec.subsetQuery()).thenReturn("SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]");
+      when(reportSpec.whereLogic()).thenReturn("lots of logic".repeat(1000));
 
       AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
@@ -734,7 +735,9 @@ class ReportControllerTest {
           reportExecHttpResponse.getHeaders().getFirst("X-Report-Description"));
 
       assertEquals(response.getHeader("X-Report-Timestamp"), LocalDateTime.now(clock).toString());
-      assertEquals(response.getHeader("X-Report-Query"), reportSpec.subsetQuery());
+      assertThat(response.getHeader("X-Report-Query")).endsWith(" ... <truncated>");
+      assertThat(response.getHeader("X-Report-Query"))
+          .startsWith(reportSpec.whereLogic().subSequence(0, 1000));
     }
 
     @Test
@@ -879,7 +882,7 @@ class ReportControllerTest {
       long dataSourceUid = 2L;
 
       ReportSpec reportSpec = mock(ReportSpec.class);
-      when(reportSpec.subsetQuery()).thenReturn("SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]");
+      when(reportSpec.whereLogic()).thenReturn("lots of logic".repeat(1000));
 
       AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
@@ -923,7 +926,9 @@ class ReportControllerTest {
           reportExecHttpResponse.getHeaders().getFirst("X-Report-Description"));
 
       assertEquals(response.getHeader("X-Report-Timestamp"), LocalDateTime.now(clock).toString());
-      assertEquals(response.getHeader("X-Report-Query"), reportSpec.subsetQuery());
+      assertThat(response.getHeader("X-Report-Query")).endsWith(" ... <truncated>");
+      assertThat(response.getHeader("X-Report-Query"))
+          .startsWith(reportSpec.whereLogic().subSequence(0, 1000));
     }
 
     @Test
