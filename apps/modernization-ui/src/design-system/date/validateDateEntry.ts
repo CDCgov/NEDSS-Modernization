@@ -5,7 +5,7 @@ import { DateEntry } from './entry';
 import { occursInThePast } from './occursInThePast';
 
 const validateYear = (name: string) => (value: DateEntry) => {
-    if (typeof value.year === 'number') {
+    if (value.year !== undefined) {
         if (value.year < 1875) {
             return `The ${name} should occur after 12/31/1874.`;
         } else if (value.year > now().getFullYear()) {
@@ -24,11 +24,14 @@ const validateMonth = (name: string) => (value: DateEntry) => {
 
 const validateDay = (name: string) => (value: DateEntry) => {
     if (typeof value.day === 'number') {
-        // default is a standard january, which has 31 days
-        const limit = getDaysInMonth(new Date(value.year ?? 2000, (value.month ?? 1) - 1));
+        if (value.month && value.year) {
+            const limit = getDaysInMonth(new Date(value.year, value.month - 1));
 
-        if (value.day > limit) {
-            return `The ${name} should have at most ${limit} days.`;
+            if (value.day > limit) {
+                return `The ${name} should have at most ${limit} days.`;
+            }
+        } else if (value.day > 31) {
+            return `The ${name} should have at most 31 days.`;
         } else if (value.day < 1) {
             return `The ${name} should be at least the first day of the month.`;
         }

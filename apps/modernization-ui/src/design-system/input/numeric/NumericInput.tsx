@@ -1,7 +1,8 @@
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
+import { NumberBetweenCriteria, NumberRangeField } from '../range/NumberRangeField.tsx';
+
 import { Numeric, NumericProps } from './Numeric';
-import { NumberRangeField, NumberRangeFieldProps } from './range/NumberRangeField.tsx';
 
 type BaseNumericInputProps = {
     id: string;
@@ -11,11 +12,16 @@ type BaseNumericInputProps = {
     error?: string;
     required?: boolean;
     helperText?: string;
-} & Omit<NumericProps, 'value' | 'onChange'>;
+} & NumericProps;
 
-type RangeInputProps = BaseNumericInputProps & Pick<NumberRangeFieldProps, 'value' | 'onChange'>;
+type RangeInputProps = BaseNumericInputProps & {
+    value?: NumberBetweenCriteria;
+    onChange?: (val?: NumberBetweenCriteria) => void;
+};
 
-type SingleInputProps = BaseNumericInputProps & Pick<NumericProps, 'value' | 'onChange'>;
+type SingleInputProps = BaseNumericInputProps & {
+    value?: number | null;
+};
 
 const NumericInput = ({
     id,
