@@ -113,7 +113,8 @@ public class WhereClauseService {
 
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
       String labResultQueryValFragment =
-          LAB_RESULT_QUERY_VAL.formatted(rdbDataSource, String.join(SQL_AND, activeClauses));
+          LAB_RESULT_QUERY_VAL.formatted(
+              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
 
       return labResultQueryValFragment;
     }

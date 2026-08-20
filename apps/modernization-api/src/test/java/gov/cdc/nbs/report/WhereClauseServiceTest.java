@@ -663,7 +663,7 @@ class WhereClauseServiceTest {
     DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
-        whereClauseService.buildLogicFragment(
+        whereClauseService.buildWhereClause(
             reportConfig, executionRequest, mockDataSourceNameUtils);
 
     // Verify that basic filters and parenthesized permission fragments are joined cleanly by an
@@ -806,7 +806,7 @@ class WhereClauseServiceTest {
         .thenReturn("[RDB].[dbo].[lab_test_report]");
 
     assertThat(
-            whereClauseService.buildLogicFragment(
+            whereClauseService.buildWhereClause(
                 reportConfig, executionRequest, mockDataSourceNameUtils))
         .isEqualTo(
             "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND ((CAST([COLUMN_DATETIME] AS DATE) IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2))) AND ((program_jurisdiction_oid IN (50)) AND (REPORTING_FACILITY_UID = 54321))");
@@ -845,7 +845,7 @@ class WhereClauseServiceTest {
     DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
-        whereClauseService.buildLogicFragment(
+        whereClauseService.buildWhereClause(
             reportConfig, executionRequest, mockDataSourceNameUtils);
 
     assertThat(result)
@@ -930,7 +930,7 @@ class WhereClauseServiceTest {
         .thenReturn("[RDB].[dbo].[lab_test_report]");
 
     assertThat(
-            whereClauseService.buildLogicFragment(
+            whereClauseService.buildWhereClause(
                 reportConfig, executionRequest, mockDataSourceNameUtils))
         .isEqualTo(
             "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND ((CAST([COLUMN_DATETIME] AS DATE) IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2)))");
@@ -1185,7 +1185,7 @@ class WhereClauseServiceTest {
 
     // Run the full orchestrator
     String result =
-        whereClauseService.buildLogicFragment(
+        whereClauseService.buildWhereClause(
             reportConfig, executionRequest, mockDataSourceNameUtils);
 
     // Verify both strings merged cleanly with zero dangling operators
@@ -1214,7 +1214,7 @@ class WhereClauseServiceTest {
     DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
-        whereClauseService.buildLogicFragment(
+        whereClauseService.buildWhereClause(
             reportConfig, executionRequest, mockDataSourceNameUtils);
 
     // Verify formatting treats permissions as the primary clause component
