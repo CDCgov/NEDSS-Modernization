@@ -14,12 +14,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.function.BiConsumer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -35,15 +42,19 @@ public class ReportController {
   private final ReportRepository reportRepository;
   private final ReportExecutionServiceClient reportExecutionClient;
 
+  private final Clock clock;
+
   public ReportController(
       ReportService reportService,
       ReportExecutionServiceClient reportExecutionClient,
       ReportRepository reportRepository,
-      ReportFetcher reportFetcher) {
+      ReportFetcher reportFetcher,
+      Clock clock) {
     this.reportService = reportService;
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
     this.reportFetcher = reportFetcher;
+    this.clock = clock;
   }
 
   @PostMapping("/configuration")
@@ -257,7 +268,7 @@ public class ReportController {
 
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
-    reportExecutionClient.executeReport(request, response);
+    reportExecutionClient.executeReport(request, handleReportRes(response));
   }
 
   @ApiResponse(
@@ -291,6 +302,37 @@ public class ReportController {
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    reportExecutionClient.executeReport(request, response);
+    reportExecutionClient.executeReport(request, this.handleReportRes(response));
+  }
+
+  private BiConsumer<RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse, ReportSpec>
+      handleReportRes(HttpServletResponse responseToSet) {
+    return (RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse resp,
+        ReportSpec reportSpec) -> {
+      HttpHeaders headers = resp.getHeaders();
+
+      String contextHeader = headers.getFirst("X-Report-Context-Header");
+      String description = headers.getFirst("X-Report-Description");
+
+      if (contextHeader != null) {
+        responseToSet.setHeader("X-Report-Context-Header", contextHeader);
+      }
+
+      if (description != null) {
+        responseToSet.setHeader("X-Report-Description", description);
+      }
+
+      responseToSet.setHeader("X-Report-Timestamp", LocalDateTime.now(this.clock).toString());
+      responseToSet.setHeader("X-Report-Query", reportSpec.subsetQuery());
+
+      responseToSet.setContentType("text/csv");
+      responseToSet.setCharacterEncoding("UTF-8");
+
+      try (InputStream inputStream = resp.getBody()) {
+        inputStream.transferTo(responseToSet.getOutputStream());
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    };
   }
 }
