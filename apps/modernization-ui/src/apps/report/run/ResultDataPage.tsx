@@ -14,6 +14,7 @@ import { NoDataRow } from 'design-system/table/NoDataRow';
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
 import layoutStyes from '../layout/layout.module.scss';
+import { fetchStoredData } from '../utils/openNewTab';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -40,10 +41,7 @@ type Result = {
 const loadReportResult: LoaderFunction = async (request): Promise<Result | null> => {
     const { resultId } = request.params;
     const resultKey = `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`;
-    const rawData = localStorage.getItem(resultKey);
-    // clean up after the data to make sure it doesn't linger in cache
-    localStorage.removeItem(resultKey);
-    return rawData ? JSON.parse(rawData) : null;
+    return fetchStoredData<Result>(resultKey);
 };
 
 const ResultDataPage = () => {
