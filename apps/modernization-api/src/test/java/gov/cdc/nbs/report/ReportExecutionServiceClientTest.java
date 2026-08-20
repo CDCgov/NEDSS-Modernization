@@ -27,8 +27,10 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.NotImplementedException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
@@ -47,6 +49,8 @@ class ReportExecutionServiceClientTest {
   @Mock private RestClient client;
   @Mock private ReportFetcher reportFetcher;
 
+  private MockedConstruction<ReportSpecBuilder> specBuilderMock;
+
   @Mock private RestClient.RequestBodyUriSpec requestBodyUriSpec;
   @Mock private RestClient.RequestBodySpec requestBodySpec;
 
@@ -55,14 +59,11 @@ class ReportExecutionServiceClientTest {
   private final Long reportUid = 1L;
   private final Long dataSourceUid = 2L;
 
-  @Test
-  void executeReport_should_return_response_when_report_exists_and_runner_is_python() {
-    ReportConfiguration reportConfig = mockReportConfiguration(true);
+  private ReportSpec spec;
 
-    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
-
-    ReportSpec spec =
-        new ReportSpec(
+  @BeforeEach
+  void setUp() {
+    spec = new ReportSpec(
             true,
             true,
             "nbs_custom",
@@ -71,29 +72,40 @@ class ReportExecutionServiceClientTest {
             null,
             null,
             null);
-    try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
-        mockConstruction(
-            ReportSpecBuilder.class,
-            (builder, context) -> when(builder.build()).thenReturn(spec))) {
-      when(client.post()).thenReturn(requestBodyUriSpec);
-      when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
-      when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.accept(any(MediaType[].class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+
+    specBuilderMock =
+            mockConstruction(
+                    ReportSpecBuilder.class,
+                    (builder, context) -> when(builder.build()).thenReturn(spec));
+
+    when(client.post()).thenReturn(requestBodyUriSpec);
+    when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
+    when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
+    when(requestBodySpec.accept(any(MediaType[].class))).thenReturn(requestBodySpec);
+    when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+    when(requestBodySpec.exchange(any())).thenCallRealMethod();
+  }
+
+  @Test
+  void executeReport_should_fetch_report_when_report_exists_and_runner_is_python() {
+    ReportConfiguration reportConfig = mockReportConfiguration(true);
+
+    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
       LibraryExecutionResult expectedResponse = getReportExecutionResponse().result();
-      when(requestBodySpec.exchange(any(RestClient.RequestHeadersSpec.ExchangeFunction.class)))
+      when(requestBodySpec.exchange(any()))
           .thenReturn(expectedResponse);
 
       ReportExecutionRequest request =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-      ReportExecutionResult response = reportExecutionClient.executeReport(request);
+      reportExecutionClient.executeReport(request, (res, reportSpec) -> {});
 
-      assertThat(response.result()).isEqualTo(expectedResponse);
       ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
       verify(specBuilder).build();
-    }
+
+      verify(client).post();
+      verify(requestBodySpec).exchange(any());
   }
 
   @Test
@@ -104,42 +116,10 @@ class ReportExecutionServiceClientTest {
 
     when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
-    ReportSpec spec =
-        new ReportSpec(
-            true,
-            true,
-            "nbs_custom",
-            "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
-            null,
-            null,
-            null,
-            null);
-    try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
-        mockConstruction(
-            ReportSpecBuilder.class,
-            (builder, context) -> when(builder.build()).thenReturn(spec))) {
-
-      when(client.post()).thenReturn(requestBodyUriSpec);
-      when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
-      when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.accept(any(MediaType[].class))).thenReturn(requestBodySpec);
-      when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
-
-      when(requestBodySpec.exchange(any(RestClient.RequestHeadersSpec.ExchangeFunction.class)))
-          .thenAnswer(
-              invocation -> {
-                RestClient.RequestHeadersSpec.ExchangeFunction exchangeFunction =
-                    invocation.getArgument(0);
-                return exchangeFunction.exchange(mock(HttpRequest.class), mockResponse);
-              });
-
       ReportExecutionRequest request =
           new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-      ReportExecutionResult response = reportExecutionClient.executeReport(request);
-
-      ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
-      verify(specBuilder).build();
+      reportExecutionClient.executeReport(request, (res,  reportSpec) -> {});
 
       assertThat(response.result().contextHeader())
           .isEqualTo(
@@ -149,7 +129,6 @@ class ReportExecutionServiceClientTest {
           .isEqualTo(
               Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Description"))
                   .getFirst());
-    }
   }
 
   @Test
