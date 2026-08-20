@@ -136,7 +136,8 @@ const ResultDataPage = () => {
                 <Card
                     id="report-result"
                     title="Report result"
-                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}>
+                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
+                >
                     {data.length === 0 && (
                         <AlertMessage type="information">
                             <p className="font-sans-md margin-0 margin-top-1">No results match your criteria.</p>
