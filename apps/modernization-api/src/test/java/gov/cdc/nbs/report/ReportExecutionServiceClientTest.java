@@ -102,6 +102,10 @@ class ReportExecutionServiceClientTest {
     verify(specBuilder).build();
 
     verify(client).post();
+    verify(requestBodyUriSpec).uri("/report/execute");
+    verify(requestBodySpec).contentType(MediaType.APPLICATION_JSON);
+    verify(requestBodySpec).accept(MediaType.TEXT_PLAIN, MediaType.parseMediaType("text/csv"));
+    verify(requestBodySpec).body(spec);
     verify(requestBodySpec).exchange(any());
   }
 
