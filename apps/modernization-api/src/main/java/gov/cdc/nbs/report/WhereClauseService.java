@@ -15,6 +15,7 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.exception.ForbiddenException;
+import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -46,7 +47,7 @@ public class WhereClauseService {
   private final PermissionScopeResolver scopeResolver;
 
   private static final String LAB_RESULT_QUERY_VAL =
-      SQL_WHERE + "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s %s)";
+      "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s %s)";
 
   Map<Operator, BiFunction<AdvancedQuery.Rule, ReportColumn, String>> advQueryOperations =
       Map.ofEntries(
@@ -82,7 +83,7 @@ public class WhereClauseService {
    * @return A string starting with "WHERE " followed by the filter criteria, or an empty string if
    *     no filters are applied.
    */
-  public String buildWhereClause(
+  public String buildLogicFragment(
       ReportConfiguration reportConfig,
       ReportExecutionRequest executionRequest,
       DataSourceNameUtils dataSourceNameUtils) {
@@ -113,31 +114,16 @@ public class WhereClauseService {
 
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
       String labResultQueryValFragment =
-          LAB_RESULT_QUERY_VAL.formatted(
-              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
-
-      // Add permission fragment to outer where
-      String permissionFragment = buildPermissionFragment(reportConfig);
-      if (!permissionFragment.isBlank()) {
-        return labResultQueryValFragment + SQL_AND + buildPermissionFragment(reportConfig);
-      }
+          LAB_RESULT_QUERY_VAL.formatted(rdbDataSource, String.join(SQL_AND, activeClauses));
 
       return labResultQueryValFragment;
-    }
-
-    String permissionFragment = buildPermissionFragment(reportConfig);
-    if (!permissionFragment.isBlank()) {
-      LOGGER.log(
-          System.Logger.Level.DEBUG,
-          "Adding permission criteria to WHERE fragment: %s".formatted(permissionFragment));
-      activeClauses.add(permissionFragment);
     }
 
     if (activeClauses.isEmpty()) {
       return "";
     }
 
-    return SQL_WHERE + String.join(SQL_AND, activeClauses);
+    return String.join(SQL_AND, activeClauses);
   }
 
   public String buildPermissionFragment(ReportConfiguration reportConfig) {
@@ -161,6 +147,35 @@ public class WhereClauseService {
     }
 
     return "(" + String.join(SQL_AND, permissionClauses) + ")";
+  }
+
+  // This call pattern is original to the code and heavily used in the tests - there was a light
+  // refactor to separate out the logic call, but didn't want to bork all the tests, so kept this
+  // signature for testing purposes primarily. Someday, this can be cleaned up.
+  public String buildWhereClause(
+      ReportConfiguration reportConfig,
+      ReportExecutionRequest executionRequest,
+      DataSourceNameUtils dataSourceNameUtils) {
+    String logicFragment = buildLogicFragment(reportConfig, executionRequest, dataSourceNameUtils);
+    return buildWhereClause(reportConfig, logicFragment);
+  }
+
+  public String buildWhereClause(ReportConfiguration reportConfig, String logicFragment) {
+    String permissionFragment = buildPermissionFragment(reportConfig);
+    if (!permissionFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding permission criteria to WHERE fragment: %s".formatted(permissionFragment));
+    }
+
+    String whereClause =
+        List.of(logicFragment, permissionFragment).stream()
+            .filter(s -> !s.isBlank())
+            .collect(Collectors.joining(SQL_AND));
+    if (!whereClause.isBlank()) {
+      whereClause = SQL_WHERE + whereClause;
+    }
+    return whereClause;
   }
 
   /**

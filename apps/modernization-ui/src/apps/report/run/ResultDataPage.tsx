@@ -92,11 +92,6 @@ const ResultDataPage = () => {
         ? DOMPurify.sanitize(marked.parse(description.trim().replaceAll('%n', '\n')) as string)
         : '';
 
-    const styledQuery = query
-        .replace(' FROM ', '\nFROM ')
-        .replace(' WHERE ', '\nWHERE ')
-        .replace(' ORDER BY ', '\nORDER BY ');
-
     return (
         <ReportLayout title={title} subtitle={context_header} noSkipLink={true}>
             <div className={layoutStyes.columnContent}>
@@ -125,10 +120,10 @@ const ResultDataPage = () => {
                 </Card>
 
                 <Card id="report-criteria" title="Report criteria" collapsible={true} open={false}>
-                    <ValueField sizing={SIZING} label="Base SQL query">
+                    <ValueField sizing={SIZING} label="Base SQL query WHERE">
                         {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
                         <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
-                            {styledQuery}
+                            {query}
                         </span>
                     </ValueField>
                 </Card>

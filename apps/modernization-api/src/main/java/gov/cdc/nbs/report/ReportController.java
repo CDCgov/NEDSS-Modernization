@@ -36,6 +36,8 @@ import org.springframework.web.client.RestClient;
     havingValue = "true")
 public class ReportController {
   private static final System.Logger LOGGER = System.getLogger(ReportController.class.getName());
+  // Overall header section is capped at 8k, so leave some buffer for other headers
+  private static final int MAX_QUERY_HEADER_LENGTH = 5000;
 
   private final ReportService reportService;
   private final ReportFetcher reportFetcher;
@@ -323,7 +325,12 @@ public class ReportController {
       }
 
       responseToSet.setHeader("X-Report-Timestamp", LocalDateTime.now(this.clock).toString());
-      responseToSet.setHeader("X-Report-Query", reportSpec.subsetQuery());
+      // Only return the where clause as we don't want to put too much data in the headers
+      String logic = reportSpec.whereLogic();
+      if (logic.length() > MAX_QUERY_HEADER_LENGTH) {
+        logic = logic.substring(0, MAX_QUERY_HEADER_LENGTH) + " ... <truncated>";
+      }
+      responseToSet.setHeader("X-Report-Query", logic);
 
       responseToSet.setContentType("text/csv");
       responseToSet.setCharacterEncoding("UTF-8");
