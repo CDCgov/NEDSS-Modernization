@@ -270,7 +270,8 @@ public class ReportController {
 
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
-    reportExecutionClient.executeReport(request, handleReportRes(response));
+
+    reportExecutionClient.executeReport(request, handleReportExecRes(response));
   }
 
   @ApiResponse(
@@ -304,39 +305,41 @@ public class ReportController {
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    reportExecutionClient.executeReport(request, handleReportRes(response));
+
+    reportExecutionClient.executeReport(request, handleReportExecRes(response));
   }
 
   private BiConsumer<RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse, ReportSpec>
-      handleReportRes(HttpServletResponse responseToSet) {
-    return (RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse resp,
+      handleReportExecRes(HttpServletResponse outboundResponse) {
+    return (RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse reportExecResponse,
         ReportSpec reportSpec) -> {
-      HttpHeaders headers = resp.getHeaders();
+      HttpHeaders reportExecHeaders = reportExecResponse.getHeaders();
 
-      String contextHeader = headers.getFirst("X-Report-Context-Header");
-      String description = headers.getFirst("X-Report-Description");
+      String contextHeader = reportExecHeaders.getFirst("X-Report-Context-Header");
+      String description = reportExecHeaders.getFirst("X-Report-Description");
 
       if (contextHeader != null) {
-        responseToSet.setHeader("X-Report-Context-Header", contextHeader);
+        outboundResponse.setHeader("X-Report-Context-Header", contextHeader);
       }
 
       if (description != null) {
-        responseToSet.setHeader("X-Report-Description", description);
+        outboundResponse.setHeader("X-Report-Description", description);
       }
 
-      responseToSet.setHeader("X-Report-Timestamp", LocalDateTime.now(this.clock).toString());
+      outboundResponse.setHeader("X-Report-Timestamp", LocalDateTime.now(this.clock).toString());
       // Only return the where clause as we don't want to put too much data in the headers
       String logic = reportSpec.whereLogic();
       if (logic.length() > MAX_QUERY_HEADER_LENGTH) {
         logic = logic.substring(0, MAX_QUERY_HEADER_LENGTH) + " ... <truncated>";
       }
-      responseToSet.setHeader("X-Report-Query", logic);
+      outboundResponse.setHeader("X-Report-Query", logic);
 
-      responseToSet.setContentType("text/csv");
-      responseToSet.setCharacterEncoding("UTF-8");
+      outboundResponse.setContentType("text/csv");
+      outboundResponse.setCharacterEncoding("UTF-8");
 
-      try (InputStream inputStream = resp.getBody()) {
-        inputStream.transferTo(responseToSet.getOutputStream());
+      //  Directly stream CSV report contents to client to avoid performance hit from serialization
+      try (InputStream reportExecInputStream = reportExecResponse.getBody()) {
+        reportExecInputStream.transferTo(outboundResponse.getOutputStream());
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
