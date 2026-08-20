@@ -30,7 +30,7 @@ class Transaction:
         logging.debug(f'Querying: {query}')
 
         try:
-            res = self._cursor.execute(query, parameters)
+            self._cursor.execute(query, parameters)
         except mssql_python.ProgrammingError as e:
             datasource_match = INVALID_OBJECT_REGEX.search(e.message)
             if datasource_match is not None:
@@ -47,14 +47,7 @@ class Transaction:
             # re-raise
             raise e
 
-        # This could be -1 if the driver doesn't know, in which case the re-check
-        # after library processing is necessary suspenders for this belt
-        num_rows = self._cursor.rowcount
-        check_row_limits(num_rows, self.is_export)
-
-        data = res.fetchall()
-        check_row_limits(len(data), self.is_export)
-
+        data = self._fetch_rows()
         columns = self._column_names()
         return Table(columns=columns, data=data)
 
@@ -69,6 +62,18 @@ class Transaction:
         logging.debug(f'Executing: {query}')
         self._cursor.execute(query, parameters)
         return None
+
+    def _fetch_rows(self):
+        row_limit = get_row_limit(self.is_export)
+        data = self._cursor.fetchmany(row_limit + 1)
+
+        # If there are any more rows to fetch beyond the limit, the result is too big
+        if len(data) == row_limit + 1:
+            raise errors.ResultTooBigError(
+                self.is_export, row_limit, f'over {row_limit}'
+            )
+
+        return data
 
     def _column_names(self) -> list[str]:
         return [c[0] for c in self._cursor.description]
@@ -90,8 +95,8 @@ def db_transaction(connection_string, is_export: bool):
         connection.commit()
 
 
-def check_row_limits(num_rows: int, is_export: bool):
-    """Ensure the number of rows in the result set does not exceed limits."""
+def get_row_limit(is_export: bool):
+    """Get the max number of rows allowed in the report."""
     if is_export:
         config_key = 'REPORT_MAX_ROW_LIMIT_EXPORT'
     else:
@@ -107,7 +112,4 @@ def check_row_limits(num_rows: int, is_export: bool):
     except ValueError:
         raise errors.IntConfigurationConversionError(config_key) from None
 
-    if num_rows > row_limit_int:
-        raise errors.ResultTooBigError(is_export, row_limit_int, num_rows)
-
-    return None
+    return row_limit_int
