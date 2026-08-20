@@ -20,10 +20,6 @@ class WebSecurityConfig {
       final SecurityConfigurer configurer,
       final GraphQLExceptionHandlingConfigurer graphQLConfigurer)
       throws Exception {
-    return configurer
-        .configure(http.exceptionHandling(graphQLConfigurer::configure))
-        //  Prevents 403s when streaming CSV report contents to client from report execution service
-        .securityContext(security -> security.requireExplicitSave(false))
-        .build();
+    return configurer.configure(http.exceptionHandling(graphQLConfigurer::configure)).build();
   }
 }
