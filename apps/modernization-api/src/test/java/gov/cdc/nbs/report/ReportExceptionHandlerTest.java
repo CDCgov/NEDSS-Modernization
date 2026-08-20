@@ -132,4 +132,17 @@ class ReportExceptionHandlerTest {
     assertEquals("it went poorly", responseEntity.getBody().message());
     assertEquals(HttpStatus.SERVICE_UNAVAILABLE, responseEntity.getStatusCode());
   }
+
+  @Test
+  void should_return_error_msg_and_status_code_for_unexpected_exception() {
+    RuntimeException exception = new RuntimeException("I failed");
+
+    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
+        handler.handleUnexpectedError(exception);
+
+    assertNotNull(responseEntity.getBody());
+    assertEquals("Internal Server Error", responseEntity.getBody().message());
+    assertNotNull(responseEntity.getBody().id());
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+  }
 }
