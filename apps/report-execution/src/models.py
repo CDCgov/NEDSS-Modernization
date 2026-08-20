@@ -115,6 +115,6 @@ class ReportResult(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content: Table  # Annotated[Table, PlainSerializer(serialize_table)]
+    content: Table
     context_header: str | None = None
     description: str | None = None
