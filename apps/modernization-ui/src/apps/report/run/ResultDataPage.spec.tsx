@@ -31,7 +31,7 @@ describe('ResultDataPage', () => {
         expect(getByRole('definition', { name: 'Data source' })).toHaveTextContent('nbs_db.My_Table');
         expect(getByRole('definition', { name: 'Description' })).toHaveTextContent('---');
         expect(getByRole('definition', { name: 'Report run date' })).toHaveTextContent('6/17/2026 7:11 PM');
-        expect(getByRole('definition', { name: 'Base SQL query' })).toHaveTextContent(
+        expect(getByRole('definition', { name: 'Base SQL query WHERE' })).toHaveTextContent(
             'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]'
         );
         expect(getByText('(0 rows)')).toBeVisible();
@@ -60,7 +60,7 @@ describe('ResultDataPage', () => {
         expect(getByText(description, 'bold text')).toBeVisible();
         expect(queryByRole(description, 'listitem')).toHaveTextContent('a list item');
         expect(getByRole('definition', { name: 'Report run date' })).toHaveTextContent('6/17/2026 7:11 PM');
-        expect(getByRole('definition', { name: 'Base SQL query' })).toHaveTextContent(
+        expect(getByRole('definition', { name: 'Base SQL query WHERE' })).toHaveTextContent(
             'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]'
         );
         expect(getByText(container, '(1 row)')).toBeVisible();
