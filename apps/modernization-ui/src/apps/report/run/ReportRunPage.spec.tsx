@@ -17,6 +17,7 @@ import { UserContextProvider } from 'user';
 import { PERMISSION_GROUP_MAP } from '../constants';
 
 import { ReportRunPage } from './ReportRunPage';
+import { fetchReport } from './fetchReport';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -30,6 +31,7 @@ vi.mock('react-router', async () => {
 vi.mock('js-file-download');
 
 vi.mock('generated');
+vi.mock('apps/report/run/fetchReport');
 vi.mock('options/selectableResolver');
 vi.mock('options/concepts/useConceptOptions', () => ({
     useConceptOptions: vi.fn(),
@@ -189,12 +191,27 @@ const MOCK_BASIC_FILTER = {
     defaultIncludeNulls: false,
 };
 
-const MOCK_RESULT: generated.ReportExecutionResult = {
-    result: {
-        content: 'I am the result',
-    },
-    query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
-    timestamp: '2026-06-17T19:11:35.595501658',
+const createMockResult = () => {
+    const encoder = new TextEncoder();
+
+    const stream = new ReadableStream({
+        start(controller) {
+            controller.enqueue(encoder.encode('id,name,status\r\n'));
+
+            controller.enqueue(encoder.encode('2,Bob,inactive\r\n'));
+
+            controller.close();
+        },
+    });
+
+    return new Response(stream, {
+        status: 200,
+        headers: {
+            'Content-Type': 'text/csv',
+            'X-Report-Query': 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
+            'X-Report-Timestamp': '2026-06-17T19:11:35.595501658',
+        },
+    });
 };
 
 const renderWithRouter = (user = BASE_MOCK_USER) => {
@@ -242,7 +259,7 @@ describe('report run page', () => {
         it('run button submits config and opens in new tab', async () => {
             const user = userEvent.setup();
             vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
-            const mockApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
+            const mockApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const windowOpen = vi.spyOn(window, 'open');
 
             const { findAllByRole, findByText } = renderWithRouter();
@@ -259,7 +276,7 @@ describe('report run page', () => {
         it('export button submits config and downloads', async () => {
             const user = userEvent.setup();
             vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
-            const mockApi = vi.mocked(generated.ReportControllerService.exportReport).mockResolvedValue(MOCK_RESULT);
+            const mockApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const windowOpen = vi.spyOn(window, 'open');
 
             const { findAllByRole, findByText } = renderWithRouter();
@@ -280,9 +297,7 @@ describe('report run page', () => {
                 message = msg;
             });
             vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
-            const mockApi = vi
-                .mocked(generated.ReportControllerService.runReport)
-                .mockRejectedValue(new RangeError('uh oh'));
+            const mockApi = vi.mocked(fetchReport).mockRejectedValue(new RangeError('uh oh'));
             const windowOpen = vi.spyOn(window, 'open');
 
             const { findAllByRole, findByRole, findAllByText, findByText } = renderWithRouter();
@@ -386,7 +401,7 @@ describe('report run page', () => {
             const mockApi = vi
                 .mocked(useLoaderData)
                 .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
-            const mockResultApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { findByRole } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
@@ -414,7 +429,7 @@ describe('report run page', () => {
             const mockApi = vi
                 .mocked(useLoaderData)
                 .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
-            const mockResultApi = vi.mocked(generated.ReportControllerService.runReport).mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { findByRole, queryByRole } = renderWithRouter({
                 ...BASE_MOCK_USER,
                 permissions: BASE_MOCK_PERMISSIONS.filter((p) => p !== permissions.reports.export),
@@ -443,9 +458,7 @@ describe('report run page', () => {
             const mockApi = vi
                 .mocked(useLoaderData)
                 .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_BASIC_FILTER] });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { findByRole, queryByRole } = renderWithRouter({
                 ...BASE_MOCK_USER,
                 permissions: BASE_MOCK_PERMISSIONS.filter((p) => p !== permissions.reports.run),
@@ -558,9 +571,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [NULLABLE_MOCK_BASIC_FILTER],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     const { container, findByLabelText, findByRole } = renderWithRouter();
 
                     expect(mockApi).toHaveBeenCalled();
@@ -589,9 +600,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...NULLABLE_MOCK_BASIC_FILTER, defaultIncludeNulls: true }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     const { container, findByLabelText, findByRole } = renderWithRouter();
 
                     expect(mockApi).toHaveBeenCalled();
@@ -640,9 +649,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
@@ -674,9 +681,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -701,9 +706,7 @@ describe('report run page', () => {
                     ...MOCK_CONFIG,
                     basicFilters: [{ ...MOCK_FILTER, defaultValues: ['starter text'] }],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findByLabelText } = renderWithRouter();
 
@@ -750,9 +753,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                     const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
@@ -788,9 +789,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                     const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -820,9 +819,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/01/2024', '01/01/2025'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                     const { findByRole, findByLabelText } = renderWithRouter();
 
@@ -872,9 +869,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
@@ -910,9 +905,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -950,9 +943,7 @@ describe('report run page', () => {
                     ...MOCK_CONFIG,
                     basicFilters: [{ ...MOCK_FILTER, defaultValues: ['2024', '2025'] }],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findByLabelText } = renderWithRouter();
 
@@ -1002,9 +993,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
@@ -1046,9 +1035,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -1084,9 +1071,7 @@ describe('report run page', () => {
                     ...MOCK_CONFIG,
                     basicFilters: [{ ...MOCK_FILTER, defaultValues: ['01/2024', '01/2025'] }],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findByLabelText } = renderWithRouter();
 
@@ -1144,9 +1129,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockImplementation(async () => createMockResult());
                     vi.mocked(options.selectableResolver).mockResolvedValue([
                         { value: '11065', name: '2019 Novel Coronavirus' },
                         { value: '10560', name: 'AIDS' },
@@ -1221,9 +1204,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockResolvedValue([
                             { value: '13', name: 'Georgia' },
                             { value: '04', name: 'Arizona' },
@@ -1263,9 +1244,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockResolvedValue([
                             { value: '13', name: 'Georgia' },
                             { value: '04', name: 'Arizona' },
@@ -1299,9 +1278,7 @@ describe('report run page', () => {
                             ...MOCK_CONFIG,
                             basicFilters: [{ ...MOCK_FILTER, defaultValues: ['13'] }],
                         });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockResolvedValue([
                             { value: '13', name: 'Georgia' },
                             { value: '04', name: 'Arizona' },
@@ -1356,9 +1333,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockResolvedValue([
                             { value: '13', name: 'Georgia' },
                             { value: '04', name: 'Arizona' },
@@ -1400,9 +1375,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockResolvedValue([
                             { value: '13', name: 'Georgia' },
                             { value: '04', name: 'Arizona' },
@@ -1431,9 +1404,7 @@ describe('report run page', () => {
                             ...MOCK_CONFIG,
                             basicFilters: [{ ...MOCK_FILTER, defaultValues: ['04'] }],
                         });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockResolvedValue([
                             { value: '13', name: 'Georgia' },
                             { value: '04', name: 'Arizona' },
@@ -1526,9 +1497,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                         const { findByRole, findAllByRole, findAllByText, findByLabelText, container } =
@@ -1588,9 +1557,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                         const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -1619,9 +1586,7 @@ describe('report run page', () => {
                             ...MOCK_CONFIG,
                             basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
                         });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                         const { findByRole, findByLabelText } = renderWithRouter();
@@ -1676,9 +1641,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                         const { getByText, findAllByText, findByRole, findByLabelText, container } = renderWithRouter();
@@ -1739,9 +1702,7 @@ describe('report run page', () => {
                         const mockConfigApi = vi
                             .mocked(useLoaderData)
                             .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [STATE_FILTER, MOCK_FILTER] });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                         const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -1770,9 +1731,7 @@ describe('report run page', () => {
                             ...MOCK_CONFIG,
                             basicFilters: [STATE_FILTER, { ...MOCK_FILTER, defaultValues: ['13001'] }],
                         });
-                        const mockResultApi = vi
-                            .mocked(generated.ReportControllerService.exportReport)
-                            .mockResolvedValue(MOCK_RESULT);
+                        const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                         const { getByText, findByRole, findByLabelText } = renderWithRouter();
@@ -1844,9 +1803,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
@@ -1882,9 +1839,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -1914,9 +1869,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findByLabelText } = renderWithRouter();
@@ -1967,9 +1920,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
@@ -2009,9 +1960,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -2040,9 +1989,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['11065'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { getByText, findByRole, findByLabelText } = renderWithRouter();
@@ -2106,9 +2053,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
                     const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
@@ -2146,9 +2091,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
                     const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -2180,9 +2123,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['100'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
                     const { findByRole, findByLabelText } = renderWithRouter();
@@ -2235,9 +2176,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
                     const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
@@ -2279,9 +2218,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
                     const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -2311,9 +2248,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['200'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(useConceptOptions).mockReturnValue(mockOptionApiImpl);
 
                     const { getByText, findByRole, findByLabelText } = renderWithRouter();
@@ -2367,9 +2302,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [{ ...MOCK_FILTER, isRequired: false }] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockImplementation(async () => createMockResult());
 
                 const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
 
@@ -2418,9 +2351,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -2443,9 +2374,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -2469,9 +2398,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findByLabelText, container } = renderWithRouter();
 
@@ -2501,9 +2428,7 @@ describe('report run page', () => {
                 const mockConfigApi = vi
                     .mocked(useLoaderData)
                     .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
@@ -2528,9 +2453,7 @@ describe('report run page', () => {
                     ...MOCK_CONFIG,
                     basicFilters: [{ ...MOCK_FILTER, defaultValues: ['1'] }],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
 
                 const { findByRole, findByLabelText } = renderWithRouter();
 
@@ -2590,9 +2513,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findAllByText, findByLabelText, container } = renderWithRouter();
@@ -2628,9 +2549,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findAllByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -2660,9 +2579,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['erso'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findByLabelText } = renderWithRouter();
@@ -2713,9 +2630,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { getByText, findByRole, findByLabelText, container } = renderWithRouter();
@@ -2755,9 +2670,7 @@ describe('report run page', () => {
                     const mockConfigApi = vi
                         .mocked(useLoaderData)
                         .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [MOCK_FILTER] });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { findByRole, findAllByText, findByLabelText } = renderWithRouter();
@@ -2786,9 +2699,7 @@ describe('report run page', () => {
                         ...MOCK_CONFIG,
                         basicFilters: [{ ...MOCK_FILTER, defaultValues: ['andor'] }],
                     });
-                    const mockResultApi = vi
-                        .mocked(generated.ReportControllerService.exportReport)
-                        .mockResolvedValue(MOCK_RESULT);
+                    const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                     vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
 
                     const { getByText, findByRole, findByLabelText } = renderWithRouter();
@@ -2827,9 +2738,7 @@ describe('report run page', () => {
 
         it('renders the empty filter builder when no default value', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { findAllByText, queryByText, findByRole, findByLabelText, getByLabelText, container } =
                 renderWithRouter();
 
@@ -2879,9 +2788,7 @@ describe('report run page', () => {
 
         it('allows submit when empty', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { findAllByText, findByRole } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
@@ -2903,9 +2810,7 @@ describe('report run page', () => {
 
         it('validates rule states', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue({ ...MOCK_CONFIG, advancedFilter: MOCK_FILTER });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const codedValueGetter = vi.mocked(options.selectableResolver).mockResolvedValue([
                 { value: '123', name: 'Terrible disease' },
                 { value: '456', name: 'Not so awful disease' },
@@ -3109,9 +3014,7 @@ describe('report run page', () => {
                     query: "([Column] STARTS WITH 'prefix')",
                 },
             });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             vi.mocked(options.selectableResolver).mockResolvedValue([
                 { value: '123', name: 'Disease, terrible' },
                 { value: '456', name: 'Disease, not so bad' },
@@ -3281,9 +3184,7 @@ describe('report run page', () => {
                         },
                     },
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                 const { findAllByText, findByRole, findByTestId, findAllByTestId } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -3507,9 +3408,7 @@ describe('report run page', () => {
 
         it('happy path', async () => {
             const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_SELECTABLE_CONFIG);
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { container, findByText, findAllByText, queryByText, findByRole, findAllByRole, findByLabelText } =
                 renderWithRouter();
 
@@ -3616,9 +3515,7 @@ describe('report run page', () => {
             const mockApi = vi
                 .mocked(useLoaderData)
                 .mockReturnValue({ ...MOCK_SELECTABLE_CONFIG, defaultColumnUids: [2003, 2002] });
-            const mockResultApi = vi
-                .mocked(generated.ReportControllerService.exportReport)
-                .mockResolvedValue(MOCK_RESULT);
+            const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
             const { findByRole, findByLabelText } = renderWithRouter();
 
             expect(mockApi).toHaveBeenCalled();
@@ -3688,9 +3585,7 @@ describe('report run page', () => {
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                 const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -3724,9 +3619,7 @@ describe('report run page', () => {
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockImplementation(async () => createMockResult());
                 const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
@@ -3772,9 +3665,7 @@ describe('report run page', () => {
                     ...MOCK_SELECTABLE_CONFIG,
                     defaultColumnUids: [2001, 2002],
                 });
-                const mockResultApi = vi
-                    .mocked(generated.ReportControllerService.exportReport)
-                    .mockResolvedValue(MOCK_RESULT);
+                const mockResultApi = vi.mocked(fetchReport).mockResolvedValue(createMockResult());
                 const { findByRole, findByLabelText } = renderWithRouter();
 
                 expect(mockApi).toHaveBeenCalled();
