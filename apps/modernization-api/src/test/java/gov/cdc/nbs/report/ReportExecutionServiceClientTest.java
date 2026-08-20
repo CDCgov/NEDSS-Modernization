@@ -2,7 +2,7 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -17,7 +17,6 @@ import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.Clock;
 import java.time.Instant;
@@ -86,6 +85,7 @@ class ReportExecutionServiceClientTest {
     when(requestBodySpec.exchange(any())).thenCallRealMethod();
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   void executeReport_should_fetch_report_when_report_exists_and_runner_is_python() {
     ReportConfiguration reportConfig = mockReportConfiguration(true);
@@ -108,6 +108,7 @@ class ReportExecutionServiceClientTest {
       verify(requestBodySpec).exchange(any());
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   @Test
   void executeReport_should_set_context_and_description_from_response_headers() {
     ReportConfiguration reportConfig = mockReportConfiguration(true);
@@ -151,12 +152,7 @@ class ReportExecutionServiceClientTest {
         mockReportExecHttpResponse();
     HttpHeaders headers = httpResponse.getHeaders();
 
-    String body = "";
-    try {
-      body = httpResponse.getBody().toString();
-    } catch (IOException e) {
-      fail("Failed to fetch report execution response: " + e.getMessage());
-    }
+    String body = assertDoesNotThrow(() -> httpResponse.getBody().toString());
 
     return new ReportExecutionResult(
         new LibraryExecutionResult(
@@ -192,13 +188,11 @@ class ReportExecutionServiceClientTest {
     RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockResponse =
         mock(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse.class);
 
-    try {
-      Mockito.lenient()
-          .when(mockResponse.getStatusCode())
-          .thenReturn(org.springframework.http.HttpStatus.OK);
-    } catch (IOException e) {
-      fail("Failed to mock status code in report execution response: " + e.getMessage());
-    }
+    assertDoesNotThrow(
+        () ->
+            Mockito.lenient()
+                .when(mockResponse.getStatusCode())
+                .thenReturn(org.springframework.http.HttpStatus.OK));
 
     HttpHeaders headers = buildReportExecResponseHeaders();
 
@@ -208,12 +202,8 @@ class ReportExecutionServiceClientTest {
                 .getBytes());
 
     Mockito.lenient().when(mockResponse.getHeaders()).thenReturn(headers);
-    try {
-      Mockito.lenient().when(mockResponse.getBody()).thenReturn(responseBody);
-    } catch (IOException e) {
-      fail("Failed to mock body in report execution response: " + e.getMessage());
-    }
-
+    assertDoesNotThrow(
+        () -> Mockito.lenient().when(mockResponse.getBody()).thenReturn(responseBody));
     return mockResponse;
   }
 }
