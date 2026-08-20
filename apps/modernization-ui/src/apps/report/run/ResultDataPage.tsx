@@ -86,7 +86,10 @@ const ResultDataPage = () => {
     });
 
     const formattedTime = formatTimestamp(timestamp);
-    const descriptionHtml = description ? DOMPurify.sanitize(marked.parse(description.trim()) as string) : '';
+    // headers can't include new lines, so un-serialize for display
+    const descriptionHtml = description
+        ? DOMPurify.sanitize(marked.parse(description.trim().replaceAll('%n', '\n')) as string)
+        : '';
 
     const styledQuery = query
         .replace(' FROM ', '\nFROM ')
