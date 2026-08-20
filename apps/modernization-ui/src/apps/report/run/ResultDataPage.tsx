@@ -120,7 +120,7 @@ const ResultDataPage = () => {
                 </Card>
 
                 <Card id="report-criteria" title="Report criteria" collapsible={true} open={false}>
-                    <ValueField sizing={SIZING} label="Base SQL query WHERE">
+                    <ValueField sizing={SIZING} label="Base SQL query's WHERE clause">
                         {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
                         <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
                             {query}

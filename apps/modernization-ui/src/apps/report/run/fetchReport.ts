@@ -2,11 +2,14 @@ import { ReportExecutionRequest } from 'generated';
 import { ApiResult } from 'generated/core/ApiResult';
 import { catchErrorCodes, getResponseBody } from 'generated/core/request';
 
-// Manually invoking this endpoint instead of using the generated API client
-// because said API client doesn't support the streamed CSV body as we need due to
-// 1) it will read it all into a string, which is find for run, but not export; and
-// 2) it doesn't give us access to the headers, where additional metadata is passed back
-// Matching the signature of the generated endpoint for consistency.
+/**
+ * Manually invoking this endpoint instead of using the generated API client
+ * because said API client doesn't support the streamed CSV body as we need:
+ * 1) It will read it all into a string, which is fine for run, but not export; and
+ * 2) It doesn't give us access to the headers, where additional metadata is passed back.
+ *
+ * Matching the signature of the generated endpoint for consistency.
+ */
 const fetchReport = async ({ requestBody }: { requestBody: ReportExecutionRequest }) => {
     const { isExport } = requestBody;
     const url = `/nbs/api/report/${isExport ? 'export' : 'run'}`;

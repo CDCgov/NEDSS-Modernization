@@ -112,11 +112,8 @@ public class WhereClauseService {
       LOGGER.log(System.Logger.Level.TRACE, "Building lab result query fragment");
 
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
-      String labResultQueryValFragment =
-          LAB_RESULT_QUERY_VAL.formatted(
-              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
-
-      return labResultQueryValFragment;
+      return LAB_RESULT_QUERY_VAL.formatted(
+          rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
     }
 
     if (activeClauses.isEmpty()) {
