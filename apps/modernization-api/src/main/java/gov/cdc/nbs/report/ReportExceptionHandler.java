@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestClientResponseException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
 
@@ -67,7 +69,8 @@ public class ReportExceptionHandler {
     ErrorResponseBody err = null;
 
     try {
-      err = ex.getResponseBodyAs(ErrorResponseBody.class);
+      ObjectMapper mapper = new ObjectMapper();
+      err = mapper.readValue(ex.getResponseBodyAsString(), ErrorResponseBody.class);
     } catch (Exception e) {
       LOGGER.log(
           System.Logger.Level.WARNING,

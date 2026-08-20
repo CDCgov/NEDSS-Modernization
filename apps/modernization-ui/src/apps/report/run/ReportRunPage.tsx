@@ -5,7 +5,6 @@ import fileDownload from 'js-file-download';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLoaderData, useParams } from 'react-router';
 
-import { getResponseBody } from 'apps/page-builder/generated/core/request';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import {
     AdvancedFilterRequest,
@@ -125,17 +124,15 @@ const ReportRunPage = () => {
             setLastReportExecutionRequest(requestBody);
             fetchReport({ requestBody })
                 .then(async (response) => {
-                    const responseBody = await getResponseBody(response);
-
                     if (isExport) {
-                        fileDownload(responseBody, `${config?.title ?? 'ReportOutput'}.csv`);
+                        fileDownload(await response.blob(), `${config?.title ?? 'ReportOutput'}.csv`);
                     } else {
                         const resultId = crypto.randomUUID();
                         openNewTab(
                             `/report/result/${resultId}`,
                             {
                                 result: {
-                                    content: responseBody,
+                                    content: await response.text(),
                                     description: response.headers.get('X-Report-Description'),
                                     context_header: response.headers.get('X-Report-Context-Header'),
                                     timestamp: response.headers.get('X-Report-Timestamp'),

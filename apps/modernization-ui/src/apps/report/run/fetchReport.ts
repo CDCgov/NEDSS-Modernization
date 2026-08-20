@@ -12,7 +12,6 @@ const fetchReport = async ({ requestBody }: { requestBody: ReportExecutionReques
     return fetch(url, {
         method,
         headers: {
-            Accept: 'text/csv',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
