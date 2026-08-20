@@ -138,15 +138,9 @@ const ReportRunPage = () => {
                 body: JSON.stringify(requestBody),
             })
                 .then(async (response) => {
-                    console.log({ response });
-                    console.log({ headers: response.headers.get('X-Report-Query') });
-
                     const responseBody = await getResponseBody(response);
-                    console.log({ responseBody });
 
-                    // const text = await new Response(response.body).text();
-                    // console.log({ text });
-
+                    //  Duplicating error handling behavior defined in generated API client
                     const result: ApiResult = {
                         url,
                         ok: response.ok,
