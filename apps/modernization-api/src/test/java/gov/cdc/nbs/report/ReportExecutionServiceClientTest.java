@@ -29,7 +29,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
@@ -37,7 +36,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
@@ -62,7 +60,8 @@ class ReportExecutionServiceClientTest {
 
   @BeforeEach
   void setUp() {
-    spec = new ReportSpec(
+    spec =
+        new ReportSpec(
             true,
             true,
             "nbs_custom",
@@ -73,9 +72,8 @@ class ReportExecutionServiceClientTest {
             null);
 
     specBuilderMock =
-            mockConstruction(
-                    ReportSpecBuilder.class,
-                    (builder, context) -> when(builder.build()).thenReturn(spec));
+        mockConstruction(
+            ReportSpecBuilder.class, (builder, context) -> when(builder.build()).thenReturn(spec));
 
     when(client.post()).thenReturn(requestBodyUriSpec);
     when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
@@ -92,20 +90,19 @@ class ReportExecutionServiceClientTest {
 
     when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
-      LibraryExecutionResult expectedResponse = getReportExecutionResponse().result();
-      when(requestBodySpec.exchange(any()))
-          .thenReturn(expectedResponse);
+    LibraryExecutionResult expectedResponse = getReportExecutionResponse().result();
+    when(requestBodySpec.exchange(any())).thenReturn(expectedResponse);
 
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-      reportExecutionClient.executeReport(request, (res, reportSpec) -> {});
+    reportExecutionClient.executeReport(request, (res, reportSpec) -> {});
 
-      ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
-      verify(specBuilder).build();
+    ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
+    verify(specBuilder).build();
 
-      verify(client).post();
-      verify(requestBodySpec).exchange(any());
+    verify(client).post();
+    verify(requestBodySpec).exchange(any());
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
@@ -117,19 +114,19 @@ class ReportExecutionServiceClientTest {
 
     when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-      reportExecutionClient.executeReport(request, (res,  reportSpec) -> {});
+    reportExecutionClient.executeReport(request, (res, reportSpec) -> {});
 
-      assertThat(response.result().contextHeader())
-          .isEqualTo(
-              Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Context-Header"))
-                  .getFirst());
-      assertThat(response.result().description())
-          .isEqualTo(
-              Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Description"))
-                  .getFirst());
+    assertThat(response.result().contextHeader())
+        .isEqualTo(
+            Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Context-Header"))
+                .getFirst());
+    assertThat(response.result().description())
+        .isEqualTo(
+            Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Description"))
+                .getFirst());
   }
 
   @Test
