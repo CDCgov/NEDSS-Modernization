@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestClientResponseException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ControllerAdvice(assignableTypes = {ReportController.class})
 public class ReportExceptionHandler {
