@@ -92,7 +92,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                             <NumericHintInput
                                 label="Threshold"
                                 name={name}
-                                value={value ?? null}
+                                value={value}
                                 min={0}
                                 max={1}
                                 step={0.01}

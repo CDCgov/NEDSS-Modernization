@@ -88,7 +88,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                 <NumericHintInput
                                     label="Lower bound"
                                     name={name}
-                                    value={value ?? null}
+                                    value={value}
                                     tooltip={
                                         <span>
                                             <b>Lower bound - </b> Records with log odds scores below this number will be
@@ -125,7 +125,7 @@ export const MatchingBounds = ({ dataElements }: Props) => {
                                 <NumericHintInput
                                     label="Upper bound"
                                     name={name}
-                                    value={value ?? null}
+                                    value={value}
                                     tooltip={
                                         <span>
                                             <b>Upper bound - </b> Records with log odds scores above this number will be
