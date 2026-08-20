@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - mcm/force-build
     paths:
       - "apps/report-execution/**"
       - ".github/workflows/Build-and-deploy-report-execution.yaml"

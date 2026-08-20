@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - mcm/force-build
     paths:
       - "!libs/testing/**"
       - "apps/modernization-api/**"
