@@ -5,8 +5,7 @@ import fileDownload from 'js-file-download';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLoaderData, useParams } from 'react-router';
 
-import { ApiResult } from 'apps/page-builder/generated/core/ApiResult';
-import { catchErrorCodes, getResponseBody } from 'apps/page-builder/generated/core/request';
+import { getResponseBody } from 'apps/page-builder/generated/core/request';
 import { ApiErrorBanner } from 'design-system/errors/ApiError';
 import {
     AdvancedFilterRequest,
@@ -25,6 +24,7 @@ import { openNewTab } from '../utils/openNewTab';
 
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { ReportResultPage } from './ReportResultPage';
+import { fetchReport } from './fetchReport';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
 export type ReportExecuteForm = {
@@ -123,56 +123,29 @@ const ReportRunPage = () => {
 
             const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
             setLastReportExecutionRequest(requestBody);
-
-            const url = `/nbs/api/report/${isExport ? 'export' : 'run'}`;
-            const method = 'POST';
-
-            //  Manually invoking this endpoint instead of using the generated API client
-            //  because said API client doesn't correctly support the 'text/csv' media type
-            fetch(url, {
-                method,
-                headers: {
-                    Accept: 'text/csv',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            })
+            fetchReport({ requestBody })
                 .then(async (response) => {
                     const responseBody = await getResponseBody(response);
 
-                    //  Duplicating error handling behavior defined in generated API client
-                    const result: ApiResult = {
-                        url,
-                        ok: response.ok,
-                        status: response.status,
-                        statusText: response.statusText,
-                        body: responseBody,
-                    };
-                    catchErrorCodes({ url, method }, result);
-
-                    try {
-                        if (isExport) {
-                            fileDownload(responseBody, `${config?.title ?? 'ReportOutput'}.csv`);
-                        } else {
-                            const resultId = crypto.randomUUID();
-                            openNewTab(
-                                `/report/result/${resultId}`,
-                                {
-                                    result: {
-                                        content: responseBody,
-                                        description: response.headers.get('X-Report-Description'),
-                                        context_header: response.headers.get('X-Report-Context-Header'),
-                                        timestamp: response.headers.get('X-Report-Timestamp'),
-                                        query: response.headers.get('X-Report-Query'),
-                                    },
-                                    title: config?.title ?? '',
-                                    dataSourceName: config?.dataSource.name ?? '',
+                    if (isExport) {
+                        fileDownload(responseBody, `${config?.title ?? 'ReportOutput'}.csv`);
+                    } else {
+                        const resultId = crypto.randomUUID();
+                        openNewTab(
+                            `/report/result/${resultId}`,
+                            {
+                                result: {
+                                    content: responseBody,
+                                    description: response.headers.get('X-Report-Description'),
+                                    context_header: response.headers.get('X-Report-Context-Header'),
+                                    timestamp: response.headers.get('X-Report-Timestamp'),
+                                    query: response.headers.get('X-Report-Query'),
                                 },
-                                `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
-                            );
-                        }
-                    } catch (err) {
-                        setError(err);
+                                title: config?.title ?? '',
+                                dataSourceName: config?.dataSource.name ?? '',
+                            },
+                            `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
+                        );
                     }
                 })
                 .catch(setError)
