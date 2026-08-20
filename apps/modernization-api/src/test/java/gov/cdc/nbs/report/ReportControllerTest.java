@@ -653,8 +653,8 @@ class ReportControllerTest {
     @SneakyThrows
     @BeforeEach
     void setUp() {
-      ServletOutputStream mockServlet = mock(ServletOutputStream.class);
-      when(response.getOutputStream()).thenReturn(mockServlet);
+      ServletOutputStream mockServletOutputStream = mock(ServletOutputStream.class);
+      when(response.getOutputStream()).thenReturn(mockServletOutputStream);
       when(response.getHeader(anyString()))
           .thenAnswer(invocation -> responseHeaders.getFirst(invocation.getArgument(0)));
       doAnswer(
@@ -845,8 +845,8 @@ class ReportControllerTest {
     @SneakyThrows
     @BeforeEach
     void setUp() {
-      ServletOutputStream mockServlet = mock(ServletOutputStream.class);
-      when(response.getOutputStream()).thenReturn(mockServlet);
+      ServletOutputStream mockServletOutputStream = mock(ServletOutputStream.class);
+      when(response.getOutputStream()).thenReturn(mockServletOutputStream);
       when(response.getHeader(anyString()))
           .thenAnswer(invocation -> responseHeaders.getFirst(invocation.getArgument(0)));
 
