@@ -138,9 +138,8 @@ const ReportRunPage = () => {
                 body: JSON.stringify(requestBody),
             })
                 .then(async (response) => {
-                    console.log({ response })
-                    console.log({ headers: response.headers.get('X-Report-Query') })
-
+                    console.log({ response });
+                    console.log({ headers: response.headers.get('X-Report-Query') });
 
                     const responseBody = await getResponseBody(response);
                     console.log({ responseBody });
@@ -165,7 +164,13 @@ const ReportRunPage = () => {
                             openNewTab(
                                 `/report/result/${resultId}`,
                                 {
-                                    result: responseBody,
+                                    result: {
+                                        content: responseBody,
+                                        description: response.headers.get('X-Report-Description'),
+                                        context_header: response.headers.get('X-Report-Context-Header'),
+                                        timestamp: response.headers.get('X-Report-Timestamp'),
+                                        query: response.headers.get('X-Report-Query'),
+                                    },
                                     title: config?.title ?? '',
                                     dataSourceName: config?.dataSource.name ?? '',
                                 },

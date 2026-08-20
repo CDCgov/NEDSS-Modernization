@@ -10,7 +10,6 @@ import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import { NoDataRow } from 'design-system/table/NoDataRow';
-import { ReportExecutionResult } from 'generated';
 
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
@@ -27,7 +26,13 @@ const dateFormatter = Intl.DateTimeFormat('en-US', {
 const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
 type Result = {
-    result: ReportExecutionResult;
+    result: {
+        content: string;
+        description?: string;
+        context_header?: string;
+        timestamp: string;
+        query: string;
+    };
     title: string;
     dataSourceName: string;
 };
@@ -70,11 +75,7 @@ const ResultDataPage = () => {
     }
 
     const {
-        result: {
-            result: { content, description, context_header },
-            timestamp,
-            query,
-        },
+        result: { content, description, context_header, timestamp, query },
         title,
         dataSourceName,
     } = result;
@@ -135,8 +136,7 @@ const ResultDataPage = () => {
                 <Card
                     id="report-result"
                     title="Report result"
-                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}
-                >
+                    flair={`(${data.length} row${data.length === 1 ? '' : 's'})`}>
                     {data.length === 0 && (
                         <AlertMessage type="information">
                             <p className="font-sans-md margin-0 margin-top-1">No results match your criteria.</p>
