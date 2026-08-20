@@ -10,7 +10,6 @@ import {
     AdvancedFilterRequest,
     BasicFilterRequest,
     ReportConfiguration,
-    ReportControllerService,
     ReportExecutionRequest,
     SortSpec,
 } from 'generated';
@@ -24,6 +23,7 @@ import { openNewTab } from '../utils/openNewTab';
 
 import { ReportConfigurationPage } from './ReportConfigurationPage';
 import { ReportResultPage } from './ReportResultPage';
+import { fetchReport } from './fetchReport';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
 
 export type ReportExecuteForm = {
@@ -119,28 +119,30 @@ const ReportRunPage = () => {
             setWasExported(isExport);
             setStatus('submitting');
             setError(null);
-            const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
+
             const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
             setLastReportExecutionRequest(requestBody);
-            runner({ requestBody })
-                .then((res) => {
-                    try {
-                        if (isExport) {
-                            fileDownload(res.result.content, `${config?.title ?? 'ReportOutput'}.csv`);
-                        } else {
-                            const resultId = crypto.randomUUID();
-                            openNewTab(
-                                `/report/result/${resultId}`,
-                                {
-                                    result: res,
-                                    title: config?.title ?? '',
-                                    dataSourceName: config?.dataSource.name ?? '',
+            fetchReport({ requestBody })
+                .then(async (response) => {
+                    if (isExport) {
+                        fileDownload(await response.blob(), `${config?.title ?? 'ReportOutput'}.csv`);
+                    } else {
+                        const resultId = crypto.randomUUID();
+                        openNewTab(
+                            `/report/result/${resultId}`,
+                            {
+                                result: {
+                                    content: await response.text(),
+                                    description: response.headers.get('X-Report-Description'),
+                                    context_header: response.headers.get('X-Report-Context-Header'),
+                                    timestamp: response.headers.get('X-Report-Timestamp'),
+                                    query: response.headers.get('X-Report-Query'),
                                 },
-                                `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
-                            );
-                        }
-                    } catch (err) {
-                        setError(err);
+                                title: config?.title ?? '',
+                                dataSourceName: config?.dataSource.name ?? '',
+                            },
+                            `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
+                        );
                     }
                 })
                 .catch(setError)

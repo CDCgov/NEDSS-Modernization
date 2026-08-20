@@ -1,5 +1,6 @@
 package gov.cdc.nbs.report;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -67,7 +68,8 @@ public class ReportExceptionHandler {
     ErrorResponseBody err = null;
 
     try {
-      err = ex.getResponseBodyAs(ErrorResponseBody.class);
+      ObjectMapper mapper = new ObjectMapper();
+      err = mapper.readValue(ex.getResponseBodyAsString(), ErrorResponseBody.class);
     } catch (Exception e) {
       LOGGER.log(
           System.Logger.Level.WARNING,

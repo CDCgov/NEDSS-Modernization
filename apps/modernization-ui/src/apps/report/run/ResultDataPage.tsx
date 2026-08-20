@@ -10,7 +10,6 @@ import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import { NoDataRow } from 'design-system/table/NoDataRow';
-import { ReportExecutionResult } from 'generated';
 
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
@@ -27,7 +26,13 @@ const dateFormatter = Intl.DateTimeFormat('en-US', {
 const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
 type Result = {
-    result: ReportExecutionResult;
+    result: {
+        content: string;
+        description?: string;
+        context_header?: string;
+        timestamp: string;
+        query: string;
+    };
     title: string;
     dataSourceName: string;
 };
@@ -70,11 +75,7 @@ const ResultDataPage = () => {
     }
 
     const {
-        result: {
-            result: { content, description, context_header },
-            timestamp,
-            query,
-        },
+        result: { content, description, context_header, timestamp, query },
         title,
         dataSourceName,
     } = result;
@@ -90,11 +91,6 @@ const ResultDataPage = () => {
     const descriptionHtml = description
         ? DOMPurify.sanitize(marked.parse(description.trim().replaceAll('%n', '\n')) as string)
         : '';
-
-    const styledQuery = query
-        .replace(' FROM ', '\nFROM ')
-        .replace(' WHERE ', '\nWHERE ')
-        .replace(' ORDER BY ', '\nORDER BY ');
 
     return (
         <ReportLayout title={title} subtitle={context_header} noSkipLink={true}>
@@ -124,10 +120,10 @@ const ResultDataPage = () => {
                 </Card>
 
                 <Card id="report-criteria" title="Report criteria" collapsible={true} open={false}>
-                    <ValueField sizing={SIZING} label="Base SQL query">
+                    <ValueField sizing={SIZING} label="Base SQL query WHERE">
                         {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
                         <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
-                            {styledQuery}
+                            {query}
                         </span>
                     </ValueField>
                 </Card>
