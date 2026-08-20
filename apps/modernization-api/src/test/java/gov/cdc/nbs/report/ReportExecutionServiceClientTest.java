@@ -129,6 +129,63 @@ class ReportExecutionServiceClientTest {
                 .getFirst());
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @Test
+  void executeReport_should_set_context_and_description_from_response_headers() {
+    ReportConfiguration reportConfig = mockReportConfiguration(true);
+    RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockResponse =
+        mockReportExecHttpResponse();
+
+    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+
+    ReportSpec spec =
+        new ReportSpec(
+            true,
+            true,
+            "nbs_custom",
+            "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
+            null,
+            null,
+            null,
+            null);
+    try (MockedConstruction<ReportSpecBuilder> specBuilderMock =
+        mockConstruction(
+            ReportSpecBuilder.class,
+            (builder, context) -> when(builder.build()).thenReturn(spec))) {
+
+      when(client.post()).thenReturn(requestBodyUriSpec);
+      when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
+      when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
+      when(requestBodySpec.accept(any(MediaType[].class))).thenReturn(requestBodySpec);
+      when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+
+      when(requestBodySpec.exchange(any(RestClient.RequestHeadersSpec.ExchangeFunction.class)))
+          .thenAnswer(
+              invocation -> {
+                RestClient.RequestHeadersSpec.ExchangeFunction exchangeFunction =
+                    invocation.getArgument(0);
+                return exchangeFunction.exchange(mock(HttpRequest.class), mockResponse);
+              });
+
+      ReportExecutionRequest request =
+          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
+
+      ReportExecutionResult response = reportExecutionClient.executeReport(request);
+
+      ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
+      verify(specBuilder).build();
+
+      assertThat(response.result().contextHeader())
+          .isEqualTo(
+              Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Context-Header"))
+                  .getFirst());
+      assertThat(response.result().description())
+          .isEqualTo(
+              Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Description"))
+                  .getFirst());
+    }
+  }
+
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
     ReportConfiguration reportConfig = mockReportConfiguration(false);
