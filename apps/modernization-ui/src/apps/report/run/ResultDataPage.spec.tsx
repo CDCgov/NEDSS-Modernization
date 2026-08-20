@@ -13,6 +13,11 @@ vi.mock('react-router', async () => {
     };
 });
 
+vi.mock('lz-string', () => ({
+    compressToUTF16: (v: string) => v,
+    decompressFromUTF16: (v: string) => v,
+}));
+
 describe('ResultDataPage', () => {
     it('renders bare bones report result', async () => {
         const result = {
