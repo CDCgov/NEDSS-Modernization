@@ -56,7 +56,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
@@ -671,10 +670,10 @@ class ReportControllerTest {
       when(reportExecHttpResponse.getBody())
           .thenReturn(new ByteArrayInputStream("LOOK IM A REPORT".getBytes()));
 
-      Mockito.lenient()
+      lenient()
           .when(reportExecHeaders.getFirst("X-Report-Context-Header"))
           .thenReturn("a test context header");
-      Mockito.lenient()
+      lenient()
           .when(reportExecHeaders.getFirst("X-Report-Description"))
           .thenReturn("just a nice lil description");
     }
@@ -863,10 +862,10 @@ class ReportControllerTest {
       when(reportExecHttpResponse.getBody())
           .thenReturn(new ByteArrayInputStream("LOOK IM A REPORT".getBytes()));
 
-      Mockito.lenient()
+      lenient()
           .when(reportExecHeaders.getFirst("X-Report-Context-Header"))
           .thenReturn("a test context header");
-      Mockito.lenient()
+      lenient()
           .when(reportExecHeaders.getFirst("X-Report-Description"))
           .thenReturn("just a nice lil description");
     }
