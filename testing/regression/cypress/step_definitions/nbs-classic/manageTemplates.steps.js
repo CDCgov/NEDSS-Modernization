@@ -17,8 +17,12 @@ Then('Click filter button in Template Library', () => {
     classicManageTemplatePage.clickFilterIconTemplateLibrary();
 });
 
-Then('Enter filter text in the input', () => {
-    classicManageTemplatePage.enterFilterTextInFilterInbox();
+Then('all template names should contain the text {string}', (text) => {
+    classicManageTemplatePage.checkTemplateNamesContain(text);
+});
+
+Then('Enter filter text {string} in the input', (text) => {
+    classicManageTemplatePage.enterFilterTextInTemplateNameFilterInbox(text);
 });
 
 Then('Click OK button to filter', () => {
