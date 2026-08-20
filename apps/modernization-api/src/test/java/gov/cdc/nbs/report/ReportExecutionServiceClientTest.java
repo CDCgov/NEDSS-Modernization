@@ -2,8 +2,8 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
@@ -11,33 +11,26 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.report.models.Library;
-import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportExecutionResult;
 import gov.cdc.nbs.report.models.ReportSpec;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Objects;
 import org.apache.commons.lang3.NotImplementedException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
@@ -62,7 +55,11 @@ class ReportExecutionServiceClientTest {
 
   @BeforeEach
   void setUp() {
-    spec = new ReportSpec(
+    ReportConfiguration reportConfig = mockReportConfiguration(true);
+    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+
+    spec =
+        new ReportSpec(
             true,
             true,
             "nbs_custom",
@@ -73,94 +70,83 @@ class ReportExecutionServiceClientTest {
             null);
 
     specBuilderMock =
-            mockConstruction(
-                    ReportSpecBuilder.class,
-                    (builder, context) -> when(builder.build()).thenReturn(spec));
+        mockConstruction(
+            ReportSpecBuilder.class, (builder, context) -> when(builder.build()).thenReturn(spec));
 
-    when(client.post()).thenReturn(requestBodyUriSpec);
-    when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
-    when(requestBodySpec.contentType(any(MediaType.class))).thenReturn(requestBodySpec);
-    when(requestBodySpec.accept(any(MediaType[].class))).thenReturn(requestBodySpec);
-    when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
-    when(requestBodySpec.exchange(any())).thenCallRealMethod();
+    Mockito.lenient().when(client.post()).thenReturn(requestBodyUriSpec);
+    Mockito.lenient().when(requestBodyUriSpec.uri("/report/execute")).thenReturn(requestBodySpec);
+    Mockito.lenient()
+        .when(requestBodySpec.contentType(any(MediaType.class)))
+        .thenReturn(requestBodySpec);
+    Mockito.lenient()
+        .when(requestBodySpec.accept(any(MediaType[].class)))
+        .thenReturn(requestBodySpec);
+    Mockito.lenient().when(requestBodySpec.body(any(ReportSpec.class))).thenReturn(requestBodySpec);
+    Mockito.lenient().when(requestBodySpec.exchange(any())).thenCallRealMethod();
   }
 
-  @SuppressWarnings("unchecked")
+  @AfterEach
+  void tearDown() {
+    specBuilderMock.close();
+  }
+
   @Test
   void executeReport_should_fetch_report_when_report_exists_and_runner_is_python() {
-    ReportConfiguration reportConfig = mockReportConfiguration(true);
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+    reportExecutionClient.executeReport(request, (res, reportSpec) -> {});
 
-      LibraryExecutionResult expectedResponse = getReportExecutionResponse().result();
-      when(requestBodySpec.exchange(any()))
-          .thenReturn(expectedResponse);
+    ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
+    verify(specBuilder).build();
 
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
-
-      reportExecutionClient.executeReport(request, (res, reportSpec) -> {});
-
-      ReportSpecBuilder specBuilder = specBuilderMock.constructed().getFirst();
-      verify(specBuilder).build();
-
-      verify(client).post();
-      verify(requestBodySpec).exchange(any());
+    verify(client).post();
+    verify(requestBodySpec).exchange(any());
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
   @Test
-  void executeReport_should_set_context_and_description_from_response_headers() {
-    ReportConfiguration reportConfig = mockReportConfiguration(true);
-    RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockResponse =
-        mockReportExecHttpResponse();
+  void executeReport_should_invoke_the_bifunction_parameter_provided() {
+    final boolean[] wasCalled = {false};
 
-    when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
+    doAnswer(
+            invocation -> {
+              RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse response =
+                  mock(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse.class);
+              when(response.getStatusCode()).thenReturn(HttpStatus.OK);
 
-      ReportExecutionRequest request =
-          new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
+              RestClient.RequestHeadersSpec.ExchangeFunction<HttpRequest> exchangeFunction =
+                  invocation.getArgument(0);
+              exchangeFunction.exchange(mock(HttpRequest.class), response);
+              return null;
+            })
+        .when(requestBodySpec)
+        .exchange(any());
 
-      reportExecutionClient.executeReport(request, (res,  reportSpec) -> {});
+    ReportExecutionRequest request =
+        new ReportExecutionRequest(reportUid, dataSourceUid, true, null, null, List.of(), null);
 
-      assertThat(response.result().contextHeader())
-          .isEqualTo(
-              Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Context-Header"))
-                  .getFirst());
-      assertThat(response.result().description())
-          .isEqualTo(
-              Objects.requireNonNull(mockResponse.getHeaders().get("X-Report-Description"))
-                  .getFirst());
+    reportExecutionClient.executeReport(
+        request,
+        (res, reportSpec) -> {
+          wasCalled[0] = true;
+        });
+
+    verify(requestBodySpec).exchange(any());
+    assertThat(wasCalled[0]).isTrue();
   }
 
   @Test
   void executeReport_should_throw_not_implemented_when_runner_not_python() {
     ReportConfiguration reportConfig = mockReportConfiguration(false);
-
     lenient().when(reportFetcher.getReport(reportUid, dataSourceUid)).thenReturn(reportConfig);
 
     ReportExecutionRequest request =
         new ReportExecutionRequest(
             reportUid, dataSourceUid, true, List.of(17L), null, List.of(), null);
 
-    assertThatThrownBy(() -> reportExecutionClient.executeReport(request))
+    assertThatThrownBy(() -> reportExecutionClient.executeReport(request, (res, reportSpec) -> {}))
         .isInstanceOf(NotImplementedException.class)
         .hasMessage("Report not implemented for python");
-  }
-
-  private ReportExecutionResult getReportExecutionResponse() {
-    RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse httpResponse =
-        mockReportExecHttpResponse();
-    HttpHeaders headers = httpResponse.getHeaders();
-
-    String body = assertDoesNotThrow(() -> httpResponse.getBody().toString());
-
-    return new ReportExecutionResult(
-        new LibraryExecutionResult(
-            body,
-            headers.getFirst("X-Report-Context-Header"),
-            headers.getFirst("X-Report-Description")),
-        "SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]",
-        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 
   private ReportConfiguration mockReportConfiguration(boolean isPython) {
@@ -174,36 +160,5 @@ class ReportExecutionServiceClientTest {
     lenient().when(reportConfig.library()).thenReturn(library);
 
     return reportConfig;
-  }
-
-  private HttpHeaders buildReportExecResponseHeaders() {
-    HttpHeaders headers = new HttpHeaders();
-
-    headers.add("X-Report-Context-Header", "Look at all this context");
-    headers.add("X-Report-Description", "WOW SUCH DESCRIPTION");
-    return headers;
-  }
-
-  private RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockReportExecHttpResponse() {
-    RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse mockResponse =
-        mock(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse.class);
-
-    assertDoesNotThrow(
-        () ->
-            Mockito.lenient()
-                .when(mockResponse.getStatusCode())
-                .thenReturn(org.springframework.http.HttpStatus.OK));
-
-    HttpHeaders headers = buildReportExecResponseHeaders();
-
-    InputStream responseBody =
-        new ByteArrayInputStream(
-            "report_uid,data_source _uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time"
-                .getBytes());
-
-    Mockito.lenient().when(mockResponse.getHeaders()).thenReturn(headers);
-    assertDoesNotThrow(
-        () -> Mockito.lenient().when(mockResponse.getBody()).thenReturn(responseBody));
-    return mockResponse;
   }
 }
