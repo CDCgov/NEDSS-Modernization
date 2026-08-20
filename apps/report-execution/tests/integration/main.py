@@ -31,14 +31,12 @@ class TestMainApp:
         response = connection.getresponse()
         assert response.status == 200
 
-        result = json.loads(response.read())
+        content = response.read().decode('UTF-8')
 
-        assert result is not None
+        assert response.headers['X-Report-Description'] is None
+        assert response.headers['X-Report-Context-Header'] is None
 
-        for k in ['content', 'context_header', 'description']:
-            assert k in result
-
-        assert len(result['content']) > 0
+        assert len(content) > 0
 
         exepected_cols = [
             'filter_uid',
@@ -53,6 +51,6 @@ class TestMainApp:
             'status_cd',
             'status_time',
         ]
-        found_cols = result['content'].split('\r\n')[0].split(',')
+        found_cols = content.split('\r\n')[0].split(',')
 
         assert found_cols == exepected_cols

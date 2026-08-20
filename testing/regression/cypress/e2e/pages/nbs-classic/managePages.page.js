@@ -1,167 +1,162 @@
 class ClassicManagePagesPage {
-    
-  navigateToPageLibrary() {
-    cy.contains('System Management').click()
+    navigateToPageLibrary() {
+        cy.contains('System Management').click();
 
-    // Expand the "Page Management" subsection
-    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
-    cy.contains('Manage Pages').click()
-  }
+        // Expand the "Page Management" subsection
+        cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
+        cy.contains('Manage Pages').click();
+    }
 
-  clickAddNewBtn() {
-    cy.get('body').then(($body) => {
-        if($body.find('input[type="button"][value="Add New"]').length > 0) {
-            cy.get('input[type="button"][value="Add New"]').eq(0).click()
-        }
-    })
-  }
+    clickAddNewBtn() {
+        cy.get('body').then(($body) => {
+            if ($body.find('input[type="button"][value="Add New"]').length > 0) {
+                cy.get('input[type="button"][value="Add New"]').eq(0).click();
+            }
+        });
+    }
 
-  clickAddNewTabImg() {
-    cy.get('body').then(($body) => {
-        if($body.find('img[title="Add New Tab"]').length > 0) {
-            cy.get('img[title="Add New Tab"]').eq(0).click()
-        }
-    })
-  }  
+    clickAddNewTabImg() {
+        cy.get('body').then(($body) => {
+            if ($body.find('img[title="Add New Tab"]').length > 0) {
+                cy.get('img[title="Add New Tab"]').eq(0).click();
+            }
+        });
+    }
 
-  clickAddSection() {
-    cy.get(".addSection").eq(0).click();
-  }
+    clickAddSection() {
+        cy.get('.addSection').eq(0).click();
+    }
 
-  clickAddSubSection() {
-    cy.get(".addSubSection").eq(0).click();
-  }
+    clickAddSubSection() {
+        cy.get('.addSubSection').eq(0).click();
+    }
 
-  selectPageType(pageType) {
-    //  Open `Event Type` dropdown
-    cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click()
+    selectPageType(pageType) {
+        //  Open `Event Type` dropdown
+        cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click();
 
-    // Select the page type
-    cy.get(`option`).contains(pageType).eq(0).click()
+        // Select the page type
+        cy.get(`option`).contains(pageType).eq(0).click();
 
-    // Close `Event Type` dropdown
-    cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click()
-  }
+        // Close `Event Type` dropdown
+        cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click();
+    }
 
-  selectTemplate() {
-    cy.get('#existingTemplate').eq(0).select(1, { force: true })
-    cy.get('input[name="existingTemplate_textbox"]').eq(0).click()
-  }
+    selectTemplate() {
+        cy.get('#existingTemplate').eq(0).select(1, { force: true });
+        cy.get('input[name="existingTemplate_textbox"]').eq(0).click();
+    }
 
-  selectMappingGuide() {
-    cy.get('#mappingGuide').eq(0).select(1, { force: true })
-    cy.get('input[name="mappingGuide_textbox"]').eq(0).click()
-  }
+    selectMappingGuide() {
+        cy.get('#mappingGuide').eq(0).select(1, { force: true });
+        cy.get('input[name="mappingGuide_textbox"]').eq(0).click();
+    }
 
-  enterPageName() {
-    const newName = this.newName()
-    cy.get('#uniquePageName').type(`Page name ${newName}`)
-  }
+    enterPageName() {
+        const newName = this.newName();
+        cy.get('#uniquePageName').type(`Page name ${newName}`);
+    }
 
-  addRelatedCondition() {
-    cy.get('select[id="availableConditions"]').eq(0).select(1, { force: true })
-    cy.get('input[value="Add >"]').eq(0).click()
-  }
+    addRelatedCondition() {
+        cy.get('select[id="availableConditions"]').eq(0).select(1, { force: true });
+        cy.get('input[value="Add >"]').eq(0).click();
+    }
 
-  clickSubmitBtn() {
-    cy.get('#submitButton').eq(0).click()
-  }
+    clickSubmitBtn() {
+        cy.get('#submitButton').eq(0).click();
+    }
 
-  newName() {
-    return Math.random().toString(36).substring(2, 8);
-  }
+    newName() {
+        return Math.random().toString(36).substring(2, 8);
+    }
 
-  clickViewIcon() {
-    cy.get('#parent tbody tr td a').eq(0).click()
-  }
-  
-  sortByLastUpdated() {
-    cy.get('table[id="parent"]').find('th').eq(6).find('a').contains('Last Updated').eq(0).click()
-  }
+    clickViewIcon() {
+        cy.get('#parent tbody tr td a').eq(0).click();
+    }
 
-  checkDisplayed(text) {
-    cy.contains(text)
-  }
+    sortByLastUpdated() {
+        cy.get('table[id="parent"]').find('th').eq(6).find('a').contains('Last Updated').eq(0).click();
+    }
 
-  clickPageDetailsBtn () {
-    cy.get('input[type="button"][name="Page Details"]').eq(0).click()
-  }
+    checkDisplayed(text) {
+        cy.contains(text);
+    }
 
-  clickClonePageBtn () {
-    cy.get('input[type="button"][name="Clone Page"]').eq(0).click()
-  }
+    clickPageDetailsBtn() {
+        cy.get('input[type="button"][name="Page Details"]').eq(0).click();
+    }
 
-  addRelatedConditions () {
-    cy.get('[name="conditionCodes"]').select(1)
-    cy.get('input[type="button"][value="Add >"]').eq(0).click()
-  }
+    clickClonePageBtn() {
+        cy.get('input[type="button"][name="Clone Page"]').eq(0).click();
+    }
 
-  clickSubmitBtn2 () {
-    cy.get('input[type="button"][name="Submit"]').eq(0).click()
-  }
+    addRelatedConditions() {
+        cy.get('[name="conditionCodes"]').select(1);
+        cy.get('input[type="button"][value="Add >"]').eq(0).click();
+    }
 
-  clickEditBtn () {
-    cy.get('input[type="button"][name="Edit"]').eq(0).click()
-  }
+    clickSubmitBtn2() {
+        cy.get('input[type="button"][name="Submit"]').eq(0).click();
+    }
 
-  enterDescription () {
-    cy.get('textarea[name="selection.waTemplateDT.descTxt"]')
-      .eq(0)
-      .clear()
-      .type('description edited')
-  }
+    clickEditBtn() {
+        cy.get('input[type="button"][name="Edit"]').eq(0).click();
+    }
 
-  clickPageRulesBtn () {
-    cy.get('input[type="button"][name="Page Rules"]').eq(0).click()
-  }
+    enterDescription() {
+        cy.enterInput('textarea[name="selection.waTemplateDT.descTxt"]', 'description edited');
+    }
 
-  selectFunction () {
-    cy.get('#function').eq(0).select(1, { force: true })
-    cy.get('input[name="function_textbox"]').eq(0).click()
-  }
+    clickPageRulesBtn() {
+        cy.get('input[type="button"][name="Page Rules"]').eq(0).click();
+    }
 
-  selectSource () {
-    cy.get('#sourceDC').eq(0).select(1, { force: true })
-    cy.get('input[name="sourceDC_textbox"]').eq(0).click()
-  }
+    selectFunction() {
+        cy.get('#function').eq(0).select(1, { force: true });
+        cy.get('input[name="function_textbox"]').eq(0).click();
+    }
 
-  selectLogic () {
-    cy.get('#logicDC').eq(0).select(1, { force: true })
-    cy.get('input[name="logicDC_textbox"]').eq(0).click()
-  }
+    selectSource() {
+        cy.get('#sourceDC').eq(0).select(1, { force: true });
+        cy.get('input[name="sourceDC_textbox"]').eq(0).click();
+    }
 
-  selectTarget () {
-    cy.get('#targetDC').select(2)
-  }
+    selectLogic() {
+        cy.get('#logicDC').eq(0).select(1, { force: true });
+        cy.get('input[name="logicDC_textbox"]').eq(0).click();
+    }
 
-  clickEditBtnInViewPage() {
-    cy.get('input[type="button"][name="Edit Page"]').eq(0).click()
-  }
+    selectTarget() {
+        cy.get('#targetDC').select(2);
+    }
 
-  clickAddElements() {
-    cy.window().then((win) => {
-      cy.stub(win, 'open').callsFake((url) => {
-        win.location.href = url; // Redirect to the popup's URL in the same tab
-      });
-    });
-    cy.get('.importQuestionLink').eq(0).click()
-  }
+    clickEditBtnInViewPage() {
+        cy.get('input[type="button"][name="Edit Page"]').eq(0).click();
+    }
 
-  selectStaticElement() {
-    cy.get('input[type="radio"][value="staticElt"]').check()
-  }
+    clickAddElements() {
+        cy.window().then((win) => {
+            cy.stub(win, 'open').callsFake((url) => {
+                win.location.href = url; // Redirect to the popup's URL in the same tab
+            });
+        });
+        cy.get('.importQuestionLink').eq(0).click();
+    }
 
-  selectStaticElementType() {
-    cy.get('#eltType').select(1)
-  }
+    selectStaticElement() {
+        cy.get('input[type="radio"][value="staticElt"]').check();
+    }
 
-  clickSubmitBtnInElementPage() {
-    cy.get('input[type="button"][name="SubmitForm"]').eq(0).click()
-  }
+    selectStaticElementType() {
+        cy.get('#eltType').select(1);
+    }
 
-  clickCloseBtnInAddElementPage() {
-    cy.get('input[type="button"][value="Close"]').eq(0).click()
-  }
+    clickSubmitBtnInElementPage() {
+        cy.get('input[type="button"][name="SubmitForm"]').eq(0).click();
+    }
 
+    clickCloseBtnInAddElementPage() {
+        cy.get('input[type="button"][value="Close"]').eq(0).click();
+    }
 }
 export default new ClassicManagePagesPage();

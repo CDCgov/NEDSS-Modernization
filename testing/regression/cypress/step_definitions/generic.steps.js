@@ -2,7 +2,7 @@ import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
 When('I navigate to {string} path', (url) => {
     cy.visit(url);
-})
+});
 
 When('I click on the {string} link', (name) => {
     cy.contains('a', name).click();
@@ -98,5 +98,5 @@ Then('I should see {string} radio selected in the {string} field', (name, label)
 });
 
 Then('I should see a green success message containing text {string}', (text) => {
-     cy.get('div[class="infoBox success"]').should('contain.text', text)
-})
+    cy.get('div[class="infoBox success"]').should('contain.text', text);
+});
