@@ -302,7 +302,7 @@ public class ReportController {
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    reportExecutionClient.executeReport(request, this.handleReportRes(response));
+    reportExecutionClient.executeReport(request, handleReportRes(response));
   }
 
   private BiConsumer<RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse, ReportSpec>
