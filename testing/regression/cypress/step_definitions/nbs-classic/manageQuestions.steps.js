@@ -17,6 +17,14 @@ Then('Click submit button to create question', () => {
     classicManageQuestionsPage.clickSubmitBtnLocalQuestion();
 });
 
+Then('I should see a success message that the question has been successfully added to the system', () => {
+    classicManageQuestionsPage.checkSuccessMessageQuestionAdded();
+});
+
+Then('I should see a success message that the question has been successfully saved to the system', () => {
+    classicManageQuestionsPage.checkSuccessMessageQuestionSaved();
+});
+
 Then('Click on a question in Question Library', () => {
     classicManageQuestionsPage.clickQuestionInQuestionList();
 });
