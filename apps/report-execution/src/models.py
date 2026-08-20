@@ -1,10 +1,11 @@
 import csv
 import decimal
 import io
+from collections.abc import Generator
 from datetime import date, datetime
-from typing import Annotated, Any
+from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
+from pydantic import BaseModel, ConfigDict, Field, Json
 
 from src.config import get_cached_config_value
 
@@ -70,7 +71,7 @@ class Table(BaseModel):
         return list(map(row_to_dict, self.data))
 
 
-def serialize_table(table: Table) -> str:
+def yield_table_csv(table: Table) -> Generator[str]:
     """Turn a Table into a CSV for returning to the user."""
     date_format = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
     datetime_format = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
@@ -87,13 +88,25 @@ def serialize_table(table: Table) -> str:
 
         return value
 
+    # only big files actually get chunked
+    chunk_size = 10000
     output = io.StringIO(newline='')
     writer = csv.writer(output, lineterminator='\r\n')
 
     writer.writerow(table.columns)
-    writer.writerows((convert(value) for value in row) for row in table.data)
 
-    return output.getvalue().removesuffix('\r\n')
+    for i, row in enumerate(table.data, start=1):
+        writer.writerow(convert(value) for value in row)
+
+        if i % chunk_size == 0:
+            yield output.getvalue()
+
+            output.seek(0)
+            output.truncate(0)
+
+    # Yield whatever remains
+    if output.tell():
+        yield output.getvalue()
 
 
 # TODO: add other return types  # noqa: FIX002
@@ -102,6 +115,6 @@ class ReportResult(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content: Annotated[Table, PlainSerializer(serialize_table)]
+    content: Table
     context_header: str | None = None
     description: str | None = None

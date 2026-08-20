@@ -37,12 +37,12 @@ class TestModels:
                 )
 
             t = models.Table(data=data, columns=columns)
-            csv_str = models.serialize_table(t)
+            csv_str = ''.join(models.yield_table_csv(t))
 
             date_re = re.compile(r'^\d{2}/\d{2}/\d{4}$')
             datetime_re = re.compile(r'^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$')
 
-            for line in csv_str.split('\r\n')[1:]:
+            for line in csv_str.split('\r\n')[1:-1]:
                 d, dt = line.split(',')
 
                 assert date_re.match(d) is not None
@@ -59,7 +59,7 @@ class TestModels:
             data = [(datetime.date(1985, 4, 13), datetime.datetime(1985, 4, 13, 4, 15))]
             t = models.Table(data=data, columns=columns)
 
-            csv_str = models.serialize_table(t)
+            csv_str = ''.join(models.yield_table_csv(t))
             lines = csv_str.split('\r\n')
 
             d = lines[1].split(',')[0]
@@ -84,7 +84,7 @@ class TestModels:
             data = [(0.00000001, 123456789.23456789, 1, 1000000000000001)]
 
             t = models.Table(data=data, columns=columns)
-            csv_str = models.serialize_table(t)
+            csv_str = ''.join(models.yield_table_csv(t))
 
             data_line = csv_str.split('\r\n')[1]
 
@@ -127,7 +127,7 @@ class TestModels:
             ]
 
             t = models.Table(data=data, columns=columns)
-            csv_str = models.serialize_table(t)
+            csv_str = ''.join(models.yield_table_csv(t))
             str_io = io.StringIO(csv_str)
             df = pd.read_csv(str_io)
 

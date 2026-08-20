@@ -48,7 +48,7 @@ describe('ResultDataPage', () => {
             result: {
                 content: 'a,b,c\n1,2,3',
                 context_header: 'Georgia | Pertussis, Measles',
-                description: '**bold text**\n\n* a list item',
+                description: '**bold text**%n%n* a list item',
             },
             query: 'SELECT * FROM [NBS_ODSE].[dbo].[PHC_Demographic]',
             timestamp: '2026-06-17T19:11:35.595501658',
