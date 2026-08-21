@@ -1,9 +1,9 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { SearchCriteria } from 'apps/search/criteria';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import { DatePickerInput } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
@@ -151,14 +151,15 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
+                                id={name}
                                 sizing={sizing}
-                                defaultValue={value}
+                                value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name={name}
                                 label="From"
                                 required={true}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />
@@ -172,14 +173,15 @@ export const GeneralFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
+                                id={name}
                                 sizing={sizing}
-                                defaultValue={value}
+                                value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name={name}
                                 label="To"
                                 required={true}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />
