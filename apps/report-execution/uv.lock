@@ -944,12 +944,12 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "mssql-python" },
-    { name = "pandas" },
     { name = "pydantic" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "pandas" },
     { name = "pyrefly" },
     { name = "pytest" },
     { name = "pytest-mock" },
@@ -966,12 +966,12 @@ dev = [
 requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = "==0.141.1" },
     { name = "mssql-python", specifier = "==1.13.0" },
-    { name = "pandas", specifier = ">=3.0.1" },
     { name = "pydantic", specifier = ">=2.13.0,<3.0.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "pandas", specifier = ">=3.0.1" },
     { name = "pyrefly", specifier = ">=1.2.0" },
     { name = "pytest", specifier = ">=9.1.1,<10.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
