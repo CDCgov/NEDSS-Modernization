@@ -85,3 +85,69 @@ Then('the stored morbidity report ID should not appear in the Documents Requirin
 Then('the stored morbidity report ID should not appear in the Morbidity Reports section of the Events tab', () => {
     eventsTabPage.verifyMorbidityEventIdNotInMorbidityReports();
 });
+
+When('I click entry {int} under the {string} section', (entryNumber, sectionName) => {
+    cy.get('h2')
+        .contains(sectionName)
+        .closest('section')
+        .find('table.usa-table tbody tr')
+        .eq(entryNumber - 1)
+        .find('a')
+        .click();
+});
+
+Then(
+    'I check the investigation associated with entry {int} under the {string} section contains {string}',
+    (entryNumber, sectionName, association) => {
+        cy.get('h2')
+            .contains(sectionName)
+            .closest('section')
+            .find('table.usa-table tbody tr')
+            .eq(entryNumber - 1)
+            .find('td')
+            .eq(5)
+            .contains(association);
+    }
+);
+
+Then(
+    'I check the column {string} for entry {int} under the {string} section contains {string}',
+    (columnName, entryNumber, sectionName, text) => {
+        const columnNameToIndexMapping = {
+            'Associated with': 5,
+            'Program area': 6,
+            Jurisdiction: 7,
+        };
+        cy.get('h2')
+            .contains(sectionName)
+            .closest('section')
+            .find('table.usa-table tbody tr')
+            .eq(entryNumber - 1)
+            .find('td')
+            .eq(columnNameToIndexMapping[columnName])
+            .contains(text);
+    }
+);
+
+Then('I check the {string} section contains an entry with {string}', (sectionName, condition) => {
+    cy.contains('h2', sectionName).closest('section').should('contain.text', condition);
+});
+
+When('I {string} entry {int} under the {string} section with the investigation', (action, entryNumber, sectionName) => {
+    cy.get('th')
+        .contains(sectionName)
+        .closest('table')
+        .find('table.dtTable tbody tr')
+        .eq(entryNumber - 1)
+        .find('td')
+        .first() // checkbox
+        .find('input')
+        .then(($input) => {
+            if (action === 'associate') {
+                cy.wrap($input).check();
+            } else {
+                cy.wrap($input).uncheck();
+            }
+        });
+    cy.get('#Submit').first().click();
+});

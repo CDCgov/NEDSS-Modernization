@@ -27,6 +27,7 @@
     "devDependencies": {
         "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
         "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+        "@dankieu/cypress-sql": "^2.1.8",
         "@eslint/js": "^10.0.1",
         "@faker-js/faker": "^8.0.2",
         "@testing-library/cypress": "^10.1.3",
@@ -45,7 +46,7 @@
     },
     "cypress-cucumber-preprocessor": {
         "nonGlobalStepDefinitions": false,
-        "stepDefinitions": "./cypress/step_definitions/**/*.{js,ts}",
+        "stepDefinitions": "./cypress/step_definitions/{*,**/*}.{js,ts}",
         "json": {
             "enabled": true,
             "output": "./reports/log.json",
