@@ -3,13 +3,7 @@ import { Field, FieldProps } from 'design-system/field';
 import { Radio } from 'design-system/radio';
 
 import styles from './date-criteria.module.scss';
-import {
-    DateCriteria,
-    initialDateBetweenCriteria,
-    initialDateEqualsCriteria,
-    isDateBetweenCriteria,
-    isDateEqualsCriteria,
-} from './dateCriteria';
+import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from './dateCriteria';
 import { ExactDateField } from './exact';
 import { DateRangeField } from './range';
 
@@ -18,19 +12,19 @@ type CriteriaType = 'equals' | 'between';
 const resolveCriteriaType = (value: DateCriteria): CriteriaType =>
     isDateBetweenCriteria(value) ? 'between' : 'equals';
 
-const resolveInitialCriteriaType = (value: DateCriteria | null): CriteriaType =>
+const resolveInitialCriteriaType = (value?: DateCriteria | null): CriteriaType =>
     value ? resolveCriteriaType(value) : 'equals';
 
-const asDateEqualsCriteria = (value: DateCriteria | null) =>
-    value && isDateEqualsCriteria(value) ? value : initialDateEqualsCriteria;
+const asDateEqualsCriteria = (value?: DateCriteria | null) =>
+    value && isDateEqualsCriteria(value) ? value : undefined;
 
-const asDateRangeCriteria = (value: DateCriteria | null) =>
-    value && isDateBetweenCriteria(value) ? value : initialDateBetweenCriteria;
+const asDateRangeCriteria = (value?: DateCriteria | null) =>
+    value && isDateBetweenCriteria(value) ? value : undefined;
 
 type DateCriteriaFieldProps = {
     id: string;
-    value: DateCriteria | null;
-    onChange: (value: DateCriteria) => void;
+    value?: DateCriteria | null;
+    onChange: (value?: DateCriteria) => void;
     onBlur?: () => void;
     clearErrors?: () => void;
 } & FieldProps;
@@ -58,7 +52,7 @@ const DateCriteriaField = ({
                         label="Exact Date"
                         value="equals"
                         onChange={() => {
-                            onChange(initialDateEqualsCriteria);
+                            onChange({ equals: {} });
                             clearErrors?.();
                         }}
                         checked={type === 'equals'}
@@ -71,7 +65,7 @@ const DateCriteriaField = ({
                         label="Date Range"
                         value="between"
                         onChange={() => {
-                            onChange(initialDateBetweenCriteria);
+                            onChange({ between: {} });
                             clearErrors?.();
                         }}
                         checked={type === 'between'}

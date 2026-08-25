@@ -7,18 +7,7 @@ import { YearRangeField } from './YearRangeField';
 describe('YearRangeField Component', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(
-            <YearRangeField
-                id="testing-year-range-accessibility"
-                onChange={vi.fn()}
-                startYear={2000}
-                endYear={2020}
-                value={{
-                    between: {
-                        from: null,
-                        to: null,
-                    },
-                }}
-            />
+            <YearRangeField id="testing-year-range-accessibility" onChange={vi.fn()} startYear={2000} endYear={2020} />
         );
 
         expect(await axe(container)).toHaveNoViolations();
@@ -51,12 +40,6 @@ describe('YearRangeField Component', () => {
         const { getByRole } = render(
             <YearRangeField
                 id="testing-date-range-from-entered"
-                value={{
-                    between: {
-                        from: null,
-                        to: null,
-                    },
-                }}
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
@@ -81,7 +64,6 @@ describe('YearRangeField Component', () => {
                 value={{
                     between: {
                         from: '2004',
-                        to: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -101,12 +83,6 @@ describe('YearRangeField Component', () => {
         const { getByRole } = render(
             <YearRangeField
                 id="testing-date-range-to-entered"
-                value={{
-                    between: {
-                        from: null,
-                        to: null,
-                    },
-                }}
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}

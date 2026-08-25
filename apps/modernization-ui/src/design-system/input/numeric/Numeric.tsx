@@ -1,17 +1,17 @@
-import { ChangeEvent as ReactChangeEvent } from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect } from 'react';
 
 import classNames from 'classnames';
 
 import { onlyDecimalKeys, onlyNumericKeys } from './onlyNumericKeys';
+import { useNumeric } from './useNumeric';
 
-type NumericOnChange = (value: number | null) => void;
+type NumericOnChange = (value?: number | null) => void;
 
 type NumericProps = {
     id: string;
     inputMode?: 'decimal' | 'numeric';
-    // don't allow undefined to avoid control<=>uncontrolled switching
-    value: number | null;
-    onChange: NumericOnChange;
+    value?: number | null;
+    onChange?: NumericOnChange;
     onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
@@ -25,18 +25,30 @@ const Numeric = ({
     placeholder,
     ...props
 }: NumericProps) => {
+    const { current, change, clear, initialize } = useNumeric(value);
+
+    useEffect(() => {
+        onChange?.(current);
+    }, [current]);
+
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
         const next = event.target.value;
 
         if (next === '') {
-            onChange(null);
+            clear();
+        } else if (Number.isNaN(next)) {
+            event.preventDefault();
         } else {
             const adjusted = Number(next);
             if (!Number.isNaN(adjusted)) {
-                onChange(adjusted);
+                change(adjusted);
             }
         }
     };
+
+    useEffect(() => {
+        initialize(value);
+    }, [value]);
 
     return (
         <input
@@ -48,7 +60,7 @@ const Numeric = ({
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            value={value ?? ''}
+            value={current ?? ''}
             pattern="[0-9]*"
             onKeyDown={inputMode === 'numeric' ? onlyNumericKeys : onlyDecimalKeys}
             {...props}
