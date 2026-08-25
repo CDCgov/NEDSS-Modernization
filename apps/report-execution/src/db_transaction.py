@@ -68,12 +68,9 @@ class Transaction:
     def _fetch_rows(self):
         data = []
         row_limit = get_row_limit(self.is_export)
-        while len(data) <= row_limit:
+        while len(data) < row_limit:
             batch = self._cursor.fetchmany(BATCH_SIZE)
-            if batch is None:
-                break
-
-            data.append(batch)
+            data.extend(batch)
 
             if len(batch) < BATCH_SIZE:
                 break
