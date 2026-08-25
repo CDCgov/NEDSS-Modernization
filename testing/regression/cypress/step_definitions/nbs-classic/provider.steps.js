@@ -1,12 +1,20 @@
-import { Then } from '@badeball/cypress-cucumber-preprocessor';
+import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import classicProviderPage from '@pages/nbs-classic/provider.page';
 
 Then('Navigate to classic provider add page', () => {
     classicProviderPage.navigateToAddProvider();
 });
 
-Then('Navigate to classic provider edit page', () => {
-    classicProviderPage.navigateToEditProvider();
+When('Enter last name {string}', (text) => {
+    classicProviderPage.enterLastName(text);
+});
+
+When('Enter first name {string}', (text) => {
+    classicProviderPage.enterFirstName(text);
+});
+
+When('Navigate to classic provider search page', () => {
+    classicProviderPage.navigateToClassicProviderSearchPane();
 });
 
 Then('Click on Add button on provider add page', () => {
@@ -15,6 +23,10 @@ Then('Click on Add button on provider add page', () => {
 
 Then('Enter quick code for new provider', () => {
     classicProviderPage.enterQuickCode();
+});
+
+Then('provider {string}, {string} should appear in search results', (lastName, firstName) => {
+    classicProviderPage.verifyProviderNameInSearchResults(lastName, firstName);
 });
 
 Then('Click Submit button on provider add page', () => {

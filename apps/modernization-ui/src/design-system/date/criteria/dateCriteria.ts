@@ -5,8 +5,8 @@ type DateEqualsCriteria = {
 };
 
 type DateRange = {
-    from: string | null;
-    to: string | null;
+    from?: string;
+    to?: string;
 };
 
 type DateBetweenCriteria = {
@@ -34,14 +34,8 @@ const resolveDate = (criteria?: DateCriteria) => {
     }
 };
 
-const initialDateEqualsCriteria: DateEqualsCriteria = {
-    equals: {
-        day: null,
-        month: null,
-        year: null,
-    },
-};
-const initialDateBetweenCriteria: DateBetweenCriteria = { between: { from: null, to: null } };
+const initialDateEqualsCriteria: DateEqualsCriteria = { equals: {} };
+const initialDateBetweenCriteria: DateBetweenCriteria = { between: {} };
 
 export { isDateEqualsCriteria, isDateBetweenCriteria, resolveDate };
 export { initialDateEqualsCriteria, initialDateBetweenCriteria };

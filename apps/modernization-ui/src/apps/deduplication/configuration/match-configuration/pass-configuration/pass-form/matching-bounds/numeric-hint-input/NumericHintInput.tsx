@@ -13,12 +13,11 @@ type Props = {
     label: string;
     error?: string;
     onBlur: () => void;
-    onChange: (v: number | null) => void;
+    onChange: () => void;
     min?: number;
     max?: number;
     step?: number;
-    // don't allow undefined to avoid control<=>uncontrolled switching
-    value: number | null;
+    value?: number;
     tooltip: ReactNode;
     disabled?: boolean;
     className?: string;
