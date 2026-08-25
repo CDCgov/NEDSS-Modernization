@@ -8,8 +8,6 @@ vi.mock('./clock', () => ({
     now: () => mockNow(),
 }));
 
-const BASE = { day: 1, month: 1, year: 2000 };
-
 describe('when validating a date entered in parts', () => {
     beforeEach(() => {
         mockNow.mockReturnValue(new Date('2020-01-25T00:00:00'));
@@ -17,13 +15,13 @@ describe('when validating a date entered in parts', () => {
 
     describe('with a month', () => {
         it('should allow a valid month', () => {
-            const actual = validateDateEntry('Date with valid month')({ ...BASE, month: 5 });
+            const actual = validateDateEntry('Date with valid month')({ month: 5 });
 
             expect(actual).toBe(true);
         });
 
         it('should not allow a month greater than 12', () => {
-            const actual = validateDateEntry('Date with an invalid month')({ ...BASE, month: 13 });
+            const actual = validateDateEntry('Date with an invalid month')({ month: 13 });
 
             expect(actual).toContain(
                 'The Date with an invalid month should have a month between 1 (January) and 12 (December).'
@@ -31,7 +29,7 @@ describe('when validating a date entered in parts', () => {
         });
 
         it('should not allow a month less than 1', () => {
-            const actual = validateDateEntry('Date with an invalid month')({ ...BASE, month: 0 });
+            const actual = validateDateEntry('Date with an invalid month')({ month: 0 });
 
             expect(actual).toContain(
                 'The Date with an invalid month should have a month between 1 (January) and 12 (December).'
@@ -48,7 +46,6 @@ describe('when validating a date entered in parts', () => {
             mockNow.mockReturnValue(new Date('2017-05-23T00:00:00'));
 
             const actual = validateDateEntry('Date in the future')({
-                ...BASE,
                 month: 6,
                 year: 2017,
             });
@@ -59,19 +56,19 @@ describe('when validating a date entered in parts', () => {
 
     describe('with a day', () => {
         it('should allow a valid day', () => {
-            const actual = validateDateEntry('Date with valid day')({ ...BASE, day: 5 });
+            const actual = validateDateEntry('Date with valid day')({ day: 5 });
 
             expect(actual).toBe(true);
         });
 
         it('should not allow a day less than 1', () => {
-            const actual = validateDateEntry('Date with an invalid day')({ ...BASE, day: 0 });
+            const actual = validateDateEntry('Date with an invalid day')({ day: 0 });
 
             expect(actual).toContain('The Date with an invalid day should be at least the first day of the month.');
         });
 
         it('should not allow a day greater than 31', () => {
-            const actual = validateDateEntry('Date with an invalid day')({ ...BASE, day: 32 });
+            const actual = validateDateEntry('Date with an invalid day')({ day: 32 });
 
             expect(actual).toContain('The Date with an invalid day should have at most 31 days.');
         });
@@ -79,13 +76,13 @@ describe('when validating a date entered in parts', () => {
 
     describe('with a year', () => {
         it('should allow a valid year', () => {
-            const actual = validateDateEntry('Date with valid year')({ ...BASE, year: 1955 });
+            const actual = validateDateEntry('Date with valid year')({ year: 1955 });
 
             expect(actual).toBe(true);
         });
 
         it('should not allow dates before the year 1875', () => {
-            const actual = validateDateEntry('Date with an invalid year')({ ...BASE, year: 1874 });
+            const actual = validateDateEntry('Date with an invalid year')({ year: 1874 });
 
             expect(actual).toContain('The Date with an invalid year should occur after 12/31/1874');
         });
@@ -97,7 +94,6 @@ describe('when validating a date entered in parts', () => {
             const tomorrow = add(today, { years: 1 });
 
             const actual = validateDateEntry('Date in the future')({
-                ...BASE,
                 year: tomorrow.getFullYear(),
             });
 

@@ -12,9 +12,6 @@ describe('MonthYearRangeField Component', () => {
                 onChange={vi.fn()}
                 startYear={2000}
                 endYear={2020}
-                value={{
-                    between: { to: null, from: null },
-                }}
             />
         );
 
@@ -55,9 +52,6 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
-                value={{
-                    between: { to: null, from: null },
-                }}
             />
         );
 
@@ -77,9 +71,6 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
-                value={{
-                    between: { to: null, from: null },
-                }}
             />
         );
 
@@ -101,7 +92,6 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         from: '01/2004',
-                        to: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -126,7 +116,6 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         from: '01/2004',
-                        to: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -149,9 +138,6 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
-                value={{
-                    between: { to: null, from: null },
-                }}
             />
         );
 
@@ -171,9 +157,6 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
-                value={{
-                    between: { to: null, from: null },
-                }}
             />
         );
 
@@ -195,7 +178,6 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         to: '01/2004',
-                        from: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -220,7 +202,6 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         to: '01/2004',
-                        from: null,
                     },
                 }}
                 onChange={mockOnChange}
