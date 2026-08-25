@@ -11,6 +11,8 @@ from .models import Table
 INVALID_OBJECT_REGEX = re.compile("Invalid object name ('.*').")
 INVALID_COLUMN_REGEX = re.compile("Invalid column name ('.*').")
 
+BATCH_SIZE = 5000
+
 
 class Transaction:
     """A database transaction abstraction for use in libraries."""
@@ -64,11 +66,16 @@ class Transaction:
         return None
 
     def _fetch_rows(self):
+        data = []
         row_limit = get_row_limit(self.is_export)
-        data = self._cursor.fetchmany(row_limit + 1)
+        while len(data) <= row_limit:
+            batch = self._cursor.fetchmany(BATCH_SIZE)
+            data.append(batch)
+            if len(batch) < BATCH_SIZE:
+                break
 
         # If there are any more rows to fetch beyond the limit, the result is too big
-        if len(data) == row_limit + 1:
+        if len(data) > row_limit:
             raise errors.ResultTooBigError(
                 self.is_export, row_limit, f'over {row_limit}'
             )
