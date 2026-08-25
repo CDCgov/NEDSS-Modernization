@@ -66,7 +66,7 @@ const ValueInput = (props: ValueEditorProps<ValueSetMetadata & FullField & FullO
         if (!isBetween && inputType !== 'text' && value.includes(',')) {
             handleOnChange('');
         }
-    }, [handleOnChange, operator, value, inputType]);
+    }, [handleOnChange, operator, value, inputType, isBetween]);
 
     const handleSingleOnChange = (newValue: unknown) => {
         props.handleOnChange(newValue?.toString() ?? '');
