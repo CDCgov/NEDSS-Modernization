@@ -91,7 +91,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
-                        value={value}
+                        value={value ?? null}
                         id={name}
                         name={name}
                         min="0"
@@ -111,7 +111,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal', sizi
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
-                        value={value}
+                        value={value ?? null}
                         id={name}
                         name={name}
                         min="0"
