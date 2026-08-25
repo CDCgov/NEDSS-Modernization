@@ -15,6 +15,9 @@ nbs:
               enabled: true
             edit:
               enabled: false
+      report:
+        execution:
+          enabled: true
 
 spring:
   graphql:

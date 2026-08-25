@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import { DragDropContext, Droppable, Draggable, DraggableProvided, DropResult } from '@hello-pangea/dnd';
-import { Checkbox } from 'design-system/checkbox';
-import { Icon } from 'design-system/icon';
+
+import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
+
 import { Button } from 'design-system/button';
+import { Checkbox } from 'design-system/checkbox';
 import { Sizing } from 'design-system/field';
+import { Icon } from 'design-system/icon';
 import { ClosablePanel } from 'design-system/panel/closable';
-import { ColumnPreference, isNamed, isLabeled, NamedColumnPreference } from './preference';
-import { useColumnPreferences } from './useColumnPreferences';
 
 import styles from './column-preference-panel.module.scss';
+import { ColumnPreference, isLabeled, isNamed, NamedColumnPreference } from './preference';
+import { useColumnPreferences } from './useColumnPreferences';
 
 const swap =
     <I,>(items: I[]) =>
@@ -78,10 +80,10 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
             onClose={close}
             footer={() => (
                 <div className={styles.footer}>
-                    <Button tertiary sizing={sizing} onClick={handleReset}>
+                    <Button tertiary={true} sizing={sizing} onClick={handleReset}>
                         Reset
                     </Button>
-                    <Button type="button" secondary sizing={sizing} onClick={handleSave}>
+                    <Button type="button" secondary={true} sizing={sizing} onClick={handleSave}>
                         Save columns
                     </Button>
                 </div>
@@ -96,7 +98,7 @@ const ColumnPreferencesPanel = ({ close, sizing = 'small' }: Props) => {
                                     key={preference.id}
                                     draggableId={preference.id}
                                     index={index}
-                                    disableInteractiveElementBlocking
+                                    disableInteractiveElementBlocking={true}
                                     isDragDisabled={
                                         isLabeled(preference) || (isNamed(preference) && !preference.moveable)
                                     }

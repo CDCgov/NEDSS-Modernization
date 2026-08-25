@@ -1,3 +1,4 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -5,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA10 STD Program Report: Interviews - Pregnant/Recent Birth Report.
@@ -14,6 +14,7 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "14" instead of the count of the columns
     """
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT
@@ -38,12 +39,12 @@ def execute(
         SUBSTRING(shd.PATIENT_LOCAL_ID, 4, 8) - 10000000 AS [patient_id],
         TRY_CAST(
             LEFT(
-                TRIM(PATIENT_AGE_REPORTED), 
+                TRIM(PATIENT_AGE_REPORTED),
                 CHARINDEX(' ', TRIM(PATIENT_AGE_REPORTED) + ' ')) AS INT
         ) AS [age]
     FROM
-        shd 
-            INNER JOIN RDB.DBO.INVESTIGATION inv
+        shd
+            INNER JOIN {nbs_rdb}.DBO.INVESTIGATION inv
                        ON shd.INVESTIGATION_KEY = inv.INVESTIGATION_KEY
     WHERE shd.DIAGNOSIS_CD IS NOT NULL
       AND shd.INVESTIGATOR_INTERVIEW_KEY IS NOT NULL
@@ -61,4 +62,4 @@ def execute(
 
     content = trx.query(sql_query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react';
-import { PagesSection, PagesResponse } from 'apps/page-builder/generated';
-import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { render } from '@testing-library/react';
+
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse, PagesSection } from 'apps/page-builder/generated';
+
 import { ManageSectionTile } from './ManageSectionTile';
 
 describe('when ManageSectionTile renders', () => {
@@ -86,14 +88,14 @@ describe('when ManageSectionTile renders', () => {
                                 <ManageSectionTile
                                     section={section}
                                     index={1}
-                                    setSelectedForDelete={vi.fn}
+                                    setSelectedForDelete={vi.fn()}
                                     selectedForDelete={undefined}
-                                    handleDelete={vi.fn}
-                                    setOnAction={vi.fn}
+                                    handleDelete={vi.fn()}
+                                    setOnAction={vi.fn()}
                                     onAction={false}
-                                    setSectionState={vi.fn}
-                                    setSelectedForEdit={vi.fn}
-                                    onChangeVisibility={vi.fn}
+                                    setSectionState={vi.fn()}
+                                    setSelectedForEdit={vi.fn()}
+                                    onChangeVisibility={vi.fn()}
                                 />
                             </div>
                         )}

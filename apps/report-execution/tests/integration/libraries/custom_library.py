@@ -13,10 +13,8 @@ class TestCustomLibrary:
         report_spec = {
             'is_export': True,
             'is_builtin': False,
-            'report_title': 'Test Report',
             'library_name': 'custom_library',
             # Filter code is used here as it is a stable, small table
-            'data_source_name': '[NBS_ODSE].[dbo].[Filter_code]',
             'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
         }
 
@@ -30,5 +28,10 @@ class TestCustomLibrary:
         response = connection.getresponse()
         assert response.status == 200
 
-        result = json.loads(response.read())
-        assert result['description'] == 'Custom pass through query'
+        assert (
+            response.headers['X-Report-Description']
+            == 'Custom pass through query%n%n        It is many lines _with_ *markdown*'
+        )
+        assert response.headers['X-Report-Context-Header'] == 'custom header'
+        body = response.read()
+        assert len(body) > 10

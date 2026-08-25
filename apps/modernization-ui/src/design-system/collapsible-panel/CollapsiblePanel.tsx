@@ -1,8 +1,10 @@
 import { ReactNode, useState } from 'react';
+
 import classNames from 'classnames';
 
-import styles from './collapsible-panel.module.scss';
 import { Icon } from 'design-system/icon';
+
+import styles from './collapsible-panel.module.scss';
 
 type Props = {
     id?: string;

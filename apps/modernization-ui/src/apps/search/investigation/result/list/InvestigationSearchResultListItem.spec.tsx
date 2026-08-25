@@ -1,6 +1,8 @@
-import { Investigation } from 'generated/graphql/schema';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+
+import { Investigation } from 'generated/graphql/schema';
+
 import { InvestigationSearchResultListItem } from './InvestigationSearchResultListItem';
 
 describe('when showing an investigation search results', () => {
@@ -257,7 +259,7 @@ describe('when showing an investigation search results', () => {
         expect(getByText('Notification')).toBeInTheDocument();
         expect(getByText('notification-status-display')).toBeInTheDocument();
 
-        expect(notificationStatusResolver).toBeCalledWith('notification-status');
+        expect(notificationStatusResolver).toHaveBeenCalledWith('notification-status');
     });
 
     it('should display the provided notification status unknown value is given', () => {

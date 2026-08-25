@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,8 +26,8 @@ class SessionAuthenticatorTest {
   @Test
   void should_authentication() {
     // Given a valid request and response
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
 
     // And an authorized session
     when(sessionResolver.resolve(request)).thenReturn(new SessionAuthorization.Authorized("user"));
@@ -43,11 +42,11 @@ class SessionAuthenticatorTest {
   @Test
   void should_not_authentication() {
     // Given a valid request and response
-    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
 
     // And an unauthorized session
-    Unauthorized unauthorized = Mockito.mock(Unauthorized.class);
+    Unauthorized unauthorized = mock(Unauthorized.class);
 
     when(sessionResolver.resolve(request)).thenReturn(unauthorized);
 

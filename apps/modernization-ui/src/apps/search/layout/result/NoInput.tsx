@@ -1,5 +1,6 @@
-import styles from './no-input.module.scss';
 import { AlertMessage } from 'design-system/message';
+
+import styles from './no-input.module.scss';
 
 const NoInput = () => {
     return (

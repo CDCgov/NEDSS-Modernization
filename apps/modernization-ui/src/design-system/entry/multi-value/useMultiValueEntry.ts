@@ -15,9 +15,7 @@ type Selected<V> = { selected: Entry<V> };
 type Waiting<V> = { status: 'adding' } & Data<V>;
 
 type State<V> =
-    | Waiting<V>
-    | ({ status: 'viewing' } & Selected<V> & Data<V>)
-    | ({ status: 'editing' } & Selected<V> & Data<V>);
+    Waiting<V> | ({ status: 'viewing' } & Selected<V> & Data<V>) | ({ status: 'editing' } & Selected<V> & Data<V>);
 
 type Action<V> =
     | { type: 'initialize'; values: V[] }
@@ -72,7 +70,7 @@ const reducer =
             case 'view': {
                 // select an item for viewing
 
-                if (current.status == 'viewing' && current.selected.id === action.identifier) {
+                if (current.status === 'viewing' && current.selected.id === action.identifier) {
                     // already viewing the selected item, this is a reset
                     return { ...current, status: 'adding' };
                 } else if (action.identifier in current.lookup) {

@@ -1,11 +1,13 @@
-import { Mock } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SearchTerms } from './SearchTerms';
+import { Mock } from 'vitest';
+
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { useSearchInteraction } from 'apps/search';
-import { focusedTarget } from 'utils/focusedTarget';
 import { Term } from 'apps/search/terms';
+import { focusedTarget } from 'utils/focusedTarget';
+
+import { SearchTerms } from './SearchTerms';
 
 const mockSkipTo = vi.fn();
 const mockRemove = vi.fn();

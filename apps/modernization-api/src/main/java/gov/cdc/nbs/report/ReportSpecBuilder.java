@@ -12,9 +12,11 @@ import lombok.Getter;
  * Execution service for subsequent report generation. It assembles report metadata, includes
  * togglable report parameters and (arguably most importantly) compiles a SQL statement to be
  * invoked during report execution, accounting for all supplied parameters as well as relevant
- * permissions for the individual invoking said report.
+ * permissions for the individual invoking that report.
  */
 public class ReportSpecBuilder {
+  private static final System.Logger LOGGER = System.getLogger(ReportSpecBuilder.class.getName());
+
   @Getter private final ReportExecutionRequest reportExecRequest;
   @Getter private final ReportConfiguration reportConfig;
   private final DataSourceNameUtils dataSourceNameUtils;
@@ -40,6 +42,21 @@ public class ReportSpecBuilder {
         + columns.stream()
             .map(column -> "[" + column.name() + "] AS [" + column.title() + "]")
             .collect(Collectors.joining(", "));
+  }
+
+  private String buildOrderByCriteria(SortSpec sortBy) {
+    if (sortBy == null) {
+      return "";
+    }
+
+    ReportColumn sortColumn = findMatchingColumn(sortBy.columnUid());
+
+    String targetColumn =
+        "STRING".equals(sortColumn.sourceTypeCode())
+            ? String.format("UPPER([%s])", sortColumn.title())
+            : String.format("[%s]", sortColumn.title());
+
+    return String.format("%s %s", targetColumn, sortBy.direction().name());
   }
 
   private ReportColumn findMatchingColumn(Long columnUid) {
@@ -72,7 +89,6 @@ public class ReportSpecBuilder {
 
     boolean isExport = reportExecRequest.isExport();
     boolean isBuiltin = reportLibrary.isBuiltin();
-    String reportTitle = reportConfig.title();
     String libraryName = reportConfig.library().name();
     String dataSourceName =
         dataSourceNameUtils.buildDataSourceName(reportConfig.dataSource().name());
@@ -81,30 +97,38 @@ public class ReportSpecBuilder {
     if (columns != null) {
       columnMap = columns.stream().map(c -> List.of(c.name(), c.title())).toList();
     }
+    SortSpec sortBy = reportExecRequest.sort();
+    validateSortColumns(reportExecRequest.columnUids(), sortBy);
+    String orderbyCriteria = buildOrderByCriteria(sortBy);
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
-    String whereClause =
-        whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
-    String orderByClause = "";
+    String logicFragment =
+        whereClauseService.buildLogicFragment(reportConfig, reportExecRequest, dataSourceNameUtils);
+    String whereClause = whereClauseService.buildWhereClause(reportConfig, logicFragment);
+
+    // filter out empty spaces prior to string joining to prevent extra spaces between clauses
+    String subsetQuery =
+        java.util.stream.Stream.of(selectClause, fromClause, whereClause)
+            .filter(clause -> clause != null && !clause.isBlank())
+            .collect(Collectors.joining(" "))
+            .trim();
+
+    LOGGER.log(System.Logger.Level.DEBUG, "Subset Query: %s", subsetQuery);
 
     Integer daysValue = extractDaysValue();
-
-    String subsetQuery =
-        String.join(" ", selectClause, fromClause, whereClause, orderByClause).trim();
-
     String libraryParams = reportConfig.library().libraryParams();
 
     return new ReportSpec(
         isExport,
         isBuiltin,
-        reportTitle,
         libraryName,
-        dataSourceName,
         subsetQuery,
         columnMap,
+        orderbyCriteria,
         daysValue,
-        libraryParams);
+        libraryParams,
+        logicFragment);
   }
 
   private Integer extractDaysValue() {
@@ -154,6 +178,18 @@ public class ReportSpecBuilder {
       throw new IllegalArgumentException(
           String.format(
               "The '%s' filter value must be a valid integer: %s", description, rawDaysValue));
+    }
+  }
+
+  private void validateSortColumns(List<Long> requestedColumnUids, SortSpec sortSpec) {
+
+    if (sortSpec == null) {
+      return;
+    }
+
+    if (requestedColumnUids == null || !requestedColumnUids.contains(sortSpec.columnUid())) {
+      throw new IllegalArgumentException(
+          "Selected sort column is not present in requested column list.");
     }
   }
 }

@@ -1,5 +1,7 @@
 import { act } from 'react';
+
 import { renderHook } from '@testing-library/react';
+
 import { useNumeric } from './useNumeric';
 
 describe('useNumeric', () => {

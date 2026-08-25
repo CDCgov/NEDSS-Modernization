@@ -1,13 +1,19 @@
+import { ReactNode, useEffect, useId, useRef, useState } from 'react';
+
 import { Button, Icon, Modal, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { PagesTab, Tab } from 'apps/page-builder/generated';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
 import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import './ManageTabModal.scss';
-import { ManageTabsHeader } from './header/ManageTabsHeader';
+
 import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
+
+import { ManageTabsHeader } from './header/ManageTabsHeader';
 import styles from './manageTabs.module.scss';
 
 type Props = {
@@ -21,6 +27,8 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const [message, setMessage] = useState<AlertMessage | undefined>(undefined);
     const [addEdit, setAddEdit] = useState(false);
     const [selectedForEdit, setSelectedForEdit] = useState<PagesTab | undefined>(undefined);
+    const headerId = useId();
+    const contentId = useId();
 
     const form = useForm<Tab>({
         mode: 'onBlur',
@@ -50,9 +58,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
 
     const handleAdd = form.handleSubmit((data) => {
         addTab(pageId, { name: data.name!, visible: data.visible ?? true })
-            .catch((e) => {
-                console.error(e);
-            })
+            .catch(logErrorToUserConsole)
             .then(() => {
                 setMessage({
                     type: 'success',
@@ -73,9 +79,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
     const handleSave = form.handleSubmit((data) => {
         if (selectedForEdit) {
             updateTab(pageId, { name: data.name ?? '', visible: data.visible ?? true }, selectedForEdit.id)
-                .catch((e) => {
-                    console.error(e);
-                })
+                .catch(logErrorToUserConsole)
                 .then(() => {
                     setMessage({
                         type: 'success',
@@ -134,18 +138,26 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
         <FormProvider {...form}>
             <ModalToggleButton
                 className={styles.manageButton}
-                unstyled
+                unstyled={true}
                 type="button"
                 modalRef={modalRef}
                 data-testid="openManageTabs"
             >
-                <Icon.Edit />
+                <Icon.Edit aria-label="edit" />
                 <h2>Manage tabs</h2>
             </ModalToggleButton>
-            <Modal id={'manage-tab-modal'} ref={modalRef} className={'manage-tab-modal'} isLarge forceAction>
+            <Modal
+                id="manage-tab-modal"
+                ref={modalRef}
+                className="manage-tab-modal"
+                isLarge={true}
+                forceAction={true}
+                aria-labelledby={headerId}
+                aria-describedby={contentId}
+            >
                 <div className={styles.manageTabModal}>
-                    <ManageTabsHeader showAddTab={!addEdit} onAddNew={addNew} />
-                    <div className={styles.modalBody}>
+                    <ManageTabsHeader id={headerId} showAddTab={!addEdit} onAddNew={addNew} />
+                    <div id={contentId} className={styles.modalBody}>
                         {message && (
                             <AlertBanner
                                 type={message.type}
@@ -174,13 +186,18 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                     </div>
                     <div className={styles.buttonBar}>
                         {!addEdit ? (
-                            <ModalToggleButton modalRef={modalRef} onClick={() => resetEditPageTabs()} closer outline>
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                onClick={() => resetEditPageTabs()}
+                                closer={true}
+                                outline={true}
+                            >
                                 Close
                             </ModalToggleButton>
                         ) : null}
                         {addEdit && !selectedForEdit ? (
                             <>
-                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
+                                <Button type="button" outline={true} onClick={() => resetEditPageTabs()}>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleAdd} type="button" disabled={!form.formState.isValid}>
@@ -190,7 +207,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                         ) : null}
                         {addEdit && selectedForEdit ? (
                             <>
-                                <Button type="button" outline onClick={() => resetEditPageTabs()}>
+                                <Button type="button" outline={true} onClick={() => resetEditPageTabs()}>
                                     Cancel
                                 </Button>
                                 <Button type="button" onClick={handleSave}>

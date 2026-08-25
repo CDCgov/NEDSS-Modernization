@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import styles from './SourceQuestion.module.scss';
-import { PagesQuestion, PagesSection, PagesSubSection, PagesTab, Rule } from 'apps/page-builder/generated';
-import { Icon } from 'components/Icon/Icon';
+
 import { Button, Radio, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
+
+import { PagesQuestion, PagesSection, PagesSubSection, PagesTab, Rule } from 'apps/page-builder/generated';
 import { useGetSourceQuestion } from 'apps/page-builder/hooks/api/useGetSourceQuestions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Icon } from 'components/Icon/Icon';
+
+import styles from './SourceQuestion.module.scss';
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;
@@ -41,7 +44,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
 
     useEffect(() => {
         if (ruleFunction && page) {
-            fetch(page.id, { ruleFunction: ruleFunction });
+            fetch(page.id, { ruleFunction });
         }
     }, [ruleFunction, page]);
 
@@ -80,7 +83,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                             <Tag className={styles.selectedQuestion}>
                                 {questionSelect.name} ({questionSelect.question})
                                 <div className={styles.closeBtn}>
-                                    <UswIcon.Close onClick={() => handleRemove()} size={3} />
+                                    <UswIcon.Close aria-label="close" onClick={() => handleRemove()} size={3} />
                                 </div>
                             </Tag>
                         </div>
@@ -107,7 +110,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                 setSourceList([]);
                                             }}
                                         >
-                                            <Icon name={'group'} size={'m'} />
+                                            <Icon name="group" size="m" alt="group" />
                                             <span className={activeSection === section.id ? styles.active : ''}>
                                                 {section.name}
                                             </span>
@@ -130,7 +133,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                         }
                                                     }}
                                                 >
-                                                    <Icon name={'group'} size={'m'} />
+                                                    <Icon name="group" size="m" alt="group" />
                                                     <span
                                                         className={
                                                             activeSubsection === subsection.id ? styles.active : ''
@@ -164,7 +167,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
             <div className={styles.footerBtn}>
                 <Button
                     type="button"
-                    outline
+                    outline={true}
                     data-testid="sourceQuestionModalCancelBtn"
                     onClick={() => {
                         onReset();

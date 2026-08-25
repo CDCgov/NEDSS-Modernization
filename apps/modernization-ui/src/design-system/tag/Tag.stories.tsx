@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Tag, TagProps } from './Tag';
-import React from 'react';
+
 import { DataTable } from 'design-system/table';
+
+import { Tag, TagProps } from './Tag';
 
 const meta = {
     title: 'Design System/Tag',
@@ -122,7 +123,7 @@ export const TagInTableColumn: Story = {
     render: () => {
         return (
             <div style={{ padding: '1rem' }}>
-                <DataTable<Data> id={'tag-table'} columns={columns} data={data} />
+                <DataTable<Data> id="tag-table" columns={columns} data={data} />
             </div>
         );
     },

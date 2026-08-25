@@ -1,36 +1,39 @@
+import { ReactNode, useId, useRef, useState } from 'react';
+
 import { ModalRef } from '@trussworks/react-uswds';
+import { ReactComponentLike } from 'prop-types';
+import { Controller, useFormState, useWatch } from 'react-hook-form';
+
 import { Shown } from 'conditional-render';
 import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { NoData } from 'design-system/data';
+import {
+    DirtySectionErrorMessage,
+    ValidationErrorBanner,
+    ValidationErrorSection,
+} from 'design-system/errors/ValidationError';
 import { ValueField } from 'design-system/field';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text';
+import { RadioGroup } from 'design-system/radio';
 import { SingleSelect } from 'design-system/select';
 import { AdminReportRequest, ReportConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { useReportDataSources, useReportLibraries, useReportSections } from 'options/report';
 import { useUserOptions } from 'options/users';
-import { ReactComponentLike } from 'prop-types';
-import { ReactNode, useId, useRef, useState } from 'react';
-import { Controller, useWatch } from 'react-hook-form';
 import { validateRequiredRule } from 'validation/entry';
-import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
-import { addLabelToName, EnumSelectable } from './utils';
-import { SIZING } from './constants';
 
-const GROUP_OPTIONS: EnumSelectable<ReportConfiguration.group>[] = [
-    { value: ReportConfiguration.group.PUBLIC, name: 'Public' },
-    { value: ReportConfiguration.group.PRIVATE, name: 'Private' },
-    { value: ReportConfiguration.group.TEMPLATE, name: 'Template' },
-    { value: ReportConfiguration.group.REPORTING_FACILITY, name: 'Reporting Facility' },
-];
+import { GROUP_OPTIONS, SIZING } from '../../constants.ts';
+import { addLabelToName, EnumSelectable } from '../../utils';
+
+import { FilterConfig, FilterRepeatingBlock } from './FilterRepeatingBlock';
 
 export type ConfigForm = {
     dataSourceId: Selectable;
     reportTitle: string;
-    description?: string;
+    description: string;
     ownerId: Selectable;
     group: EnumSelectable<ReportConfiguration.group>;
     sectionCode: Selectable;
@@ -48,7 +51,7 @@ const formToRequest = (data: ConfigForm): AdminReportRequest => {
         sectionCode: data.sectionCode.value,
         filterRequests: data.filterRequests.map((fc) => ({
             id: fc.id,
-            filterCodeUid: parseInt(fc.filter.value),
+            filterCodeUid: parseInt(fc.filter!.value),
             selectType: fc.selectType?.value,
             columnUid: fc.associatedColumn?.value ? parseInt(fc.associatedColumn.value) : undefined,
             isRequired: fc.isRequired,
@@ -60,10 +63,16 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
     const [dataSource, setDataSource] = useState<string | Selectable | undefined>(config?.dataSource.id.toString());
     const dataSourceSelected = !!dataSource;
 
+    const userOptions = useUserOptions();
+    const libOptions = useReportLibraries();
+
     return (
         <>
             {isEditable ? (
-                <DataSourceEditCard config={config} setDataSource={setDataSource} />
+                <>
+                    <ValidationErrors />
+                    <DataSourceEditCard config={config} setDataSource={setDataSource} />
+                </>
             ) : (
                 <DataSourceCard isEditable={false} defaultValue={config!.dataSource.id.toString()} disabled={false} />
             )}
@@ -84,7 +93,6 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     EditComponent={TextAreaField}
                     label="Description"
                     defaultValue={config?.description}
-                    required={false}
                     maxLength={300}
                 />
                 <Row
@@ -94,14 +102,18 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     EditComponent={SingleSelect}
                     label="Owner"
                     defaultValue={config?.ownerUid.toString()}
-                    getOptions={() => [{ value: '0', name: 'System' }, ...useUserOptions()]}
+                    getOptions={() => {
+                        if (userOptions.length === 0) return userOptions;
+                        // add system option once loaded (to avoid options appearing loaded when not)
+                        return [{ value: '0', name: 'System' }, ...userOptions];
+                    }}
                     helperText="The user who can edit and delete this report."
                 />
                 <Row
                     isEditable={isEditable}
                     disabled={!dataSourceSelected}
                     fieldName="group"
-                    EditComponent={SingleSelect}
+                    EditComponent={RadioGroup}
                     label="Group"
                     defaultValue={config?.group}
                     getOptions={() => GROUP_OPTIONS}
@@ -126,18 +138,49 @@ const ReportConfigurationContent = ({ config, isEditable }: { config?: ReportCon
                     defaultValue={config?.library.id.toString()}
                     getOptions={() => {
                         // move nbs custom to the top of the list
-                        const libs = useReportLibraries();
-                        const nbsCustom = libs.find(({ name }) => name === 'nbs_custom');
-                        const options = libs.filter(({ name }) => name !== 'nbs_custom');
+                        const nbsCustom = libOptions.find(({ name }) => name === 'nbs_custom');
+                        const options = libOptions.filter(({ name }) => name !== 'nbs_custom');
                         if (!nbsCustom) return options;
                         return [nbsCustom, ...options];
                     }}
-                    helperText="The query logic for the report"
+                    helperText="The query logic for the report."
                 />
             </Card>
             <FilterRepeatingBlock config={config} isEditable={isEditable} dataSource={dataSource} />
         </>
     );
+};
+
+const ValidationErrors = () => {
+    const { errors } = useFormState<ConfigForm>();
+    const hasFormErrs = !!Object.keys(errors).length;
+    const metadataErrs = Object.entries(errors).filter(([k, _e]) => k !== 'dataSourceId' && k !== 'filterRequests');
+
+    if (hasFormErrs) {
+        return (
+            <ValidationErrorBanner level={2}>
+                <>
+                    {errors.dataSourceId?.message && (
+                        <ValidationErrorSection id="report-source" title="Report source">
+                            <li>{errors.dataSourceId.message}</li>
+                        </ValidationErrorSection>
+                    )}
+                    {!!metadataErrs.length && (
+                        <ValidationErrorSection id="metadata" title="Report configuration">
+                            {metadataErrs.map(([k, { message }]) => !!message && <li key={`error-${k}`}>{message}</li>)}
+                        </ValidationErrorSection>
+                    )}
+                    {errors.filterRequests?.type && (
+                        <ValidationErrorSection id="filter-config" title="Available filters">
+                            <li>
+                                <DirtySectionErrorMessage title="Available filters" />
+                            </li>
+                        </ValidationErrorSection>
+                    )}
+                </>
+            </ValidationErrorBanner>
+        );
+    }
 };
 
 const DataSourceEditCard = ({
@@ -186,9 +229,6 @@ const DataSourceEditCard = ({
                 onConfirm={() => {
                     setDataSourceSelected(true);
                     setDataSource(dataSource);
-                    confirmDataSourceRef.current?.toggleModal();
-                }}
-                onCancel={() => {
                     confirmDataSourceRef.current?.toggleModal();
                 }}
             />
@@ -254,11 +294,14 @@ const Row = ({
 
     const option = options ? options.find(({ value }) => value === defaultValue) : defaultValue;
 
-    return isEditable ? (
+    const optionsReady = defaultValue && !!getOptions ? options!.length > 0 : true;
+
+    // if there is a default value and a get options, wait for options to load before registering the field
+    return isEditable && optionsReady ? (
         <Controller
             name={fieldName}
-            rules={required ? validateRequiredRule(label) : undefined}
-            defaultValue={defaultValue}
+            rules={required && !disabled ? validateRequiredRule(label) : undefined}
+            defaultValue={option}
             // ignoring the ref as it does not pass down well and isn't critical
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { ref, ...fieldValues }, fieldState: { error } }) => (
@@ -278,7 +321,7 @@ const Row = ({
             )}
         />
     ) : (
-        <ValueField label={label} helperText={helperText}>
+        <ValueField label={label} helperText={helperText} sizing={SIZING}>
             <Option option={option} />
         </ValueField>
     );

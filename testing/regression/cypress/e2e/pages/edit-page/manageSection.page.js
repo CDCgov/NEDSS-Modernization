@@ -1,15 +1,14 @@
 class ManageSectionPage {
-
-    navigateEditPage () {
-        this.navigateToPreviewPageWithStatusInitialDraft()
-        cy.get("body").then($body => {
-            if ($body.find("#create-new-draft-button").length > 0) {
-                cy.get("create-new-draft-button").then($button => {
-                    if ($button.is(':visible')){
-                        $button.click()
+    navigateEditPage() {
+        this.navigateToPreviewPageWithStatusInitialDraft();
+        cy.get('body').then(($body) => {
+            if ($body.find('#create-new-draft-button').length > 0) {
+                cy.get('create-new-draft-button').then(($button) => {
+                    if ($button.is(':visible')) {
+                        $button.click();
                         cy.get('.editDraftBtn').eq(0).click();
                     }
-                })
+                });
             } else {
                 cy.get('.editDraftBtn').eq(0).click();
             }
@@ -20,17 +19,17 @@ class ManageSectionPage {
         cy.get('.manageSections').eq(0).click();
     }
 
-    seeElementOnManageSection(content, type, description) {
-        if (type === "title" || type === "heading" || type === "button") {
+    seeElementOnManageSection(content, type) {
+        if (type === 'title' || type === 'heading' || type === 'button') {
             cy.contains(content);
-        } else if (type === "icon") {
-            if (content === "Six dots") {
+        } else if (type === 'icon') {
+            if (content === 'Six dots') {
                 cy.get('img[src="/icons/drag.svg"]');
-            } else if (content === "Pencil") {
+            } else if (content === 'Pencil') {
                 cy.get('[data-testId="editIcon"]');
-            } else if (content === "Trash can") {
+            } else if (content === 'Trash can') {
                 cy.get('[data-testId="deleteIcon"]');
-            } else if (content === "Cross-eye") {
+            } else if (content === 'Cross-eye') {
                 cy.get('[data-testId="visibilityIcon"]');
             }
         }
@@ -47,7 +46,7 @@ class ManageSectionPage {
     viewDeleteConfirmationDialogText(texts) {
         texts.forEach((text) => {
             cy.contains('Section cannot be deleted').then((ele) => {
-                if(ele.length < 1) {
+                if (ele.length < 1) {
                     cy.contains(text);
                 }
             });
@@ -56,8 +55,8 @@ class ManageSectionPage {
 
     clickYesDeleteBtn() {
         cy.contains('Section cannot be deleted').then((ele) => {
-            if(ele.length < 1) {
-                cy.get('.yesDelete').eq(0).click()
+            if (ele.length < 1) {
+                cy.get('.yesDelete').eq(0).click();
             }
         });
     }
@@ -69,7 +68,7 @@ class ManageSectionPage {
 
     showDeleteConfirmationText(text) {
         cy.contains('Section cannot be deleted').then((ele) => {
-            if(ele.length < 1) {
+            if (ele.length < 1) {
                 cy.contains(text);
             }
         });
@@ -80,7 +79,7 @@ class ManageSectionPage {
     }
 
     verifyManageSectionsHeader(title) {
-        cy.contains(title)
+        cy.contains(title);
     }
 
     clickAddNewSection() {
@@ -88,7 +87,7 @@ class ManageSectionPage {
     }
 
     enterSectionName() {
-        cy.get('.sectionName').eq(0).type("test new section");
+        cy.get('.sectionName').eq(0).type('test new section');
     }
 
     clickAddSectionBtn() {
@@ -96,8 +95,8 @@ class ManageSectionPage {
     }
 
     checkAddedSectionExist() {
-        cy.wait(2000)
-        cy.contains("test new section");
+        cy.wait(2000);
+        cy.contains('test new section');
     }
 
     viewPencilIcon() {
@@ -109,12 +108,12 @@ class ManageSectionPage {
     }
 
     viewEditSectionModalWindow() {
-        cy.contains("Edit section");
+        cy.contains('Edit section');
     }
 
     modifySectionName() {
         const newSecName = Math.random().toString(36).substring(2, 12);
-        cy.get('.sectionName').eq(0).clear().type(`Modified text section name ${newSecName}`);
+        cy.enterInput('.sectionName', `Modified text section name ${newSecName}`);
     }
 
     clickSaveBtn() {
@@ -122,7 +121,7 @@ class ManageSectionPage {
     }
 
     closeEditSectionModal() {
-        cy.contains("Edit section").should('not.be.visible');
+        cy.contains('Edit section').should('not.be.visible');
     }
 
     checkConfirmationMessageShowing(text) {
@@ -132,16 +131,18 @@ class ManageSectionPage {
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-        cy.get('#range-toggle').select('100')
+        cy.get('#range-toggle').select('100');
         cy.wait(2000);
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Initial Draft") {
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr, index) => {
+                if ($tr.find('td').eq(3).text() === 'Initial Draft') {
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false;
+                }
+            });
     }
-
 }
 
-export const manageSectionPage = new ManageSectionPage()
+export const manageSectionPage = new ManageSectionPage();

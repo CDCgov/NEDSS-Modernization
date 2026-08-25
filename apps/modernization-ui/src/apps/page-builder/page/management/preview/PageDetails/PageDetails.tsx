@@ -1,4 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Form, Icon } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router';
+
+import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import {
     Concept,
     PageInformation,
@@ -6,15 +12,14 @@ import {
     PageInformationService,
 } from 'apps/page-builder/generated';
 import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
-import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router';
-import { useAlert } from 'libs/alert';
-import { LinkButton } from 'components/button';
-import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { useGetPageDetails } from 'apps/page-builder/page/management/useGetPageDetails';
+import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
+import { LinkButton } from 'components/button';
+import { useAlert } from 'libs/alert';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import './PageDetails.scss';
+
 import { PageDetailsField } from './PageDetailsField';
 
 export const PageDetails = () => {
@@ -38,7 +43,7 @@ export const PageDetails = () => {
                 setMmgs(data);
             })
             .catch((error) => {
-                console.log('Error', error);
+                logErrorToUserConsole('Error', error);
             });
     }, []);
     useEffect(() => {
@@ -110,7 +115,7 @@ export const PageDetails = () => {
                     </div>
                 </div>
                 <div className="page-details__buttons">
-                    <Button type="button" outline onClick={handleCancel}>
+                    <Button type="button" outline={true} onClick={handleCancel}>
                         {isEnabled ? 'Cancel' : 'Close'}
                     </Button>
                     {isEnabled && (

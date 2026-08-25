@@ -1,9 +1,11 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+
+import { BlockingCriteriaSidePanel } from './BlockingCriteriaSidePanel';
 
 const onAccept = vi.fn();
 const onCancel = vi.fn();
@@ -160,7 +162,7 @@ describe('BlockingCriteriaSidePanel', () => {
         expect(cancel).toHaveTextContent('Cancel');
         await user.click(cancel);
 
-        expect(onCancel).toBeCalledTimes(1);
+        expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger onAccept when Add attribute(s) is clicked', async () => {
@@ -175,6 +177,6 @@ describe('BlockingCriteriaSidePanel', () => {
 
         await user.click(add);
 
-        expect(onAccept).toBeCalledTimes(1);
+        expect(onAccept).toHaveBeenCalledTimes(1);
     });
 });

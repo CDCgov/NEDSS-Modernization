@@ -1,14 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
-import { EntryFieldsProps } from 'design-system/entry';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { Verification } from 'libs/verification';
-import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
-import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
+
 import { PhoneEmailEntry } from 'apps/patient/data';
-import { usePhoneCodedValues } from './usePhoneCodedValues';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { SingleSelect } from 'design-system/select';
+import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { Verification } from 'libs/verification';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { usePhoneCodedValues } from './usePhoneCodedValues';
 
 const AS_OF_DATE_LABEL = 'Phone & email as of';
 const TYPE_LABEL = 'Type';
@@ -37,7 +39,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         onBlur={onBlur}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -58,7 +60,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         name={`phone-${name}`}
                         options={coded.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -78,7 +80,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal', sizing = 'me
                         name={`phone-${name}`}
                         options={coded.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

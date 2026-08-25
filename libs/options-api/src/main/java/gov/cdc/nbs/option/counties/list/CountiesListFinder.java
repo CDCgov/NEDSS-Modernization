@@ -16,7 +16,8 @@ public class CountiesListFinder {
           code_desc_txt       as [name],
           indent_level_nbr    as [order]
       from [NBS_SRTE].[dbo].state_county_code_value
-      where parent_is_cd = ?
+      where status_cd = 'A'
+        and parent_is_cd = ?
       order by
           indent_level_nbr,
           code_desc_txt

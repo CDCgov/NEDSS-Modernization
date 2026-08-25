@@ -1,12 +1,13 @@
 package gov.cdc.nbs.datasource.utils;
 
-import java.util.Map;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DataSourceNameUtils {
   private static final String ERROR_MSG = "No data source found for %s";
-  private final DataSourceNameConfiguration config;
+  private final ConfigurationValueFinder config;
 
-  public DataSourceNameUtils(DataSourceNameConfiguration config) {
+  public DataSourceNameUtils(ConfigurationValueFinder config) {
     this.config = config;
   }
 
@@ -34,7 +35,7 @@ public class DataSourceNameUtils {
    *     name, or an alias does not exist in the application.yml, or it is not a valid DB name
    */
   private String buildDBName(String orgDataSourceName) {
-    Map<String, String> dataSourceNameMappings = config.getMappings();
+
     String modifiedDataSourceName = removeBrackets(orgDataSourceName);
 
     int dataSourceParts = modifiedDataSourceName.split("\\.").length;
@@ -45,24 +46,14 @@ public class DataSourceNameUtils {
     }
 
     String orgDBName = modifiedDataSourceName.substring(0, orgDBNameIndex);
-    String standardizedDBName = "";
-
-    // Check if it's an alias (key)
-    if (dataSourceNameMappings.containsKey(orgDBName)) {
-      standardizedDBName = dataSourceNameMappings.get(orgDBName);
-    }
-
-    // Check if it's already a valid standardized name (value)
-    if (dataSourceNameMappings.containsValue(orgDBName)) {
-      standardizedDBName = orgDBName;
-    }
+    String mappedDbName = config.getConfigValue("REPORT_DB_" + orgDBName);
 
     // check if DBName has an alias or is already a valid DB name
-    if (standardizedDBName.isEmpty()) {
+    if (mappedDbName.isEmpty()) {
       throw new IllegalArgumentException(String.format(ERROR_MSG, orgDataSourceName));
     }
 
-    return String.format("[%s]", standardizedDBName);
+    return String.format("[%s]", mappedDbName);
   }
 
   /**

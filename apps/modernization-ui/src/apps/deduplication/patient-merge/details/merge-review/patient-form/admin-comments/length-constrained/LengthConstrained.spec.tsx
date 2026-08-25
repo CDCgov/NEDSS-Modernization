@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { LengthConstrained } from './LengthConstrained';
 import userEvent from '@testing-library/user-event';
+
+import { LengthConstrained } from './LengthConstrained';
 
 const Fixture = ({ limit = 10 }) => {
     return <LengthConstrained content="This is my test text content that is 56 characters long." limit={limit} />;

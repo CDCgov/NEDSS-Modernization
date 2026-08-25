@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import { Modal } from './Modal';
+
 import { Message } from 'design-system/message';
+
+import { Modal } from './Modal';
 
 type Props = {
     title?: string;
@@ -16,7 +18,12 @@ const Success = ({ title = 'Success', children, onClose }: Props) => {
             title={title}
             onClose={onClose}
             footer={(close) => (
-                <button type="button" className="usa-button usa-button--outline" onClick={close} data-close-modal>
+                <button
+                    type="button"
+                    className="usa-button usa-button--outline"
+                    onClick={close}
+                    data-close-modal={true}
+                >
                     Go back
                 </button>
             )}

@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,8 @@ public class DataSourceCodeset {
   @Column(name = "data_source_codeset_uid", nullable = false)
   private Long id;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  /** Should be 1:1 in practice, but the DB does not enforce this. */
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "column_uid")
   private DataSourceColumn column;
 

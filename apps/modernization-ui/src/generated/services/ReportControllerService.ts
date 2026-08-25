@@ -6,7 +6,6 @@ import type { AdminReportRequest } from '../models/AdminReportRequest';
 import type { ReportConfiguration } from '../models/ReportConfiguration';
 import type { ReportExecutionRequest } from '../models/ReportExecutionRequest';
 import type { ReportId } from '../models/ReportId';
-import type { ReportResult } from '../models/ReportResult';
 import type { SaveAsReportRequest } from '../models/SaveAsReportRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -60,6 +59,26 @@ export class ReportControllerService {
      * @returns ReportId OK
      * @throws ApiError
      */
+    public static deleteReport({
+        reportUid,
+        dataSourceUid,
+    }: {
+        reportUid: number,
+        dataSourceUid: number,
+    }): CancelablePromise<ReportId> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/nbs/api/report/configuration/{reportUid}/{dataSourceUid}',
+            path: {
+                'reportUid': reportUid,
+                'dataSourceUid': dataSourceUid,
+            },
+        });
+    }
+    /**
+     * @returns ReportId OK
+     * @throws ApiError
+     */
     public static saveReport({
         reportUid,
         dataSourceUid,
@@ -81,14 +100,14 @@ export class ReportControllerService {
         });
     }
     /**
-     * @returns ReportResult OK
+     * @returns string Run a report given an execution request and return a CSV plus metadata.
      * @throws ApiError
      */
     public static runReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
-    }): CancelablePromise<ReportResult> {
+    }): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/report/run',
@@ -97,14 +116,14 @@ export class ReportControllerService {
         });
     }
     /**
-     * @returns ReportResult OK
+     * @returns string Export a report given an execution request and return a CSV plus metadata.
      * @throws ApiError
      */
     public static exportReport({
         requestBody,
     }: {
         requestBody: ReportExecutionRequest,
-    }): CancelablePromise<ReportResult> {
+    }): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/report/export',

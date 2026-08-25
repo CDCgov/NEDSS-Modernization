@@ -1,6 +1,6 @@
 import { EncryptionControllerService } from 'generated';
 
-const encrypt = (value: Record<string, any>) =>
+const encrypt = (value: Record<string, unknown>) =>
     EncryptionControllerService.encrypt({
         requestBody: value,
     });

@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
-import { PageSummary, PageSummaryService, Date, DateRange, MultiValue, SingleValue } from 'apps/page-builder/generated';
-import { Status as PageStatus, usePagination } from 'pagination';
-import { Filter, externalize } from 'filters';
+import { Date, DateRange, MultiValue, PageSummary, PageSummaryService, SingleValue } from 'apps/page-builder/generated';
+import { externalize, Filter } from 'filters';
 import { useSorting } from 'libs/sorting';
+import { Status as PageStatus, usePagination } from 'pagination';
 
 type Sorting = {
     property: string;
@@ -53,7 +53,7 @@ const usePageSummarySearch = () => {
     const { sorting } = useSorting();
 
     useEffect(() => {
-        if (page.status == PageStatus.Requested) {
+        if (page.status === PageStatus.Requested) {
             dispatch({ type: 'refresh' });
         }
     }, [page.status, dispatch]);
@@ -73,7 +73,7 @@ const usePageSummarySearch = () => {
     }, [state.status]);
 
     useEffect(() => {
-        if (state.status === 'new-search' && page.current == 1) {
+        if (state.status === 'new-search' && page.current === 1) {
             dispatch({ type: 'fetch', keyword: state.keyword, filters: state.filters });
         }
     }, [page.current]);

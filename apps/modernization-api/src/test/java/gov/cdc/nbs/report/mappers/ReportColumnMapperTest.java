@@ -7,6 +7,8 @@ import gov.cdc.nbs.entity.odse.DataSourceCodeset;
 import gov.cdc.nbs.entity.odse.DataSourceColumn;
 import gov.cdc.nbs.report.models.ReportColumn;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ReportColumnMapperTest {
@@ -26,9 +28,14 @@ class ReportColumnMapperTest {
             .displayable('Y')
             .filterable('N')
             .statusCd('A')
-            .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
-            .codeset(
-                DataSourceCodeset.builder().id(2L).codeDescCd("D").codesetNm("RACE_CODE").build())
+            .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
+            .codesets(
+                List.of(
+                    DataSourceCodeset.builder()
+                        .id(2L)
+                        .codeDescCd("D")
+                        .codesetNm("RACE_CODE")
+                        .build()))
             .build();
 
     ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);
@@ -43,8 +50,8 @@ class ReportColumnMapperTest {
     assertThat(mapped.isFilterable()).isFalse();
     assertThat(mapped.statusCd()).isEqualTo(dbColumn.getStatusCd());
     assertThat(mapped.statusTime()).isEqualTo(dbColumn.getStatusTime());
-    assertThat(mapped.codesetNm()).isEqualTo(dbColumn.getCodeset().getCodesetNm());
-    assertThat(mapped.codeDescCd()).isEqualTo(dbColumn.getCodeset().getCodeDescCd());
+    assertThat(mapped.codesetNm()).isEqualTo(dbColumn.getCodesets().getFirst().getCodesetNm());
+    assertThat(mapped.codeDescCd()).isEqualTo(dbColumn.getCodesets().getFirst().getCodeDescCd());
   }
 
   @Test
@@ -59,8 +66,9 @@ class ReportColumnMapperTest {
             .columnSourceTypeCode("VARCHAR")
             .dataSource(dataSource)
             .descTxt("Some description")
+            .codesets(List.of())
             .statusCd('A')
-            .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+            .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
             .build();
 
     ReportColumn mapped = ReportColumnMapper.fromDataSourceColumn(dbColumn);

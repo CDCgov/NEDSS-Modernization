@@ -1,4 +1,5 @@
 import { Navigate, RouteObject } from 'react-router';
+
 import { RedirectHome } from 'routes';
 
 const routing: RouteObject[] = [
@@ -10,7 +11,7 @@ const routing: RouteObject[] = [
         },
         errorElement: <RedirectHome />,
         children: [
-            { index: true, element: <Navigate to="summary" replace /> },
+            { index: true, element: <Navigate to="summary" replace={true} /> },
             {
                 path: 'summary',
                 lazy: {

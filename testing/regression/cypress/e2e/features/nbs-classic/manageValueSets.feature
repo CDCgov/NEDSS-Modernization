@@ -2,34 +2,42 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
 
   Background:
     Given I am logged in as secure user and stay on classic
-    Then Navigate to Value Set Library
+    And Navigate to Value Set Library
 
   Scenario: Add new Value Set LOCAL
-    And Click on Add new in Value Set Library
-    Then Fill the details to create new "LOCAL" Value Set
-    Then Click submit button to create Value Set
+    When Click on Add new in Value Set Library
+    And Fill the details to create new "LOCAL" Value Set
+    And Click submit button to create Value Set
+    Then I should see a green success message containing text "has been successfully added to the system"
 
   Scenario: Add new Value Set PHIN
-    And Click on Add new in Value Set Library
-    Then Fill the details to create new "PHIN" Value Set
-    Then Click submit button to create Value Set
+    When Click on Add new in Value Set Library
+    And Fill the details to create new "PHIN" Value Set
+    And Click submit button to create Value Set
+    Then I should see a green success message containing text "has been successfully added to the system"
 
   Scenario: Filter navigate result page
-    And Click filter button in Value Set library
-    Then Enter filter text in the input in Value Set library
+    When Click filter button in Value Set library
+    And Enter filter text "NBS" in the input in Value Set library
     And Click OK button to filter in Value Set library
+    Then Verify all value set names contain "NBS"
 
   Scenario: Collapse or Expand subsections
-    And Click on a Value set in Value Set library
-    Then Click Collapse Subsections to collapse the sections in Value Set library
+    When Click on a Value set in Value Set library
+    And Click Collapse Subsections to collapse the sections in Value Set library
+    Then the Value Set page should be collapsed
     And Click Expand Subsections to expand the sections in Value Set library
+    Then the Value Set page should be expanded
 
   Scenario: Add new concept in Value Set
-    And Click on a Value set in Value Set library
-    Then Click on Add new in Value Set Concept section
+    When Click on a Value set in Value Set library
+    And I store the Value Set count
+    And Click on Add new in Value Set Concept section
     And Fill the details to create new concept Value Set
-    Then Click submit button to create new concept in Value Set
+    And Click submit button to create new concept in Value Set
+    Then the Value Set count should increase by 1
 
   Scenario: Make inactive
-    And Click on a Value set in Value Set library
-    Then Click on Make Inactive button to inactive the value set
+    When I click on an active Value set in Value Set Library
+    And Click on Make Inactive button to inactive the value set
+    Then I should see a green success message containing text "has been made inactive"

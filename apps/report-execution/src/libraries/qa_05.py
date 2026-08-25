@@ -1,3 +1,4 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -5,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA Report 05: Number of Records Entered by User ID.
@@ -13,29 +13,33 @@ def execute(
     Conversion notes:
     * Matched "export format"
     """
+    # Dynamically look up the correct DB names
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+    nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
     content = trx.query(
         f"""
         WITH v_event_metric as ({subset_query}),
-        
+
         PROG_AREA as (
             SELECT DISTINCT PROG_AREA_CD
-            FROM nbs_srte.dbo.condition_code
-            WHERE 
+            FROM {nbs_srt}.dbo.condition_code
+            WHERE
                 condition_cd in ('10560', '900')
                 OR nnd_entity_identifier = 'STD_Case_Map_v1.0'
         ),
 
         INV as (
-            SELECT DISTINCT 
+            SELECT DISTINCT
                 count(*) as OOJ_REFF,
                 em.ADD_USER_ID
             FROM v_event_metric em
-            INNER JOIN rdb.dbo.STD_HIV_DATAMART hiv on em.LOCAL_ID = hiv.INV_LOCAL_ID
-            INNER JOIN rdb.dbo.F_STD_PAGE_CASE std 
+            INNER JOIN {nbs_rdb}.dbo.STD_HIV_DATAMART hiv
+                on em.LOCAL_ID = hiv.INV_LOCAL_ID
+            INNER JOIN {nbs_rdb}.dbo.F_STD_PAGE_CASE std
                 on hiv.INVESTIGATION_KEY = std.INVESTIGATION_KEY
-            INNER JOIN rdb.dbo.D_INV_ADMINISTRATIVE adm 
+            INNER JOIN {nbs_rdb}.dbo.D_INV_ADMINISTRATIVE adm
                 on std.D_INV_ADMINISTRATIVE_KEY = adm.D_INV_ADMINISTRATIVE_KEY
-            WHERE 
+            WHERE
                 em.EVENT_TYPE in ('PHCInvForm')
                 AND adm.ADM_REFERRAL_BASIS_OOJ IS NOT NULL
             GROUP BY em.ADD_USER_ID
@@ -75,11 +79,11 @@ def execute(
                 COALESCE(CONTACT.PART_CLUS, 0) as PART_CLUS
             FROM INV
             FULL JOIN LAB_MORB on INV.ADD_USER_ID = LAB_MORB.ADD_USER_ID
-            FULL JOIN CONTACT on INV.ADD_USER_ID = CONTACT.ADD_USER_ID 
+            FULL JOIN CONTACT on INV.ADD_USER_ID = CONTACT.ADD_USER_ID
                     or LAB_MORB.ADD_USER_ID = CONTACT.ADD_USER_ID
         )
 
-        SELECT 
+        SELECT
             -- SAS trim leaves a ' ' behind if otherwise empty
             TRIM(CONCAT(
                 COALESCE(TRIM(usr.PROVIDER_QUICK_CODE), ' '),
@@ -96,12 +100,12 @@ def execute(
             RESULT.REACTOR,
             RESULT.PART_CLUS
         FROM RESULT
-        LEFT JOIN rdb.dbo.USER_PROFILE usr on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
+        LEFT JOIN {nbs_rdb}.dbo.USER_PROFILE usr
+            on usr.NEDSS_ENTRY_ID = RESULT.ADD_USER_ID
         ORDER BY user_qc
         """
     )
 
     return ReportResult(
-        content_type='table',
         content=content,
     )

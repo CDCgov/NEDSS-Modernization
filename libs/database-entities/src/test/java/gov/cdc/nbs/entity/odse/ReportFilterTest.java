@@ -12,7 +12,7 @@ class ReportFilterTest {
   void should_throw_exception_with_null_values() {
     assertThatThrownBy(() -> new ReportFilter(null, null))
         .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("report is marked non-null but is null");
+        .hasMessageContaining("id is marked non-null but is null");
   }
 
   @Test

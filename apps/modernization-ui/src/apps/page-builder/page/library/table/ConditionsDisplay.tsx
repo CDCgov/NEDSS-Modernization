@@ -1,6 +1,8 @@
+import { useState } from 'react';
+
 import { ConditionSummary } from 'apps/page-builder/generated';
 import { NoData } from 'design-system/data';
-import { useState } from 'react';
+
 import styles from './page-library-table.module.scss';
 
 type Props = {
@@ -37,7 +39,9 @@ export const ConditionsDisplay = ({ conditions }: Props) => {
                     aria-label="view fewer conditions"
                     className={styles.expandButton}
                     onClick={() => setShowAll(false)}
-                >{`view less`}</button>
+                >
+                    view less
+                </button>
             )}
         </>
     );

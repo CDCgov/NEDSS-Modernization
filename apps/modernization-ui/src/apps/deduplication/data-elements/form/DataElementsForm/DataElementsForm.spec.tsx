@@ -1,8 +1,10 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { DataElementsForm } from './DataElementsForm';
-import { FormProvider, useForm } from 'react-hook-form';
-import { DataElements } from '../../../api/model/DataElement';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { DataElements } from '../../../api/model/DataElement';
+
+import { DataElementsForm } from './DataElementsForm';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
     const methods = useForm<DataElements>({ defaultValues: {} });

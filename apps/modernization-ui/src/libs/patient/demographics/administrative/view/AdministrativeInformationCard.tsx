@@ -1,8 +1,10 @@
 import classNames from 'classnames';
+
 import { internalizeDate } from 'date';
 import { Card, CardProps } from 'design-system/card';
-import { AdministrativeInformation } from '../administrative';
 import { defaultTo } from 'libs/supplying';
+
+import { AdministrativeInformation } from '../administrative';
 
 import styles from './administrative-information-card.module.scss';
 

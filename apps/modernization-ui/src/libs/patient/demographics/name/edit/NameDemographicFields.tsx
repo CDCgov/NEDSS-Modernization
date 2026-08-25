@@ -1,11 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { SingleSelect } from 'design-system/select';
-import { TextInputField } from 'design-system/input';
 import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
+import { SingleSelect } from 'design-system/select';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 
-import { NameDemographic, labels } from '../names';
+import { labels, NameDemographic } from '../names';
+
 import { NameOptions } from './useNameOptions';
 
 type NameDemographicFieldsProps = { options: NameOptions } & EntryFieldsProps;
@@ -33,7 +35,7 @@ const NameDemographicFields = ({
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -54,7 +56,7 @@ const NameDemographicFields = ({
                         name={name}
                         options={options.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

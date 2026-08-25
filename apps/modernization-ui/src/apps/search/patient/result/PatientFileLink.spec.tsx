@@ -1,7 +1,9 @@
-import { BrowserRouter } from 'react-router';
 import { render, screen } from '@testing-library/react';
-import { defaultConfiguration } from 'configuration/defaults';
+import { BrowserRouter } from 'react-router';
+
 import { Features } from 'configuration';
+import { defaultConfiguration } from 'configuration/defaults';
+
 import { PatientFileLink } from './PatientFileLink';
 
 let mockPermissions: string[] = [];
@@ -19,7 +21,7 @@ const withModernizedPatientFile = (enabled: boolean) => ({
     patient: {
         ...defaultConfiguration.features.patient,
         file: {
-            enabled: enabled,
+            enabled,
         },
     },
 });

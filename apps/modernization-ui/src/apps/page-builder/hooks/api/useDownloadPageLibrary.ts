@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from 'react';
+
 import { BusinessRuleSort } from './useFetchPageRules';
 
 type State =
@@ -57,8 +58,8 @@ export const useDownloadPageLibrary = () => {
                 pageId: page,
                 page: 0,
                 pageSize: 1000,
-                sort: sort,
-                query: query,
+                sort,
+                query,
             }),
         })
             .then((response) => response.blob())
@@ -85,8 +86,8 @@ export const useDownloadPageLibrary = () => {
                 pageId: page,
                 page: 0,
                 pageSize: 1000,
-                sort: sort,
-                query: query,
+                sort,
+                query,
             }),
         })
             .then((response) => response.blob())

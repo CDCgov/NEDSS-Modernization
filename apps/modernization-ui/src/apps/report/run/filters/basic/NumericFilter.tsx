@@ -1,6 +1,7 @@
 import { NumericInput } from 'design-system/input';
-import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 import { BasicFilterConfiguration } from 'generated';
+
+import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 999;
@@ -9,7 +10,7 @@ const MAX_VALUE = 999;
 const NumericFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
     const numericValue = value ? Number(value) : value;
 
-    const numericOnChange = (v: number | null | undefined) => onChange(v || v === 0 ? v.toString() : v);
+    const numericOnChange = (v: number | null | undefined) => onChange(v || v === 0 ? v.toString() : null);
 
     return (
         <NumericInput min={MIN_VALUE} max={MAX_VALUE} value={numericValue} onChange={numericOnChange} {...remaining} />

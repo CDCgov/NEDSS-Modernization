@@ -1,12 +1,15 @@
-import { Button, Icon } from '@trussworks/react-uswds';
 import { useState } from 'react';
-import { FilterEntryForm } from 'filters/entry/FilterEntryForm';
-import { FilterEntry } from 'filters/entry/FilterEntry';
+
+import { Button, Icon } from '@trussworks/react-uswds';
+
 import { Filter } from 'filters';
 import { AppliedFilters } from 'filters/applied/AppliedFilters';
-import styles from './filter-panel.module.scss';
-import { Property } from 'filters/properties';
 import { asFilter } from 'filters/asDisplayableFilter';
+import { FilterEntry } from 'filters/entry/FilterEntry';
+import { FilterEntryForm } from 'filters/entry/FilterEntryForm';
+import { Property } from 'filters/properties';
+
+import styles from './filter-panel.module.scss';
 
 type State = 'view' | 'add';
 
@@ -71,7 +74,7 @@ const FilterPanel = ({ label, properties, filters, onApply, close }: FilterPanel
                     disabled={displayable.length === 0}
                     className={styles.clearButton}
                     type="button"
-                    outline
+                    outline={true}
                     onClick={handleClear}
                 >
                     Clear filters
@@ -90,7 +93,7 @@ type AddNewFilterProp = {
 
 const AddNewFilter = ({ onAddNew }: AddNewFilterProp) => {
     return (
-        <Button className={styles.addNew} type="button" unstyled onClick={onAddNew} id="add-filter">
+        <Button className={styles.addNew} type="button" unstyled={true} onClick={onAddNew} id="add-filter">
             <Icon.Add />
             Add Filter
         </Button>

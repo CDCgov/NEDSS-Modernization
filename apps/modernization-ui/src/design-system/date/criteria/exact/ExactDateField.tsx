@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
+
 import classNames from 'classnames';
-import { withoutProperty, withProperty } from 'utils/object';
-import { Numeric } from 'design-system/input/numeric/Numeric';
+
 import { DateEntry } from 'design-system/date/entry';
+import { Numeric } from 'design-system/input/numeric/Numeric';
+import { withoutProperty, withProperty } from 'utils/object';
+
 import { DateEqualsCriteria } from '../dateCriteria';
 
 import styles from './exact-date-field.module.scss';
@@ -44,7 +47,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
 
     return (
         <div role="group" id={id} className={styles['exact-date-entry']} aria-label={label}>
-            <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
+            <div className={classNames(styles['numeric-wrapper'], styles.month)}>
                 <label htmlFor={`${id}-month`}>Month</label>
                 <Numeric
                     id={`${id}-month`}
@@ -56,7 +59,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                     max={12}
                 />
             </div>
-            <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
+            <div className={classNames(styles['numeric-wrapper'], styles.day)}>
                 <label htmlFor={`${id}-day`}>Day</label>
                 <Numeric
                     id={`${id}-day`}
@@ -68,7 +71,7 @@ const ExactDateField = ({ id, value, onChange, onBlur, label }: ExactDateFieldPr
                     max={31}
                 />
             </div>
-            <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
+            <div className={classNames(styles['numeric-wrapper'], styles.year)}>
                 <label htmlFor={`${id}-year`}>Year</label>
                 <Numeric
                     id={`${id}-year`}

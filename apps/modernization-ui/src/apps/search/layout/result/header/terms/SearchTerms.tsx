@@ -1,10 +1,10 @@
-import { Chip } from 'design-system/chips';
+import { SkipLink } from 'SkipLink';
 import { useSearchInteraction } from 'apps/search';
 import { Term } from 'apps/search/terms';
+import { Chip } from 'design-system/chips';
 import { pluralize } from 'utils';
 
 import styles from './search-terms.module.scss';
-import { SkipLink } from 'SkipLink';
 
 type Props = {
     total: number;
@@ -30,7 +30,7 @@ const SearchTerms = ({ total, filteredTotal, terms }: Props) => {
 
     return (
         <div tabIndex={0} id="resultsCount" className={styles.terms} aria-label={ariaLabel}>
-            <SkipLink id="resultsCount" autoFocus />
+            <SkipLink id="resultsCount" autoFocus={true} />
             <div className={styles.term}>
                 <h2>
                     {filteredTotal !== undefined

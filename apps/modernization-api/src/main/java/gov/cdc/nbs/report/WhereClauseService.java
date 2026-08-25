@@ -14,6 +14,7 @@ import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
 import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
@@ -39,12 +40,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class WhereClauseService {
+  private static final System.Logger LOGGER = System.getLogger(WhereClauseService.class.getName());
 
   private final FieldFormatter fieldFormatter;
   private final PermissionScopeResolver scopeResolver;
 
   private static final String LAB_RESULT_QUERY_VAL =
-      SQL_WHERE + "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s %s)";
+      "root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM %s %s)";
 
   Map<Operator, BiFunction<AdvancedQuery.Rule, ReportColumn, String>> advQueryOperations =
       Map.ofEntries(
@@ -80,7 +82,7 @@ public class WhereClauseService {
    * @return A string starting with "WHERE " followed by the filter criteria, or an empty string if
    *     no filters are applied.
    */
-  public String buildWhereClause(
+  public String buildLogicFragment(
       ReportConfiguration reportConfig,
       ReportExecutionRequest executionRequest,
       DataSourceNameUtils dataSourceNameUtils) {
@@ -90,41 +92,35 @@ public class WhereClauseService {
     String basicWhereFragment =
         buildBasicWhereFragment(reportConfig, executionRequest.basicFilters());
     if (!basicWhereFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding basic filter criteria to WHERE fragment: %s".formatted(basicWhereFragment));
       activeClauses.add(basicWhereFragment);
     }
 
     String advWhereFragment =
         buildAdvancedQueryResult(reportConfig, executionRequest.advancedFilter());
     if (advWhereFragment != null && !advWhereFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding advanced filter criteria to WHERE fragment: %s".formatted(advWhereFragment));
       activeClauses.add(advWhereFragment);
     }
 
     boolean hasLabResultVal = hasLabResultVal(reportConfig, executionRequest.advancedFilter());
     if (hasLabResultVal) {
+      LOGGER.log(System.Logger.Level.TRACE, "Building lab result query fragment");
+
       String rdbDataSource = dataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report");
-      String labResultQueryValFragment =
-          LAB_RESULT_QUERY_VAL.formatted(
-              rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
-
-      // Add permission fragment to outer where
-      String permissionFragment = buildPermissionFragment(reportConfig);
-      if (!permissionFragment.isBlank()) {
-        return labResultQueryValFragment + SQL_AND + buildPermissionFragment(reportConfig);
-      }
-
-      return labResultQueryValFragment;
-    }
-
-    String permissionFragment = buildPermissionFragment(reportConfig);
-    if (!permissionFragment.isBlank()) {
-      activeClauses.add(permissionFragment);
+      return LAB_RESULT_QUERY_VAL.formatted(
+          rdbDataSource, SQL_WHERE + String.join(SQL_AND, activeClauses));
     }
 
     if (activeClauses.isEmpty()) {
       return "";
     }
 
-    return SQL_WHERE + String.join(SQL_AND, activeClauses);
+    return String.join(SQL_AND, activeClauses);
   }
 
   public String buildPermissionFragment(ReportConfiguration reportConfig) {
@@ -150,6 +146,35 @@ public class WhereClauseService {
     return "(" + String.join(SQL_AND, permissionClauses) + ")";
   }
 
+  // This call pattern is original to the code and heavily used in the tests - there was a light
+  // refactor to separate out the logic call, but didn't want to bork all the tests, so kept this
+  // signature for testing purposes primarily. Someday, this can be cleaned up.
+  public String buildWhereClause(
+      ReportConfiguration reportConfig,
+      ReportExecutionRequest executionRequest,
+      DataSourceNameUtils dataSourceNameUtils) {
+    String logicFragment = buildLogicFragment(reportConfig, executionRequest, dataSourceNameUtils);
+    return buildWhereClause(reportConfig, logicFragment);
+  }
+
+  public String buildWhereClause(ReportConfiguration reportConfig, String logicFragment) {
+    String permissionFragment = buildPermissionFragment(reportConfig);
+    if (!permissionFragment.isBlank()) {
+      LOGGER.log(
+          System.Logger.Level.DEBUG,
+          "Adding permission criteria to WHERE fragment: %s".formatted(permissionFragment));
+    }
+
+    String whereClause =
+        List.of(logicFragment, permissionFragment).stream()
+            .filter(s -> !s.isBlank())
+            .collect(Collectors.joining(SQL_AND));
+    if (!whereClause.isBlank()) {
+      whereClause = SQL_WHERE + whereClause;
+    }
+    return whereClause;
+  }
+
   /**
    * Constructs the SQL criteria block to restrict data visibility by program area and jurisdiction.
    *
@@ -162,8 +187,8 @@ public class WhereClauseService {
    * @return A parenthesized SQL predicate clause (e.g., {@code "(program_jurisdiction_oid IN (1,
    *     2))"}). Returns an empty string {@code ""} if jurisdiction/program area security is not
    *     set.
-   * @throws IllegalArgumentException If jurisdiction/progam area security is set but the user's
-   *     resolved {@link PermissionScope} contains no assigned identifiers.
+   * @throws ForbiddenException If jurisdiction/progam area security is set but the user's resolved
+   *     {@link PermissionScope} contains no assigned identifiers.
    */
   private String getJurisProgramRestrictionCriteria(
       boolean hasJurisdictionSecurity, ReportConstants.ReportGroup group) {
@@ -174,9 +199,9 @@ public class WhereClauseService {
 
     PermissionScope scope = this.scopeResolver.resolve(mapSharedToPermission(group));
     if (scope.any().isEmpty()) {
-      throw new IllegalArgumentException(
-          "No Jurisdiction or Program Area permissions found for user: "
-              + SecurityUtil.getUserDetails().getUsername());
+      throw new ForbiddenException(
+          "No Jurisdiction or Program Area permissions found for user: %s for group: %s"
+              .formatted(SecurityUtil.getUserDetails().getUsername(), group));
     }
 
     String ids = scope.any().stream().map(String::valueOf).collect(Collectors.joining(", "));
@@ -212,20 +237,20 @@ public class WhereClauseService {
     return switch (group) {
       case TEMPLATE ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTTEMPLATE);
+              ReportConstants.Permissions.VIEWREPORTTEMPLATE,
+              ReportConstants.Permissions.REPORTINGOBJECT);
       case PRIVATE ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTPRIVATE);
+              ReportConstants.Permissions.VIEWREPORTPRIVATE,
+              ReportConstants.Permissions.REPORTINGOBJECT);
       case PUBLIC ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTPUBLIC);
+              ReportConstants.Permissions.VIEWREPORTPUBLIC,
+              ReportConstants.Permissions.REPORTINGOBJECT);
       case REPORTING_FACILITY ->
           new Permission(
-              ReportConstants.Permissions.REPORTINGOPERATION,
-              ReportConstants.Permissions.VIEWREPORTREPORTINGFACILITY);
+              ReportConstants.Permissions.VIEWREPORTREPORTINGFACILITY,
+              ReportConstants.Permissions.REPORTINGOBJECT);
     };
   }
 
@@ -245,6 +270,11 @@ public class WhereClauseService {
     StringJoiner basicCriteria = new StringJoiner(SQL_AND);
 
     for (BasicFilterRequest filterRequest : basicFilterRequests) {
+      LOGGER.log(
+          System.Logger.Level.TRACE,
+          "Constructing basic filter criteria for report filter %s"
+              .formatted(filterRequest.reportFilterUid()));
+
       // Find the Filter Configuration
       BasicFilterConfiguration config =
           findBasicFilterConfiguration(reportConfig, filterRequest.reportFilterUid())
@@ -278,9 +308,28 @@ public class WhereClauseService {
                               + config.reportFilterUid()));
 
       if (BAS_TYPES.contains(type)) {
-        basicCriteria.add(buildBasicFilterCriteria(filterRequest, column));
+        LOGGER.log(
+            System.Logger.Level.TRACE, "Building IN criteria for filter type %s".formatted(type));
+
+        String standardCriteria = buildBasicFilterCriteria(filterRequest, column);
+        if (!standardCriteria.isEmpty()) {
+          LOGGER.log(
+              System.Logger.Level.DEBUG,
+              "Adding IN filter criteria to WHERE fragment: %s".formatted(standardCriteria));
+          basicCriteria.add(standardCriteria);
+        }
       } else if (BAS_TIME_RANGE_TYPES.contains(type)) {
-        basicCriteria.add(buildBasicBetweenCriteria(filterRequest, column));
+        LOGGER.log(
+            System.Logger.Level.TRACE,
+            "Building BETWEEN criteria for filter type %s".formatted(type));
+        String betweenCriteria = buildBasicBetweenCriteria(filterRequest, column);
+
+        if (!betweenCriteria.isEmpty()) {
+          LOGGER.log(
+              System.Logger.Level.DEBUG,
+              "Adding BETWEEN filter criteria to WHERE fragment: %s".formatted(betweenCriteria));
+          basicCriteria.add(betweenCriteria);
+        }
       }
     }
 
@@ -316,12 +365,14 @@ public class WhereClauseService {
       AdvancedQuery.RuleGroup ruleGroup = (AdvancedQuery.RuleGroup) query;
       if (ruleGroup.rules().isEmpty()) return "";
 
-      String combinator = String.format(" %s ", ruleGroup.combinator().toUpperCase());
+      String combinator = String.format(" %s ", ruleGroup.combinator().toString().toUpperCase());
       StringJoiner joiner = new StringJoiner(combinator, "(", ")");
 
       for (AdvancedQuery rule : ruleGroup.rules()) {
         String innerRuleSql = buildAdvancedQuery(config, rule);
         if (!innerRuleSql.isEmpty()) {
+          LOGGER.log(
+              System.Logger.Level.DEBUG, "Adding inner rule to joiner: %s".formatted(innerRuleSql));
           joiner.add(innerRuleSql);
         }
       }
@@ -438,34 +489,46 @@ public class WhereClauseService {
     if (values.size() != 2 && !includeNulls) return "";
 
     String colType = column.sourceTypeCode();
-    List<String> formattedValues;
+    List<String> formattedValues = new ArrayList<>();
 
-    if (colType.equals("DATE") || colType.equals("DATETIME")) {
-      formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
-    } else {
-      formattedValues =
-          values.stream()
-              .filter(Objects::nonNull)
-              .map(v -> fieldFormatter.formatField(colType, v))
-              .toList();
+    if (!values.isEmpty() && !values.stream().allMatch(String::isEmpty)) {
+      if (colType.equals("DATE") || colType.equals("DATETIME")) {
+        formattedValues = fieldFormatter.convertToSQLFromDateRange(values);
+      } else {
+        formattedValues =
+            values.stream()
+                .filter(Objects::nonNull)
+                .map(v -> fieldFormatter.formatField(colType, v))
+                .toList();
+      }
     }
 
-    StringBuilder criteria = new StringBuilder("(");
+    StringBuilder criteria = new StringBuilder();
 
     String colName = fieldFormatter.convertToSQLColName(column.name(), colType);
 
-    criteria
-        .append(colName)
-        .append(" BETWEEN ")
-        .append(formattedValues.get(0))
-        .append(SQL_AND)
-        .append(formattedValues.get(1));
-
-    if (includeNulls) {
-      criteria.insert(0, "(").append(") OR (").append(buildNullCriteria(column, false)).append(")");
+    if (!formattedValues.isEmpty()) {
+      criteria
+          .append("(")
+          .append(colName)
+          .append(" BETWEEN ")
+          .append(formattedValues.get(0))
+          .append(SQL_AND)
+          .append(formattedValues.get(1))
+          .append(")");
     }
 
-    return criteria.append(")").toString();
+    if (includeNulls) {
+      String isNullClause = "(" + buildNullCriteria(column, false) + ")";
+
+      if (!criteria.isEmpty()) {
+        criteria.insert(0, "(").append(" OR ").append(isNullClause).append(")");
+      } else {
+        criteria.append(isNullClause);
+      }
+    }
+
+    return criteria.toString();
   }
 
   private String buildBasicBetweenCriteria(

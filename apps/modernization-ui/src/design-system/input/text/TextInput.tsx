@@ -1,5 +1,7 @@
 import { ChangeEvent as ReactChangeEvent } from 'react';
+
 import classNames from 'classnames';
+
 import { Icon } from 'design-system/icon';
 
 import styles from './text-input.module.scss';

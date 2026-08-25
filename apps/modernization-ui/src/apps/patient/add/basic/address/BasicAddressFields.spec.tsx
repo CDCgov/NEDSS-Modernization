@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AddressEntry } from 'apps/patient/data';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BasicAddressFields } from './BasicAddressFields';
+
+import { AddressEntry } from 'apps/patient/data';
 import { LocationOptions } from 'options/location';
+
+import { BasicAddressFields } from './BasicAddressFields';
 
 const mockState = vi.fn();
 

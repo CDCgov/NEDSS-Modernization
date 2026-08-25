@@ -1,4 +1,5 @@
-import { Filter, externalize } from 'filters';
+import { externalize, Filter } from 'filters';
+
 import { OpenAPI } from '../generated/core/OpenAPI';
 
 export const downloadPageLibraryPdf = (search: string, filters: Filter[], sort?: string) => {
@@ -9,7 +10,7 @@ export const downloadPageLibraryPdf = (search: string, filters: Filter[], sort?:
             Accept: 'application/pdf',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ search: search, filters: externalize(filters) }),
+        body: JSON.stringify({ search, filters: externalize(filters) }),
     })
         .then((response) => response.blob())
         .then((blob) => {

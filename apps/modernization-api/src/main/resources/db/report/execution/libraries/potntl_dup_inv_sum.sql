@@ -1,4 +1,4 @@
--- Migrate the NBSCUSTOM.SAS library to the nbs_sr_05 python library
+-- Migrate the POTNTL_DUP_INV_SUM.SAS library to the potntl_dup_inv_sum python library
 
 USE [NBS_ODSE]
 

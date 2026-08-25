@@ -1,8 +1,10 @@
+import { format, isAfter, parseISO } from 'date-fns';
+
+import { Column } from 'design-system/table';
+
 import { MergeCandidate } from '../../../../../api/model/MergeCandidate';
 import { RaceId } from '../../../merge-review/model/PatientMergeForm';
 import { MergePreviewTableCard } from '../shared/preview-card-table/MergePreviewTableCard';
-import { Column } from 'design-system/table';
-import { format, parseISO, isAfter } from 'date-fns';
 
 type RaceEntry = {
     id: string;

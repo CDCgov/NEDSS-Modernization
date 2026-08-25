@@ -1,4 +1,5 @@
 import { Maybe } from 'utils';
+
 import { Comparator } from './sorting';
 
 const nullsLast =

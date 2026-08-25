@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
 
-import styles from './search-navigation.module.scss';
 import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
+
+import styles from './search-navigation.module.scss';
 
 type ActionsRenderer = () => ReactNode;
 

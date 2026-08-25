@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.page.content.section;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -17,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,13 +31,13 @@ class SectionUpdaterTest {
   @Test
   void should_update_section() {
     // Given a page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    WaUiMetadata sectionMock = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata sectionMock = mock(WaUiMetadata.class);
     when(sectionMock.getId()).thenReturn(98l);
     ArgumentCaptor<PageContentCommand.UpdateSection> captor =
         ArgumentCaptor.forClass(PageContentCommand.UpdateSection.class);
-    when(page.updateSection(captor.capture(), Mockito.any())).thenReturn(sectionMock);
+    when(page.updateSection(captor.capture(), any())).thenReturn(sectionMock);
 
     // When a valid request is made to update the section
     UpdateSectionRequest request = new UpdateSectionRequest("New name", false);
@@ -90,10 +91,10 @@ class SectionUpdaterTest {
   @Test
   void should_find_section() {
     // given a valid section
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata section = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata section = mock(WaUiMetadata.class);
     when(section.getWaTemplateUid()).thenReturn(page);
     when(section.getNbsUiComponentUid()).thenReturn(1015l);
 
@@ -111,10 +112,10 @@ class SectionUpdaterTest {
   @Test
   void should_not_find_section_bad_component() {
     // given a section with a bad component id
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(2l);
 
-    WaUiMetadata section = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata section = mock(WaUiMetadata.class);
     when(section.getWaTemplateUid()).thenReturn(page);
     when(section.getNbsUiComponentUid()).thenReturn(1009l);
 
@@ -125,10 +126,10 @@ class SectionUpdaterTest {
   @Test
   void should_not_find_section_bad_page() {
     // given a section with the wrong page
-    WaTemplate page = Mockito.mock(WaTemplate.class);
+    WaTemplate page = mock(WaTemplate.class);
     when(page.getId()).thenReturn(3l);
 
-    WaUiMetadata section = Mockito.mock(WaUiMetadata.class);
+    WaUiMetadata section = mock(WaUiMetadata.class);
     when(section.getWaTemplateUid()).thenReturn(page);
 
     when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(section);

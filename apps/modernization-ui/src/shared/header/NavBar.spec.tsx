@@ -1,11 +1,15 @@
-import { Mock } from 'vitest';
 import { render } from '@testing-library/react';
-import { usePage } from 'page';
-import { NavBar } from './NavBar';
+import { Mock } from 'vitest';
+
 import { permissions } from 'libs/permission';
+import { usePage } from 'page';
+
+import { NavBar } from './NavBar';
 
 let mockPermissions: string[] = [];
 const mockAllowFn = vi.fn((permission: string) => mockPermissions.includes(permission));
+
+let mockFeatures: any = { deduplication: { enabled: false } };
 
 vi.mock('page', () => ({
     usePage: vi.fn(),
@@ -22,8 +26,15 @@ vi.mock('../../libs/permission/usePermissions', () => ({
     }),
 }));
 
-const renderNavBarWithPermissions = (permissions: string[]) => {
+vi.mock('feature', () => ({
+    FeatureToggle: ({ guard, fallback, children }: any) => {
+        return guard(mockFeatures) ? children : fallback;
+    },
+}));
+
+const renderNavBarWithPermissions = (permissions: string[], featuresConfig = mockFeatures) => {
     mockPermissions = permissions;
+    mockFeatures = featuresConfig;
     return render(<NavBar />);
 };
 
@@ -39,9 +50,34 @@ describe('NavBar component tests', () => {
     });
 
     describe('System Management section', () => {
-        it('should display System Management with appropriate permission', () => {
-            const { getByText } = renderNavBarWithPermissions(['ADMINISTRATE-SYSTEM']);
-            expect(getByText('System Management')).toBeInTheDocument();
+        const basePermissions = ['ADMINISTRATE-SYSTEM'];
+
+        describe('When deduplication is disabled', () => {
+            const config = { deduplication: { enabled: false } };
+
+            it('should display System Management with permissions', () => {
+                const { getByText } = renderNavBarWithPermissions(basePermissions, config);
+                expect(getByText('System Management')).toBeInTheDocument();
+            });
+
+            it('should not display System Management with only MERGE-PATIENT permission', () => {
+                const { queryByText } = renderNavBarWithPermissions(['MERGE-PATIENT'], config);
+                expect(queryByText('System Management')).not.toBeInTheDocument();
+            });
+        });
+
+        describe('When deduplication is enabled', () => {
+            const config = { deduplication: { enabled: true } };
+
+            it('should display System Management with permissions', () => {
+                const { getByText } = renderNavBarWithPermissions([...basePermissions, 'MERGE-PATIENT'], config);
+                expect(getByText('System Management')).toBeInTheDocument();
+            });
+
+            it('should display System Management with only MERGE-PATIENT permission', () => {
+                const { getByText } = renderNavBarWithPermissions(['MERGE-PATIENT'], config);
+                expect(getByText('System Management')).toBeInTheDocument();
+            });
         });
     });
 

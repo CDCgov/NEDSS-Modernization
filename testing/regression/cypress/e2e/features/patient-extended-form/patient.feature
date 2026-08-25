@@ -4,18 +4,18 @@ Feature: Classic NBS - Dedupe - User can view data in NBS Patient Search Page
     Given I am logged in as secure user and stay on classic
 
   Scenario: Search patient
-    Then Navigate to classic Patient Search pane
-    Then Enter Last Name in input text field "Simpson"
-    Then Click on Search in classic Patient Search pane
+    When Navigate to classic Patient Search pane
+    And Enter Last Name in input text field "Simpson"
+    And Click on Search in classic Patient Search pane
 
   Scenario: Edit patient
-    Then Select a patient to edit through classic search
+    When Select a patient to edit through classic search
     Then Edit patient details showing on the page
 
   Scenario: Successfully Submitting a Completed New Patient Extended Form
-    Given I am on the New patient Extended form
+    When I am on the New patient Extended form
     And I have filled out all required fields in all sections
-    When I click the Save button
+    And I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
@@ -69,7 +69,7 @@ Scenario: Required Name Fields
   Scenario: Valid Address Input
     Given I am on the New patient Extended form
     And I have filled out Address input fields
-    When I click the Save button
+    And I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
@@ -81,14 +81,14 @@ Scenario: Required Name Fields
   Scenario: Valid Dropdown Selections
     Given I am on the New patient Extended form
     And I have filled out Dropdowns fields
-    When I click the Save button
+    And I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
   Scenario: Valid Phone Number
     Given I am on the New patient Extended form
     And I enter a valid phone number in the Phone field
-    Then I click the Save button
+    And I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 
@@ -109,13 +109,13 @@ Scenario: Required Name Fields
   @skip-broken
   Scenario: Add Valid Phone Number
     Given I am on the New patient Extended form
-    Then I add type and use for phone
-    Then I click Add Phone and Email Button
+    When I add type and use for phone
+    And I click Add Phone and Email Button
 
   Scenario: Add Valid Identification
     Given I am on the New patient Extended form
-    Then Select section "Identification" with id "identification-type" option "Medicaid number"
-    Then Type section "Identification" with id "id" with text "23123"
+    When Select section "Identification" with id "identification-type" option "Medicaid number"
+    And Type section "Identification" with id "id" with text "23123"
     And I click Add Identification Button
 
   # Result not adding
@@ -136,7 +136,7 @@ Scenario: Required Name Fields
     Given I am on the New patient Extended form
     And I select yes to Is the patient deceased
     And I complete the Mortality fields
-    When I click the Save button
+    And I click the Save button
     Then Form should be submitted successfully without errors
     And I should receive a confirmation message
 

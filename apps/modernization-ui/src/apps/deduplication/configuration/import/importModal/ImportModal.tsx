@@ -1,9 +1,12 @@
+import { DragEvent, ReactNode, useMemo, useState } from 'react';
+
 import classNames from 'classnames';
+
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Icon } from 'design-system/icon';
 import { Modal } from 'design-system/modal';
-import React, { ReactNode, useMemo, useState } from 'react';
+
 import styles from './import-modal.module.scss';
 
 type Props = {
@@ -43,7 +46,7 @@ export const ImportModal = ({
         onCancel();
     };
 
-    const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         if (accept === undefined || accept?.includes(file.type)) {
@@ -52,12 +55,12 @@ export const ImportModal = ({
         setDragOver(false);
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDragOver(true);
     };
 
-    const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragEnd = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setDragOver(false);
     };
@@ -74,10 +77,10 @@ export const ImportModal = ({
 
     const footer = () => (
         <>
-            <Button secondary onClick={handleCancel} data-close-modal>
+            <Button secondary={true} onClick={handleCancel} data-close-modal={true}>
                 Cancel
             </Button>
-            <Button disabled={!selectedFile} onClick={handleAccept} data-close-modal>
+            <Button disabled={!selectedFile} onClick={handleAccept} data-close-modal={true}>
                 Import
             </Button>
         </>

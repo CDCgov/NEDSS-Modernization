@@ -36,9 +36,7 @@ class TestIntegrationNbsSrDupInvLibrary:
             'version': 1,
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Potential Duplicate Investigations',
             'library_name': 'potntl_dup_inv_sum',
-            'data_source_name': '[RDB].[dbo].[INV_SUMM_DATAMART]',
             'subset_query': '',
             'days_value': None,
             'column_map': self.default_column_map,
@@ -58,23 +56,74 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec()
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
-        assert 'Duplicate Investigations Time Frame: 3650 Days' in result.subheader
-        assert result.subheader is not None
+        assert (
+            result.context_header is not None
+            and 'Duplicate Investigations Time Frame: 3650 Days'
+            in result.context_header
+        )
+        assert result.context_header is not None
 
         data = result.content
         assert len(data.data) >= 0
         snapshot.assert_match(yaml.dump(data.data), 'snapshot.yml')
+
+    def test_execute_report_check_data_with_required_string_col_order_by(
+        self, snapshot
+    ):
+        """Test with sort by of a string required column."""
+        report_spec = self.create_spec(sort_by='UPPER([Disease Code]) ASC')
+
+        result = execute_report(report_spec)
+
+        data = result.content.data
+        assert len(data) >= 0
+        for i in range(1, len(data)):
+            prior = data[i - 1][2]
+            cur = data[i][2]
+            assert (prior is None and cur is None) or (prior is None) or prior <= cur
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+    def test_execute_report_check_data_with_non_required_string_col_order_by(
+        self, snapshot
+    ):
+        """Test with sort by of a string non-required column."""
+        report_spec = self.create_spec(sort_by='UPPER([Investigation Local Id]) ASC')
+
+        result = execute_report(report_spec)
+
+        data = result.content.data
+        assert len(data) >= 0
+        for i in range(1, len(data)):
+            prior = data[i - 1][3]
+            cur = data[i][3]
+            assert (prior is None and cur is None) or (prior is None) or prior <= cur
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
+
+    def test_execute_report_check_data_with_required_non_string_col_order_by(
+        self, snapshot
+    ):
+        """Test with sort by of a non-string required column."""
+        report_spec = self.create_spec(sort_by='[Event Date] ASC')
+
+        result = execute_report(report_spec)
+
+        data = result.content.data
+        assert len(data) >= 0
+        for i in range(1, len(data)):
+            prior = data[i - 1][0]
+            cur = data[i][0]
+            assert (prior is None and cur is None) or (prior is None) or prior <= cur
+
+        snapshot.assert_match(yaml.dump(data), 'snapshot.yml')
 
     def test_execute_report_with_days_value(self):
         """Test with a specific days value (e.g., 365 days)."""
         report_spec = self.create_spec(days_value=365)
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'Potential Duplicate Investigations'
-        assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
+        assert result.context_header == 'Duplicate Investigations Time Frame: 365 Days'
 
         data = result.content
         assert len(data.data) >= 0
@@ -85,8 +134,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=3650)
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.subheader == 'Duplicate Investigations Time Frame: 3650 Days'
+        assert result.context_header == 'Duplicate Investigations Time Frame: 3650 Days'
 
         # Should return more results than the 30-day test
         spec_30 = self.create_spec(days_value=30)
@@ -102,8 +150,9 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=-3650)
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.subheader == 'Duplicate Investigations Time Frame: -3650 Days'
+        assert (
+            result.context_header == 'Duplicate Investigations Time Frame: -3650 Days'
+        )
 
         # Based on current implementation, this should not return any results.
         assert len(result.content.data) == 0
@@ -115,7 +164,6 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec.subset_query += ' WHERE 1 = 0'
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
         assert len(result.content.data) == 0
 
     def test_execute_report_check_metadata(self):
@@ -123,9 +171,7 @@ class TestIntegrationNbsSrDupInvLibrary:
         report_spec = self.create_spec(days_value=365)
 
         result = execute_report(report_spec)
-        assert result.header == 'Potential Duplicate Investigations'
-        assert result.subheader == 'Duplicate Investigations Time Frame: 365 Days'
-        assert result.content_type == 'table'
+        assert result.context_header == 'Duplicate Investigations Time Frame: 365 Days'
 
     def test_execute_report_verify_no_single_events(self):
         """Verify that patients with only one event are filtered out."""

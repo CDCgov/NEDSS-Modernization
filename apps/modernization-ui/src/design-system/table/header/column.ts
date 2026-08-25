@@ -1,5 +1,6 @@
-import { FilterDescriptor } from 'design-system/filter';
 import { ReactNode } from 'react';
+
+import { FilterDescriptor } from 'design-system/filter';
 import { Mapping } from 'utils/mapping';
 
 type SortIconType = 'alpha' | 'numeric';
@@ -10,9 +11,7 @@ type HasRenderFunction<R> = { render: (value: R, index: number) => ReactNode | u
 type HasValueFunction<R, C = CellValue> = { value: Mapping<R, C | null | undefined> };
 
 type Rendered<R, C = CellValue> =
-    | HasRenderFunction<R>
-    | HasValueFunction<R, C>
-    | (HasRenderFunction<R> & HasValueFunction<R, C>);
+    HasRenderFunction<R> | HasValueFunction<R, C> | (HasRenderFunction<R> & HasValueFunction<R, C>);
 
 type BaseColumn<R, C> = {
     id: string;

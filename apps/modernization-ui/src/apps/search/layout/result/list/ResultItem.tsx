@@ -1,6 +1,8 @@
-import classNames from 'classnames';
-import { NoData } from 'design-system/data';
 import { ReactNode } from 'react';
+
+import classNames from 'classnames';
+
+import { NoData } from 'design-system/data';
 
 import styles from './result-item.module.scss';
 

@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
-import { SuccessModal } from './SuccessModal';
 import { Button } from '@trussworks/react-uswds';
+
+import { SuccessModal } from './SuccessModal';
 
 describe('when SuccessModal renders', () => {
     const modal = { current: null };
@@ -10,10 +11,10 @@ describe('when SuccessModal renders', () => {
             title="Test heading"
             actions={
                 <>
-                    <Button type="button" outline onClick={() => vi.fn()}>
+                    <Button type="button" outline={true} onClick={() => vi.fn()}>
                         Test 1
                     </Button>
-                    <Button type="button" outline onClick={() => vi.fn()}>
+                    <Button type="button" outline={true} onClick={() => vi.fn()}>
                         Test 2
                     </Button>
                     <Button type="button" onClick={() => vi.fn()}>

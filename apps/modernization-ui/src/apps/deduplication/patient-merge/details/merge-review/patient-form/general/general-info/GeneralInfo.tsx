@@ -1,9 +1,11 @@
-import { MergeGeneralInfo } from 'apps/deduplication/api/model/MergeCandidate';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { MergeGeneralInfo } from 'apps/deduplication/api/model/MergeCandidate';
+import { Permitted } from 'libs/permission';
+
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
-import { Permitted } from 'libs/permission';
 
 type Props = {
     personUid: string;
@@ -26,7 +28,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -42,7 +44,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -58,7 +60,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -74,7 +76,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -90,7 +92,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -106,7 +108,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -122,7 +124,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -138,7 +140,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -154,7 +156,7 @@ export const GeneralInfo = ({ personUid, generalInfo }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />

@@ -1,10 +1,12 @@
-import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 import { parseISO } from 'date-fns';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { MergeSexAndBirth } from 'apps/deduplication/api/model/MergeCandidate';
 import { calculateAge } from 'utils/util';
+
+import { toDateDisplay } from '../../../../shared/toDateDisplay';
 import { PatientMergeForm } from '../../../model/PatientMergeForm';
 import { MergeDataDisplay } from '../../shared/merge-data-display/MergeDataDisplay';
-import { toDateDisplay } from '../../../../shared/toDateDisplay';
 
 type Props = {
     personUid: string;
@@ -14,7 +16,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
     const form = useFormContext<PatientMergeForm>();
 
     const parseAge = (date?: string) => {
-        if (date == undefined) {
+        if (date === undefined) {
             return '---';
         }
         return calculateAge(parseISO(date));
@@ -34,7 +36,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -57,7 +59,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                 label="Current age"
                 display={parseAge(sexAndBirth.dateOfBirth)}
                 groupType="blank"
-                underlined
+                underlined={true}
             />
             <Controller
                 control={form.control}
@@ -74,7 +76,12 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                     />
                 )}
             />
-            <MergeDataDisplay label="Unknown reason" display={sexAndBirth.sexUnknown} groupType="last" underlined />
+            <MergeDataDisplay
+                label="Unknown reason"
+                display={sexAndBirth.sexUnknown}
+                groupType="last"
+                underlined={true}
+            />
             <Controller
                 control={form.control}
                 name="sexAndBirth.transgenderInfo"
@@ -87,7 +94,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -103,7 +110,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -119,7 +126,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -138,7 +145,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                     />
                 )}
             />
-            <MergeDataDisplay label="Birth order" display={sexAndBirth.birthOrder} groupType="last" underlined />
+            <MergeDataDisplay label="Birth order" display={sexAndBirth.birthOrder} groupType="last" underlined={true} />
             <Controller
                 control={form.control}
                 name="sexAndBirth.birthCity"
@@ -151,7 +158,7 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                             formValue: personUid,
                             ...field,
                         }}
-                        underlined
+                        underlined={true}
                     />
                 )}
             />
@@ -170,7 +177,12 @@ export const SexAndBirth = ({ personUid, sexAndBirth }: Props) => {
                     />
                 )}
             />
-            <MergeDataDisplay label="Birth county" display={sexAndBirth.birthCounty} groupType="last" underlined />
+            <MergeDataDisplay
+                label="Birth county"
+                display={sexAndBirth.birthCounty}
+                groupType="last"
+                underlined={true}
+            />
             <Controller
                 control={form.control}
                 name="sexAndBirth.birthCountry"

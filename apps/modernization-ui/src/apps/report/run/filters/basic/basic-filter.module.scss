@@ -1,0 +1,23 @@
+@use 'styles/borders';
+
+.row {
+    &:not(:last-child) {
+        @extend %thin-bottom;
+    }
+}
+
+.fieldWithNulls {
+    display: grid;
+    grid-template-areas: 'field nulls';
+    grid-template-columns: auto 1fr;
+
+    .field {
+        grid-area: field;
+    }
+
+    .nulls {
+        grid-area: nulls;
+        font-size: 0.875rem;
+        align-self: center;
+    }
+}

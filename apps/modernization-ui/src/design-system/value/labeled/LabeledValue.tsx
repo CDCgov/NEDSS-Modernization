@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
 
-import styles from './labeled-value.module.scss';
-import { Orientation } from 'design-system/field';
 import classNames from 'classnames';
+
+import { Orientation } from 'design-system/field';
+
+import styles from './labeled-value.module.scss';
 
 type LabeledValueProps = {
     label: string;

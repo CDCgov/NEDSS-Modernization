@@ -32,6 +32,11 @@ public class PatientRaceDemographicsSteps {
     patient.maybeActive().ifPresent(current -> applier.withRace(current, asOf, category));
   }
 
+  @Given("the patient has a race with the unmapped category code {string} as of {localDate}")
+  public void unmappedCategory(final String code, final LocalDate asOf) {
+    patient.maybeActive().ifPresent(current -> applier.withRace(current, asOf, code));
+  }
+
   @Given("the patient race of {raceCategory} includes {raceDetail}")
   public void detailed(final String category, final String detail) {
     patient.maybeActive().ifPresent(current -> applier.withRace(current, category, detail));

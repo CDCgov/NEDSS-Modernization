@@ -1,6 +1,8 @@
-import { PagesResponse, PagesService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
 import { useParams } from 'react-router';
+
+import { PagesResponse, PagesService } from 'apps/page-builder/generated';
 
 type State =
     | { status: 'idle' }

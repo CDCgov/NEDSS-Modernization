@@ -1,8 +1,9 @@
-import styles from './no-patient-result.module.scss';
 import { useAddPatientFromSearch } from 'apps/search/patient/add/useAddPatientFromSearch';
-import { permissions, Permitted } from 'libs/permission';
-import { AlertMessage } from 'design-system/message';
 import { Button } from 'design-system/button';
+import { AlertMessage } from 'design-system/message';
+import { permissions, Permitted } from 'libs/permission';
+
+import styles from './no-patient-result.module.scss';
 
 const NoPatientResults = () => {
     const { add } = useAddPatientFromSearch();
@@ -19,7 +20,7 @@ const NoPatientResults = () => {
                         <Permitted permission={permissions.patient.add} fallback="Try refining your search.">
                             <span className={styles.noResultsSubHeading}>
                                 Try refining your search, or{' '}
-                                <Button className={styles.link} onClick={add} tertiary>
+                                <Button className={styles.link} onClick={add} tertiary={true}>
                                     add a new patient.
                                 </Button>
                             </span>

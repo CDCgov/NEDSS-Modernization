@@ -1,16 +1,17 @@
 import { useState } from 'react';
+
 import { Outlet } from 'react-router';
-import { SignIn } from 'apps/landing/SignIn/SignIn';
-import { SignUp } from 'apps/landing/SignUp/SignUp';
-import { LoginWrapper } from './LoginWrapper';
 
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-
-import style from './welcomeLayout.module.scss';
-import logo from './cdc.svg';
+import { SignIn } from 'apps/landing/SignIn/SignIn';
+import { SignUp } from 'apps/landing/SignUp/SignUp';
+import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
 import { TopBanner } from 'components/TopBanner/TopBanner';
 import { PageProvider } from 'page';
-import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabNavigation';
+
+import { LoginWrapper } from './LoginWrapper';
+import logo from './cdc.svg';
+import style from './welcomeLayout.module.scss';
 
 const WelcomeLayout = () => {
     const [event, setEvent] = useState('login');
@@ -23,9 +24,9 @@ const WelcomeLayout = () => {
                     <div className={style.welcome}>
                         <main>
                             <div className={style.information}>
-                                <TabNavigation className={style.tabs} sizing={'large'}>
-                                    <TabNavigationEntry path={'about'}>About</TabNavigationEntry>
-                                    <TabNavigationEntry path={'learn'}>Learn more</TabNavigationEntry>
+                                <TabNavigation className={style.tabs} sizing="large">
+                                    <TabNavigationEntry path="about">About</TabNavigationEntry>
+                                    <TabNavigationEntry path="learn">Learn more</TabNavigationEntry>
                                 </TabNavigation>
                                 <div className={style['tab-content']}>
                                     <Outlet />

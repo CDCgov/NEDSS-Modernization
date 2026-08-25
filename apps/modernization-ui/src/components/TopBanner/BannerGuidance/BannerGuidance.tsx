@@ -1,4 +1,5 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
+
 import classNames from 'classnames';
 
 export const BannerGuidance = ({ children, className, ...divProps }: JSX.IntrinsicElements['div']): ReactElement => {

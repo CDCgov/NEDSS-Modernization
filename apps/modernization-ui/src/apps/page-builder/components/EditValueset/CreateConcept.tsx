@@ -1,11 +1,13 @@
 import { Button } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { useAlert } from 'libs/alert';
 import { ConceptControllerService, CreateConceptRequest } from 'apps/page-builder/generated';
 import { externalizeDateTime, internalizeDate } from 'date';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useAlert } from 'libs/alert';
+
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+
 import { ConceptForm } from './concept/ConceptForm';
 import styles from './edit-valueset.module.scss';
 
@@ -45,7 +47,7 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button type="button" outline onClick={onCancel}>
+                <Button type="button" outline={true} onClick={onCancel}>
                     Cancel
                 </Button>
                 <Button disabled={!form.formState.isValid} type="button" onClick={handleCreate}>

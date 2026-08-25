@@ -1,11 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { useIdentificationCodedValues } from './useIdentificationCodedValues';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { IdentificationEntry } from './entry';
+import { useIdentificationCodedValues } from './useIdentificationCodedValues';
 
 const AS_OF_DATE_LABEL = 'Identification as of';
 const TYPE_LABEL = 'Type';
@@ -30,7 +32,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal', sizing =
                         value={value}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -50,7 +52,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal', sizing =
                         id={`identification-${name}`}
                         options={coded.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -86,7 +88,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal', sizing =
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

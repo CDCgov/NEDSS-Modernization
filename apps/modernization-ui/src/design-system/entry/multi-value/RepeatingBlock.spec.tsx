@@ -1,9 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Controller, useFormContext } from 'react-hook-form';
-import { Input } from 'components/FormInputs/Input';
-import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
 import { axe } from 'jest-axe';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { Input } from 'components/FormInputs/Input';
+
+import { RepeatingBlock, RepeatingBlockProps } from './RepeatingBlock';
 
 type TestType = {
     firstInput: string;
@@ -22,14 +24,14 @@ const UnderTestForm = () => {
                 rules={{ required: { value: true, message: 'First input is required.' } }}
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <Input
-                        flexBox
+                        flexBox={true}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
                         label="First Input"
                         id={name}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -38,7 +40,7 @@ const UnderTestForm = () => {
                 control={control}
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <Input
-                        flexBox
+                        flexBox={true}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -83,7 +85,7 @@ const Fixture = ({
 }: Partial<RepeatingBlockProps<TestType>>) => (
     <RepeatingBlock<TestType>
         id="testing"
-        title={'Test title'}
+        title="Test title"
         defaultValues={defaultValues}
         columns={columns}
         data={data}

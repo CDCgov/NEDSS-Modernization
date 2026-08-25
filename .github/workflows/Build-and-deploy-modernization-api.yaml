@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
+      - release-*
     paths:
       - "!libs/testing/**"
       - "apps/modernization-api/**"
       - "apps/modernization-ui/**"
       - "libs/**"
       - "gradle/libs.versions.toml"
+      - ".github/workflows/Build-and-deploy-modernization-api.yaml"
 
 jobs:
   sonar_scan:
@@ -38,3 +40,5 @@ jobs:
       java_version: "21"
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
+      HARBOR_ROBOT_USERNAME: ${{secrets.HARBOR_ROBOT_USERNAME}}
+      HARBOR_ROBOT_SECRET: ${{secrets.HARBOR_ROBOT_SECRET}}

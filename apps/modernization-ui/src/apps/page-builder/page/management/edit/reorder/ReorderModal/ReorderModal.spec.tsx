@@ -1,8 +1,11 @@
 import { render } from '@testing-library/react';
-import { ReorderModal } from './ReorderModal';
-import { PagesResponse } from 'apps/page-builder/generated';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse } from 'apps/page-builder/generated';
+
 import { PageManagementProvider } from '../../../usePageManagement';
+
+import { ReorderModal } from './ReorderModal';
 
 describe('when ReorderModal renders', () => {
     const page: PagesResponse = {

@@ -1,9 +1,11 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import userEvent from '@testing-library/user-event';
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { LocationOptions } from 'options/location';
-import { AddressEntry } from './entry';
+
 import { AddressEntryFields } from './AddressEntryFields';
+import { AddressEntry } from './entry';
 import { AddressCodedValues } from './useAddressCodedValues';
 
 const mockAddressCodedValues: AddressCodedValues = {

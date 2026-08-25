@@ -1,15 +1,19 @@
-import { Concept, UpdateConceptRequest } from 'apps/page-builder/generated';
-import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import { ButtonBar } from '../ButtonBar/ButtonBar';
-import { Button } from '@trussworks/react-uswds';
-import styles from './edit-valueset.module.scss';
-import { ConceptForm } from './concept/ConceptForm';
-import { FormProvider, useForm, useFormState } from 'react-hook-form';
-import { useUpdateConcept } from 'apps/page-builder/hooks/api/useUpdateConcept';
 import { useEffect } from 'react';
-import { useAlert } from 'libs/alert';
-import { externalizeDateTime } from 'date/ExternalizeDateTime';
+
+import { Button } from '@trussworks/react-uswds';
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
+
+import { Concept, UpdateConceptRequest } from 'apps/page-builder/generated';
+import { useUpdateConcept } from 'apps/page-builder/hooks/api/useUpdateConcept';
 import { internalizeDate } from 'date';
+import { externalizeDateTime } from 'date/ExternalizeDateTime';
+import { useAlert } from 'libs/alert';
+
+import { ButtonBar } from '../ButtonBar/ButtonBar';
+import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+
+import { ConceptForm } from './concept/ConceptForm';
+import styles from './edit-valueset.module.scss';
 
 type Props = {
     valueset: string;
@@ -53,12 +57,12 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
             <CloseableHeader title={<div className={styles.addValuesetHeader}>Edit concept</div>} onClose={onClose} />
             <div className={styles.content}>
                 <FormProvider {...form}>
-                    <ConceptForm isEditing />
+                    <ConceptForm isEditing={true} />
                 </FormProvider>
             </div>
 
             <ButtonBar>
-                <Button onClick={onCancel} type="button" outline>
+                <Button onClick={onCancel} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button disabled={!isDirty || !isValid} type="button" onClick={handleSave}>

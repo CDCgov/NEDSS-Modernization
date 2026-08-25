@@ -1,19 +1,21 @@
 import { ReactNode, useId } from 'react';
-import { SkipLink } from 'SkipLink';
-import { ReportHeader, ReportHeaderProps } from './ReporHeader';
 
+import { SkipLink } from 'SkipLink';
+
+import { ReportHeader, ReportHeaderProps } from './ReportHeader';
 import styles from './layout.module.scss';
 
 type ReportRunLayoutProps = ReportHeaderProps & {
+    noSkipLink?: boolean;
     children?: ReactNode | ReactNode[];
 };
 
-const ReportLayout = ({ children, ...headerProps }: ReportRunLayoutProps) => {
+const ReportLayout = ({ noSkipLink = false, children, ...headerProps }: ReportRunLayoutProps) => {
     const headerId = useId();
 
     return (
         <div className={styles.page}>
-            <SkipLink id={headerId} />
+            {!noSkipLink && <SkipLink id={headerId} />}
             <header id={headerId}>
                 <ReportHeader {...headerProps} />
             </header>

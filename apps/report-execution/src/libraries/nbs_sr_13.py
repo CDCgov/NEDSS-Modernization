@@ -1,3 +1,4 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -5,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """Standard Report 13: Counts of Selected Diseases By Case Status.
@@ -18,14 +18,17 @@ def execute(
     * Changed file name from NBSSR000017.sas to nbr_sr_13.py since 17 was
       associated with label for 13
     """
+    # Dynamically look up the correct name for the SRTE database
+    nbs_srt = get_cached_config_value('REPORT_DB_NBS_SRT')
+
     sql_query = f"""
-    SELECT 
+    SELECT
         SUM(group_case_cnt) as "Case Count",
         phc_code_short_desc as "Condition",
         cvg.code_short_desc_txt as "Case Status"
     FROM ({subset_query}) phc
-    LEFT JOIN nbs_srte.dbo.code_value_general cvg 
-        ON phc.case_class_cd = cvg.code 
+    LEFT JOIN {nbs_srt}.dbo.code_value_general cvg
+        ON phc.case_class_cd = cvg.code
         AND cvg.code_set_nm = 'PHC_CLASS'
     WHERE cvg.code_short_desc_txt IS NOT NULL
     GROUP BY phc_code_short_desc, cvg.code_short_desc_txt
@@ -34,20 +37,20 @@ def execute(
 
     content = trx.query(sql_query)
 
-    description = (
-        '*<u>Report content</u>*\n'
-        '*Data Source:* nbs_ods.PHCDemographic (publichealthcasefact)\n'
-        '*Output:* Report demonstrates, in table form, the total number of '
-        'Investigation(s) [both Individual and Summary]. \n'
-        'Output:\n'
-        '* Does not include Investigation(s) that have been logically deleted\n'
-        '* Is filtered based on the disease(s) and advanced criteria selected by user\n'
-        '* Will not include Investigation(s) that do not have a value for Case Status\n'
-    )
+    description = """
+**<u>Report content</u>**
+
+**Output:** Report demonstrates, in table form, the total number of Investigations [both Individual and Summary]. Output:
+
+* Does not include Investigations that have been logically deleted
+
+* Is filtered based on the diseases and advanced criteria selected by user
+
+* Will not include Investigations that do not have a value for Case Status
+"""  # noqa: E501
 
     return ReportResult(
-        content_type='table',
         content=content,
-        subheader=None,
+        context_header=None,
         description=description,
     )

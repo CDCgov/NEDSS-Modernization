@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react';
+
+import { IdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
+
 import {
     BasicIdentificationRepeatingBlock,
     BasicIdentificationRepeatingBlockProps,
 } from './BasicIdentificationRepeatingBlock';
-import { IdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 
 const mockPatientIdentificationCodedValues: IdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],

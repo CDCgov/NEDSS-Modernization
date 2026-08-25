@@ -1,5 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { Input } from 'components/FormInputs/Input';
+
 import { FilterEntry } from './FilterEntry';
 
 const PartialValueEntryForm = () => {
@@ -9,7 +11,7 @@ const PartialValueEntryForm = () => {
         <Controller
             control={control}
             name="value"
-            shouldUnregister
+            shouldUnregister={true}
             rules={{
                 required: { value: true, message: 'A value is required.' },
             }}

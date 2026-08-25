@@ -1,5 +1,4 @@
 import { FacilityOptionsService } from 'generated';
-
 import { AutocompleteOptionsResolver, SelectableAutocompletion, useSelectableAutocomplete } from 'options/autocompete';
 
 type Settings = {

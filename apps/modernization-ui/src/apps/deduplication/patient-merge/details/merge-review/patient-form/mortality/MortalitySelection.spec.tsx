@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { MortalitySelection } from './MortalitySelection';
 
 const data: Partial<MergeCandidate>[] = [
@@ -81,7 +83,7 @@ describe('MortalitySelection', () => {
         const firstMortality = getAllByLabelText('As of date')[0];
         await user.click(firstMortality);
 
-        // all 5 fields for entries with deceased == 'Yes'. Only 'As of' field for non deceased entry
+        // all 5 fields for entries with deceased === 'Yes'. Only 'As of' field for non deceased entry
         expect(getAllByRole('radio')).toHaveLength(11);
     });
 

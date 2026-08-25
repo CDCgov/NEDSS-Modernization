@@ -1,7 +1,9 @@
 import classNames from 'classnames';
-import styles from './toggle.module.scss';
+
 import { Sizing } from 'design-system/field';
 import { isLabelVisible, Labeled } from 'design-system/label-utils';
+
+import styles from './toggle.module.scss';
 
 export type ToggleProps = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> &
     Labeled & {

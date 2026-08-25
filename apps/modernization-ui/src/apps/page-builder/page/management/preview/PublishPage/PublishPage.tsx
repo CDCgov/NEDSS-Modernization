@@ -1,10 +1,15 @@
-import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
-import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
 import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
+
+import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
 import { Controller, useForm } from 'react-hook-form';
+
+import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
+import { useAlert } from 'libs/alert';
+import { logErrorToUserConsole } from 'utils/logging';
 import { maxLengthRule } from 'validation/entry';
+
 import { usePageManagement } from '../../usePageManagement';
+
 import styles from './publish-page.module.scss';
 
 type Props = {
@@ -41,15 +46,14 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 onPublishing(false);
             }
             modalRef.current?.toggleModal();
+            logErrorToUserConsole(error);
             if (error instanceof Error) {
-                console.error(error);
                 showAlert({
                     type: 'error',
                     title: 'error',
                     message: error.message,
                 });
             } else {
-                console.error(error);
                 showAlert({
                     type: 'error',
                     title: 'error',
@@ -85,8 +89,8 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
             <div className={styles.body}>
                 <p>
                     You have indicated that you would like to publish the <b>"{page.name}"</b> page. Please enter the
-                    <b> version notes </b> below, review the <b> related condition(s)</b>, then select <b> publish </b>{' '}
-                    to continue, or select <b> cancel </b> to return to view the page.
+                    <b> version notes </b> below, review the <b> related condition(s)</b>, then select
+                    <b> publish </b> to continue, or select <b> cancel </b> to return to view the page.
                 </p>
                 <p className={styles.required}>
                     <span className={styles.requiredIndicator}>*</span> Indicates a required field.
@@ -128,7 +132,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 </div>
             </div>
             <div className={styles.footer}>
-                <ModalToggleButton type="button" closer outline modalRef={modalRef}>
+                <ModalToggleButton type="button" closer={true} outline={true} modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
                 <Button

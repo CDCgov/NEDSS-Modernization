@@ -1,10 +1,12 @@
 import { ReactNode, useCallback, useState } from 'react';
-import { createPortal } from 'react-dom';
+
 import classNames from 'classnames';
+import { createPortal } from 'react-dom';
+
 import { Shown } from 'conditional-render';
 import { Icon } from 'design-system/icon';
-import { HintPanel } from './HintPanel';
 
+import { HintPanel } from './HintPanel';
 import styles from './hint.module.scss';
 
 type Target = ReactNode | ((id: string) => ReactNode);
@@ -37,7 +39,7 @@ const Hint = ({ id, enabled = true, children, target, position }: HintProps) => 
 
     const targeted = useCallback(
         (element: HTMLElement | null) => {
-            if (enabled && visible && element != null) {
+            if (enabled && visible && element !== null) {
                 const { top, left, width, height } = element.getBoundingClientRect();
 
                 setPlacement({

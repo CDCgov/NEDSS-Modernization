@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
+
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+
 import styles from './blocking-criteria-attribute.module.scss';
 
 type AttributeProps = {
@@ -33,9 +36,9 @@ export const BlockingCriteriaAttribute = ({ label, description, attribute, onRem
                 <div>
                     <Button
                         icon="delete"
-                        secondary
+                        secondary={true}
                         sizing="small"
-                        destructive
+                        destructive={true}
                         aria-label="Remove"
                         onClick={() => onRemove(attribute)}
                     />

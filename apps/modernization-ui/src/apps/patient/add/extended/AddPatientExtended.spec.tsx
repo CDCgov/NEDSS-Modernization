@@ -1,12 +1,15 @@
-import { Mock } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { AddPatientExtended } from './AddPatientExtended';
 import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+import { Mock } from 'vitest';
+
+import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import { Selectable } from 'options';
+import { PageProvider } from 'page';
+
 import { useShowCancelModal } from '../cancelAddPatientPanel';
 import { PatientDataEntryMethodProvider } from '../usePatientDataEntryMethod';
-import { Selectable } from 'options';
-import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { PageProvider } from 'page';
+
+import { AddPatientExtended } from './AddPatientExtended';
 
 window.scrollTo = vi.fn();
 
@@ -63,6 +66,18 @@ const mockDetailedRaces: Selectable[] = [
 vi.mock('options/race', () => ({
     useRaceCategoryOptions: () => mockRaceCategories,
     useDetailedRaceOptions: () => ({ options: mockDetailedRaces, load: vi.fn }),
+}));
+
+vi.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: [{ name: 'test', value: '2' }] }),
+}));
+
+vi.mock('options/language', () => ({
+    usePrimaryLanguageOptions: () => ({ options: [{ name: 'english', value: '2' }] }),
+}));
+
+vi.mock('options/occupations', () => ({
+    useOccupationOptions: () => ({ options: [{ name: 'job', value: '2' }] }),
 }));
 
 vi.mock('apps/patient/data/identification/useIdentificationCodedValues', () => ({
@@ -152,7 +167,7 @@ describe('AddPatientExtended', () => {
         const cancelButton = screen.getByRole('button', { name: 'Cancel' });
         cancelButton.click();
 
-        expect(useNavigate).toBeCalled();
+        expect(useNavigate).toHaveBeenCalled();
     });
 
     it('should not show modal when local storage flag is set', () => {

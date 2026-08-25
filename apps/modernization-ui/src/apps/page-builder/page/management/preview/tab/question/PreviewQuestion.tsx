@@ -1,12 +1,15 @@
-import { PagesQuestion } from 'apps/page-builder/generated';
-import styles from './preview-question.module.scss';
-import { Input } from 'components/FormInputs/Input';
-import { Button, Icon } from '@trussworks/react-uswds';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { useEffect, useState } from 'react';
-import { Selectable } from 'options';
+
+import { Button, Icon } from '@trussworks/react-uswds';
+
+import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
+import { PagesQuestion } from 'apps/page-builder/generated';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
+import { Selectable } from 'options';
+
+import styles from './preview-question.module.scss';
 
 type Props = {
     question: PagesQuestion;
@@ -56,7 +59,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     displayComponent === 1031) && (
                     <SelectInput
                         onChange={() => {}}
-                        defaultValue={''}
+                        defaultValue=""
                         options={conceptState}
                         data-testid="dropdown-input"
                         disabled={!question.enabled}
@@ -80,7 +83,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         <Button
                             type="button"
                             className={styles.searchBtn}
-                            outline
+                            outline={true}
                             onClick={() => {}}
                             disabled={!question.enabled}
                         >
@@ -97,7 +100,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         <Button
                             type="button"
                             className={styles.quickCodeLookupBtn}
-                            outline
+                            outline={true}
                             onClick={() => {}}
                             disabled={!question.enabled}
                         >

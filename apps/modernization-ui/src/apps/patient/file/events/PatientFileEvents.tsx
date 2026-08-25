@@ -1,16 +1,18 @@
 import { useComponentSizing } from 'design-system/sizing';
 import { ClassicModalProvider } from 'libs/classic';
+
+import { PatientFileView } from '../PatientFileView';
 import { usePatientFileData } from '../usePatientFileData';
-import { PatientFileInvestigationsCard } from './investigations';
-import { PatientFileLaboratoryReportsCard } from './reports/laboratory';
-import { PatientFileMorbidityReportsCard } from './reports/morbidity';
-import { PatientFileVaccinationsCard } from './vaccinations/PatientFileVaccinationsCard';
-import { PatientFileTreatmentsCard } from './treatments/PatientFileTreatmentsCard';
+
 import { PatientFileContactsNamedCard } from './contactsNamed/PatientFileContactsNamedCard';
 import { PatientFileDocumentsCard } from './documents/PatientFileDocumentsCard';
-import { PatientFileView } from '../PatientFileView';
+import { PatientFileInvestigationsCard } from './investigations';
 import { PatientFilePatientsNamedCard } from './patientsNamed/PatientFilePatientsNamedCard';
 import { PatientFileBirthRecordCard } from './record/birth';
+import { PatientFileLaboratoryReportsCard } from './reports/laboratory';
+import { PatientFileMorbidityReportsCard } from './reports/morbidity';
+import { PatientFileTreatmentsCard } from './treatments/PatientFileTreatmentsCard';
+import { PatientFileVaccinationsCard } from './vaccinations/PatientFileVaccinationsCard';
 
 const PatientFileEvents = () => {
     const { id, patient, events } = usePatientFileData();
@@ -53,13 +55,13 @@ const PatientFileEvents = () => {
                 <PatientFileDocumentsCard id="documents" provider={events.get().documents} sizing={sizing} />
                 <PatientFileContactsNamedCard
                     provider={events.get().contactNamed}
-                    id={'contact-named'}
+                    id="contact-named"
                     patient={patient}
                     sizing={sizing}
                 />
                 <PatientFilePatientsNamedCard
                     provider={events.get().patientNamed}
-                    id={'patient-named'}
+                    id="patient-named"
                     patient={patient}
                     sizing={sizing}
                 />

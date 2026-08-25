@@ -1,12 +1,13 @@
 import { ReactNode, useEffect, useState } from 'react';
+
 import {
-    mappingComparator,
-    withDirection,
-    Direction,
-    nullsLast,
-    defaultComparator,
     Comparator,
+    defaultComparator,
+    Direction,
+    mappingComparator,
+    nullsLast,
     SortingInteraction,
+    withDirection,
 } from 'libs/sorting';
 import { Mapping, Maybe } from 'utils';
 
@@ -57,7 +58,6 @@ type SortHandlerProps<T, U> = {
  * Reacts to the SortingInteraction to sort the data using the supplied Comparator.  If a Comparator is not defined
  * then the default comparator is used with values sorted as nulls last.
  *
- * @param {SortHandlerProps} props
  * @return {JSX.Element} - The result of children rendering function.
  */
 const SortHandler = <T, U>({

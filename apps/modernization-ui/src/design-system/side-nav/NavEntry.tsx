@@ -1,6 +1,7 @@
-import { Link } from 'react-router';
-import styles from './side-nav.module.scss';
 import classNames from 'classnames';
+import { Link } from 'react-router';
+
+import styles from './side-nav.module.scss';
 
 type Entry = {
     name: string;

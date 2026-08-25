@@ -1,5 +1,6 @@
-import { FeatureLayout } from 'feature';
 import { Navigate, RouteObject } from 'react-router';
+
+import { FeatureLayout } from 'feature';
 
 const routing: RouteObject[] = [
     {
@@ -65,10 +66,12 @@ const routing: RouteObject[] = [
                                     {
                                         path: ':ruleId',
                                         lazy: {
-                                            Component: async () =>
-                                                (
-                                                    await import('./pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule')
-                                                ).ViewBusinessRule,
+                                            Component: async () => {
+                                                const { ViewBusinessRule } =
+                                                    // eslint-disable-next-line max-len
+                                                    await import('./pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule');
+                                                return ViewBusinessRule;
+                                            },
                                         },
                                     },
                                     {

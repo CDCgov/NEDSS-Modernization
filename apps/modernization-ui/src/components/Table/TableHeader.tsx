@@ -1,10 +1,11 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import { Direction } from 'libs/sorting';
-import { Sorting } from './useTableSorting';
-import { Header } from './Table';
 
+import { Direction } from 'libs/sorting';
+
+import { Header } from './Table';
 import styles from './table.module.scss';
+import { Sorting } from './useTableSorting';
 
 type TableHeaderProps = {
     sorting: Sorting;
@@ -26,7 +27,7 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
                     <Button
                         disabled={!sorting.enabled}
                         className="usa-button--unstyled"
-                        type={'button'}
+                        type="button"
                         aria-label="sort"
                         onClick={() => sorting.toggleSort(header.name)}
                     >
@@ -41,11 +42,11 @@ const TableHeader = ({ sorting, header }: TableHeaderProps) => {
 const resolveSortIcon = (direction: Direction) => {
     switch (direction) {
         case Direction.Ascending:
-            return <Icon.ArrowDownward color="black" />;
+            return <Icon.ArrowDownward aria-label="ascending" color="black" />;
         case Direction.Descending:
-            return <Icon.ArrowUpward color="black" />;
+            return <Icon.ArrowUpward aria-label="descending" color="black" />;
         default:
-            return <Icon.SortArrow color="black" />;
+            return <Icon.SortArrow aria-label="unsorted" color="black" />;
     }
 };
 

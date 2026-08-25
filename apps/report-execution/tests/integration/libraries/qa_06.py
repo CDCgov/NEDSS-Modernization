@@ -20,15 +20,12 @@ class TestIntegrationQa06Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA06',
                 'library_name': 'qa_06',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data[0]) == 13
@@ -62,9 +59,7 @@ class TestIntegrationQa06Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA06',
                 'library_name': 'qa_06',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': (
                     'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1 = 2'
                 ),
@@ -72,7 +67,6 @@ class TestIntegrationQa06Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
         assert len(data) == 0
@@ -83,18 +77,14 @@ class TestIntegrationQa06Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA06',
                 'library_name': 'qa_06',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.header == 'QA06'
-        assert result.subheader is None
+        assert result.context_header is None
         assert result.description is None
-        assert result.content_type == 'table'
 
         assert result.content.columns[0] == 'PATIENT_NAME'
         assert result.content.columns[1] == 'PATIENT_LOCAL_ID'

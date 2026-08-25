@@ -1,1748 +1,10564 @@
 - !!python/tuple
-  - 79
+  - 355
   - null
   - null
   - null
-  - '21'
-  - Female
+  - 82 Years
   - ''
-  - '480'
-  - '59647717'
-  - '71946169'
+  - A
+  - '200'
+  - '93513778'
+  - '36052763'
   - N
-  - 2023-12-21
-  - 2020-07-07
-  - null
-  - ''
-  - ''
-  - '13'
-  - '21'
-- !!python/tuple
-  - 863
-  - null
-  - null
-  - null
-  - null
-  - ''
-  - W
-  - '850'
-  - '59746482'
-  - '46630231'
-  - N
-  - 2022-01-13
-  - 2022-07-23
+  - 2019-02-25
+  - 2024-02-07
   - null
   - XXX
   - ''
   - '13'
-  - null
+  - 82 Years
 - !!python/tuple
-  - 576
+  - 785
+  - 10000785
+  - Lord Farquaad
+  - null
+  - 29 Days
+  - Female
+  - AI
+  - '200'
+  - '33320840'
+  - '67952553'
+  - N
+  - 2022-08-25
+  - 2019-10-07
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 29 Days
+- !!python/tuple
+  - 904
+  - 10000904
   - null
   - null
-  - Allen, Michelle
-  - '3'
+  - 86 Years
   - null
   - ''
-  - '850'
-  - '83027981'
-  - '46042470'
+  - '200'
+  - '26682724'
+  - '28208065'
   - N
-  - 2023-07-26
-  - 2022-02-16
-  - allen, michelle
+  - 2021-02-14
+  - 2020-01-10
+  - null
   - ''
   - ''
   - '13'
-  - '3'
+  - 86 Years
 - !!python/tuple
-  - 49
+  - 71
+  - 10000071
+  - Puss in Boots
   - null
+  - 64 Days
   - null
-  - Anderson, Monica
-  - '26'
+  - W
+  - '300'
+  - '39433335'
+  - '69503595'
+  - N
+  - 2024-11-11
+  - 2021-11-29
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 64 Days
+- !!python/tuple
+  - 441
+  - 10000441
+  - Shrek
+  - null
+  - 24 Days
   - Male
+  - W
+  - '300'
+  - '99641018'
+  - '21070546'
+  - N
+  - 2019-11-19
+  - 2019-09-25
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 24 Days
+- !!python/tuple
+  - 336
+  - 10000336
+  - Donkey
+  - null
+  - 84 Years
+  - Male
+  - B
+  - '710'
+  - '56221440'
+  - '35988550'
+  - N
+  - 2020-05-03
+  - 2022-10-24
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 84 Years
+- !!python/tuple
+  - 600
+  - 10000600
+  - null
+  - null
+  - 2 Days
+  - Female
+  - A
+  - '710'
+  - '30316398'
+  - null
+  - N
+  - 2020-09-26
+  - 2021-10-13
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 2 Days
+- !!python/tuple
+  - 642
+  - 10000642
+  - Fiona
+  - null
+  - 80 Months
+  - ''
+  - ''
+  - '710'
+  - '38812615'
+  - '91146406'
+  - Y
+  - null
+  - null
+  - null
+  - ''
+  - ''
+  - '13'
+  - 80 Months
+- !!python/tuple
+  - 186
+  - 10000186
+  - Shrek
+  - null
+  - 50 Months
+  - ''
+  - W
+  - '720'
+  - '50558921'
+  - null
+  - N
+  - 2020-01-22
+  - 2024-10-27
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 50 Months
+- !!python/tuple
+  - 209
+  - 10000209
+  - Fiona
+  - null
+  - 94 Months
+  - ''
+  - B
+  - '720'
+  - '82992662'
+  - null
+  - N
+  - 2023-02-10
+  - 2019-02-27
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 94 Months
+- !!python/tuple
+  - 248
+  - null
+  - null
+  - null
+  - 91 Years
+  - ''
+  - AI
+  - '720'
+  - '67003347'
+  - '30508899'
+  - N
+  - 2023-10-11
+  - 2021-04-21
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 91 Years
+- !!python/tuple
+  - 300
+  - 10000300
+  - Shrek
+  - null
+  - 69 Days
+  - Female
+  - ''
+  - '720'
+  - '49480921'
+  - '83058806'
+  - N
+  - 2022-02-13
+  - 2019-03-11
+  - null
+  - ''
+  - ''
+  - '13'
+  - 69 Days
+- !!python/tuple
+  - 331
+  - null
+  - null
+  - null
+  - 87 Days
+  - null
+  - B
+  - '720'
+  - '16789407'
+  - '32694281'
+  - N
+  - 2021-08-16
+  - 2018-09-10
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 87 Days
+- !!python/tuple
+  - 932
+  - 10000932
+  - Shrek
+  - null
+  - 56 Months
+  - null
+  - B
+  - '720'
+  - '69479757'
+  - '81448560'
+  - N
+  - 2024-01-15
+  - 2018-12-10
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 56 Months
+- !!python/tuple
+  - 992
+  - 10000992
+  - null
+  - null
+  - 55 Years
+  - Female
+  - A
+  - '720'
+  - '17445254'
+  - '12713541'
+  - N
+  - 2021-10-03
+  - 2022-09-15
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 55 Years
+- !!python/tuple
+  - 199
+  - 10000199
+  - Puss in Boots
+  - null
+  - 1 Months
+  - ''
+  - AI
+  - '730'
+  - '21109512'
+  - '35819973'
+  - N
+  - 2018-07-07
+  - 2019-03-18
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 1 Months
+- !!python/tuple
+  - 755
+  - null
+  - null
+  - null
+  - 33 Months
+  - ''
   - W
   - '730'
-  - '56766480'
-  - '82427062'
+  - '93624935'
+  - '60676184'
   - N
+  - 2022-11-15
+  - 2020-06-01
   - null
-  - 2024-07-27
-  - anderson, monica
   - XXX
   - ''
   - '13'
-  - '26'
+  - 33 Months
 - !!python/tuple
-  - 643
+  - 972
+  - 10000972
+  - Puss in Boots
   - null
-  - null
-  - Andrews, Isaac
-  - '61'
-  - Male
-  - W
-  - '100'
-  - '27838256'
-  - '31386349'
-  - N
-  - 2018-05-25
-  - 2020-10-10
-  - andrews, isaac
-  - XXX
-  - ''
-  - '13'
-  - '61'
-- !!python/tuple
-  - 95
-  - null
-  - null
-  - Baker, Alexander
-  - '18'
+  - 23 Days
   - Male
   - ''
-  - '350'
-  - null
-  - '81443808'
+  - '730'
+  - '33358140'
+  - '67804460'
   - N
-  - 2022-03-22
-  - 2019-10-01
-  - baker, alexander
+  - 2023-03-05
+  - 2020-03-13
+  - null
   - ''
   - ''
   - '13'
-  - '18'
+  - 23 Days
 - !!python/tuple
-  - 75
+  - 155
+  - 10000155
+  - Shrek
   - null
-  - null
-  - Beasley, Sarah
-  - '29'
-  - Female
-  - B
-  - '410'
-  - '92461629'
-  - '42697430'
-  - N
-  - 2024-11-24
-  - 2022-08-03
-  - beasley, sarah
-  - XXX
-  - ''
-  - '13'
-  - '29'
-- !!python/tuple
-  - 900
-  - null
-  - null
-  - Bell, Brittany
-  - '96'
-  - Female
+  - 26 Days
+  - Male
   - AI
-  - '600'
-  - '35250201'
-  - '64284184'
-  - N
-  - 2019-03-16
-  - 2021-11-19
-  - bell, brittany
-  - XXX
-  - ''
-  - '13'
-  - '96'
-- !!python/tuple
-  - 34
-  - null
-  - null
-  - Berry, Carrie
-  - '81'
-  - Male
-  - null
-  - '420'
-  - '34136124'
-  - '54693037'
-  - N
-  - 2022-01-03
-  - 2024-05-20
-  - berry, carrie
-  - ''
-  - ''
-  - '13'
-  - '81'
-- !!python/tuple
-  - 668
-  - null
-  - null
-  - Buchanan, James
-  - '37'
-  - Female
-  - B
-  - '410'
-  - '66491158'
-  - '39681774'
-  - N
-  - 2023-11-21
-  - 2021-07-08
-  - buchanan, james
-  - XXX
-  - ''
-  - '13'
-  - '37'
-- !!python/tuple
-  - 675
-  - null
-  - null
-  - Campbell, Jordan
-  - '29'
-  - Male
-  - A
-  - '745'
-  - '66684863'
-  - '12326949'
-  - N
-  - 2023-01-16
-  - 2020-10-24
-  - campbell, jordan
-  - XXX
-  - ''
-  - '13'
-  - '29'
-- !!python/tuple
-  - 818
-  - null
-  - null
-  - Campbell, Scott
-  - '28'
-  - ''
-  - B
   - '790'
-  - '31864240'
-  - '14147879'
+  - '70211998'
+  - '62891797'
   - N
-  - 2020-12-02
-  - 2018-09-19
-  - campbell, scott
+  - 2019-08-05
+  - 2020-08-28
+  - null
   - XXX
   - ''
   - '13'
-  - '28'
+  - 26 Days
 - !!python/tuple
-  - 118
+  - 493
+  - 10000493
+  - Shrek
   - null
-  - null
-  - Carter, Felicia
-  - '15'
-  - ''
-  - B
-  - '300'
-  - '31228325'
-  - '75891034'
-  - N
-  - 2022-04-07
-  - 2023-02-22
-  - carter, felicia
-  - XXX
-  - ''
-  - '13'
-  - '15'
-- !!python/tuple
-  - 409
-  - null
-  - null
-  - Clark, Ethan
-  - '74'
-  - null
-  - W
-  - '720'
-  - '57378597'
-  - '64586842'
-  - N
-  - 2022-06-20
-  - 2024-05-08
-  - clark, ethan
-  - XXX
-  - ''
-  - '13'
-  - '74'
-- !!python/tuple
-  - 918
-  - null
-  - null
-  - Coleman, Jason
-  - 33 years
-  - Male
-  - B
-  - '470'
-  - '51302088'
-  - '23484312'
-  - N
-  - 2018-12-04
-  - 2018-07-16
-  - coleman, jason
-  - XXX
-  - ''
-  - '13'
-  - 33 years
-- !!python/tuple
-  - 829
-  - null
-  - null
-  - Conner, Stephen
-  - '62'
-  - Male
-  - B
-  - '470'
-  - '44523697'
-  - '99894490'
-  - N
-  - 2022-10-07
-  - 2019-08-08
-  - conner, stephen
-  - XXX
-  - ''
-  - '13'
-  - '62'
-- !!python/tuple
-  - 943
-  - null
-  - null
-  - Cook, Crystal
-  - '65'
-  - Male
-  - ''
-  - '750'
-  - '28452849'
-  - '72341130'
-  - N
-  - 2019-03-11
-  - 2018-12-18
-  - cook, crystal
-  - ''
-  - ''
-  - '13'
-  - '65'
-- !!python/tuple
-  - 295
-  - null
-  - null
-  - Cooper, Steven
-  - null
-  - null
+  - 75 Years
+  - Female
   - AI
-  - '740'
-  - '92260359'
-  - '43214708'
+  - '790'
+  - '84090061'
+  - '71634499'
   - N
+  - 2021-11-29
+  - 2020-08-02
   - null
-  - 2024-12-22
-  - cooper, steven
   - XXX
   - ''
   - '13'
-  - null
+  - 75 Years
 - !!python/tuple
-  - 279
+  - 175
+  - 10000175
+  - Shrek
   - null
-  - null
-  - Davis, Alyssa
-  - '8'
+  - 42 Months
   - Female
-  - W
-  - '490'
-  - '24079207'
-  - '46968362'
-  - N
-  - 2022-04-10
-  - 2019-09-17
-  - davis, alyssa
-  - XXX
-  - ''
-  - '13'
-  - '8'
-- !!python/tuple
-  - 883
-  - null
-  - null
-  - Davis, Derrick
-  - 11 years
-  - Male
-  - ''
-  - '480'
-  - '16954785'
-  - '20275627'
-  - N
-  - 2020-12-11
-  - 2021-12-09
-  - davis, derrick
-  - ''
-  - ''
-  - '13'
-  - 11 years
-- !!python/tuple
-  - 109
-  - null
-  - null
-  - Day, Brent
-  - '20'
-  - ''
   - AI
-  - '470'
-  - '79192807'
-  - '12069465'
+  - '900'
+  - '47278811'
+  - '51696577'
   - N
-  - 2024-05-13
-  - 2020-06-06
-  - day, brent
+  - 2021-10-22
+  - 2024-09-05
+  - null
   - XXX
   - ''
   - '13'
-  - '20'
+  - 42 Months
 - !!python/tuple
-  - 403
+  - 233
+  - 10000233
   - null
   - null
-  - Edwards, Ryan
-  - '24'
+  - .
   - ''
-  - null
-  - '100'
-  - '49014836'
-  - '53785272'
-  - N
-  - null
-  - 2021-09-29
-  - edwards, ryan
-  - ''
-  - ''
-  - '13'
-  - '24'
-- !!python/tuple
-  - 48
-  - null
-  - null
-  - Fitzgerald, Patricia
-  - 27 years
-  - Male
-  - A
-  - '470'
-  - '43767579'
-  - '87729941'
-  - N
-  - 2018-07-29
-  - 2018-12-26
-  - fitzgerald, patricia
-  - XXX
-  - ''
-  - '13'
-  - 27 years
-- !!python/tuple
-  - 305
-  - null
-  - null
-  - Freeman, Shannon
-  - '1'
-  - ''
-  - ''
-  - '745'
-  - '72095144'
-  - '47237267'
-  - N
-  - 2022-07-30
-  - 2019-03-23
-  - freeman, shannon
-  - ''
-  - ''
-  - '13'
-  - '1'
-- !!python/tuple
-  - 296
-  - null
-  - null
-  - Garcia, Wanda
-  - '40'
-  - Female
-  - W
-  - '450'
-  - '27516164'
-  - '49453223'
-  - N
-  - 2019-03-14
-  - 2023-07-17
-  - garcia, wanda
-  - XXX
-  - ''
-  - '13'
-  - '40'
-- !!python/tuple
-  - 631
-  - null
-  - null
-  - George, Jeffrey
-  - '8'
-  - Female
-  - W
-  - '450'
-  - '13811604'
-  - '46711684'
-  - N
-  - 2023-03-07
-  - 2024-01-23
-  - george, jeffrey
-  - XXX
-  - ''
-  - '13'
-  - '8'
-- !!python/tuple
-  - 654
-  - null
-  - null
-  - Harris, Darren
-  - '90'
-  - Female
   - ''
   - '900'
-  - '90784291'
-  - '67794228'
+  - '52221634'
+  - '26035137'
   - N
-  - 2021-12-13
-  - 2024-04-10
-  - harris, darren
+  - 2021-01-20
+  - 2024-10-03
+  - null
   - ''
   - ''
   - '13'
-  - '90'
+  - .
 - !!python/tuple
-  - 779
+  - 364
+  - 10000364
+  - Puss in Boots
   - null
-  - null
-  - Harris, Vanessa
-  - '11'
+  - 58 Months
   - Male
-  - null
-  - '720'
-  - '88828806'
-  - '14682633'
-  - N
-  - 2020-06-09
-  - 2021-09-29
-  - harris, vanessa
-  - ''
-  - ''
-  - '13'
-  - '11'
-- !!python/tuple
-  - 999
-  - null
-  - null
-  - Hayes, Lindsay
-  - null
-  - Female
-  - B
-  - '790'
-  - '71280007'
-  - '57565394'
-  - N
-  - 2024-06-14
-  - 2018-11-10
-  - hayes, lindsay
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 649
-  - null
-  - null
-  - Hebert, Patrick
-  - '33'
-  - null
-  - A
-  - '410'
-  - '43872468'
-  - '49556987'
-  - N
-  - 2018-09-27
-  - 2023-11-13
-  - hebert, patrick
-  - XXX
-  - ''
-  - '13'
-  - '33'
-- !!python/tuple
-  - 284
-  - null
-  - null
-  - Hernandez, Gabriella
-  - null
-  - Male
-  - W
+  - AI
   - '900'
-  - '31799630'
-  - '84065610'
+  - '89228233'
+  - '63528610'
   - N
-  - 2021-08-27
-  - 2020-05-20
-  - hernandez, gabriella
+  - 2022-07-10
+  - 2023-01-04
+  - null
   - XXX
   - ''
   - '13'
-  - null
-- !!python/tuple
-  - 725
-  - null
-  - null
-  - Hines, Brandon
-  - '18'
-  - null
-  - null
-  - '420'
-  - '69602751'
-  - '30452416'
-  - N
-  - 2021-04-18
-  - 2021-11-11
-  - hines, brandon
-  - ''
-  - ''
-  - '13'
-  - '18'
-- !!python/tuple
-  - 430
-  - null
-  - null
-  - Houston, Caroline
-  - 82 years
-  - Male
-  - A
-  - '100'
-  - '46272366'
-  - '25896271'
-  - N
-  - 2019-12-17
-  - 2018-07-03
-  - houston, caroline
-  - XXX
-  - ''
-  - '13'
-  - 82 years
-- !!python/tuple
-  - 161
-  - null
-  - null
-  - Hudson, Logan
-  - '9'
-  - ''
-  - null
-  - '600'
-  - '22700071'
-  - '11809054'
-  - N
-  - null
-  - 2021-07-10
-  - hudson, logan
-  - ''
-  - ''
-  - '13'
-  - '9'
-- !!python/tuple
-  - 752
-  - null
-  - null
-  - Hutchinson, Maria
-  - null
-  - Male
-  - AI
-  - '790'
-  - '91373874'
-  - '88745323'
-  - N
-  - 2021-03-26
-  - 2020-04-11
-  - hutchinson, maria
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 372
-  - null
-  - null
-  - Jackson, Christine
-  - null
-  - Male
-  - B
-  - '800'
-  - '50995222'
-  - '27353582'
-  - N
-  - 2024-04-20
-  - 2022-12-27
-  - jackson, christine
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 669
-  - null
-  - null
-  - James, Amber
-  - '47'
-  - ''
-  - W
-  - '950'
-  - '63345719'
-  - '53887117'
-  - N
-  - 2023-12-31
-  - 2021-11-05
-  - james, amber
-  - XXX
-  - ''
-  - '13'
-  - '47'
-- !!python/tuple
-  - 948
-  - null
-  - null
-  - Jimenez, Lucas
-  - '59'
-  - Male
-  - W
-  - '745'
-  - '24187028'
-  - '45246926'
-  - N
-  - 2024-11-26
-  - 2019-07-18
-  - jimenez, lucas
-  - XXX
-  - ''
-  - '13'
-  - '59'
-- !!python/tuple
-  - 516
-  - null
-  - null
-  - Kim, Daniel
-  - '5'
-  - Female
-  - B
-  - '100'
-  - '49924722'
-  - '23939769'
-  - N
-  - 2021-06-26
-  - 2019-05-06
-  - kim, daniel
-  - XXX
-  - ''
-  - '13'
-  - '5'
-- !!python/tuple
-  - 104
-  - null
-  - null
-  - Landry, Laura
-  - '94'
-  - Female
-  - AI
-  - '450'
-  - '59982133'
-  - '26289084'
-  - N
-  - 2018-11-19
-  - 2020-08-04
-  - landry, laura
-  - XXX
-  - ''
-  - '13'
-  - '94'
+  - 58 Months
 - !!python/tuple
   - 270
   - null
   - null
-  - Larson, Jeff
-  - '56'
+  - null
+  - 50 Years
   - Male
-  - B
-  - '350'
-  - '61048843'
-  - '85120216'
+  - A
+  - '950'
+  - '35322433'
+  - '61543987'
   - N
-  - 2024-08-18
-  - 2022-04-15
-  - larson, jeff
+  - 2022-12-03
+  - 2020-11-22
+  - null
   - XXX
   - ''
   - '13'
-  - '56'
+  - 50 Years
 - !!python/tuple
-  - 674
+  - 342
+  - 10000342
+  - Fiona
+  - null
+  - 56 Months
+  - Female
+  - AI
+  - '950'
+  - '90614216'
+  - '15064401'
+  - N
+  - 2021-08-08
+  - 2019-09-13
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 56 Months
+- !!python/tuple
+  - 713
+  - 10000713
+  - Donkey
+  - null
+  - 95 Days
+  - ''
+  - W
+  - '950'
+  - '67189902'
+  - '86828832'
+  - N
+  - 2018-12-11
+  - 2024-02-28
+  - null
+  - XXX
+  - ''
+  - '13'
+  - 95 Days
+- !!python/tuple
+  - 725
+  - 10000725
+  - Donkey
+  - null
+  - 61 Years
+  - ''
+  - ''
+  - '950'
+  - '48852811'
+  - '10838158'
+  - N
+  - 2019-07-17
+  - 2019-02-28
+  - null
+  - ''
+  - ''
+  - '13'
+  - 61 Years
+- !!python/tuple
+  - 910
+  - 10000910
+  - Lord Farquaad
+  - null
+  - 78 Years
+  - null
+  - W
+  - '950'
+  - '29609209'
+  - '77081825'
+  - Y
+  - 2018-09-25
   - null
   - null
-  - Lee, Edward
-  - '39'
+  - XXX
+  - ''
+  - '13'
+  - 78 Years
+- !!python/tuple
+  - 10
+  - 10000010
+  - Fiona
+  - Brown, Lisa
+  - 59 Days
+  - ''
+  - B
+  - '200'
+  - '86771657'
+  - '94947114'
+  - N
+  - 2021-02-18
+  - 2020-01-02
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 59 Days
+- !!python/tuple
+  - 24
+  - 10000024
+  - Puss in Boots
+  - Brown, Lisa
+  - 27 Years
+  - Male
+  - ''
+  - '200'
+  - '64884230'
+  - '90113332'
+  - N
+  - 2022-12-21
+  - 2021-01-27
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 27 Years
+- !!python/tuple
+  - 47
+  - 10000047
+  - Lord Farquaad
+  - Brown, Lisa
+  - 31 Years
+  - Female
+  - A
+  - '200'
+  - '32860574'
+  - '45415509'
+  - N
+  - 2020-12-07
+  - 2021-10-02
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 31 Years
+- !!python/tuple
+  - 132
+  - 10000132
+  - Fiona
+  - Brown, Lisa
+  - 3 Days
+  - Female
+  - AI
+  - '200'
+  - null
+  - null
+  - N
+  - 2023-05-04
+  - 2022-07-22
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 3 Days
+- !!python/tuple
+  - 302
+  - 10000302
+  - Donkey
+  - Brown, Lisa
+  - 62 Months
+  - Male
+  - AI
+  - '200'
+  - '43580814'
+  - '92157311'
+  - N
+  - 2021-01-10
+  - 2024-07-03
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 62 Months
+- !!python/tuple
+  - 317
+  - 10000317
+  - Fiona
+  - Brown, Lisa
+  - 69 Days
+  - Male
+  - null
+  - '200'
+  - '35950433'
+  - null
+  - N
+  - 2019-03-08
+  - 2019-12-31
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 69 Days
+- !!python/tuple
+  - 512
+  - 10000512
+  - Donkey
+  - Brown, Lisa
+  - 66 Years
+  - Female
+  - null
+  - '200'
+  - '21103017'
+  - '49055164'
+  - N
+  - 2021-01-30
+  - 2019-04-07
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 66 Years
+- !!python/tuple
+  - 531
+  - 10000531
+  - null
+  - Brown, Lisa
+  - 99 Days
+  - ''
+  - W
+  - '200'
+  - '15859877'
+  - '37141588'
+  - N
+  - 2022-10-26
+  - 2019-06-22
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 99 Days
+- !!python/tuple
+  - 536
+  - 10000536
+  - null
+  - Brown, Lisa
+  - 51 Days
+  - Female
+  - ''
+  - '200'
+  - null
+  - '59157664'
+  - N
+  - 2022-08-08
+  - 2019-12-30
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 51 Days
+- !!python/tuple
+  - 635
+  - 10000635
+  - Puss in Boots
+  - Brown, Lisa
+  - 65 Months
+  - Male
+  - A
+  - '200'
+  - '92995208'
+  - '46577992'
+  - N
+  - 2020-05-20
+  - 2019-12-05
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 65 Months
+- !!python/tuple
+  - 720
+  - 10000720
+  - Puss in Boots
+  - Brown, Lisa
+  - 82 Days
+  - Female
+  - A
+  - '200'
+  - null
+  - null
+  - N
+  - 2020-07-21
+  - 2018-05-30
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 82 Days
+- !!python/tuple
+  - 765
+  - 10000765
+  - Donkey
+  - Brown, Lisa
+  - 43 Days
+  - Female
+  - ''
+  - '200'
+  - '68135028'
+  - '63882460'
+  - N
+  - 2023-10-19
+  - 2021-05-18
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 43 Days
+- !!python/tuple
+  - 811
+  - 10000811
+  - Fiona
+  - Brown, Lisa
+  - 23 Months
+  - Female
+  - null
+  - '200'
+  - '39945366'
+  - '96125729'
+  - N
+  - 2020-04-05
+  - 2020-03-01
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 23 Months
+- !!python/tuple
+  - 32
+  - 10000032
+  - null
+  - Brown, Lisa
+  - 67 Days
+  - Female
+  - null
+  - '300'
+  - '38809882'
+  - '87850946'
+  - N
+  - 2021-08-04
+  - 2021-07-04
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 67 Days
+- !!python/tuple
+  - 79
+  - 10000079
+  - Puss in Boots
+  - Brown, Lisa
+  - 93 Months
+  - ''
+  - W
+  - '300'
+  - '15118338'
+  - '35841007'
+  - N
+  - 2024-06-21
+  - 2021-09-27
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 93 Months
+- !!python/tuple
+  - 108
+  - 10000108
+  - Shrek
+  - Brown, Lisa
+  - 73 Days
+  - null
+  - W
+  - '300'
+  - '88232020'
+  - '39360884'
+  - N
+  - 2019-08-20
+  - 2024-01-05
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 73 Days
+- !!python/tuple
+  - 123
+  - 10000123
+  - null
+  - Brown, Lisa
+  - 3 Days
+  - null
+  - W
+  - '300'
+  - '59990248'
+  - '80874662'
+  - N
+  - 2024-03-16
+  - 2018-10-19
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 3 Days
+- !!python/tuple
+  - 205
+  - 10000205
+  - Lord Farquaad
+  - Brown, Lisa
+  - 1 Months
+  - Female
+  - W
+  - '300'
+  - null
+  - '72673847'
+  - N
+  - 2018-10-17
+  - 2020-02-15
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 1 Months
+- !!python/tuple
+  - 460
+  - 10000460
+  - Fiona
+  - Brown, Lisa
+  - 67 Days
+  - Male
+  - B
+  - '300'
+  - '13854878'
+  - '16948391'
+  - N
+  - 2018-07-26
+  - 2019-11-27
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 67 Days
+- !!python/tuple
+  - 470
+  - 10000470
+  - Puss in Boots
+  - Brown, Lisa
+  - 25 Days
+  - Male
+  - AI
+  - '300'
+  - null
+  - '78016737'
+  - N
+  - 2021-07-18
+  - 2018-08-08
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 25 Days
+- !!python/tuple
+  - 538
+  - 10000538
+  - Shrek
+  - Brown, Lisa
+  - 73 Days
+  - ''
+  - W
+  - '300'
+  - '70230142'
+  - '69249466'
+  - N
+  - 2020-05-17
+  - 2019-01-19
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 73 Days
+- !!python/tuple
+  - 685
+  - 10000685
+  - Shrek
+  - Brown, Lisa
+  - 10 Days
+  - Male
+  - ''
+  - '300'
+  - '69934202'
+  - '54570371'
+  - N
+  - 2024-11-22
+  - 2021-06-09
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 10 Days
+- !!python/tuple
+  - 771
+  - 10000771
+  - Fiona
+  - Brown, Lisa
+  - 6 Years
+  - Female
+  - A
+  - '300'
+  - '47914386'
+  - '43422069'
+  - N
+  - 2021-09-07
+  - 2019-03-30
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 6 Years
+- !!python/tuple
+  - 829
+  - 10000829
+  - Fiona
+  - Brown, Lisa
+  - 30 Years
+  - null
+  - A
+  - '300'
+  - '52475982'
+  - '36319727'
+  - N
+  - 2024-01-30
+  - 2024-11-15
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 30 Years
+- !!python/tuple
+  - 991
+  - 10000991
+  - Lord Farquaad
+  - Brown, Lisa
+  - 95 Months
+  - Female
+  - W
+  - '300'
+  - '10232890'
+  - '64005711'
+  - N
+  - 2018-11-02
+  - 2024-05-17
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 95 Months
+- !!python/tuple
+  - 45
+  - 10000045
+  - Puss in Boots
+  - Brown, Lisa
+  - 2 Years
+  - ''
+  - null
+  - '710'
+  - '64763957'
+  - '84372394'
+  - N
+  - 2022-04-27
+  - 2023-10-29
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 2 Years
+- !!python/tuple
+  - 109
+  - 10000109
+  - Puss in Boots
+  - Brown, Lisa
+  - 26 Years
+  - Male
+  - ''
+  - '710'
+  - '94314084'
+  - '98932783'
+  - N
+  - 2019-01-27
+  - 2024-02-21
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 26 Years
+- !!python/tuple
+  - 335
+  - 10000335
+  - Donkey
+  - Brown, Lisa
+  - 50 Months
+  - Male
+  - B
+  - '710'
+  - '44754415'
+  - '91459868'
+  - N
+  - 2020-09-18
+  - 2020-12-14
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 50 Months
+- !!python/tuple
+  - 471
+  - 10000471
+  - null
+  - Brown, Lisa
+  - 37 Months
+  - ''
+  - B
+  - '710'
+  - '38748912'
+  - '22975076'
+  - N
+  - 2020-03-20
+  - 2021-10-20
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 37 Months
+- !!python/tuple
+  - 622
+  - 10000622
+  - null
+  - Brown, Lisa
+  - 57 Days
+  - ''
+  - AI
+  - '710'
+  - '71436272'
+  - '26919368'
+  - N
+  - 2024-11-21
+  - 2024-08-07
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 57 Days
+- !!python/tuple
+  - 694
+  - 10000694
+  - Fiona
+  - Brown, Lisa
+  - 4 Years
+  - null
+  - ''
+  - '710'
+  - '44438284'
+  - '40013682'
+  - N
+  - 2024-01-27
+  - 2024-10-31
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 4 Years
+- !!python/tuple
+  - 751
+  - 10000751
+  - Fiona
+  - Brown, Lisa
+  - 82 Years
+  - ''
+  - ''
+  - '710'
+  - '74515046'
+  - '10757680'
+  - N
+  - 2024-04-29
+  - 2022-12-23
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 82 Years
+- !!python/tuple
+  - 874
+  - 10000874
+  - Puss in Boots
+  - Brown, Lisa
+  - 18 Days
+  - Male
+  - ''
+  - '710'
+  - '10858275'
+  - null
+  - N
+  - 2020-02-22
+  - 2018-12-20
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 18 Days
+- !!python/tuple
+  - 895
+  - 10000895
+  - Shrek
+  - Brown, Lisa
+  - 34 Months
+  - Male
+  - AI
+  - '710'
+  - '58795545'
+  - '30105508'
+  - N
+  - 2024-08-06
+  - 2024-04-28
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 34 Months
+- !!python/tuple
+  - 965
+  - null
+  - null
+  - Brown, Lisa
+  - 8 Days
+  - Female
+  - AI
+  - '710'
+  - '24055924'
+  - '85195940'
+  - N
+  - null
+  - 2019-02-10
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 8 Days
+- !!python/tuple
+  - 986
+  - 10000986
+  - Donkey
+  - Brown, Lisa
+  - 66 Months
+  - ''
+  - ''
+  - '710'
+  - '32152521'
+  - '61779883'
+  - N
+  - null
+  - 2024-07-04
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 66 Months
+- !!python/tuple
+  - 994
+  - null
+  - null
+  - Brown, Lisa
+  - 7 Days
+  - Female
+  - null
+  - '710'
+  - '68435351'
+  - '40732654'
+  - N
+  - 2022-11-19
+  - 2020-04-06
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 7 Days
+- !!python/tuple
+  - 19
+  - 10000019
+  - Donkey
+  - Brown, Lisa
+  - 47 Months
+  - Male
+  - B
+  - '720'
+  - null
+  - '38805552'
+  - N
+  - null
+  - 2020-05-18
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 47 Months
+- !!python/tuple
+  - 514
+  - 10000514
+  - Fiona
+  - Brown, Lisa
+  - 10 Years
+  - Male
+  - AI
+  - '720'
+  - '80050885'
+  - '45967934'
+  - N
+  - 2023-08-26
+  - 2023-02-12
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 10 Years
+- !!python/tuple
+  - 516
+  - 10000516
+  - Lord Farquaad
+  - Brown, Lisa
+  - 19 Years
+  - null
+  - AI
+  - '720'
+  - null
+  - '65489721'
+  - N
+  - 2025-01-02
+  - 2021-07-12
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 19 Years
+- !!python/tuple
+  - 571
+  - 10000571
+  - Fiona
+  - Brown, Lisa
+  - 93 Months
+  - ''
+  - A
+  - '720'
+  - '30127443'
+  - '63256017'
+  - N
+  - 2023-07-15
+  - 2020-06-11
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 93 Months
+- !!python/tuple
+  - 627
+  - 10000627
+  - Lord Farquaad
+  - Brown, Lisa
+  - .
+  - ''
+  - W
+  - '720'
+  - '22687005'
+  - '93527881'
+  - N
+  - null
+  - 2022-12-18
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 649
+  - null
+  - null
+  - Brown, Lisa
+  - 19 Years
+  - Male
+  - W
+  - '720'
+  - '89526441'
+  - '37972726'
+  - N
+  - 2018-09-30
+  - 2024-10-29
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 19 Years
+- !!python/tuple
+  - 673
+  - 10000673
+  - Lord Farquaad
+  - Brown, Lisa
+  - 54 Years
+  - Female
+  - ''
+  - '720'
+  - '39807570'
+  - '68875545'
+  - N
+  - 2024-04-09
+  - 2020-02-23
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 54 Years
+- !!python/tuple
+  - 833
+  - 10000833
+  - null
+  - Brown, Lisa
+  - 14 Months
+  - ''
+  - B
+  - '720'
+  - '34314645'
+  - '97688734'
+  - N
+  - 2023-04-29
+  - 2021-03-18
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 14 Months
+- !!python/tuple
+  - 861
+  - 10000861
+  - Lord Farquaad
+  - Brown, Lisa
+  - 33 Years
+  - Male
+  - W
+  - '720'
+  - '30347913'
+  - '31337253'
+  - N
+  - null
+  - 2022-07-03
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 33 Years
+- !!python/tuple
+  - 901
+  - 10000901
+  - Fiona
+  - Brown, Lisa
+  - 84 Years
+  - null
+  - null
+  - '720'
+  - '27412651'
+  - '82348531'
+  - N
+  - 2019-01-29
+  - 2019-02-14
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 84 Years
+- !!python/tuple
+  - 936
+  - 10000936
+  - Fiona
+  - Brown, Lisa
+  - 78 Months
+  - Female
+  - W
+  - '720'
+  - '42712518'
+  - '75395904'
+  - N
+  - 2020-04-08
+  - 2019-09-08
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 78 Months
+- !!python/tuple
+  - 180
+  - 10000180
+  - Donkey
+  - Brown, Lisa
+  - 60 Years
+  - Male
+  - W
+  - '730'
+  - '33116765'
+  - '45653409'
+  - N
+  - 2022-01-08
+  - 2022-08-10
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 60 Years
+- !!python/tuple
+  - 215
+  - 10000215
+  - Fiona
+  - Brown, Lisa
+  - 16 Months
+  - ''
+  - W
+  - '730'
+  - '41386117'
+  - '70803358'
+  - N
+  - 2022-01-16
+  - 2020-09-15
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 16 Months
+- !!python/tuple
+  - 370
+  - 10000370
+  - Lord Farquaad
+  - Brown, Lisa
+  - 98 Years
+  - Female
+  - null
+  - '730'
+  - '81475752'
+  - '60531875'
+  - N
+  - 2024-04-28
+  - 2019-10-09
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 98 Years
+- !!python/tuple
+  - 411
+  - 10000411
+  - null
+  - Brown, Lisa
+  - 3 Months
+  - Male
+  - A
+  - '730'
+  - '73559037'
+  - '44463374'
+  - N
+  - 2021-03-03
+  - 2024-05-12
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 3 Months
+- !!python/tuple
+  - 445
+  - 10000445
+  - Donkey
+  - Brown, Lisa
+  - 74 Years
+  - ''
+  - B
+  - '730'
+  - '89478862'
+  - '48880241'
+  - N
+  - 2024-10-29
+  - 2021-04-22
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 74 Years
+- !!python/tuple
+  - 875
+  - 10000875
+  - Shrek
+  - Brown, Lisa
+  - 22 Months
+  - Female
+  - W
+  - '730'
+  - '93118311'
+  - '66698331'
+  - N
+  - 2020-05-14
+  - 2022-09-08
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 22 Months
+- !!python/tuple
+  - 154
+  - 10000154
+  - Donkey
+  - Brown, Lisa
+  - 5 Months
+  - Female
+  - A
+  - '790'
+  - '12984669'
+  - '33978116'
+  - N
+  - 2021-08-09
+  - 2024-11-11
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 5 Months
+- !!python/tuple
+  - 519
+  - 10000519
+  - Lord Farquaad
+  - Brown, Lisa
+  - 27 Days
+  - Male
+  - B
+  - '790'
+  - '14883891'
+  - '31156085'
+  - N
+  - 2018-11-26
+  - 2019-07-19
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 27 Days
+- !!python/tuple
+  - 561
+  - 10000561
+  - Donkey
+  - Brown, Lisa
+  - .
+  - Female
+  - W
+  - '790'
+  - '16514357'
+  - '89592358'
+  - N
+  - 2023-05-30
+  - 2020-06-09
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 587
+  - 10000587
+  - null
+  - Brown, Lisa
+  - 92 Months
+  - Female
+  - A
+  - '790'
+  - '91627043'
+  - '38812009'
+  - N
+  - 2022-01-02
+  - 2023-07-07
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 92 Months
+- !!python/tuple
+  - 636
+  - 10000636
+  - null
+  - Brown, Lisa
+  - 97 Days
+  - Female
+  - AI
+  - '790'
+  - '66513771'
+  - '93775760'
+  - N
+  - 2020-01-03
+  - 2019-03-24
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 97 Days
+- !!python/tuple
+  - 719
+  - 10000719
+  - Lord Farquaad
+  - Brown, Lisa
+  - 57 Months
+  - Female
+  - W
+  - '790'
+  - '63053906'
+  - '45242433'
+  - N
+  - 2020-07-31
+  - 2024-02-06
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 57 Months
+- !!python/tuple
+  - 906
+  - 10000906
+  - null
+  - Brown, Lisa
+  - 78 Months
+  - Male
+  - A
+  - '790'
+  - '44844435'
+  - '29732803'
+  - N
+  - 2024-07-09
+  - 2019-08-14
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 78 Months
+- !!python/tuple
+  - 7
+  - null
+  - null
+  - Brown, Lisa
+  - 93 Months
+  - Male
+  - ''
+  - '900'
+  - null
+  - '47213580'
+  - N
+  - 2019-07-28
+  - 2022-06-28
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 93 Months
+- !!python/tuple
+  - 156
+  - 10000156
+  - Donkey
+  - Brown, Lisa
+  - 81 Days
+  - Male
+  - B
+  - '900'
+  - '95658152'
+  - '48512454'
+  - N
+  - 2019-06-20
+  - 2022-02-15
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 81 Days
+- !!python/tuple
+  - 322
+  - 10000322
+  - Lord Farquaad
+  - Brown, Lisa
+  - 90 Days
+  - Male
+  - A
+  - '900'
+  - '33112123'
+  - '14722272'
+  - N
+  - 2018-09-24
+  - 2021-02-23
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 90 Days
+- !!python/tuple
+  - 361
+  - 10000361
+  - Donkey
+  - Brown, Lisa
+  - 58 Months
+  - ''
+  - W
+  - '900'
+  - '69282043'
+  - '15904095'
+  - Y
+  - null
+  - null
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 58 Months
+- !!python/tuple
+  - 385
+  - 10000385
+  - Fiona
+  - Brown, Lisa
+  - 16 Months
+  - Male
+  - AI
+  - '900'
+  - '96565514'
+  - '46665864'
+  - N
+  - 2018-08-03
+  - 2022-05-26
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 16 Months
+- !!python/tuple
+  - 397
+  - 10000397
+  - Puss in Boots
+  - Brown, Lisa
+  - .
+  - ''
+  - ''
+  - '900'
+  - '79843091'
+  - '48024113'
+  - Y
+  - 2022-08-30
+  - null
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 477
+  - 10000477
+  - Lord Farquaad
+  - Brown, Lisa
+  - 69 Years
+  - Male
+  - AI
+  - '900'
+  - '49366717'
+  - null
+  - N
+  - 2023-02-03
+  - 2019-04-08
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 69 Years
+- !!python/tuple
+  - 492
+  - 10000492
+  - Shrek
+  - Brown, Lisa
+  - 31 Days
+  - ''
+  - ''
+  - '900'
+  - '83781027'
+  - '64042893'
+  - N
+  - 2021-10-14
+  - 2023-06-13
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 31 Days
+- !!python/tuple
+  - 623
+  - 10000623
+  - Lord Farquaad
+  - Brown, Lisa
+  - 52 Years
+  - Male
+  - W
+  - '900'
+  - '54462442'
+  - null
+  - N
+  - 2020-05-27
+  - 2024-12-19
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 52 Years
+- !!python/tuple
+  - 626
+  - 10000626
+  - Shrek
+  - Brown, Lisa
+  - 3 Days
+  - Female
+  - ''
+  - '900'
+  - '72553814'
+  - '21191279'
+  - N
+  - 2023-09-13
+  - 2019-09-14
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 3 Days
+- !!python/tuple
+  - 683
+  - null
+  - null
+  - Brown, Lisa
+  - 13 Months
+  - ''
+  - B
+  - '900'
+  - '54540591'
+  - '83461375'
+  - N
+  - 2024-05-03
+  - 2018-09-12
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 13 Months
+- !!python/tuple
+  - 845
+  - null
+  - null
+  - Brown, Lisa
+  - 41 Months
+  - Female
+  - ''
+  - '900'
+  - '13848907'
+  - '80010664'
+  - N
+  - 2022-05-31
+  - 2022-10-25
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 41 Months
+- !!python/tuple
+  - 856
+  - 10000856
+  - Puss in Boots
+  - Brown, Lisa
+  - 49 Days
+  - Female
+  - A
+  - '900'
+  - '86498830'
+  - '88665975'
+  - N
+  - 2020-01-27
+  - 2022-01-30
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 49 Days
+- !!python/tuple
+  - 969
+  - 10000969
+  - null
+  - Brown, Lisa
+  - 28 Months
+  - null
+  - ''
+  - '900'
+  - '86641954'
+  - '43075664'
+  - N
+  - null
+  - 2024-01-04
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 28 Months
+- !!python/tuple
+  - 977
+  - 10000977
+  - Puss in Boots
+  - Brown, Lisa
+  - 82 Years
+  - Female
+  - B
+  - '900'
+  - '10763029'
+  - '98228651'
+  - N
+  - 2021-02-28
+  - 2024-10-18
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 82 Years
+- !!python/tuple
+  - 66
+  - 10000066
+  - Fiona
+  - Brown, Lisa
+  - 29 Months
+  - ''
+  - AI
+  - '950'
+  - '12855946'
+  - '46734086'
+  - N
+  - 2021-11-16
+  - 2018-10-19
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 29 Months
+- !!python/tuple
+  - 112
+  - 10000112
+  - Fiona
+  - Brown, Lisa
+  - 79 Days
+  - Male
+  - ''
+  - '950'
+  - '74611641'
+  - '28087626'
+  - N
+  - 2021-02-26
+  - 2020-12-24
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 79 Days
+- !!python/tuple
+  - 296
+  - 10000296
+  - null
+  - Brown, Lisa
+  - 43 Years
+  - null
+  - B
+  - '950'
+  - null
+  - '85390158'
+  - N
+  - 2021-08-08
+  - 2022-03-23
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 43 Years
+- !!python/tuple
+  - 338
+  - 10000338
+  - Shrek
+  - Brown, Lisa
+  - 84 Months
+  - Female
+  - W
+  - '950'
+  - '61371539'
+  - '35567201'
+  - N
+  - 2022-02-26
+  - 2020-11-20
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 84 Months
+- !!python/tuple
+  - 341
+  - 10000341
+  - Donkey
+  - Brown, Lisa
+  - 5 Years
+  - ''
+  - ''
+  - '950'
+  - '47328123'
+  - '42009496'
+  - N
+  - 2019-09-19
+  - 2019-12-28
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 5 Years
+- !!python/tuple
+  - 432
+  - 10000432
+  - Fiona
+  - Brown, Lisa
+  - 74 Days
+  - null
+  - AI
+  - '950'
+  - '21524506'
+  - '62378876'
+  - N
+  - 2018-12-21
+  - 2019-03-22
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 74 Days
+- !!python/tuple
+  - 500
+  - 10000500
+  - null
+  - Brown, Lisa
+  - 3 Years
+  - ''
+  - W
+  - '950'
+  - '20473656'
+  - null
+  - N
+  - null
+  - 2023-09-23
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 3 Years
+- !!python/tuple
+  - 567
+  - 10000567
+  - Shrek
+  - Brown, Lisa
+  - 44 Days
+  - Male
+  - W
+  - '950'
+  - '24017550'
+  - '52569526'
+  - N
+  - 2022-07-28
+  - 2018-08-23
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 44 Days
+- !!python/tuple
+  - 585
+  - 10000585
+  - null
+  - Brown, Lisa
+  - 98 Years
+  - ''
+  - null
+  - '950'
+  - '61809094'
+  - '60595329'
+  - N
+  - 2024-01-07
+  - 2019-12-01
+  - brown, lisa
+  - ''
+  - ''
+  - '13'
+  - 98 Years
+- !!python/tuple
+  - 730
+  - 10000730
+  - Donkey
+  - Brown, Lisa
+  - 25 Years
+  - Female
+  - W
+  - '950'
+  - '83044230'
+  - '30777103'
+  - N
+  - 2018-11-13
+  - 2022-01-06
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 25 Years
+- !!python/tuple
+  - 744
+  - 10000744
+  - Donkey
+  - Brown, Lisa
+  - 78 Days
+  - Male
+  - W
+  - '950'
+  - '74842453'
+  - '26619974'
+  - N
+  - 2018-07-07
+  - 2023-05-15
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 78 Days
+- !!python/tuple
+  - 793
+  - null
+  - null
+  - Brown, Lisa
+  - 38 Years
+  - null
+  - B
+  - '950'
+  - '27878135'
+  - null
+  - N
+  - 2021-11-01
+  - 2023-01-16
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 38 Years
+- !!python/tuple
+  - 794
+  - 10000794
+  - Fiona
+  - Brown, Lisa
+  - 5 Years
+  - ''
+  - A
+  - '950'
+  - '40564935'
+  - '59398474'
+  - N
+  - 2024-07-11
+  - 2019-05-26
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 5 Years
+- !!python/tuple
+  - 837
+  - 10000837
+  - Donkey
+  - Brown, Lisa
+  - 83 Months
+  - Female
+  - B
+  - '950'
+  - '16535979'
+  - '10663183'
+  - N
+  - 2019-07-03
+  - 2024-11-17
+  - brown, lisa
+  - XXX
+  - ''
+  - '13'
+  - 83 Months
+- !!python/tuple
+  - 94
+  - 10000094
+  - Lord Farquaad
+  - Davis, Tom
+  - .
+  - ''
+  - A
+  - '200'
+  - '33044805'
+  - null
+  - N
+  - 2021-11-22
+  - 2022-06-12
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 660
+  - 10000660
+  - null
+  - Davis, Tom
+  - 34 Days
+  - ''
+  - null
+  - '200'
+  - null
+  - '19111949'
+  - N
+  - 2023-05-04
+  - 2023-05-30
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 34 Days
+- !!python/tuple
+  - 663
+  - 10000663
+  - Donkey
+  - Davis, Tom
+  - 69 Years
+  - Male
+  - B
+  - '200'
+  - '83542015'
+  - '53782225'
+  - N
+  - 2020-09-28
+  - 2024-12-14
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 69 Years
+- !!python/tuple
+  - 737
+  - 10000737
+  - null
+  - Davis, Tom
+  - 51 Days
+  - ''
+  - ''
+  - '200'
+  - '33926941'
+  - '83453785'
+  - N
+  - 2024-11-11
+  - 2021-02-04
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 51 Days
+- !!python/tuple
+  - 752
+  - 10000752
+  - null
+  - Davis, Tom
+  - 55 Months
+  - Male
+  - W
+  - '200'
+  - '28624115'
+  - '54390280'
+  - N
+  - 2019-09-21
+  - 2018-11-01
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 55 Months
+- !!python/tuple
+  - 757
+  - null
+  - null
+  - Davis, Tom
+  - 86 Months
+  - null
+  - A
+  - '200'
+  - '75292923'
+  - '94873861'
+  - N
+  - 2024-04-02
+  - 2022-06-18
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 86 Months
+- !!python/tuple
+  - 844
+  - 10000844
+  - Lord Farquaad
+  - Davis, Tom
+  - 81 Years
+  - Female
+  - A
+  - '200'
+  - '79637401'
+  - null
+  - N
+  - 2023-02-25
+  - 2020-08-08
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 81 Years
+- !!python/tuple
+  - 849
+  - 10000849
+  - Lord Farquaad
+  - Davis, Tom
+  - 61 Days
+  - ''
+  - A
+  - '200'
+  - '54961863'
+  - '54710517'
+  - N
+  - 2022-05-11
+  - 2018-05-24
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 61 Days
+- !!python/tuple
+  - 871
+  - 10000871
+  - Lord Farquaad
+  - Davis, Tom
+  - 38 Years
+  - Female
+  - ''
+  - '200'
+  - '92925257'
+  - '46638165'
+  - N
+  - 2019-05-28
+  - 2023-05-04
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 38 Years
+- !!python/tuple
+  - 80
+  - 10000080
+  - null
+  - Davis, Tom
+  - 67 Years
+  - ''
+  - ''
+  - '300'
+  - '13450321'
+  - '22695503'
+  - N
+  - 2020-06-13
+  - 2023-06-17
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 67 Years
+- !!python/tuple
+  - 99
+  - null
+  - null
+  - Davis, Tom
+  - 27 Days
+  - Female
+  - ''
+  - '300'
+  - '61284249'
+  - '93113263'
+  - N
+  - 2024-09-08
+  - 2018-07-23
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 27 Days
+- !!python/tuple
+  - 265
+  - 10000265
+  - Puss in Boots
+  - Davis, Tom
+  - 42 Days
+  - null
+  - ''
+  - '300'
+  - '11126063'
+  - null
+  - N
+  - 2022-07-11
+  - 2023-07-19
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 42 Days
+- !!python/tuple
+  - 433
+  - 10000433
+  - Fiona
+  - Davis, Tom
+  - 6 Years
+  - ''
+  - W
+  - '300'
+  - '23984479'
+  - '55348903'
+  - N
+  - 2023-12-11
+  - 2023-03-21
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 6 Years
+- !!python/tuple
+  - 611
+  - 10000611
+  - Fiona
+  - Davis, Tom
+  - 56 Years
+  - ''
+  - ''
+  - '300'
+  - '52761602'
+  - '22221653'
+  - N
+  - 2020-03-11
+  - 2022-08-22
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 56 Years
+- !!python/tuple
+  - 616
+  - 10000616
+  - Puss in Boots
+  - Davis, Tom
+  - 8 Months
+  - Female
+  - A
+  - '300'
+  - '37980624'
+  - '81045384'
+  - N
+  - 2024-05-15
+  - 2019-04-22
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 8 Months
+- !!python/tuple
+  - 873
+  - 10000873
+  - Fiona
+  - Davis, Tom
+  - 95 Years
+  - Male
+  - W
+  - '300'
+  - '77487954'
+  - '46914031'
+  - N
+  - 2024-03-01
+  - 2024-11-09
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 95 Years
+- !!python/tuple
+  - 60
+  - 10000060
+  - Puss in Boots
+  - Davis, Tom
+  - 81 Months
+  - ''
+  - ''
+  - '710'
+  - '55248192'
+  - null
+  - N
+  - 2020-11-03
+  - 2019-01-14
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 81 Months
+- !!python/tuple
+  - 111
+  - 10000111
+  - Donkey
+  - Davis, Tom
+  - 6 Months
+  - Male
+  - AI
+  - '710'
+  - null
+  - '65931725'
+  - N
+  - 2019-05-30
+  - 2021-10-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 6 Months
+- !!python/tuple
+  - 139
+  - 10000139
+  - Puss in Boots
+  - Davis, Tom
+  - 6 Years
+  - ''
+  - AI
+  - '710'
+  - '86166091'
+  - '54632777'
+  - N
+  - null
+  - 2023-08-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 6 Years
+- !!python/tuple
+  - 197
+  - 10000197
+  - Puss in Boots
+  - Davis, Tom
+  - 67 Months
+  - Male
+  - A
+  - '710'
+  - '10940630'
+  - '28487142'
+  - N
+  - 2024-11-10
+  - 2022-11-06
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 67 Months
+- !!python/tuple
+  - 226
+  - 10000226
+  - Donkey
+  - Davis, Tom
+  - 24 Months
+  - ''
+  - ''
+  - '710'
+  - '54770021'
+  - '48581981'
+  - N
+  - null
+  - 2018-08-30
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 24 Months
+- !!python/tuple
+  - 285
+  - null
+  - null
+  - Davis, Tom
+  - 52 Months
+  - Female
+  - null
+  - '710'
+  - '86582781'
+  - null
+  - Y
+  - 2020-04-18
+  - null
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 52 Months
+- !!python/tuple
+  - 308
+  - 10000308
+  - Shrek
+  - Davis, Tom
+  - 36 Years
+  - ''
+  - AI
+  - '710'
+  - '34143698'
+  - '80319200'
+  - Y
+  - 2018-08-02
+  - null
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 36 Years
+- !!python/tuple
+  - 423
+  - 10000423
+  - Shrek
+  - Davis, Tom
+  - 22 Days
+  - null
+  - ''
+  - '710'
+  - '43782831'
+  - null
+  - Y
+  - 2024-05-06
+  - null
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 22 Days
+- !!python/tuple
+  - 459
+  - 10000459
+  - Shrek
+  - Davis, Tom
+  - 98 Months
+  - Male
+  - B
+  - '710'
+  - '63160099'
+  - '53352827'
+  - N
+  - 2019-11-23
+  - 2023-09-20
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 98 Months
+- !!python/tuple
+  - 569
+  - 10000569
+  - Lord Farquaad
+  - Davis, Tom
+  - 60 Months
+  - Female
+  - W
+  - '710'
+  - '38777710'
+  - '50768175'
+  - N
+  - 2023-09-21
+  - 2021-02-16
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 60 Months
+- !!python/tuple
+  - 712
+  - 10000712
+  - Lord Farquaad
+  - Davis, Tom
+  - 74 Months
+  - Female
+  - B
+  - '710'
+  - '10943042'
+  - '95216497'
+  - N
+  - 2022-11-29
+  - 2021-12-22
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 74 Months
+- !!python/tuple
+  - 866
+  - null
+  - null
+  - Davis, Tom
+  - 99 Years
+  - Female
+  - B
+  - '710'
+  - '82389753'
+  - '14877367'
+  - Y
+  - 2023-01-25
+  - null
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 99 Years
+- !!python/tuple
+  - 878
+  - 10000878
+  - Fiona
+  - Davis, Tom
+  - 32 Days
+  - null
+  - A
+  - '710'
+  - '39571786'
+  - '75287447'
+  - N
+  - null
+  - 2023-03-08
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 32 Days
+- !!python/tuple
+  - 914
+  - 10000914
+  - Fiona
+  - Davis, Tom
+  - 51 Days
+  - ''
+  - null
+  - '710'
+  - '43546838'
+  - null
+  - N
+  - 2024-10-10
+  - 2024-07-25
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 51 Days
+- !!python/tuple
+  - 960
+  - 10000960
+  - null
+  - Davis, Tom
+  - 34 Years
+  - Female
+  - B
+  - '710'
+  - '33873153'
+  - '35168884'
+  - N
+  - 2020-02-04
+  - 2024-08-24
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 34 Years
+- !!python/tuple
+  - 988
+  - 10000988
+  - Shrek
+  - Davis, Tom
+  - 40 Days
+  - Female
+  - A
+  - '710'
+  - '22818963'
+  - '98131356'
+  - N
+  - 2022-02-05
+  - 2021-08-30
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 40 Days
+- !!python/tuple
+  - 231
+  - 10000231
+  - Puss in Boots
+  - Davis, Tom
+  - 25 Years
+  - Female
+  - null
+  - '720'
+  - '57009572'
+  - '68116515'
+  - N
+  - 2023-12-15
+  - 2022-02-20
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 25 Years
+- !!python/tuple
+  - 294
+  - 10000294
+  - null
+  - Davis, Tom
+  - 58 Months
+  - ''
+  - W
+  - '720'
+  - '46604720'
+  - '34280707'
+  - N
+  - 2022-10-02
+  - 2024-08-06
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 58 Months
+- !!python/tuple
+  - 304
+  - 10000304
+  - Lord Farquaad
+  - Davis, Tom
+  - 40 Months
+  - ''
+  - W
+  - '720'
+  - '24365078'
+  - '60642933'
+  - N
+  - 2020-03-14
+  - 2018-12-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 40 Months
+- !!python/tuple
+  - 334
+  - null
+  - null
+  - Davis, Tom
+  - .
+  - Female
+  - ''
+  - '720'
+  - '14315513'
+  - '42488110'
+  - N
+  - 2024-05-01
+  - 2020-05-05
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 349
+  - 10000349
+  - Donkey
+  - Davis, Tom
+  - 39 Years
+  - Male
+  - ''
+  - '720'
+  - '82713545'
+  - '88825640'
+  - N
+  - 2018-05-21
+  - 2021-12-11
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 39 Years
+- !!python/tuple
+  - 822
+  - 10000822
+  - null
+  - Davis, Tom
+  - 2 Years
+  - ''
+  - W
+  - '720'
+  - '90061908'
+  - '87221557'
+  - N
+  - 2020-04-03
+  - 2021-12-12
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 2 Years
+- !!python/tuple
+  - 931
+  - 10000931
+  - Donkey
+  - Davis, Tom
+  - 81 Years
+  - Female
+  - ''
+  - '720'
+  - null
+  - '95142377'
+  - N
+  - null
+  - 2018-09-23
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 81 Years
+- !!python/tuple
+  - 957
+  - 10000957
+  - Donkey
+  - Davis, Tom
+  - 56 Months
+  - Male
+  - ''
+  - '720'
+  - '17295346'
+  - '17500516'
+  - N
+  - 2023-01-07
+  - 2020-06-20
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 56 Months
+- !!python/tuple
+  - 975
+  - 10000975
+  - Shrek
+  - Davis, Tom
+  - 1 Days
+  - Female
+  - B
+  - '720'
+  - '23661203'
+  - null
+  - N
+  - 2022-09-02
+  - 2020-12-05
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 1 Days
+- !!python/tuple
+  - 989
+  - 10000989
+  - Lord Farquaad
+  - Davis, Tom
+  - 37 Months
+  - Female
+  - W
+  - '720'
+  - '81214169'
+  - '46243172'
+  - N
+  - 2022-01-04
+  - 2023-11-05
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 37 Months
+- !!python/tuple
+  - 51
+  - 10000051
+  - Shrek
+  - Davis, Tom
+  - 31 Years
+  - ''
+  - W
+  - '730'
+  - '66258839'
+  - '57219527'
+  - N
+  - 2023-08-05
+  - 2020-08-10
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 31 Years
+- !!python/tuple
+  - 76
+  - 10000076
+  - Puss in Boots
+  - Davis, Tom
+  - 43 Months
+  - Male
+  - W
+  - '730'
+  - '76813823'
+  - '61533536'
+  - N
+  - 2023-04-23
+  - 2019-07-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 43 Months
+- !!python/tuple
+  - 247
+  - null
+  - null
+  - Davis, Tom
+  - 30 Years
+  - Female
+  - ''
+  - '730'
+  - '54100737'
+  - '48626958'
+  - N
+  - 2024-05-16
+  - 2022-07-06
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 30 Years
+- !!python/tuple
+  - 337
+  - 10000337
+  - Donkey
+  - Davis, Tom
+  - 30 Years
+  - Male
+  - B
+  - '730'
+  - '51747859'
+  - '14249323'
+  - N
+  - 2023-06-01
+  - 2019-12-31
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 30 Years
+- !!python/tuple
+  - 346
+  - 10000346
+  - null
+  - Davis, Tom
+  - 35 Months
+  - Male
+  - AI
+  - '730'
+  - '80183447'
+  - '70577283'
+  - N
+  - 2024-09-16
+  - 2020-06-01
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 35 Months
+- !!python/tuple
+  - 392
+  - 10000392
+  - null
+  - Davis, Tom
+  - 46 Months
+  - Male
+  - A
+  - '730'
+  - '76326965'
+  - '20878441'
+  - N
+  - 2019-02-22
+  - 2021-09-18
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 46 Months
+- !!python/tuple
+  - 572
+  - 10000572
+  - Lord Farquaad
+  - Davis, Tom
+  - 29 Years
+  - Female
+  - A
+  - '730'
+  - '46543136'
+  - '88740639'
+  - N
+  - 2023-11-18
+  - 2019-04-12
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 29 Years
+- !!python/tuple
+  - 594
+  - 10000594
+  - Lord Farquaad
+  - Davis, Tom
+  - 16 Days
+  - Male
+  - A
+  - '730'
+  - '92076607'
+  - '93127629'
+  - N
+  - 2022-05-10
+  - 2021-03-09
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 16 Days
+- !!python/tuple
+  - 630
+  - 10000630
+  - Puss in Boots
+  - Davis, Tom
+  - 72 Months
+  - Female
+  - A
+  - '730'
+  - null
+  - '69175882'
+  - N
+  - 2023-03-06
+  - 2023-11-06
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 72 Months
+- !!python/tuple
+  - 761
+  - 10000761
+  - Lord Farquaad
+  - Davis, Tom
+  - 9 Months
+  - Female
+  - ''
+  - '730'
+  - '70523731'
+  - null
+  - N
+  - 2024-03-22
+  - 2019-07-13
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 9 Months
+- !!python/tuple
+  - 915
+  - 10000915
+  - Shrek
+  - Davis, Tom
+  - 15 Days
+  - Male
+  - ''
+  - '730'
+  - '60023227'
+  - '43155279'
+  - N
+  - 2024-08-05
+  - 2020-04-07
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 15 Days
+- !!python/tuple
+  - 201
+  - 10000201
+  - Donkey
+  - Davis, Tom
+  - 1 Years
+  - Male
+  - null
+  - '790'
+  - '37761540'
+  - '96044881'
+  - N
+  - 2019-11-10
+  - 2019-12-01
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 1 Years
+- !!python/tuple
+  - 220
+  - 10000220
+  - Lord Farquaad
+  - Davis, Tom
+  - 48 Days
+  - Male
+  - AI
+  - '790'
+  - '97697957'
+  - null
+  - N
+  - 2023-12-04
+  - 2022-11-15
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 48 Days
+- !!python/tuple
+  - 240
+  - 10000240
+  - null
+  - Davis, Tom
+  - 15 Months
   - ''
   - AI
   - '790'
-  - '57008616'
-  - '65815408'
+  - '78814159'
+  - '92424503'
   - N
-  - 2024-04-09
-  - 2019-08-28
-  - lee, edward
+  - 2024-03-20
+  - 2021-07-19
+  - davis, tom
   - XXX
   - ''
   - '13'
-  - '39'
+  - 15 Months
 - !!python/tuple
-  - 443
+  - 249
+  - 10000249
+  - Lord Farquaad
+  - Davis, Tom
+  - 59 Years
+  - null
+  - AI
+  - '790'
+  - '60527665'
+  - '76210453'
+  - N
+  - 2022-05-15
+  - 2024-09-18
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 59 Years
+- !!python/tuple
+  - 298
+  - 10000298
+  - Fiona
+  - Davis, Tom
+  - 56 Days
+  - ''
+  - AI
+  - '790'
+  - '59513320'
+  - '33740268'
+  - N
+  - 2020-07-28
+  - 2021-04-05
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 56 Days
+- !!python/tuple
+  - 366
+  - 10000366
+  - Fiona
+  - Davis, Tom
+  - 48 Days
+  - ''
+  - B
+  - '790'
+  - '42927815'
+  - '44403959'
+  - N
+  - 2023-01-14
+  - 2020-05-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 48 Days
+- !!python/tuple
+  - 598
+  - 10000598
+  - Shrek
+  - Davis, Tom
+  - 55 Months
+  - Female
+  - B
+  - '790'
+  - '37464010'
+  - '91993077'
+  - N
+  - 2023-12-19
+  - 2019-12-13
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 55 Months
+- !!python/tuple
+  - 688
+  - 10000688
+  - null
+  - Davis, Tom
+  - 78 Months
+  - Male
+  - ''
+  - '790'
+  - '65089599'
+  - '34373852'
+  - N
+  - 2024-01-04
+  - 2019-10-13
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 78 Months
+- !!python/tuple
+  - 711
+  - 10000711
+  - null
+  - Davis, Tom
+  - 93 Years
+  - Female
+  - B
+  - '790'
+  - '25606308'
+  - null
+  - N
+  - 2019-04-14
+  - 2018-06-20
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 93 Years
+- !!python/tuple
+  - 758
+  - 10000758
+  - Shrek
+  - Davis, Tom
+  - 64 Days
+  - Male
+  - ''
+  - '790'
+  - '18547536'
+  - '28962764'
+  - N
+  - 2020-05-30
+  - 2021-02-17
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 64 Days
+- !!python/tuple
+  - 779
   - null
   - null
-  - Lewis, Gregory
+  - Davis, Tom
+  - 7 Years
   - null
+  - AI
+  - '790'
+  - '97548288'
+  - '47814230'
+  - Y
+  - 2018-08-04
+  - null
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 7 Years
+- !!python/tuple
+  - 782
+  - 10000782
+  - Puss in Boots
+  - Davis, Tom
+  - 92 Years
+  - Male
+  - null
+  - '790'
+  - '69558387'
+  - '95104375'
+  - Y
+  - 2022-07-08
+  - null
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 92 Years
+- !!python/tuple
+  - 136
+  - 10000136
+  - Shrek
+  - Davis, Tom
+  - 28 Months
+  - Female
+  - AI
+  - '900'
+  - '68336415'
+  - '29847096'
+  - N
+  - 2020-03-06
+  - 2023-12-09
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 28 Months
+- !!python/tuple
+  - 229
+  - 10000229
+  - Fiona
+  - Davis, Tom
+  - 20 Months
+  - Female
+  - B
+  - '900'
+  - '37440229'
+  - null
+  - N
+  - 2018-09-15
+  - 2020-07-10
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 20 Months
+- !!python/tuple
+  - 271
+  - 10000271
+  - Donkey
+  - Davis, Tom
+  - 10 Days
+  - Female
+  - AI
+  - '900'
+  - '58263694'
+  - '48620631'
+  - N
+  - 2023-05-15
+  - 2021-01-31
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 10 Days
+- !!python/tuple
+  - 281
+  - 10000281
+  - Lord Farquaad
+  - Davis, Tom
+  - .
   - Female
   - ''
-  - '350'
-  - '32207084'
-  - '59821086'
+  - '900'
+  - '84557817'
+  - '62242548'
   - N
-  - 2023-08-06
-  - 2021-03-08
-  - lewis, gregory
+  - 2020-11-20
+  - 2018-08-28
+  - davis, tom
   - ''
   - ''
   - '13'
-  - null
+  - .
 - !!python/tuple
-  - 582
+  - 288
+  - 10000288
+  - Puss in Boots
+  - Davis, Tom
+  - 4 Years
+  - ''
+  - AI
+  - '900'
+  - '68314120'
+  - '88675652'
+  - N
+  - 2019-11-04
+  - 2020-11-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 4 Years
+- !!python/tuple
+  - 352
+  - 10000352
+  - Puss in Boots
+  - Davis, Tom
+  - 27 Days
+  - Female
+  - AI
+  - '900'
+  - '20727785'
+  - '95836059'
+  - Y
+  - 2020-08-28
   - null
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 27 Days
+- !!python/tuple
+  - 496
+  - 10000496
+  - Fiona
+  - Davis, Tom
+  - 29 Days
+  - Female
+  - ''
+  - '900'
+  - '13054200'
+  - '65228371'
+  - N
+  - 2024-07-06
+  - 2021-10-08
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 29 Days
+- !!python/tuple
+  - 540
+  - 10000540
+  - Shrek
+  - Davis, Tom
+  - 71 Years
+  - Male
+  - W
+  - '900'
+  - '64275071'
+  - '23832936'
+  - N
+  - 2020-08-01
+  - 2018-05-28
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 71 Years
+- !!python/tuple
+  - 545
+  - 10000545
+  - Donkey
+  - Davis, Tom
+  - 69 Months
+  - ''
+  - ''
+  - '900'
+  - '60573248'
+  - '80737927'
+  - N
+  - 2021-08-02
+  - 2023-03-17
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 69 Months
+- !!python/tuple
+  - 652
+  - 10000652
+  - Lord Farquaad
+  - Davis, Tom
+  - 33 Days
   - null
-  - Mendez, Matthew
-  - '19'
+  - W
+  - '900'
+  - '97211723'
+  - '78106090'
+  - N
+  - 2018-08-30
+  - 2021-01-02
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 33 Days
+- !!python/tuple
+  - 655
+  - 10000655
+  - Shrek
+  - Davis, Tom
+  - 98 Years
+  - Female
+  - AI
+  - '900'
+  - '17045943'
+  - '73169137'
+  - N
+  - 2021-11-04
+  - 2020-03-29
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 98 Years
+- !!python/tuple
+  - 754
+  - 10000754
+  - Lord Farquaad
+  - Davis, Tom
+  - 74 Days
+  - ''
+  - A
+  - '900'
+  - '78919715'
+  - '35130008'
+  - N
+  - 2023-04-14
+  - 2023-11-02
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 74 Days
+- !!python/tuple
+  - 764
+  - 10000764
+  - Donkey
+  - Davis, Tom
+  - 63 Months
+  - Female
+  - W
+  - '900'
+  - '14610932'
+  - '68624345'
+  - N
+  - 2018-09-05
+  - 2020-08-31
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 63 Months
+- !!python/tuple
+  - 853
+  - 10000853
+  - Fiona
+  - Davis, Tom
+  - 75 Days
+  - ''
+  - W
+  - '900'
+  - '21722308'
+  - '73882369'
+  - N
+  - 2018-09-23
+  - 2018-12-04
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 75 Days
+- !!python/tuple
+  - 941
+  - 10000941
+  - Fiona
+  - Davis, Tom
+  - 39 Days
+  - Female
+  - AI
+  - '900'
+  - '55201255'
+  - '89476786'
+  - N
+  - 2018-07-10
+  - 2023-03-16
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 39 Days
+- !!python/tuple
+  - 946
+  - 10000946
+  - Puss in Boots
+  - Davis, Tom
+  - 39 Days
+  - Male
+  - A
+  - '900'
+  - '40911381'
+  - '82270408'
+  - N
+  - 2022-05-20
+  - 2023-07-29
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 39 Days
+- !!python/tuple
+  - 967
+  - 10000967
+  - Fiona
+  - Davis, Tom
+  - 94 Days
+  - Female
+  - AI
+  - '900'
+  - '48548708'
+  - '16762627'
+  - N
+  - 2018-06-28
+  - 2024-03-04
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 94 Days
+- !!python/tuple
+  - 8
+  - 10000008
+  - Fiona
+  - Davis, Tom
+  - 71 Years
+  - Female
+  - ''
+  - '950'
+  - '59325469'
+  - '23555246'
+  - N
+  - 2019-04-11
+  - 2020-04-29
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 71 Years
+- !!python/tuple
+  - 416
+  - 10000416
+  - Fiona
+  - Davis, Tom
+  - 18 Days
+  - ''
+  - AI
+  - '950'
+  - '52613354'
+  - '32526803'
+  - N
+  - 2019-06-12
+  - 2024-11-23
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 18 Days
+- !!python/tuple
+  - 478
+  - 10000478
+  - Fiona
+  - Davis, Tom
+  - 32 Years
+  - Female
+  - AI
+  - '950'
+  - '98027122'
+  - '23452441'
+  - N
+  - 2018-07-01
+  - 2020-07-26
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 32 Years
+- !!python/tuple
+  - 504
+  - 10000504
+  - Lord Farquaad
+  - Davis, Tom
+  - 7 Months
   - Male
   - B
-  - '480'
-  - '67689611'
-  - '97811326'
+  - '950'
+  - '66865706'
+  - '59849726'
   - N
-  - 2021-05-07
-  - 2023-07-14
-  - mendez, matthew
+  - 2019-11-17
+  - 2019-03-16
+  - davis, tom
   - XXX
   - ''
   - '13'
-  - '19'
+  - 7 Months
 - !!python/tuple
-  - 482
+  - 544
+  - 10000544
   - null
-  - null
-  - Meyer, Veronica
-  - 1 Years
-  - ''
-  - A
-  - '100'
-  - null
-  - '82469789'
-  - N
-  - 2020-06-18
-  - 2022-03-03
-  - meyer, veronica
-  - XXX
-  - ''
-  - '13'
-  - 1 Years
-- !!python/tuple
-  - 463
-  - null
-  - null
-  - Mitchell, Jonathan
-  - '69'
-  - Male
-  - A
-  - '350'
-  - '22334520'
-  - '79562021'
-  - N
-  - 2024-11-02
-  - 2018-05-12
-  - mitchell, jonathan
-  - XXX
-  - ''
-  - '13'
-  - '69'
-- !!python/tuple
-  - 538
-  - null
-  - null
-  - Moore, Kelly
-  - 12 Years
+  - Davis, Tom
+  - 42 Months
   - ''
   - W
   - '950'
-  - '86951775'
-  - '72570098'
+  - '83831839'
+  - '54622399'
   - N
-  - 2020-05-22
-  - 2024-07-05
-  - moore, kelly
+  - 2018-09-05
+  - 2019-04-09
+  - davis, tom
   - XXX
   - ''
   - '13'
-  - 12 Years
+  - 42 Months
 - !!python/tuple
-  - 217
-  - null
-  - null
-  - Moore, Trevor
-  - '11'
-  - ''
-  - ''
-  - '300'
-  - '69905603'
-  - '54674064'
-  - N
-  - 2024-11-10
-  - 2022-09-06
-  - moore, trevor
-  - ''
-  - ''
-  - '13'
-  - '11'
-- !!python/tuple
-  - 586
-  - null
-  - null
-  - Morales, Christopher
-  - '96'
+  - 580
+  - 10000580
+  - Puss in Boots
+  - Davis, Tom
+  - 61 Months
   - Male
-  - AI
-  - '750'
-  - '30355643'
-  - '69419561'
-  - N
   - null
-  - 2021-07-08
-  - morales, christopher
-  - XXX
+  - '950'
+  - '49477211'
+  - '49875744'
+  - N
+  - 2020-12-25
+  - 2019-05-25
+  - davis, tom
+  - ''
   - ''
   - '13'
-  - '96'
+  - 61 Months
 - !!python/tuple
-  - 383
-  - null
-  - null
-  - Morales, Robert
-  - '74'
+  - 727
+  - 10000727
+  - Lord Farquaad
+  - Davis, Tom
+  - 9 Months
+  - ''
+  - ''
+  - '950'
+  - '20811788'
+  - '82248379'
+  - N
+  - 2020-08-24
+  - 2018-09-29
+  - davis, tom
+  - ''
+  - ''
+  - '13'
+  - 9 Months
+- !!python/tuple
+  - 827
+  - 10000827
+  - Lord Farquaad
+  - Davis, Tom
+  - 83 Months
   - Female
-  - W
-  - '750'
-  - null
-  - '82076426'
+  - A
+  - '950'
+  - '15625078'
+  - '71726548'
   - N
-  - 2023-10-08
-  - 2021-09-22
-  - morales, robert
+  - 2023-09-03
+  - 2021-07-29
+  - davis, tom
   - XXX
   - ''
   - '13'
-  - '74'
+  - 83 Months
 - !!python/tuple
-  - 343
-  - null
-  - null
-  - Munoz, Adrian
-  - 6 years
-  - Male
-  - W
-  - '750'
-  - '22238121'
-  - '75897023'
-  - N
-  - 2023-05-01
-  - 2022-08-20
-  - munoz, adrian
-  - XXX
-  - ''
-  - '13'
-  - 6 years
-- !!python/tuple
-  - 923
-  - null
-  - null
-  - Nelson, Janet
+  - 892
+  - 10000892
+  - Lord Farquaad
+  - Davis, Tom
   - 28 Years
-  - Male
-  - W
-  - '740'
-  - '38997088'
-  - '29166111'
+  - Female
+  - A
+  - '950'
+  - '52699598'
+  - '65732865'
   - N
-  - 2022-02-06
-  - 2021-06-26
-  - nelson, janet
+  - 2024-02-25
+  - 2020-08-30
+  - davis, tom
   - XXX
   - ''
   - '13'
   - 28 Years
 - !!python/tuple
-  - 942
-  - null
-  - null
-  - Nelson, Michelle
-  - '47'
-  - Female
-  - AI
-  - '490'
-  - '97849883'
-  - '74371395'
+  - 907
+  - 10000907
+  - Shrek
+  - Davis, Tom
+  - 78 Years
+  - Male
+  - ''
+  - '950'
+  - '31774148'
+  - '99104971'
   - N
-  - 2021-07-03
-  - 2021-11-08
-  - nelson, michelle
-  - XXX
+  - 2024-12-14
+  - 2022-08-23
+  - davis, tom
+  - ''
   - ''
   - '13'
-  - '47'
+  - 78 Years
 - !!python/tuple
-  - 546
-  - null
-  - null
-  - Odonnell, Ronald
-  - '56'
-  - Female
+  - 940
+  - 10000940
+  - Donkey
+  - Davis, Tom
+  - 98 Months
+  - ''
   - B
   - '950'
-  - '55350536'
-  - '59798787'
+  - '56249132'
+  - '53552993'
   - N
-  - 2021-12-11
-  - 2021-12-19
-  - odonnell, ronald
+  - 2019-04-27
+  - 2021-05-17
+  - davis, tom
   - XXX
   - ''
   - '13'
-  - '56'
+  - 98 Months
 - !!python/tuple
-  - 417
+  - 973
   - null
   - null
-  - Oneal, Tiffany
-  - '60'
+  - Davis, Tom
+  - 27 Years
+  - ''
+  - AI
+  - '950'
   - null
-  - B
-  - '600'
-  - '92972414'
-  - '19487140'
+  - '98786607'
+  - N
+  - 2022-01-15
+  - 2024-03-18
+  - davis, tom
+  - XXX
+  - ''
+  - '13'
+  - 27 Years
+- !!python/tuple
+  - 168
+  - 10000168
+  - Puss in Boots
+  - Doe, Jane
+  - 29 Days
+  - Male
+  - A
+  - '200'
+  - '84953726'
+  - '76550562'
+  - N
+  - null
+  - 2020-11-22
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 29 Days
+- !!python/tuple
+  - 360
+  - 10000360
+  - Donkey
+  - Doe, Jane
+  - 89 Days
+  - ''
+  - AI
+  - '200'
+  - '85359852'
+  - '69195159'
   - N
   - 2024-07-18
-  - 2024-01-14
-  - oneal, tiffany
+  - 2023-03-24
+  - doe, jane
   - XXX
   - ''
   - '13'
-  - '60'
+  - 89 Days
 - !!python/tuple
-  - 910
-  - null
-  - null
-  - Orr, Chelsea
-  - '9'
+  - 419
+  - 10000419
+  - Lord Farquaad
+  - Doe, Jane
+  - 94 Months
   - Male
-  - ''
-  - '745'
-  - '21722065'
-  - '55378246'
-  - Y
-  - 2023-12-14
-  - null
-  - orr, chelsea
-  - ''
-  - ''
-  - '13'
-  - '9'
-- !!python/tuple
-  - 314
-  - null
-  - null
-  - Ortiz, Mark
-  - '95'
-  - ''
-  - null
-  - '350'
-  - '74151726'
-  - '75747139'
+  - B
+  - '200'
+  - '96977907'
+  - '12111255'
   - N
-  - 2023-07-25
-  - 2018-06-04
-  - ortiz, mark
-  - ''
-  - ''
-  - '13'
-  - '95'
-- !!python/tuple
-  - 784
-  - null
-  - null
-  - Page, Kevin
-  - '23'
-  - ''
-  - null
-  - '750'
-  - '18386548'
-  - null
-  - N
-  - 2022-10-06
-  - 2022-07-04
-  - page, kevin
-  - ''
+  - 2018-05-29
+  - 2018-12-29
+  - doe, jane
+  - XXX
   - ''
   - '13'
-  - '23'
+  - 94 Months
 - !!python/tuple
-  - 480
-  - null
-  - null
-  - Parker, Erin
-  - '67'
+  - 532
+  - 10000532
+  - Puss in Boots
+  - Doe, Jane
+  - 35 Years
   - Male
+  - A
+  - '200'
+  - '47340167'
+  - '57080790'
+  - N
+  - 2022-07-09
+  - 2024-07-12
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 35 Years
+- !!python/tuple
+  - 581
+  - 10000581
+  - Shrek
+  - Doe, Jane
+  - 18 Months
+  - null
+  - B
+  - '200'
+  - '97340778'
+  - null
+  - N
+  - 2023-09-07
+  - 2019-06-23
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 18 Months
+- !!python/tuple
+  - 608
+  - 10000608
+  - Fiona
+  - Doe, Jane
+  - .
+  - Male
+  - AI
+  - '200'
+  - null
+  - '58723303'
+  - N
+  - 2019-06-05
+  - 2023-08-18
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 731
+  - 10000731
+  - Lord Farquaad
+  - Doe, Jane
+  - 64 Days
+  - Female
+  - ''
+  - '200'
+  - '19731299'
+  - '71552776'
+  - N
+  - 2023-03-15
+  - 2024-03-17
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 64 Days
+- !!python/tuple
+  - 831
+  - 10000831
+  - Lord Farquaad
+  - Doe, Jane
+  - 38 Months
+  - Female
   - W
-  - '460'
-  - '37125250'
-  - '71992382'
+  - '200'
+  - '95742496'
+  - '10972749'
   - N
-  - null
-  - 2024-06-30
-  - parker, erin
+  - 2023-08-26
+  - 2019-05-02
+  - doe, jane
   - XXX
   - ''
   - '13'
-  - '67'
+  - 38 Months
 - !!python/tuple
-  - 549
+  - 850
+  - 10000850
+  - Fiona
+  - Doe, Jane
+  - 33 Days
+  - Female
+  - W
+  - '200'
+  - '13338873'
+  - '16477354'
+  - N
+  - null
+  - 2024-11-02
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 33 Days
+- !!python/tuple
+  - 15
+  - 10000015
+  - Puss in Boots
+  - Doe, Jane
+  - 61 Years
+  - Female
+  - AI
+  - '300'
+  - '17767502'
+  - '83537758'
+  - N
+  - 2023-01-28
+  - 2019-08-05
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 61 Years
+- !!python/tuple
+  - 41
   - null
   - null
-  - Payne, Darryl
-  - '95'
+  - Doe, Jane
+  - 62 Years
+  - Male
+  - B
+  - '300'
+  - '11552063'
+  - null
+  - N
+  - 2018-08-10
+  - 2024-01-03
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 62 Years
+- !!python/tuple
+  - 170
+  - 10000170
+  - Lord Farquaad
+  - Doe, Jane
+  - 30 Days
+  - Male
+  - AI
+  - '300'
+  - '39274122'
+  - '17698424'
+  - N
+  - 2020-08-09
+  - 2019-12-16
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 30 Days
+- !!python/tuple
+  - 456
+  - 10000456
+  - null
+  - Doe, Jane
+  - 87 Years
+  - Female
+  - W
+  - '300'
+  - '31865776'
+  - null
+  - N
+  - 2024-09-03
+  - 2018-10-11
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 87 Years
+- !!python/tuple
+  - 537
+  - null
+  - null
+  - Doe, Jane
+  - 38 Months
+  - ''
+  - ''
+  - '300'
+  - '35179435'
+  - '27379027'
+  - N
+  - 2024-12-17
+  - 2021-01-29
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 38 Months
+- !!python/tuple
+  - 582
+  - 10000582
+  - Puss in Boots
+  - Doe, Jane
+  - 93 Years
+  - Female
+  - B
+  - '300'
+  - '56187410'
+  - '49089410'
+  - N
+  - 2018-07-24
+  - 2023-11-19
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 93 Years
+- !!python/tuple
+  - 770
+  - 10000770
+  - null
+  - Doe, Jane
+  - 10 Days
+  - Male
+  - ''
+  - '300'
+  - '59731507'
+  - null
+  - N
+  - 2025-01-02
+  - 2021-04-26
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 10 Days
+- !!python/tuple
+  - 789
+  - 10000789
+  - null
+  - Doe, Jane
+  - 17 Days
+  - Male
+  - B
+  - '300'
+  - '62776039'
+  - '34127504'
+  - N
+  - 2023-10-18
+  - 2018-06-16
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 17 Days
+- !!python/tuple
+  - 807
+  - 10000807
+  - Donkey
+  - Doe, Jane
+  - 85 Months
   - ''
   - AI
   - '300'
-  - '27031867'
-  - '98797884'
+  - '85336167'
+  - '12186755'
   - N
-  - 2021-07-08
-  - 2019-08-30
-  - payne, darryl
+  - 2020-10-21
+  - 2023-06-01
+  - doe, jane
   - XXX
   - ''
   - '13'
-  - '95'
+  - 85 Months
 - !!python/tuple
-  - 864
-  - null
-  - null
-  - Perez, Marcus
-  - '10'
+  - 877
+  - 10000877
+  - Fiona
+  - Doe, Jane
+  - 95 Days
   - Female
   - W
-  - '740'
-  - '45844540'
-  - '71742544'
+  - '300'
+  - '17066750'
+  - '24629317'
   - N
-  - 2021-06-12
-  - 2023-11-04
-  - perez, marcus
+  - 2021-11-22
+  - 2019-01-29
+  - doe, jane
   - XXX
   - ''
   - '13'
-  - '10'
+  - 95 Days
 - !!python/tuple
-  - 414
-  - null
-  - null
-  - Pittman, Marco
-  - '68'
-  - ''
-  - null
-  - '410'
-  - '42366325'
-  - '46802096'
+  - 995
+  - 10000995
+  - Puss in Boots
+  - Doe, Jane
+  - 55 Months
+  - Male
+  - A
+  - '300'
+  - '92223660'
+  - '88972681'
   - N
-  - 2019-03-04
-  - 2023-08-14
-  - pittman, marco
+  - 2023-05-02
+  - 2020-02-23
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 55 Months
+- !!python/tuple
+  - 38
+  - 10000038
+  - Puss in Boots
+  - Doe, Jane
+  - 33 Months
+  - Male
+  - A
+  - '710'
+  - '79489843'
+  - '34838033'
+  - N
+  - 2024-04-08
+  - 2023-05-20
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 33 Months
+- !!python/tuple
+  - 253
+  - 10000253
+  - Shrek
+  - Doe, Jane
+  - 14 Days
+  - Male
+  - null
+  - '710'
+  - '44711282'
+  - '56260230'
+  - N
+  - 2020-02-16
+  - 2024-05-07
+  - doe, jane
   - ''
   - ''
   - '13'
-  - '68'
+  - 14 Days
 - !!python/tuple
-  - 708
+  - 307
+  - 10000307
+  - Puss in Boots
+  - Doe, Jane
+  - 61 Months
+  - null
+  - A
+  - '710'
+  - '61993206'
+  - '52798189'
+  - N
+  - 2021-05-15
+  - 2019-12-18
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 61 Months
+- !!python/tuple
+  - 395
+  - 10000395
+  - Fiona
+  - Doe, Jane
+  - 46 Months
+  - ''
+  - B
+  - '710'
+  - '63682213'
+  - '14571607'
+  - N
+  - 2021-01-15
+  - 2023-09-11
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 46 Months
+- !!python/tuple
+  - 484
+  - 10000484
+  - Donkey
+  - Doe, Jane
+  - 21 Months
+  - Female
+  - ''
+  - '710'
+  - '59904100'
+  - null
+  - N
+  - 2019-09-18
+  - 2022-10-05
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 21 Months
+- !!python/tuple
+  - 547
+  - 10000547
+  - Puss in Boots
+  - Doe, Jane
+  - 75 Days
+  - Female
+  - AI
+  - '710'
+  - '62412200'
+  - '81191876'
+  - N
+  - 2019-01-11
+  - 2018-09-09
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 75 Days
+- !!python/tuple
+  - 550
+  - 10000550
+  - Puss in Boots
+  - Doe, Jane
+  - 76 Days
+  - Female
+  - AI
+  - '710'
+  - '15399394'
+  - '70319307'
+  - N
+  - 2021-03-07
+  - 2021-09-08
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 76 Days
+- !!python/tuple
+  - 575
+  - 10000575
+  - Lord Farquaad
+  - Doe, Jane
+  - 63 Months
   - null
   - null
-  - Powell, Ronald
-  - '96'
+  - '710'
+  - '55752492'
+  - '90723412'
+  - N
+  - 2023-01-02
+  - 2023-08-02
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 63 Months
+- !!python/tuple
+  - 857
+  - 10000857
+  - null
+  - Doe, Jane
+  - 4 Months
+  - null
+  - W
+  - '710'
+  - '53004281'
+  - '33007631'
+  - N
+  - 2024-01-27
+  - 2021-11-28
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 4 Months
+- !!python/tuple
+  - 862
+  - 10000862
+  - Shrek
+  - Doe, Jane
+  - 41 Months
+  - ''
+  - ''
+  - '710'
+  - '30209946'
+  - '91668869'
+  - N
+  - 2021-04-21
+  - 2021-12-20
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 41 Months
+- !!python/tuple
+  - 918
+  - 10000918
+  - Donkey
+  - Doe, Jane
+  - 67 Months
+  - ''
+  - W
+  - '710'
+  - '63472072'
+  - '57201220'
+  - N
+  - 2018-11-26
+  - 2020-06-20
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 67 Months
+- !!python/tuple
+  - 920
+  - 10000920
+  - Puss in Boots
+  - Doe, Jane
+  - 32 Months
+  - Male
+  - null
+  - '710'
+  - null
+  - '41099320'
+  - N
+  - 2021-05-30
+  - 2024-03-19
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 32 Months
+- !!python/tuple
+  - 40
+  - 10000040
+  - Lord Farquaad
+  - Doe, Jane
+  - 59 Years
+  - Male
+  - A
+  - '720'
+  - '18529759'
+  - null
+  - N
+  - 2022-12-24
+  - 2024-03-07
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 59 Years
+- !!python/tuple
+  - 439
+  - 10000439
+  - Fiona
+  - Doe, Jane
+  - 43 Days
+  - Female
+  - B
+  - '720'
+  - '18536640'
+  - '71567938'
+  - N
+  - 2020-12-12
+  - 2018-11-29
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 43 Days
+- !!python/tuple
+  - 597
+  - 10000597
+  - Shrek
+  - Doe, Jane
+  - 97 Days
+  - Female
+  - B
+  - '720'
+  - '74654553'
+  - '78482511'
+  - N
+  - 2019-11-18
+  - 2021-12-16
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 97 Days
+- !!python/tuple
+  - 601
+  - 10000601
+  - Fiona
+  - Doe, Jane
+  - 72 Days
+  - null
+  - ''
+  - '720'
+  - '63390180'
+  - '59482600'
+  - N
+  - 2018-06-07
+  - 2023-09-08
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 72 Days
+- !!python/tuple
+  - 709
+  - null
+  - null
+  - Doe, Jane
+  - 97 Days
+  - Male
+  - AI
+  - '720'
+  - '81760689'
+  - '30457867'
+  - N
+  - null
+  - 2018-06-11
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 97 Days
+- !!python/tuple
+  - 11
+  - 10000011
+  - Fiona
+  - Doe, Jane
+  - 63 Months
+  - Male
+  - null
+  - '730'
+  - '69385910'
+  - '96019820'
+  - N
+  - 2021-01-27
+  - 2020-03-11
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 63 Months
+- !!python/tuple
+  - 83
+  - 10000083
+  - Lord Farquaad
+  - Doe, Jane
+  - 66 Months
+  - Male
+  - AI
+  - '730'
+  - '72152309'
+  - '12947533'
+  - N
+  - 2023-05-17
+  - 2020-05-20
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 66 Months
+- !!python/tuple
+  - 118
+  - 10000118
+  - null
+  - Doe, Jane
+  - 20 Months
+  - Female
+  - AI
+  - '730'
+  - '74457256'
+  - '96554449'
+  - N
+  - 2020-04-29
+  - 2024-06-28
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 20 Months
+- !!python/tuple
+  - 122
+  - null
+  - null
+  - Doe, Jane
+  - 77 Days
+  - Male
+  - null
+  - '730'
+  - '20214126'
+  - '60787256'
+  - N
+  - 2024-03-10
+  - 2018-11-03
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 77 Days
+- !!python/tuple
+  - 301
+  - 10000301
+  - Fiona
+  - Doe, Jane
+  - 28 Months
+  - ''
+  - A
+  - '730'
+  - '22900472'
+  - '84451846'
+  - N
+  - 2021-06-17
+  - 2019-07-07
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 28 Months
+- !!python/tuple
+  - 457
+  - 10000457
+  - Fiona
+  - Doe, Jane
+  - 21 Years
+  - ''
+  - B
+  - '730'
+  - '25913214'
+  - null
+  - N
+  - 2023-03-04
+  - 2022-07-15
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 21 Years
+- !!python/tuple
+  - 465
+  - null
+  - null
+  - Doe, Jane
+  - 25 Days
+  - Male
+  - null
+  - '730'
+  - '36516991'
+  - '11821146'
+  - N
+  - 2021-01-21
+  - 2022-11-09
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 25 Days
+- !!python/tuple
+  - 528
+  - 10000528
+  - Lord Farquaad
+  - Doe, Jane
+  - 26 Months
+  - Male
+  - B
+  - '730'
+  - '25081697'
+  - '86453282'
+  - N
+  - 2023-09-27
+  - 2023-03-24
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 26 Months
+- !!python/tuple
+  - 658
+  - 10000658
+  - Donkey
+  - Doe, Jane
+  - 45 Months
+  - Male
+  - B
+  - '730'
+  - '19543197'
+  - '30528172'
+  - N
+  - 2021-10-29
+  - 2020-06-11
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 45 Months
+- !!python/tuple
+  - 746
+  - 10000746
+  - Fiona
+  - Doe, Jane
+  - 63 Months
+  - ''
+  - ''
+  - '730'
+  - '94788655'
+  - '42995529'
+  - N
+  - 2019-05-04
+  - 2024-06-20
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 63 Months
+- !!python/tuple
+  - 766
+  - 10000766
+  - Fiona
+  - Doe, Jane
+  - 77 Days
+  - null
+  - A
+  - '730'
+  - '10079292'
+  - '39124125'
+  - N
+  - 2018-08-05
+  - 2023-03-25
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 77 Days
+- !!python/tuple
+  - 860
+  - 10000860
+  - Lord Farquaad
+  - Doe, Jane
+  - 81 Days
+  - ''
+  - A
+  - '730'
+  - '70574694'
+  - '60133575'
+  - N
+  - 2023-06-03
+  - 2024-12-02
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 81 Days
+- !!python/tuple
+  - 28
+  - 10000028
+  - Fiona
+  - Doe, Jane
+  - 99 Days
+  - Male
+  - A
+  - '790'
+  - '43095764'
+  - '13910083'
+  - N
+  - 2021-04-02
+  - 2021-05-27
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 99 Days
+- !!python/tuple
+  - 193
+  - 10000193
+  - Lord Farquaad
+  - Doe, Jane
+  - 61 Months
+  - Female
+  - A
+  - '790'
+  - '74492459'
+  - '94173284'
+  - N
+  - 2021-07-07
+  - 2022-04-24
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 61 Months
+- !!python/tuple
+  - 234
+  - 10000234
+  - Fiona
+  - Doe, Jane
+  - 75 Years
+  - Female
+  - B
+  - '790'
+  - '98183562'
+  - '51623216'
+  - N
+  - 2024-11-19
+  - 2023-11-26
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 75 Years
+- !!python/tuple
+  - 413
+  - 10000413
+  - Shrek
+  - Doe, Jane
+  - 19 Days
+  - Female
+  - null
+  - '790'
+  - '68114900'
+  - '79267098'
+  - N
+  - 2019-07-24
+  - 2019-06-23
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 19 Days
+- !!python/tuple
+  - 498
+  - 10000498
+  - Puss in Boots
+  - Doe, Jane
+  - 59 Years
   - Male
   - W
-  - '490'
-  - '53169502'
-  - '19709410'
+  - '790'
+  - '41852418'
+  - '11459305'
   - Y
-  - 2022-11-01
+  - 2018-07-09
   - null
-  - powell, ronald
+  - doe, jane
   - XXX
   - ''
   - '13'
-  - '96'
+  - 59 Years
+- !!python/tuple
+  - 552
+  - 10000552
+  - Donkey
+  - Doe, Jane
+  - .
+  - Female
+  - B
+  - '790'
+  - '26935583'
+  - '64550741'
+  - N
+  - 2024-03-17
+  - 2021-05-28
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 583
+  - 10000583
+  - Fiona
+  - Doe, Jane
+  - 1 Years
+  - ''
+  - AI
+  - '790'
+  - '41839111'
+  - '15881958'
+  - N
+  - 2018-07-28
+  - 2018-12-13
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 1 Years
+- !!python/tuple
+  - 590
+  - 10000590
+  - Shrek
+  - Doe, Jane
+  - 96 Years
+  - ''
+  - B
+  - '790'
+  - '97788367'
+  - '65809887'
+  - N
+  - 2019-12-08
+  - 2018-06-19
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 96 Years
+- !!python/tuple
+  - 617
+  - 10000617
+  - null
+  - Doe, Jane
+  - 5 Years
+  - ''
+  - AI
+  - '790'
+  - '33435842'
+  - '37778973'
+  - N
+  - 2020-02-25
+  - 2022-05-25
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 5 Years
+- !!python/tuple
+  - 659
+  - 10000659
+  - Fiona
+  - Doe, Jane
+  - 53 Years
+  - Male
+  - null
+  - '790'
+  - '58510567'
+  - '16968094'
+  - N
+  - null
+  - 2023-09-02
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 53 Years
+- !!python/tuple
+  - 699
+  - 10000699
+  - Puss in Boots
+  - Doe, Jane
+  - 64 Years
+  - Female
+  - W
+  - '790'
+  - '25961628'
+  - '39313684'
+  - Y
+  - 2019-06-25
+  - null
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 64 Years
+- !!python/tuple
+  - 798
+  - 10000798
+  - Lord Farquaad
+  - Doe, Jane
+  - 94 Days
+  - Male
+  - W
+  - '790'
+  - '39488547'
+  - '57430927'
+  - N
+  - null
+  - 2021-10-16
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 94 Days
+- !!python/tuple
+  - 933
+  - 10000933
+  - Donkey
+  - Doe, Jane
+  - 25 Years
+  - Male
+  - B
+  - '790'
+  - '90247504'
+  - '51802045'
+  - N
+  - 2024-03-02
+  - 2021-09-21
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 25 Years
+- !!python/tuple
+  - 143
+  - 10000143
+  - Puss in Boots
+  - Doe, Jane
+  - 27 Days
+  - Female
+  - AI
+  - '900'
+  - '29006752'
+  - '40066342'
+  - N
+  - 2020-03-03
+  - 2022-09-06
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 27 Days
+- !!python/tuple
+  - 287
+  - 10000287
+  - Lord Farquaad
+  - Doe, Jane
+  - 29 Days
+  - ''
+  - AI
+  - '900'
+  - '52027514'
+  - '30089719'
+  - N
+  - 2024-10-28
+  - 2019-08-24
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 29 Days
+- !!python/tuple
+  - 320
+  - 10000320
+  - Puss in Boots
+  - Doe, Jane
+  - 24 Years
+  - null
+  - W
+  - '900'
+  - '67219464'
+  - '50103310'
+  - N
+  - 2024-09-06
+  - 2019-02-25
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 24 Years
+- !!python/tuple
+  - 357
+  - 10000357
+  - Fiona
+  - Doe, Jane
+  - 41 Days
+  - Male
+  - B
+  - '900'
+  - '88066606'
+  - '22884227'
+  - N
+  - 2021-07-08
+  - 2020-04-09
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 41 Days
+- !!python/tuple
+  - 412
+  - 10000412
+  - null
+  - Doe, Jane
+  - .
+  - Male
+  - null
+  - '900'
+  - '10577308'
+  - '21561669'
+  - N
+  - 2020-10-29
+  - 2021-03-19
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 436
+  - 10000436
+  - Shrek
+  - Doe, Jane
+  - .
+  - Female
+  - AI
+  - '900'
+  - '44275147'
+  - null
+  - N
+  - 2023-08-07
+  - 2021-02-27
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 503
+  - null
+  - null
+  - Doe, Jane
+  - 34 Months
+  - Female
+  - ''
+  - '900'
+  - '64490604'
+  - '74858552'
+  - Y
+  - 2019-01-02
+  - null
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 34 Months
+- !!python/tuple
+  - 513
+  - 10000513
+  - Donkey
+  - Doe, Jane
+  - 64 Months
+  - Female
+  - W
+  - '900'
+  - '82129347'
+  - null
+  - N
+  - 2020-06-23
+  - 2022-04-14
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 64 Months
+- !!python/tuple
+  - 559
+  - null
+  - null
+  - Doe, Jane
+  - 3 Years
+  - Female
+  - ''
+  - '900'
+  - '11209410'
+  - '70389425'
+  - N
+  - 2020-08-17
+  - 2019-01-11
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 3 Years
+- !!python/tuple
+  - 624
+  - 10000624
+  - null
+  - Doe, Jane
+  - 38 Days
+  - Female
+  - W
+  - '900'
+  - '33489061'
+  - '88574970'
+  - N
+  - 2020-12-21
+  - 2018-09-07
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 38 Days
+- !!python/tuple
+  - 698
+  - 10000698
+  - Donkey
+  - Doe, Jane
+  - 67 Months
+  - ''
+  - ''
+  - '900'
+  - '17326355'
+  - '46119332'
+  - N
+  - 2024-09-18
+  - 2021-09-19
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 67 Months
+- !!python/tuple
+  - 745
+  - null
+  - null
+  - Doe, Jane
+  - 99 Days
+  - ''
+  - ''
+  - '900'
+  - '12526134'
+  - '13038015'
+  - N
+  - 2022-03-23
+  - 2019-06-26
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 99 Days
+- !!python/tuple
+  - 876
+  - 10000876
+  - Lord Farquaad
+  - Doe, Jane
+  - 1 Months
+  - null
+  - A
+  - '900'
+  - '97201037'
+  - '53628495'
+  - N
+  - 2023-09-27
+  - 2024-12-30
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 1 Months
+- !!python/tuple
+  - 882
+  - null
+  - null
+  - Doe, Jane
+  - 46 Days
+  - Male
+  - ''
+  - '900'
+  - '14741011'
+  - '44216784'
+  - N
+  - null
+  - 2022-11-04
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 46 Days
+- !!python/tuple
+  - 902
+  - 10000902
+  - Lord Farquaad
+  - Doe, Jane
+  - 7 Months
+  - Male
+  - W
+  - '900'
+  - '23318977'
+  - '34098603'
+  - N
+  - 2024-01-13
+  - 2019-10-13
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 7 Months
+- !!python/tuple
+  - 912
+  - 10000912
+  - Shrek
+  - Doe, Jane
+  - 86 Months
+  - Male
+  - ''
+  - '900'
+  - '29897920'
+  - '94969515'
+  - Y
+  - 2021-06-28
+  - null
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 86 Months
+- !!python/tuple
+  - 22
+  - 10000022
+  - null
+  - Doe, Jane
+  - 87 Days
+  - null
+  - W
+  - '950'
+  - '55967722'
+  - '76640188'
+  - Y
+  - 2024-11-17
+  - null
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 87 Days
+- !!python/tuple
+  - 31
+  - null
+  - null
+  - Doe, Jane
+  - 74 Months
+  - Female
+  - A
+  - '950'
+  - '48882635'
+  - '50994685'
+  - N
+  - 2019-09-09
+  - 2020-09-03
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 74 Months
+- !!python/tuple
+  - 96
+  - null
+  - null
+  - Doe, Jane
+  - 85 Months
+  - Female
+  - B
+  - '950'
+  - '63702525'
+  - '78454163'
+  - N
+  - 2023-06-10
+  - 2019-05-15
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 85 Months
+- !!python/tuple
+  - 133
+  - 10000133
+  - Fiona
+  - Doe, Jane
+  - 61 Days
+  - ''
+  - B
+  - '950'
+  - '26162820'
+  - '87789895'
+  - N
+  - 2023-12-19
+  - 2021-03-07
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 61 Days
+- !!python/tuple
+  - 146
+  - 10000146
+  - Lord Farquaad
+  - Doe, Jane
+  - 79 Months
+  - Male
+  - ''
+  - '950'
+  - '50879932'
+  - '96337426'
+  - N
+  - 2024-01-23
+  - 2023-12-22
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 79 Months
+- !!python/tuple
+  - 149
+  - 10000149
+  - Donkey
+  - Doe, Jane
+  - 26 Days
+  - ''
+  - A
+  - '950'
+  - '21956905'
+  - '35067449'
+  - N
+  - 2021-08-21
+  - 2019-09-20
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 26 Days
+- !!python/tuple
+  - 330
+  - 10000330
+  - Donkey
+  - Doe, Jane
+  - 73 Days
+  - Male
+  - W
+  - '950'
+  - '39195604'
+  - '55903435'
+  - N
+  - 2019-02-21
+  - 2023-03-20
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 73 Days
+- !!python/tuple
+  - 458
+  - 10000458
+  - Lord Farquaad
+  - Doe, Jane
+  - 54 Years
+  - null
+  - ''
+  - '950'
+  - '89081377'
+  - '48072291'
+  - N
+  - 2023-09-11
+  - 2018-06-29
+  - doe, jane
+  - ''
+  - ''
+  - '13'
+  - 54 Years
+- !!python/tuple
+  - 556
+  - null
+  - null
+  - Doe, Jane
+  - 53 Years
+  - ''
+  - A
+  - '950'
+  - '83501229'
+  - '46437668'
+  - N
+  - 2019-02-27
+  - 2022-03-05
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 53 Years
+- !!python/tuple
+  - 558
+  - 10000558
+  - Shrek
+  - Doe, Jane
+  - 9 Days
+  - Female
+  - AI
+  - '950'
+  - '14455690'
+  - '63724223'
+  - N
+  - 2022-04-02
+  - 2023-10-04
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 9 Days
+- !!python/tuple
+  - 839
+  - 10000839
+  - null
+  - Doe, Jane
+  - 4 Months
+  - Female
+  - W
+  - '950'
+  - '88708837'
+  - null
+  - N
+  - 2024-03-23
+  - 2023-01-05
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 4 Months
+- !!python/tuple
+  - 840
+  - null
+  - null
+  - Doe, Jane
+  - 15 Months
+  - Female
+  - A
+  - '950'
+  - '15878260'
+  - '14309460'
+  - N
+  - 2019-09-21
+  - 2021-03-26
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 15 Months
+- !!python/tuple
+  - 954
+  - 10000954
+  - Puss in Boots
+  - Doe, Jane
+  - 46 Years
+  - Male
+  - AI
+  - '950'
+  - '78337977'
+  - null
+  - N
+  - 2019-06-11
+  - 2020-06-23
+  - doe, jane
+  - XXX
+  - ''
+  - '13'
+  - 46 Years
+- !!python/tuple
+  - 1
+  - 10000001
+  - Fiona
+  - Duplicates, Test
+  - 82 Days
+  - null
+  - A
+  - '200'
+  - '84464853'
+  - '72363930'
+  - N
+  - 2022-04-27
+  - 2024-01-15
+  - duplicates, test
+  - XXX
+  - ''
+  - '13'
+  - 82 Days
+- !!python/tuple
+  - 2
+  - 10000002
+  - Puss in Boots
+  - Duplicates, Test
+  - 39 Years
+  - Male
+  - W
+  - '200'
+  - '46100176'
+  - '72853220'
+  - N
+  - 2021-01-17
+  - 2020-07-22
+  - duplicates, test
+  - XXX
+  - ''
+  - '13'
+  - 39 Years
+- !!python/tuple
+  - 3
+  - 10000003
+  - Shrek
+  - Duplicates, Test
+  - 52 Months
+  - Female
+  - B
+  - '300'
+  - '13176342'
+  - '23796407'
+  - N
+  - 2023-08-29
+  - 2023-10-12
+  - duplicates, test
+  - XXX
+  - ''
+  - '13'
+  - 52 Months
+- !!python/tuple
+  - 4
+  - 10000004
+  - Puss in Boots
+  - Duplicates, Test
+  - 43 Months
+  - null
+  - W
+  - '300'
+  - '26536385'
+  - '19894982'
+  - N
+  - 2020-10-23
+  - 2024-02-25
+  - duplicates, test
+  - XXX
+  - ''
+  - '13'
+  - 43 Months
+- !!python/tuple
+  - 5
+  - 10000005
+  - Fiona
+  - Duplicates, Test
+  - 10 Days
+  - ''
+  - AI
+  - '710'
+  - '28150162'
+  - '15125685'
+  - N
+  - 2023-04-05
+  - 2024-04-30
+  - duplicates, test
+  - XXX
+  - ''
+  - '13'
+  - 10 Days
+- !!python/tuple
+  - 6
+  - 10000006
+  - Fiona
+  - Duplicates, Test
+  - 82 Days
+  - Male
+  - A
+  - '710'
+  - '61499986'
+  - '19056322'
+  - N
+  - 2018-06-09
+  - 2024-06-30
+  - duplicates, test
+  - XXX
+  - ''
+  - '13'
+  - 82 Days
+- !!python/tuple
+  - 182
+  - 10000182
+  - null
+  - Johnson, Mike
+  - 86 Years
+  - Female
+  - ''
+  - '200'
+  - '77258151'
+  - '82077569'
+  - N
+  - 2019-07-08
+  - 2019-09-23
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 86 Years
+- !!python/tuple
+  - 190
+  - 10000190
+  - Donkey
+  - Johnson, Mike
+  - .
+  - null
+  - AI
+  - '200'
+  - '58967685'
+  - '83006016'
+  - N
+  - null
+  - 2022-12-23
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 255
+  - 10000255
+  - Donkey
+  - Johnson, Mike
+  - 56 Years
+  - ''
+  - ''
+  - '200'
+  - '56189232'
+  - '89091964'
+  - N
+  - 2021-09-01
+  - 2019-03-02
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 56 Years
+- !!python/tuple
+  - 306
+  - 10000306
+  - Lord Farquaad
+  - Johnson, Mike
+  - .
+  - ''
+  - B
+  - '200'
+  - '51477710'
+  - '12488899'
+  - N
+  - 2020-02-08
+  - 2019-09-09
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 449
+  - 10000449
+  - null
+  - Johnson, Mike
+  - 6 Days
+  - null
+  - A
+  - '200'
+  - '75082387'
+  - '49555024'
+  - N
+  - 2023-12-31
+  - 2022-02-22
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 6 Days
+- !!python/tuple
+  - 485
+  - 10000485
+  - Lord Farquaad
+  - Johnson, Mike
+  - 46 Days
+  - Female
+  - AI
+  - '200'
+  - '85825188'
+  - '57445904'
+  - N
+  - 2019-07-16
+  - 2020-09-24
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 46 Days
+- !!python/tuple
+  - 549
+  - 10000549
+  - Fiona
+  - Johnson, Mike
+  - 60 Months
+  - ''
+  - W
+  - '200'
+  - '56644782'
+  - '78636563'
+  - N
+  - 2021-06-13
+  - 2023-10-12
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 60 Months
+- !!python/tuple
+  - 799
+  - 10000799
+  - Lord Farquaad
+  - Johnson, Mike
+  - 94 Months
+  - ''
+  - A
+  - '200'
+  - '17536608'
+  - '42300725'
+  - N
+  - 2018-05-09
+  - 2024-02-05
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 94 Months
+- !!python/tuple
+  - 885
+  - 10000885
+  - Fiona
+  - Johnson, Mike
+  - 79 Years
+  - null
+  - B
+  - '200'
+  - '78145573'
+  - '48934147'
+  - N
+  - 2021-12-02
+  - 2018-06-13
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 79 Years
+- !!python/tuple
+  - 20
+  - 10000020
+  - Lord Farquaad
+  - Johnson, Mike
+  - 15 Years
+  - Female
+  - B
+  - '300'
+  - '23170185'
+  - '89181238'
+  - Y
+  - 2021-02-11
+  - null
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 15 Years
+- !!python/tuple
+  - 78
+  - 10000078
+  - Donkey
+  - Johnson, Mike
+  - 28 Months
+  - Female
+  - W
+  - '300'
+  - '81706290'
+  - '60600241'
+  - Y
+  - 2019-10-10
+  - null
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 28 Months
+- !!python/tuple
+  - 144
+  - 10000144
+  - Shrek
+  - Johnson, Mike
+  - 86 Days
+  - Female
+  - B
+  - '300'
+  - '54533109'
+  - '35393346'
+  - N
+  - 2020-09-15
+  - 2022-11-16
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 86 Days
+- !!python/tuple
+  - 254
+  - 10000254
+  - Shrek
+  - Johnson, Mike
+  - 74 Days
+  - Male
+  - A
+  - '300'
+  - '58041928'
+  - '54215180'
+  - N
+  - 2019-02-14
+  - 2024-09-16
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 74 Days
+- !!python/tuple
+  - 382
+  - 10000382
+  - Donkey
+  - Johnson, Mike
+  - 92 Years
+  - Female
+  - AI
+  - '300'
+  - '12360810'
+  - '32684304'
+  - N
+  - 2024-07-27
+  - 2024-04-24
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 92 Years
+- !!python/tuple
+  - 442
+  - 10000442
+  - Lord Farquaad
+  - Johnson, Mike
+  - 14 Days
+  - ''
+  - null
+  - '300'
+  - '57186261'
+  - '34854558'
+  - N
+  - 2020-12-03
+  - 2022-08-16
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 14 Days
+- !!python/tuple
+  - 614
+  - 10000614
+  - Puss in Boots
+  - Johnson, Mike
+  - 98 Days
+  - ''
+  - ''
+  - '300'
+  - '54317794'
+  - null
+  - N
+  - 2023-01-12
+  - 2024-02-11
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 98 Days
+- !!python/tuple
+  - 676
+  - 10000676
+  - null
+  - Johnson, Mike
+  - 99 Days
+  - ''
+  - AI
+  - '300'
+  - '43919391'
+  - '69928196'
+  - N
+  - 2019-03-11
+  - 2021-01-28
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 99 Days
+- !!python/tuple
+  - 796
+  - 10000796
+  - Fiona
+  - Johnson, Mike
+  - 67 Days
+  - Male
+  - A
+  - '300'
+  - '44154288'
+  - '24411804'
+  - N
+  - 2024-06-29
+  - 2023-06-14
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 67 Days
+- !!python/tuple
+  - 816
+  - 10000816
+  - Lord Farquaad
+  - Johnson, Mike
+  - 32 Years
+  - ''
+  - A
+  - '300'
+  - '53944728'
+  - '33810741'
+  - N
+  - 2020-04-27
+  - 2024-08-31
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 32 Years
+- !!python/tuple
+  - 843
+  - 10000843
+  - Donkey
+  - Johnson, Mike
+  - 36 Years
+  - Female
+  - A
+  - '300'
+  - null
+  - '92010950'
+  - N
+  - 2024-01-14
+  - 2022-11-09
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 36 Years
+- !!python/tuple
+  - 880
+  - 10000880
+  - null
+  - Johnson, Mike
+  - 80 Years
+  - Male
+  - B
+  - '300'
+  - '90953315'
+  - '95434467'
+  - Y
+  - 2024-01-11
+  - null
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 80 Years
+- !!python/tuple
+  - 890
+  - 10000890
+  - Puss in Boots
+  - Johnson, Mike
+  - 64 Years
+  - Female
+  - A
+  - '300'
+  - '51782498'
+  - null
+  - N
+  - 2018-11-29
+  - 2023-07-31
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 64 Years
+- !!python/tuple
+  - 961
+  - 10000961
+  - Donkey
+  - Johnson, Mike
+  - 98 Months
+  - ''
+  - null
+  - '300'
+  - '55251116'
+  - '93797045'
+  - N
+  - 2021-04-03
+  - 2019-05-30
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 98 Months
+- !!python/tuple
+  - 93
+  - 10000093
+  - Fiona
+  - Johnson, Mike
+  - 29 Months
+  - Female
+  - A
+  - '710'
+  - '22499586'
+  - '55984747'
+  - N
+  - 2021-04-10
+  - 2018-07-12
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 29 Months
+- !!python/tuple
+  - 227
+  - 10000227
+  - Donkey
+  - Johnson, Mike
+  - 63 Months
+  - Female
+  - W
+  - '710'
+  - '85826494'
+  - '68236198'
+  - N
+  - 2020-11-04
+  - 2018-09-29
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 63 Months
+- !!python/tuple
+  - 621
+  - 10000621
+  - Donkey
+  - Johnson, Mike
+  - 40 Years
+  - Female
+  - ''
+  - '710'
+  - '77299840'
+  - '33783203'
+  - N
+  - 2019-09-23
+  - 2021-04-17
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 40 Years
+- !!python/tuple
+  - 639
+  - 10000639
+  - Fiona
+  - Johnson, Mike
+  - 38 Months
+  - Male
+  - ''
+  - '710'
+  - '44987303'
+  - '65831134'
+  - N
+  - 2023-11-27
+  - 2022-02-21
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 38 Months
+- !!python/tuple
+  - 648
+  - null
+  - null
+  - Johnson, Mike
+  - 54 Months
+  - Female
+  - A
+  - '710'
+  - '77763110'
+  - '89138680'
+  - N
+  - null
+  - 2023-03-02
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 54 Months
+- !!python/tuple
+  - 743
+  - 10000743
+  - Lord Farquaad
+  - Johnson, Mike
+  - 60 Years
+  - null
+  - A
+  - '710'
+  - '90759681'
+  - '92280843'
+  - N
+  - 2019-03-08
+  - 2021-04-22
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 60 Years
+- !!python/tuple
+  - 929
+  - 10000929
+  - Donkey
+  - Johnson, Mike
+  - .
+  - Male
+  - AI
+  - '710'
+  - '23286528'
+  - '45754203'
+  - N
+  - 2019-02-26
+  - 2023-07-07
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 984
+  - 10000984
+  - Shrek
+  - Johnson, Mike
+  - 28 Days
+  - ''
+  - AI
+  - '710'
+  - '44022106'
+  - '23153401'
+  - N
+  - 2024-10-02
+  - 2019-11-27
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 28 Days
+- !!python/tuple
+  - 86
+  - null
+  - null
+  - Johnson, Mike
+  - 80 Months
+  - Male
+  - ''
+  - '720'
+  - '56396894'
+  - '33091373'
+  - N
+  - 2019-10-05
+  - 2022-09-14
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 80 Months
+- !!python/tuple
+  - 235
+  - 10000235
+  - Lord Farquaad
+  - Johnson, Mike
+  - 38 Years
+  - Female
+  - ''
+  - '720'
+  - '71172179'
+  - '87279487'
+  - N
+  - null
+  - 2023-09-22
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 38 Years
+- !!python/tuple
+  - 312
+  - 10000312
+  - Lord Farquaad
+  - Johnson, Mike
+  - 23 Months
+  - null
+  - ''
+  - '720'
+  - '38557867'
+  - '75293025'
+  - N
+  - 2024-05-03
+  - 2024-12-04
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 23 Months
+- !!python/tuple
+  - 463
+  - 10000463
+  - Lord Farquaad
+  - Johnson, Mike
+  - 11 Months
+  - Female
+  - W
+  - '720'
+  - '65939059'
+  - '27666458'
+  - N
+  - 2023-10-19
+  - 2019-09-15
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 11 Months
+- !!python/tuple
+  - 527
+  - 10000527
+  - Shrek
+  - Johnson, Mike
+  - 4 Years
+  - ''
+  - W
+  - '720'
+  - '99847481'
+  - '71370012'
+  - N
+  - null
+  - 2020-08-21
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 4 Years
+- !!python/tuple
+  - 563
+  - 10000563
+  - Donkey
+  - Johnson, Mike
+  - 30 Days
+  - Male
+  - AI
+  - '720'
+  - '54726938'
+  - '39989874'
+  - N
+  - null
+  - 2021-09-27
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 30 Days
+- !!python/tuple
+  - 586
+  - 10000586
+  - Shrek
+  - Johnson, Mike
+  - .
+  - Female
+  - ''
+  - '720'
+  - null
+  - '34100483'
+  - N
+  - 2020-11-16
+  - 2019-12-28
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 592
+  - 10000592
+  - Shrek
+  - Johnson, Mike
+  - 80 Days
+  - ''
+  - AI
+  - '720'
+  - '68710388'
+  - '59502274'
+  - N
+  - 2020-05-26
+  - 2023-10-03
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 80 Days
+- !!python/tuple
+  - 769
+  - 10000769
+  - Puss in Boots
+  - Johnson, Mike
+  - 77 Years
+  - Female
+  - ''
+  - '720'
+  - '39663128'
+  - '10875057'
+  - N
+  - 2021-04-14
+  - 2022-11-28
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 77 Years
+- !!python/tuple
+  - 996
+  - 10000996
+  - Shrek
+  - Johnson, Mike
+  - 88 Months
+  - Male
+  - null
+  - '720'
+  - '51725188'
+  - '46169699'
+  - N
+  - 2021-06-20
+  - 2022-10-28
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 88 Months
+- !!python/tuple
+  - 37
+  - 10000037
+  - null
+  - Johnson, Mike
+  - 57 Months
+  - Male
+  - ''
+  - '730'
+  - '85636332'
+  - '34523140'
+  - N
+  - 2018-06-18
+  - 2018-06-14
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 57 Months
+- !!python/tuple
+  - 91
+  - 10000091
+  - Puss in Boots
+  - Johnson, Mike
+  - 9 Months
+  - Male
+  - W
+  - '730'
+  - '63306714'
+  - '40097712'
+  - N
+  - 2023-08-20
+  - 2024-09-05
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 9 Months
+- !!python/tuple
+  - 153
+  - 10000153
+  - Shrek
+  - Johnson, Mike
+  - 15 Years
+  - Male
+  - W
+  - '730'
+  - '36087434'
+  - '62361053'
+  - N
+  - 2024-05-03
+  - 2021-06-13
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 15 Years
+- !!python/tuple
+  - 204
+  - 10000204
+  - Lord Farquaad
+  - Johnson, Mike
+  - 73 Years
+  - Male
+  - B
+  - '730'
+  - '37384315'
+  - '87901714'
+  - N
+  - 2018-11-24
+  - 2020-04-19
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 73 Years
+- !!python/tuple
+  - 223
+  - 10000223
+  - Shrek
+  - Johnson, Mike
+  - .
+  - ''
+  - AI
+  - '730'
+  - '92236682'
+  - '46359628'
+  - N
+  - 2024-01-23
+  - 2021-07-21
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 286
+  - 10000286
+  - null
+  - Johnson, Mike
+  - 77 Days
+  - Male
+  - AI
+  - '730'
+  - '36078968'
+  - '70767423'
+  - N
+  - 2018-08-04
+  - 2019-04-09
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 77 Days
+- !!python/tuple
+  - 319
+  - 10000319
+  - Lord Farquaad
+  - Johnson, Mike
+  - 83 Days
+  - Male
+  - ''
+  - '730'
+  - '27945781'
+  - '14599335'
+  - N
+  - 2019-02-16
+  - 2022-08-20
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 83 Days
+- !!python/tuple
+  - 380
+  - 10000380
+  - Fiona
+  - Johnson, Mike
+  - 75 Years
+  - Female
+  - W
+  - '730'
+  - '32835833'
+  - '11902054'
+  - Y
+  - 2022-04-07
+  - null
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 75 Years
+- !!python/tuple
+  - 656
+  - 10000656
+  - Puss in Boots
+  - Johnson, Mike
+  - .
+  - ''
+  - B
+  - '730'
+  - '82827762'
+  - '38327285'
+  - N
+  - 2020-12-08
+  - 2023-11-30
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 674
+  - 10000674
+  - Puss in Boots
+  - Johnson, Mike
+  - 29 Years
+  - Male
+  - A
+  - '730'
+  - null
+  - '92918980'
+  - N
+  - 2019-05-05
+  - 2021-02-17
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 29 Years
+- !!python/tuple
+  - 823
+  - 10000823
+  - Shrek
+  - Johnson, Mike
+  - 45 Months
+  - ''
+  - AI
+  - '730'
+  - '57599066'
+  - null
+  - N
+  - 2018-09-23
+  - 2021-08-20
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 45 Months
+- !!python/tuple
+  - 900
+  - 10000900
+  - Donkey
+  - Johnson, Mike
+  - 59 Years
+  - Male
+  - B
+  - '730'
+  - '42227170'
+  - '88790336'
+  - N
+  - 2019-01-09
+  - 2023-10-26
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 59 Years
+- !!python/tuple
+  - 43
+  - 10000043
+  - Shrek
+  - Johnson, Mike
+  - 21 Years
+  - Male
+  - B
+  - '790'
+  - '16506034'
+  - '52772754'
+  - N
+  - 2023-07-25
+  - 2020-12-24
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 21 Years
+- !!python/tuple
+  - 48
+  - 10000048
+  - Puss in Boots
+  - Johnson, Mike
+  - 19 Days
+  - Male
+  - W
+  - '790'
+  - '30643375'
+  - '34362824'
+  - N
+  - 2020-06-22
+  - 2018-09-16
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 19 Days
+- !!python/tuple
+  - 141
+  - 10000141
+  - null
+  - Johnson, Mike
+  - 26 Days
+  - Female
+  - null
+  - '790'
+  - '65254875'
+  - '20948665'
+  - N
+  - 2020-05-28
+  - 2024-10-05
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 26 Days
+- !!python/tuple
+  - 273
+  - 10000273
+  - Fiona
+  - Johnson, Mike
+  - 65 Months
+  - ''
+  - A
+  - '790'
+  - '26006744'
+  - '60711838'
+  - N
+  - 2020-07-14
+  - 2023-04-04
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 65 Months
+- !!python/tuple
+  - 391
+  - 10000391
+  - null
+  - Johnson, Mike
+  - .
+  - Female
+  - A
+  - '790'
+  - null
+  - '44172504'
+  - N
+  - 2021-11-01
+  - 2024-08-01
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 682
+  - 10000682
+  - Shrek
+  - Johnson, Mike
+  - 85 Days
+  - Female
+  - W
+  - '790'
+  - '20981491'
+  - '61140920'
+  - N
+  - null
+  - 2024-07-26
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 85 Days
+- !!python/tuple
+  - 791
+  - 10000791
+  - Lord Farquaad
+  - Johnson, Mike
+  - 71 Years
+  - ''
+  - ''
+  - '790'
+  - '42308225'
+  - '82760871'
+  - N
+  - 2023-06-12
+  - 2019-01-15
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 71 Years
+- !!python/tuple
+  - 832
+  - 10000832
+  - Fiona
+  - Johnson, Mike
+  - 99 Days
+  - ''
+  - W
+  - '790'
+  - '40640144'
+  - '33818571'
+  - N
+  - 2022-08-14
+  - 2019-07-31
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 99 Days
+- !!python/tuple
+  - 925
+  - 10000925
+  - Donkey
+  - Johnson, Mike
+  - 56 Months
+  - Male
+  - W
+  - '790'
+  - '20223387'
+  - '38940285'
+  - N
+  - 2023-06-13
+  - 2023-09-01
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 56 Months
+- !!python/tuple
+  - 949
+  - 10000949
+  - null
+  - Johnson, Mike
+  - 43 Years
+  - Female
+  - ''
+  - '790'
+  - '22643741'
+  - '39340125'
+  - Y
+  - 2024-07-11
+  - null
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 43 Years
+- !!python/tuple
+  - 981
+  - 10000981
+  - Fiona
+  - Johnson, Mike
+  - 48 Years
+  - Female
+  - W
+  - '790'
+  - '53823177'
+  - null
+  - N
+  - null
+  - 2023-11-21
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 48 Years
+- !!python/tuple
+  - 990
+  - null
+  - null
+  - Johnson, Mike
+  - 7 Years
+  - Female
+  - W
+  - '790'
+  - '18859477'
+  - '99162615'
+  - N
+  - 2020-09-05
+  - 2022-07-15
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 7 Years
+- !!python/tuple
+  - 130
+  - 10000130
+  - Donkey
+  - Johnson, Mike
+  - 91 Months
+  - Male
+  - A
+  - '900'
+  - '55442999'
+  - null
+  - Y
+  - 2019-03-03
+  - null
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 91 Months
+- !!python/tuple
+  - 284
+  - 10000284
+  - Puss in Boots
+  - Johnson, Mike
+  - 57 Years
+  - ''
+  - A
+  - '900'
+  - '61394065'
+  - '45184353'
+  - N
+  - 2023-12-24
+  - 2020-05-06
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 57 Years
+- !!python/tuple
+  - 426
+  - 10000426
+  - Shrek
+  - Johnson, Mike
+  - 88 Years
+  - Female
+  - AI
+  - '900'
+  - '41893498'
+  - '60439615'
+  - N
+  - 2020-01-13
+  - 2019-04-17
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 88 Years
+- !!python/tuple
+  - 479
+  - null
+  - null
+  - Johnson, Mike
+  - 34 Months
+  - Female
+  - B
+  - '900'
+  - '53429554'
+  - '38583895'
+  - N
+  - 2023-04-26
+  - 2022-01-11
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 34 Months
+- !!python/tuple
+  - 495
+  - 10000495
+  - Donkey
+  - Johnson, Mike
+  - 83 Months
+  - ''
+  - B
+  - '900'
+  - '65875845'
+  - '42512695'
+  - N
+  - 2019-09-16
+  - 2024-01-08
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 83 Months
+- !!python/tuple
+  - 553
+  - 10000553
+  - null
+  - Johnson, Mike
+  - 63 Years
+  - ''
+  - B
+  - '900'
+  - '36279041'
+  - '88466780'
+  - N
+  - 2024-11-10
+  - 2020-09-23
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 63 Years
+- !!python/tuple
+  - 784
+  - 10000784
+  - Fiona
+  - Johnson, Mike
+  - 50 Days
+  - null
+  - AI
+  - '900'
+  - '21710692'
+  - '94619112'
+  - N
+  - 2018-07-25
+  - 2023-07-16
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 50 Days
+- !!python/tuple
+  - 14
+  - 10000014
+  - Puss in Boots
+  - Johnson, Mike
+  - 79 Days
+  - ''
+  - A
+  - '950'
+  - '15756245'
+  - null
+  - N
+  - 2020-06-10
+  - 2021-03-29
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 79 Days
+- !!python/tuple
+  - 75
+  - 10000075
+  - Fiona
+  - Johnson, Mike
+  - 31 Days
+  - Male
+  - W
+  - '950'
+  - '58268084'
+  - '56664442'
+  - N
+  - 2022-04-02
+  - 2024-05-25
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 31 Days
+- !!python/tuple
+  - 107
+  - 10000107
+  - Donkey
+  - Johnson, Mike
+  - 86 Months
+  - ''
+  - B
+  - '950'
+  - '88845095'
+  - '52256228'
+  - N
+  - 2024-10-06
+  - 2024-01-11
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 86 Months
+- !!python/tuple
+  - 279
+  - null
+  - null
+  - Johnson, Mike
+  - 44 Days
+  - Male
+  - A
+  - '950'
+  - '73492368'
+  - '43829539'
+  - N
+  - 2024-08-13
+  - 2023-11-18
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 44 Days
+- !!python/tuple
+  - 297
+  - 10000297
+  - Donkey
+  - Johnson, Mike
+  - 32 Years
+  - Male
+  - A
+  - '950'
+  - '19687267'
+  - '26481063'
+  - N
+  - 2018-11-03
+  - 2022-01-21
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 32 Years
+- !!python/tuple
+  - 376
+  - 10000376
+  - Shrek
+  - Johnson, Mike
+  - 48 Days
+  - ''
+  - AI
+  - '950'
+  - '68153545'
+  - '76197542'
+  - N
+  - 2020-12-18
+  - 2020-01-26
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 48 Days
+- !!python/tuple
+  - 389
+  - 10000389
+  - Shrek
+  - Johnson, Mike
+  - 16 Months
+  - Male
+  - ''
+  - '950'
+  - '55546177'
+  - '81782745'
+  - N
+  - 2020-06-21
+  - 2022-06-29
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 16 Months
+- !!python/tuple
+  - 612
+  - null
+  - null
+  - Johnson, Mike
+  - 7 Days
+  - Female
+  - ''
+  - '950'
+  - '40068663'
+  - '76855258'
+  - N
+  - 2019-10-28
+  - 2018-12-22
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 7 Days
+- !!python/tuple
+  - 693
+  - 10000693
+  - Puss in Boots
+  - Johnson, Mike
+  - 68 Days
+  - Female
+  - AI
+  - '950'
+  - '34552234'
+  - '69320536'
+  - Y
+  - 2021-01-20
+  - null
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 68 Days
+- !!python/tuple
+  - 776
+  - 10000776
+  - Lord Farquaad
+  - Johnson, Mike
+  - 53 Days
+  - Male
+  - W
+  - '950'
+  - '61270983'
+  - '35938991'
+  - N
+  - 2018-06-11
+  - 2019-12-16
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 53 Days
+- !!python/tuple
+  - 821
+  - 10000821
+  - Fiona
+  - Johnson, Mike
+  - 59 Days
+  - null
+  - A
+  - '950'
+  - '47847357'
+  - '59647715'
+  - N
+  - 2020-07-04
+  - 2019-10-14
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 59 Days
+- !!python/tuple
+  - 908
+  - 10000908
+  - Donkey
+  - Johnson, Mike
+  - 48 Days
+  - Female
+  - ''
+  - '950'
+  - '16245733'
+  - '51585786'
+  - N
+  - 2018-09-03
+  - 2023-04-11
+  - johnson, mike
+  - ''
+  - ''
+  - '13'
+  - 48 Days
+- !!python/tuple
+  - 916
+  - 10000916
+  - Puss in Boots
+  - Johnson, Mike
+  - 74 Years
+  - null
+  - W
+  - '950'
+  - '91177360'
+  - '63134060'
+  - N
+  - 2019-04-19
+  - 2020-10-18
+  - johnson, mike
+  - XXX
+  - ''
+  - '13'
+  - 74 Years
+- !!python/tuple
+  - 35
+  - 10000035
+  - Puss in Boots
+  - Miller, Amy
+  - .
+  - ''
+  - null
+  - '200'
+  - '30032600'
+  - '53024488'
+  - N
+  - 2022-05-07
+  - 2018-07-25
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 98
+  - 10000098
+  - Puss in Boots
+  - Miller, Amy
+  - 44 Months
+  - Female
+  - A
+  - '200'
+  - '38639874'
+  - '13092938'
+  - N
+  - 2021-11-07
+  - 2018-06-23
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 44 Months
+- !!python/tuple
+  - 417
+  - 10000417
+  - Shrek
+  - Miller, Amy
+  - 70 Days
+  - Female
+  - B
+  - '200'
+  - '59203423'
+  - '92104560'
+  - N
+  - 2020-09-23
+  - 2022-04-13
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 70 Days
+- !!python/tuple
+  - 434
+  - 10000434
+  - Lord Farquaad
+  - Miller, Amy
+  - 95 Months
+  - Male
+  - null
+  - '200'
+  - '90750429'
+  - '41954338'
+  - N
+  - 2020-06-17
+  - 2022-06-29
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 95 Months
+- !!python/tuple
+  - 515
+  - 10000515
+  - null
+  - Miller, Amy
+  - 72 Months
+  - Male
+  - B
+  - '200'
+  - '13559000'
+  - null
+  - N
+  - 2018-12-06
+  - 2019-12-15
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 72 Months
+- !!python/tuple
+  - 637
+  - 10000637
+  - Puss in Boots
+  - Miller, Amy
+  - 22 Years
+  - Female
+  - B
+  - '200'
+  - '95212895'
+  - null
+  - N
+  - 2020-12-28
+  - 2020-09-02
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 22 Years
+- !!python/tuple
+  - 701
+  - 10000701
+  - Shrek
+  - Miller, Amy
+  - 33 Months
+  - Male
+  - A
+  - '200'
+  - '41636459'
+  - null
+  - N
+  - 2020-10-08
+  - 2021-01-11
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 33 Months
 - !!python/tuple
   - 707
   - null
   - null
-  - Powers, Christopher
+  - Miller, Amy
+  - 16 Months
   - null
   - ''
-  - B
-  - '450'
-  - '87851733'
-  - '36779995'
-  - N
-  - 2020-12-05
-  - 2019-03-22
-  - powers, christopher
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 698
-  - null
-  - null
-  - Ray, David
-  - '25'
-  - Female
-  - W
-  - '490'
-  - '93929876'
-  - '45110267'
-  - N
-  - null
-  - 2021-02-15
-  - ray, david
-  - XXX
-  - ''
-  - '13'
-  - '25'
-- !!python/tuple
-  - 441
-  - null
-  - null
-  - Robinson, Ruben
-  - '29'
-  - ''
-  - ''
-  - '800'
-  - '14409683'
-  - '99589109'
+  - '200'
+  - '11176951'
+  - '45711067'
   - Y
-  - 2022-07-14
+  - 2021-01-23
   - null
-  - robinson, ruben
+  - miller, amy
   - ''
   - ''
   - '13'
-  - '29'
+  - 16 Months
 - !!python/tuple
-  - 393
-  - null
-  - null
-  - Rodriguez, Russell
-  - '85'
+  - 723
+  - 10000723
+  - Fiona
+  - Miller, Amy
+  - 66 Months
   - Male
   - A
   - '200'
-  - '12227734'
-  - '51941890'
+  - '13362550'
+  - '21838815'
   - N
-  - 2022-06-17
-  - 2023-10-08
-  - rodriguez, russell
+  - 2021-02-08
+  - 2022-07-26
+  - miller, amy
   - XXX
   - ''
   - '13'
-  - '85'
+  - 66 Months
 - !!python/tuple
-  - 774
-  - null
-  - null
-  - Rogers, Erin
-  - '14'
-  - Male
-  - A
-  - '730'
-  - '73333750'
-  - '36706868'
-  - N
-  - 2018-06-09
-  - 2022-12-23
-  - rogers, erin
-  - XXX
-  - ''
-  - '13'
-  - '14'
-- !!python/tuple
-  - 976
-  - null
-  - null
-  - Savage, Patricia
-  - 71 Years
+  - 736
+  - 10000736
+  - Donkey
+  - Miller, Amy
+  - 62 Years
   - ''
   - B
-  - '100'
-  - '10261828'
-  - '38567539'
+  - '200'
+  - '15843095'
+  - '83373223'
   - N
-  - 2020-11-10
-  - 2022-02-19
-  - savage, patricia
+  - null
+  - 2020-07-05
+  - miller, amy
   - XXX
   - ''
   - '13'
-  - 71 Years
+  - 62 Years
 - !!python/tuple
-  - 369
+  - 805
+  - 10000805
+  - Puss in Boots
+  - Miller, Amy
+  - 66 Months
+  - Male
+  - B
+  - '200'
+  - '40578141'
+  - '36874726'
+  - N
+  - 2020-03-29
+  - 2020-12-19
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 66 Months
+- !!python/tuple
+  - 815
+  - 10000815
+  - null
+  - Miller, Amy
+  - 51 Months
+  - ''
+  - ''
+  - '200'
+  - '34181930'
+  - null
+  - N
+  - 2019-04-08
+  - 2019-01-26
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 51 Months
+- !!python/tuple
+  - 830
+  - 10000830
+  - Lord Farquaad
+  - Miller, Amy
+  - 48 Years
+  - ''
+  - W
+  - '200'
+  - '90936420'
+  - '25057123'
+  - N
+  - 2020-04-03
+  - 2018-07-19
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 48 Years
+- !!python/tuple
+  - 854
+  - 10000854
+  - Shrek
+  - Miller, Amy
+  - 55 Days
+  - Female
+  - A
+  - '200'
+  - '50348312'
+  - '32149224'
+  - N
+  - 2022-10-22
+  - 2024-04-02
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 55 Days
+- !!python/tuple
+  - 53
+  - 10000053
+  - Puss in Boots
+  - Miller, Amy
+  - 18 Years
+  - Male
+  - A
+  - '300'
+  - '86538254'
+  - '17835404'
+  - N
+  - 2024-02-26
+  - 2024-04-22
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 18 Years
+- !!python/tuple
+  - 63
+  - 10000063
+  - Shrek
+  - Miller, Amy
+  - 13 Months
+  - ''
+  - W
+  - '300'
+  - '38056923'
+  - '59138447'
+  - N
+  - 2019-09-04
+  - 2019-05-19
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 13 Months
+- !!python/tuple
+  - 116
+  - 10000116
+  - Donkey
+  - Miller, Amy
+  - 84 Years
+  - ''
+  - null
+  - '300'
+  - '63316293'
+  - '37856280'
+  - N
+  - 2021-01-11
+  - 2023-03-24
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 84 Years
+- !!python/tuple
+  - 174
   - null
   - null
-  - Schaefer, Timothy
-  - 66 Years
+  - Miller, Amy
+  - 14 Years
+  - Female
+  - AI
+  - '300'
+  - '37757760'
+  - '39227861'
+  - N
+  - 2020-10-20
+  - 2022-10-18
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 14 Years
+- !!python/tuple
+  - 293
+  - 10000293
+  - Donkey
+  - Miller, Amy
+  - 20 Months
+  - null
+  - ''
+  - '300'
+  - '77575285'
+  - null
+  - N
+  - 2019-08-23
+  - 2023-07-08
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 20 Months
+- !!python/tuple
+  - 316
+  - 10000316
+  - Fiona
+  - Miller, Amy
+  - .
+  - ''
+  - B
+  - '300'
+  - '75417068'
+  - '78919852'
+  - N
+  - 2023-11-21
+  - 2022-07-21
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 511
+  - 10000511
+  - Fiona
+  - Miller, Amy
+  - 2 Days
+  - ''
+  - A
+  - '300'
+  - '21767884'
+  - '78767899'
+  - N
+  - 2023-05-15
+  - 2023-04-14
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 2 Days
+- !!python/tuple
+  - 607
+  - 10000607
+  - Donkey
+  - Miller, Amy
+  - 50 Months
+  - Female
+  - ''
+  - '300'
+  - '35133128'
+  - '63806878'
+  - N
+  - 2018-10-20
+  - 2024-02-01
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 50 Months
+- !!python/tuple
+  - 620
+  - 10000620
+  - Fiona
+  - Miller, Amy
+  - 43 Years
+  - Female
+  - A
+  - '300'
+  - '60164312'
+  - '88164283'
+  - N
+  - 2019-08-14
+  - 2020-03-02
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 43 Years
+- !!python/tuple
+  - 813
+  - 10000813
+  - Shrek
+  - Miller, Amy
+  - .
+  - Female
+  - AI
+  - '300'
+  - '79767167'
+  - '38846012'
+  - N
+  - 2020-02-01
+  - 2022-12-12
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 858
+  - null
+  - null
+  - Miller, Amy
+  - 58 Months
+  - Male
+  - A
+  - '300'
+  - '69578308'
+  - '23249190'
+  - N
+  - 2020-08-28
+  - 2018-08-13
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 58 Months
+- !!python/tuple
+  - 64
+  - 10000064
+  - Fiona
+  - Miller, Amy
+  - 50 Months
+  - null
+  - ''
+  - '710'
+  - '20417067'
+  - '76741610'
+  - Y
+  - 2021-02-13
+  - null
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 50 Months
+- !!python/tuple
+  - 92
+  - 10000092
+  - Shrek
+  - Miller, Amy
+  - 90 Months
+  - Male
+  - B
+  - '710'
+  - '89447950'
+  - '66204907'
+  - N
+  - 2022-06-09
+  - 2024-07-09
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 90 Months
+- !!python/tuple
+  - 208
+  - 10000208
+  - Lord Farquaad
+  - Miller, Amy
+  - 88 Years
+  - Female
+  - W
+  - '710'
+  - '49027450'
+  - '33148855'
+  - N
+  - 2021-05-16
+  - 2023-06-19
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 88 Years
+- !!python/tuple
+  - 250
+  - 10000250
+  - Puss in Boots
+  - Miller, Amy
+  - 69 Days
+  - ''
+  - ''
+  - '710'
+  - '52540728'
+  - '34159086'
+  - N
+  - 2021-09-24
+  - 2023-09-05
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 69 Days
+- !!python/tuple
+  - 510
+  - 10000510
+  - null
+  - Miller, Amy
+  - 11 Months
+  - Male
+  - A
+  - '710'
+  - '69228039'
+  - '73696062'
+  - Y
+  - 2020-03-16
+  - null
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 11 Months
+- !!python/tuple
+  - 539
+  - 10000539
+  - Shrek
+  - Miller, Amy
+  - 97 Months
+  - Male
+  - B
+  - '710'
+  - '34288264'
+  - '60213675'
+  - N
+  - 2018-08-09
+  - 2021-08-23
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 97 Months
+- !!python/tuple
+  - 546
+  - 10000546
+  - Fiona
+  - Miller, Amy
+  - 48 Days
+  - ''
+  - AI
+  - '710'
+  - '61015361'
+  - '60859295'
+  - N
+  - 2020-10-08
+  - 2023-04-29
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 48 Days
+- !!python/tuple
+  - 729
+  - 10000729
+  - Fiona
+  - Miller, Amy
+  - 97 Months
+  - Male
+  - null
+  - '710'
+  - '13574084'
+  - '78298065'
+  - N
+  - 2018-12-05
+  - 2023-02-19
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 97 Months
+- !!python/tuple
+  - 749
+  - 10000749
+  - Fiona
+  - Miller, Amy
+  - 83 Years
+  - Female
+  - B
+  - '710'
+  - '11759612'
+  - '44676728'
+  - N
+  - 2019-03-05
+  - 2022-11-23
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 83 Years
+- !!python/tuple
+  - 774
+  - 10000774
+  - Lord Farquaad
+  - Miller, Amy
+  - 79 Months
+  - Female
+  - A
+  - '710'
+  - '55284371'
+  - '42316657'
+  - N
+  - 2024-06-21
+  - 2022-05-15
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 79 Months
+- !!python/tuple
+  - 855
+  - 10000855
+  - Lord Farquaad
+  - Miller, Amy
+  - 58 Days
+  - Male
+  - ''
+  - '710'
+  - '13295609'
+  - '38164164'
+  - N
+  - 2021-10-28
+  - 2018-10-22
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 58 Days
+- !!python/tuple
+  - 870
+  - 10000870
+  - Shrek
+  - Miller, Amy
+  - 11 Months
+  - Male
+  - null
+  - '710'
+  - '36001774'
+  - '97256561'
+  - N
+  - 2022-12-26
+  - 2021-06-21
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 11 Months
+- !!python/tuple
+  - 888
+  - 10000888
+  - Fiona
+  - Miller, Amy
+  - 88 Days
+  - ''
+  - A
+  - '710'
+  - '49709301'
+  - '26575839'
+  - N
+  - 2020-05-12
+  - 2019-04-01
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 88 Days
+- !!python/tuple
+  - 119
+  - 10000119
+  - Lord Farquaad
+  - Miller, Amy
+  - .
+  - ''
+  - A
+  - '720'
+  - '28784378'
+  - '28793008'
+  - N
+  - 2018-06-11
+  - 2020-02-06
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 262
+  - 10000262
+  - Lord Farquaad
+  - Miller, Amy
+  - 2 Months
+  - Male
+  - AI
+  - '720'
+  - '18142001'
+  - '58210870'
+  - N
+  - 2019-08-25
+  - 2020-02-29
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 2 Months
+- !!python/tuple
+  - 303
+  - null
+  - null
+  - Miller, Amy
+  - 35 Months
   - Female
   - ''
   - '720'
-  - '19321622'
-  - '86962138'
+  - '12864797'
+  - '67257336'
   - N
-  - 2022-08-22
-  - 2020-01-03
-  - schaefer, timothy
+  - 2023-02-13
+  - 2018-07-29
+  - miller, amy
   - ''
+  - ''
+  - '13'
+  - 35 Months
+- !!python/tuple
+  - 321
+  - 10000321
+  - Shrek
+  - Miller, Amy
+  - 51 Months
+  - Female
+  - AI
+  - '720'
+  - '60530756'
+  - null
+  - N
+  - null
+  - 2022-11-16
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 51 Months
+- !!python/tuple
+  - 377
+  - 10000377
+  - Lord Farquaad
+  - Miller, Amy
+  - 91 Months
+  - Male
+  - A
+  - '720'
+  - '31755930'
+  - '79864529'
+  - N
+  - 2023-09-30
+  - 2019-09-12
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 91 Months
+- !!python/tuple
+  - 576
+  - 10000576
+  - Shrek
+  - Miller, Amy
+  - 18 Years
+  - Female
+  - B
+  - '720'
+  - '17165039'
+  - '79347640'
+  - N
+  - 2022-01-03
+  - 2018-10-17
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 18 Years
+- !!python/tuple
+  - 728
+  - 10000728
+  - Lord Farquaad
+  - Miller, Amy
+  - 53 Days
+  - ''
+  - null
+  - '720'
+  - '68127502'
+  - '65349420'
+  - N
+  - 2020-10-05
+  - 2018-11-26
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 53 Days
+- !!python/tuple
+  - 739
+  - 10000739
+  - Lord Farquaad
+  - Miller, Amy
+  - 99 Years
+  - Female
+  - B
+  - '720'
+  - '93107452'
+  - '22844030'
+  - N
+  - 2019-09-24
+  - 2023-06-22
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 99 Years
+- !!python/tuple
+  - 783
+  - 10000783
+  - Puss in Boots
+  - Miller, Amy
+  - 14 Years
+  - ''
+  - B
+  - '720'
+  - '23234012'
+  - '13248949'
+  - N
+  - null
+  - 2019-12-07
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 14 Years
+- !!python/tuple
+  - 1000
+  - 10001000
+  - null
+  - Miller, Amy
+  - 75 Years
+  - Male
+  - AI
+  - '720'
+  - '36521383'
+  - '46482314'
+  - N
+  - 2021-05-27
+  - 2022-09-04
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 75 Years
+- !!python/tuple
+  - 100
+  - 10000100
+  - null
+  - Miller, Amy
+  - 48 Months
+  - ''
+  - A
+  - '730'
+  - '18315361'
+  - '97849787'
+  - N
+  - 2023-12-17
+  - 2023-03-02
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 48 Months
+- !!python/tuple
+  - 114
+  - 10000114
+  - null
+  - Miller, Amy
+  - 90 Days
+  - Male
+  - AI
+  - '730'
+  - '46541304'
+  - '40758469'
+  - N
+  - 2019-05-31
+  - 2023-01-16
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 90 Days
+- !!python/tuple
+  - 159
+  - 10000159
+  - null
+  - Miller, Amy
+  - 4 Months
+  - Male
+  - A
+  - '730'
+  - '35344763'
+  - '25358635'
+  - N
+  - 2024-05-27
+  - 2020-02-16
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 4 Months
+- !!python/tuple
+  - 160
+  - 10000160
+  - Lord Farquaad
+  - Miller, Amy
+  - 5 Days
+  - Male
+  - ''
+  - '730'
+  - '82554039'
+  - '27549496'
+  - N
+  - 2022-05-16
+  - 2020-09-30
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 5 Days
+- !!python/tuple
+  - 258
+  - 10000258
+  - Donkey
+  - Miller, Amy
+  - 93 Years
+  - Female
+  - W
+  - '730'
+  - '60873469'
+  - '48874610'
+  - N
+  - 2019-08-21
+  - 2018-06-22
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 93 Years
+- !!python/tuple
+  - 267
+  - 10000267
+  - Fiona
+  - Miller, Amy
+  - 71 Years
+  - ''
+  - B
+  - '730'
+  - '74432969'
+  - '84956997'
+  - N
+  - 2020-12-28
+  - 2024-12-12
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 71 Years
+- !!python/tuple
+  - 327
+  - 10000327
+  - Shrek
+  - Miller, Amy
+  - 81 Months
+  - Female
+  - ''
+  - '730'
+  - '83712200'
+  - '88699343'
+  - N
+  - 2021-08-26
+  - 2022-09-30
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 81 Months
+- !!python/tuple
+  - 381
+  - 10000381
+  - Donkey
+  - Miller, Amy
+  - 1 Months
+  - ''
+  - null
+  - '730'
+  - '23656623'
+  - '19158027'
+  - N
+  - 2024-08-09
+  - 2020-08-21
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 1 Months
+- !!python/tuple
+  - 678
+  - 10000678
+  - Fiona
+  - Miller, Amy
+  - 66 Years
+  - Male
+  - AI
+  - '730'
+  - '82945663'
+  - '27038630'
+  - N
+  - 2020-07-26
+  - 2023-08-22
+  - miller, amy
+  - XXX
   - ''
   - '13'
   - 66 Years
 - !!python/tuple
-  - 812
+  - 819
   - null
   - null
-  - Scott, Tanya
-  - '90'
-  - ''
-  - W
-  - '600'
-  - '72420715'
-  - null
-  - N
-  - 2024-06-29
-  - 2023-07-16
-  - scott, tanya
-  - XXX
-  - ''
-  - '13'
-  - '90'
-- !!python/tuple
-  - 220
-  - null
-  - null
-  - Shepherd, Joanna
-  - '27'
-  - Male
-  - A
-  - '420'
-  - '18135117'
-  - '10206687'
-  - N
-  - 2020-10-13
-  - 2020-07-24
-  - shepherd, joanna
-  - XXX
-  - ''
-  - '13'
-  - '27'
-- !!python/tuple
-  - 601
-  - null
-  - null
-  - Simon, Shannon
-  - '58'
-  - Female
-  - ''
-  - '745'
-  - '58672819'
-  - '92919890'
-  - N
-  - 2024-09-30
-  - 2021-04-09
-  - simon, shannon
-  - ''
-  - ''
-  - '13'
-  - '58'
-- !!python/tuple
-  - 190
-  - null
-  - null
-  - Simpson, Shelly
-  - '67'
+  - Miller, Amy
+  - 88 Days
   - Female
   - B
-  - '400'
-  - '76082329'
-  - '67223322'
+  - '730'
+  - '87936795'
+  - '41092659'
   - N
-  - 2021-11-24
-  - 2023-03-23
-  - simpson, shelly
+  - 2022-09-05
+  - 2019-05-14
+  - miller, amy
   - XXX
   - ''
   - '13'
-  - '67'
+  - 88 Days
 - !!python/tuple
-  - 620
-  - null
-  - null
-  - Singleton, Karen
-  - '37'
-  - Male
-  - B
-  - '750'
-  - null
-  - '26408087'
-  - N
-  - 2018-06-19
-  - 2021-03-21
-  - singleton, karen
-  - XXX
-  - ''
-  - '13'
-  - '37'
-- !!python/tuple
-  - 988
-  - null
-  - null
-  - Smith, Christian
-  - '60'
-  - Female
-  - A
-  - '500'
-  - '70766929'
-  - '66114255'
-  - N
-  - 2022-04-25
-  - 2024-09-16
-  - smith, christian
-  - XXX
-  - ''
-  - '13'
-  - '60'
-- !!python/tuple
-  - 667
-  - null
-  - null
-  - Smith, Christine
-  - '54'
-  - ''
-  - W
-  - '470'
-  - '86273876'
-  - '90580388'
-  - N
-  - 2022-07-22
-  - 2024-01-31
-  - smith, christine
-  - XXX
-  - ''
-  - '13'
-  - '54'
-- !!python/tuple
-  - 737
-  - null
-  - null
-  - Smith, Christopher
-  - null
-  - Male
-  - A
-  - '400'
-  - '93042224'
-  - '86438070'
-  - N
-  - 2020-04-22
-  - 2023-05-05
-  - smith, christopher
-  - XXX
-  - ''
-  - '13'
-  - null
-- !!python/tuple
-  - 201
-  - null
-  - null
-  - Smith, Erin
-  - '30'
-  - ''
-  - B
-  - '710'
-  - '14326047'
-  - '65428204'
-  - N
-  - 2020-01-10
-  - 2023-11-02
-  - smith, erin
-  - XXX
-  - ''
-  - '13'
-  - '30'
-- !!python/tuple
-  - 33
-  - null
-  - null
-  - Smith, Stacy
-  - '90'
-  - Male
-  - ''
-  - '900'
-  - '37151914'
-  - '92206428'
-  - N
-  - 2024-02-11
-  - 2021-04-22
-  - smith, stacy
-  - ''
-  - ''
-  - '13'
-  - '90'
-- !!python/tuple
-  - 302
-  - null
-  - null
-  - Spencer, Diana
-  - '19'
-  - Male
-  - A
-  - '400'
-  - '68850145'
-  - '75655069'
-  - N
-  - 2022-12-01
-  - 2021-07-01
-  - spencer, diana
-  - XXX
-  - ''
-  - '13'
-  - '19'
-- !!python/tuple
-  - 344
-  - null
-  - null
-  - Stone, Kelly
-  - '90'
-  - Male
-  - B
-  - '745'
-  - '49801748'
-  - '16552910'
-  - N
-  - 2022-10-23
-  - 2018-07-24
-  - stone, kelly
-  - XXX
-  - ''
-  - '13'
-  - '90'
-- !!python/tuple
-  - 727
-  - null
-  - null
-  - Sweeney, Sean
-  - '18'
+  - 835
+  - 10000835
+  - Fiona
+  - Miller, Amy
+  - 92 Months
   - ''
   - A
-  - '400'
-  - '45543983'
-  - '55967232'
+  - '730'
+  - '64994861'
+  - '53188321'
   - N
-  - 2021-01-25
-  - 2020-07-27
-  - sweeney, sean
+  - 2019-07-28
+  - 2021-05-22
+  - miller, amy
   - XXX
   - ''
   - '13'
-  - '18'
+  - 92 Months
 - !!python/tuple
-  - 273
+  - 963
+  - 10000963
   - null
-  - null
-  - Todd, Kayla
-  - '5'
-  - Female
-  - AI
+  - Miller, Amy
+  - 35 Years
+  - Male
+  - ''
+  - '730'
+  - '13558842'
+  - '37657387'
+  - N
+  - 2019-01-08
+  - 2020-06-19
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 35 Years
+- !!python/tuple
+  - 131
+  - 10000131
+  - Shrek
+  - Miller, Amy
+  - 15 Years
+  - Male
+  - ''
   - '790'
-  - '81836335'
-  - '56715536'
+  - '23190896'
+  - '10992127'
   - N
-  - 2018-05-08
-  - 2023-05-06
-  - todd, kayla
-  - XXX
+  - 2020-09-14
+  - 2022-01-05
+  - miller, amy
+  - ''
   - ''
   - '13'
-  - '5'
+  - 15 Years
 - !!python/tuple
-  - 800
-  - null
-  - null
-  - Torres, Monique
-  - '82'
+  - 202
+  - 10000202
+  - Donkey
+  - Miller, Amy
+  - 11 Months
+  - Female
   - ''
-  - ''
-  - '100'
-  - '98395313'
-  - '96877471'
+  - '790'
+  - '17584747'
+  - '70549710'
   - N
-  - 2019-09-25
-  - 2021-06-30
-  - torres, monique
+  - 2020-05-28
+  - 2022-12-08
+  - miller, amy
   - ''
   - ''
   - '13'
-  - '82'
+  - 11 Months
+- !!python/tuple
+  - 217
+  - 10000217
+  - Donkey
+  - Miller, Amy
+  - 86 Years
+  - ''
+  - ''
+  - '790'
+  - '57799230'
+  - '51870958'
+  - N
+  - 2021-04-30
+  - 2019-12-10
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 86 Years
 - !!python/tuple
   - 225
+  - 10000225
+  - Fiona
+  - Miller, Amy
+  - 70 Years
+  - Male
+  - ''
+  - '790'
+  - '89725348'
   - null
-  - null
-  - Walters, Courtney
-  - 7 years
-  - null
-  - AI
-  - '300'
-  - '30232895'
-  - '92070913'
   - N
-  - 2022-06-01
-  - 2022-01-05
-  - walters, courtney
+  - 2019-04-01
+  - 2019-04-10
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 70 Years
+- !!python/tuple
+  - 363
+  - 10000363
+  - null
+  - Miller, Amy
+  - 32 Months
+  - ''
+  - A
+  - '790'
+  - '94917831'
+  - '35875987'
+  - N
+  - 2019-06-19
+  - 2021-07-26
+  - miller, amy
   - XXX
   - ''
   - '13'
-  - 7 years
+  - 32 Months
 - !!python/tuple
-  - 519
+  - 401
   - null
   - null
-  - Ward, Grace
-  - 56 Years
+  - Miller, Amy
+  - 88 Days
   - Male
   - B
   - '790'
-  - '63255784'
-  - '32854431'
+  - '86632691'
+  - null
   - N
-  - 2019-04-16
-  - 2018-12-09
-  - ward, grace
+  - 2021-08-29
+  - 2023-03-23
+  - miller, amy
   - XXX
   - ''
   - '13'
-  - 56 Years
+  - 88 Days
 - !!python/tuple
-  - 760
+  - 438
+  - 10000438
+  - Lord Farquaad
+  - Miller, Amy
+  - 91 Months
+  - Female
+  - W
+  - '790'
+  - '12162497'
+  - '89073218'
+  - N
+  - 2023-07-03
+  - 2021-01-06
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 91 Months
+- !!python/tuple
+  - 483
+  - 10000483
+  - Puss in Boots
+  - Miller, Amy
+  - 49 Days
+  - Female
+  - null
+  - '790'
+  - '74206178'
+  - '94597833'
+  - N
+  - 2023-07-07
+  - 2021-10-12
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 49 Days
+- !!python/tuple
+  - 591
+  - 10000591
+  - Fiona
+  - Miller, Amy
+  - 70 Months
+  - Female
+  - null
+  - '790'
+  - '46845678'
+  - '10600979'
+  - N
+  - 2023-07-22
+  - 2021-12-22
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 70 Months
+- !!python/tuple
+  - 703
+  - 10000703
+  - Shrek
+  - Miller, Amy
+  - 77 Months
+  - Female
+  - W
+  - '790'
+  - '53778097'
+  - '41295721'
+  - N
+  - 2020-12-02
+  - 2023-06-15
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 77 Months
+- !!python/tuple
+  - 806
+  - 10000806
+  - Shrek
+  - Miller, Amy
+  - 60 Months
+  - Female
+  - W
+  - '790'
+  - '41401806'
+  - '29664027'
+  - N
+  - 2023-04-08
+  - 2023-09-07
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 60 Months
+- !!python/tuple
+  - 809
+  - 10000809
+  - Donkey
+  - Miller, Amy
+  - 74 Years
+  - Male
+  - B
+  - '790'
+  - '81948092'
+  - '36693119'
+  - N
+  - 2022-05-03
+  - 2020-01-07
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 74 Years
+- !!python/tuple
+  - 852
+  - 10000852
+  - Lord Farquaad
+  - Miller, Amy
+  - 12 Months
+  - ''
+  - W
+  - '790'
+  - '66078220'
+  - '17066331'
+  - N
+  - 2019-02-08
+  - 2019-01-03
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 12 Months
+- !!python/tuple
+  - 939
+  - 10000939
+  - null
+  - Miller, Amy
+  - .
+  - null
+  - ''
+  - '790'
+  - '90374051'
+  - '86474457'
+  - Y
+  - 2024-11-22
+  - null
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 105
+  - 10000105
+  - Fiona
+  - Miller, Amy
+  - 13 Years
+  - null
+  - AI
+  - '900'
+  - '28735089'
+  - '87245113'
+  - N
+  - 2019-03-13
+  - 2022-05-11
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 13 Years
+- !!python/tuple
+  - 176
   - null
   - null
-  - Washington, Stacey
-  - '32'
+  - Miller, Amy
+  - 41 Years
+  - Female
+  - null
+  - '900'
+  - '24163830'
+  - '90167847'
+  - N
+  - 2021-05-13
+  - 2024-09-06
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 41 Years
+- !!python/tuple
+  - 280
+  - 10000280
+  - Puss in Boots
+  - Miller, Amy
+  - 36 Months
+  - ''
+  - ''
+  - '900'
+  - '57122792'
+  - '60726964'
+  - N
+  - 2021-02-15
+  - 2023-09-06
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 36 Months
+- !!python/tuple
+  - 398
+  - 10000398
+  - Puss in Boots
+  - Miller, Amy
+  - 35 Days
+  - Male
+  - A
+  - '900'
+  - '87899249'
+  - '21035878'
+  - N
+  - 2020-09-27
+  - 2019-06-21
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 35 Days
+- !!python/tuple
+  - 408
+  - 10000408
+  - Lord Farquaad
+  - Miller, Amy
+  - 71 Days
+  - ''
+  - AI
+  - '900'
+  - '37328356'
+  - '78214600'
+  - N
+  - 2023-02-04
+  - 2018-09-17
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 71 Days
+- !!python/tuple
+  - 467
+  - 10000467
+  - Donkey
+  - Miller, Amy
+  - 7 Days
+  - ''
+  - ''
+  - '900'
+  - '73767904'
+  - '58729590'
+  - N
+  - 2020-04-14
+  - 2023-05-28
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - 7 Days
+- !!python/tuple
+  - 631
+  - 10000631
+  - Lord Farquaad
+  - Miller, Amy
+  - 69 Days
+  - ''
+  - AI
+  - '900'
+  - '95201559'
+  - '73649803'
+  - N
+  - 2021-12-20
+  - 2021-07-23
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 69 Days
+- !!python/tuple
+  - 95
+  - 10000095
+  - Lord Farquaad
+  - Miller, Amy
+  - 77 Years
+  - Male
+  - W
+  - '950'
+  - '21177535'
+  - '60783109'
+  - N
+  - 2020-04-11
+  - 2022-03-01
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 77 Years
+- !!python/tuple
+  - 356
+  - 10000356
+  - Puss in Boots
+  - Miller, Amy
+  - 46 Days
+  - Male
+  - B
+  - '950'
+  - '32126131'
+  - '30596676'
+  - N
+  - 2020-11-08
+  - 2022-08-29
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 46 Days
+- !!python/tuple
+  - 369
+  - 10000369
+  - null
+  - Miller, Amy
+  - 75 Days
+  - null
+  - W
+  - '950'
+  - '26527592'
+  - '58628183'
+  - N
+  - 2018-12-13
+  - 2020-11-13
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 75 Days
+- !!python/tuple
+  - 469
+  - 10000469
+  - null
+  - Miller, Amy
+  - 12 Months
+  - Female
+  - W
+  - '950'
+  - '53639991'
+  - '74257320'
+  - N
+  - 2020-12-21
+  - 2019-12-22
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 12 Months
+- !!python/tuple
+  - 599
+  - 10000599
+  - Puss in Boots
+  - Miller, Amy
+  - 42 Months
+  - null
+  - W
+  - '950'
+  - '17297926'
+  - '53840825'
+  - N
+  - 2021-11-23
+  - 2019-07-25
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 42 Months
+- !!python/tuple
+  - 604
+  - 10000604
+  - Fiona
+  - Miller, Amy
+  - 92 Months
+  - Male
+  - AI
+  - '950'
+  - '89959925'
+  - '23334046'
+  - N
+  - 2019-01-04
+  - 2022-02-14
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 92 Months
+- !!python/tuple
+  - 894
+  - 10000894
+  - Puss in Boots
+  - Miller, Amy
+  - 54 Months
+  - ''
+  - B
+  - '950'
+  - '29444584'
+  - '56647835'
+  - N
+  - 2021-09-15
+  - 2022-06-20
+  - miller, amy
+  - XXX
+  - ''
+  - '13'
+  - 54 Months
+- !!python/tuple
+  - 905
+  - 10000905
+  - Lord Farquaad
+  - Miller, Amy
+  - .
+  - ''
+  - ''
+  - '950'
+  - '20866601'
+  - '88545110'
+  - N
+  - 2024-03-04
+  - 2018-06-05
+  - miller, amy
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 521
+  - 10000521
+  - Lord Farquaad
+  - Smith, John
+  - 70 Months
+  - Male
+  - ''
+  - '200'
+  - '94914745'
+  - '56551497'
+  - N
+  - 2019-04-29
+  - 2023-02-14
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 70 Months
+- !!python/tuple
+  - 18
+  - 10000018
+  - Donkey
+  - Smith, John
+  - 51 Days
+  - Male
+  - null
+  - '300'
+  - '15804568'
+  - '54229460'
+  - N
+  - 2021-11-27
+  - 2022-06-11
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 51 Days
+- !!python/tuple
+  - 509
+  - 10000509
+  - Lord Farquaad
+  - Smith, John
+  - 25 Years
+  - Female
+  - A
+  - '300'
+  - '50604752'
+  - '28189881'
+  - N
+  - null
+  - 2018-08-31
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 25 Years
+- !!python/tuple
+  - 589
+  - 10000589
+  - Donkey
+  - Smith, John
+  - 84 Months
+  - Male
+  - A
+  - '300'
+  - '41845856'
+  - '61562117'
+  - N
+  - 2022-12-05
+  - 2022-12-11
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 84 Months
+- !!python/tuple
+  - 640
+  - null
+  - null
+  - Smith, John
+  - 85 Months
+  - ''
+  - null
+  - '300'
+  - '30600607'
+  - '48302269'
+  - N
+  - 2023-07-15
+  - 2024-11-19
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 85 Months
+- !!python/tuple
+  - 645
+  - 10000645
+  - Shrek
+  - Smith, John
+  - 29 Months
+  - ''
+  - A
+  - '300'
+  - '91408416'
+  - null
+  - N
+  - 2022-07-18
+  - 2020-08-16
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 29 Months
+- !!python/tuple
+  - 665
+  - 10000665
+  - Shrek
+  - Smith, John
+  - 46 Days
+  - Male
+  - null
+  - '300'
+  - '33616288'
+  - '31101165'
+  - N
+  - 2024-01-01
+  - 2019-12-28
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 46 Days
+- !!python/tuple
+  - 753
+  - 10000753
+  - Puss in Boots
+  - Smith, John
+  - 11 Years
+  - ''
+  - B
+  - '300'
+  - null
+  - '32855712'
+  - N
+  - 2018-06-23
+  - 2019-02-11
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 11 Years
+- !!python/tuple
+  - 780
+  - 10000780
+  - Donkey
+  - Smith, John
+  - 22 Years
+  - ''
+  - AI
+  - '300'
+  - '72250578'
+  - '70099367'
+  - N
+  - 2023-04-10
+  - 2022-12-17
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 22 Years
+- !!python/tuple
+  - 39
+  - 10000039
+  - Fiona
+  - Smith, John
+  - 31 Years
+  - Female
+  - ''
+  - '710'
+  - '61072226'
+  - '30467170'
+  - N
+  - 2022-01-10
+  - 2022-10-26
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 31 Years
+- !!python/tuple
+  - 61
+  - 10000061
+  - Lord Farquaad
+  - Smith, John
+  - 19 Months
+  - Female
+  - A
+  - '710'
+  - '49797290'
+  - '77287426'
+  - N
+  - 2020-08-03
+  - 2020-04-20
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 19 Months
+- !!python/tuple
+  - 266
+  - 10000266
+  - Donkey
+  - Smith, John
+  - 64 Months
+  - Male
+  - B
+  - '710'
+  - '16777515'
+  - '95770746'
+  - Y
+  - 2020-05-07
+  - null
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 64 Months
+- !!python/tuple
+  - 277
+  - 10000277
+  - Puss in Boots
+  - Smith, John
+  - 4 Days
+  - Female
+  - AI
+  - '710'
+  - '31152290'
+  - '22143990'
+  - N
+  - 2022-03-09
+  - 2019-08-21
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 4 Days
+- !!python/tuple
+  - 283
+  - 10000283
+  - Puss in Boots
+  - Smith, John
+  - .
+  - Male
+  - B
+  - '710'
+  - '56862344'
+  - '62354809'
+  - N
+  - 2021-11-27
+  - 2023-11-01
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 595
+  - null
+  - null
+  - Smith, John
+  - 21 Months
+  - Male
+  - B
+  - '710'
+  - '71953018'
+  - '58899389'
+  - N
+  - 2019-11-23
+  - 2018-10-29
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 21 Months
+- !!python/tuple
+  - 704
+  - 10000704
+  - null
+  - Smith, John
+  - 16 Years
   - Female
   - B
   - '710'
-  - '95580820'
-  - '11769948'
+  - '23055401'
+  - '76190711'
   - N
-  - 2020-05-10
-  - 2019-01-30
-  - washington, stacey
+  - null
+  - 2022-03-25
+  - smith, john
   - XXX
   - ''
   - '13'
-  - '32'
+  - 16 Years
 - !!python/tuple
-  - 762
+  - 824
+  - 10000824
+  - Shrek
+  - Smith, John
+  - 82 Months
+  - ''
+  - null
+  - '710'
+  - '97760918'
+  - '41261240'
+  - N
+  - 2019-08-04
+  - 2018-10-21
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 82 Months
+- !!python/tuple
+  - 928
+  - 10000928
+  - Donkey
+  - Smith, John
+  - 92 Days
+  - Female
+  - W
+  - '710'
+  - '81406819'
+  - '60522578'
+  - N
+  - 2023-04-15
+  - 2021-06-07
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 92 Days
+- !!python/tuple
+  - 42
+  - 10000042
+  - Shrek
+  - Smith, John
+  - 59 Months
+  - ''
+  - W
+  - '720'
+  - '26603618'
+  - '21338488'
+  - N
+  - 2020-03-26
+  - 2023-02-07
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 59 Months
+- !!python/tuple
+  - 373
+  - 10000373
+  - Shrek
+  - Smith, John
+  - 50 Days
+  - Female
+  - A
+  - '720'
+  - null
+  - '11707316'
+  - N
+  - 2020-09-08
+  - 2019-04-21
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 50 Days
+- !!python/tuple
+  - 374
+  - 10000374
+  - Donkey
+  - Smith, John
+  - 51 Years
+  - ''
+  - A
+  - '720'
+  - '78903074'
+  - '34248257'
+  - N
+  - 2020-03-28
+  - 2023-05-12
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 51 Years
+- !!python/tuple
+  - 472
+  - 10000472
+  - Donkey
+  - Smith, John
+  - 99 Years
+  - ''
+  - AI
+  - '720'
+  - '71554981'
+  - null
+  - N
+  - 2024-08-12
+  - 2022-01-02
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 99 Years
+- !!python/tuple
+  - 570
   - null
   - null
-  - Watkins, Charles
-  - '84'
+  - Smith, John
+  - 88 Months
+  - Female
+  - ''
+  - '720'
+  - '81283756'
+  - '85440346'
+  - Y
+  - 2020-11-12
+  - null
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 88 Months
+- !!python/tuple
+  - 613
+  - 10000613
+  - null
+  - Smith, John
+  - 26 Years
+  - Male
+  - AI
+  - '720'
+  - '93619294'
+  - '82710334'
+  - N
+  - 2024-01-27
+  - 2020-06-18
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 26 Years
+- !!python/tuple
+  - 641
+  - 10000641
+  - Shrek
+  - Smith, John
+  - 41 Years
+  - Female
+  - W
+  - '720'
+  - '41141674'
+  - '23384542'
+  - N
+  - 2021-05-14
+  - 2018-08-16
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 41 Years
+- !!python/tuple
+  - 695
+  - 10000695
+  - Donkey
+  - Smith, John
+  - .
+  - null
+  - ''
+  - '720'
+  - '57895439'
+  - '94543063'
+  - N
+  - 2021-02-11
+  - 2022-05-10
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 964
+  - 10000964
+  - Donkey
+  - Smith, John
+  - 54 Months
+  - Male
+  - B
+  - '720'
+  - '98163146'
+  - '57057218'
+  - N
+  - 2019-10-11
+  - 2018-10-26
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 54 Months
+- !!python/tuple
+  - 77
+  - 10000077
+  - Puss in Boots
+  - Smith, John
+  - 16 Months
+  - Female
+  - null
+  - '730'
+  - '62566870'
+  - '64556177'
+  - N
+  - 2024-08-07
+  - 2023-10-07
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 16 Months
+- !!python/tuple
+  - 104
+  - 10000104
+  - Puss in Boots
+  - Smith, John
+  - 7 Days
+  - Male
+  - A
+  - '730'
+  - '74072489'
+  - '12975241'
+  - N
+  - 2024-05-10
+  - 2022-05-10
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 7 Days
+- !!python/tuple
+  - 290
+  - 10000290
+  - Lord Farquaad
+  - Smith, John
+  - 29 Years
+  - ''
+  - ''
+  - '730'
+  - '15002372'
+  - '13752713'
+  - N
+  - 2023-01-28
+  - 2023-01-23
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 29 Years
+- !!python/tuple
+  - 348
+  - 10000348
+  - Lord Farquaad
+  - Smith, John
+  - 66 Years
+  - Male
+  - AI
+  - '730'
+  - '68134269'
+  - null
+  - N
+  - 2021-12-05
+  - 2024-11-26
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 66 Years
+- !!python/tuple
+  - 453
+  - null
+  - null
+  - Smith, John
+  - 98 Months
+  - null
+  - ''
+  - '730'
+  - '41520076'
+  - '59178706'
+  - N
+  - 2020-11-16
+  - 2022-10-01
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 98 Months
+- !!python/tuple
+  - 499
+  - null
+  - null
+  - Smith, John
+  - 74 Years
+  - Male
+  - null
+  - '730'
+  - '23944931'
+  - '98261784'
+  - N
+  - 2021-02-23
+  - 2024-03-06
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 74 Years
+- !!python/tuple
+  - 584
+  - 10000584
+  - Puss in Boots
+  - Smith, John
+  - 84 Months
+  - Male
+  - AI
+  - '730'
+  - '46798315'
+  - '89323471'
+  - N
+  - 2020-09-25
+  - 2019-11-06
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 84 Months
+- !!python/tuple
+  - 680
+  - 10000680
+  - Fiona
+  - Smith, John
+  - 9 Months
+  - null
+  - AI
+  - '730'
+  - null
+  - '44676474'
+  - N
+  - 2020-11-30
+  - 2023-03-09
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 9 Months
+- !!python/tuple
+  - 732
+  - 10000732
+  - null
+  - Smith, John
+  - 81 Years
+  - Female
+  - null
+  - '730'
+  - '26171584'
+  - null
+  - N
+  - 2022-08-22
+  - 2020-02-22
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 81 Years
+- !!python/tuple
+  - 747
+  - 10000747
+  - Shrek
+  - Smith, John
+  - 59 Months
+  - Female
+  - B
+  - '730'
+  - '95438995'
+  - '19189493'
+  - N
+  - 2021-10-13
+  - 2018-11-08
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 59 Months
+- !!python/tuple
+  - 810
+  - 10000810
+  - Lord Farquaad
+  - Smith, John
+  - 65 Years
   - Female
   - AI
-  - '470'
-  - '86515612'
-  - '40239885'
+  - '730'
+  - '66061125'
+  - '49517781'
   - N
-  - 2022-07-29
-  - 2018-08-22
-  - watkins, charles
+  - 2018-09-21
+  - 2023-07-27
+  - smith, john
   - XXX
   - ''
   - '13'
-  - '84'
+  - 65 Years
 - !!python/tuple
-  - 152
+  - 883
+  - 10000883
+  - Shrek
+  - Smith, John
+  - 95 Months
+  - Female
+  - AI
+  - '730'
+  - null
+  - '55223024'
+  - N
+  - 2018-08-11
+  - 2019-07-30
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 95 Months
+- !!python/tuple
+  - 889
+  - 10000889
+  - null
+  - Smith, John
+  - 62 Months
   - null
   - null
-  - Wiggins, Brian
-  - '9'
+  - '730'
+  - '11180591'
+  - '98435240'
+  - N
+  - 2019-05-22
+  - 2020-07-07
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 62 Months
+- !!python/tuple
+  - 922
+  - 10000922
+  - Shrek
+  - Smith, John
+  - 47 Years
+  - ''
+  - B
+  - '730'
+  - '98271284'
+  - '11873965'
+  - N
+  - 2019-05-23
+  - 2021-10-03
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 47 Years
+- !!python/tuple
+  - 70
+  - null
+  - null
+  - Smith, John
+  - 64 Days
+  - Male
+  - A
+  - '790'
+  - '20871598'
+  - '93303181'
+  - N
+  - 2024-05-09
+  - 2022-09-23
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 64 Days
+- !!python/tuple
+  - 252
+  - 10000252
+  - Shrek
+  - Smith, John
+  - 20 Days
+  - ''
+  - A
+  - '790'
+  - '64759177'
+  - '55393230'
+  - N
+  - 2021-01-29
+  - 2018-08-27
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 20 Days
+- !!python/tuple
+  - 268
+  - null
+  - null
+  - Smith, John
+  - 17 Years
+  - Female
+  - ''
+  - '790'
+  - '53085608'
+  - '99873593'
+  - N
+  - 2020-02-22
+  - 2024-01-29
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 17 Years
+- !!python/tuple
+  - 299
+  - 10000299
+  - Lord Farquaad
+  - Smith, John
+  - 40 Years
+  - null
+  - W
+  - '790'
+  - '40883597'
+  - '86869942'
+  - N
+  - 2022-12-28
+  - 2024-02-07
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 40 Years
+- !!python/tuple
+  - 378
+  - 10000378
+  - null
+  - Smith, John
+  - 63 Months
+  - Male
+  - W
+  - '790'
+  - '78213601'
+  - '81381124'
+  - N
+  - 2021-01-15
+  - 2021-11-04
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 63 Months
+- !!python/tuple
+  - 435
+  - 10000435
+  - Puss in Boots
+  - Smith, John
+  - 81 Days
+  - Female
+  - B
+  - '790'
+  - '87169292'
+  - '37634884'
+  - N
+  - 2020-05-11
+  - 2024-11-30
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 81 Days
+- !!python/tuple
+  - 437
+  - 10000437
+  - Shrek
+  - Smith, John
+  - 70 Months
+  - Female
+  - AI
+  - '790'
+  - '96801918'
+  - '55847633'
+  - N
+  - 2020-02-27
+  - 2023-03-19
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 70 Months
+- !!python/tuple
+  - 454
+  - 10000454
+  - Fiona
+  - Smith, John
+  - 86 Months
+  - Male
+  - W
+  - '790'
+  - '69257692'
+  - '34949646'
+  - N
+  - 2024-05-31
+  - 2024-05-07
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 86 Months
+- !!python/tuple
+  - 530
+  - 10000530
+  - Donkey
+  - Smith, John
+  - 96 Days
+  - ''
+  - A
+  - '790'
+  - '62713819'
+  - '97731389'
+  - N
+  - 2020-08-20
+  - 2021-03-31
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 96 Days
+- !!python/tuple
+  - 562
+  - 10000562
+  - Donkey
+  - Smith, John
+  - 39 Days
+  - null
+  - A
+  - '790'
+  - '40269622'
+  - '68348075'
+  - N
+  - 2020-05-01
+  - 2019-04-22
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 39 Days
+- !!python/tuple
+  - 653
+  - 10000653
+  - null
+  - Smith, John
+  - 89 Years
+  - Male
+  - B
+  - '790'
+  - '54697230'
+  - '48661728'
+  - N
+  - 2021-07-18
+  - 2018-08-27
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 89 Years
+- !!python/tuple
+  - 214
+  - 10000214
+  - Donkey
+  - Smith, John
+  - 39 Days
+  - Male
+  - ''
+  - '900'
+  - '85032091'
+  - '57598140'
+  - N
+  - 2020-09-18
+  - 2019-02-15
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 39 Days
+- !!python/tuple
+  - 315
+  - 10000315
+  - Fiona
+  - Smith, John
+  - 52 Years
+  - Male
+  - null
+  - '900'
+  - '57721406'
+  - '70213580'
+  - N
+  - 2023-10-05
+  - 2023-06-21
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 52 Years
+- !!python/tuple
+  - 324
+  - null
+  - null
+  - Smith, John
+  - .
   - ''
   - B
   - '900'
-  - '95116591'
-  - '10833988'
+  - '59610709'
+  - '65965897'
   - N
-  - 2020-01-14
-  - 2022-05-01
-  - wiggins, brian
+  - 2019-01-15
+  - 2019-11-30
+  - smith, john
   - XXX
   - ''
   - '13'
-  - '9'
+  - .
 - !!python/tuple
-  - 258
+  - 396
+  - 10000396
   - null
+  - Smith, John
+  - 56 Months
+  - ''
+  - AI
+  - '900'
+  - '84478147'
   - null
-  - Williams, Brendan
-  - '29'
+  - N
+  - 2018-09-19
+  - 2022-11-09
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 56 Months
+- !!python/tuple
+  - 488
+  - 10000488
+  - Puss in Boots
+  - Smith, John
+  - 33 Years
+  - Male
+  - A
+  - '900'
+  - '40797457'
+  - '59719989'
+  - N
+  - 2020-04-12
+  - 2024-12-20
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 33 Years
+- !!python/tuple
+  - 489
+  - 10000489
+  - Lord Farquaad
+  - Smith, John
+  - 29 Months
+  - Female
+  - ''
+  - '900'
+  - '68482880'
+  - '35186258'
+  - N
+  - 2021-01-06
+  - 2022-01-18
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 29 Months
+- !!python/tuple
+  - 651
+  - 10000651
+  - Lord Farquaad
+  - Smith, John
+  - 64 Years
+  - ''
+  - A
+  - '900'
+  - '57644797'
+  - '91520042'
+  - N
+  - 2020-12-13
+  - 2019-06-03
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 64 Years
+- !!python/tuple
+  - 657
+  - 10000657
+  - null
+  - Smith, John
+  - 62 Days
+  - ''
+  - B
+  - '900'
+  - '19160625'
+  - '50774022'
+  - N
+  - 2018-12-31
+  - 2018-11-19
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 62 Days
+- !!python/tuple
+  - 896
+  - 10000896
+  - Lord Farquaad
+  - Smith, John
+  - 21 Years
+  - ''
+  - B
+  - '900'
+  - '22676590'
+  - '51121980'
+  - N
+  - 2019-05-10
+  - 2021-08-23
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 21 Years
+- !!python/tuple
+  - 956
+  - 10000956
+  - Donkey
+  - Smith, John
+  - .
+  - Female
+  - null
+  - '900'
+  - '31741373'
+  - '94204554'
+  - N
+  - 2022-09-17
+  - 2021-04-13
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 148
+  - 10000148
+  - Puss in Boots
+  - Smith, John
+  - 12 Months
   - Female
   - W
-  - '420'
-  - '13976347'
-  - '67292855'
+  - '950'
+  - '20785235'
+  - '59797899'
   - N
-  - 2021-12-14
-  - 2023-01-28
-  - williams, brendan
+  - 2024-03-27
+  - 2024-04-07
+  - smith, john
   - XXX
   - ''
   - '13'
-  - '29'
+  - 12 Months
 - !!python/tuple
-  - 920
-  - null
-  - null
-  - Williams, Timothy
-  - '88'
-  - Female
-  - AI
-  - '480'
-  - '72534182'
-  - '88681845'
+  - 232
+  - 10000232
+  - Fiona
+  - Smith, John
+  - 6 Years
+  - ''
+  - ''
+  - '950'
+  - '92568741'
+  - '97598907'
   - N
-  - 2023-11-30
-  - 2019-12-07
-  - williams, timothy
+  - 2019-10-13
+  - 2024-12-16
+  - smith, john
+  - ''
+  - ''
+  - '13'
+  - 6 Years
+- !!python/tuple
+  - 318
+  - 10000318
+  - Donkey
+  - Smith, John
+  - 43 Days
+  - Female
+  - B
+  - '950'
+  - '30643688'
+  - '22276107'
+  - N
+  - 2023-07-25
+  - 2020-09-04
+  - smith, john
   - XXX
   - ''
   - '13'
-  - '88'
+  - 43 Days
+- !!python/tuple
+  - 529
+  - null
+  - null
+  - Smith, John
+  - 91 Years
+  - Female
+  - B
+  - '950'
+  - '92427218'
+  - '27927774'
+  - N
+  - 2024-05-29
+  - 2018-07-30
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 91 Years
+- !!python/tuple
+  - 577
+  - 10000577
+  - Fiona
+  - Smith, John
+  - .
+  - null
+  - W
+  - '950'
+  - '20291032'
+  - '40687234'
+  - N
+  - 2022-05-14
+  - 2022-07-24
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - .
+- !!python/tuple
+  - 686
+  - 10000686
+  - Donkey
+  - Smith, John
+  - 46 Years
+  - ''
+  - W
+  - '950'
+  - '93850027'
+  - '35126014'
+  - N
+  - 2020-03-05
+  - 2023-09-10
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 46 Years
+- !!python/tuple
+  - 762
+  - 10000762
+  - Lord Farquaad
+  - Smith, John
+  - 7 Months
+  - Female
+  - B
+  - '950'
+  - '46764721'
+  - '21871672'
+  - N
+  - 2023-03-25
+  - 2023-07-18
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 7 Months
+- !!python/tuple
+  - 781
+  - 10000781
+  - Lord Farquaad
+  - Smith, John
+  - 18 Years
+  - Female
+  - W
+  - '950'
+  - '87462831'
+  - null
+  - N
+  - 2023-01-23
+  - 2019-05-31
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 18 Years
+- !!python/tuple
+  - 897
+  - 10000897
+  - Donkey
+  - Smith, John
+  - 72 Days
+  - Male
+  - W
+  - '950'
+  - '52801446'
+  - '21198768'
+  - N
+  - 2020-06-13
+  - 2020-05-30
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 72 Days
+- !!python/tuple
+  - 966
+  - 10000966
+  - Puss in Boots
+  - Smith, John
+  - 32 Years
+  - Male
+  - B
+  - '950'
+  - '47967127'
+  - '58615949'
+  - N
+  - 2022-04-21
+  - 2024-07-11
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 32 Years
+- !!python/tuple
+  - 999
+  - 10000999
+  - Donkey
+  - Smith, John
+  - 16 Months
+  - Female
+  - A
+  - '950'
+  - '35396463'
+  - '98820656'
+  - N
+  - 2020-11-04
+  - 2019-02-25
+  - smith, john
+  - XXX
+  - ''
+  - '13'
+  - 16 Months

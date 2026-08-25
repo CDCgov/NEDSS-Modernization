@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CheckboxGroup } from './CheckboxGroup';
 import { axe } from 'jest-axe';
+
+import { CheckboxGroup } from './CheckboxGroup';
 
 const options = [
     { value: 'value1', label: 'label1', name: 'name1' },
@@ -126,7 +127,7 @@ describe('CheckboxGroup', () => {
 
     it('should disable checkboxes', () => {
         const { getByLabelText } = render(
-            <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} disabled />
+            <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} disabled={true} />
         );
 
         const checkbox1 = getByLabelText('name1');
@@ -143,7 +144,7 @@ describe('CheckboxGroup', () => {
                 label="Testing CheckboxGroup"
                 className="customClass"
                 options={options}
-                disabled
+                disabled={true}
             />
         );
 
@@ -152,7 +153,7 @@ describe('CheckboxGroup', () => {
     });
     it('should set aria-required and required attributes when required is true', () => {
         const { getAllByRole } = render(
-            <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} required />
+            <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} required={true} />
         );
         const checkboxes = getAllByRole('checkbox');
         checkboxes.forEach((checkbox) => {

@@ -1,2500 +1,3000 @@
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2018-07-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2019-09-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2020-03-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2021-09-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2022-07-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2024-02-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2024-04-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10082059GA01
-  - 2024-07-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2018-09-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2018-12-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2019-08-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2020-07-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2020-08-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2021-04-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087055GA01
-  - 2024-01-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2018-10-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2019-06-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2019-12-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2020-01-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2020-03-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2021-10-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2021-11-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2022-02-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087069GA01
-  - 2023-06-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2019-02-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2019-04-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2020-06-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2022-07-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2023-05-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2024-01-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10087071GA01
-  - 2024-07-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10088042GA01
-  - 2019-04-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10088042GA01
-  - 2020-01-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10088042GA01
-  - 2021-01-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10088042GA01
-  - 2021-12-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10088042GA01
-  - 2023-08-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2018-08-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2019-05-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2019-07-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2019-09-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2020-04-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2022-04-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089067GA01
-  - 2024-11-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089161GA01
-  - 2018-10-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089161GA01
-  - 2020-06-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089161GA01
-  - 2020-12-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089161GA01
-  - 2021-01-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089161GA01
-  - 2021-02-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10089161GA01
-  - 2021-03-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2018-10-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2018-10-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2019-01-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2019-03-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2020-02-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2021-04-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2022-01-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2024-04-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2024-12-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094077GA01
-  - 2024-12-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2018-10-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2019-02-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2020-07-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2021-04-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2021-06-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2022-05-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2023-07-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2023-08-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN10094080GA01
-  - 2024-12-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
+    - '1300400015'
   - PSN20067002GA01
-  - 2019-01-22 00:00:00
+  - 2022-11-10 00:00:00
+  - 1
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN20067002GA01
-  - 2019-06-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN20067002GA01
-  - 2020-03-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN20067002GA01
-  - 2020-03-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN20067002GA01
-  - 2021-07-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN20067002GA01
-  - 2024-07-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN20067002GA01
-  - 2024-08-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2018-07-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2019-05-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2020-02-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2021-11-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2023-07-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2023-11-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2023-12-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400008'
-  - PSN30076044GA01
-  - 2024-07-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2019-09-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2021-04-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2021-10-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2022-01-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2022-11-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2024-07-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10082059GA01
-  - 2024-11-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087055GA01
-  - 2020-12-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087055GA01
-  - 2023-11-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2018-08-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2019-08-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2020-08-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2020-10-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2020-12-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2021-04-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2022-10-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087069GA01
-  - 2024-10-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087071GA01
-  - 2019-11-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087071GA01
-  - 2020-03-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087071GA01
-  - 2021-04-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087071GA01
-  - 2021-04-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087071GA01
-  - 2021-08-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10087071GA01
-  - 2022-07-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2019-08-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2019-11-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2020-05-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2021-07-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2021-09-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2021-11-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2021-11-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2021-12-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2023-03-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10088042GA01
-  - 2024-04-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2019-04-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2019-09-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2020-01-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2020-03-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2020-08-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2020-08-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2021-03-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2022-01-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2023-09-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2023-09-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2024-04-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2024-04-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089067GA01
-  - 2024-10-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
+    - '1300400012'
   - PSN10089161GA01
-  - 2019-01-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089161GA01
-  - 2019-04-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089161GA01
-  - 2020-01-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089161GA01
-  - 2022-09-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089161GA01
-  - 2023-11-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089161GA01
-  - 2024-03-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10089161GA01
-  - 2024-10-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094077GA01
-  - 2020-10-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094077GA01
-  - 2021-09-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094077GA01
-  - 2022-03-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094077GA01
-  - 2023-09-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2018-10-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2019-05-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2021-02-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2021-05-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2023-05-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2023-12-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN10094080GA01
-  - 2024-07-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN20067002GA01
-  - 2018-12-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN20067002GA01
-  - 2019-05-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN20067002GA01
-  - 2021-12-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN20067002GA01
-  - 2022-06-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN30076044GA01
-  - 2018-10-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN30076044GA01
-  - 2018-10-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN30076044GA01
-  - 2019-02-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN30076044GA01
-  - 2019-09-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN30076044GA01
-  - 2021-05-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400009'
-  - PSN30076044GA01
-  - 2022-11-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10082059GA01
-  - 2019-04-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10082059GA01
-  - 2020-11-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2018-05-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2019-02-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2019-03-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2019-09-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2020-11-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2022-01-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2022-11-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2023-04-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2023-08-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2024-01-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2024-07-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087055GA01
-  - 2024-12-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087069GA01
-  - 2021-07-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087069GA01
-  - 2024-10-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2020-12-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2022-03-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2022-03-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2022-05-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2022-11-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2022-12-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10087071GA01
-  - 2023-09-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10088042GA01
-  - 2020-03-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10088042GA01
-  - 2022-09-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10088042GA01
-  - 2023-08-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2019-03-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2020-02-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2020-12-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2021-03-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2021-08-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2022-04-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2023-03-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2023-06-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089067GA01
-  - 2023-08-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2019-07-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2019-11-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2020-12-11 00:00:00
+  - 2023-07-30 00:00:00
+  - 2
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400010'
   - PSN10089161GA01
   - 2021-10-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2021-10-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2022-06-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2022-11-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10089161GA01
-  - 2023-06-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2018-09-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2018-10-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2020-03-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2020-09-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2020-12-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2021-02-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2024-02-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094077GA01
-  - 2024-07-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094080GA01
-  - 2019-05-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094080GA01
-  - 2019-06-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN10094080GA01
-  - 2020-07-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN20067002GA01
-  - 2018-07-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN20067002GA01
-  - 2018-07-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN20067002GA01
-  - 2019-02-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN20067002GA01
-  - 2019-12-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN20067002GA01
-  - 2021-05-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN20067002GA01
-  - 2023-05-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN30076044GA01
-  - 2020-05-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN30076044GA01
-  - 2021-11-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400010'
-  - PSN30076044GA01
-  - 2022-12-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10082059GA01
-  - 2021-03-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10082059GA01
-  - 2021-05-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10082059GA01
-  - 2022-04-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10082059GA01
-  - 2022-11-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10082059GA01
-  - 2023-02-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10082059GA01
-  - 2023-08-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087055GA01
-  - 2021-09-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087055GA01
-  - 2022-04-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087055GA01
-  - 2022-10-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087055GA01
-  - 2023-11-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087069GA01
-  - 2019-06-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087069GA01
-  - 2020-03-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087069GA01
-  - 2021-08-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087069GA01
-  - 2021-08-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2019-06-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2020-01-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2022-01-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2022-04-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2022-07-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2022-10-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2023-12-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10087071GA01
-  - 2024-08-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10088042GA01
-  - 2019-03-01 00:00:00
+  - 3
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400011'
   - PSN10088042GA01
   - 2021-10-02 00:00:00
+  - 4
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10088042GA01
-  - 2022-09-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10088042GA01
-  - 2023-04-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10088042GA01
-  - 2024-09-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089067GA01
-  - 2018-11-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089067GA01
-  - 2019-04-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089067GA01
-  - 2021-09-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089067GA01
-  - 2022-06-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089067GA01
-  - 2023-01-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
+    - '1300400008'
   - PSN10089161GA01
-  - 2018-07-25 00:00:00
+  - 2020-12-19 00:00:00
+  - 5
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089161GA01
-  - 2018-10-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089161GA01
-  - 2019-05-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089161GA01
-  - 2020-04-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089161GA01
-  - 2020-05-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089161GA01
-  - 2021-10-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10089161GA01
-  - 2022-05-30 00:00:00
+    - '1300400008'
+  - PSN10094077GA01
+  - 2024-12-28 00:00:00
+  - 6
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400011'
   - PSN10094077GA01
   - 2020-04-09 00:00:00
+  - 7
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094077GA01
-  - 2020-10-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094077GA01
-  - 2022-09-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094077GA01
-  - 2022-12-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094077GA01
-  - 2024-09-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094080GA01
-  - 2018-06-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094080GA01
-  - 2022-09-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094080GA01
-  - 2023-08-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094080GA01
-  - 2024-05-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094080GA01
-  - 2024-09-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN10094080GA01
-  - 2024-12-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN20067002GA01
-  - 2021-09-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN20067002GA01
-  - 2022-03-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN20067002GA01
-  - 2022-04-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN20067002GA01
-  - 2023-12-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
+    - '1300400008'
   - PSN30076044GA01
-  - 2018-06-09 00:00:00
+  - 2019-05-01 00:00:00
+  - 8
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2018-08-12 00:00:00
+    - '1300400008'
+  - PSN10088042GA01
+  - 2020-01-31 00:00:00
+  - 9
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2018-11-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2018-11-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2019-05-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2020-06-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2020-10-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2021-08-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2022-01-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2022-02-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2022-04-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2023-08-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2023-08-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400011'
-  - PSN30076044GA01
-  - 2024-08-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10082059GA01
-  - 2019-08-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10082059GA01
-  - 2023-01-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2019-08-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2020-06-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2021-04-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2022-10-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2024-06-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2024-09-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087055GA01
-  - 2024-10-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
+    - '1300400008'
   - PSN10087069GA01
-  - 2020-11-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087069GA01
-  - 2021-03-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087069GA01
-  - 2022-06-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087069GA01
-  - 2022-12-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087069GA01
-  - 2023-08-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087069GA01
-  - 2024-02-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2019-05-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2020-02-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2020-07-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2021-05-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2022-08-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2023-11-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2024-05-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10087071GA01
-  - 2024-12-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2019-01-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2020-02-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2020-05-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2020-10-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2022-07-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2023-01-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2023-01-17 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2023-08-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2023-08-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10088042GA01
-  - 2023-09-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2019-03-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2019-04-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2020-12-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2021-03-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2021-11-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2022-07-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089067GA01
-  - 2024-09-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2018-05-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2018-06-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2020-04-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2020-11-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2022-04-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2022-09-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2022-11-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10089161GA01
-  - 2023-07-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094077GA01
-  - 2020-06-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094077GA01
-  - 2021-07-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094077GA01
-  - 2023-04-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094077GA01
-  - 2024-06-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094077GA01
-  - 2024-11-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2019-07-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2019-10-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2020-09-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2023-05-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2023-06-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2023-11-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2024-08-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN10094080GA01
-  - 2024-08-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN20067002GA01
-  - 2019-08-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN20067002GA01
-  - 2020-10-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN20067002GA01
-  - 2021-06-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN20067002GA01
-  - 2021-11-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN20067002GA01
-  - 2022-03-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN20067002GA01
-  - 2024-10-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2018-11-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2019-01-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2019-09-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2020-01-24 00:00:00
+  - 2020-01-29 00:00:00
+  - 10
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400012'
   - PSN30076044GA01
   - 2020-07-10 00:00:00
+  - 11
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400012'
-  - PSN30076044GA01
-  - 2022-09-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2023-05-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2024-04-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400012'
-  - PSN30076044GA01
-  - 2024-10-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2018-10-19 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2018-12-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2019-03-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2023-03-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2023-06-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2024-06-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2024-08-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10082059GA01
-  - 2024-08-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2018-10-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2019-09-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2019-12-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2020-12-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2021-08-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2021-10-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2022-07-21 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087055GA01
-  - 2023-12-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2019-01-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2020-01-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2020-06-10 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2021-05-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2022-08-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2022-09-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2022-09-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2024-07-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087069GA01
-  - 2024-11-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
   - PSN10087071GA01
-  - 2018-05-20 00:00:00
+  - 2020-02-16 00:00:00
+  - 12
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087071GA01
-  - 2021-06-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087071GA01
-  - 2021-10-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10087071GA01
-  - 2023-12-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2018-07-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2019-07-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2020-02-25 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2020-11-14 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2021-02-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2022-04-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2022-09-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10088042GA01
-  - 2024-01-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2019-06-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2019-09-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2020-03-26 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2020-05-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2020-12-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2021-02-04 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2021-06-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2022-03-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2022-10-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2024-08-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2024-10-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089067GA01
-  - 2024-11-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089161GA01
-  - 2018-12-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089161GA01
-  - 2020-10-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089161GA01
-  - 2023-12-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10089161GA01
-  - 2024-11-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094077GA01
-  - 2018-11-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094077GA01
-  - 2019-05-02 00:00:00
+    - '1300400008'
+  - PSN20067002GA01
+  - 2019-01-22 00:00:00
+  - 13
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400014'
   - PSN10094077GA01
   - 2020-07-06 00:00:00
+  - 14
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2020-06-01 00:00:00
+  - 15
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2022-02-20 00:00:00
+  - 16
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400014'
+  - PSN10089067GA01
+  - 2019-09-08 00:00:00
+  - 17
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN30076044GA01
+  - 2018-10-24 00:00:00
+  - 18
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2019-09-10 00:00:00
+  - 19
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN20067002GA01
+  - 2021-12-16 00:00:00
+  - 20
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
   - PSN10094077GA01
-  - 2023-07-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094077GA01
-  - 2024-01-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2018-06-13 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2019-05-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2020-10-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2021-08-08 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2021-08-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2024-05-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2024-08-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN10094080GA01
-  - 2024-10-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN20067002GA01
-  - 2018-11-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN20067002GA01
-  - 2019-08-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN20067002GA01
-  - 2022-10-27 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN20067002GA01
-  - 2023-02-12 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN20067002GA01
-  - 2024-09-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2020-01-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2020-05-02 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2021-09-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2022-07-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2023-01-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2023-05-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400014'
-  - PSN30076044GA01
-  - 2023-07-30 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10082059GA01
-  - 2020-02-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10082059GA01
-  - 2021-09-18 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10082059GA01
-  - 2023-08-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10082059GA01
-  - 2023-10-31 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087055GA01
-  - 2020-04-24 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087055GA01
-  - 2021-11-03 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087055GA01
-  - 2021-12-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087055GA01
-  - 2022-07-07 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087055GA01
-  - 2022-11-09 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087055GA01
-  - 2024-03-15 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087069GA01
-  - 2021-06-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087069GA01
-  - 2023-03-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087069GA01
-  - 2023-10-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087069GA01
-  - 2024-02-05 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087071GA01
-  - 2021-03-16 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087071GA01
-  - 2021-11-01 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10087071GA01
-  - 2023-05-22 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10088042GA01
-  - 2018-06-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10088042GA01
-  - 2019-08-28 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10088042GA01
-  - 2020-06-11 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10088042GA01
-  - 2021-04-16 00:00:00
+  - 2020-12-06 00:00:00
+  - 21
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN10088042GA01
   - 2023-03-27 00:00:00
+  - 22
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2018-10-20 00:00:00
+    - '1300400012'
+  - PSN10088042GA01
+  - 2023-09-13 00:00:00
+  - 23
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2019-07-17 00:00:00
+    - '1300400009'
+  - PSN10094080GA01
+  - 2021-02-07 00:00:00
+  - 24
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2020-09-27 00:00:00
+    - '1300400008'
+  - PSN10094077GA01
+  - 2019-01-02 00:00:00
+  - 25
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2020-10-02 00:00:00
+    - '1300400014'
+  - PSN10082059GA01
+  - 2023-03-14 00:00:00
+  - 26
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2021-02-14 00:00:00
+    - '1300400012'
+  - PSN10094080GA01
+  - 2023-05-20 00:00:00
+  - 27
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2021-12-23 00:00:00
+    - '1300400009'
+  - PSN10087055GA01
+  - 2020-12-25 00:00:00
+  - 28
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089067GA01
-  - 2022-10-08 00:00:00
+    - '1300400012'
+  - PSN10089161GA01
+  - 2022-09-25 00:00:00
+  - 29
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2020-05-02 00:00:00
+  - 30
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2024-06-11 00:00:00
+  - 31
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087055GA01
+  - 2023-11-26 00:00:00
+  - 32
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10082059GA01
+  - 2023-08-17 00:00:00
+  - 33
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN10089067GA01
   - 2024-09-14 00:00:00
+  - 34
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
+    - '1300400010'
   - PSN10089161GA01
-  - 2019-07-12 00:00:00
+  - 2019-11-23 00:00:00
+  - 35
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
-  - PSN10089161GA01
-  - 2019-10-25 00:00:00
+  - PSN10089067GA01
+  - 2021-12-23 00:00:00
+  - 36
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089161GA01
-  - 2020-03-20 00:00:00
+    - '1300400010'
+  - PSN10089067GA01
+  - 2023-03-22 00:00:00
+  - 37
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089161GA01
-  - 2021-10-06 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089161GA01
-  - 2022-02-20 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089161GA01
-  - 2022-03-23 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10089161GA01
-  - 2024-03-29 00:00:00
-- !!python/tuple
-  - !!python/object/apply:decimal.Decimal
-    - '1300400015'
+    - '1300400009'
   - PSN10094077GA01
-  - 2018-06-04 00:00:00
+  - 2023-09-09 00:00:00
+  - 38
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10094077GA01
-  - 2018-10-27 00:00:00
+    - '1300400010'
+  - PSN10089161GA01
+  - 2020-12-11 00:00:00
+  - 39
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10094077GA01
-  - 2019-12-20 00:00:00
+    - '1300400009'
+  - PSN10089161GA01
+  - 2019-04-07 00:00:00
+  - 40
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10094080GA01
-  - 2020-01-31 00:00:00
+    - '1300400009'
+  - PSN10087071GA01
+  - 2022-07-09 00:00:00
+  - 41
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089161GA01
+  - 2019-01-15 00:00:00
+  - 42
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10082059GA01
+  - 2023-01-17 00:00:00
+  - 43
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2018-05-21 00:00:00
+  - 44
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN20067002GA01
+  - 2021-05-16 00:00:00
+  - 45
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2021-07-17 00:00:00
+  - 46
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN30076044GA01
+  - 2019-02-20 00:00:00
+  - 47
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN10094080GA01
   - 2021-07-18 00:00:00
+  - 48
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10094080GA01
-  - 2021-11-26 00:00:00
+    - '1300400008'
+  - PSN10082059GA01
+  - 2021-09-04 00:00:00
+  - 49
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN10094080GA01
-  - 2024-09-05 00:00:00
+    - '1300400009'
+  - PSN10087069GA01
+  - 2020-10-20 00:00:00
+  - 50
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2024-04-27 00:00:00
+  - 51
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2024-02-13 00:00:00
+  - 52
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2024-04-13 00:00:00
+  - 53
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2019-12-22 00:00:00
+  - 54
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN20067002GA01
   - 2018-07-07 00:00:00
+  - 55
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN20067002GA01
-  - 2020-08-27 00:00:00
+    - '1300400010'
+  - PSN10087055GA01
+  - 2020-11-07 00:00:00
+  - 56
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2019-02-05 00:00:00
+  - 57
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2023-01-17 00:00:00
+  - 58
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2020-02-04 00:00:00
+  - 59
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2019-03-13 00:00:00
+  - 60
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2020-03-26 00:00:00
+  - 61
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN20067002GA01
   - 2021-01-12 00:00:00
+  - 62
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10088042GA01
+  - 2023-04-01 00:00:00
+  - 63
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
-  - PSN20067002GA01
-  - 2021-02-17 00:00:00
+  - PSN10087069GA01
+  - 2021-06-01 00:00:00
+  - 64
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN20067002GA01
-  - 2021-04-07 00:00:00
+    - '1300400010'
+  - PSN30076044GA01
+  - 2020-05-07 00:00:00
+  - 65
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN20067002GA01
+    - '1300400011'
+  - PSN10082059GA01
   - 2022-11-10 00:00:00
+  - 66
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2018-08-23 00:00:00
+  - 67
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN30076044GA01
+  - 2019-09-26 00:00:00
+  - 68
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094077GA01
+  - 2022-12-05 00:00:00
+  - 69
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094080GA01
+  - 2023-05-11 00:00:00
+  - 70
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2019-01-06 00:00:00
+  - 71
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094080GA01
+  - 2018-10-13 00:00:00
+  - 72
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
+  - PSN10082059GA01
+  - 2021-09-18 00:00:00
+  - 73
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10088042GA01
+  - 2022-09-20 00:00:00
+  - 74
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2018-06-13 00:00:00
+  - 75
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2021-04-03 00:00:00
+  - 76
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2020-03-04 00:00:00
+  - 77
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094077GA01
+  - 2018-11-28 00:00:00
+  - 78
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2019-06-26 00:00:00
+  - 79
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087069GA01
+  - 2020-03-31 00:00:00
+  - 80
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087071GA01
+  - 2021-06-16 00:00:00
+  - 81
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
   - PSN20067002GA01
-  - 2023-07-31 00:00:00
+  - 2019-02-02 00:00:00
+  - 82
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087069GA01
+  - 2022-06-24 00:00:00
+  - 83
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
+  - PSN10087055GA01
+  - 2024-03-15 00:00:00
+  - 84
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2022-11-26 00:00:00
+  - 85
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089161GA01
+  - 2018-10-17 00:00:00
+  - 86
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089161GA01
+  - 2022-09-01 00:00:00
+  - 87
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2022-07-27 00:00:00
+  - 88
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089161GA01
+  - 2018-05-26 00:00:00
+  - 89
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087069GA01
+  - 2020-11-27 00:00:00
+  - 90
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2022-09-11 00:00:00
+  - 91
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10094080GA01
+  - 2024-09-05 00:00:00
+  - 92
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2024-07-15 00:00:00
+  - 93
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2022-02-20 00:00:00
+  - 94
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2022-04-09 00:00:00
+  - 95
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2024-09-25 00:00:00
+  - 96
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2019-09-30 00:00:00
+  - 97
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
   - PSN20067002GA01
-  - 2024-05-14 00:00:00
+  - 2021-09-26 00:00:00
+  - 98
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN30076044GA01
+  - 2018-10-01 00:00:00
+  - 99
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094077GA01
+  - 2023-07-05 00:00:00
+  - 100
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2022-09-13 00:00:00
+  - 101
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2019-09-30 00:00:00
+  - 102
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
-  - PSN30076044GA01
-  - 2018-10-26 00:00:00
+  - PSN10088042GA01
+  - 2019-08-28 00:00:00
+  - 103
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
-  - PSN30076044GA01
-  - 2019-11-05 00:00:00
+  - PSN10087071GA01
+  - 2021-11-01 00:00:00
+  - 104
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN30076044GA01
-  - 2020-09-14 00:00:00
+    - '1300400008'
+  - PSN10087071GA01
+  - 2023-05-10 00:00:00
+  - 105
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
-    - '1300400015'
-  - PSN30076044GA01
-  - 2020-10-15 00:00:00
+    - '1300400011'
+  - PSN10089067GA01
+  - 2019-04-01 00:00:00
+  - 106
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2020-07-01 00:00:00
+  - 107
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN30076044GA01
   - 2021-10-05 00:00:00
+  - 108
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10094080GA01
+  - 2020-01-31 00:00:00
+  - 109
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2024-03-29 00:00:00
+  - 110
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2023-03-06 00:00:00
+  - 111
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN20067002GA01
+  - 2024-09-18 00:00:00
+  - 112
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2022-08-14 00:00:00
+  - 113
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2022-11-20 00:00:00
+  - 114
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087071GA01
+  - 2020-03-30 00:00:00
+  - 115
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094077GA01
+  - 2021-09-15 00:00:00
+  - 116
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087071GA01
+  - 2021-03-16 00:00:00
+  - 117
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087069GA01
+  - 2021-07-13 00:00:00
+  - 118
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2018-10-04 00:00:00
+  - 119
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2024-01-04 00:00:00
+  - 120
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN20067002GA01
+  - 2019-05-16 00:00:00
+  - 121
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10082059GA01
+  - 2021-05-25 00:00:00
+  - 122
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094080GA01
+  - 2024-07-18 00:00:00
+  - 123
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2021-10-06 00:00:00
+  - 124
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2024-02-19 00:00:00
+  - 125
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2020-01-29 00:00:00
+  - 126
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN20067002GA01
+  - 2021-06-15 00:00:00
+  - 127
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2020-11-14 00:00:00
+  - 128
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094080GA01
+  - 2020-07-03 00:00:00
+  - 129
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094077GA01
+  - 2020-10-21 00:00:00
+  - 130
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2021-04-24 00:00:00
+  - 131
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089161GA01
+  - 2023-12-16 00:00:00
+  - 132
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN20067002GA01
+  - 2024-10-26 00:00:00
+  - 133
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2018-12-21 00:00:00
+  - 134
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087055GA01
+  - 2022-10-18 00:00:00
+  - 135
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2021-11-13 00:00:00
+  - 136
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2021-02-04 00:00:00
+  - 137
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2018-08-12 00:00:00
+  - 138
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089067GA01
+  - 2020-10-02 00:00:00
+  - 139
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089161GA01
+  - 2020-06-15 00:00:00
+  - 140
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094077GA01
+  - 2020-10-15 00:00:00
+  - 141
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2022-04-20 00:00:00
+  - 142
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN30076044GA01
+  - 2020-10-15 00:00:00
+  - 143
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087055GA01
+  - 2020-04-24 00:00:00
+  - 144
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2020-03-03 00:00:00
+  - 145
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2024-11-10 00:00:00
+  - 146
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2020-12-14 00:00:00
+  - 147
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2024-10-30 00:00:00
+  - 148
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN20067002GA01
+  - 2019-06-12 00:00:00
+  - 149
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2022-10-08 00:00:00
+  - 150
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2022-01-15 00:00:00
+  - 151
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2023-01-28 00:00:00
+  - 152
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2021-10-09 00:00:00
+  - 153
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089161GA01
+  - 2024-03-03 00:00:00
+  - 154
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2022-04-05 00:00:00
+  - 155
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2018-08-26 00:00:00
+  - 156
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089161GA01
+  - 2022-11-23 00:00:00
+  - 157
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN20067002GA01
+  - 2022-06-07 00:00:00
+  - 158
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2019-12-23 00:00:00
+  - 159
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087069GA01
+  - 2023-03-20 00:00:00
+  - 160
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2023-12-01 00:00:00
+  - 161
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10088042GA01
+  - 2020-03-10 00:00:00
+  - 162
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094080GA01
+  - 2019-05-01 00:00:00
+  - 163
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2020-04-08 00:00:00
+  - 164
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10082059GA01
+  - 2022-04-10 00:00:00
+  - 165
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2021-04-21 00:00:00
+  - 166
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10094077GA01
+  - 2018-10-27 00:00:00
+  - 167
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN30076044GA01
+  - 2021-05-04 00:00:00
+  - 168
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10088042GA01
+  - 2021-12-28 00:00:00
+  - 169
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094077GA01
+  - 2022-03-15 00:00:00
+  - 170
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2020-09-13 00:00:00
+  - 171
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN20067002GA01
+  - 2023-07-31 00:00:00
+  - 172
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087055GA01
+  - 2022-11-09 00:00:00
+  - 173
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2020-01-24 00:00:00
+  - 174
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2020-08-26 00:00:00
+  - 175
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2024-07-07 00:00:00
+  - 176
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2019-10-25 00:00:00
+  - 177
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2021-04-29 00:00:00
+  - 178
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2020-05-14 00:00:00
+  - 179
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN20067002GA01
+  - 2022-03-26 00:00:00
+  - 180
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2023-08-24 00:00:00
+  - 181
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10088042GA01
+  - 2019-03-01 00:00:00
+  - 182
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN20067002GA01
+  - 2019-08-11 00:00:00
+  - 183
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2018-10-07 00:00:00
+  - 184
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2019-03-07 00:00:00
+  - 185
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087071GA01
+  - 2021-10-24 00:00:00
+  - 186
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087069GA01
+  - 2021-08-08 00:00:00
+  - 187
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2024-08-25 00:00:00
+  - 188
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2021-05-13 00:00:00
+  - 189
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN30076044GA01
+  - 2021-11-05 00:00:00
+  - 190
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN20067002GA01
+  - 2018-07-08 00:00:00
+  - 191
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN30076044GA01
+  - 2019-11-05 00:00:00
+  - 192
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2020-05-27 00:00:00
+  - 193
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN20067002GA01
+  - 2019-12-19 00:00:00
+  - 194
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10088042GA01
+  - 2023-08-07 00:00:00
+  - 195
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089067GA01
+  - 2021-02-14 00:00:00
+  - 196
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087071GA01
+  - 2019-04-02 00:00:00
+  - 197
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2021-11-26 00:00:00
+  - 198
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2019-05-20 00:00:00
+  - 199
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN20067002GA01
+  - 2019-08-01 00:00:00
+  - 200
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2022-05-25 00:00:00
+  - 201
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2018-11-30 00:00:00
+  - 202
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087071GA01
+  - 2023-05-22 00:00:00
+  - 203
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087071GA01
+  - 2021-04-08 00:00:00
+  - 204
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2018-10-08 00:00:00
+  - 205
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN30076044GA01
+  - 2022-11-02 00:00:00
+  - 206
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2024-10-03 00:00:00
+  - 207
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094077GA01
+  - 2023-04-08 00:00:00
+  - 208
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN20067002GA01
+  - 2023-12-15 00:00:00
+  - 209
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2024-08-09 00:00:00
+  - 210
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2020-02-25 00:00:00
+  - 211
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087071GA01
+  - 2021-08-02 00:00:00
+  - 212
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2023-04-15 00:00:00
+  - 213
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2020-12-27 00:00:00
+  - 214
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2024-10-16 00:00:00
+  - 215
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2021-03-01 00:00:00
+  - 216
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094080GA01
+  - 2018-06-26 00:00:00
+  - 217
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2018-12-22 00:00:00
+  - 218
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10082059GA01
+  - 2021-03-10 00:00:00
+  - 219
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10088042GA01
+  - 2018-06-20 00:00:00
+  - 220
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2022-05-30 00:00:00
+  - 221
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2024-12-22 00:00:00
+  - 222
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2024-07-25 00:00:00
+  - 223
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094080GA01
+  - 2024-12-03 00:00:00
+  - 224
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089161GA01
+  - 2020-01-01 00:00:00
+  - 225
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2019-07-18 00:00:00
+  - 226
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2018-10-23 00:00:00
+  - 227
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2024-07-20 00:00:00
+  - 228
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2018-07-07 00:00:00
+  - 229
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2018-10-28 00:00:00
+  - 230
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2022-10-17 00:00:00
+  - 231
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2024-08-30 00:00:00
+  - 232
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10094080GA01
+  - 2021-11-26 00:00:00
+  - 233
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2018-10-05 00:00:00
+  - 234
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN20067002GA01
+  - 2018-07-29 00:00:00
+  - 235
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087069GA01
+  - 2023-10-23 00:00:00
+  - 236
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087069GA01
+  - 2022-12-07 00:00:00
+  - 237
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2020-05-30 00:00:00
+  - 238
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2024-11-27 00:00:00
+  - 239
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2020-03-20 00:00:00
+  - 240
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094080GA01
+  - 2019-05-01 00:00:00
+  - 241
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089161GA01
+  - 2024-10-14 00:00:00
+  - 242
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2018-09-17 00:00:00
+  - 243
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2020-10-05 00:00:00
+  - 244
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089067GA01
+  - 2019-07-17 00:00:00
+  - 245
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2022-08-11 00:00:00
+  - 246
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2021-08-08 00:00:00
+  - 247
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2020-01-09 00:00:00
+  - 248
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2022-07-12 00:00:00
+  - 249
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2019-01-20 00:00:00
+  - 250
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094077GA01
+  - 2024-11-25 00:00:00
+  - 251
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2023-07-27 00:00:00
+  - 252
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2019-09-25 00:00:00
+  - 253
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089161GA01
+  - 2022-04-26 00:00:00
+  - 254
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2020-02-25 00:00:00
+  - 255
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN20067002GA01
+  - 2022-03-05 00:00:00
+  - 256
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10088042GA01
+  - 2020-06-11 00:00:00
+  - 257
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2019-09-29 00:00:00
+  - 258
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2021-08-12 00:00:00
+  - 259
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN30076044GA01
+  - 2018-10-26 00:00:00
+  - 260
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2024-12-18 00:00:00
+  - 261
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10082059GA01
+  - 2023-08-06 00:00:00
+  - 262
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2019-11-10 00:00:00
+  - 263
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2022-05-03 00:00:00
+  - 264
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089161GA01
+  - 2019-07-09 00:00:00
+  - 265
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2019-06-15 00:00:00
+  - 266
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10082059GA01
+  - 2020-11-23 00:00:00
+  - 267
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN20067002GA01
+  - 2023-02-12 00:00:00
+  - 268
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089067GA01
+  - 2018-10-20 00:00:00
+  - 269
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2024-08-02 00:00:00
+  - 270
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2020-01-07 00:00:00
+  - 271
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087069GA01
+  - 2019-06-09 00:00:00
+  - 272
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087069GA01
+  - 2021-08-05 00:00:00
+  - 273
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2024-05-18 00:00:00
+  - 274
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089161GA01
+  - 2021-02-10 00:00:00
+  - 275
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2021-12-03 00:00:00
+  - 276
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2024-12-04 00:00:00
+  - 277
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2021-11-09 00:00:00
+  - 278
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN20067002GA01
+  - 2020-08-27 00:00:00
+  - 279
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2019-08-09 00:00:00
+  - 280
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2021-10-26 00:00:00
+  - 281
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2022-07-20 00:00:00
+  - 282
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN20067002GA01
+  - 2022-04-17 00:00:00
+  - 283
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10082059GA01
+  - 2019-08-19 00:00:00
+  - 284
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10094077GA01
+  - 2018-06-04 00:00:00
+  - 285
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087069GA01
+  - 2024-10-12 00:00:00
+  - 286
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2022-12-08 00:00:00
+  - 287
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087071GA01
+  - 2023-12-23 00:00:00
+  - 288
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094080GA01
+  - 2023-12-16 00:00:00
+  - 289
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089161GA01
+  - 2021-03-07 00:00:00
+  - 290
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2019-08-02 00:00:00
+  - 291
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2024-10-08 00:00:00
+  - 292
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2024-04-27 00:00:00
+  - 293
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2018-10-12 00:00:00
+  - 294
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087071GA01
+  - 2022-07-17 00:00:00
+  - 295
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087055GA01
+  - 2021-09-05 00:00:00
+  - 296
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2018-07-03 00:00:00
+  - 297
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2022-02-19 00:00:00
+  - 298
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2022-09-06 00:00:00
+  - 299
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087071GA01
+  - 2021-04-27 00:00:00
+  - 300
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2020-01-16 00:00:00
+  - 301
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2024-04-03 00:00:00
+  - 302
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN20067002GA01
+  - 2022-10-27 00:00:00
+  - 303
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2020-03-14 00:00:00
+  - 304
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2023-07-14 00:00:00
+  - 305
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2024-05-29 00:00:00
+  - 306
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2020-12-05 00:00:00
+  - 307
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2022-03-02 00:00:00
+  - 308
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN20067002GA01
+  - 2018-12-20 00:00:00
+  - 309
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2019-03-23 00:00:00
+  - 310
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094077GA01
+  - 2024-01-06 00:00:00
+  - 311
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2024-09-16 00:00:00
+  - 312
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2024-07-21 00:00:00
+  - 313
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094077GA01
+  - 2019-05-02 00:00:00
+  - 314
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2023-01-09 00:00:00
+  - 315
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2020-12-16 00:00:00
+  - 316
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2019-10-11 00:00:00
+  - 317
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2024-04-20 00:00:00
+  - 318
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089161GA01
+  - 2018-12-23 00:00:00
+  - 319
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089067GA01
+  - 2018-11-18 00:00:00
+  - 320
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2020-09-02 00:00:00
+  - 321
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10082059GA01
+  - 2019-04-26 00:00:00
+  - 322
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2020-12-26 00:00:00
+  - 323
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2022-07-21 00:00:00
+  - 324
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2021-10-12 00:00:00
+  - 325
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094077GA01
+  - 2024-06-26 00:00:00
+  - 326
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN20067002GA01
+  - 2021-07-24 00:00:00
+  - 327
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10088042GA01
+  - 2019-04-22 00:00:00
+  - 328
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2022-01-01 00:00:00
+  - 329
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089161GA01
+  - 2018-06-30 00:00:00
+  - 330
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094080GA01
+  - 2022-09-28 00:00:00
+  - 331
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2019-05-27 00:00:00
+  - 332
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2021-08-04 00:00:00
+  - 333
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN20067002GA01
+  - 2021-04-07 00:00:00
+  - 334
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087071GA01
+  - 2024-07-18 00:00:00
+  - 335
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2019-03-12 00:00:00
+  - 336
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2020-03-23 00:00:00
+  - 337
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2020-07-13 00:00:00
+  - 338
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2021-10-22 00:00:00
+  - 339
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2020-12-01 00:00:00
+  - 340
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089161GA01
+  - 2024-11-20 00:00:00
+  - 341
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN20067002GA01
+  - 2024-07-09 00:00:00
+  - 342
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2024-08-20 00:00:00
+  - 343
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2022-10-22 00:00:00
+  - 344
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087069GA01
+  - 2023-08-26 00:00:00
+  - 345
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2022-01-06 00:00:00
+  - 346
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2019-09-09 00:00:00
+  - 347
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2019-06-14 00:00:00
+  - 348
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2019-08-09 00:00:00
+  - 349
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089161GA01
+  - 2023-06-17 00:00:00
+  - 350
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2022-10-22 00:00:00
+  - 351
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2018-07-27 00:00:00
+  - 352
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2020-04-15 00:00:00
+  - 353
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2018-11-01 00:00:00
+  - 354
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087055GA01
+  - 2021-11-03 00:00:00
+  - 355
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2020-08-14 00:00:00
+  - 356
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094077GA01
+  - 2021-07-23 00:00:00
+  - 357
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2020-10-22 00:00:00
+  - 358
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10088042GA01
+  - 2021-01-12 00:00:00
+  - 359
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10094080GA01
+  - 2021-05-15 00:00:00
+  - 360
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2023-08-04 00:00:00
+  - 361
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2018-10-19 00:00:00
+  - 362
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN30076044GA01
+  - 2023-05-25 00:00:00
+  - 363
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2022-03-31 00:00:00
+  - 364
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2023-08-16 00:00:00
+  - 365
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2019-05-20 00:00:00
+  - 366
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089161GA01
+  - 2020-04-06 00:00:00
+  - 367
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094080GA01
+  - 2024-05-23 00:00:00
+  - 368
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094077GA01
+  - 2024-09-26 00:00:00
+  - 369
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2020-02-29 00:00:00
+  - 370
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089161GA01
+  - 2020-11-06 00:00:00
+  - 371
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2020-08-02 00:00:00
+  - 372
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2020-07-12 00:00:00
+  - 373
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2024-08-31 00:00:00
+  - 374
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089067GA01
+  - 2021-09-08 00:00:00
+  - 375
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2021-03-06 00:00:00
+  - 376
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN20067002GA01
+  - 2024-05-14 00:00:00
+  - 377
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2022-07-30 00:00:00
+  - 378
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2024-08-06 00:00:00
+  - 379
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10088042GA01
+  - 2022-09-04 00:00:00
+  - 380
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10088042GA01
+  - 2021-04-16 00:00:00
+  - 381
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN20067002GA01
+  - 2018-11-12 00:00:00
+  - 382
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2021-08-27 00:00:00
+  - 383
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089161GA01
+  - 2021-10-27 00:00:00
+  - 384
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089161GA01
+  - 2022-06-18 00:00:00
+  - 385
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087071GA01
+  - 2023-12-29 00:00:00
+  - 386
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089161GA01
+  - 2020-10-12 00:00:00
+  - 387
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2022-01-03 00:00:00
+  - 388
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2023-11-03 00:00:00
+  - 389
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10088042GA01
+  - 2024-09-04 00:00:00
+  - 390
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087055GA01
+  - 2023-11-02 00:00:00
+  - 391
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10082059GA01
+  - 2020-02-06 00:00:00
+  - 392
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089161GA01
+  - 2023-11-02 00:00:00
+  - 393
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10082059GA01
+  - 2022-11-01 00:00:00
+  - 394
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094077GA01
+  - 2020-06-11 00:00:00
+  - 395
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2022-01-12 00:00:00
+  - 396
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2023-08-20 00:00:00
+  - 397
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2023-09-24 00:00:00
+  - 398
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10094077GA01
+  - 2019-12-20 00:00:00
+  - 399
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087055GA01
+  - 2021-08-07 00:00:00
+  - 400
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089067GA01
+  - 2022-10-08 00:00:00
+  - 401
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094080GA01
+  - 2019-06-27 00:00:00
+  - 402
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2023-06-09 00:00:00
+  - 403
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094080GA01
+  - 2023-08-11 00:00:00
+  - 404
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2022-03-23 00:00:00
+  - 405
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094080GA01
+  - 2024-09-18 00:00:00
+  - 406
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087071GA01
+  - 2020-06-13 00:00:00
+  - 407
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN20067002GA01
+  - 2020-03-15 00:00:00
+  - 408
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087069GA01
+  - 2024-10-28 00:00:00
+  - 409
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089067GA01
+  - 2022-06-13 00:00:00
+  - 410
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087071GA01
+  - 2018-05-20 00:00:00
+  - 411
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2021-03-26 00:00:00
+  - 412
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2020-06-15 00:00:00
+  - 413
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2023-11-12 00:00:00
+  - 414
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2024-10-30 00:00:00
+  - 415
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2019-04-03 00:00:00
+  - 416
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089161GA01
+  - 2022-11-12 00:00:00
+  - 417
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2024-01-18 00:00:00
+  - 418
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087071GA01
+  - 2019-02-09 00:00:00
+  - 419
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094077GA01
+  - 2021-04-16 00:00:00
+  - 420
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2018-07-25 00:00:00
+  - 421
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN30076044GA01
+  - 2020-09-14 00:00:00
+  - 422
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2022-03-24 00:00:00
+  - 423
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089067GA01
+  - 2023-01-26 00:00:00
+  - 424
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN20067002GA01
+  - 2020-03-03 00:00:00
+  - 425
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10094077GA01
+  - 2022-09-26 00:00:00
+  - 426
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2022-01-13 00:00:00
+  - 427
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2020-10-09 00:00:00
+  - 428
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2021-09-18 00:00:00
+  - 429
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087071GA01
+  - 2023-09-09 00:00:00
+  - 430
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2023-08-10 00:00:00
+  - 431
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN20067002GA01
+  - 2021-02-17 00:00:00
+  - 432
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2023-08-19 00:00:00
+  - 433
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087055GA01
+  - 2021-04-10 00:00:00
+  - 434
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2021-06-30 00:00:00
+  - 435
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10087071GA01
+  - 2019-11-08 00:00:00
+  - 436
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2021-09-01 00:00:00
+  - 437
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2018-09-21 00:00:00
+  - 438
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2023-12-26 00:00:00
+  - 439
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN20067002GA01
+  - 2020-10-22 00:00:00
+  - 440
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089067GA01
+  - 2020-09-27 00:00:00
+  - 441
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087071GA01
+  - 2024-01-21 00:00:00
+  - 442
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN30076044GA01
+  - 2022-12-01 00:00:00
+  - 443
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087071GA01
+  - 2021-05-17 00:00:00
+  - 444
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087069GA01
+  - 2024-02-05 00:00:00
+  - 445
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2022-04-29 00:00:00
+  - 446
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2024-01-31 00:00:00
+  - 447
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN30076044GA01
+  - 2020-02-04 00:00:00
+  - 448
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2023-07-30 00:00:00
+  - 449
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2024-08-30 00:00:00
+  - 450
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089161GA01
+  - 2021-01-05 00:00:00
+  - 451
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN30076044GA01
+  - 2023-05-31 00:00:00
+  - 452
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10089067GA01
+  - 2024-11-02 00:00:00
+  - 453
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10089067GA01
+  - 2022-04-14 00:00:00
+  - 454
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN20067002GA01
+  - 2023-05-22 00:00:00
+  - 455
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2019-01-29 00:00:00
+  - 456
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2019-02-07 00:00:00
+  - 457
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2023-11-02 00:00:00
+  - 458
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2023-06-24 00:00:00
+  - 459
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10094080GA01
+  - 2019-05-15 00:00:00
+  - 460
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10088042GA01
+  - 2023-08-19 00:00:00
+  - 461
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2019-04-19 00:00:00
+  - 462
 - !!python/tuple
   - !!python/object/apply:decimal.Decimal
     - '1300400015'
   - PSN30076044GA01
   - 2024-01-08 00:00:00
+  - 463
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2024-07-18 00:00:00
+  - 464
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN20067002GA01
+  - 2021-11-20 00:00:00
+  - 465
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10089161GA01
+  - 2020-05-01 00:00:00
+  - 466
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2023-06-02 00:00:00
+  - 467
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087069GA01
+  - 2024-02-16 00:00:00
+  - 468
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2019-05-20 00:00:00
+  - 469
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2021-06-27 00:00:00
+  - 470
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2022-09-02 00:00:00
+  - 471
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087069GA01
+  - 2023-06-05 00:00:00
+  - 472
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2018-06-09 00:00:00
+  - 473
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2023-09-14 00:00:00
+  - 474
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2022-07-05 00:00:00
+  - 475
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10082059GA01
+  - 2023-10-31 00:00:00
+  - 476
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10087055GA01
+  - 2019-03-15 00:00:00
+  - 477
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10088042GA01
+  - 2021-02-06 00:00:00
+  - 478
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087055GA01
+  - 2022-07-07 00:00:00
+  - 479
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2024-04-30 00:00:00
+  - 480
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400010'
+  - PSN10094077GA01
+  - 2021-02-06 00:00:00
+  - 481
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN20067002GA01
+  - 2024-08-11 00:00:00
+  - 482
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10088042GA01
+  - 2021-11-17 00:00:00
+  - 483
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10082059GA01
+  - 2024-06-13 00:00:00
+  - 484
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2024-11-09 00:00:00
+  - 485
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN30076044GA01
+  - 2018-11-15 00:00:00
+  - 486
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10082059GA01
+  - 2019-09-17 00:00:00
+  - 487
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400014'
+  - PSN10087069GA01
+  - 2020-06-10 00:00:00
+  - 488
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10089067GA01
+  - 2021-11-26 00:00:00
+  - 489
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10082059GA01
+  - 2023-02-05 00:00:00
+  - 490
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400011'
+  - PSN10087055GA01
+  - 2022-04-20 00:00:00
+  - 491
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400009'
+  - PSN10089067GA01
+  - 2020-08-22 00:00:00
+  - 492
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10089067GA01
+  - 2019-07-08 00:00:00
+  - 493
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10087069GA01
+  - 2021-03-26 00:00:00
+  - 494
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10094080GA01
+  - 2024-12-16 00:00:00
+  - 495
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400008'
+  - PSN10087055GA01
+  - 2019-08-19 00:00:00
+  - 496
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10089161GA01
+  - 2019-07-12 00:00:00
+  - 497
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400015'
+  - PSN10087055GA01
+  - 2021-12-09 00:00:00
+  - 498
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10094080GA01
+  - 2019-07-14 00:00:00
+  - 499
+- !!python/tuple
+  - !!python/object/apply:decimal.Decimal
+    - '1300400012'
+  - PSN10088042GA01
+  - 2023-08-24 00:00:00
+  - 500

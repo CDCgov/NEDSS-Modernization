@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { EntryFieldsProps } from 'design-system/entry';
-import { useLocationOptions } from 'options/location';
-import { indicators } from 'options/indicator';
-import { DatePickerInput, validDateRule } from 'design-system/date';
-import { Input } from 'components/FormInputs/Input';
-import { SingleSelect } from 'design-system/select';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { MortalityEntry } from 'apps/patient/data/entry';
+import { Input } from 'components/FormInputs/Input';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { SingleSelect } from 'design-system/select';
+import { indicators } from 'options/indicator';
+import { useLocationOptions } from 'options/location';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 
 const AS_OF_DATE_LABEL = 'Mortality information as of';
 const DECEASED_ON_LABEL = 'Date of death';
@@ -52,7 +54,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -80,7 +82,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.deceasedOn"
-                        shouldUnregister
+                        shouldUnregister={true}
                         rules={validDateRule(DECEASED_ON_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
@@ -98,7 +100,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.city"
-                        shouldUnregister
+                        shouldUnregister={true}
                         rules={maxLengthRule(100, DEATH_CITY_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Input
@@ -119,7 +121,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.state"
-                        shouldUnregister
+                        shouldUnregister={true}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death state"
@@ -137,7 +139,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.county"
-                        shouldUnregister
+                        shouldUnregister={true}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death county"
@@ -156,7 +158,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                     <Controller
                         control={control}
                         name="mortality.country"
-                        shouldUnregister
+                        shouldUnregister={true}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death country"

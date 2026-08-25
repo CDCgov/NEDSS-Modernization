@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class DataSource {
   @Column(name = "data_source_uid", nullable = false, updatable = false)
   private Long id;
 
+  @Fetch(FetchMode.SUBSELECT)
   @OneToMany(mappedBy = "dataSource", fetch = FetchType.LAZY)
   private List<DataSourceColumn> dataSourceColumns;
 

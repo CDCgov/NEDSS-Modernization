@@ -17,28 +17,44 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.x
+
+      - name: Install dependencies
+        uses: cypress-io/github-action@v7
+        with:
+          runTests: false
+          working-directory: testing/regression/
+
+      - name: Lint
+        working-directory: testing/regression/
+        run: npm run lint
+
+      - name: Check formatting
+        working-directory: testing/regression/
+        run: npm run format:check
 
       - name: Run containers
         working-directory: ./cdc-sandbox
         run: ./build_all.sh
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22.x
-
       # Check graphql types are up to date (definition and usage)
+      # needs to be run after containers are running
       - name: Check Graphql generated types are still correct
         working-directory: apps/modernization-ui
-        run: npm ci && npm run generate && git diff --exit-code && npm run lint
+        run: npm ci && npm run generate && git diff --exit-code && npm run lint && npm run typecheck
 
-      # Install npm dependencies, cache them, run tests
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
+          install: false
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
+          browser: chrome
         env:
           CYPRESS_BASE_URL: 'http://localhost:8000/'
           CYPRESS_LOGIN_USERNAME: 'superuser'

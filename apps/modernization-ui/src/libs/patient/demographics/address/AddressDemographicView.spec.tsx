@@ -1,7 +1,9 @@
-import { asSelectable } from 'options';
-import { AddressDemographic } from './address';
 import { render, screen } from '@testing-library/react';
+
+import { asSelectable } from 'options';
+
 import { AddressDemographicView } from './AddressDemographicView';
+import { AddressDemographic } from './address';
 
 const entry: AddressDemographic = {
     asOf: '2000-01-01',

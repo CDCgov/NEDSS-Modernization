@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
-import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
+
 import { ManageSection } from './ManageSection';
 
 describe('when ManageSection renders', () => {
@@ -59,7 +61,14 @@ describe('when ManageSection renders', () => {
     it('should show the heading', () => {
         const { getByTestId } = render(
             <DragDropProvider pageData={content}>
-                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={vi.fn()} onCancel={vi.fn()} />
+                <ManageSection
+                    id="test"
+                    pageId={1}
+                    tab={tabData}
+                    key={1}
+                    onContentChange={vi.fn()}
+                    onCancel={vi.fn()}
+                />
             </DragDropProvider>
         );
         const header = getByTestId('header');
@@ -69,7 +78,14 @@ describe('when ManageSection renders', () => {
     it('should display two buttons', () => {
         const { container } = render(
             <DragDropProvider pageData={content}>
-                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={vi.fn()} onCancel={vi.fn()} />
+                <ManageSection
+                    id="test"
+                    pageId={1}
+                    tab={tabData}
+                    key={1}
+                    onContentChange={vi.fn()}
+                    onCancel={vi.fn()}
+                />
             </DragDropProvider>
         );
         const buttons = container.getElementsByTagName('button');

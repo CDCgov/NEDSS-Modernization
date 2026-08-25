@@ -9,9 +9,7 @@ type State =
     | { status: 'error'; error: string };
 
 type Action =
-    | { type: 'fetch'; page?: number }
-    | { type: 'complete'; conditions: Condition[] }
-    | { type: 'error'; error: string };
+    { type: 'fetch'; page?: number } | { type: 'complete'; conditions: Condition[] } | { type: 'error'; error: string };
 
 const reducer = (_state: State, action: Action): State => {
     switch (action.type) {
@@ -27,7 +25,7 @@ const reducer = (_state: State, action: Action): State => {
 };
 
 export const useFindConditionsNotInUse = (page?: number) => {
-    const [state, dispatch] = useReducer(reducer, { status: 'fetching', page: page });
+    const [state, dispatch] = useReducer(reducer, { status: 'fetching', page });
 
     useEffect(() => {
         if (state.status === 'fetching') {

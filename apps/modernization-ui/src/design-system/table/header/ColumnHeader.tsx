@@ -1,14 +1,16 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
-import { Direction, SortingInteraction } from 'libs/sorting';
+
 import { Button } from 'design-system/button';
+import { Sizing } from 'design-system/field';
 import { FilterInteraction } from 'design-system/filter';
 import { Column, SortIconType } from 'design-system/table';
-import { Sizing } from 'design-system/field';
-import { HeaderFilterField } from './filter';
-import { isNamed, NamedColumn } from './column';
+import { Direction, SortingInteraction } from 'libs/sorting';
 
+import { isNamed, NamedColumn } from './column';
 import styles from './column-header.module.scss';
+import { HeaderFilterField } from './filter';
 
 type ColumnOptions = {
     className?: string;
@@ -107,7 +109,7 @@ const SortableHeader = <V,>({ sorting, filtering, column, sizing, ...remaining }
                 <div className={styles.sortable}>
                     {column.name}
                     <Button
-                        tertiary
+                        tertiary={true}
                         icon={icon}
                         aria-label={`Sort ${column.name}`}
                         onClick={() => sorting.toggle(column.id)}

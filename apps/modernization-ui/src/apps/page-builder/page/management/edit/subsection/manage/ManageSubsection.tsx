@@ -1,16 +1,21 @@
 import { useState } from 'react';
-import styles from './managesubsection.module.scss';
-import { Button, Icon } from '@trussworks/react-uswds';
-import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
-import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
-import { AddSubSection } from './AddSubSection';
-import { usePageManagement } from '../../../usePageManagement';
+
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { Button, Icon } from '@trussworks/react-uswds';
+
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
+import { Icon as NbsIcon } from 'components/Icon/Icon';
+
+import { usePageManagement } from '../../../usePageManagement';
+import { AlertInLineProps } from '../../section/manage/ManageSectionModal';
+
+import { AddSubSection } from './AddSubSection';
+import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
+import styles from './managesubsection.module.scss';
 
 type ManageSubsectionProps = {
+    id: string;
     alert?: AlertInLineProps;
     onResetAlert?: () => void;
     section: PagesSection;
@@ -18,7 +23,7 @@ type ManageSubsectionProps = {
     onSetAlert?: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
 };
 
-export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onCancel }: ManageSubsectionProps) => {
+export const ManageSubsection = ({ id, alert, onResetAlert, section, onSetAlert, onCancel }: ManageSubsectionProps) => {
     const { handleDragEnd, handleDragStart, handleDragUpdate } = useDragDrop();
     const [subsectionState, setSubsectionState] = useState<'manage' | 'add' | 'edit'>('manage');
     const { page, refresh } = usePageManagement();
@@ -63,6 +68,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragUpdate={handleDragUpdate}>
             {subsectionState === 'add' && (
                 <AddSubSection
+                    id={id}
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={() => {
@@ -77,6 +83,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
             )}
             {subsectionState === 'edit' && (
                 <AddSubSection
+                    id={id}
                     sectionId={section.id}
                     pageId={page.id}
                     onCancel={() => {
@@ -89,12 +96,12 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                         refresh();
                     }}
                     subsectionEdit={editSubsection}
-                    isEdit
+                    isEdit={true}
                 />
             )}
             {subsectionState === 'manage' && (
                 <div className={styles.manageSubsection}>
-                    <div className={styles.header}>
+                    <div id={`${id}-header`} className={styles.header}>
                         <div className={styles.manageSubsectionHeader} data-testid="header">
                             <h2>Manage subsections</h2>
                         </div>
@@ -107,28 +114,28 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                 className={styles.addSubsectionBtn}
                                 disabled={onAction}
                             >
-                                <Icon.Add size={3} className={styles.addIcon} />
+                                <Icon.Add aria-label="add" size={3} className={styles.addIcon} />
                                 Add new subsection
                             </Button>
                         </div>
                     </div>
-                    <div className={styles.content}>
+                    <div id={`${id}-content`} className={styles.content}>
                         {alert !== undefined && (
                             <div className={styles.alert}>
                                 <div className={styles.checkCircle}>
-                                    <Icon.CheckCircle size={3} />
+                                    <Icon.CheckCircle aria-label="check" size={3} />
                                 </div>
                                 <div className={styles.alertContent}>
                                     <div className={styles.alertMessage}>{alert.message}</div>
                                     <div className={styles.closeBtn}>
-                                        <Icon.Close size={3} onClick={() => onResetAlert?.()} />
+                                        <Icon.Close aria-label="close" size={3} onClick={() => onResetAlert?.()} />
                                     </div>
                                 </div>
                             </div>
                         )}
                         <div className={styles.section}>
                             <div className={styles.folderIcon}>
-                                <NbsIcon name={'folder'} />
+                                <NbsIcon alt="folder" name="folder" />
                             </div>
                             <p className={styles.sectionName}>{section?.name}</p>
                         </div>
@@ -163,9 +170,9 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             onClick={() => {
                                 onCancel?.();
                             }}
-                            type={'button'}
+                            type="button"
                             data-testid="manageSubsectionCloseBtn"
-                            outline
+                            outline={true}
                         >
                             Close
                         </Button>

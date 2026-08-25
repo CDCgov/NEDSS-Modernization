@@ -11,10 +11,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity
@@ -30,19 +33,38 @@ public class Report {
       updatable = false)
   private DataSource dataSource;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "library_uid")
   private ReportLibrary reportLibrary;
 
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  // Report filters are updated/deleted when reports save/delete, so we need to
+  // cascade all operations. When a report is no longer referenced, we want
+  // to delete it, so set `orphanRemoval` to true
+  @Fetch(FetchMode.SUBSELECT)
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ReportFilter> reportFilters;
 
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  @Fetch(FetchMode.SUBSELECT)
+  @OrderBy("sequenceNumber")
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL)
   private List<DisplayColumn> displayColumns;
 
   // should be 1:1 in practice, but the DB implies there could be
   // more and NBS 6 fetches all then takes the first
-  @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
+  @Fetch(FetchMode.SUBSELECT)
+  @OneToMany(
+      mappedBy = "report",
+      fetch = FetchType.LAZY,
+      orphanRemoval = true,
+      cascade = CascadeType.ALL)
   private List<ReportSortColumn> reportSortColumns;
 
   @Column(name = "desc_txt", length = 300)
@@ -81,7 +103,7 @@ public class Report {
   @Column(name = "category", length = 20)
   private String category;
 
-  @NonNull @Column(name = "section_cd", length = 5, nullable = false)
+  @Column(name = "section_cd", length = 5, nullable = false)
   private String sectionCd;
 
   @Column(name = "add_reason_cd", length = 20)
@@ -94,6 +116,22 @@ public class Report {
   private Long addUserUid;
 
   @Embedded private Status status;
+
+  /**
+   * Forcefully and eagerly load all necessary report associations prior to detaching said report.
+   * This exists specifically for the "save as" operation, which involves first duplicating a report
+   * and it's underlying associations, then making a handful of potential changes to the new report,
+   * WITHOUT updating the initial report being duplicated.
+   */
+  public void eagerLoadForDetach() {
+    Hibernate.initialize(getDisplayColumns());
+    Hibernate.initialize(getDataSource().getDataSourceColumns());
+    Hibernate.initialize(getReportSortColumns());
+    for (ReportFilter reportFilter : getReportFilters()) {
+      Hibernate.initialize(reportFilter.getFilterValues());
+      Hibernate.initialize(reportFilter.getFilterCode());
+    }
+  }
 
   protected Report() {}
 }

@@ -4,10 +4,10 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import jakarta.persistence.EntityManager;
 import java.util.function.Consumer;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class PageService {
 
   private final EntityManager entityManager;

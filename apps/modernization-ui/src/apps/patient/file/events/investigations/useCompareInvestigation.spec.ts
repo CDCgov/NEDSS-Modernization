@@ -1,5 +1,7 @@
 import { act } from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
+
+import { renderHook } from '@testing-library/react';
+
 import { useCompareInvestigation } from './useCompareInvestigation';
 
 describe('useCompareInvestigation', () => {

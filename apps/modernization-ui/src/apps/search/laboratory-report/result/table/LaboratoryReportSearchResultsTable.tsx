@@ -1,17 +1,17 @@
-import { LabReport } from 'generated/graphql/schema';
+import { displayGender, displayProfileLink, withPatient } from 'apps/search/basic';
+import {
+    getAssociatedInvestigations,
+    getDescription,
+    getOrderingProviderName,
+    getPatient,
+    getReportingFacility,
+} from 'apps/search/laboratory-report/result';
+import { ClassicLink } from 'classic';
+import { internalizeDate } from 'date';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
-import { internalizeDate } from 'date';
-import { ClassicLink } from 'classic';
+import { LabReport } from 'generated/graphql/schema';
 import { Selectable } from 'options';
-import { withPatient, displayProfileLink, displayGender } from 'apps/search/basic';
-import {
-    getPatient,
-    getOrderingProviderName,
-    getReportingFacility,
-    getDescription,
-    getAssociatedInvestigations,
-} from 'apps/search/laboratory-report/result';
 
 const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
 const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };

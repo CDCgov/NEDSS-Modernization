@@ -1,3 +1,8 @@
+import { useRef } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+
+import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import {
     PageHeader,
     PageManagementLayout,
@@ -8,12 +13,10 @@ import {
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
 import { NavLinkButton } from 'design-system/button';
+
 import { PageContent } from './content/PageContent';
-import { ManageSectionModal } from './section/manage/ManageSectionModal';
-import { ModalRef } from '@trussworks/react-uswds';
-import { useRef } from 'react';
 import { ReorderModal } from './reorder/ReorderModal/ReorderModal';
-import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { ManageSectionModal } from './section/manage/ManageSectionModal';
 
 export const Edit = () => {
     const { page, fetch, refresh, loading } = useGetPageDetails();
@@ -37,7 +40,7 @@ export const Edit = () => {
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
-                <Loading center />
+                <Loading center={true} />
             )}
         </>
     );
@@ -67,7 +70,7 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
                         <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
                         </NavLinkButton>
-                        <NavLinkButton data-testid="previewBtn" to={'..'}>
+                        <NavLinkButton data-testid="previewBtn" to="..">
                             Preview
                         </NavLinkButton>
                     </PageManagementMenu>

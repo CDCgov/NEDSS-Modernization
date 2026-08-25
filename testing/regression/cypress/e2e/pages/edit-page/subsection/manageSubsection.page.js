@@ -1,15 +1,14 @@
 class ManageSubsectionPage {
-
-    navigateEditPage () {
-        this.navigateToPreviewPageWithStatusInitialDraft()
-        cy.get("body").then($body => {
-            if ($body.find("#create-new-draft-button").length > 0) {
-                cy.get("create-new-draft-button").then($button => {
-                    if ($button.is(':visible')){
-                        $button.click()
+    navigateEditPage() {
+        this.navigateToPreviewPageWithStatusInitialDraft();
+        cy.get('body').then(($body) => {
+            if ($body.find('#create-new-draft-button').length > 0) {
+                cy.get('create-new-draft-button').then(($button) => {
+                    if ($button.is(':visible')) {
+                        $button.click();
                         cy.get('.editDraftBtn').eq(0).click();
                     }
-                })
+                });
             } else {
                 cy.get('.editDraftBtn').eq(0).click();
             }
@@ -22,12 +21,11 @@ class ManageSubsectionPage {
     }
 
     clickEditSubsectionIcon() {
-        cy.get('.subsectionHeader').eq(0)
-            .get('[data-testid="subsectionTileEditIcon"]').eq(0).click();
+        cy.get('.subsectionHeader').eq(0).get('[data-testid="subsectionTileEditIcon"]').eq(0).click();
     }
 
     verifyEditSubsectionIsVisible() {
-        cy.contains('Edit subsection')
+        cy.contains('Edit subsection');
     }
 
     verifyButtonsAreVisible() {
@@ -36,8 +34,7 @@ class ManageSubsectionPage {
     }
 
     checkSaveButtonDisabledByDefault() {
-        cy.get('[data-testid="confirmation-btn"]')
-            .filter(':visible').eq(0).should('be.disabled');
+        cy.get('[data-testid="confirmation-btn"]').filter(':visible').eq(0).should('be.disabled');
     }
 
     updateSubsectionName() {
@@ -46,8 +43,8 @@ class ManageSubsectionPage {
             .filter(':visible')
             .eq(0)
             .then((btn) => {
-                cy.wrap(btn).clear()
-                    .type(`Subsection name edited ${newSubsectionName}`);
+                cy.wrap(btn).clear();
+                cy.wrap(btn).type(`Subsection name edited ${newSubsectionName}`);
             });
     }
 
@@ -56,8 +53,7 @@ class ManageSubsectionPage {
     }
 
     clickSaveBtn() {
-        cy.get('[data-testid="confirmation-btn"]')
-        .filter(':visible:enabled').eq(0).click();
+        cy.get('[data-testid="confirmation-btn"]').filter(':visible:enabled').eq(0).click();
     }
 
     checkManageSubsectionWindowVisible() {
@@ -69,13 +65,12 @@ class ManageSubsectionPage {
     }
 
     clickDeleteSubsectionIcon() {
-        cy.get('.subsectionHeader').eq(0)
-            .get('[data-testid="subsectionTileDeleteIcon"]').eq(0).click();
+        cy.get('.subsectionHeader').eq(0).get('[data-testid="subsectionTileDeleteIcon"]').eq(0).click();
     }
 
     showWarningMessageOnSubsectionDelete(text) {
         cy.contains('Subsection cannot be deleted').then((ele) => {
-            if(ele.length < 1) {
+            if (ele.length < 1) {
                 cy.contains(text);
             }
         });
@@ -83,46 +78,45 @@ class ManageSubsectionPage {
 
     clickOkLink() {
         cy.contains('Subsection cannot be deleted').then((ele) => {
-            if(ele.length > 1) {
-                cy.get('.subsectionHeader').eq(0)
-                    .get('.subsectionOkLink').eq(0).click();
+            if (ele.length > 1) {
+                cy.get('.subsectionHeader').eq(0).get('.subsectionOkLink').eq(0).click();
             }
         });
     }
 
-    checkButtonsAreVisible(text, text1) {
+    checkButtonsAreVisible(text) {
         cy.contains('Subsection cannot be deleted').then((ele) => {
-            if(ele.length < 1) {
+            if (ele.length < 1) {
                 cy.contains('Are you sure you want to delete').should('contain', text);
             }
         });
-
     }
 
     clickVisibilitySubsectionIcon(visibility) {
-        const onOrOff = visibility ? 'on' : 'off'
-        const dataTestId = ``;
-        cy.get('.subsectionHeader').eq(0)
+        const onOrOff = visibility ? 'on' : 'off';
+        cy.get('.subsectionHeader')
+            .eq(0)
             .then((ele) => {
-                 if(ele.find(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).length > 0) {
-                    cy.get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click({force: true});
-                 }
+                if (ele.find(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).length > 0) {
+                    cy.get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click({ force: true });
+                }
             });
     }
 
     checkVisibilityIconTurnedOff(visibility) {
-        const onOrOff = visibility ? 'on' : 'off'
-        cy.get('.subsectionHeader').eq(0)
+        const onOrOff = visibility ? 'on' : 'off';
+        cy.get('.subsectionHeader')
+            .eq(0)
             .then((ele) => {
-                if(ele.find(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).length > 0) {
-                    cy.get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click({force: true});
+                if (ele.find(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).length > 0) {
+                    cy.get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click({ force: true });
                 }
-            })
+            });
     }
 
     verifyVisibilitySuccessMessage(text) {
         cy.contains('Manage subsections').then((ele) => {
-            if(ele.length < 1) {
+            if (ele.length < 1) {
                 cy.wait(2000);
                 cy.contains(text);
             }
@@ -157,19 +151,17 @@ class ManageSubsectionPage {
     }
 
     clickDragAndDropIcon() {
-        cy.get('.manage-sections').eq(0)
-            .get('[data-testid="dragAndDropIcon"]').eq(0).click();
+        cy.get('.manage-sections').eq(0).get('[data-testid="dragAndDropIcon"]').eq(0).click();
     }
 
     checkDragAndDrop() {
-        cy.get('.manage-sections').eq(0)
-            .get('[data-testid="dragAndDropIcon"]').eq(0)
-            .trigger('mousedown').trigger('mouseup');
+        cy.get('.manage-sections').eq(0).get('[data-testid="dragAndDropIcon"]').eq(0).as('dragAndDropIcon');
+        cy.get('@dragAndDropIcon').trigger('mousedown');
+        cy.get('@dragAndDropIcon').trigger('mouseup');
     }
 
     closeManageSubsectionWindow() {
-        cy.get('.manage-sections').eq(0)
-            .get('[data-testid="manageSubsectionCloseBtn"]').eq(0).click();
+        cy.get('.manage-sections').eq(0).get('[data-testid="manageSubsectionCloseBtn"]').eq(0).click();
     }
 
     checkOnEditPage() {
@@ -179,15 +171,18 @@ class ManageSubsectionPage {
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-        cy.get('#range-toggle').select('100')
+        cy.get('#range-toggle').select('100');
         cy.wait(2000);
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Initial Draft") {
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr, index) => {
+                if ($tr.find('td').eq(3).text() === 'Initial Draft') {
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false;
+                }
+            });
     }
 }
 
-export const manageSubsectionPage = new ManageSubsectionPage()
+export const manageSubsectionPage = new ManageSubsectionPage();

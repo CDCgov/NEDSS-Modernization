@@ -3,6 +3,8 @@ package gov.cdc.nbs.id;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 class IdGeneratorServiceTest {
@@ -30,8 +31,7 @@ class IdGeneratorServiceTest {
 
   @Test
   void testGetNextValidId_NBS() {
-    when(localUidGeneratorRepository.findByTypeCd(Mockito.anyString()))
-        .thenReturn(validGeneratorEntry());
+    when(localUidGeneratorRepository.findByTypeCd(anyString())).thenReturn(validGeneratorEntry());
     var response = idGeneratorService.getNextValidId(EntityType.NBS);
 
     assertNotNull(response);
@@ -44,8 +44,7 @@ class IdGeneratorServiceTest {
 
   @Test
   void testGetNextValidId_PERSON() {
-    when(localUidGeneratorRepository.findById(Mockito.anyString()))
-        .thenReturn(validGeneratorEntry());
+    when(localUidGeneratorRepository.findById(anyString())).thenReturn(validGeneratorEntry());
     var response = idGeneratorService.getNextValidId(EntityType.PERSON);
 
     assertNotNull(response);
@@ -68,7 +67,7 @@ class IdGeneratorServiceTest {
     assertNotNull(exception);
     assertNull(response);
 
-    verify(localUidGeneratorRepository, never()).save(Mockito.any());
+    verify(localUidGeneratorRepository, never()).save(any());
   }
 
   private Optional<LocalUidGenerator> validGeneratorEntry() {

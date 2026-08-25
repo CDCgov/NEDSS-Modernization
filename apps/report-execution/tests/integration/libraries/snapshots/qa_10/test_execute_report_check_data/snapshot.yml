@@ -1,462 +1,630 @@
 - !!python/tuple
-  - 75
-  - Beasley, Sarah
-  - PSN30083699GA01
-  - '29'
+  - 110
+  - null
+  - null
+  - 70 Months
   - F
-  - '410'
+  - '790'
+  - Washington County
+  - '37719441'
+  - 2020-03-25
+  - N
+  - Y
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2018-08-03
+  - '14'
+  - null
+  - null
+  - 70
+- !!python/tuple
+  - 132
+  - Brown, Lisa
+  - PSN10010004GA01
+  - 3 Days
+  - F
+  - '200'
+  - Washington County
+  - null
+  - 2022-07-22
+  - N
+  - null
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2023-05-04
+  - '14'
+  - brown, lisa
+  - 10004
+  - 3
+- !!python/tuple
+  - 88
+  - Brown, Lisa
+  - PSN10010004GA01
+  - 53 Months
+  - F
+  - '710'
   - Middlesex County
-  - '42697430'
-  - 2022-08-03
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2024-11-24
-  - '14'
-  - beasley, sarah
-  - 20083699
-  - 29
-- !!python/tuple
-  - 186
-  - Burns, Oscar
-  - PSN20032568GA01
-  - '78'
-  - F
-  - '480'
-  - Washington County
-  - '46069451'
-  - 2019-03-05
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2024-04-01
-  - '14'
-  - burns, oscar
-  - 10032568
-  - 78
-- !!python/tuple
-  - 692
-  - Cameron, Tiffany
-  - PSN30022103GA01
-  - '10'
-  - F
-  - '750'
-  - Washington County
-  - '55745726'
-  - 2024-03-31
+  - '51185626'
+  - 2024-02-27
   - N
   - Y
   - 'No'
   - 'No'
   - 'No'
   - 'No'
-  - 2020-05-25
+  - 2021-09-07
   - '14'
-  - cameron, tiffany
-  - 20022103
-  - 10
+  - brown, lisa
+  - 10004
+  - 53
 - !!python/tuple
-  - 278
-  - Diaz, Victoria
-  - PSN20022195GA01
-  - null
+  - 616
+  - Davis, Tom
+  - PSN10010005GA01
+  - 8 Months
   - F
-  - '410'
+  - '300'
   - Washington County
-  - '54212741'
-  - 2018-06-01
+  - '81045384'
+  - 2019-04-22
   - N
   - N
-  - 'No'
-  - 'No'
   - 'Yes'
   - 'No'
-  - 2018-08-23
-  - '14'
-  - diaz, victoria
-  - 10022195
   - null
+  - 'Yes'
+  - 2024-05-15
+  - '14'
+  - davis, tom
+  - 10005
+  - 8
 - !!python/tuple
-  - 296
-  - Garcia, Wanda
-  - PSN20031700GA01
-  - '40'
+  - 960
+  - Davis, Tom
+  - PSN10010005GA01
+  - 34 Years
   - F
-  - '450'
-  - Middlesex County
-  - '49453223'
-  - 2023-07-17
+  - '710'
+  - Washington County
+  - '35168884'
+  - 2024-08-24
   - N
   - N
   - 'No'
   - 'No'
   - 'Yes'
   - 'No'
-  - 2019-03-14
+  - 2020-02-04
   - '14'
-  - garcia, wanda
-  - 10031700
+  - davis, tom
+  - 10005
+  - 34
+- !!python/tuple
+  - 988
+  - Davis, Tom
+  - PSN10010005GA01
+  - 40 Days
+  - F
+  - '710'
+  - Middlesex County
+  - '98131356'
+  - 2021-08-30
+  - N
+  - Y
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2022-02-05
+  - '14'
+  - davis, tom
+  - 10005
   - 40
 - !!python/tuple
-  - 232
-  - Gibson, Shari
-  - PSN20042921GA01
-  - '1'
+  - 207
+  - Davis, Tom
+  - PSN10010005GA01
+  - 42 Months
   - F
-  - '480'
-  - Washington County
-  - '68352256'
-  - 2022-10-10
-  - N
-  - N
-  - null
-  - 'No'
-  - 'Yes'
-  - null
-  - 2021-09-02
-  - '14'
-  - gibson, shari
-  - 10042921
-  - 1
-- !!python/tuple
-  - 636
-  - Guerrero, Ethan
-  - PSN20065186GA01
-  - 88 years
-  - F
-  - '300'
+  - '710'
   - Middlesex County
-  - '87539255'
-  - 2021-12-23
+  - '69698802'
+  - 2023-02-28
   - N
-  - N
-  - 'Yes'
+  - Y
   - 'No'
   - 'No'
-  - 'Yes'
-  - 2019-04-07
+  - 'No'
+  - 'No'
+  - 2024-03-19
   - '14'
-  - guerrero, ethan
-  - 10065186
-  - 88
+  - davis, tom
+  - 10005
+  - 42
 - !!python/tuple
-  - 817
-  - Hayes, Megan
-  - PSN20067465GA01
-  - '13'
+  - 136
+  - Davis, Tom
+  - PSN10010005GA01
+  - 28 Months
   - F
-  - '300'
+  - '900'
   - Middlesex County
-  - '80193795'
-  - 2023-11-09
+  - '29847096'
+  - 2023-12-09
   - N
   - N
+  - 'Yes'
   - 'No'
   - 'No'
   - 'Yes'
-  - 'No'
-  - 2018-06-22
+  - 2020-03-06
   - '14'
-  - hayes, megan
-  - 10067465
-  - 13
+  - davis, tom
+  - 10005
+  - 28
 - !!python/tuple
-  - 963
-  - Jackson, David
-  - PSN20077021GA01
-  - '95'
+  - 831
+  - Doe, Jane
+  - PSN10010002GA01
+  - 38 Months
   - F
   - '200'
   - Middlesex County
-  - '55309619'
+  - '10972749'
+  - 2019-05-02
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2023-08-26
+  - '14'
+  - doe, jane
+  - 10002
+  - 38
+- !!python/tuple
+  - 456
+  - Doe, Jane
+  - PSN10010002GA01
+  - 87 Years
+  - F
+  - '300'
+  - Washington County
+  - null
+  - 2018-10-11
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2024-09-03
+  - '14'
+  - doe, jane
+  - 10002
+  - 87
+- !!python/tuple
+  - 179
+  - Doe, Jane
+  - PSN10010002GA01
+  - 34 Days
+  - F
+  - '790'
+  - Washington County
+  - '91934184'
+  - 2019-03-20
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2020-02-26
+  - '14'
+  - doe, jane
+  - 10002
+  - 34
+- !!python/tuple
+  - 513
+  - Doe, Jane
+  - PSN10010002GA01
+  - 64 Months
+  - F
+  - '900'
+  - Washington County
+  - null
+  - 2022-04-14
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2020-06-23
+  - '14'
+  - doe, jane
+  - 10002
+  - 64
+- !!python/tuple
+  - 559
+  - Doe, Jane
+  - PSN10010002GA01
+  - 3 Years
+  - F
+  - '900'
+  - Middlesex County
+  - '70389425'
+  - 2019-01-11
+  - N
+  - N
+  - 'Yes'
+  - null
+  - 'No'
+  - 'Yes'
+  - 2020-08-17
+  - '14'
+  - doe, jane
+  - 10002
+  - 3
+- !!python/tuple
+  - 840
+  - Doe, Jane
+  - PSN10010002GA01
+  - 15 Months
+  - F
+  - '950'
+  - Middlesex County
+  - '14309460'
+  - 2021-03-26
+  - N
+  - null
+  - 'Yes'
+  - null
+  - 'No'
+  - 'Yes'
+  - 2019-09-21
+  - '14'
+  - doe, jane
+  - 10002
+  - 15
+- !!python/tuple
+  - 313
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 72 Months
+  - F
+  - '300'
+  - Middlesex County
+  - '73516624'
+  - 2020-06-23
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2024-01-25
+  - '14'
+  - johnson, mike
+  - 10003
+  - 72
+- !!python/tuple
+  - 235
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 38 Years
+  - F
+  - '720'
+  - Washington County
+  - '87279487'
+  - 2023-09-22
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - null
+  - '14'
+  - johnson, mike
+  - 10003
+  - 38
+- !!python/tuple
+  - 682
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 85 Days
+  - F
+  - '790'
+  - Middlesex County
+  - '61140920'
   - 2024-07-26
   - N
   - N
   - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2020-03-10
-  - '14'
-  - jackson, david
-  - 10077021
-  - 95
-- !!python/tuple
-  - 796
-  - Jackson, Donald
-  - PSN10066209GA01
-  - '81'
-  - F
-  - '350'
-  - Washington County
-  - '25216912'
-  - 2023-06-11
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2023-10-04
-  - '14'
-  - jackson, donald
-  - 66209
-  - 81
-- !!python/tuple
-  - 618
-  - Martin, Jose
-  - PSN10048024GA01
-  - '88'
-  - F
-  - '800'
-  - Washington County
-  - '27789216'
-  - 2020-04-12
-  - N
-  - Y
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2024-01-17
-  - '14'
-  - martin, jose
-  - 48024
-  - 88
-- !!python/tuple
-  - 243
-  - Mata, Zachary
-  - PSN30056748GA01
-  - '37'
-  - F
-  - '740'
-  - Washington County
-  - '62412438'
-  - 2022-07-21
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2022-08-04
-  - '14'
-  - mata, zachary
-  - 20056748
-  - 37
-- !!python/tuple
-  - 188
-  - Miller, Kristina
-  - PSN20048184GA01
-  - '43'
-  - F
-  - '480'
-  - Washington County
-  - '96046838'
-  - 2022-11-30
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2021-12-01
-  - '14'
-  - miller, kristina
-  - 10048184
-  - 43
-- !!python/tuple
-  - 231
-  - Olson, Andrea
-  - PSN30033832GA01
-  - '84'
-  - F
-  - '490'
-  - Middlesex County
-  - '83254613'
-  - 2021-05-17
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2021-07-22
-  - '14'
-  - olson, andrea
-  - 20033832
-  - 84
-- !!python/tuple
-  - 881
-  - Peterson, Dwayne
-  - PSN10088219GA01
-  - '73'
-  - F
-  - '470'
-  - Washington County
-  - '48978709'
-  - 2021-10-11
-  - N
-  - Y
   - null
   - 'No'
-  - 'No'
+  - 'Yes'
   - null
-  - 2024-09-05
   - '14'
-  - peterson, dwayne
-  - 88219
-  - 73
+  - johnson, mike
+  - 10003
+  - 85
 - !!python/tuple
-  - 59
-  - Rocha, Brittany
-  - PSN10049526GA01
-  - '13'
-  - F
-  - '710'
-  - Middlesex County
-  - '28276662'
-  - 2020-09-13
-  - N
-  - Y
-  - 'No'
-  - 'No'
-  - 'No'
-  - 'No'
-  - 2021-09-15
-  - '14'
-  - rocha, brittany
-  - 49526
-  - 13
-- !!python/tuple
-  - 263
-  - Smith, Brittany
-  - PSN20083542GA01
-  - '44'
-  - F
-  - '460'
-  - Middlesex County
-  - '27616468'
-  - 2019-03-03
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2024-03-24
-  - '14'
-  - smith, brittany
-  - 10083542
-  - 44
-- !!python/tuple
-  - 303
-  - Stanley, Janet
-  - PSN20038005GA01
-  - '33'
-  - F
-  - '100'
-  - Middlesex County
-  - '26032901'
-  - 2020-01-24
-  - N
-  - N
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 2023-03-07
-  - '14'
-  - stanley, janet
-  - 10038005
-  - 33
-- !!python/tuple
-  - 137
-  - Stein, Nicholas
-  - PSN10095953GA01
-  - null
-  - F
-  - '350'
-  - Washington County
-  - '68334965'
-  - 2020-05-28
-  - N
-  - N
-  - 'Yes'
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 2022-04-25
-  - '14'
-  - stein, nicholas
-  - 95953
-  - null
-- !!python/tuple
-  - 512
-  - Todd, Matthew
-  - PSN30059933GA01
-  - 22 Years
-  - F
-  - '730'
-  - Washington County
-  - '37456212'
-  - 2019-06-14
-  - N
-  - N
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 2020-02-03
-  - '14'
-  - todd, matthew
-  - 20059933
-  - 22
-- !!python/tuple
-  - 886
-  - Weber, David
-  - PSN20039193GA01
-  - '13'
-  - F
-  - '850'
-  - Washington County
-  - '71769780'
-  - 2021-01-19
-  - N
-  - N
-  - 'No'
-  - 'No'
-  - 'Yes'
-  - 'No'
-  - 2019-12-01
-  - '14'
-  - weber, david
-  - 10039193
-  - 13
-- !!python/tuple
-  - 105
-  - Williams, Annette
-  - PSN10079843GA01
-  - '70'
+  - 836
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 30 Days
   - F
   - '900'
   - Middlesex County
-  - '37024562'
-  - null
+  - '39288717'
+  - 2022-01-24
+  - N
   - Y
+  - 'No'
+  - 'Yes'
+  - null
+  - 'No'
+  - 2020-02-29
+  - '14'
+  - johnson, mike
+  - 10003
+  - 30
+- !!python/tuple
+  - 426
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 88 Years
+  - F
+  - '900'
+  - Washington County
+  - '60439615'
+  - 2019-04-17
+  - N
   - N
   - 'Yes'
   - 'No'
   - 'No'
   - 'Yes'
-  - 2020-12-19
+  - 2020-01-13
   - '14'
-  - williams, annette
-  - 79843
-  - 70
+  - johnson, mike
+  - 10003
+  - 88
+- !!python/tuple
+  - 479
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 34 Months
+  - F
+  - '900'
+  - Washington County
+  - '38583895'
+  - 2022-01-11
+  - N
+  - Y
+  - 'No'
+  - null
+  - 'No'
+  - 'No'
+  - 2023-04-26
+  - '14'
+  - johnson, mike
+  - 10003
+  - 34
+- !!python/tuple
+  - 693
+  - Johnson, Mike
+  - PSN10010003GA01
+  - 68 Days
+  - F
+  - '950'
+  - Middlesex County
+  - '69320536'
+  - null
+  - Y
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2021-01-20
+  - '14'
+  - johnson, mike
+  - 10003
+  - 68
+- !!python/tuple
+  - 98
+  - Miller, Amy
+  - PSN10010006GA01
+  - 44 Months
+  - F
+  - '200'
+  - null
+  - '13092938'
+  - 2018-06-23
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2021-11-07
+  - '14'
+  - miller, amy
+  - 10006
+  - 44
+- !!python/tuple
+  - 813
+  - Miller, Amy
+  - PSN10010006GA01
+  - .
+  - F
+  - '300'
+  - Washington County
+  - '38846012'
+  - 2022-12-12
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2020-02-01
+  - '14'
+  - miller, amy
+  - 10006
+  - null
+- !!python/tuple
+  - 39
+  - Smith, John
+  - PSN10010001GA01
+  - 31 Years
+  - F
+  - '710'
+  - Washington County
+  - '30467170'
+  - 2022-10-26
+  - N
+  - null
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 2022-01-10
+  - '14'
+  - smith, john
+  - 10001
+  - 31
+- !!python/tuple
+  - 883
+  - Smith, John
+  - PSN10010001GA01
+  - 95 Months
+  - F
+  - '730'
+  - Washington County
+  - '55223024'
+  - 2019-07-30
+  - N
+  - N
+  - 'Yes'
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 2018-08-11
+  - '14'
+  - smith, john
+  - 10001
+  - 95
+- !!python/tuple
+  - 810
+  - Smith, John
+  - PSN10010001GA01
+  - 65 Years
+  - F
+  - '730'
+  - Washington County
+  - '49517781'
+  - 2023-07-27
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2018-09-21
+  - '14'
+  - smith, john
+  - 10001
+  - 65
+- !!python/tuple
+  - 748
+  - Smith, John
+  - PSN10010001GA01
+  - 77 Years
+  - F
+  - '900'
+  - Washington County
+  - '49540552'
+  - 2024-09-28
+  - N
+  - Y
+  - 'No'
+  - 'No'
+  - 'No'
+  - 'No'
+  - 2021-10-09
+  - '14'
+  - smith, john
+  - 10001
+  - 77
+- !!python/tuple
+  - 956
+  - Smith, John
+  - PSN10010001GA01
+  - .
+  - F
+  - '900'
+  - Middlesex County
+  - '94204554'
+  - 2021-04-13
+  - N
+  - N
+  - 'No'
+  - 'No'
+  - 'Yes'
+  - 'No'
+  - 2022-09-17
+  - '14'
+  - smith, john
+  - 10001
+  - null
+- !!python/tuple
+  - 354
+  - Smith, John
+  - PSN10010001GA01
+  - 36 Years
+  - F
+  - '900'
+  - Middlesex County
+  - '72203705'
+  - 2022-03-29
+  - N
+  - N
+  - null
+  - 'Yes'
+  - 'Yes'
+  - null
+  - 2019-02-20
+  - '14'
+  - smith, john
+  - 10001
+  - 36
+- !!python/tuple
+  - 318
+  - Smith, John
+  - PSN10010001GA01
+  - 43 Days
+  - F
+  - '950'
+  - Washington County
+  - '22276107'
+  - 2020-09-04
+  - N
+  - N
+  - 'No'
+  - 'Yes'
+  - 'Yes'
+  - 'No'
+  - 2023-07-25
+  - '14'
+  - smith, john
+  - 10001
+  - 43

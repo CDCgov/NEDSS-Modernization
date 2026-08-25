@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
+
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { EntryFieldsProps } from 'design-system/entry';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { validateRequiredRule } from 'validation/entry';
+
 import { HasEthnicityDemographic, labels } from '../ethnicity';
+
 import { EthnicityOptions } from './useEthnicityOptions';
 
 const UNKNOWN = 'UNK';
@@ -47,7 +51,7 @@ const EthnicityDemographicsFields = ({
                         onBlur={onBlur}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -75,7 +79,7 @@ const EthnicityDemographicsFields = ({
                 <Controller
                     control={form.control}
                     name="ethnicity.detailed"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <MultiSelect
                             label={labels.detailed}
@@ -95,7 +99,7 @@ const EthnicityDemographicsFields = ({
                 <Controller
                     control={form.control}
                     name="ethnicity.unknownReason"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label={labels.unknownReason}

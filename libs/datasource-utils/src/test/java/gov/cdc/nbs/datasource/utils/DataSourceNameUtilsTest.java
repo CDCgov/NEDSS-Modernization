@@ -2,9 +2,9 @@ package gov.cdc.nbs.datasource.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,16 +17,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class DataSourceNameUtilsTest {
-  @Mock DataSourceNameConfiguration config;
+
+  private static final Map<String, String> DATABASE_MAPPINGS =
+      Map.of(
+          "report_db_nbs_ods", "NBS_ODSE",
+          "report_db_nbs_odse", "NBS_ODSE",
+          "report_db_odse", "NBS_ODSE",
+          "report_db_ods", "NBS_ODSE");
+
+  @Mock ConfigurationValueFinder config;
   @InjectMocks private DataSourceNameUtils utils;
 
   @BeforeEach
   void setUp() {
-    Map<String, String> mappings = new HashMap<>();
-    mappings.put("nbs_ods", "NBS_ODSE");
-    mappings.put("odse", "NBS_ODSE");
-    mappings.put("ods", "NBS_ODSE");
-    when(config.getMappings()).thenReturn(mappings);
+    lenient()
+        .when(config.getConfigValue(anyString()))
+        .thenAnswer(
+            invocation -> {
+              String key = invocation.getArgument(0, String.class);
+              return DATABASE_MAPPINGS.getOrDefault(key.toLowerCase(), "");
+            });
   }
 
   @ParameterizedTest

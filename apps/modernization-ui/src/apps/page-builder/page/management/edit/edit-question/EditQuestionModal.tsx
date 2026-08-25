@@ -1,17 +1,21 @@
+import { RefObject, useEffect } from 'react';
+
 import { Button, Modal, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
+
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { useFetchEditableQuestion } from 'apps/page-builder/hooks/api/useFetchEditableQuestion';
 import { useUpdatePageQuestion } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
-import { RefObject, useEffect } from 'react';
-import { FormProvider, useForm, useFormState } from 'react-hook-form';
+import { Spinner } from 'components/Spinner';
+import { useAlert } from 'libs/alert';
+
 import { usePageManagement } from '../../usePageManagement';
+
 import './EditQuestionModal.scss';
 import styles from './edit-question-modal.module.scss';
 import { EditPageQuestion, EditPageQuestionForm } from './form/EditPageQuestion';
-import { Spinner } from 'components/Spinner';
 type Props = {
     modal: RefObject<ModalRef>;
     question?: PagesQuestion;
@@ -30,9 +34,9 @@ export const EditQuestionModal = ({ modal, question, onClosed, onUpdated }: Prop
     };
     return (
         <Modal
-            isLarge
+            isLarge={true}
             ref={modal}
-            forceAction
+            forceAction={true}
             className="edit-question-modal"
             id="edit-question-modal"
             aria-labelledby="edit-question-modal"
@@ -82,7 +86,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
                 ...editableQuestion,
                 questionType: editableQuestion.questionType as 'TEXT' | 'CODED' | 'NUMERIC' | 'DATE',
                 relatedUnits: unitType !== undefined,
-                unitType: unitType,
+                unitType,
             });
         }
     }, [editableQuestion]);

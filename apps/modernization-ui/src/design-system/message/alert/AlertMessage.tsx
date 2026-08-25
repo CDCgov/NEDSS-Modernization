@@ -1,8 +1,11 @@
 import { ReactNode, useId } from 'react';
+
 import classNames from 'classnames';
-import { Heading } from 'components/heading';
-import { Icon } from 'design-system/icon';
+
+import { Heading, HeadingLevel } from 'components/heading';
 import { Button } from 'design-system/button';
+import { Icon } from 'design-system/icon';
+
 import { resolveIcon } from '../resolveIcon';
 
 import styles from './alert-message.module.scss';
@@ -16,6 +19,7 @@ type AlertMessageProps = {
     className?: string;
     iconless?: boolean;
     slim?: boolean;
+    level?: HeadingLevel;
     onClose?: () => void;
 } & JSX.IntrinsicElements['div'];
 
@@ -28,6 +32,7 @@ const AlertMessage = ({
     iconless = false,
     onClose,
     role = 'alert',
+    level = 2,
     ...props
 }: AlertMessageProps) => {
     const icon = iconless ? undefined : resolveIcon(type);
@@ -41,10 +46,10 @@ const AlertMessage = ({
             className={classNames(
                 styles.alertMessage,
                 {
-                    [styles.information]: type == 'information',
-                    [styles.success]: type == 'success',
-                    [styles.warning]: type == 'warning',
-                    [styles.error]: type == 'error',
+                    [styles.information]: type === 'information',
+                    [styles.success]: type === 'success',
+                    [styles.warning]: type === 'warning',
+                    [styles.error]: type === 'error',
                     [styles.slim]: slim,
                 },
                 className
@@ -53,7 +58,7 @@ const AlertMessage = ({
         >
             {icon && <Icon name={icon} sizing={slim ? 'small' : 'medium'} />}
             <div className={styles.content}>
-                {title && <Heading level={2}>{title}</Heading>}
+                {title && <Heading level={level}>{title}</Heading>}
                 <span id={messageId}>{children}</span>
             </div>
             {onClose && (
@@ -61,7 +66,7 @@ const AlertMessage = ({
                     type="button"
                     onClick={onClose}
                     icon="close"
-                    tertiary
+                    tertiary={true}
                     sizing="small"
                     aria-label="Close alert"
                     className={styles.closeButton}

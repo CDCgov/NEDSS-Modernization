@@ -1,19 +1,22 @@
 import { useCallback, useEffect } from 'react';
-import { useLocation } from 'react-router';
+
 import { FormProvider, useForm } from 'react-hook-form';
-import { Button } from 'components/button';
-import { NavigationGuard } from 'design-system/entry/navigation-guard';
-import { sections } from './sections';
-import { AddPatientBasicForm } from './AddPatientBasicForm';
-import { BasicNewPatientEntry, initial } from './entry';
-import { useAddBasicPatient } from './useAddBasicPatient';
-import { AddPatientLayout } from '../layout';
-import { PatientCreatedPanel } from '../PatientCreatedPanel';
-import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
-import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
-import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
+import { useLocation } from 'react-router';
 
 import { SkipLink } from 'SkipLink';
+import { Button } from 'components/button';
+import { NavigationGuard } from 'design-system/entry/navigation-guard';
+
+import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { AddPatientLayout } from '../layout';
+import { usePatientDataEntryMethod } from '../usePatientDataEntryMethod';
+import { useSearchFromAddPatient } from '../useSearchFromAddPatient';
+
+import { AddPatientBasicForm } from './AddPatientBasicForm';
+import { BasicNewPatientEntry, initial } from './entry';
+import { sections } from './sections';
+import { useAddBasicPatient } from './useAddBasicPatient';
+import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 
 export const AddPatientBasic = () => {
     const { defaults } = useAddPatientBasicDefaults();
@@ -63,10 +66,10 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     actions={() => (
                         <>
-                            <Button type="button" onClick={handleExtended} secondary disabled={working}>
+                            <Button type="button" onClick={handleExtended} secondary={true} disabled={working}>
                                 Add extended data
                             </Button>
-                            <Button onClick={backToSearch} secondary>
+                            <Button onClick={backToSearch} secondary={true}>
                                 Cancel
                             </Button>
                             <Button type="submit" onClick={handleSave} disabled={working}>
@@ -81,7 +84,7 @@ export const AddPatientBasic = () => {
             <NavigationGuard
                 id="patient.create.basic.cancel"
                 form={form}
-                allowed={'/patient/add/extended'}
+                allowed="/patient/add/extended"
                 activated={interaction.status !== 'created'}
             />
         </>

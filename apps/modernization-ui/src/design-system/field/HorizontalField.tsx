@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
+
 import classNames from 'classnames';
+
+import { Sizing } from './Field';
 import { HelperText } from './HelperText';
 import { InlineErrorMessage } from './InlineErrorMessage';
 import { InlineWarningMessage } from './InlineWarningMessage';
-import { Sizing } from './Field';
 import styles from './horizontal-field.module.scss';
 
 type Props = {
@@ -44,10 +46,13 @@ const HorizontalField = ({
         </div>
         <div className={styles.right}>
             <div className={styles.children}>{children}</div>
-            <div className={styles.message}>
-                {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
-                {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
-            </div>
+            {warning ||
+                (error && (
+                    <div className={styles.message}>
+                        {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
+                        {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
+                    </div>
+                ))}
         </div>
     </div>
 );

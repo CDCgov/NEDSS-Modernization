@@ -1,13 +1,15 @@
 import { UseFormReturn } from 'react-hook-form';
-import { SearchInteraction, ResultRequest, useSearchResultsFormAdapter } from 'apps/search';
+
+import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { LabReport, LabReportFilter, useFindLabReportsByFilterLazyQuery } from 'generated/graphql/schema';
+
 import {
-    LabReportFilterEntry,
     initial as defaultValues,
     initialForEventId as defaultValuesForIdentification,
+    LabReportFilterEntry,
 } from './labReportFormTypes';
-import { transformObject as transformer } from './transformer';
 import { laboratoryReportTermsResolver as termResolver } from './laboratoryReportTermsResolver';
+import { transformObject as transformer } from './transformer';
 
 type Settings = {
     form: UseFormReturn<LabReportFilterEntry>;

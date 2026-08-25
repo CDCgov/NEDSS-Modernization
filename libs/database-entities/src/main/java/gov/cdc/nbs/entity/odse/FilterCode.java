@@ -22,11 +22,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "Filter_code", catalog = "NBS_ODSE")
 public class FilterCode {
-  @Id
+  @NonNull @Id
   @Column(name = "filter_uid", nullable = false)
   private Long id;
 
-  @NonNull @Column(name = "code_table", length = 50)
+  @Column(name = "code_table", length = 50)
   private String codeTable;
 
   @Column(name = "desc_txt", length = 300)
@@ -49,4 +49,15 @@ public class FilterCode {
   @Embedded private Status status;
 
   protected FilterCode() {}
+
+  public static final String BASIC_FILTER_PREFIX = "BAS_";
+  public static final String ADV_FILTER_TYPE = "ADV_WCB";
+
+  public boolean isAdvancedFilterCode() {
+    return getFilterType() != null && getFilterType().equalsIgnoreCase(ADV_FILTER_TYPE);
+  }
+
+  public boolean isBasicFilterCode() {
+    return getFilterType() != null && getFilterType().startsWith(BASIC_FILTER_PREFIX);
+  }
 }

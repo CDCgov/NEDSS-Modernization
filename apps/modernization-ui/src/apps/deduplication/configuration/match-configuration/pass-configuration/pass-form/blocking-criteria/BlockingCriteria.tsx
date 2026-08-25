@@ -1,11 +1,13 @@
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 import { BlockingAttribute } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
-import { useFormContext, useWatch } from 'react-hook-form';
+
 import { BlockingCriteriaAttribute } from './attribute/BlockingCriteriaAttribute';
 import styles from './blocking-criteria.module.scss';
-import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 
 type Props = {
     onAddAttributes: () => void;
@@ -19,7 +21,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
         const value = [...(blockingCriteria ?? [])].filter((a) => a !== attribute);
 
         registeredBlockingCriteria.onChange({
-            target: { name: 'blockingCriteria', value: value },
+            target: { name: 'blockingCriteria', value },
         });
         form.trigger('blockingCriteria');
     };
@@ -55,7 +57,7 @@ export const BlockingCriteria = ({ onAddAttributes: onShowAttributes }: Props) =
                     <Button
                         icon="add"
                         labelPosition="right"
-                        secondary
+                        secondary={true}
                         onClick={onShowAttributes}
                         sizing="small"
                         className={styles.addButton}

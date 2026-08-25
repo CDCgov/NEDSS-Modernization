@@ -1,5 +1,7 @@
 import { render, within } from '@testing-library/react';
+
 import { MergeRace } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { RaceDetails } from './RaceDetails';
 
 const defaultRace: MergeRace = {

@@ -1,10 +1,12 @@
+import { Params } from 'react-router';
+
 import { MemoizedSupplier } from 'libs/supplying';
-import { PatientFileData } from './usePatientFileData';
-import { summary } from './summary';
-import { events } from './events';
+
 import { demographics } from './demographics';
 import { description } from './description';
-import { Params } from 'react-router';
+import { events } from './events';
+import { summary } from './summary';
+import { PatientFileData } from './usePatientFileData';
 
 type LoaderParams = { params: Params<string> };
 

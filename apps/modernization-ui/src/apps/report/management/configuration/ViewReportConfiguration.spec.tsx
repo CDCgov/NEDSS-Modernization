@@ -1,17 +1,22 @@
-import { render } from '@testing-library/react';
-import * as generated from 'generated';
-import * as options from 'options/selectableResolver';
-import { Layout } from 'layout';
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider } from 'react-router';
-import { ViewReportConfiguration } from './ViewReportConfiguration';
+
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryRouter, RouterProvider, useLoaderData } from 'react-router';
+
+import * as generated from 'generated';
+import { Layout } from 'layout';
+import { LoadingBlock } from 'libs/loading/block';
+import * as options from 'options/selectableResolver';
+
+import { ViewReportConfiguration } from './ViewReportConfiguration';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
     return {
         ...actual,
         default: actual,
+        useLoaderData: vi.fn(),
         useParams: vi.fn(() => ({ reportUid: '2', dataSourceUid: '1' })), // Mock useParams to return a default value
     };
 });
@@ -26,6 +31,30 @@ vi.mock('libs/permission', async () => {
     };
 });
 
+// don't actually let the cache cache
+const localStorageMock: Storage = {
+    getItem: (): string | null => null,
+    setItem: (): void => {},
+    removeItem: (): void => {},
+    clear: (): void => {},
+    key: (): string | null => '',
+    length: 0,
+};
+
+let originalLocalStorage: Storage;
+beforeAll((): void => {
+    originalLocalStorage = window.localStorage;
+    (window as any).localStorage = localStorageMock;
+});
+
+afterAll((): void => {
+    (window as any).localStorage = originalLocalStorage;
+});
+
+afterEach(() => {
+    vi.restoreAllMocks();
+});
+
 const MOCK_CONFIG: generated.ReportConfiguration = {
     title: 'Test Report',
     ownerUid: 0,
@@ -34,6 +63,8 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
     dataSource: {
         id: 1,
         name: 'nbs_ods.data_source',
+        hasJurisdictionSecurity: true,
+        hasFacilitySecurity: false,
     },
     library: {
         id: 2,
@@ -79,13 +110,14 @@ const MOCK_CONFIG: generated.ReportConfiguration = {
 const renderWithRouter = () => {
     const routes = [
         {
-            path: '/',
+            path: '/:reportUid/:dataSourceUid',
             element: <Layout />,
+            HydrateFallback: LoadingBlock,
             children: [{ index: true, element: <ViewReportConfiguration /> }],
         },
     ];
 
-    const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+    const router = createMemoryRouter(routes, { initialEntries: ['/2/1'] });
     return render(<RouterProvider router={router} />);
 };
 
@@ -127,9 +159,7 @@ describe('view report configuration page', () => {
     };
 
     it('renders the config', async () => {
-        const mockApi = vi
-            .mocked(generated.ReportControllerService.getReportConfiguration)
-            .mockResolvedValue(MOCK_CONFIG);
+        const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
         const { getByRole, findByText, findAllByText, findAllByLabelText } = renderWithRouter();
 
@@ -156,13 +186,13 @@ describe('view report configuration page', () => {
         expect(await findAllByText('My filter')).toHaveLength(2);
         expect(await findAllByText('Yes')).toHaveLength(2);
         expect(await findAllByText(/FULL_NAME \(Full Name\)/));
-        expect(await findAllByText('Single'));
+        expect(await findAllByText('Single-select filter'));
     });
 
     it('renders no filters', async () => {
         const mockApi = vi
-            .mocked(generated.ReportControllerService.getReportConfiguration)
-            .mockResolvedValue({ ...MOCK_CONFIG, basicFilters: [], advancedFilter: undefined });
+            .mocked(useLoaderData)
+            .mockReturnValue({ ...MOCK_CONFIG, basicFilters: [], advancedFilter: undefined });
         vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
         const { getByRole, findByText } = renderWithRouter();
 
@@ -172,5 +202,35 @@ describe('view report configuration page', () => {
 
         expect(await findByText('3. Available filters')).toBeVisible();
         expect(await findByText('No data has been added.'));
+    });
+
+    it('handles delete', async () => {
+        const mockApi = vi.mocked(useLoaderData).mockReturnValue(MOCK_CONFIG);
+        vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
+        const mockDeleteApi = vi
+            .mocked(generated.ReportControllerService.deleteReport)
+            .mockResolvedValue({ reportUid: 2, dataSourceUid: 1 });
+        const { getByRole, findByRole, findByText } = renderWithRouter();
+
+        expect(getByRole('status')).toHaveTextContent('Loading');
+
+        expect(mockApi).toHaveBeenCalled();
+
+        const user = userEvent.setup();
+
+        await user.click(await findByRole('button', { name: 'Delete' }));
+
+        expect(await findByRole('dialog')).toHaveClass('is-visible');
+        expect(await findByText(/Delete report: Test Report/)).toBeVisible();
+
+        await user.click(await findByRole('button', { name: 'No, cancel' }));
+
+        expect(await findByRole('dialog')).toHaveClass('is-hidden');
+
+        await user.click(await findByRole('button', { name: 'Delete' }));
+
+        await user.click(await findByRole('button', { name: 'Yes, delete' }));
+
+        expect(mockDeleteApi).toHaveBeenCalledWith({ reportUid: 2, dataSourceUid: 1 });
     });
 });

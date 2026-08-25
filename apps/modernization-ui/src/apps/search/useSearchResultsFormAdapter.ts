@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react';
+
 import { FieldValues, UseFormReturn } from 'react-hook-form';
+
 import { SearchInteraction, SearchResultSettings, useSearchResults } from 'apps/search';
 import { removeTerm, Term } from 'apps/search/terms';
 
@@ -38,7 +40,7 @@ type Settings<C extends FieldValues, A, R> = { form: UseFormReturn<C> } & Search
  *   termResolver
  * });
  */
-const useSearchResultsFormAdapter = <C extends object, A extends object, R extends object>({
+const useSearchResultsFormAdapter = <C extends Record<string, unknown>, A extends object, R extends object>({
     form,
     ...settings
 }: Settings<C, A, R>): SearchInteraction<R> => {

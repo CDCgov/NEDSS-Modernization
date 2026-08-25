@@ -1,12 +1,14 @@
 import { Button, Icon, Label } from '@trussworks/react-uswds';
-import styles from './segmentedButtons.module.scss';
+
 import { Option } from 'generated';
+
+import styles from './segmentedButtons.module.scss';
 type Props = {
     title?: string;
     buttons: Option[];
     onBlur?: () => void;
     onChange?: () => void;
-    onClick?: (button: any) => void;
+    onClick?: (button: Option) => void;
     value: string | number;
     required?: boolean;
 };
@@ -31,7 +33,7 @@ export const SegmentedButtons = ({ title, buttons, value, onBlur, onChange, onCl
                         outline={button.value !== value}
                         className={`${button.value === value ? styles.active : ''} fieldType-option-${key}`}
                     >
-                        {value === button.value && <Icon.Check />}
+                        {value === button.value && <Icon.Check aria-label="checked" />}
                         {button.name}
                     </Button>
                 ))}

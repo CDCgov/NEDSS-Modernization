@@ -1,10 +1,13 @@
-import { useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MortalityDemographicFields } from './MortalityDemographicFields';
-import { HasMortalityDemographic, initial } from '../mortality';
-import { useMortalityOptions } from './useMortalityOptions';
+import { useForm } from 'react-hook-form';
+
 import { LocationOptions } from 'options/location';
+
+import { HasMortalityDemographic, initial } from '../mortality';
+
+import { MortalityDemographicFields } from './MortalityDemographicFields';
+import { useMortalityOptions } from './useMortalityOptions';
 
 const mockState = vi.fn();
 

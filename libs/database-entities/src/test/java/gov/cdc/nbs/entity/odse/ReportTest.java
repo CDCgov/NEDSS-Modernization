@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class ReportTest {
   @Test
   void should_throw_exception_with_null_values() {
-    assertThatThrownBy(() -> new Report(null, null))
+    assertThatThrownBy(() -> new Report(null))
         .isInstanceOf(NullPointerException.class)
         .hasMessageContaining("id is marked non-null but is null");
   }
@@ -25,9 +25,7 @@ class ReportTest {
     Long dataSource = 2L;
     ReportId id = new ReportId(reportId, dataSource);
 
-    String sectionCd = "1000";
-
-    Report actual = new Report(id, sectionCd);
+    Report actual = new Report(id);
 
     assertThat(actual)
         .satisfies(report -> assertEquals(reportId, report.getId().getReportUid()))
@@ -47,7 +45,7 @@ class ReportTest {
         .satisfies(report -> assertNull(report.getAddTime()))
         .satisfies(report -> assertNull(report.getAddUserUid()))
         .satisfies(report -> assertNull(report.getReportLibrary()))
-        .satisfies(report -> assertEquals(sectionCd, report.getSectionCd()));
+        .satisfies(report -> assertNull(report.getSectionCd()));
   }
 
   // Suppressing too many assertions code smell as there are just a lot of fields in report

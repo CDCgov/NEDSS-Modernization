@@ -17,15 +17,12 @@ class TestIntegrationNbsSr18Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 18',
                 'library_name': 'nbs_sr_18',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
 
         data = result.content.data
 
@@ -48,9 +45,7 @@ class TestIntegrationNbsSr18Library:
             {
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'SR 18',
                 'library_name': 'nbs_sr_18',
-                'data_source_name': '[RDB].[dbo].[TB_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[TB_DATAMART] WHERE 1 = 2',
             }
         )

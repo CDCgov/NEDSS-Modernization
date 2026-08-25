@@ -80,7 +80,6 @@ export { ReportConfiguration } from './models/ReportConfiguration';
 export type { ReportDataSource } from './models/ReportDataSource';
 export type { ReportExecutionRequest } from './models/ReportExecutionRequest';
 export type { ReportId } from './models/ReportId';
-export { ReportResult } from './models/ReportResult';
 export type { Restricted } from './models/Restricted';
 export type { ResultedTest } from './models/ResultedTest';
 export type { Rule } from './models/Rule';
@@ -90,6 +89,7 @@ export type { Selectable } from './models/Selectable';
 export type { SensitiveValue } from './models/SensitiveValue';
 export { SortSpec } from './models/SortSpec';
 export type { Specimen } from './models/Specimen';
+export type { StandardResponse } from './models/StandardResponse';
 export type { Success } from './models/Success';
 export { UpsertFilterRequest } from './models/UpsertFilterRequest';
 

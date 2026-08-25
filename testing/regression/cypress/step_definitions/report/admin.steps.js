@@ -10,7 +10,7 @@ Then('I should see the report list', () => {
 });
 
 Then('I should see the {string} configuration page', (type) => {
-    cy.contains(`${type} Report`).should('be.visible');
+    cy.contains(`${type} report`).should('be.visible');
 });
 
 Then('I should see {int} available filters', (filterCount) => {
@@ -22,4 +22,35 @@ Then('I should see {int} available filters', (filterCount) => {
 
 When('I click the filter {int} {string} button', (filterInd, name) => {
     cy.findAllByRole('button', { name }).eq(filterInd).click();
+});
+
+When('I add all filters', () => {
+    const optionValues = [];
+    // eslint-disable-next-line cypress/unsafe-to-chain-command
+    cy.findByRole('combobox', { name: 'Filter' })
+        .findAllByRole('option')
+        .each(($option) => {
+            // skip placeholder
+            if (!$option.val()) return;
+            optionValues.push($option.val());
+        })
+        .then(() => {
+            cy.log(`Available filters: ${optionValues.length}`);
+
+            for (const value of optionValues) {
+                cy.log(`Selecting filter: ${value}`);
+                cy.findByRole('combobox', { name: 'Filter' }).select(value);
+
+                cy.findAllByRole('combobox').each(($item) => {
+                    const name = $item.attr('name');
+                    if (name === 'selectType') {
+                        cy.wrap($item).select('Multi-select filter');
+                    } else if (name === 'associatedColumn') {
+                        cy.wrap($item).select(1);
+                    }
+                });
+
+                cy.findByRole('button', { name: 'Add filter' }).click();
+            }
+        });
 });

@@ -1,9 +1,12 @@
-import { Pass } from 'apps/deduplication/api/model/Pass';
+import { MouseEvent } from 'react';
+
 import classNames from 'classnames';
-import { Icon } from 'design-system/icon';
-import styles from './pass-entry.module.scss';
+
+import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Shown } from 'conditional-render';
-import React from 'react';
+import { Icon } from 'design-system/icon';
+
+import styles from './pass-entry.module.scss';
 
 type Props = {
     pass: Pass;
@@ -13,28 +16,30 @@ type Props = {
 };
 
 export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }: Props) => {
-    const handleEditClick = (e: React.MouseEvent) => {
+    const handleEditClick = (e: MouseEvent) => {
         e.stopPropagation();
         onEditName(pass);
     };
 
     return (
-        <button
-            type="button"
-            className={classNames(styles.passEntry, isSelected && styles.selected)}
-            aria-label={`Select ${pass.name}`}
-            onClick={() => onSelectPass(pass)}
-        >
+        <div className={classNames(styles.passEntry, isSelected && styles.selected)}>
             <div className={styles.border} />
             <div className={styles.content}>
                 <div className={styles.passNameRow}>
-                    <span className={styles.nameLink}>{pass.name}</span>
+                    <button
+                        type="button"
+                        className={styles.nameLink}
+                        aria-label={`Select ${pass.name}`}
+                        onClick={() => onSelectPass(pass)}
+                    >
+                        {pass.name}
+                    </button>
                     <Shown when={pass.id !== undefined}>
                         <button
                             type="button"
                             className={styles.editButton}
                             onClick={handleEditClick}
-                            aria-label={`Edit name`}
+                            aria-label="Edit name"
                             data-tooltip-position="top"
                             data-tooltip-offset="left"
                         >
@@ -47,6 +52,6 @@ export const PassEntry = ({ pass, onSelectPass, onEditName, isSelected = false }
                     {pass.active ? 'Active' : 'Inactive'}
                 </div>
             </div>
-        </button>
+        </div>
     );
 };

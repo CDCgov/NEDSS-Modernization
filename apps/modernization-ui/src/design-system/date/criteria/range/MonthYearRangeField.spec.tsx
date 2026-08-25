@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+
 import { MonthYearRangeField } from './MonthYearRangeField';
 
 describe('MonthYearRangeField Component', () => {
@@ -32,10 +33,10 @@ describe('MonthYearRangeField Component', () => {
                 onChange={vi.fn()}
             />
         );
-        const fromMonth = getByRole('combobox', { name: 'From Month' });
-        const fromYear = getByRole('combobox', { name: 'From Year' });
-        const toMonth = getByRole('combobox', { name: 'To Month' });
-        const toYear = getByRole('combobox', { name: 'To Year' });
+        const fromMonth = getByRole('combobox', { name: 'From month' });
+        const fromYear = getByRole('combobox', { name: 'From year' });
+        const toMonth = getByRole('combobox', { name: 'To month' });
+        const toYear = getByRole('combobox', { name: 'To year' });
 
         expect(fromMonth).toHaveValue('1');
         expect(fromYear).toHaveValue('2004');
@@ -54,7 +55,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const from = getByRole('combobox', { name: 'From Month' });
+        const from = getByRole('combobox', { name: 'From month' });
 
         const user = userEvent.setup();
         await user.selectOptions(from, '2');
@@ -73,7 +74,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const from = getByRole('combobox', { name: 'From Year' });
+        const from = getByRole('combobox', { name: 'From year' });
 
         const user = userEvent.setup();
         await user.selectOptions(from, '2018');
@@ -97,7 +98,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const from = getByRole('combobox', { name: 'From Month' });
+        const from = getByRole('combobox', { name: 'From month' });
 
         const user = userEvent.setup();
         await user.selectOptions(from, '8');
@@ -121,7 +122,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const from = getByRole('combobox', { name: 'From Year' });
+        const from = getByRole('combobox', { name: 'From year' });
 
         const user = userEvent.setup();
         await user.selectOptions(from, '2010');
@@ -140,7 +141,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const to = getByRole('combobox', { name: 'To Month' });
+        const to = getByRole('combobox', { name: 'To month' });
 
         const user = userEvent.setup();
         await user.selectOptions(to, '2');
@@ -159,7 +160,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const to = getByRole('combobox', { name: 'To Year' });
+        const to = getByRole('combobox', { name: 'To year' });
 
         const user = userEvent.setup();
         await user.selectOptions(to, '2018');
@@ -183,7 +184,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const to = getByRole('combobox', { name: 'To Month' });
+        const to = getByRole('combobox', { name: 'To month' });
 
         const user = userEvent.setup();
         await user.selectOptions(to, '8');
@@ -207,7 +208,7 @@ describe('MonthYearRangeField Component', () => {
             />
         );
 
-        const to = getByRole('combobox', { name: 'To Year' });
+        const to = getByRole('combobox', { name: 'To year' });
 
         const user = userEvent.setup();
         await user.selectOptions(to, '2010');

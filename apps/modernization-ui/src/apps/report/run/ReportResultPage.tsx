@@ -1,32 +1,200 @@
+import { ReactNode, useRef, useState } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+import classNames from 'classnames';
+
+import { FullPageBlock } from 'components/FullPageBlock';
+import { Heading } from 'components/heading';
+import { Shown } from 'conditional-render';
+import { ConfirmationModal } from 'confirmation';
 import { Button } from 'design-system/button';
-import { InlineErrorMessage } from 'design-system/field/InlineErrorMessage';
+import { ApiErrorBanner } from 'design-system/errors/ApiError.tsx';
+import { ReportConfiguration, ReportControllerService, ReportExecutionRequest } from 'generated';
+import { LoadingIndicator } from 'libs/loading/indicator';
+import { permissions, permits, permitsAny, Permitted } from 'libs/permission';
+import { useUser } from 'user';
+import { redirectToNBS6 } from 'utils';
+
+import { NBS_MANAGE_REPORT_PAGE, PERMISSION_GROUP_MAP } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
-import { ReportConfiguration } from 'generated';
+import layoutStyles from '../layout/layout.module.scss';
+
+import { SaveAsReportFormData, SaveAsReportModal } from './modals/SaveAsReportModal.tsx';
 
 const ReportResultPage = ({
     config,
     error,
+    wasExported,
     resultLoading,
     handleRefineReport,
+    executionRequest,
 }: {
     config: ReportConfiguration;
-    error: string | null;
+    error: unknown | null;
+    wasExported: boolean;
     resultLoading: boolean;
     handleRefineReport: () => void;
+    executionRequest?: ReportExecutionRequest;
 }) => {
+    const {
+        state: { user },
+    } = useUser();
+    const [saving, setSaving] = useState<boolean>(false);
+    const [saveError, setSaveError] = useState<string | null>(null);
+    const saveReportModalRef = useRef<ModalRef>(null);
+    const saveAsReportModalRef = useRef<ModalRef>(null);
+
+    const handleReportSave = <SaveAs extends boolean>(
+        isSaveAs: SaveAs,
+        saveAsData: SaveAs extends true ? SaveAsReportFormData : undefined
+    ) => {
+        if (!executionRequest || (isSaveAs && !saveAsData)) {
+            setSaveError('Something went wrong.');
+            return;
+        }
+
+        setSaving(true);
+        setSaveError(null);
+
+        const id = {
+            reportUid: executionRequest.reportUid,
+            dataSourceUid: executionRequest.dataSourceUid,
+        };
+
+        const request = isSaveAs
+            ? ReportControllerService.saveAsReport({ ...id, requestBody: { ...saveAsData!, executionRequest } })
+            : ReportControllerService.saveReport({ ...id, requestBody: executionRequest });
+        request
+            .then(() => {
+                redirectToNBS6(NBS_MANAGE_REPORT_PAGE);
+            })
+            .catch((err) => {
+                setSaveError(err);
+            })
+            .finally(() => {
+                const modalRef = isSaveAs ? saveAsReportModalRef : saveReportModalRef;
+                modalRef.current?.toggleModal();
+                setSaving(false);
+            });
+    };
+
+    const onSave = () => {
+        handleReportSave(false, undefined);
+    };
+
+    const onSaveAs = (data: SaveAsReportFormData) => {
+        handleReportSave(true, data);
+    };
+
     return (
         <ReportLayout
             title={config.title}
+            startHref={NBS_MANAGE_REPORT_PAGE}
+            startPage="Reports"
             actions={
                 <>
-                    <Button onClick={handleRefineReport}>Refine Report</Button>
-                    <Button onClick={() => {}}>Save As</Button>
+                    <Permitted permission={PERMISSION_GROUP_MAP[config.group].selectFilterCriteria}>
+                        <Button onClick={handleRefineReport} secondary={true} disabled={resultLoading}>
+                            Refine report
+                        </Button>
+                    </Permitted>
+                    <Permitted
+                        permission={permitsAny(
+                            permissions.reports.public.create,
+                            permissions.reports.private.create,
+                            permissions.reports.reportingFacility.create
+                        )}
+                    >
+                        <Button
+                            onClick={() => saveAsReportModalRef.current?.toggleModal()}
+                            disabled={resultLoading || !!error}
+                        >
+                            Save as new
+                        </Button>
+                        <SaveAsReportModal
+                            saveAsReportModalRef={saveAsReportModalRef}
+                            saving={saving}
+                            onSaveAs={onSaveAs}
+                        />
+                    </Permitted>
+                    <Shown when={user?.identifier === config.ownerUid}>
+                        {/* These permissions do not match what the operators would strictly imply,
+                        but do match what NBS 6 does */}
+                        <Permitted
+                            permission={(userPermissions: string[]) =>
+                                config.group === ReportConfiguration.group.PUBLIC ||
+                                config.group === ReportConfiguration.group.REPORTING_FACILITY
+                                    ? permitsAny(
+                                          permissions.reports.public.edit,
+                                          permissions.reports.reportingFacility.edit
+                                      )(userPermissions)
+                                    : permits(permissions.reports.private.edit)(userPermissions)
+                            }
+                        >
+                            <Button
+                                onClick={() => saveReportModalRef.current?.toggleModal()}
+                                disabled={resultLoading || !!error}
+                            >
+                                Save
+                            </Button>
+                            <ConfirmationModal
+                                modal={saveReportModalRef}
+                                title="Overwrite saved report?"
+                                message={
+                                    <>
+                                        This will replace the saved criteria with your current criteria. This action
+                                        cannot be undone.
+                                    </>
+                                }
+                                confirmText="Save"
+                                cancelText="Cancel"
+                                onConfirm={onSave}
+                                disabled={saving}
+                            />
+                        </Permitted>
+                    </Shown>
                 </>
             }
         >
-            {error && <InlineErrorMessage id="report-result-error">{error}</InlineErrorMessage>}
-            {resultLoading ? 'Your report is running, this can take some time' : 'Your report has run'}
+            <div className="display-flex flex-column">
+                {(error || saveError) && (
+                    <ApiErrorBanner
+                        className={classNames(layoutStyles.alertMessage, 'margin-top-2 margin-x-2')}
+                        action={saveError ? 'saving' : wasExported ? 'exporting' : 'running'}
+                        item="report"
+                        error={error ?? saveError}
+                    />
+                )}
+                {!error &&
+                    (resultLoading ? (
+                        <TextCard loading={true}>
+                            <Heading level={2}>
+                                {`Your report is ${wasExported ? 'downloading' : 'opening in a new tab'}. 
+                            Please do not leave this page while your report is generating.`}
+                            </Heading>
+                            <p>
+                                This might take several minutes for large reports. To be sure it opens, check that
+                                pop-ups are enabled in your browser.
+                            </p>
+                        </TextCard>
+                    ) : (
+                        <TextCard>
+                            <Heading level={2}>
+                                {`Your report has ${wasExported ? 'downloaded' : 'opened in a new tab'}.`}
+                            </Heading>
+                        </TextCard>
+                    ))}
+            </div>
         </ReportLayout>
+    );
+};
+
+const TextCard = ({ loading = false, children }: { loading?: boolean; children: ReactNode }) => {
+    return (
+        <FullPageBlock>
+            {children}
+            {loading && <LoadingIndicator />}
+        </FullPageBlock>
     );
 };
 

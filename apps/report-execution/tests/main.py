@@ -38,22 +38,17 @@ class TestReportExecuteEndpoint:
         report_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
-            'data_source_name': 'random_db_table_0',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        result = response.json()
-        assert result
+        content = response.read().decode('utf-8')
 
         # check we can round trip back to DF
-        content = result['content']
         assert '\r\n1,a\r\n' in content
-        assert content.endswith('d')
-        assert not content.endswith('\r\n')
+        assert content.endswith('d\r\n')
         str_io = io.StringIO(content)
         df = pd.read_csv(str_io)
         # check numbers kept precision, but not overly so
@@ -68,21 +63,17 @@ class TestReportExecuteEndpoint:
         report_spec = {
             'is_export': False,
             'is_builtin': True,
-            'report_title': 'Time-based Report',
             'library_name': 'nbs_custom',
-            'data_source_name': 'random_db_table_1',
             'subset_query': 'SELECT * FROM events WHERE date > ?',
         }
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        assert response.json()
+        assert response.read()
 
     def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""
-        incomplete_spec = {
-            'report_title': 'Incomplete Report',
-        }
+        incomplete_spec = {}
         response = client.post('/report/execute', json=incomplete_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
@@ -92,9 +83,7 @@ class TestReportExecuteEndpoint:
         invalid_spec = {
             'is_export': 'not_a_boolean',
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'nbs_custom',
-            'data_source_name': 'random_db_table_3',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=invalid_spec)
@@ -106,14 +95,17 @@ class TestReportExecuteEndpoint:
         invalid_spec = {
             'is_export': True,
             'is_builtin': True,
-            'report_title': 'Test Report',
             'library_name': 'missing_library',
-            'data_source_name': 'random_db_table_3',
             'subset_query': 'SELECT * FROM test',
         }
         response = client.post('/report/execute', json=invalid_spec)
 
         assert response.status_code == 422  # Unprocessable Entity
-        assert response.json() == {
-            'message': 'Library `missing_library` (is_builtin: True) not found'
-        }
+
+        res_body = response.json()
+
+        assert (
+            res_body['message']
+            == 'Library `missing_library` (is_builtin: True) not found'
+        )
+        assert res_body['id'] is not None

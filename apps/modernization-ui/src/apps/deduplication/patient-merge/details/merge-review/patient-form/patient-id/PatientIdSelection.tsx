@@ -1,10 +1,13 @@
-import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import classNames from 'classnames';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { MergeCandidate } from 'apps/deduplication/api/model/MergeCandidate';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
 import { Radio } from 'design-system/radio';
-import { Controller, useFormContext } from 'react-hook-form';
+
 import { PatientMergeForm } from '../../model/PatientMergeForm';
+
 import styles from './patient-id-selection.module.scss';
 
 type Props = {
@@ -33,8 +36,8 @@ export const PatientIdSelection = ({ mergeCandidates, onRemovePatient }: Props) 
                             />
                             <Shown when={value !== p.personUid && mergeCandidates.length > 2}>
                                 <Button
-                                    secondary
-                                    destructive
+                                    secondary={true}
+                                    destructive={true}
                                     sizing="small"
                                     onClick={() => onRemovePatient(p.personUid)}
                                 >

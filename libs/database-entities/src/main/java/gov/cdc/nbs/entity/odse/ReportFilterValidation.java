@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity

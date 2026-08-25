@@ -1,6 +1,8 @@
 import { Icon } from '@trussworks/react-uswds';
-import styles from './page-content.module.scss';
+
 import { Icon as EQIcon } from 'components/Icon/Icon';
+
+import styles from './page-content.module.scss';
 
 type PageSideMenuProps = {
     onAddSection: () => void;
@@ -18,7 +20,7 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                     }}
                     className="manageSections"
                 >
-                    <Icon.Edit size={3} />
+                    <Icon.Edit aria-label="edit" size={3} />
                     Manage sections
                 </li>
                 <li
@@ -27,7 +29,7 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                     }}
                     className="addSection"
                 >
-                    <Icon.Add size={3} />
+                    <Icon.Add aria-label="add" size={3} />
                     Add section
                 </li>
                 <li
@@ -35,7 +37,7 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                         onReorderModal();
                     }}
                 >
-                    <EQIcon name="reorder" />
+                    <EQIcon alt="reorder" name="reorder" />
                     Reorder
                 </li>
             </ul>

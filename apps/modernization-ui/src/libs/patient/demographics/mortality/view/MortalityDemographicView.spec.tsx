@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { MortalityDemographicView } from './MortalityDemographicView';
 
-const noop = () => undefined;
+import { MortalityDemographicView } from './MortalityDemographicView';
 
 describe('MortalityDemographicView', () => {
     it('should display "As of" when present', () => {

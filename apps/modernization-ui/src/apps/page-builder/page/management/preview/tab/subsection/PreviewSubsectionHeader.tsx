@@ -1,6 +1,8 @@
-import styles from './preview-subsection.module.scss';
 import { Icon } from '@trussworks/react-uswds';
+
 import { PagesSubSection } from '../../../../../generated';
+
+import styles from './preview-subsection.module.scss';
 
 type Props = {
     subsection: PagesSubSection;

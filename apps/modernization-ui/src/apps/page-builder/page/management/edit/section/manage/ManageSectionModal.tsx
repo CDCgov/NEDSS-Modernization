@@ -1,11 +1,16 @@
-import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { AddSection } from './AddSection';
-import { ManageSection } from './ManageSection';
 import { RefObject, useEffect, useState } from 'react';
-import './ManageSectionModal.scss';
-import { usePageManagement } from '../../../usePageManagement';
+
+import { Modal, ModalRef } from '@trussworks/react-uswds';
+
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { useAlert } from 'libs/alert';
+
+import { usePageManagement } from '../../../usePageManagement';
+
+import { AddSection } from './AddSection';
+import { ManageSection } from './ManageSection';
+
+import './ManageSectionModal.scss';
 
 type ManageSectionModalProps = {
     addSecModalRef: RefObject<ModalRef>;
@@ -48,14 +53,17 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
     return (
         <>
             <Modal
-                id={'manage-section-modal'}
-                className={'manage-section-modal'}
+                id="manage-section-modal"
+                aria-labelledby="manage-section-modal-header"
+                aria-describedby="manage-section-modal-content"
+                className="manage-section-modal"
                 ref={manageSectionModalRef}
-                forceAction
-                isLarge
+                forceAction={true}
+                isLarge={true}
             >
                 <DragDropProvider pageData={page} successCallBack={onReorderSuccess}>
                     <ManageSection
+                        id="manage-section-modal"
                         pageId={page.id}
                         alert={alert}
                         onResetAlert={() => setAlert(undefined)}
@@ -83,8 +91,16 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
                     />
                 </DragDropProvider>
             </Modal>
-            <Modal id={'add-section-modal'} ref={addSectionModalRef} className={'add-section-modal'} isLarge>
+            <Modal
+                id="add-section-modal"
+                aria-labelledby="add-section-modal-header"
+                aria-describedby="add-section-modal-conent"
+                ref={addSectionModalRef}
+                className="add-section-modal"
+                isLarge={true}
+            >
                 <AddSection
+                    id="add-section-modal"
                     pageId={page.id}
                     tabId={selected?.id}
                     onSectionTouched={() => {

@@ -1,9 +1,12 @@
-import { Mock } from 'vitest';
 import { act } from 'react';
+
 import { renderHook, waitFor } from '@testing-library/react';
 import { useSearchParams } from 'react-router';
-import { useSearchCriteria } from './useSearchCriteria';
+import { Mock } from 'vitest';
+
 import { decrypt, encrypt } from 'cryptography';
+
+import { useSearchCriteria } from './useSearchCriteria';
 
 vi.mock('react-router', () => ({
     useSearchParams: vi.fn(),

@@ -1,5 +1,7 @@
-import { Button } from 'design-system/button';
 import { useNavigate } from 'react-router';
+
+import { Button } from 'design-system/button';
+
 import { NotificationCard } from './NotificationCard';
 
 type Props = {

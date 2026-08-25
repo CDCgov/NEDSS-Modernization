@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { internalizeDate } from 'date';
-import { RaceRepeatingBlock } from './RaceRepeatingBlock';
 import { Selectable } from 'options';
+
+import { RaceRepeatingBlock } from './RaceRepeatingBlock';
 
 const mockRaceCategories: Selectable[] = [
     { value: '1', name: 'race one name' },

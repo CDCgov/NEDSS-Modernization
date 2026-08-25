@@ -1,8 +1,11 @@
-import { SaveTemplate } from './SaveTemplate';
 import { render } from '@testing-library/react';
-import { PageManagementProvider } from '../../usePageManagement';
-import { PagesResponse } from 'apps/page-builder/generated';
+
 import { AlertProvider } from 'alert';
+import { PagesResponse } from 'apps/page-builder/generated';
+
+import { PageManagementProvider } from '../../usePageManagement';
+
+import { SaveTemplate } from './SaveTemplate';
 
 describe('When SaveTemplate renders', () => {
     const modalRef = { current: null };

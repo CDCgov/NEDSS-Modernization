@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
+import { TextInputField } from 'design-system/input';
 import { SingleSelect } from 'design-system/select';
 import {
+    CensusTractInputField,
+    validCensusTractRule,
     validZipCodeRule,
     ZipCodeInputField,
-    validCensusTractRule,
-    CensusTractInputField,
 } from 'libs/demographics/location';
 import { useLocationOptions } from 'options/location';
 import { maxLengthRule } from 'validation/entry';
-import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
-import { TextInputField } from 'design-system/input';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';

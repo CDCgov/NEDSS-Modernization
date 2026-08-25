@@ -1,9 +1,24 @@
 import { vi } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import 'jest-axe/extend-expect';
+import failOnConsole from 'vitest-fail-on-console';
+
+failOnConsole({
+    silenceMessage: (message: string) => {
+        // Due to https://github.com/jsdom/jsdom/issues/3882
+        if (/The tag <search> is unrecognized in this browser/.test(message)) {
+            return true;
+        }
+        return false;
+    },
+});
+
+// mock common window function calls that won't do anything in jsdom
+window.scrollTo = vi.fn();
+window.open = vi.fn();
 
 // All tests will create dates in the EST Timezone. UTC-5 or UTC-4 during DST
-// eslint-disable-next-line no-undef
+
 process.env.TZ = 'America/New_York';
 
 // Global fetch mock to prevent live network calls in all tests
@@ -28,19 +43,20 @@ type MockRequestInit = {
 class MockRequest {
     url: string;
     options: MockRequestInit;
+    method: string;
+    signal: object;
     constructor(url: string, options?: MockRequestInit) {
         this.url = url;
         this.options = options || {};
+        this.method = 'GET';
+        this.signal = { removeEventListener: vi.fn(), addEventListener: vi.fn() };
     }
 }
 
 globalThis.Request = MockRequest as any;
 
 globalThis.ResizeObserver = class {
-    private callback: (...args: any[]) => void;
-    constructor(callback: (...args: any[]) => void) {
-        this.callback = callback;
-    }
+    constructor(_callback: (...args: any[]) => void) {}
     observe() {}
     unobserve() {}
     disconnect() {}
@@ -59,7 +75,6 @@ async function mock(mockedUri: string, stub: unknown) {
 }
 
 vi.hoisted(async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const tabbable: { tabbable: any; focusable: any; isTabbable: any; isFocusable: any } =
         await vi.importActual('tabbable');
     return mock('tabbable', {

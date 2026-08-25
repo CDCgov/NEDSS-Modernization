@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import { defaultTextOperator, textAlphaOperators, textOperators } from 'options/operator';
+
 import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
-import { textOperators, defaultTextOperator, textAlphaOperators } from 'options/operator';
 
 describe('OperatorSelect', () => {
     const mockOnChange = vi.fn();
@@ -19,8 +21,6 @@ describe('OperatorSelect', () => {
     });
 
     it('calls onChange when an option is selected', async () => {
-        const user = userEvent.setup();
-
         const { getByRole } = render(<OperatorSelect {...defaultProps} />);
         const selectElement = getByRole('combobox');
 

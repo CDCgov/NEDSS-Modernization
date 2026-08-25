@@ -2,10 +2,11 @@ package gov.cdc.nbs.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
-import gov.cdc.nbs.datasource.utils.DataSourceNameConfiguration;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
@@ -16,8 +17,8 @@ import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
 import gov.cdc.nbs.report.models.ReportSpec;
+import gov.cdc.nbs.report.models.SortSpec;
 import gov.cdc.nbs.report.utils.FieldFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +45,7 @@ class ReportSpecBuilderTest {
   }
 
   private DataSourceNameUtils mockDataSourceNameUtils() {
-    DataSourceNameUtils dataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils dataSourceNameUtils = mock(DataSourceNameUtils.class);
     when(dataSourceNameUtils.buildDataSourceName("nbs_ods.NBS_configuration"))
         .thenReturn("[NBS_ODSE].[dbo].[NBS_configuration]");
     return dataSourceNameUtils;
@@ -73,51 +73,52 @@ class ReportSpecBuilderTest {
   }
 
   private ReportColumn mockReportColumn(Long columnId, String columnName, String columnTitle) {
-    ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
+    return mockReportColumn(columnId, columnName, columnTitle, "STRING");
+  }
 
-    Mockito.lenient().when(reportColumn.id()).thenReturn(columnId);
-    Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
-    Mockito.lenient().when(reportColumn.title()).thenReturn(columnTitle);
-    Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn("STRING");
+  private ReportColumn mockReportColumn(
+      Long columnId, String columnName, String columnTitle, String typeCode) {
+    ReportColumn reportColumn = mock(ReportColumn.class);
+
+    lenient().when(reportColumn.id()).thenReturn(columnId);
+    lenient().when(reportColumn.name()).thenReturn(columnName);
+    lenient().when(reportColumn.title()).thenReturn(columnTitle);
+    lenient().when(reportColumn.sourceTypeCode()).thenReturn(typeCode);
 
     return reportColumn;
   }
 
   private ReportConfiguration mockReportConfiguration(
       List<BasicFilterConfiguration> filters, List<ReportColumn> columns, String title) {
-    ReportConfiguration reportConfiguration = Mockito.mock(ReportConfiguration.class);
+    ReportConfiguration reportConfiguration = mock(ReportConfiguration.class);
 
-    DataSourceNameConfiguration dataSourceNameConfiguration =
-        Mockito.mock(DataSourceNameConfiguration.class);
-    Mockito.lenient().when(dataSourceNameConfiguration.getMappings()).thenReturn(new HashMap<>());
+    Library library = mock(Library.class);
+    lenient().when(reportConfiguration.library()).thenReturn(library);
+    lenient().when(library.name()).thenReturn("nbs_custom");
 
-    Library library = Mockito.mock(Library.class);
-    Mockito.lenient().when(reportConfiguration.library()).thenReturn(library);
-    Mockito.lenient().when(library.name()).thenReturn("nbs_custom");
+    ReportDataSource dataSource = mock(ReportDataSource.class);
+    lenient().when(reportConfiguration.dataSource()).thenReturn(dataSource);
+    lenient().when(dataSource.name()).thenReturn("nbs_ods.NBS_configuration");
 
-    ReportDataSource dataSource = Mockito.mock(ReportDataSource.class);
-    Mockito.lenient().when(reportConfiguration.dataSource()).thenReturn(dataSource);
-    Mockito.lenient().when(dataSource.name()).thenReturn("nbs_ods.NBS_configuration");
-
-    Mockito.lenient().when(reportConfiguration.basicFilters()).thenReturn(filters);
-    Mockito.lenient().when(reportConfiguration.columns()).thenReturn(columns);
-    Mockito.lenient().when(reportConfiguration.title()).thenReturn(title);
+    lenient().when(reportConfiguration.basicFilters()).thenReturn(filters);
+    lenient().when(reportConfiguration.columns()).thenReturn(columns);
+    lenient().when(reportConfiguration.title()).thenReturn(title);
 
     return reportConfiguration;
   }
 
   private ReportExecutionRequest mockReportExecutionRequest(List<Long> columnUids) {
-    ReportExecutionRequest request = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest request = mock(ReportExecutionRequest.class);
 
-    Mockito.lenient().when(request.columnUids()).thenReturn(columnUids);
+    lenient().when(request.columnUids()).thenReturn(columnUids);
 
     return request;
   }
 
   private FilterType createFilterType(String type, String code) {
-    FilterType filterType = Mockito.mock(FilterType.class);
-    Mockito.lenient().when(filterType.type()).thenReturn(type);
-    Mockito.lenient().when(filterType.code()).thenReturn(code);
+    FilterType filterType = mock(FilterType.class);
+    lenient().when(filterType.type()).thenReturn(type);
+    lenient().when(filterType.code()).thenReturn(code);
 
     return filterType;
   }
@@ -155,9 +156,7 @@ class ReportSpecBuilderTest {
 
     assertThat(reportSpec.isBuiltin()).isEqualTo(reportConfig.library().isBuiltin());
     assertThat(reportSpec.isExport()).isEqualTo(request.isExport());
-    assertThat(reportSpec.reportTitle()).isEqualTo(reportConfig.title());
     assertThat(reportSpec.libraryName()).isEqualTo(reportConfig.library().name());
-    assertThat(reportSpec.dataSourceName()).isEqualTo("[NBS_ODSE].[dbo].[NBS_configuration]");
 
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
@@ -328,6 +327,7 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
             "SELECT [col1] AS [Col 1] FROM [NBS_ODSE].[dbo].[NBS_configuration] WHERE ([col1] IN ('Value'))");
+    assertThat(reportSpec.whereLogic()).isEqualTo("([col1] IN ('Value'))");
   }
 
   @Test
@@ -476,6 +476,128 @@ class ReportSpecBuilderTest {
             .build();
 
     assertThat(reportSpec.daysValue()).isNull();
+  }
+
+  @Test
+  void build_should_include_order_by_and_sort_map_when_valid_sort_present() {
+    Long columnUid = 1L;
+    String columnTitle = "Last Name";
+    ReportColumn reportColumn = mockReportColumn(columnUid, "last_name", columnTitle);
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(columnUid));
+
+    SortSpec sortSpec = new SortSpec(columnUid, ReportConstants.SortDirection.ASC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo("SELECT [last_name] AS [Last Name] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+
+    assertThat(reportSpec.sortBy()).isEqualTo("UPPER([Last Name]) ASC");
+  }
+
+  @Test
+  void build_should_include_order_by_and_sort_map_when_integer_sort_present() {
+    Long columnUid = 1L;
+    String columnTitle = "Number";
+    ReportColumn reportColumn = mockReportColumn(columnUid, "number", columnTitle, "INTEGER");
+
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(columnUid));
+
+    SortSpec sortSpec = new SortSpec(columnUid, ReportConstants.SortDirection.ASC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo("SELECT [number] AS [Number] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+
+    assertThat(reportSpec.sortBy()).isEqualTo("[Number] ASC");
+  }
+
+  @Test
+  void build_should_throw_exception_when_sort_column_is_not_in_requested_columns() {
+    Long requestedColumnUid = 1L;
+    Long unrequestedSortColumnUid = 99L;
+
+    ReportColumn reportColumn = mockReportColumn(requestedColumnUid, "col1", "Col 1");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(requestedColumnUid));
+
+    SortSpec sortSpec =
+        new SortSpec(
+            unrequestedSortColumnUid, gov.cdc.nbs.report.ReportConstants.SortDirection.DESC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpecBuilder builder =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService);
+
+    assertThatThrownBy(builder::build)
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Selected sort column is not present in requested column list.");
+  }
+
+  @Test
+  void build_should_throw_exception_when_sorting_but_requested_columns_are_null() {
+    ReportColumn reportColumn = mockReportColumn(1L, "col1", "Col 1");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    // Requesting NULL columns, but providing a sort option
+    ReportExecutionRequest request = mockReportExecutionRequest(null);
+    SortSpec sortSpec = new SortSpec(1L, gov.cdc.nbs.report.ReportConstants.SortDirection.ASC);
+    when(request.sort()).thenReturn(sortSpec);
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpecBuilder builder =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService);
+
+    assertThatThrownBy(builder::build)
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Selected sort column is not present in requested column list.");
+  }
+
+  @Test
+  void build_should_omit_order_by_and_sort_map_when_sort_is_null() {
+    Long columnUid = 1L;
+    ReportColumn reportColumn = mockReportColumn(columnUid, "col1", "Col 1");
+    ReportConfiguration reportConfig =
+        mockReportConfiguration(List.of(), List.of(reportColumn), "Test Title");
+
+    ReportExecutionRequest request = mockReportExecutionRequest(List.of(columnUid));
+    when(request.sort()).thenReturn(null); // Explicitly no sorting
+
+    DataSourceNameUtils dataSourceNameUtils = mockDataSourceNameUtils();
+
+    ReportSpec reportSpec =
+        new ReportSpecBuilder(request, reportConfig, dataSourceNameUtils, whereClauseService)
+            .build();
+
+    // Verify SQL does not have a double space or a trailing space at end
+    assertThat(reportSpec.subsetQuery())
+        .isEqualTo("SELECT [col1] AS [Col 1] FROM [NBS_ODSE].[dbo].[NBS_configuration]");
+
+    assertThat(reportSpec.sortBy()).isEmpty();
   }
 
   private static Stream<Arguments> fetchSingleColumnTestParams() {

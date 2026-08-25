@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.querydsl.jpa.impl.JPAQuery;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +33,7 @@ class PageValidatorTest {
   void should_be_valid() {
     // Given a page name that is not being used
     PageValidationRequest request = new PageValidationRequest("some name");
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(pageTable.id.count())).thenReturn(query);
     when(query.from(pageTable)).thenReturn(query);
     when(query.where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase())))
@@ -52,7 +52,7 @@ class PageValidatorTest {
   void should_be_invalid() {
     // Given a page name that is used
     PageValidationRequest request = new PageValidationRequest("some name");
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(pageTable.id.count())).thenReturn(query);
     when(query.from(pageTable)).thenReturn(query);
     when(query.where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase())))
@@ -79,7 +79,7 @@ class PageValidatorTest {
   void should_be_invalid_mmg() {
     // Given a mmg code that is valid
     String code = "mmgCode";
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(codeValueGeneral.id.code.count())).thenReturn(query);
     when(query.from(codeValueGeneral)).thenReturn(query);
     when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code))).thenReturn(query);
@@ -183,14 +183,14 @@ class PageValidatorTest {
     PageCreateRequest request =
         new PageCreateRequest(
             "INV", Arrays.asList("1023"), "page name", 10l, code, "unit test", "dataMart");
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(codeValueGeneral.id.code.count())).thenReturn(query);
     when(query.from(codeValueGeneral)).thenReturn(query);
     when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code))).thenReturn(query);
     when(query.fetchFirst()).thenReturn(0l);
 
     // and a valid name
-    JPAQuery<Long> nameQuery = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> nameQuery = mock(JPAQuery.class);
     when(factory.select(pageTable.id.count())).thenReturn(nameQuery);
     when(nameQuery.from(pageTable)).thenReturn(nameQuery);
     when(nameQuery.where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase())))
@@ -214,7 +214,7 @@ class PageValidatorTest {
             "dataMart");
 
     // and an ivalid name
-    JPAQuery<Long> nameQuery = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> nameQuery = mock(JPAQuery.class);
     when(factory.select(pageTable.id.count())).thenReturn(nameQuery);
     when(nameQuery.from(pageTable)).thenReturn(nameQuery);
     when(nameQuery.where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase())))
@@ -239,7 +239,7 @@ class PageValidatorTest {
             "unit test",
             "dataMart");
     // and a valid name
-    JPAQuery<Long> nameQuery = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> nameQuery = mock(JPAQuery.class);
     when(factory.select(pageTable.id.count())).thenReturn(nameQuery);
     when(nameQuery.from(pageTable)).thenReturn(nameQuery);
     when(nameQuery.where(pageTable.templateNm.toLowerCase().eq(request.name().toLowerCase())))
@@ -250,7 +250,7 @@ class PageValidatorTest {
 
   @SuppressWarnings("unchecked")
   private void validMmg(String code) {
-    JPAQuery<Long> query = Mockito.mock(JPAQuery.class);
+    JPAQuery<Long> query = mock(JPAQuery.class);
     when(factory.select(codeValueGeneral.id.code.count())).thenReturn(query);
     when(query.from(codeValueGeneral)).thenReturn(query);
     when(query.where(codeValueGeneral.id.code.equalsIgnoreCase(code))).thenReturn(query);

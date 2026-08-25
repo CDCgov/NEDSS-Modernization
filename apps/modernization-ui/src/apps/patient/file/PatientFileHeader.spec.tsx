@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import { PatientFileHeader } from './PatientFileHeader';
 import { Patient } from './patient';
 
@@ -66,7 +67,7 @@ describe('when displaying the demographics summary of a patient', () => {
             deletability: 'Deletable',
         };
 
-        render(<PatientFileHeader patient={patient} actions={'actions'} />);
+        render(<PatientFileHeader patient={patient} actions="actions" />);
 
         expect(screen.getByText('actions')).toBeInTheDocument();
     });

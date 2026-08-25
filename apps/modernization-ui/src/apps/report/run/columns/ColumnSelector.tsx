@@ -1,18 +1,22 @@
+import { useState } from 'react';
+
+import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
+import { useController } from 'react-hook-form';
+
+import { SIZING } from 'apps/report/constants';
+import { LiveSearch } from 'components/Search/LiveSearch';
+import { Button } from 'design-system/button';
 import { Card } from 'design-system/card';
 import { Checkbox } from 'design-system/checkbox';
+import { ValidationErrorBanner } from 'design-system/errors/ValidationError';
+import { Icon } from 'design-system/icon';
 import { ReportColumn } from 'generated';
 import { Selectable } from 'options';
+
 import { ReportExecuteForm } from '../ReportRunPage';
-import { validateRequiredRule } from 'validation/entry';
-import { useController } from 'react-hook-form';
-import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from '@hello-pangea/dnd';
-import { Icon } from 'design-system/icon';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { Button } from 'design-system/button';
-import { useState } from 'react';
-import { LiveSearch } from 'components/Search/LiveSearch';
 
 import styles from './column-selector.module.scss';
+import { toSelectable } from './utils';
 
 const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; defaultColumns?: number[] }) => {
     const {
@@ -21,14 +25,12 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
     } = useController<ReportExecuteForm, 'columns'>({
         name: 'columns',
         defaultValue: defaultColumns?.map((c) => c.toString()) ?? [],
-        rules: validateRequiredRule('column selection'),
+        rules: { required: { value: true, message: 'Select at least one column from the Available columns list.' } },
     });
 
     const [searchText, setSearchText] = useState<string>('');
 
-    const options: Selectable[] = columns
-        .filter(({ isDisplayable }) => isDisplayable)
-        .map((c) => ({ value: c.id.toString(), name: c.title }));
+    const options: Selectable[] = toSelectable(columns);
 
     const availableOptions = options.filter(
         (o) => !searchText || o.name.toLowerCase().includes(searchText.toLowerCase())
@@ -42,12 +44,15 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
         }
     };
 
-    const handleSelectAll = (checked: boolean) => {
-        if (checked) {
-            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
-        } else {
+    const allSelected = availableOptions.every((o) => value?.includes(o.value));
+    const selectWord = allSelected ? 'Deselect' : 'Select';
+
+    const handleSelectAll = () => {
+        if (allSelected) {
             const optionValues = availableOptions.map((o) => o.value);
             onChange(value!.filter((v) => !optionValues.includes(v)));
+        } else {
+            onChange([...value!, ...availableOptions.filter((o) => !value?.includes(o.value)).map((o) => o.value)]);
         }
     };
 
@@ -55,54 +60,70 @@ const ColumnSelector = ({ columns, defaultColumns }: { columns: ReportColumn[]; 
 
     return (
         <>
-            {error?.message && <AlertBanner type="error">{error.message}</AlertBanner>}
+            {error?.message && (
+                <ValidationErrorBanner level={3}>
+                    <ul>
+                        <li>{error.message}</li>
+                    </ul>
+                </ValidationErrorBanner>
+            )}
             <div className={styles.layout}>
-                <Card id="available-columns" title="Available columns" collapsible={false}>
-                    <div className={styles.card}>
-                        <div className={styles.search}>
-                            <LiveSearch
-                                name="column-search"
-                                value={searchText}
-                                onChange={setSearchText}
-                                className="width-full"
-                            />
-                        </div>
-                        <Checkbox
-                            key="select-all"
-                            className={styles.option}
-                            label={searchText ? 'Select search results' : 'Select all'}
-                            selected={availableOptions.every((o) => value?.includes(o.value))}
-                            onChange={handleSelectAll}
-                        />
-                        {availableOptions.map((o) => (
+                <div className={styles.grid}>
+                    <Card id="available-columns" title="Available columns" collapsible={false}>
+                        <div className={styles.card}>
+                            <div className={styles.search}>
+                                <LiveSearch
+                                    name="column-search"
+                                    value={searchText}
+                                    onChange={setSearchText}
+                                    className="width-full"
+                                />
+                            </div>
                             <Checkbox
-                                key={o.value}
+                                key="select-all"
                                 className={styles.option}
-                                label={o.name}
-                                selected={value?.includes(o.value)}
-                                onChange={handleOnAvailableChange(o)}
+                                label={selectWord + (searchText ? ' search results' : ' all')}
+                                selected={false}
+                                onChange={handleSelectAll}
+                                sizing={SIZING}
                             />
-                        ))}
-                    </div>
-                </Card>
-                <Card
-                    id="selected-columns"
-                    title="Selected columns"
-                    collapsible={false}
-                    actions={
-                        <Button disabled={noneSelected} onClick={() => onChange([])}>
-                            Clear selections
-                        </Button>
-                    }
-                >
-                    <div className={styles.card}>
-                        {noneSelected ? (
-                            <p className={styles.center}>Select a column from "Available columns"</p>
-                        ) : (
-                            <SelectedColumnsList value={value} options={options} onChange={onChange} />
-                        )}
-                    </div>
-                </Card>
+                            {availableOptions.map((o) => (
+                                <Checkbox
+                                    key={o.value}
+                                    className={styles.option}
+                                    label={o.name}
+                                    selected={value?.includes(o.value)}
+                                    onChange={handleOnAvailableChange(o)}
+                                    sizing={SIZING}
+                                />
+                            ))}
+                        </div>
+                    </Card>
+                    <Card
+                        id="selected-columns"
+                        title="Selected columns"
+                        collapsible={false}
+                        actions={
+                            <Button
+                                sizing="small"
+                                destructive={true}
+                                secondary={true}
+                                disabled={noneSelected}
+                                onClick={() => onChange([])}
+                            >
+                                Clear selections
+                            </Button>
+                        }
+                    >
+                        <div className={styles.card}>
+                            {noneSelected ? (
+                                <p className={styles.center}>Select a column from "Available columns"</p>
+                            ) : (
+                                <SelectedColumnsList value={value} options={options} onChange={onChange} />
+                            )}
+                        </div>
+                    </Card>
+                </div>
             </div>
         </>
     );
@@ -133,7 +154,7 @@ const SelectedColumnsList = ({
                 {(droppable) => (
                     <div {...droppable.droppableProps} ref={droppable.innerRef} className={styles.preferences}>
                         {value?.map((id, index) => (
-                            <Draggable key={id} draggableId={id} index={index} disableInteractiveElementBlocking>
+                            <Draggable key={id} draggableId={id} index={index} disableInteractiveElementBlocking={true}>
                                 {(draggable: DraggableProvided) => {
                                     const optionName = options.find(({ value }) => value === id)?.name;
                                     return (

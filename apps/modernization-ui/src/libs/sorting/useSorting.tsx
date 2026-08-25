@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+
 import { useSearchParams } from 'react-router';
+
 import { Direction } from './sorting';
 
 const SORT_ON_PARAMETER = 'sortOn';
@@ -25,9 +27,7 @@ type Sorting =
     | undefined;
 
 type Action =
-    | { type: 'reset' }
-    | { type: 'sort'; property: string; direction: Direction }
-    | { type: 'toggle'; property: string };
+    { type: 'reset' } | { type: 'sort'; property: string; direction: Direction } | { type: 'toggle'; property: string };
 
 const reducer = (current: Sorting, action: Action): Sorting => {
     switch (action.type) {

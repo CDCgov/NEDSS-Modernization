@@ -1,8 +1,10 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { EntryFieldsProps } from 'design-system/entry';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
 import { TextAreaField } from 'design-system/input/text';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { HasAdministrativeInformation, labels } from '../administrative';
 
 type AdministrativeInformationFieldsProps = {
@@ -30,7 +32,7 @@ const AdministrativeInformationFields = ({
                     orientation={orientation}
                     error={error?.message}
                     sizing={sizing}
-                    required
+                    required={true}
                     aria-description="This field defaults to today's date and can be changed if needed."
                 />
             )}

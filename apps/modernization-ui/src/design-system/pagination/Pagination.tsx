@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+
 import { Button } from 'components/button';
 
 import styles from './pagination.module.scss';
@@ -13,7 +14,7 @@ const PageSelector = ({ page, selected, onSelectPage }: PaginationPageProps) => 
     return (
         <li key={`pagination_page_${page}`} className="usa-pagination__item usa-pagination__page-no">
             <Button
-                tertiary
+                tertiary={true}
                 className={classnames('usa-pagination__button', styles.page, {
                     'usa-current': selected,
                 })}
@@ -79,7 +80,7 @@ const Pagination = ({
                         <Button
                             className="usa-pagination__link usa-pagination__previous-page"
                             aria-label="Previous page"
-                            tertiary
+                            tertiary={true}
                             icon="navigate_before"
                             onClick={onPrevious}
                         >
@@ -106,7 +107,7 @@ const Pagination = ({
                         <Button
                             className="usa-pagination__link usa-pagination__next-page"
                             aria-label="Next page"
-                            tertiary
+                            tertiary={true}
                             icon="navigate_next"
                             labelPosition="left"
                             onClick={onNext}
@@ -127,7 +128,8 @@ const adjustedForOverflow = (maxPagesShown: number, current: number, total: numb
 
     const previous = current === 1 ? 0 : hasOverflowBefore ? 2 : 1; // first page + prev overflow
     const next = current === total ? 0 : hasOverflowAfter ? 2 : 1; // next overflow + last page
-    const pageCount = maxPagesShown - 1 - (previous + next); // remaining selections to show (minus one for the current page)
+    // remaining selections to show (minus one for the current page)
+    const pageCount = maxPagesShown - 1 - (previous + next);
 
     // Determine how many selections we have before/after the current page
     let before = 0;

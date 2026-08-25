@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { MultiSelect, SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { validateRequiredRule } from 'validation/entry';
+
 import { EthnicityEntry } from './entry';
 import { useEthnicityCodedValues } from './useEthnicityCodedValues';
 
@@ -37,7 +40,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                         onBlur={onBlur}
                         onChange={onChange}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This field defaults to today's date and can be changed if needed."
                     />
@@ -65,7 +68,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                 <Controller
                     control={control}
                     name="ethnicity.detailed"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <MultiSelect
                             label="Spanish origin"
@@ -85,7 +88,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal', sizing = 'med
                 <Controller
                     control={control}
                     name="ethnicity.unknownReason"
-                    shouldUnregister
+                    shouldUnregister={true}
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label="Reason unknown"

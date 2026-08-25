@@ -1,6 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
-import { SidePanel } from './SidePanel';
 import userEvent from '@testing-library/user-event';
+
+import { SidePanel } from './SidePanel';
 
 const onClose = vi.fn();
 class ResizeObserver {
@@ -55,7 +56,7 @@ describe('SidePanel', () => {
 
     it('should trigger on close when close button is clicked', async () => {
         // show content
-        let visible = true;
+        const visible = true;
         const { getByRole } = render(
             <SidePanel heading="Some heading" visible={visible} onClose={onClose}>
                 Some content

@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { CheckboxGroup } from './CheckboxGroup';
+
 import { asSelectable, Selectable } from 'options';
+
+import { CheckboxGroup } from './CheckboxGroup';
 
 const meta = {
     title: 'Design System/CheckboxGroup',

@@ -1,8 +1,9 @@
 package gov.cdc.nbs.report;
 
-import static gov.cdc.nbs.report.ReportConstants.Operator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
@@ -10,6 +11,8 @@ import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.datasource.utils.DataSourceNameUtils;
+import gov.cdc.nbs.exception.ForbiddenException;
+import gov.cdc.nbs.report.ReportConstants.Operator;
 import gov.cdc.nbs.report.ReportConstants.ReportGroup;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import gov.cdc.nbs.report.models.AdvancedFilterRequest;
@@ -36,7 +39,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -67,8 +69,8 @@ class WhereClauseServiceTest {
       List<ReportColumn> columns,
       ReportConstants.ReportGroup group) {
     return new ReportConfiguration(
-        Mockito.mock(ReportDataSource.class),
-        Mockito.mock(Library.class),
+        mock(ReportDataSource.class),
+        mock(Library.class),
         "Test Report",
         null,
         0L,
@@ -103,7 +105,7 @@ class WhereClauseServiceTest {
       Long reportFilterUid,
       Long reportColumnUid,
       Boolean defaultIncludeNulls,
-      FilterType fitlerType) {
+      FilterType filterType) {
 
     return new BasicFilterConfiguration(
         reportFilterUid,
@@ -112,7 +114,7 @@ class WhereClauseServiceTest {
         defaultIncludeNulls,
         null,
         null,
-        fitlerType);
+        filterType);
   }
 
   private FilterType createFilterType(String type, String code) {
@@ -121,7 +123,7 @@ class WhereClauseServiceTest {
 
   private AdvancedFilterConfiguration createAdvancedFilterConfiguration(
       Long id, AdvancedQuery.RuleGroup value) {
-    return new AdvancedFilterConfiguration(id, value);
+    return new AdvancedFilterConfiguration(id, value, null, null);
   }
 
   private AdvancedFilterRequest createAdvancedFilterRequest(
@@ -130,7 +132,7 @@ class WhereClauseServiceTest {
   }
 
   private AdvancedQuery.RuleGroup createRuleGroup(
-      String id, String combinator, List<AdvancedQuery> rules) {
+      String id, ReportConstants.QueryCombinators combinator, List<AdvancedQuery> rules) {
     return new AdvancedQuery.RuleGroup(id, combinator, rules);
   }
 
@@ -144,28 +146,28 @@ class WhereClauseServiceTest {
 
   private ReportColumn mockReportColumn(
       Long id, String columnSourceTypeCode, String columnName, String codesetName) {
-    ReportColumn reportColumn = Mockito.mock(ReportColumn.class);
+    ReportColumn reportColumn = mock(ReportColumn.class);
 
-    Mockito.lenient().when(reportColumn.id()).thenReturn(id);
-    Mockito.lenient().when(reportColumn.sourceTypeCode()).thenReturn(columnSourceTypeCode);
-    Mockito.lenient().when(reportColumn.name()).thenReturn(columnName);
-    Mockito.lenient().when(reportColumn.codesetNm()).thenReturn(codesetName);
+    lenient().when(reportColumn.id()).thenReturn(id);
+    lenient().when(reportColumn.sourceTypeCode()).thenReturn(columnSourceTypeCode);
+    lenient().when(reportColumn.name()).thenReturn(columnName);
+    lenient().when(reportColumn.codesetNm()).thenReturn(codesetName);
 
     return reportColumn;
   }
 
   private void mockAuthenticatedUser(Long externalOrgUid) {
 
-    NbsUserDetails mockUserDetails = Mockito.mock(NbsUserDetails.class);
-    Mockito.lenient().when(mockUserDetails.getExternalOrgUid()).thenReturn(externalOrgUid);
+    NbsUserDetails mockUserDetails = mock(NbsUserDetails.class);
+    lenient().when(mockUserDetails.getExternalOrgUid()).thenReturn(externalOrgUid);
 
     // Mock the Authentication and return our user as the Principal
-    Authentication mockAuthentication = Mockito.mock(Authentication.class);
-    Mockito.lenient().when(mockAuthentication.getPrincipal()).thenReturn(mockUserDetails);
+    Authentication mockAuthentication = mock(Authentication.class);
+    lenient().when(mockAuthentication.getPrincipal()).thenReturn(mockUserDetails);
 
     // Mock the Security Context container and have it return the auth token
-    SecurityContext mockSecurityContext = Mockito.mock(SecurityContext.class);
-    Mockito.lenient().when(mockSecurityContext.getAuthentication()).thenReturn(mockAuthentication);
+    SecurityContext mockSecurityContext = mock(SecurityContext.class);
+    lenient().when(mockSecurityContext.getAuthentication()).thenReturn(mockAuthentication);
 
     // Bind the context to the execution thread
     SecurityContextHolder.setContext(mockSecurityContext);
@@ -227,7 +229,35 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_handle_allow_nulls_operator() {
+  void should_disregard_basic_filters_requests_without_values_and_includeNulls_set_to_false() {
+    Long filter1 = 101L;
+    Long col1 = 1L;
+    Long filter2 = 102L;
+    Long col2 = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
+    ReportConfiguration reportConfig =
+        createReportConfig(
+            List.of(
+                createBasicFilterConfiguration(List.of(), filter1, col1, false, filterType),
+                createBasicFilterConfiguration(List.of(), filter2, col2, false, filterType)),
+            List.of(
+                mockReportColumn(col1, "STRING", "ColumnName1"),
+                mockReportColumn(col2, "STRING", "ColumnName2")));
+
+    List<BasicFilterRequest> basicFilterRequests =
+        List.of(
+            new BasicFilterRequest(filter1, List.of(), false),
+            new BasicFilterRequest(filter2, List.of(), false));
+
+    String whereFragment =
+        whereClauseService.buildBasicWhereFragment(reportConfig, basicFilterRequests);
+
+    assertThat(whereFragment).isEmpty();
+  }
+
+  @Test
+  void should_handle_includeNulls_operator_with_values() {
     Long filterUid = 100L;
     Long columnUid = 1L;
     FilterType filterType = createFilterType("BAS_TXT", "");
@@ -248,7 +278,7 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_handle_allow_nulls_operator_with_multiple_fields() {
+  void should_handle_includeNulls_operator_with_multiple_fields() {
     Long filterUid = 100L;
     Long columnUid = 1L;
     Long filterUid2 = 101L;
@@ -321,7 +351,27 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_handle_time_range_with_nulls() {
+  void should_handle_empty_string_time_range_values() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, List.of("", ""), false));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEmpty();
+  }
+
+  @Test
+  void should_handle_time_range_values_with_includeNulls() {
     Long filterUid = 200L;
     Long columnUid = 5L;
     FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
@@ -340,6 +390,64 @@ class WhereClauseServiceTest {
     assertThat(whereFragment)
         .isEqualTo(
             "(([date_column] BETWEEN '2023-01-01' AND '2023-01-31') OR ([date_column] IS NULL))");
+  }
+
+  @Test
+  void should_handle_empty_time_range_values_with_includeNulls() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request = List.of(new BasicFilterRequest(filterUid, List.of(), true));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEqualTo("([date_column] IS NULL)");
+  }
+
+  @Test
+  void should_handle_empty_string_time_range_values_with_includeNulls() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "DATE", "date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request =
+        List.of(new BasicFilterRequest(filterUid, List.of("", ""), true));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEqualTo("([date_column] IS NULL)");
+  }
+
+  @Test
+  void should_handle_empty_time_range_values_for_non_date_field_with_includeNulls() {
+    Long filterUid = 200L;
+    Long columnUid = 5L;
+    FilterType filterType = createFilterType("BAS_TIM_RANGE", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, true, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "non_date_column");
+    ReportConfiguration reportConfig = createReportConfig(List.of(config), List.of(reportColumn));
+
+    List<BasicFilterRequest> request = List.of(new BasicFilterRequest(filterUid, List.of(), true));
+
+    String whereFragment = whereClauseService.buildBasicWhereFragment(reportConfig, request);
+
+    assertThat(whereFragment).isEqualTo("([non_date_column] IS NULL)");
   }
 
   @Test
@@ -539,20 +647,20 @@ class WhereClauseServiceTest {
     mockAuthenticatedUser(54321L);
 
     // Stub the permission scope resolver for jurisdiction tracking (program_jurisdiction_oid IN
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     // Wrap in the execution request
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters())
         .thenReturn(
             List.of(
                 new BasicFilterRequest(filterUid, List.of("A"), false),
                 new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
         whereClauseService.buildWhereClause(
@@ -643,22 +751,22 @@ class WhereClauseServiceTest {
     AdvancedQuery.RuleGroup ruleGroup1 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(18), rules.get(22), rules.get(0), rules.get(4)));
     AdvancedQuery.RuleGroup ruleGroup3 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(rules.get(1), ruleGroup1, rules.get(15), labResultRule));
     AdvancedQuery.RuleGroup ruleGroup4 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(19), ruleGroup3, rules.get(23), labResultRule2));
     AdvancedQuery.RuleGroup ruleGroup2 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(
                 rules.get(9),
                 ruleGroup4,
@@ -674,16 +782,16 @@ class WhereClauseServiceTest {
     ReportConfiguration reportConfig =
         createReportConfig(
             List.of(config, config2), advFilterConfig, reportCols, ReportGroup.PUBLIC);
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.TRUE);
 
     mockAuthenticatedUser(54321L);
 
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     when(executionRequest.basicFilters())
@@ -693,7 +801,7 @@ class WhereClauseServiceTest {
                 new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
     when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup2));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
     when(mockDataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report"))
         .thenReturn("[RDB].[dbo].[lab_test_report]");
 
@@ -702,6 +810,47 @@ class WhereClauseServiceTest {
                 reportConfig, executionRequest, mockDataSourceNameUtils))
         .isEqualTo(
             "WHERE root_ordered_test_pntr IN (SELECT root_ordered_test_pntr FROM [RDB].[dbo].[lab_test_report] WHERE ([COLUMN_INTEGER] IN (1)) AND (([TimeRangeColumn] BETWEEN '2023-01-01' AND '2024-01-01') OR ([TimeRangeColumn] IS NULL)) AND ((CAST([COLUMN_DATETIME] AS DATE) IN ('2026-05-28')) OR (([COLUMN_STRING] LIKE CONCAT('%', 'foo', '%')) AND (([COLUMN_INTEGER] NOT IN (1) OR [COLUMN_INTEGER] IS NULL) OR (([COLUMN_STRING] LIKE CONCAT('foo', '%')) AND ([COLUMN_STRING] IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)')) AND ([COLUMN_INTEGER] IN (1)) AND ([COLUMN_INTEGER] >= 1)) OR (CAST([COLUMN_DATETIME] AS DATE) > '2026-05-28') OR ([numeric_result_val] = 1)) AND ([COLUMN_STRING] NOT IN ('2019 Novel Coronavirus', 'AIDS', 'Acanthamoeba Disease (Excluding Keratitis)') OR [COLUMN_STRING] IS NULL) AND ([RESULT_UNITS] <> '1' OR ([RESULT_UNITS] IS NULL))) OR (CAST([COLUMN_DATETIME] AS DATE) BETWEEN '2026-05-25' AND '2026-05-28') OR (CAST([COLUMN_DATETIME] AS DATE) IS NOT NULL) OR ([COLUMN_INTEGER] > 1) OR ([COLUMN_INTEGER] BETWEEN 1 AND 2))) AND ((program_jurisdiction_oid IN (50)) AND (REPORTING_FACILITY_UID = 54321))");
+  }
+
+  @Test
+  void should_escape_special_characters_for_like_operator_in_where_clause() {
+    Long filterUid = 100L;
+    Long columnUid = 2L;
+    FilterType filterType = createFilterType("BAS_TXT", "");
+
+    BasicFilterConfiguration config =
+        createBasicFilterConfiguration(List.of(), filterUid, columnUid, false, filterType);
+
+    ReportColumn reportColumn = mockReportColumn(columnUid, "STRING", "ColumnName");
+
+    ReportConfiguration reportConfig =
+        createReportConfig(List.of(config), List.of(reportColumn), ReportGroup.PUBLIC);
+
+    AdvancedQuery.Rule percentRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "75%");
+    AdvancedQuery.Rule singleQuoteRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "O'Brien");
+    AdvancedQuery.Rule openingBracketRule =
+        createRule(UUID.randomUUID().toString(), columnUid, Operator.CO, "test[");
+
+    AdvancedQuery.RuleGroup ruleGroup1 =
+        createRuleGroup(
+            UUID.randomUUID().toString(),
+            ReportConstants.QueryCombinators.AND,
+            List.of(percentRule, singleQuoteRule, openingBracketRule));
+
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
+    when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup1));
+
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
+
+    String result =
+        whereClauseService.buildWhereClause(
+            reportConfig, executionRequest, mockDataSourceNameUtils);
+
+    assertThat(result)
+        .isEqualTo(
+            "WHERE (([ColumnName] LIKE CONCAT('%', '75[%]', '%')) AND ([ColumnName] LIKE CONCAT('%', 'O''Brien', '%')) AND ([ColumnName] LIKE CONCAT('%', 'test[[]', '%')))");
   }
 
   @Test
@@ -737,22 +886,22 @@ class WhereClauseServiceTest {
     AdvancedQuery.RuleGroup ruleGroup1 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(18), rules.get(22), rules.get(0), rules.get(4)));
     AdvancedQuery.RuleGroup ruleGroup3 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(rules.get(1), ruleGroup1, rules.get(15), labResultRule));
     AdvancedQuery.RuleGroup ruleGroup4 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "and",
+            ReportConstants.QueryCombinators.AND,
             List.of(rules.get(19), ruleGroup3, rules.get(23), labResultRule2));
     AdvancedQuery.RuleGroup ruleGroup2 =
         createRuleGroup(
             UUID.randomUUID().toString(),
-            "or",
+            ReportConstants.QueryCombinators.OR,
             List.of(
                 rules.get(9),
                 ruleGroup4,
@@ -767,7 +916,7 @@ class WhereClauseServiceTest {
         List.of(reportColumn, reportColumn2, labResultReportColumn, labResultReportColumn2));
     ReportConfiguration reportConfig =
         createReportConfig(List.of(config, config2), advFilterConfig, reportCols, null);
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
 
     when(executionRequest.basicFilters())
         .thenReturn(
@@ -776,7 +925,7 @@ class WhereClauseServiceTest {
                 new BasicFilterRequest(filterUid2, List.of("01/01/2023", "01/01/2024"), true)));
     when(executionRequest.advancedFilter()).thenReturn(new AdvancedFilterRequest(3L, ruleGroup2));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
     when(mockDataSourceNameUtils.buildDataSourceName("nbs_rdb.lab_test_report"))
         .thenReturn("[RDB].[dbo].[lab_test_report]");
 
@@ -800,7 +949,8 @@ class WhereClauseServiceTest {
     }
 
     AdvancedQuery.RuleGroup ruleGroup =
-        createRuleGroup(UUID.randomUUID().toString(), "and", selectedRules);
+        createRuleGroup(
+            UUID.randomUUID().toString(), ReportConstants.QueryCombinators.AND, selectedRules);
     AdvancedFilterRequest advancedFilterRequest = createAdvancedFilterRequest(1L, ruleGroup);
 
     AdvancedFilterConfiguration filterConfiguration =
@@ -925,10 +1075,10 @@ class WhereClauseServiceTest {
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.FALSE);
 
     // Stub the permission scope resolver data
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(101L, 102L));
 
-    Permission expectedPermission = new Permission("REPORTING", "VIEWREPORTPRIVATE");
+    Permission expectedPermission = new Permission("VIEWREPORTPRIVATE", "REPORTING");
     when(scopeResolver.resolve(expectedPermission)).thenReturn(mockScope);
 
     String result = whereClauseService.buildPermissionFragment(reportConfig);
@@ -946,9 +1096,9 @@ class WhereClauseServiceTest {
 
     mockAuthenticatedUser(54321L);
 
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(50L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTTEMPLATE")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTTEMPLATE", "REPORTING")))
         .thenReturn(mockScope);
 
     String result = whereClauseService.buildPermissionFragment(reportConfig);
@@ -973,21 +1123,21 @@ class WhereClauseServiceTest {
   }
 
   @Test
-  void should_throw_illegal_arg_exception_when_user_has_no_assigned_ids() {
+  void should_throw_forbidden_exception_when_user_has_no_assigned_ids() {
     ReportConfiguration reportConfig =
         createReportConfig(List.of(), List.of(), ReportGroup.REPORTING_FACILITY);
 
     when(reportConfig.dataSource().hasJurisdictionSecurity()).thenReturn(Boolean.TRUE);
 
-    PermissionScope emptyScope = Mockito.mock(PermissionScope.class);
+    PermissionScope emptyScope = mock(PermissionScope.class);
     when(emptyScope.any()).thenReturn(List.of()); // Empty list
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTREPORTINGFACILITY")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTREPORTINGFACILITY", "REPORTING")))
         .thenReturn(emptyScope);
 
     mockAuthenticatedUser(null);
 
     assertThatThrownBy(() -> whereClauseService.buildPermissionFragment(reportConfig))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(ForbiddenException.class)
         .hasMessageContaining("No Jurisdiction or Program Area permissions found for user: null");
   }
 
@@ -1027,11 +1177,11 @@ class WhereClauseServiceTest {
     mockAuthenticatedUser(8888L);
 
     // Assemble execution payload matching the configured filter UID
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters())
         .thenReturn(List.of(new BasicFilterRequest(filterUid, List.of("GA"), false)));
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     // Run the full orchestrator
     String result =
@@ -1052,16 +1202,16 @@ class WhereClauseServiceTest {
     when(reportConfig.dataSource().hasFacilitySecurity()).thenReturn(Boolean.FALSE);
 
     // Stub the permission context return mapping
-    PermissionScope mockScope = Mockito.mock(PermissionScope.class);
+    PermissionScope mockScope = mock(PermissionScope.class);
     when(mockScope.any()).thenReturn(List.of(77L));
-    when(scopeResolver.resolve(new Permission("REPORTING", "VIEWREPORTPUBLIC")))
+    when(scopeResolver.resolve(new Permission("VIEWREPORTPUBLIC", "REPORTING")))
         .thenReturn(mockScope);
 
     // Setup user context requesting a report with no filters
-    ReportExecutionRequest executionRequest = Mockito.mock(ReportExecutionRequest.class);
+    ReportExecutionRequest executionRequest = mock(ReportExecutionRequest.class);
     when(executionRequest.basicFilters()).thenReturn(List.of()); // Wide open request
 
-    DataSourceNameUtils mockDataSourceNameUtils = Mockito.mock(DataSourceNameUtils.class);
+    DataSourceNameUtils mockDataSourceNameUtils = mock(DataSourceNameUtils.class);
 
     String result =
         whereClauseService.buildWhereClause(

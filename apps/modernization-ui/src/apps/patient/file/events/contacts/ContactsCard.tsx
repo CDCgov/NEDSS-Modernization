@@ -1,26 +1,27 @@
 import { Suspense, useState } from 'react';
+
 import { Await, NavLink } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
-import { internalizeDate, internalizeDateTime } from 'date';
-import { exists } from 'utils';
-import { LoadingOverlay } from 'libs/loading';
+
 import { Shown } from 'conditional-render';
-import { Sizing } from 'design-system/field';
-import { displayNoData } from 'design-system/data';
+import { internalizeDate, internalizeDateTime } from 'date';
 import { Card, TableCardProps } from 'design-system/card';
-import { Tag } from 'design-system/tag';
-import { MaybeLabeledValue } from 'design-system/value';
 import { Section } from 'design-system/card';
+import { displayNoData } from 'design-system/data';
+import { Sizing } from 'design-system/field';
 import { Column, SortableDataTable } from 'design-system/table';
 import { ColumnPreference, ColumnPreferenceProvider, ColumnPreferencesAction } from 'design-system/table/preferences';
-
-import { maybeDisplayName } from 'name';
+import { Tag } from 'design-system/tag';
+import { MaybeLabeledValue } from 'design-system/value';
 import { ClassicModalButton } from 'libs/classic';
 import { AssociatedWith } from 'libs/events/investigations/associated';
-import { PatientFileContact, PatientFileContacts } from './contacts';
-
-import styles from './contacts-card.module.scss';
+import { LoadingOverlay } from 'libs/loading';
+import { MemoizedSupplier } from 'libs/supplying';
+import { maybeDisplayName } from 'name';
+import { exists } from 'utils';
 import { maybeMap } from 'utils/mapping';
+
+import { PatientFileContact, PatientFileContacts } from './contacts';
+import styles from './contacts-card.module.scss';
 
 const EVENT_ID = { id: 'local', name: 'Event ID' };
 const DATE_CREATED = { id: 'created-on', name: 'Date created' };
@@ -49,7 +50,7 @@ const columns = (onClose: () => void): Column<PatientFileContact>[] => [
         render: (value) => (
             <>
                 <ClassicModalButton
-                    tertiary
+                    tertiary={true}
                     sizing="small"
                     className={styles['event-id']}
                     url={`/nbs/api/profile/${value.patient}/contact/${value.identifier}?condition=${value.condition}`}
@@ -134,9 +135,9 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
         <ColumnPreferenceProvider id="key" defaults={columnPreferences}>
             {(apply) => (
                 <Card
-                    id={'patient-file-contact-named'}
+                    id="patient-file-contact-named"
                     title={title}
-                    collapsible
+                    collapsible={true}
                     open={data.length > 0}
                     flair={<Tag size={sizing}>{total}</Tag>}
                     className={styles.card}
@@ -151,6 +152,7 @@ const InternalCard = ({ sizing, title, data = [], onClose, titleResolver, ...rem
                                     id={`${contact.condition}-${title}`}
                                     sizing={sizing}
                                     className={styles.card}
+                                    // eslint-disable-next-line max-len
                                     subtext={`${contact.contacts.length} record${contact.contacts.length > 1 ? 's' : ''}`}
                                 >
                                     <SortableDataTable

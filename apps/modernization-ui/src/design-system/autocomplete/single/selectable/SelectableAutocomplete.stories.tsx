@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { SelectableAutocomplete } from './SelectableAutocomplete';
+
 import { asSelectable, Selectable } from 'options';
+
+import { SelectableAutocomplete } from './SelectableAutocomplete';
 
 const meta = {
     title: 'Design System/Autocomplete/SelectableAutocomplete',
@@ -28,7 +30,7 @@ export const Default: Story = {
         id: 'selectautocomplete-default',
         name: 'selectautocomplete-default',
         label: 'Default',
-        resolver: resolver,
+        resolver,
         placeholder: 'Select text',
     },
 };

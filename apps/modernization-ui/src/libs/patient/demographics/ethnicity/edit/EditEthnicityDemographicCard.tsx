@@ -1,7 +1,10 @@
+import { UseFormReturn } from 'react-hook-form';
+
 import { Card, CardProps } from 'design-system/card';
 import { EntryFieldsProps, Required } from 'design-system/entry';
-import { UseFormReturn } from 'react-hook-form';
+
 import { HasEthnicityDemographic } from '../ethnicity';
+
 import { EthnicityDemographicsFields } from './EthnicityDemographicFields';
 import { useEthnicityOptions } from './useEthnicityOptions';
 

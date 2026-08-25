@@ -1,19 +1,23 @@
+import { useEffect } from 'react';
+
 import { Button, Form } from '@trussworks/react-uswds';
+import { Controller, useForm } from 'react-hook-form';
+
+import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import {
     CreateSectionRequest,
     PagesSection,
     SectionControllerService,
     UpdateSectionRequest,
 } from 'apps/page-builder/generated';
-import { Controller, useForm } from 'react-hook-form';
-import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
-import styles from './addsection.module.scss';
-import { useEffect } from 'react';
-import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { notEmptyRule } from 'validation/entry/notEmptyRule';
 
-type sectionProps = {
+import styles from './addsection.module.scss';
+
+type SectionProps = {
+    id: string;
     tabId?: number;
     pageId?: number;
     onCancel?: () => void;
@@ -24,6 +28,7 @@ type sectionProps = {
 };
 
 export const AddSection = ({
+    id,
     onSectionTouched,
     tabId,
     onCancel,
@@ -31,7 +36,7 @@ export const AddSection = ({
     section,
     isEdit,
     onAddSection,
-}: sectionProps) => {
+}: SectionProps) => {
     const form = useForm<CreateSectionRequest | UpdateSectionRequest>({
         mode: 'onBlur',
         defaultValues: { visible: true },
@@ -39,7 +44,7 @@ export const AddSection = ({
 
     useEffect(() => {
         if (section && isEdit) {
-            form.reset({ name: section.name, tabId: tabId, visible: section.visible });
+            form.reset({ name: section.name, tabId, visible: section.visible });
         }
     }, [section]);
     const onSubmit = form.handleSubmit((data) => {
@@ -55,7 +60,7 @@ export const AddSection = ({
         } else {
             SectionControllerService.createSection({
                 page: pageId ?? 0,
-                requestBody: { name: data.name, visible: data.visible, tabId: tabId },
+                requestBody: { name: data.name, visible: data.visible, tabId },
             }).then(() => {
                 form.reset();
                 onAddSection?.(data.name ?? '');
@@ -71,9 +76,11 @@ export const AddSection = ({
 
     return (
         <div className={styles.addSection}>
-            <div className={styles.header}>{isEdit ? <h2>Edit section</h2> : <h2>Add a section</h2>}</div>
+            <div id={`${id}-header`} className={styles.header}>
+                {isEdit ? <h2>Edit section</h2> : <h2>Add a section</h2>}
+            </div>
             <Form onSubmit={onSubmit} className={styles.form}>
-                <div className={styles.content}>
+                <div id={`${id}-content`} className={styles.content}>
                     <Controller
                         control={form.control}
                         name="name"
@@ -91,7 +98,7 @@ export const AddSection = ({
                                 label="Section Name"
                                 type="text"
                                 error={error?.message}
-                                required
+                                required={true}
                                 className={`${styles.inputField} sectionName`}
                             />
                         )}
@@ -116,7 +123,7 @@ export const AddSection = ({
             </Form>
             <div className={styles.footer}>
                 <div className={styles.footerBtns}>
-                    <Button type="button" outline onClick={onClose}>
+                    <Button type="button" outline={true} onClick={onClose}>
                         Cancel
                     </Button>
                     {isEdit ? (

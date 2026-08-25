@@ -1,16 +1,20 @@
 import { Controller, useFormContext } from 'react-hook-form';
+
+import { useIdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 import { Input } from 'components/FormInputs/Input';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
 import { BasicIdentificationEntry } from '../entry';
-import { useIdentificationCodedValues } from 'apps/patient/data/identification/useIdentificationCodedValues';
 
 const TYPE_LABEL = 'Type';
 const ID_VALUE_LABEL = 'ID value';
 
 export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing = 'medium' }: EntryFieldsProps) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
+
+    const { types, authorities } = useIdentificationCodedValues();
 
     return (
         <>
@@ -27,9 +31,9 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         sizing={sizing}
                         onChange={onChange}
                         id={`identification-${name}`}
-                        options={useIdentificationCodedValues().types}
+                        options={types}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -45,7 +49,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
-                        options={useIdentificationCodedValues().authorities}
+                        options={authorities}
                     />
                 )}
             />
@@ -65,7 +69,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal', sizing =
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />

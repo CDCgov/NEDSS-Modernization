@@ -1,12 +1,16 @@
-import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
-import { Button } from 'design-system/button';
 import { useEffect, useState } from 'react';
+
 import { useFormContext, useWatch } from 'react-hook-form';
-import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
-import { SidePanel } from '../../side-panel/SidePanel';
-import styles from './matching-criteria-panel.module.scss';
+
 import { DataElements } from 'apps/deduplication/api/model/DataElement';
 import { MatchingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
+import { MatchingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+import { Button } from 'design-system/button';
+
+import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
+import { SidePanel } from '../../side-panel/SidePanel';
+
+import styles from './matching-criteria-panel.module.scss';
 
 type Props = {
     visible: boolean;
@@ -38,7 +42,7 @@ export const MatchingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
             onClose={onCancel}
             footer={
                 <>
-                    <Button secondary onClick={onCancel}>
+                    <Button secondary={true} onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button icon="add" labelPosition="right" onClick={() => onAccept(selectedAttributes)}>

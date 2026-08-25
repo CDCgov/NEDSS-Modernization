@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -31,33 +31,33 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./apps/report-execution
-        run: uv sync --frozen
+        run: uv sync --no-build --frozen
 
       - name: Validate formatting
         working-directory: ./apps/report-execution
-        run: uv run ruff format --check
+        run: uv run --no-build ruff format --check
 
       - name: Run linter
         working-directory: ./apps/report-execution
-        run: uv run ruff check
+        run: uv run --no-build ruff check
         
       - name: Run type check
         working-directory: ./apps/report-execution
-        run: uv run pyrefly check --output-format=github
+        run: uv run --no-build pyrefly check --output-format=github
 
       - name: Run tests
         working-directory: ./apps/report-execution
-        run: uv run pytest -m "not integration"
+        run: uv run --no-build pytest -m "not integration"
 
   integration_test:
     name: Integration Test
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7

@@ -1,5 +1,7 @@
 import { render, within } from '@testing-library/react';
+
 import { MergePhoneEmail } from 'apps/deduplication/api/model/MergeCandidate';
+
 import { PhoneEmailDetails } from './PhoneEmailDetails';
 
 const defaultPhoneEmail: MergePhoneEmail = {

@@ -14,14 +14,15 @@ import gov.cdc.nbs.entity.odse.ReportId;
 import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BasicFilterConfigurationMapperTest {
   // JPA creates circular references, which are tedious to construct properly and
   // we don't really care here
-  Report emptyReport = new Report(new ReportId(), "section");
-  ReportFilter emptyFilter = new ReportFilter(emptyReport, new FilterCode("NONE"));
+  Report emptyReport = new Report(new ReportId());
+  ReportFilter emptyFilter = new ReportFilter(100L, new FilterCode(1L));
   DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
   DataSourceColumn column =
       DataSourceColumn.builder()
@@ -35,7 +36,7 @@ class BasicFilterConfigurationMapperTest {
           .displayable('Y')
           .filterable('N')
           .statusCd('A')
-          .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+          .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
           .build();
   FilterCode filterCode =
       FilterCode.builder()
@@ -54,18 +55,26 @@ class BasicFilterConfigurationMapperTest {
   FilterValue filterValue =
       FilterValue.builder()
           .id(6L)
-          .operator("EQ")
-          .valueType("CODE")
+          .valueType("code")
           .valueTxt("value")
           .reportFilter(emptyFilter)
           .build();
 
-  FilterValue filterValueAllowNulls =
+  FilterValue basTxtFilterValueWithAllowNulls =
       FilterValue.builder()
           .id(6L)
-          .operator("ALLOW_NULLS")
-          .valueType("CODE")
-          .valueTxt("value")
+          .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
+          .valueType(ReportConstants.BASIC_FILTER_VALUE_TYPE)
+          .valueTxt("value1")
+          .reportFilter(emptyFilter)
+          .build();
+
+  FilterValue allowNullsFilterValue =
+      FilterValue.builder()
+          .id(6L)
+          .operator(ReportConstants.BASIC_FILTER_ALLOW_NULLS_OP)
+          .valueType(ReportConstants.BASIC_FILTER_ALLOW_NULLS_VALUE_TYPE)
+          .valueTxt("")
           .reportFilter(emptyFilter)
           .build();
 
@@ -95,14 +104,14 @@ class BasicFilterConfigurationMapperTest {
   }
 
   @Test
-  void fromReportFilter_should_map_all_fields_with_value_operator_allowsnulls() {
+  void fromReportFilter_should_map_all_fields_with_filter_value_that_allows_nulls() {
     ReportFilter reportFilter =
         ReportFilter.builder()
             .id(2L)
             .dataSourceColumn(column)
             .filterValidation(filterValidation)
             .filterCode(filterCode)
-            .filterValues(List.of(filterValueAllowNulls))
+            .filterValues(List.of(basTxtFilterValueWithAllowNulls))
             .minValueCnt(1)
             .maxValueCnt(1)
             .report(emptyReport)
@@ -112,11 +121,40 @@ class BasicFilterConfigurationMapperTest {
 
     assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
     assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
-    assertThat(mapped.defaultValues()).isEqualTo(List.of());
-    assertThat(mapped.defaultIncludeNulls()).isTrue();
     assertThat(mapped.selectType()).isEqualTo(ReportConstants.SelectType.SINGLE);
     assertThat(mapped.isRequired()).isTrue();
     assertThat(mapped.filterType()).isEqualTo(FilterTypeMapper.fromFilterCode(filterCode));
+
+    assertThat(mapped.defaultIncludeNulls()).isTrue();
+    assertThat(mapped.defaultValues()).hasSize(1);
+    assertThat(mapped.defaultValues().getFirst())
+        .isEqualTo(basTxtFilterValueWithAllowNulls.getValueTxt());
+  }
+
+  @Test
+  void fromReportFilter_should_map_all_fields_with_only_allow_nulls_filter_value() {
+    ReportFilter reportFilter =
+        ReportFilter.builder()
+            .id(2L)
+            .dataSourceColumn(column)
+            .filterValidation(filterValidation)
+            .filterCode(filterCode)
+            .filterValues(List.of(allowNullsFilterValue))
+            .minValueCnt(1)
+            .maxValueCnt(1)
+            .report(emptyReport)
+            .build();
+
+    BasicFilterConfiguration mapped = BasicFilterConfigurationMapper.fromReportFilter(reportFilter);
+
+    assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
+    assertThat(mapped.reportColumnUid()).isEqualTo(column.getId());
+    assertThat(mapped.selectType()).isEqualTo(ReportConstants.SelectType.SINGLE);
+    assertThat(mapped.isRequired()).isTrue();
+    assertThat(mapped.filterType()).isEqualTo(FilterTypeMapper.fromFilterCode(filterCode));
+
+    assertThat(mapped.defaultIncludeNulls()).isTrue();
+    assertThat(mapped.defaultValues()).isEmpty();
   }
 
   @Test
@@ -144,7 +182,7 @@ class BasicFilterConfigurationMapperTest {
             .id(4L)
             .code("T_T01")
             .filterName("Test Filter")
-            .filterType("ADV_FILTER")
+            .filterType("ADV_WCB")
             .codeTable("NONE")
             .build();
     ReportFilter reportFilter =

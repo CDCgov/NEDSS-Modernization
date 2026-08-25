@@ -1,14 +1,17 @@
-import { Card } from 'design-system/card';
-import { BasicPhoneEmailFields } from './phoneEmail';
-import { BasicIdentificationRepeatingBlock } from './identification';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useComponentSizing } from 'design-system/sizing';
-import { BasicNewPatientEntry } from './entry';
+
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
-import { NameEntryFields } from './name/NameEntryFields';
-import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
-import { BasicPersonalDetailsFields } from './personalDetails/BasicPersonalDetailsFields';
+import { Card } from 'design-system/card';
+import { useComponentSizing } from 'design-system/sizing';
+
+import styles from './add-patient-basic-form.module.scss';
 import { BasicAddressFields } from './address/BasicAddressFields';
+import { BasicNewPatientEntry } from './entry';
+import { BasicIdentificationRepeatingBlock } from './identification';
+import { NameEntryFields } from './name/NameEntryFields';
+import { BasicPersonalDetailsFields } from './personalDetails/BasicPersonalDetailsFields';
+import { BasicPhoneEmailFields } from './phoneEmail';
+import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
 import {
     ADDRESS_SECTION,
     ADMINISTRATIVE_SECTION,
@@ -18,8 +21,6 @@ import {
     PHONE_EMAIL_SECTION,
     RACE_ETHNICITY_SECTION,
 } from './sections';
-
-import styles from './add-patient-basic-form.module.scss';
 
 type Props = {
     isValid: (valid: boolean) => void;

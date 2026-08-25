@@ -1,3 +1,4 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -5,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA01 STD Program Report: Interview Record Listing.
@@ -14,6 +14,8 @@ def execute(
     * Did not include logging of run time
     * Hardcode i to "13" instead of the count of the columns
     """
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
+
     sql_query = f"""
     WITH Shd_Filtered AS (
     SELECT *
@@ -44,15 +46,15 @@ def execute(
         '13' AS [i], -- the sas library included a column with the count of the columns
         shd.patient_age_reported AS [age]
     FROM Shd_Filtered shd
-        LEFT JOIN rdb.dbo.investigation i 
+        LEFT JOIN {nbs_rdb}.dbo.investigation i
             ON shd.investigation_key = i.investigation_key
-        LEFT JOIN rdb.dbo.event_metric em 
+        LEFT JOIN {nbs_rdb}.dbo.event_metric em
             ON i.case_uid = em.event_uid
-        LEFT JOIN rdb.dbo.user_profile up 
+        LEFT JOIN {nbs_rdb}.dbo.user_profile up
             ON em.add_user_id = up.nedss_entry_id
     ORDER BY [PATIENT_NAME], [DIAGNOSIS_CD], [INVESTIGATION_KEY];
     """
 
     content = trx.query(sql_query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

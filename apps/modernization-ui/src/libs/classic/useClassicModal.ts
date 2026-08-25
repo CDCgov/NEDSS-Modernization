@@ -1,4 +1,5 @@
-import { useContext, useReducer, useEffect } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
+
 import { ClassicModalContext } from './ClassicModalContext';
 
 type ClassicModal = {
@@ -27,10 +28,7 @@ type ModalState = {
 };
 
 type Action =
-    | { type: 'open'; location: string }
-    | { type: 'opened' }
-    | { type: 'closed'; action?: string }
-    | { type: 'reset' };
+    { type: 'open'; location: string } | { type: 'opened' } | { type: 'closed'; action?: string } | { type: 'reset' };
 
 const classicModalReducer = (state: ModalState, action: Action) => {
     switch (action.type) {
@@ -71,7 +69,7 @@ const useClassicModal = (): ClassicModal => {
             throw new Error('The receiving form for the Classic Modal could not be found');
         }
 
-        if (window.document.forms[0] != form) {
+        if (window.document.forms[0] !== form) {
             throw new Error(
                 'The receiving form for the Classic Modal must be the first form available in the document'
             );

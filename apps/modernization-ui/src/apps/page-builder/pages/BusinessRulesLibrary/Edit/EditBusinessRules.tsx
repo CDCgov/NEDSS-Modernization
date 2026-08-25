@@ -1,5 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router';
+
 import {
     PageRuleControllerService,
     PagesQuestion,
@@ -13,12 +17,12 @@ import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Breadcrumb } from 'breadcrumb/Breadcrumb';
 import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router';
+import { useAlert } from 'libs/alert';
+
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
-import styles from './EditBusinessRule.module.scss';
 import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
+
+import styles from './EditBusinessRule.module.scss';
 
 export const EditBusinessRule = () => {
     const form = useForm<RuleRequest>();
@@ -190,10 +194,10 @@ export const EditBusinessRule = () => {
                 modal={deleteWarningModal}
                 title="Warning"
                 message="Are you sure you want to delete this business rule?"
+                // eslint-disable-next-line max-len
                 detail="Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
                 confirmText="Yes, delete"
                 onConfirm={onDelete}
-                onCancel={() => deleteWarningModal.current?.toggleModal(undefined, false)}
             />
             <div className={styles.breadCrumb}>
                 <Breadcrumb start="../">Business rules</Breadcrumb>
@@ -208,7 +212,7 @@ export const EditBusinessRule = () => {
                         <div className={styles.content}>
                             <FormProvider {...form}>
                                 <BusinessRulesForm
-                                    isEdit
+                                    isEdit={true}
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
                                     editSourceQuestion={findSourceQuestion(initialSourceIdentifiers)}
@@ -223,7 +227,7 @@ export const EditBusinessRule = () => {
                     <div className={styles.deleteBtn}>
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             data-testid="deleteBtnEditBusinessRulesPage"
                             onClick={() => deleteWarningModal.current?.toggleModal(undefined, true)}
                             className={styles.button}
@@ -235,7 +239,7 @@ export const EditBusinessRule = () => {
                     <div className={styles.submitBtns}>
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             data-testid="cancelEditBusinessRulesModel"
                             onClick={() => {
                                 form.reset();

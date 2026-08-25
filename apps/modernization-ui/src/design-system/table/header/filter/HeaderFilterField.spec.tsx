@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { FilterInteraction, FilterType } from 'design-system/filter';
+
 import { HeaderFilterField } from './HeaderFilterField';
 
 const mockValueOf = vi.fn();

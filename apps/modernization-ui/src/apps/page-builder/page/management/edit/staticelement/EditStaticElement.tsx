@@ -1,17 +1,20 @@
 import { Button, Form } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+
 import {
-    PageStaticControllerService,
     PagesQuestion,
+    PageStaticControllerService,
     UpdateDefault,
     UpdateHyperlink,
     UpdateReadOnlyComments,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useAlert } from 'libs/alert';
 import { maxLengthRule } from 'validation/entry';
+
 import { usePageManagement } from '../../usePageManagement';
+
 import { CommentsFields } from './CommentsFields';
 import { HyperlinkFields } from './HyperlinkFields';
 import styles from './staticelement.module.scss';
@@ -60,7 +63,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
     };
 
     const handleAlert = (message: string) => {
-        showAlert({ message: message, type: 'success' });
+        showAlert({ message, type: 'success' });
     };
 
     const onSubmit = form.handleSubmit((data) => {
@@ -153,10 +156,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                         <SelectInput
                             label="Choose a static element"
                             options={staticType}
-                            required
+                            required={true}
                             defaultValue={checkStaticType(question.displayComponent)}
                             aria-label="staticType"
-                            disabled
+                            disabled={true}
                             className={styles.select_input}
                         ></SelectInput>
                     </div>
@@ -182,7 +185,7 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                                 label="Administrative Comments"
                                 type="text"
                                 ariaLabel="adminComments"
-                                multiline
+                                multiline={true}
                                 error={error?.message}
                             />
                         )}
@@ -190,13 +193,13 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 </div>
 
                 <div className={styles.footer_buttons}>
-                    <Button outline onClick={onCancel} type={'button'}>
+                    <Button outline={true} onClick={onCancel} type="button">
                         Cancel
                     </Button>
                     <Button
                         disabled={!form.formState.isDirty || !form.formState.isValid}
                         onClick={handleSubmit}
-                        type={'button'}
+                        type="button"
                         aria-label="submit-btn"
                     >
                         Save changes

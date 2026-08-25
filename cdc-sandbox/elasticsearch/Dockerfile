@@ -1,5 +1,5 @@
 # Dockerfile to build elasticsearch image
-FROM docker.elastic.co/elasticsearch/elasticsearch:9.2.8
+FROM docker.elastic.co/elasticsearch/elasticsearch:9.4.2
 
 # Relaxes security and sets node to single
 ENV xpack.security.enabled=false

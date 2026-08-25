@@ -1,12 +1,13 @@
 .date-range-entry {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     gap: 1rem;
 
     .range-wrapper {
         display: flex;
         gap: 0.25rem;
         flex-direction: column;
+        width: 100%;
     }
 
     input {

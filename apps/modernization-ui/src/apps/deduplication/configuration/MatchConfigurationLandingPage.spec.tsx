@@ -1,8 +1,11 @@
 import { render } from '@testing-library/react';
-import { MatchConfigurationLandingPage } from './MatchConfigurationLandingPage';
 import { MemoryRouter } from 'react-router';
+
 import { AlertProvider } from 'alert';
+
 import { DataElements } from '../api/model/DataElement';
+
+import { MatchConfigurationLandingPage } from './MatchConfigurationLandingPage';
 
 let mockReturnValue: DataElements | undefined = { firstName: { active: true } };
 vi.mock('apps/deduplication/api/useDataElements', () => ({

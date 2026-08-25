@@ -1,7 +1,10 @@
-import { Card } from 'design-system/card/Card';
-import styles from './SystemManagementInfoCard.module.scss';
+import { MouseEvent } from 'react';
+
 import { useNavigate } from 'react-router';
-import React from 'react';
+
+import { Card } from 'design-system/card/Card';
+
+import styles from './SystemManagementInfoCard.module.scss';
 
 type LinkItem = { text: string; href: string };
 
@@ -20,7 +23,7 @@ export const SystemManagementInfoCard = ({ id, title, filter, links, useNavigati
 
     if (filteredLinks.length === 0) return null;
 
-    const handleClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleClick = (href: string, e: MouseEvent<HTMLAnchorElement>) => {
         if (useNavigation) {
             e.preventDefault();
             navigate(href);
@@ -30,7 +33,7 @@ export const SystemManagementInfoCard = ({ id, title, filter, links, useNavigati
     return (
         <>
             {filteredLinks.length > 0 && (
-                <Card id={id} title={title} level={2} collapsible className={styles.card}>
+                <Card id={id} title={title} level={2} collapsible={true} className={styles.card}>
                     <div className={styles.sectionContent}>
                         {filteredLinks.map((link) => (
                             <a key={link.href} href={link.href} onClick={(e) => handleClick(link.href, e)}>

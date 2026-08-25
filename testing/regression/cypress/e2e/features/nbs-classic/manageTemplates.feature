@@ -2,18 +2,21 @@ Feature: Classic NBS - User can view and manage data in NBS Templates
 
   Background:
     Given I am logged in as secure user and stay on classic
-    Then Navigate to Template Library
+    And Navigate to Template Library
 
+  # Needs test template to import
+  @skip
   Scenario: Import template
-    And Click on Import in Template Library
-    Then Click on Choose File in Template Library
+    When Click on Import in Template Library
+    And Click on Choose File in Template Library
 
   Scenario: Filter results in template library
-    And Click filter button in Template Library
-    Then Enter filter text in the input
+    When Click filter button in Template Library
+    And Enter filter text "COVID" in the input
     And Click OK button to filter
+    Then all template names should contain the text "COVID"
 
   Scenario: View rule in template library
-    And Click a template in template library
-    Then Click View Rules button in Template view
-    And Verify rules listed in the results page
+    When Click a template in template library
+    And Click View Rules button in Template view
+    Then Verify rules listed in the results page

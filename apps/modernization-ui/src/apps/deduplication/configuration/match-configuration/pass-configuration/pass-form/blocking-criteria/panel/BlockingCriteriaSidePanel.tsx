@@ -1,12 +1,16 @@
+import { useEffect, useState } from 'react';
+
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import { DataElements } from 'apps/deduplication/api/model/DataElement';
+import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
 import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
 import { Button } from 'design-system/button';
-import { useEffect, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+
 import { AttributeEntry } from '../../attribute-entry/AttributeEntry';
 import { SidePanel } from '../../side-panel/SidePanel';
+
 import styles from './blocking-criteria-panel.module.scss';
-import { BlockingAttributeLabelsList } from 'apps/deduplication/api/model/Labels';
-import { DataElements } from 'apps/deduplication/api/model/DataElement';
 
 type Props = {
     visible: boolean;
@@ -43,7 +47,7 @@ export const BlockingCriteriaSidePanel = ({ visible, dataElements, onAccept, onC
             onClose={onCancel}
             footer={
                 <>
-                    <Button secondary onClick={handleCancel}>
+                    <Button secondary={true} onClick={handleCancel}>
                         Cancel
                     </Button>
                     <Button icon="add" labelPosition="right" onClick={() => onAccept(selectedAttributes)}>

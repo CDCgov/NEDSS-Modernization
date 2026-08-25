@@ -1,0 +1,33 @@
+.layout {
+    :global {
+        min-width: 38rem;
+
+        .usa-modal__content {
+            overflow-y: auto;
+
+            .usa-modal__footer {
+                div {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+
+    .radioGroupWrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+}
+
+.form {
+    margin: 1rem;
+
+    :global {
+        form {
+            > span {
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}

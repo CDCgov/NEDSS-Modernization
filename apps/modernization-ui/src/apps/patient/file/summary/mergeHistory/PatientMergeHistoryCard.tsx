@@ -1,16 +1,20 @@
 import { Suspense, useMemo } from 'react';
+
+import { format } from 'date-fns';
 import { Await } from 'react-router';
+
+import { Card } from 'design-system/card';
 import { Section } from 'design-system/card/section/Section';
 import { Column, SortableDataTable } from 'design-system/table';
-import { Card } from 'design-system/card';
 import { Tag } from 'design-system/tag';
-import { PatientFileMergeHistory } from './model/mergeHistory';
-import { MemoizedSupplier } from 'libs/supplying';
-import { format } from 'date-fns';
-import { displayName } from 'name/displayName';
-import { Patient } from '../../patient';
-import styles from './PatientMergeHistory.module.scss';
 import { permissions, Permitted } from 'libs/permission';
+import { MemoizedSupplier } from 'libs/supplying';
+import { displayName } from 'name/displayName';
+
+import { Patient } from '../../patient';
+
+import styles from './PatientMergeHistory.module.scss';
+import { PatientFileMergeHistory } from './model/mergeHistory';
 
 type PatientMergeHistoryCardProps = {
     id: string;
@@ -85,7 +89,7 @@ const InternalMergeHistoryCard = ({
     const patientName = patient?.name ? displayName('short')(patient.name) : '---';
 
     return (
-        <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible>
+        <Card id={id} title="Merge history" flair={<Tag variant="default">{data.length}</Tag>} collapsible={true}>
             <div className={styles.sectionCard}>
                 {groupKeys.map((timestampKey, index) => {
                     const group = grouped[timestampKey];
@@ -102,7 +106,7 @@ const InternalMergeHistoryCard = ({
                                 columns={columns}
                                 data={group}
                                 className={styles.dataTable}
-                                sizing={'small'}
+                                sizing="small"
                             />
                         </Section>
                     );

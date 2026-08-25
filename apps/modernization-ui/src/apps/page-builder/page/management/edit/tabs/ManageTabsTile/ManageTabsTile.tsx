@@ -1,7 +1,9 @@
-import { PagesTab } from 'apps/page-builder/generated';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
 import { Icon } from '@trussworks/react-uswds';
+
+import { PagesTab } from 'apps/page-builder/generated';
 import { Icon as IconComponent } from 'components/Icon/Icon';
+
 import styles from './manageTabsTile.module.scss';
 
 type Props = {
@@ -40,20 +42,21 @@ export const ManageTabsTile = ({
                             className={`${styles.handle} ${selectedForDelete ? styles.inactive : ''}`}
                             {...provided.dragHandleProps}
                         >
-                            {selectedForDelete ? (
-                                <IconComponent name="drag" color="inactive" />
-                            ) : (
-                                <IconComponent name="drag" />
-                            )}
+                            <IconComponent
+                                name="drag"
+                                color={selectedForDelete ? 'inactive' : undefined}
+                                alt="drag handle"
+                            />
                         </div>
-                        <div className={styles.label} data-testid={'label'}>
-                            <IconComponent name="folder" />
+                        <div className={styles.label} data-testid="label">
+                            <IconComponent name="folder" alt="folder" />
                             {tab.name}&nbsp;
                             {tab.sections && tab.sections.length ? '(' + tab.sections!.length + ')' : '(0)'}
                         </div>
                     </div>
                     <div className={styles.buttons}>
                         <Icon.Edit
+                            aria-label="edit"
                             onClick={() => {
                                 reset();
                                 setSelectedForEdit(tab, index);
@@ -61,6 +64,7 @@ export const ManageTabsTile = ({
                             size={3}
                         />
                         <Icon.Delete
+                            aria-label="delete"
                             onClick={() => {
                                 reset();
                                 setSelectedForDelete(tab);
@@ -68,9 +72,9 @@ export const ManageTabsTile = ({
                             size={3}
                         />
                         {tab.visible ? (
-                            <Icon.Visibility size={3} onClick={() => onChangeVisibility(tab)} />
+                            <Icon.Visibility aria-label="hide" size={3} onClick={() => onChangeVisibility(tab)} />
                         ) : (
-                            <Icon.VisibilityOff size={3} onClick={() => onChangeVisibility(tab)} />
+                            <Icon.VisibilityOff aria-label="show" size={3} onClick={() => onChangeVisibility(tab)} />
                         )}
                         <div className={styles.delete_buttons}>
                             <p onClick={deleteTab}>Yes, delete</p> | <p onClick={() => reset()}>Cancel</p>

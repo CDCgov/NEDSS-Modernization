@@ -1,12 +1,14 @@
 import { Suspense } from 'react';
+
 import { Await } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
+
 import { LoadingOverlay } from 'libs/loading';
 import {
     MortalityDemographic,
     MortalityDemographicCard,
     MortalityDemographicCardProps,
 } from 'libs/patient/demographics/mortality';
+import { MemoizedSupplier } from 'libs/supplying';
 
 type PatientFileMortalityCardProps = {
     provider: MemoizedSupplier<Promise<MortalityDemographic>>;

@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 
 class BaseReportExecutionError(Exception):
@@ -7,6 +8,8 @@ class BaseReportExecutionError(Exception):
     def __init__(self, message: str, http_code: int):
         self.message = message
         self.http_code = http_code
+        self.id = str(uuid.uuid4())
+
         super().__init__(self.message)
 
 
@@ -15,6 +18,14 @@ class MissingLibraryError(BaseReportExecutionError):
 
     def __init__(self, library_name: str, is_builtin: bool):
         message = f'Library `{library_name}` (is_builtin: {is_builtin}) not found'
+        super().__init__(message, 422)
+
+
+class MissingDbObjectError(BaseReportExecutionError):
+    """The queried db object is missing."""
+
+    def __init__(self, object_type: str, name: str):
+        message = f'{object_type} `{name}` not found in the reporting database'
         super().__init__(message, 422)
 
 
@@ -46,10 +57,11 @@ class InternalServerError(BaseReportExecutionError):
     """
 
     def __init__(self, message, orig_exc=None):
-        logging.error(message)
-        if orig_exc is not None:
-            logging.error(orig_exc)
         super().__init__('Internal Server Error', 500)
+
+        logging.error(f'(Error ID: {self.id}) - {message}')
+        if orig_exc is not None:
+            logging.error(f'(Error ID: {self.id}) - {orig_exc}')
 
 
 class InvalidReportSpecError(BaseReportExecutionError):
@@ -76,4 +88,40 @@ class ToDoError(BaseReportExecutionError):
         todo_message = f'TODO: {message}'
         if orig_exc is not None:
             logging.error(orig_exc)
-        super().__init__(todo_message, 502)
+        super().__init__(todo_message, 501)
+
+
+class InvalidConfigurationError(BaseReportExecutionError):
+    """The requested configuration key is missing or unmapped in the database."""
+
+    def __init__(self, config_key: str):
+        super().__init__(
+            'No qualified mapping found in NBS_Configuration '
+            + f'for config_key: {config_key}',
+            422,
+        )
+
+
+class IntConfigurationConversionError(BaseReportExecutionError):
+    """The configuration text payload cannot be evaluated as a valid integer."""
+
+    def __init__(self, config_key: str):
+        super().__init__(
+            'Unable to convert NBS configuration value to number '
+            + f'for config_key: {config_key}',
+            422,
+        )
+
+
+class ConfigurationIntegrityError(BaseReportExecutionError):
+    """A query constraint was broken due to duplicate keys or bad data layouts."""
+
+    def __init__(self, message: str):
+        super().__init__(f'NBS_Configuration Data Integrity Error: {message}', 422)
+
+
+class InvalidLibraryParamsError(BaseReportExecutionError):
+    """The provided library parameters are invalid or missing required keys."""
+
+    def __init__(self, message: str):
+        super().__init__(f'Invalid library parameters: {message}', 422)

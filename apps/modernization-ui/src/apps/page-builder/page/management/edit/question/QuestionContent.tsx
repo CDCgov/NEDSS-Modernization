@@ -1,13 +1,17 @@
-import styles from './question-content.module.scss';
-import { Input } from 'components/FormInputs/Input';
 import { useEffect, useState } from 'react';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Selectable } from 'options/selectable';
-import { Icon as NbsIcon } from 'components/Icon/Icon';
-import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
+
 import { Button, Icon } from '@trussworks/react-uswds';
+
+import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
+import { Selectable } from 'options/selectable';
+
 import { usePageManagement } from '../../usePageManagement';
+
+import styles from './question-content.module.scss';
 
 type Props = {
     defaultValue: string;
@@ -73,13 +77,14 @@ export const QuestionContent = ({
                         displayComponent === 1031) && (
                         <SelectInput
                             onChange={() => {}}
-                            defaultValue={''}
+                            defaultValue=""
                             options={conceptState}
                             data-testid="dropdown-input"
                         />
                     )}
                     {/* create custom checkbox component */}
-                    {/* need to create an api that grabs the race since it is in another table, once that is done a custom component can be created */}
+                    {/* need to create an api that grabs the race since it is in another table, 
+                    once that is done a custom component can be created */}
                     {displayComponent === 1001 && <RadioButtons options={conceptState} />}
 
                     {displayComponent === 1008 && (
@@ -92,24 +97,36 @@ export const QuestionContent = ({
                             defaultValue=""
                             type="text"
                             className={styles.questionInput}
-                            multiline
+                            multiline={true}
                         />
                     )}
                     {displayComponent === 1017 && (
                         <div className={styles.multiElements}>
-                            <Button type="button" className={styles.searchBtn} outline onClick={() => {}}>
+                            <Button type="button" className={styles.searchBtn} outline={true} onClick={() => {}}>
                                 Search
                             </Button>
                             <span className={styles.dividerText}>Or</span>
                             <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
-                            <Button type="button" className={styles.quickCodeLookupBtn} outline onClick={() => {}}>
+                            <Button
+                                type="button"
+                                className={styles.quickCodeLookupBtn}
+                                outline={true}
+                                onClick={() => {}}
+                            >
                                 Quick code lookup
                             </Button>
                         </div>
                     )}
                 </div>
 
-                {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />}
+                {type === 'DATE' && (
+                    <Icon.CalendarToday
+                        aria-label="calendar"
+                        size={4}
+                        className={styles.icon}
+                        data-testid="calendar-icon"
+                    />
+                )}
             </div>
             {valueSet && !isStandard && (
                 <div className="margin-top-1em">
@@ -117,9 +134,9 @@ export const QuestionContent = ({
                         className={`${styles.unStyledButton} margin-right-2`}
                         type="button"
                         onClick={() => onEditValueset(valueSet)}
-                        unstyled
+                        unstyled={true}
                     >
-                        <Icon.Edit className="margin-right-2px" />
+                        <Icon.Edit aria-label="edit" className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
                     {!isPublished && (
@@ -127,10 +144,10 @@ export const QuestionContent = ({
                             className={styles.unStyledButton}
                             type="button"
                             onClick={onChangeValueset}
-                            unstyled
+                            unstyled={true}
                             disabled={isPublished}
                         >
-                            <Icon.Edit className="margin-right-2px" />
+                            <Icon.Edit aria-label="edit" className="margin-right-2px" />
                             <span> Change value set</span>
                         </Button>
                     )}
@@ -141,7 +158,7 @@ export const QuestionContent = ({
     return (
         <div className={styles.question}>
             <div className={styles.reorderIcon}>
-                <NbsIcon name={'drag'} />
+                <NbsIcon alt="drag handle" name="drag" />
             </div>
             {!staticTypes.includes(displayComponent ?? 0) ? (
                 renderLabelWithComponent

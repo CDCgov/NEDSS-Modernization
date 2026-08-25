@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { Concept } from 'apps/page-builder/generated';
 import { ConceptSort, SortField } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { TableBody, TableComponent } from 'components/Table';
 import { internalizeDate } from 'date';
-import { usePagination } from 'pagination';
-import { useEffect, useState } from 'react';
 import { Direction } from 'libs/sorting';
+import { usePagination } from 'pagination';
+
 import styles from './concept-table.module.scss';
 
 export enum Column {
@@ -53,7 +56,7 @@ export const ConceptTable = ({ concepts, loading, onSort, onEditConcept }: Props
                     title: (
                         <Button
                             type="button"
-                            outline
+                            outline={true}
                             className={styles.editConceptButton}
                             aria-label={`edit concept: ${concept.localCode}`}
                             onClick={() => onEditConcept(concept)}

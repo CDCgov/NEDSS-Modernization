@@ -1,10 +1,12 @@
 import { ReactNode, useId, useState } from 'react';
+
 import classNames from 'classnames';
+
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
+
 import { CardHeader, CardHeaderProps } from './CardHeader';
 import { Collapsible } from './Collapsible';
-
 import styles from './card.module.scss';
 
 type CardProps = {
@@ -16,6 +18,7 @@ type CardProps = {
     footer?: ReactNode;
     required?: boolean;
     disabled?: boolean;
+    contentMaxWidth?: string;
 } & Omit<CardHeaderProps, 'control'> &
     JSX.IntrinsicElements['section'];
 
@@ -34,6 +37,7 @@ const Card = ({
     required = false,
     disabled = false,
     children,
+    contentMaxWidth,
     ...remaining
 }: CardProps) => {
     const [collapsed, setCollapsed] = useState<boolean>(!open);
@@ -46,7 +50,9 @@ const Card = ({
             id={cardId}
             role="group"
             aria-labelledby={id}
-            className={classNames(styles.card, className, { [styles.disabled]: disabled })}
+            className={classNames(styles.card, className, contentMaxWidth ? styles[`card--${contentMaxWidth}`] : '', {
+                [styles.disabled]: disabled,
+            })}
             {...remaining}
         >
             <CardHeader
@@ -62,7 +68,7 @@ const Card = ({
                         <Button
                             className={classNames(styles.toggle, { [styles.collapsed]: collapsed })}
                             sizing={remaining.sizing}
-                            tertiary
+                            tertiary={true}
                             icon="expand_less"
                             aria-label={collapsed ? `Show ${title} content` : `Hide ${title} content`}
                             aria-controls={collapsibleId}

@@ -1,10 +1,13 @@
+import { useEffect, useRef, useState } from 'react';
+
+import { ModalRef } from '@trussworks/react-uswds';
+
 import { PagesQuestion } from 'apps/page-builder/generated';
+import { ConfirmationModal } from 'confirmation';
+
+import { QuestionContent } from './QuestionContent';
 import { QuestionHeader } from './QuestionHeader';
 import styles from './question.module.scss';
-import { QuestionContent } from './QuestionContent';
-import { ModalRef } from '@trussworks/react-uswds';
-import { ConfirmationModal } from 'confirmation';
-import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     question: PagesQuestion;
@@ -49,6 +52,7 @@ export const Question = ({
                         modal={modal}
                         title="Warning"
                         message="Are you sure you want to delete element?"
+                        // eslint-disable-next-line max-len
                         detail="You have indicated that you would like to delete element. Select Delete to continue or Cancel to return to Edit Page."
                         confirmText="Delete"
                         onConfirm={() => {
@@ -57,9 +61,6 @@ export const Question = ({
                             modal.current?.toggleModal();
                         }}
                         cancelText="Cancel"
-                        onCancel={() => {
-                            modal.current?.toggleModal();
-                        }}
                     />
                 )}
                 <QuestionContent

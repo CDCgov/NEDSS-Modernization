@@ -19,17 +19,13 @@ class TestIntegrationQa04Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
 
         result = execute_report(report_spec)
 
-        assert result.content_type == 'table'
-        assert result.header == 'QA04 Cases Missing Lab and/or Treatment'
         data = result.content
         assert len(data.data) > 0
         assert len(data.data[0]) == len(data.columns) if data.data else True
@@ -52,9 +48,7 @@ class TestIntegrationQa04Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART] WHERE 1=0
                 """,
@@ -62,8 +56,6 @@ class TestIntegrationQa04Library:
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'QA04 Cases Missing Lab and/or Treatment'
         data = result.content
         assert data.data == []
 
@@ -74,17 +66,13 @@ class TestIntegrationQa04Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
 
         result = execute_report(report_spec)
-        assert result.content_type == 'table'
-        assert result.header == 'QA04 Cases Missing Lab and/or Treatment'
-        assert result.subheader is None
+        assert result.context_header is None
         assert result.description is None
 
     def test_execute_report_error_explanations(self):
@@ -94,9 +82,7 @@ class TestIntegrationQa04Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )
@@ -118,9 +104,7 @@ class TestIntegrationQa04Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': """
                     SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]
                     WHERE INV_CASE_STATUS = 'Suspect'
@@ -142,9 +126,7 @@ class TestIntegrationQa04Library:
                 'version': 1,
                 'is_export': True,
                 'is_builtin': True,
-                'report_title': 'QA04 Cases Missing Lab and/or Treatment',
                 'library_name': 'qa_04',
-                'data_source_name': '[RDB].[dbo].[STD_HIV_DATAMART]',
                 'subset_query': 'SELECT * FROM [RDB].[dbo].[STD_HIV_DATAMART]',
             }
         )

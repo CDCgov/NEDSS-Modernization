@@ -1,6 +1,8 @@
 import { Card, CardProps } from 'design-system/card';
-import { MortalityDemographicView } from './MortalityDemographicView';
+
 import { MortalityDemographic } from '../mortality';
+
+import { MortalityDemographicView } from './MortalityDemographicView';
 
 type MortalityDemographicCardProps = {
     title?: string;

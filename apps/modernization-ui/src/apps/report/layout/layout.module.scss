@@ -2,10 +2,11 @@
 @use 'styles/colors';
 
 .columnContent {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
+    align-content: start;
 }
 
 $header-height: 6rem;
@@ -13,6 +14,7 @@ $header-height: 6rem;
 .page {
     display: flex;
     flex-direction: column;
+    min-height: calc(100vh - var(--nav-bar-height));
 
     & > header {
         position: sticky;
@@ -23,9 +25,21 @@ $header-height: 6rem;
     }
 
     & > main {
+        flex-grow: 1;
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-areas: 'main aside';
+
+        // overflow ruins sticky-ness of aside
+        &:not(:has(aside)) {
+            overflow-x: auto;
+        }
+
+        // assumes that a div will be a primary sibling of the aside
+        // in the layout (<main><aside /><div /></main>
+        &:has(aside) > div {
+            overflow-x: auto;
+        }
 
         h2 {
             scroll-margin-top: $header-height;
@@ -42,7 +56,8 @@ $header-height: 6rem;
 }
 
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     justify-content: space-between;
     align-items: flex-start;
 
@@ -54,16 +69,28 @@ $header-height: 6rem;
 
     background-color: colors.$base-white;
 
-    .title {
-        display: flex;
-        flex-direction: row;
+    .left {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: start;
+        align-items: end;
         gap: 1rem;
-        align-items: baseline;
+    }
+
+    // it will cut off with ellipsis, need the height to stay relatively stable
+    // so the logic for the "on this page" aside offset is reasonable
+    .title {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .subtitle {
+        font-size: 1.375rem;
+        font-weight: 400;
+        margin: 0.25rem 0;
     }
 
     .actions {
-        flex-shrink: 0;
-
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -74,4 +101,8 @@ $header-height: 6rem;
             box-shadow: inset 0 0 0 2px colors.$disabled !important;
         }
     }
+}
+
+.alertMessage {
+    flex-grow: unset;
 }

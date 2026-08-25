@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { DatePickerInput } from './DatePickerInput';
 
 describe('DatePickerInput component tests', () => {
@@ -166,7 +167,7 @@ describe('DatePickerInput component tests', () => {
                     label="Test DP Label"
                     className="test-dp-class-name"
                     defaultValue="12/31/2022"
-                    required
+                    required={true}
                 />
             );
             const label = getByText('Test DP Label');

@@ -1,5 +1,6 @@
-import { PageRuleControllerService, PagesResponse, TargetQuestionRequest } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { PageRuleControllerService, PagesResponse, TargetQuestionRequest } from 'apps/page-builder/generated';
 
 type State =
     | { status: 'idle' }

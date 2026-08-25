@@ -1,46 +1,74 @@
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
-import { ReportLayout } from 'apps/report/layout/ReportLayout';
-import { Button, LinkButton } from 'design-system/button';
-import { LoadingIndicator } from 'libs/loading/indicator';
-import { useState } from 'react';
-import { useParams } from 'react-router';
-import { ReportConfigurationContent } from './ReportConfigurationContent';
+import { useRef, useState } from 'react';
 
+import { ModalRef } from '@trussworks/react-uswds';
+import { useLoaderData, useParams } from 'react-router';
+
+import { ReportLayout } from 'apps/report/layout/ReportLayout';
 import styles from 'apps/report/layout/layout.module.scss';
+import { ConfirmationModal } from 'confirmation';
+import { Button, NavLinkButton } from 'design-system/button';
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
+import { ReportConfiguration, ReportControllerService } from 'generated';
+import { LoadingBlock } from 'libs/loading/block';
+import { redirectToNBS6 } from 'utils';
+
+import { ReportConfigurationContent } from './ReportConfigurationContent';
 import { NBS_LIST_REPORT_CONFIG_PAGE } from './constants';
 
 const ViewReportConfiguration = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [error, setError] = useState<string | null>(null);
-    const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
+    const confirmDeleteRef = useRef<ModalRef>(null);
+    const [deleting, setDeleting] = useState<boolean>(false);
+    const [error, setError] = useState<unknown | null>(null);
+    const config = useLoaderData<ReportConfiguration>();
 
     return !config ? (
-        <>
-            {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <LoadingIndicator />
-        </>
+        <LoadingBlock />
     ) : (
         <ReportLayout
-            title="View Report"
+            title="View report"
             startHref={NBS_LIST_REPORT_CONFIG_PAGE}
             startPage="Manage Reports"
             actions={
                 <>
-                    <Button secondary={true} onClick={() => window.alert('to do')}>
+                    <Button secondary={true} destructive={true} onClick={() => confirmDeleteRef.current?.toggleModal()}>
                         Delete
                     </Button>
-                    <LinkButton href={`/report/management/configuration/${reportUid}/${dataSourceUid}/edit`}>
+                    <NavLinkButton to={`/report/${reportUid}/${dataSourceUid}/run`} secondary={true}>
+                        Run
+                    </NavLinkButton>
+                    <NavLinkButton to={`/report/management/configuration/${reportUid}/${dataSourceUid}/edit`}>
                         Edit
-                    </LinkButton>
+                    </NavLinkButton>
                 </>
             }
         >
+            {!!error && <ApiErrorBanner action="viewing" item="report" error={error} />}
             <div className={styles.columnContent}>
                 <ReportConfigurationContent isEditable={false} config={config} />
             </div>
+            <ConfirmationModal
+                modal={confirmDeleteRef}
+                title={`Delete report: ${config?.title}`}
+                message={<>This action is permanent and cannot be undone.</>}
+                confirmText="Yes, delete"
+                cancelText="No, cancel"
+                disabled={deleting}
+                onConfirm={() => {
+                    setDeleting(true);
+                    ReportControllerService.deleteReport({ reportUid, dataSourceUid })
+                        .then(() => {
+                            redirectToNBS6(NBS_LIST_REPORT_CONFIG_PAGE);
+                        })
+                        .catch((err) => {
+                            setError(err);
+                            confirmDeleteRef.current?.toggleModal();
+                        })
+                        .finally(() => setDeleting(false));
+                }}
+            />
         </ReportLayout>
     );
 };

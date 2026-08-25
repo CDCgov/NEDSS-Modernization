@@ -1,7 +1,10 @@
 import { useCallback } from 'react';
+
 import classNames from 'classnames';
-import { withoutProperty, withProperty } from 'utils/object';
+
 import { Sizing } from 'design-system/field';
+import { withoutProperty, withProperty } from 'utils/object';
+
 import { DateBetweenCriteria, DateEqualsCriteria, DateRange } from '../dateCriteria';
 import { MonthYearField } from '../exact/MonthYearField';
 

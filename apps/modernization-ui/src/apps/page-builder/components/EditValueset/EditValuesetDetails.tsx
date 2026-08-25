@@ -1,12 +1,16 @@
-import { CreateValuesetRequest, Valueset } from 'apps/page-builder/generated';
-import { FormProvider, useForm } from 'react-hook-form';
-import { ValuesetForm } from '../AddValueset/ValuesetForm/ValuesetForm';
-import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import { Button } from '@trussworks/react-uswds';
-import { ButtonBar } from '../ButtonBar/ButtonBar';
-import { useUpdateValueset } from 'apps/page-builder/hooks/api/useUpdateValueset';
 import { useEffect } from 'react';
+
+import { Button } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { CreateValuesetRequest, Valueset } from 'apps/page-builder/generated';
+import { useUpdateValueset } from 'apps/page-builder/hooks/api/useUpdateValueset';
 import { useAlert } from 'libs/alert';
+
+import { ValuesetForm } from '../AddValueset/ValuesetForm/ValuesetForm';
+import { ButtonBar } from '../ButtonBar/ButtonBar';
+import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+
 import styles from './edit-valueset.module.scss';
 
 type Props = {
@@ -51,7 +55,7 @@ export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpd
                 </FormProvider>
             </div>
             <ButtonBar>
-                <Button type="button" onClick={onCancel} outline>
+                <Button type="button" onClick={onCancel} outline={true}>
                     Cancel
                 </Button>
                 <Button

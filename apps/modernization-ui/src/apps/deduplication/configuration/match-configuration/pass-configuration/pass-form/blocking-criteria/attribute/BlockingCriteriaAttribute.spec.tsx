@@ -1,8 +1,10 @@
-import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
-import { FormProvider, useForm } from 'react-hook-form';
-import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { BlockingAttribute, Pass } from 'apps/deduplication/api/model/Pass';
+
+import { BlockingCriteriaAttribute } from './BlockingCriteriaAttribute';
 
 const onRemove = vi.fn();
 const Fixture = () => {

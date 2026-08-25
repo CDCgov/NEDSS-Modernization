@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react';
+
 import { Label, Radio } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { CreateNumericQuestionRequest, ValueSetControllerService } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput, Selectable } from 'components/FormInputs/SelectInput';
+import { Selectable, SelectInput } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import { AdditionalQuestionFields } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 

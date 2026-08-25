@@ -1,8 +1,11 @@
 import { FormEvent, useEffect, useState } from 'react';
+
 import { Button, ErrorMessage, Fieldset, Form, FormGroup, Label, TextInput } from '@trussworks/react-uswds';
-import { ApiError, LoginService } from 'generated';
-import './Login.scss';
 import { useNavigate } from 'react-router';
+
+import { ApiError, LoginService } from 'generated';
+
+import './Login.scss';
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +17,7 @@ const LoginForm = () => {
     useEffect(() => {
         if (pending) {
             LoginService.login({
-                requestBody: { username: username },
+                requestBody: { username },
             })
                 .then(() => navigate('/'))
                 .catch((error: ApiError) => {
@@ -37,7 +40,7 @@ const LoginForm = () => {
 
     return (
         <div className="sign-in-wrapper">
-            <Form onSubmit={handleSubmit} large className="sign-in-form">
+            <Form onSubmit={handleSubmit} large={true} className="sign-in-form">
                 <Fieldset legend="Sign In" legendStyle="large">
                     <FormGroup error={error !== undefined}>
                         <Label htmlFor="username">Username or email address</Label>

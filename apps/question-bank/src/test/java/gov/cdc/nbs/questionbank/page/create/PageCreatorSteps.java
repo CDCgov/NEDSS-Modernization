@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page.create;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.PageController;
 import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
@@ -12,6 +13,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.util.Arrays;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -27,6 +29,9 @@ public class PageCreatorSteps {
   private PageCreateRequest request;
 
   private PageCreateResponse pageCreateResponse;
+
+  private final NbsUserDetails user =
+      new NbsUserDetails(103L, "username", "first", "last", Set.of(), true, 1L);
 
   @Given("I am an admin user make an add page request")
   public void i_am_an_admin_user_make_an_add_page_request() {
@@ -50,7 +55,7 @@ public class PageCreatorSteps {
   @When("I make a request to create a Page")
   public void i_make_a_request_to_create_a_page() {
     try {
-      pageCreateResponse = pageController.createPage(request);
+      pageCreateResponse = pageController.createPage(user, request);
     } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }

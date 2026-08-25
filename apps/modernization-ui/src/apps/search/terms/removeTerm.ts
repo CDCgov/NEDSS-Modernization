@@ -1,11 +1,14 @@
 import { FieldValues, Path, PathValue, UseFormReturn } from 'react-hook-form';
-import { Term } from './terms';
-import { selectField } from 'utils/util';
+
 import { removeAndTrim } from 'utils';
+import { selectField } from 'utils/util';
 
-const isSelectableNotMatching = (value: string) => (item: any) => 'value' in item && item.value !== value;
+import { Term } from './terms';
 
-const doesNotEqual = (value: string) => (item: any) =>
+const isSelectableNotMatching = (value: string) => (item: unknown) =>
+    !!item && typeof item === 'object' && 'value' in item && item.value !== value;
+
+const doesNotEqual = (value: string) => (item: unknown) =>
     typeof item === 'string' ? value !== item : isSelectableNotMatching(value)(item);
 
 const removeTerm =

@@ -1,15 +1,20 @@
+import { createRef } from 'react';
+
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
+
 import { SaveTemplates } from './SaveTemplate';
 
 describe('When SaveTemplates component loads', () => {
     it('Save button should be disabled', () => {
+        const mockModalRef = createRef<any>();
+
         const { container } = render(
             <BrowserRouter>
-                <SaveTemplates />
+                <SaveTemplates modalRef={mockModalRef} />
             </BrowserRouter>
         );
         const btn = container.getElementsByClassName('usa-button')[0];
-        expect(btn.hasAttribute('disabled'));
+        expect(btn).toBeDisabled();
     });
 });

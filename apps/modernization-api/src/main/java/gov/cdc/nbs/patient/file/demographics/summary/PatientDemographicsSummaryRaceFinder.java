@@ -10,10 +10,10 @@ class PatientDemographicsSummaryRaceFinder {
   private static final String QUERY =
       """
       select
-          coalesce([race].code_short_desc_txt, [patient].race_category_cd, '')
+          [race].code_short_desc_txt
       from person_race [patient]
 
-              left join NBS_SRTE..Code_value_general [race] on
+              join NBS_SRTE..Code_value_general [race] on
                   [race].code_set_nm = 'RACE_CALCULATED'
               and [race].[code] = [patient].race_category_cd
 

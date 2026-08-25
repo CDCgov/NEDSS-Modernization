@@ -1,7 +1,9 @@
-import { asSelectable } from 'options';
 import { render, screen } from '@testing-library/react';
-import { RaceDemographic } from './race';
+
+import { asSelectable } from 'options';
+
 import { RaceDemographicView } from './RaceDemographicView';
+import { RaceDemographic } from './race';
 
 const entry: RaceDemographic = {
     id: 613,

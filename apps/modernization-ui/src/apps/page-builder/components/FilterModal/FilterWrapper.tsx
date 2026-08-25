@@ -1,12 +1,24 @@
+import { ReactNode } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
-import React from 'react';
+
 import './filter.scss';
 
-export const FilterWrapper = ({ isModalHidden, name, toggleModal, children }: any) => {
+export const FilterWrapper = ({
+    isModalHidden,
+    name,
+    toggleModal,
+    children,
+}: {
+    isModalHidden: boolean;
+    name: ReactNode;
+    toggleModal: () => void;
+    children: ReactNode;
+}) => {
     return (
         <div className="filter-config-panel">
             <div className="filter-bar">
-                <Button type="submit" id="filter-model-btn" className="filter-btn" onClick={toggleModal} outline>
+                <Button type="submit" id="filter-model-btn" className="filter-btn" onClick={toggleModal} outline={true}>
                     <Icon.FilterAlt />
                     <label className="filter-label"></label>
                     {name}

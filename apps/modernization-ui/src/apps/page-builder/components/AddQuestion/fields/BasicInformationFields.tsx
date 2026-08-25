@@ -1,16 +1,18 @@
+import { useEffect } from 'react';
+
 import { ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
 import { maxLengthRule } from 'validation/entry';
+
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
-import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
 
 const questionTypes: { name: string; value: 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE' }[] = [
     { name: 'Value set', value: 'CODED' },
@@ -78,7 +80,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         <Radio
                             id="codeSet_LOCAL"
                             name="codeSet"
-                            value={'LOCAL'}
+                            value="LOCAL"
                             label="LOCAL"
                             onChange={onChange}
                             checked={value === 'LOCAL'}
@@ -87,7 +89,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         <Radio
                             id="codeSet_PHIN"
                             name="codeSet"
-                            value={'PHIN'}
+                            value="PHIN"
                             label="PHIN"
                             onChange={onChange}
                             checked={value === 'PHIN'}
@@ -144,7 +146,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         htmlFor={name}
                         id={name}
                         error={error?.message}
-                        required
+                        required={true}
                         disabled={editing}
                     />
                 )}
@@ -168,7 +170,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         disabled={editing}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -191,7 +193,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             id={name}
                             rows={1}
                             className={styles.textaArea}
-                            required
+                            required={true}
                         />
                     </>
                 )}
@@ -214,7 +216,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                                 onChange(field.value);
                             }}
                             value={value}
-                            required
+                            required={true}
                         />
                     </>
                 )}

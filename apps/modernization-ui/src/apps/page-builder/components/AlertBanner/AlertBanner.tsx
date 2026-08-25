@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
+
 import './AlertBanner.scss';
 import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';

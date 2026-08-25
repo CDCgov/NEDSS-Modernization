@@ -1,10 +1,14 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQuestion';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
-import { useEffect, useState } from 'react';
-import styles from './question-header.module.scss';
+
 import { staticElementTypes } from '../staticelement/EditStaticElement';
+
+import styles from './question-header.module.scss';
 
 type Props = {
     question: PagesQuestion;
@@ -55,12 +59,12 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
             </div>
             <div className={`${styles.questionButtons} question-header-button`}>
                 <Button
-                    unstyled
+                    unstyled={true}
                     className={`${styles.editButton} questionEditButton`}
                     type="button"
                     onClick={onEditQuestion}
                 >
-                    <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
+                    <Icon.Edit aria-label="edit" style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
                 {!question.isStandard && !question.isPublished && (
                     <DeleteQuestion

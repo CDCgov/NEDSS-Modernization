@@ -1,16 +1,18 @@
 import { FormProvider, useForm } from 'react-hook-form';
+
 import { SkipLink } from 'SkipLink';
-import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
-import { NavigationGuard } from 'design-system/entry/navigation-guard';
-import { Button } from 'design-system/button';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
-import { usePatientDataEntryMethod } from 'apps/patient/add/usePatientDataEntryMethod';
 import { AddPatientLayout } from 'apps/patient/add/layout';
-import { ExtendedNewPatientEntry } from './entry';
+import { usePatientDataEntryMethod } from 'apps/patient/add/usePatientDataEntryMethod';
+import { Button } from 'design-system/button';
+import { NavigationGuard } from 'design-system/entry/navigation-guard';
+import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
+
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
+import { ExtendedNewPatientEntry } from './entry';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 
 const sections: NavSection[] = [
     { id: 'administrative', label: 'Administrative' },
@@ -55,7 +57,7 @@ export const AddPatientExtended = () => {
                         sections={sections}
                         actions={() => (
                             <>
-                                <Button onClick={handleCancel} secondary>
+                                <Button onClick={handleCancel} secondary={true}>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleSave} disabled={working}>

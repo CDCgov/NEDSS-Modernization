@@ -2,6 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Success = {
-};
+import type { StandardResponse } from './StandardResponse';
+export type Success = StandardResponse;
 

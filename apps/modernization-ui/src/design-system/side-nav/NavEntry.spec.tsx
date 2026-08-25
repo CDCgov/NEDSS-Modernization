@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { NavEntry, NavEntryProps } from './NavEntry';
 import { MemoryRouter } from 'react-router';
+
+import { NavEntry, NavEntryProps } from './NavEntry';
 
 const Fixture = (props: NavEntryProps) => (
     <MemoryRouter>
@@ -14,13 +15,15 @@ const Fixture = (props: NavEntryProps) => (
 describe('when a navigation menu item', () => {
     describe('is active', () => {
         it('should render with no accessibility violations', async () => {
-            const { container } = render(<Fixture name="internal link" path="/internalRoute" active />);
+            const { container } = render(<Fixture name="internal link" path="/internalRoute" active={true} />);
 
             expect(await axe(container)).toHaveNoViolations();
         });
 
         it('should display a link to a modernized page as active', () => {
-            const { queryByRole, getByText } = render(<Fixture name="internal link" path="/internalRoute" active />);
+            const { queryByRole, getByText } = render(
+                <Fixture name="internal link" path="/internalRoute" active={true} />
+            );
 
             const link = queryByRole('link', { name: 'internal link' });
 
@@ -33,7 +36,7 @@ describe('when a navigation menu item', () => {
 
         it('should display a link to a modernized page as active', () => {
             const { queryByRole, getByText } = render(
-                <Fixture name="external link" href="/nbs/externalRoute" active />
+                <Fixture name="external link" href="/nbs/externalRoute" active={true} />
             );
 
             const link = queryByRole('link', { name: 'external link' });

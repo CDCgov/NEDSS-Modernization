@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+
 import { Icon } from './Icon';
 import { Icons } from './types';
-import userEvent from '@testing-library/user-event';
 
 describe('Icon', () => {
     it('should render with no accessibility violations', async () => {

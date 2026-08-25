@@ -1,6 +1,6 @@
 class RowSelectionPage {
-    navigateToCreateNewPage () {
-        cy.visit('/page-builder/pages/add')
+    navigateToCreateNewPage() {
+        cy.visit('/page-builder/pages/add');
     }
 
     openSearchModal() {
@@ -11,11 +11,11 @@ class RowSelectionPage {
     }
 
     verifySearchModalOpen() {
-        cy.contains("Search and add condition(s)");
+        cy.contains('Search and add condition(s)');
     }
 
     verifyRowsByDefault() {
-        cy.get('#range-toggle').should('have.value', "10");
+        cy.get('#range-toggle').should('have.value', '10');
     }
 
     updateRowsSelection(rowsSelection) {
@@ -39,4 +39,4 @@ class RowSelectionPage {
     }
 }
 
-export const rowSelectionPage = new RowSelectionPage()
+export const rowSelectionPage = new RowSelectionPage();

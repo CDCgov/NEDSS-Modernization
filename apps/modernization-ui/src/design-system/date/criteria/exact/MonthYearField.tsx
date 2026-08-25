@@ -1,11 +1,14 @@
 import { useCallback } from 'react';
+
 import classNames from 'classnames';
-import { withoutProperty, withProperty } from 'utils/object';
+
 import { DateEntry } from 'design-system/date/entry';
-import { DateEqualsCriteria } from '../dateCriteria';
 import { Sizing } from 'design-system/field';
 import Select from 'design-system/select/single/Select';
 import { Selectable } from 'options';
+import { withoutProperty, withProperty } from 'utils/object';
+
+import { DateEqualsCriteria } from '../dateCriteria';
 
 import styles from './exact-date-field.module.scss';
 
@@ -66,8 +69,8 @@ const MonthYearField = ({
 
     return (
         <div role="group" id={id} className={styles['exact-date-entry']} aria-label={label}>
-            <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
-                <label htmlFor={`${id}-month`}>{label} Month</label>
+            <div className={classNames(styles['numeric-wrapper'], styles.month)}>
+                <label htmlFor={`${id}-month`}>{label} month</label>
                 <Select
                     id={`${id}-month`}
                     sizing={sizing}
@@ -78,8 +81,8 @@ const MonthYearField = ({
                     options={months}
                 />
             </div>
-            <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
-                <label htmlFor={`${id}-year`}>{label} Year</label>
+            <div className={classNames(styles['numeric-wrapper'], styles.year)}>
+                <label htmlFor={`${id}-year`}>{label} year</label>
                 <Select
                     id={`${id}-year`}
                     sizing={sizing}

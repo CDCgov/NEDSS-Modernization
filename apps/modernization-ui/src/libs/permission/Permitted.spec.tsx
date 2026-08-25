@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import { Permitted } from './Permitted';
 
 const mockPermissions: string[] = ['permitted', 'other-permitted'];

@@ -1,10 +1,13 @@
-import { useAlert } from 'libs/alert';
+import { useState } from 'react';
+
 import { Pass } from 'apps/deduplication/api/model/Pass';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { Button } from 'design-system/button';
-import { useState } from 'react';
+import { useAlert } from 'libs/alert';
+
 import { UpdatePassNameModal } from '../pass-form/save-modal/UpdatePassNameModal';
+
 import { PassEntry } from './pass-entry/PassEntry';
 import styles from './pass-list.module.scss';
 
@@ -57,7 +60,7 @@ export const PassList = ({ passes, selectedPass, onSetSelectedPass, onAddPass, o
                 <Button
                     icon="add"
                     labelPosition="right"
-                    tertiary
+                    tertiary={true}
                     onClick={onAddPass}
                     disabled={selectedPass !== undefined && selectedPass?.id === undefined}
                     className={styles.addPassButton}

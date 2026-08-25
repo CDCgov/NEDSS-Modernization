@@ -1,5 +1,6 @@
-import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
+
+import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
 import { Direction } from 'libs/sorting';
 
 export type ConditionSearch = {

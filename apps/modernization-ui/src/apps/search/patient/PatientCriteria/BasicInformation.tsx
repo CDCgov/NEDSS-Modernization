@@ -1,16 +1,18 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
-import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
-import { TextCriteriaField } from 'design-system/input/text/criteria';
-import { SingleSelect } from 'design-system/select';
-import { EntryFieldsProps } from 'design-system/entry';
-import { validNameRule } from 'validation/entry';
+
+import { SkipLink } from 'SkipLink';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { Permitted } from 'libs/permission';
-import { searchableGenders } from './searchableGenders';
+import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import { DateCriteriaField, validateDateCriteria } from 'design-system/date/criteria';
+import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
-import { SkipLink } from 'SkipLink';
+import { TextCriteriaField } from 'design-system/input/text/criteria';
+import { SingleSelect } from 'design-system/select';
+import { Permitted } from 'libs/permission';
+import { validNameRule } from 'validation/entry';
+
+import { searchableGenders } from './searchableGenders';
 
 export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
     const { control, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -106,7 +108,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
-                        aria-description={'Separate IDs by commas, semicolons, or spaces'}
+                        aria-description="Separate IDs by commas, semicolons, or spaces"
                     />
                 )}
             />
@@ -120,10 +122,10 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <CheckboxGroup
                             name={name}
-                            label={'Include records that are'}
+                            label="Include records that are"
                             sizing={sizing}
                             orientation={orientation}
-                            required
+                            required={true}
                             options={statusOptions}
                             value={value}
                             onChange={onChange}

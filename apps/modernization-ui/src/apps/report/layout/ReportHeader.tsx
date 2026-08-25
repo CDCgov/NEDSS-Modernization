@@ -1,0 +1,31 @@
+import { ReactNode } from 'react';
+
+import { BackToNbs6Link } from 'breadcrumb';
+import { Heading } from 'components/heading';
+
+import styles from './layout.module.scss';
+
+export type ReportHeaderProps = {
+    title: string;
+    subtitle?: string;
+    actions?: ReactNode;
+    startHref?: string;
+    startPage?: string;
+};
+
+export const ReportHeader = ({ title, subtitle, actions, startHref, startPage }: ReportHeaderProps) => {
+    return (
+        <div className={styles.header}>
+            <div className={styles.left}>
+                <span className={styles.title}>
+                    <Heading level={1} title={title}>
+                        {title}
+                    </Heading>
+                    {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+                </span>
+                {startHref && startPage && <BackToNbs6Link start={startHref}>Back to {startPage}</BackToNbs6Link>}
+            </div>
+            <div className={styles.actions}>{actions}</div>
+        </div>
+    );
+};

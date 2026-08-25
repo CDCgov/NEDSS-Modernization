@@ -1,11 +1,14 @@
+import { ChangeEvent, useEffect } from 'react';
+
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { usePageQuestionDataMartValidation } from 'apps/page-builder/hooks/api/usePageQuestionValidation';
 import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
-import { ChangeEvent, useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+
 import { CreateQuestionForm } from '../QuestionForm';
 
 type Props = {
@@ -65,6 +68,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
         // check === false to keep undefined from triggering an error
         if (isValidRdbColumn === false) {
             form.setError('dataMartInfo.rdbColumnName', {
+                // eslint-disable-next-line max-len
                 message: `An Rdb column named: ${rdbColumnName} already exists in the system for the specified subgroup`,
             });
         } else {
@@ -102,7 +106,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required
+                        required={true}
                     />
                 )}
             />

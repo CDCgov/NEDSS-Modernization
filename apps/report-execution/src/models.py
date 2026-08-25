@@ -1,10 +1,13 @@
+import csv
+import decimal
+import io
+from collections.abc import Generator
 from datetime import date, datetime
-from typing import Annotated, Any, Literal
+from typing import Any
 
-import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
+from pydantic import BaseModel, ConfigDict, Field, Json
 
-from src.utils import get_str_env_or_default
+from src.config import get_cached_config_value
 
 
 class ReportSpec(BaseModel):
@@ -12,10 +15,9 @@ class ReportSpec(BaseModel):
 
     is_export: bool
     is_builtin: bool
-    report_title: str = Field(min_length=1)
     library_name: str = Field(min_length=1)
-    data_source_name: str = Field(min_length=1)
     subset_query: str = Field(min_length=1)
+    sort_by: str | None = None
     days_value: int | None = None  # Specific to potntl_dup_inv_sum
     column_map: list[list[str]] | None = None
     library_params: Json[Any] | None = Field(default_factory=dict)
@@ -50,45 +52,61 @@ class Table(BaseModel):
         # Sort with None first (False < True, so None comes before non-None)
         return sorted(values, key=lambda x: (x is not None, x))
 
+    def data_as_dicts(self) -> list[dict]:
+        """Return data as a list of dicts where the keys are the column names
+        and the values are the data values.
 
-def serialize_table(table: Table) -> str:
-    """Turn a Table into a CSV for returning to the user.
+        Returns:
+            Table data in the form of dicts where the column names are the keys
+        """
 
-    Standardizes Python date and datetime instances to the provided strftime constants,
-    defaulting to:
-     - datetime: mm/dd/yyyy hh:mm:ss
-     - date: mm/dd/yyyy
-    """
-    # strftime constants for Python date and datetime when outputting to CSV
-    csv_date_strftime = get_str_env_or_default('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y')
-    csv_datetime_strftime = get_str_env_or_default(
-        'REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S'
-    )
+        def row_to_dict(row: tuple) -> dict:
+            d = dict()
 
-    # properly format a given value if it's a date or datetime
-    def convert_dates(val: Any) -> Any:
-        if type(val) is date:
-            return pd.to_datetime(val).strftime(csv_date_strftime)
-        elif type(val) is datetime:
-            return pd.to_datetime(val).strftime(csv_datetime_strftime)
+            for i, col in enumerate(self.columns):
+                d[col] = row[i]
 
-        return val
+            return d
 
-    # update table data to have properly formatted dates and datetimes
-    data = [list(map(convert_dates, tpl)) for tpl in table.data]
+        return list(map(row_to_dict, self.data))
 
-    # Short cut to valid CSV - can swap out later if performance dictates
-    # or serialize to CSV at a different location
-    df = pd.DataFrame.from_records(data, columns=table.columns, coerce_float=True)
 
-    csv_str = df.to_csv(
-        index=False,
-        float_format='{:.20g}',
-        lineterminator='\r\n',
-    )
+def yield_table_csv(table: Table) -> Generator[str]:
+    """Turn a Table into a CSV for returning to the user."""
+    date_format = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
+    datetime_format = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
 
-    # Remove trailing new line
-    return csv_str[:-2]
+    def convert(value: Any) -> Any:
+        if type(value) is date:
+            return value.strftime(date_format)
+
+        if type(value) is datetime:
+            return value.strftime(datetime_format)
+
+        if isinstance(value, (float, decimal.Decimal)):
+            return f'{value:.2f}'.rstrip('0').rstrip('.')
+
+        return value
+
+    # only big files actually get chunked
+    chunk_size = 10000
+    output = io.StringIO(newline='')
+    writer = csv.writer(output, lineterminator='\r\n')
+
+    writer.writerow(table.columns)
+
+    for i, row in enumerate(table.data, start=1):
+        writer.writerow(convert(value) for value in row)
+
+        if i % chunk_size == 0:
+            yield output.getvalue()
+
+            output.seek(0)
+            output.truncate(0)
+
+    # Yield whatever remains
+    if output.tell():
+        yield output.getvalue()
 
 
 # TODO: add other return types  # noqa: FIX002
@@ -97,8 +115,6 @@ class ReportResult(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content_type: Literal['table']
-    content: Annotated[Table, PlainSerializer(serialize_table)]
-    header: str | None = None
-    subheader: str | None = None
+    content: Table
+    context_header: str | None = None
     description: str | None = None

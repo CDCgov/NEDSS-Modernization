@@ -1,15 +1,9 @@
-import { ReactNode, createContext, useContext } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
+
 import { Term } from './terms';
 
 type SearchInteractionStatus =
-    | 'waiting'
-    | 'completed'
-    | 'no-input'
-    | 'error'
-    | 'resetting'
-    | 'initializing'
-    | 'loading'
-    | 'reloading';
+    'waiting' | 'completed' | 'no-input' | 'error' | 'resetting' | 'initializing' | 'loading' | 'reloading';
 
 type SearchResults<R> = {
     total: number;
@@ -29,10 +23,10 @@ type SearchInteraction<R> = {
     clear: () => void;
 };
 
-const SearchInteractionContext = createContext<SearchInteraction<any> | undefined>(undefined);
+const SearchInteractionContext = createContext<SearchInteraction<unknown> | undefined>(undefined);
 
 type Props = {
-    interaction: SearchInteraction<any>;
+    interaction: SearchInteraction<unknown>;
     children: ReactNode;
 };
 

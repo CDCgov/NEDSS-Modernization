@@ -1,7 +1,8 @@
-import { Button, Icon, TextInput } from '@trussworks/react-uswds';
 import { KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
 
+import { Button, Icon, TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import styles from './search.module.scss';
 
 type SearchProps = {
@@ -24,7 +25,7 @@ const Search = (props: SearchProps) => {
     };
 
     const handleEnter = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             handleSearch();
         }
     };
@@ -64,8 +65,8 @@ const Search = (props: SearchProps) => {
                     maxLength={50}
                 />
             )}
-            <Button id="searchButton" aria-label="search" type="button" onClick={handleSearch}>
-                <Icon.Search size={3} name="Search" />
+            <Button id="searchButton" type="button" onClick={handleSearch}>
+                <Icon.Search aria-label="search" size={3} name="Search" />
             </Button>
         </search>
     );

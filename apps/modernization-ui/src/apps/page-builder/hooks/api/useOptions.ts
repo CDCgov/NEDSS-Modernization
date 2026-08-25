@@ -1,5 +1,6 @@
-import { ConceptOptionsService, Option } from 'generated';
 import { useEffect, useReducer } from 'react';
+
+import { ConceptOptionsService, Option } from 'generated';
 
 type State =
     | { status: 'idle' }
@@ -8,9 +9,7 @@ type State =
     | { status: 'error'; error: string };
 
 type Action =
-    | { type: 'fetch'; name: string }
-    | { type: 'complete'; options: Option[] }
-    | { type: 'error'; error: string };
+    { type: 'fetch'; name: string } | { type: 'complete'; options: Option[] } | { type: 'error'; error: string };
 
 const reducer = (_state: State, action: Action): State => {
     switch (action.type) {

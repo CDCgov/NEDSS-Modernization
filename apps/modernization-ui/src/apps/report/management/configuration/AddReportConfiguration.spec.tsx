@@ -1,11 +1,14 @@
-import { render, waitFor, within } from '@testing-library/react';
-import * as generated from 'generated';
-import * as options from 'options/selectableResolver';
-import { Layout } from 'layout';
 import { ReactNode } from 'react';
-import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
-import { AddReportConfiguration } from './AddReportConfiguration';
+
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryRouter, RouterProvider, useNavigate } from 'react-router';
+
+import * as generated from 'generated';
+import { Layout } from 'layout';
+import * as options from 'options/selectableResolver';
+
+import { AddReportConfiguration } from './AddReportConfiguration';
 
 vi.mock('react-router', async () => {
     const actual = await vi.importActual<typeof import('react-router')>('react-router');
@@ -104,7 +107,7 @@ describe('add report configuration page', () => {
 
     it('renders empty form and marks fields required', async () => {
         const mockApi = vi.mocked(options.selectableResolver).mockImplementation(mockOptionApiImpl);
-        const { getByRole, findByRole, findByText } = renderWithRouter();
+        const { getByRole, queryByRole, findByRole, findByText, findAllByText, findByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -118,9 +121,42 @@ describe('add report configuration page', () => {
 
         await user.click(await findByRole('button', { name: 'Submit' }));
 
-        for (const field of ['Data source', 'Name', 'Owner', 'Group', 'Section name', 'Report execution library']) {
-            expect(await findByText(`The ${field} is required.`)).toBeVisible();
+        expect(await findAllByText('The Data source is required.')).toHaveLength(2);
+        expect(await findByRole('link', { name: 'Report source' })).toBeVisible();
+
+        // fill out data source
+        expect(await findByLabelText('Name')).toBeDisabled();
+        await user.selectOptions(await findByLabelText('Data source'), '1');
+        await user.click(await findByRole('button', { name: 'Confirm data source' }));
+        await user.click(await findByRole('button', { name: 'Confirm' }));
+        expect(await findByLabelText('Name')).not.toBeDisabled();
+
+        await user.click(await findByRole('button', { name: 'Submit' }));
+
+        for (const field of ['Name', 'Owner', 'Group', 'Section name', 'Report execution library']) {
+            expect(await findAllByText(`The ${field} is required.`)).toHaveLength(2);
+            expect(await findByRole('link', { name: 'Report configuration' })).toBeVisible();
         }
+
+        // Partially add filter
+        await user.selectOptions(await findByLabelText('Filter'), '1');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findAllByText(/The Associated column is required./)).toHaveLength(2);
+
+        // revalidate
+        await user.click(await findByRole('button', { name: 'Submit' }));
+        expect(
+            await findByText(
+                /Data have been entered in the Available filters section. Please press Add or clear the data and submit again/
+            )
+        ).toBeVisible();
+        expect(await findByRole('link', { name: 'Available filters' })).toBeVisible();
+
+        // clear the filter and check validation error clears as well
+        await user.click(await findByRole('button', { name: 'Clear' }));
+        expect(queryByRole('link', { name: /The Associated column is required./ })).toBeNull();
+        await user.click(await findByRole('button', { name: 'Submit' }));
+        expect(queryByRole('link', { name: 'Available filters' })).toBeNull();
     });
 
     it('fills out form and redirects on submit', async () => {
@@ -128,7 +164,7 @@ describe('add report configuration page', () => {
         vi.mocked(generated.ReportControllerService.createReport).mockResolvedValue({ reportUid: 1, dataSourceUid: 2 });
         const navigate = vi.fn();
         vi.mocked(useNavigate).mockReturnValue(navigate);
-        const { getByRole, findByRole, findByLabelText } = renderWithRouter();
+        const { getByRole, queryByRole, findByRole, findAllByText, findByLabelText } = renderWithRouter();
 
         expect(getByRole('status')).toHaveTextContent('Loading');
 
@@ -150,7 +186,8 @@ describe('add report configuration page', () => {
         await user.type(await findByLabelText('Name'), 'Name');
         await user.type(await findByLabelText('Description'), 'Description');
         await user.selectOptions(await findByLabelText('Owner'), '0'); // System
-        await user.selectOptions(await findByLabelText('Group'), 'PRIVATE');
+        const privateRadio = screen.getByRole('radio', { name: 'Private' });
+        await user.click(privateRadio);
         await user.selectOptions(await findByLabelText('Section name'), 'My reports');
         const libDropDown = await findByRole('combobox', { name: 'Report execution library' });
         const libOptions = await within(libDropDown).findAllByRole('option');
@@ -158,12 +195,22 @@ describe('add report configuration page', () => {
 
         // add filter
         await user.selectOptions(await findByLabelText('Filter'), '1');
-        await user.selectOptions(await findByLabelText('Type'), 'Single');
+        await user.selectOptions(await findByLabelText('Selection type'), 'Single-select filter');
         await user.selectOptions(await findByLabelText('Associated column'), 'DATE_OF_BIRTH (Date of Birth)');
-        await user.click(await findByLabelText('Required as basic filter'));
+        await user.click(await findByLabelText('Required as basic filter?'));
         await user.click(await findByRole('button', { name: 'Add filter' }));
         // should add to table and form reset
         expect(await findByRole('cell', { name: 'My filter' })).toBeVisible();
+        expect(await findByLabelText('Filter')).toHaveValue('');
+        // add another filter partially and then change it to something that doesn't use those fields
+        await user.selectOptions(await findByLabelText('Filter'), '1');
+        await user.selectOptions(await findByLabelText('Selection type'), 'Multi-select filter');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findAllByText(/The Associated column is required./)).toHaveLength(2);
+        await user.selectOptions(await findByLabelText('Filter'), '7');
+        await user.click(await findByRole('button', { name: 'Add filter' }));
+        expect(await findByRole('cell', { name: 'Where Clause Builder' })).toBeVisible();
+        expect(queryByRole('cell', { name: 'Multi-select filter' })).toBeNull();
         expect(await findByLabelText('Filter')).toHaveValue('');
 
         await user.click(await findByRole('button', { name: 'Submit' }));

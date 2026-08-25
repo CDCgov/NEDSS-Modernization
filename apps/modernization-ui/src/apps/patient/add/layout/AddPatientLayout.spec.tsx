@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react';
-import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
-import { AddPatientLayout } from './AddPatientLayout';
 import { MemoryRouter } from 'react-router';
+
+import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 import { PageProvider } from 'page';
+
+import { AddPatientLayout } from './AddPatientLayout';
 
 vi.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
     __esModule: true,

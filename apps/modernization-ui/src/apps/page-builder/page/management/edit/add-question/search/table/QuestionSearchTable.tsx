@@ -1,11 +1,15 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
+
 import { AvailableQuestion } from 'apps/page-builder/generated';
-import { AddableQuestionSort, SortField } from '../../../../../../hooks/api/useFindAvailableQuestions';
 import { Search } from 'components/Search';
 import { SelectionMode, TableBody, TableComponent } from 'components/Table';
-import { Status, usePagination } from 'pagination';
-import { useEffect, useState } from 'react';
 import { Direction } from 'libs/sorting';
+import { Status, usePagination } from 'pagination';
+
+import { AddableQuestionSort, SortField } from '../../../../../../hooks/api/useFindAvailableQuestions';
+
 import { ExpandedQuestion } from './ExpandedQuestion';
 import styles from './question-search-table.module.scss';
 
@@ -79,12 +83,14 @@ export const QuestionSearchTable = ({
                     title:
                         expanded === question.id ? (
                             <Icon.ExpandLess
+                                aria-label="collapse"
                                 className={styles.expandButton}
                                 onClick={() => setExpanded(undefined)}
                                 size={4}
                             />
                         ) : (
                             <Icon.ExpandMore
+                                aria-label="expand"
                                 className={styles.expandButton}
                                 onClick={() => setExpanded(question.id)}
                                 size={4}
@@ -141,7 +147,7 @@ export const QuestionSearchTable = ({
                                 type="button"
                                 onClick={() => onQuerySubmit?.('')}
                             >
-                                <Icon.Close />
+                                <Icon.Close aria-label="close" />
                             </Button>
                         </div>
                     )}
@@ -157,7 +163,7 @@ export const QuestionSearchTable = ({
                     <Button
                         type="button"
                         className={`${styles.createNewButton} addQuestionCreateNewBtn`}
-                        outline
+                        outline={true}
                         onClick={onCreateNew}
                     >
                         Create new

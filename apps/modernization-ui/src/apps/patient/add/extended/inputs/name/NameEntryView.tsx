@@ -10,8 +10,8 @@ type Props = {
 export const NameEntryView = ({ entry, sizing }: Props) => {
     return (
         <>
-            <ValueView title="As of" value={entry.asOf} sizing={sizing} required />
-            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required />
+            <ValueView title="As of" value={entry.asOf} sizing={sizing} required={true} />
+            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required={true} />
             <ValueView title="Prefix" value={entry.prefix?.name} sizing={sizing} />
             <ValueView title="Last" value={entry.last} sizing={sizing} />
             <ValueView title="Second last" value={entry.secondLast} sizing={sizing} />

@@ -1,8 +1,10 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { MockedProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
-import { Address } from './Address';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { PatientCriteriaEntry } from '../criteria';
+
+import { Address } from './Address';
 
 vi.mock('options/location', () => ({
     useStateOptions: () => [],

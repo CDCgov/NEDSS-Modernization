@@ -15,6 +15,7 @@ describe('OptionSelectFilter', () => {
             },
             isRequired: true,
             reportColumnUid: 2001,
+            defaultIncludeNulls: false,
         };
         const MOCK_LABEL = 'Full Name';
 

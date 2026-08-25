@@ -1,7 +1,10 @@
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { useEffect } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { isBefore } from 'validation/date';
+
 import { FilterEntry } from './FilterEntry';
 
 const DataRangeEntryForm = () => {
@@ -21,7 +24,7 @@ const DataRangeEntryForm = () => {
             <Controller
                 control={control}
                 name="after"
-                shouldUnregister
+                shouldUnregister={true}
                 rules={{
                     required: { value: !before, message: 'From date is required when To is not picked.' },
                     validate: isBefore(before),
@@ -33,7 +36,7 @@ const DataRangeEntryForm = () => {
                         onChange={onChange}
                         name={name}
                         label="From"
-                        disableFutureDates
+                        disableFutureDates={true}
                         required={!before}
                         errorMessage={error?.message}
                     />
@@ -42,7 +45,7 @@ const DataRangeEntryForm = () => {
             <Controller
                 control={control}
                 name="before"
-                shouldUnregister
+                shouldUnregister={true}
                 rules={{
                     required: {
                         value: !after,
@@ -56,7 +59,7 @@ const DataRangeEntryForm = () => {
                         onChange={onChange}
                         name={name}
                         label="To"
-                        disableFutureDates
+                        disableFutureDates={true}
                         required={!after}
                         errorMessage={error?.message}
                     />

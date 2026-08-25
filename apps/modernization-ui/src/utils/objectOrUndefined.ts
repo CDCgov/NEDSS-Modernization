@@ -1,7 +1,7 @@
 /*
  * checks if an object has any defined properties
  */
-function objectOrUndefined(object: any) {
+function objectOrUndefined(object?: object) {
     if (object === undefined) {
         return undefined;
     }

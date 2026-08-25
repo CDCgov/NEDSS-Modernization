@@ -329,6 +329,15 @@ class PatientDemographicQueryResolver {
     return Optional.empty();
   }
 
+  // Accounts for datetime comparison (i.e. DOB values with time components)
+  private Optional<QueryVariant> asFullDayRange(final String field, final LocalDate date) {
+    if (date == null) return Optional.empty();
+    String start = FlexibleInstantConverter.toString(date);
+    String end = FlexibleInstantConverter.toString(date.plusDays(1));
+    return Optional.of(
+        RangeQuery.of(range -> range.term(term -> term.field(field).gte(start).lt(end))));
+  }
+
   private Optional<QueryVariant> applyDateOfBirthCriteria(final PatientSearchCriteria criteria) {
 
     LocalDate dateOfBirth = criteria.getDateOfBirth();
@@ -342,7 +351,7 @@ class PatientDemographicQueryResolver {
             Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(value))));
         case "after" ->
             Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).gt(value))));
-        default -> Optional.of(MatchQuery.of(match -> match.field(BIRTHDAY).query(value)));
+        default -> asFullDayRange(BIRTHDAY, dateOfBirth);
       };
     }
 
@@ -351,10 +360,8 @@ class PatientDemographicQueryResolver {
         && dateCriteria.equals() != null
         && dateCriteria.equals().isCompleteDate()) {
       Equals equals = dateCriteria.equals();
-      String value =
-          FlexibleInstantConverter.toString(
-              LocalDate.of(equals.year(), equals.month(), equals.day()));
-      return Optional.of(MatchQuery.of(match -> match.field(BIRTHDAY).query(value)));
+      LocalDate targetDate = LocalDate.of(equals.year(), equals.month(), equals.day());
+      return asFullDayRange(BIRTHDAY, targetDate);
     }
 
     return Optional.empty();
@@ -387,9 +394,12 @@ class PatientDemographicQueryResolver {
       return Optional.empty();
     }
 
-    String value = FlexibleInstantConverter.toString(betweenDate.to());
+    // Day+1 accounts for datetime comparison (i.e. DOB values with time components)
+    LocalDate toDate = betweenDate.to();
+    String nextDayValue = FlexibleInstantConverter.toString(toDate.plusDays(1));
 
-    return Optional.of(RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lte(value))));
+    return Optional.of(
+        RangeQuery.of(range -> range.term(term -> term.field(BIRTHDAY).lt(nextDayValue))));
   }
 
   private String resolveDateOperator(final String operator) {

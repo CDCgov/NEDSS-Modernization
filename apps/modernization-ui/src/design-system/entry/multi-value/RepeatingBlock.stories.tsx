@@ -1,10 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { RepeatingBlock } from './RepeatingBlock';
 import { Controller, useFormContext } from 'react-hook-form';
-import { SingleSelect } from 'design-system/select';
-import { asSelectable, Selectable } from 'options';
+
 import { Orientation, Sizing } from 'design-system/field';
 import { TextInputField } from 'design-system/input/text';
+import { SingleSelect } from 'design-system/select';
+import { asSelectable, Selectable } from 'options';
+
+import { RepeatingBlock } from './RepeatingBlock';
 import { DetailValue, DetailView } from './view/DetailView';
 
 type SampleType = {
@@ -49,7 +51,7 @@ const SampleForm = ({ sizing, orientation = 'horizontal' }: { sizing?: Sizing; o
                         sizing={sizing}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                     />
                 )}
             />
@@ -85,7 +87,7 @@ const SampleForm = ({ sizing, orientation = 'horizontal' }: { sizing?: Sizing; o
                         options={options}
                         error={error?.message}
                         placeholder="Select a veggie"
-                        required
+                        required={true}
                     />
                 )}
             />

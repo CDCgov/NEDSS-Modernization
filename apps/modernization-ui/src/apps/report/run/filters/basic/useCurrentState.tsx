@@ -1,8 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect } from 'react';
+
 import { useFormContext, useWatch } from 'react-hook-form';
-import { ReportExecuteForm } from '../../ReportRunPage';
-import { BasicFilterConfiguration } from 'generated';
+
 import { useConfiguration } from 'configuration';
+import { BasicFilterConfiguration } from 'generated';
+
+import { ReportExecuteForm } from '../../ReportRunPage';
 
 const CurrentStateContext = createContext<string | undefined>(undefined);
 
@@ -12,7 +15,7 @@ type Props = {
 };
 const CurrentStateProvider = ({ stateFilter, children }: Props) => {
     const { setValue } = useFormContext<ReportExecuteForm>();
-    const { ready, properties } = useConfiguration();
+    const { properties } = useConfiguration();
     const stateFilterId = stateFilter?.reportFilterUid;
     const formName: `basicFilter.${string}.value` = `basicFilter.id_${stateFilterId}.value`;
     const stateVal = useWatch<ReportExecuteForm>({
@@ -27,10 +30,10 @@ const CurrentStateProvider = ({ stateFilter, children }: Props) => {
 
     // If there isn't a state set when the config first loads, set it to the default state
     useEffect(() => {
-        if (ready && stateFilterId && !state && properties.entries.NBS_STATE_CODE) {
+        if (stateFilterId && !stateFilter.defaultValues?.[0] && properties.entries.NBS_STATE_CODE) {
             setValue(formName, [properties.entries.NBS_STATE_CODE]);
         }
-    }, [ready]);
+    }, [formName, properties.entries.NBS_STATE_CODE, setValue, stateFilter?.defaultValues, stateFilterId]);
 
     return <CurrentStateContext.Provider value={state}>{children}</CurrentStateContext.Provider>;
 };

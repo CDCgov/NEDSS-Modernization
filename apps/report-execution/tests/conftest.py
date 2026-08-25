@@ -38,10 +38,10 @@ class MockTransaction:
     """Mock version of Transaction with public api."""
 
     # Pointer to the parent connection for testing purposes
-    def __init__(self, cursor=None):
+    def __init__(self, cursor=None, is_export=True):
         self._cursor = cursor
 
-    def query(self, query):
+    def query(self, query, parameters=()):
         return Table(
             columns=['id', 'name'],
             data=[
@@ -54,6 +54,20 @@ class MockTransaction:
 
     def execute(self, query):
         return None
+
+
+class MockCursor:
+    """Mock version of Cursor."""
+
+    def execute(self, query, parameters=()):
+        return MockResult()
+
+
+class MockResult:
+    """Mock version of Result."""
+
+    def fetchall(self):
+        return [('100000',)]  # Returns 1 row, satisfying the len(data) == 1 check
 
 
 class MockConnection:
@@ -81,9 +95,9 @@ def mock_db_connection_ctxt(conn_string):
 
 
 @contextmanager
-def mock_db_transaction_ctxt(conn_string):
+def mock_db_transaction_ctxt(conn_string, is_export):
     """Mock context function for db_transaction."""
-    yield MockTransaction()
+    yield MockTransaction(MockCursor())
 
 
 @pytest.fixture(scope='function')
@@ -140,6 +154,44 @@ def setup_containers(request):
                 container.stop()
 
     request.addfinalizer(teardown)
+
+    conn_string = utils.get_env_or_error('DATABASE_CONN_STRING')
+    _seed_baseline_configuration(conn_string)
+
+
+def _seed_baseline_configuration(conn_string: str):
+    """Initializes and seeds the NBS_configuration table for all integration tests."""
+    logging.info('Seeding global configuration keys inside active containers...')
+
+    with db_transaction(conn_string, True) as trx:
+        baseline_configs = [
+            ('REPORT_DB_NBS_RDB', 'RDB'),
+            ('REPORT_DB_NBS_ODS', 'NBS_ODSE'),
+            ('REPORT_DB_NBS_SRT', 'NBS_SRTE'),
+            ('REPORT_DB_NBS_MSG', 'NBS_MSGOUTE'),
+            ('REPORT_MAX_ROW_LIMIT_EXPORT', '100000'),
+            ('REPORT_MAX_ROW_LIMIT_RUN', '10000'),
+            ('REPORT_EXPORT_DATE_FORMAT', '%m/%d/%Y'),
+            ('REPORT_EXPORT_DATETIME_FORMAT', '%m/%d/%Y %H:%M:%S'),
+        ]
+
+        for key, val in baseline_configs:
+            trx.execute(
+                'DELETE FROM NBS_ODSE..NBS_configuration WHERE config_key = ?', (key,)
+            )
+            trx.execute(
+                """
+                INSERT INTO NBS_ODSE..NBS_configuration (
+                    config_key, config_value,
+                    version_ctrl_nbr, add_user_id, add_time,
+                    last_chg_user_id, last_chg_time, status_cd, status_time
+                )
+                VALUES (?, ?, 1, 1, GETDATE(), 1, GETDATE(), 'A', GETDATE())
+                """,
+                (key, val),
+            )
+
+    logging.info('Global NBS_configuration entries seeded successfully.')
 
 
 def get_faker_sql(schema_name: str) -> list[str]:
@@ -239,7 +291,7 @@ def insert_fake_data(
     the current data in those db tables and saves the to temp tables
     """
     # swap out original data for fake data
-    with db_transaction(conn_string) as trx:
+    with db_transaction(conn_string, True) as trx:
         # Tables with foreign keys pointing to the table we want to replace need to
         # be backed up and cleared out to avoid FK constraint violations
         for fk_table in fk_tables:
@@ -273,7 +325,7 @@ def restore_original_data(conn_string: str, db_tables: list[str], fk_tables: lis
     Intended to be run after `insert_fake_data`.
     """
     # restore the original data
-    with db_transaction(conn_string) as trx:
+    with db_transaction(conn_string, True) as trx:
         for db_table in db_tables:
             trx.execute(f'DELETE {db_table}')
             trx.execute(f'INSERT INTO {db_table} SELECT * FROM {temp_name(db_table)}')

@@ -9,10 +9,10 @@ type Props = {
 export const IdentificationView = ({ entry, sizing }: Props) => {
     return (
         <>
-            <ValueView title="Identification as of" value={entry.asOf} sizing={sizing} required />
-            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required />
+            <ValueView title="Identification as of" value={entry.asOf} sizing={sizing} required={true} />
+            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required={true} />
             <ValueView title="Assigning authority" value={entry.issuer?.name} sizing={sizing} />
-            <ValueView title="ID value" value={entry.id} sizing={sizing} required />
+            <ValueView title="ID value" value={entry.id} sizing={sizing} required={true} />
         </>
     );
 };

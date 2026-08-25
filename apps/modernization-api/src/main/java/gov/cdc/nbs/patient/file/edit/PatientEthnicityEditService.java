@@ -11,9 +11,9 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographics.ethnicity.EthnicityDemographic;
 import java.util.function.Function;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientEthnicityEditService {
 
   private final ChangeResolver<PersonEthnicGroup, String, String> resolver =

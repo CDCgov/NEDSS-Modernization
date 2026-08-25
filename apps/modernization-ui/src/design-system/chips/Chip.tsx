@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import { Button } from 'design-system/button';
 
 import styles from './chip.module.scss';
@@ -14,7 +15,13 @@ const Chip = ({ name, value, operator, handleClose }: ChipProps) => {
     return (
         <div className={classNames(styles['chip-container'])}>
             <span>{operator ? `${name} ${operator} '${value}'` : `${name}: ${value}`}</span>
-            <Button tertiary icon="close" aria-label={`Close ${name}`} onClick={handleClose} className={styles.close} />
+            <Button
+                tertiary={true}
+                icon="close"
+                aria-label={`Close ${name}`}
+                onClick={handleClose}
+                className={styles.close}
+            />
         </div>
     );
 };

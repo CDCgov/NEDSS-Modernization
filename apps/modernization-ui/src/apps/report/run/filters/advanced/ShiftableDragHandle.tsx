@@ -1,10 +1,13 @@
-import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect, useState } from 'react';
+import { forwardRef, ForwardRefExoticComponent, KeyboardEventHandler, RefAttributes, useEffect } from 'react';
+
 import { DragHandleProps } from 'react-querybuilder';
-import { useKeyboardDnd } from './useKeyboardDnd';
+
 import { Icon } from 'design-system/icon';
+
+import { AnyEventBinding, EventBinding } from './eventTypes';
 import * as keyCodes from './keyCodes';
 import supportedPageVisibilityEventName from './supportedPageVisibilityEventName';
-import { AnyEventBinding, EventBinding } from './eventTypes';
+import { useKeyboardDnd } from './useKeyboardDnd';
 
 // custom drag handle to add shifting action on keyboard up down when space enabled
 const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttributes<HTMLSpanElement>> = forwardRef<
@@ -13,7 +16,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
 >((props, dragRef) => {
     const { activeId, activate, reset, drag, drop } = useKeyboardDnd();
     const id = props.ruleOrGroup.id!;
-    const [isActive, setIsActive] = useState<boolean>(activeId === id);
+    const isActive = activeId === id;
     const { getQuery, dispatchQuery } = props.schema;
 
     // When a rule group changes level, the component re-mounts and we need to move focus
@@ -25,19 +28,12 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
         }
     }, []);
 
-    const cancel = () => {
-        setIsActive(false);
-        reset(getQuery(), dispatchQuery);
-    };
-
     const handleKeyDown: KeyboardEventHandler = (event) => {
         // space toggles, escape will turn off activity if active
         if (event.code === 'Space') {
             if (!isActive) {
-                setIsActive(true);
                 activate(props.ruleOrGroup, props.path);
             } else {
-                setIsActive(false);
                 drop(props.path);
             }
             event.preventDefault();
@@ -58,7 +54,10 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
     // This is adapted from pragmatic-dnd that's used elsewhere in the app
     useEffect(() => {
         if (isActive) {
-            const bindings = getDraggingBindings((dir) => drag(getQuery(), dispatchQuery, dir), cancel);
+            const bindings = getDraggingBindings(
+                (dir) => drag(getQuery(), dispatchQuery, dir),
+                () => reset(getQuery(), dispatchQuery)
+            );
 
             (bindings as EventBinding[]).forEach(({ eventName, fn, options = {} }) =>
                 window.addEventListener(eventName, fn, {
@@ -73,7 +72,7 @@ const ShiftableDragHandle: ForwardRefExoticComponent<DragHandleProps & RefAttrib
                     window.removeEventListener(eventName, fn, { capture: true, passive: false, ...options })
                 );
         }
-    }, [isActive]);
+    }, [dispatchQuery, drag, getQuery, isActive, reset]);
 
     return (
         <span

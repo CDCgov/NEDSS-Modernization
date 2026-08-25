@@ -10,17 +10,17 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @Entity
 @Table(name = "Filter_value", catalog = "NBS_ODSE")
 public class FilterValue {
-  @Id
+  @NonNull @Id
   @Column(name = "value_uid", nullable = false)
   private Long id;
 
-  @NonNull @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "report_filter_uid", nullable = false)
   private ReportFilter reportFilter;
 

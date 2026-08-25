@@ -1,8 +1,10 @@
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BlockingAttribute, MatchingAttribute, MatchMethod } from 'apps/deduplication/api/model/Pass';
-import { ImportConfigurationModal } from './ImportConfigurationModal';
+
 import { AlgorithmExport } from 'apps/deduplication/api/model/AlgorithmExport';
+import { BlockingAttribute, MatchingAttribute, MatchMethod } from 'apps/deduplication/api/model/Pass';
+
+import { ImportConfigurationModal } from './ImportConfigurationModal';
 
 // mock file.text()
 File.prototype.text = function () {
@@ -101,8 +103,8 @@ describe('ImportConfigurationModal', () => {
         expect(importButton).toHaveTextContent('Import');
 
         await user.click(importButton);
-
-        expect(onImport).toHaveBeenCalledTimes(1);
+        // call happens in promise, can take a moment to settle
+        waitFor(() => expect(onImport).toHaveBeenCalledTimes(1));
         expect(onImport).toHaveBeenCalledWith('test.json', algorithmExport);
     });
 

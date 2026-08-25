@@ -16,6 +16,9 @@ databaseChangeLog:
             path: db/report/execution/03_ODSE_Data_Report_Library_Init.sql
             splitStatements: false
         - sqlFile:
+            path: db/report/execution/04_ODSE_Data_Report_Config_Insert.sql
+            splitStatements: false
+        - sqlFile:
             path: db/report/execution/libraries/nbs_custom.sql
             splitStatements: false
         - sqlFile:
@@ -67,5 +70,57 @@ databaseChangeLog:
             path: db/report/execution/libraries/qa_06.sql
             splitStatements: false
         - sqlFile:
+            path: db/report/execution/libraries/qa_07_30.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/qa_07_60.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/qa_07_90.sql
+            splitStatements: false
+        - sqlFile:
             path: db/report/execution/libraries/nbs_sr_18.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_sr_19.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/nbs_sr_20.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_03.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_05.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_04_hiv.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_04_std.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_01_hiv.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_01_std.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/05_ODSE_Drop_Regions.sql
+            splitStatements: false
+            endDelimiter: ""        
+        - sqlFile:
+            path: db/report/execution/libraries/pa_02_std.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/pa_02_hiv.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_case_ver.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_summary_count.sql
+            splitStatements: false
+        - sqlFile:
+            path: db/report/execution/libraries/tb_summary_count_date.sql
             splitStatements: false

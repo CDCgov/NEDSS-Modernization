@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useReducer } from 'react';
+
 import { useSearchParams } from 'react-router';
+
 import { TOTAL_TABLE_DATA } from 'utils/util';
 
 const PAGE_PARAMETER = 'page';
@@ -91,7 +93,7 @@ const PaginationProvider = ({
 
     const requestFromUrl = useCallback(
         (next: number) => {
-            if (next != page.current) {
+            if (next !== page.current) {
                 // saves the current page to a url param so that it persists
                 // on page refresh or navigating away
                 setSearchParams((current) => {

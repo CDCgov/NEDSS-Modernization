@@ -1,16 +1,16 @@
 class BusinessRulesPage {
-    navigateToBusinessRulesPage () {
+    navigateToBusinessRulesPage() {
         cy.visit('/page-builder/pages');
         cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
         cy.contains('button', 'Business rules').click();
     }
 
     viewsBusinessRulesPage() {
-        cy.get(".business-rules-library")
+        cy.get('.business-rules-library');
     }
 
     checkLogicColumnPopulated() {
-        cy.contains("Logic");
+        cy.contains('Logic');
     }
 
     displayLogics(logic) {
@@ -18,33 +18,36 @@ class BusinessRulesPage {
             .invoke('text')
             .then((text) => {
                 if (!text.includes(logic)) {
-                    cy.contains("Logic");
+                    cy.contains('Logic');
                 } else {
                     cy.contains(logic);
                 }
-            })
+            });
     }
 
     checkFunctionColumnPopulated() {
         cy.get('.business-rules-library')
             .invoke('text')
             .then((text) => {
-                if (!text.includes("Disable")) {
-                    cy.contains("Disable");
-                } else if (!text.includes("Enable")) {
-                   cy.contains("Enable");
-               } else if (!text.includes("Hide")) {
-                    cy.contains("Hide");
-               } else if (!text.includes("Unhide")) {
-                    cy.contains("Unhide");
-               }
-            })
+                if (!text.includes('Disable')) {
+                    cy.contains('Disable');
+                } else if (!text.includes('Enable')) {
+                    cy.contains('Enable');
+                } else if (!text.includes('Hide')) {
+                    cy.contains('Hide');
+                } else if (!text.includes('Unhide')) {
+                    cy.contains('Unhide');
+                }
+            });
     }
 
     checkTargetColumnPopulated() {
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr) => {
-            expect($tr.find("td").eq(4).text()).to.exist;
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr) => {
+                expect($tr.find('td').eq(4).text()).to.exist;
+            });
     }
 
     enterUniqueNameInSearchField() {
@@ -56,9 +59,12 @@ class BusinessRulesPage {
     }
 
     checkBusinessRulesListDisplayed() {
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr) => {
-            expect($tr.find("td").eq(0).text()).to.exist;
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr) => {
+                expect($tr.find('td').eq(0).text()).to.exist;
+            });
     }
 
     enterUniqueIdInSearchField() {
@@ -66,7 +72,7 @@ class BusinessRulesPage {
     }
 
     checkBusinessRulesLibraryDefaultRows() {
-        cy.contains("10");
+        cy.contains('10');
     }
 
     selectRowsFromDisplayDropdown(selection) {
@@ -74,9 +80,12 @@ class BusinessRulesPage {
     }
 
     checkBusinessRulesListMatchingRows(numOfRows) {
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr) => {
-            expect($tr.length).to.be.lessThan(numOfRows);
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr) => {
+                expect($tr.length).to.be.lessThan(numOfRows);
+            });
     }
 
     clickAddBusinessRuleBtn() {
@@ -91,7 +100,7 @@ class BusinessRulesPage {
         cy.get('.fieldType-option-0').eq(0).click();
     }
 
-    completeAllRequiredFields(logic) {
+    completeAllRequiredFields() {
         cy.get('[data-testid="searchSourceQuestionBtn"]').eq(0).click();
         cy.get('[data-testid="listedSections"]').eq(0).click({ force: true });
         cy.get('[data-testid="listedSubsections"]').eq(0).click({ force: true });
@@ -167,12 +176,12 @@ class BusinessRulesPage {
         cy.get('[data-testid="LogicSelectDropdown"]')
             .invoke('prop', 'selectedIndex')
             .then((selectedIndex) => {
-                if(selectedIndex !== 1) {
+                if (selectedIndex !== 1) {
                     cy.get('[data-testid="LogicSelectDropdown"]').select(1);
                 } else {
                     cy.get('[data-testid="LogicSelectDropdown"]').select(2);
                 }
-            })
+            });
     }
 
     selectTargetQuestion() {
@@ -181,27 +190,25 @@ class BusinessRulesPage {
         cy.get('[data-testid="listedSectionsTarget"]').eq(0).click({ force: true });
         cy.get('[data-testid="listedSubsectionsTarget"]').eq(0).click({ force: true });
         cy.get('[for="hots1"]').click({ force: true });
-        cy.get('.usa-checkbox__input')
-            .then((items) => {
-                cy.log('xox-items.length', items.length)
-                if(items.length > 9) {
-                    cy.get('[for="hots1"]').click({ force: true });
-                    cy.get('[for="sourceId0"]').click({ force: true });
-                } else {
-                    cy.get('[for="hots1"]').click({ force: true });
-                }
-            })
+        cy.get('.usa-checkbox__input').then((items) => {
+            cy.log('xox-items.length', items.length);
+            if (items.length > 9) {
+                cy.get('[for="hots1"]').click({ force: true });
+                cy.get('[for="sourceId0"]').click({ force: true });
+            } else {
+                cy.get('[for="hots1"]').click({ force: true });
+            }
+        });
         cy.get('[data-testid="targetQuestionModalContinueBtn"]').eq(0).click({ force: true });
     }
 
     targetQuestionUpdated() {
-        cy.get('[data-testid="targetQuestionEditBtn"]').eq(0)
+        cy.get('[data-testid="targetQuestionEditBtn"]').eq(0);
     }
 
     clickUpdateBtnEditBusinessRulePage() {
         cy.get('[data-testid="updateBtnEditBusinessRulesPage"]').eq(0).click({ force: true });
     }
-
 }
 
-export const businessRulesPage = new BusinessRulesPage()
+export const businessRulesPage = new BusinessRulesPage();

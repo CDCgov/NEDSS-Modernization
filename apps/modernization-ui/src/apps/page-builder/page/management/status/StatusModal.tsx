@@ -1,5 +1,7 @@
-import { Button, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
+
+import { Button, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
+
 import styles from './statusmodal.module.scss';
 
 type Props = {
@@ -22,13 +24,20 @@ export const StatusModal = ({
     id = 'status',
 }: Props) => {
     return (
-        <Modal forceAction ref={modal} className={styles.modal} id={id}>
-            <ModalHeading className={styles.title}>
-                <h2>{title}</h2>
+        <Modal
+            forceAction={true}
+            ref={modal}
+            className={styles.modal}
+            id={id}
+            aria-labelledby={`${id}-header`}
+            aria-describedby={`${id}-content`}
+        >
+            <ModalHeading id={`${id}-header`} className={styles.title}>
+                {title}
             </ModalHeading>
-            <div className={styles.content}>
+            <div id={`${id}-content`} className={styles.content}>
                 <div className={styles.warning}>
-                    <Icon.Warning size={4} />
+                    <Icon.Warning aria-label="warning" size={4} />
                 </div>
                 <div className={styles.message}>
                     <h3>{messageHeader}</h3>

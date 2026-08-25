@@ -1,12 +1,14 @@
 import { Suspense } from 'react';
+
 import { Await } from 'react-router';
-import { MemoizedSupplier } from 'libs/supplying';
+
 import { LoadingOverlay } from 'libs/loading';
 import {
     PhoneEmailDemographic,
     PhoneEmailDemographicCard,
     PhoneEmailDemographicCardProps,
 } from 'libs/patient/demographics/phoneEmail';
+import { MemoizedSupplier } from 'libs/supplying';
 
 type PatientFilePhoneEmailProps = {
     provider: MemoizedSupplier<Promise<PhoneEmailDemographic[]>>;

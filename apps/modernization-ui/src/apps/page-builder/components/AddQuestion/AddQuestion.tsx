@@ -1,17 +1,21 @@
+import { useEffect, useState } from 'react';
+
 import { Button, Icon } from '@trussworks/react-uswds';
-import { useAlert } from 'libs/alert';
+import classNames from 'classnames';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+
 import { CreateCodedQuestionRequest } from 'apps/page-builder/generated';
 import { CreateQuestionRequest, useCreateQuestion } from 'apps/page-builder/hooks/api/useCreateQuestion';
-import classNames from 'classnames';
+import { useAlert } from 'libs/alert';
 import { PaginationProvider } from 'pagination';
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+
 import { CreateQuestionForm, QuestionForm } from './QuestionForm';
+import styles from './add-question.module.scss';
 import { CreateEditValueset } from './valueset/CreateEditValueset';
 import { ValuesetSearch } from './valueset/ValuesetSearch';
-import styles from './add-question.module.scss';
 import './AddQuestion.scss';
 
 type Props = {
@@ -91,7 +95,7 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
             <CloseableHeader
                 title={
                     <div className={styles.addQuestionHeader}>
-                        <Icon.ArrowBack onClick={onBack} /> Add question
+                        <Icon.ArrowBack aria-label="back" onClick={onBack} /> Add question
                     </div>
                 }
                 onClose={onClose}
@@ -108,7 +112,7 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
                 </div>
             </div>
             <ButtonBar>
-                <Button onClick={onClose} type="button" outline>
+                <Button onClick={onClose} type="button" outline={true}>
                     Cancel
                 </Button>
                 <Button

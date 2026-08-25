@@ -1,16 +1,20 @@
+import { ChangeEvent, DragEvent, useEffect, useState } from 'react';
+
 import { Button, Icon, Tag } from '@trussworks/react-uswds';
+
 import { Template } from 'apps/page-builder/generated';
 import { useImportTemplate } from 'apps/page-builder/hooks/api/useImportTemplate';
 import { Spinner } from 'components/Spinner/Spinner';
-import React, { useEffect, useState } from 'react';
+
 import { AlertBanner } from '../AlertBanner/AlertBanner';
 import './ImportTemplate.scss';
 
 type ImportTemplateProps = {
+    id: string;
     onTemplateCreated: (template: Template) => void;
     onCancel: () => void;
 };
-export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplateProps) => {
+export const ImportTemplate = ({ id, onTemplateCreated, onCancel }: ImportTemplateProps) => {
     const [file, setFile] = useState<File | undefined>();
     const [fileDrag, setFileDrag] = useState(false);
     const { error, isLoading, imported, reset, importTemplate } = useImportTemplate();
@@ -22,9 +26,9 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
         }
     }, [imported]);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (files == null) {
+        if (files === null) {
             setFile(undefined);
         } else {
             setFile(files[0]);
@@ -32,7 +36,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
     };
 
     const handleSubmit = () => {
-        if (file == undefined) {
+        if (file === undefined) {
             return;
         }
         importTemplate(file);
@@ -44,17 +48,17 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
         onCancel();
     };
 
-    const handleDragEnd = (ev: React.DragEvent<HTMLDivElement>) => {
+    const handleDragEnd = (ev: DragEvent<HTMLDivElement>) => {
         ev.preventDefault();
         setFileDrag(false);
     };
 
-    const handleDragOver = (ev: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (ev: DragEvent<HTMLDivElement>) => {
         ev.preventDefault();
         setFileDrag(true);
     };
 
-    const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    const handleFileDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setFileDrag(false);
         setFile(event.dataTransfer.files[0]);
@@ -76,18 +80,18 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                     </div>
                 )}
 
-                <div className="heading">
+                <div id={`${id}-header`} className="heading">
                     <h2>Import a new template</h2>
                 </div>
-                <label htmlFor="importTempId">
+                <label id={`${id}-content`} htmlFor="importTempId">
                     <input
-                        value={''}
+                        value=""
                         onChange={handleFileChange}
                         name="fileInput"
                         type="file"
                         id="importTempId"
                         accept="text/xml"
-                        hidden
+                        hidden={true}
                     />
 
                     <div className={`drop-area ${fileDrag ? 'dragged' : ''}`}>
@@ -98,7 +102,7 @@ export const ImportTemplate = ({ onTemplateCreated, onCancel }: ImportTemplatePr
                                 </div>
                             )}
                         </div>
-                        <Icon.Logout size={4} />
+                        <Icon.Logout aria-hidden={true} size={4} />
                         <label htmlFor="importTempId">
                             Drag & drop or <span>Choose file</span> to upload
                         </label>

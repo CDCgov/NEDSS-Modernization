@@ -1,9 +1,12 @@
-import { PagesSection } from 'apps/page-builder/generated';
 import { Draggable, DraggableProvided } from '@hello-pangea/dnd';
-import { Icon as IconComponent } from 'components/Icon/Icon';
 import { Button, Icon } from '@trussworks/react-uswds';
-import styles from './manageSectionTile.module.scss';
+
+import { PagesSection } from 'apps/page-builder/generated';
+import { Icon as IconComponent } from 'components/Icon/Icon';
+
 import { AlertInLineProps } from '../ManageSectionModal';
+
+import styles from './manageSectionTile.module.scss';
 
 type Props = {
     section: PagesSection;
@@ -33,6 +36,7 @@ export const ManageSectionTile = ({
 }: Props) => {
     const deleteHeader = (section: PagesSection) => {
         if (section.subSections.length !== 0) {
+            // eslint-disable-next-line max-len
             return `Section cannot be deleted. This section contains elements (subsections and questions) inside it. Remove the contents first, and then the section can be deleted.`;
         } else {
             return `Are you sure you want to delete this section?`;
@@ -55,17 +59,17 @@ export const ManageSectionTile = ({
                         <div className={styles.warningModal}>
                             <div className={styles.warningModalHeader}>
                                 <div className={styles.warningIcon}>
-                                    <Icon.Warning size={3} />
+                                    <Icon.Warning aria-label="warning" size={3} />
                                 </div>
                                 {deleteHeader?.(section)}
                             </div>
                             <div className={styles.warningModalContent}>
                                 <div className={styles.content}>
                                     <div className={styles.warningDrag} {...provided.dragHandleProps}>
-                                        <IconComponent name="drag" size="3" />
+                                        <IconComponent name="drag" size="3" alt="Drag handle to reorder section" />
                                     </div>
                                     <div className={styles.warningGroup}>
-                                        <IconComponent name="group" size="3" />
+                                        <IconComponent name="group" size="3" alt="Group Icon" />
                                     </div>
                                     <div>{`${section.name} (${section.subSections.length})`}</div>
                                 </div>
@@ -108,10 +112,10 @@ export const ManageSectionTile = ({
                     ) : (
                         <div className={styles.manageSectionTile}>
                             <div className={styles.handle} {...provided.dragHandleProps}>
-                                <IconComponent name="drag" size="3" />
+                                <IconComponent name="drag" size="3" alt="Drag handle to reorder section" />
                             </div>
                             <div className={styles.label}>
-                                <IconComponent name="group" size="3" />
+                                <IconComponent name="group" size="3" alt="Group icon" />
                                 <span data-testid="manageSectionTileId">
                                     {`${section.name} (${section.subSections.length})`}
                                 </span>
@@ -123,28 +127,38 @@ export const ManageSectionTile = ({
                                         setSectionState('edit');
                                         setSelectedForEdit(section);
                                     }}
-                                    outline
+                                    outline={true}
                                     className={styles.iconBtn}
                                     disabled={onAction}
                                 >
-                                    <Icon.Edit data-testId="editIcon" style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Edit
+                                        aria-label="edit"
+                                        data-testid="editIcon"
+                                        style={{ cursor: 'pointer' }}
+                                        size={3}
+                                    />
                                 </Button>
                                 <Button
                                     type="button"
                                     className={styles.iconBtn}
-                                    outline
+                                    outline={true}
                                     disabled={onAction}
                                     onClick={() => {
                                         setSelectedForDelete(section);
                                         setOnAction(true);
                                     }}
                                 >
-                                    <Icon.Delete data-testId="deleteIcon" style={{ cursor: 'pointer' }} size={3} />
+                                    <Icon.Delete
+                                        aria-label="delete"
+                                        data-testid="deleteIcon"
+                                        style={{ cursor: 'pointer' }}
+                                        size={3}
+                                    />
                                 </Button>
                                 {section.visible ? (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         className={styles.iconBtn}
                                         disabled={onAction}
                                         onClick={() => {
@@ -152,7 +166,8 @@ export const ManageSectionTile = ({
                                         }}
                                     >
                                         <Icon.Visibility
-                                            data-testId="visibilityIcon"
+                                            aria-label="hide"
+                                            data-testid="visibilityIcon"
                                             style={{ cursor: 'pointer' }}
                                             size={3}
                                         />
@@ -160,14 +175,14 @@ export const ManageSectionTile = ({
                                 ) : (
                                     <Button
                                         type="button"
-                                        outline
+                                        outline={true}
                                         className={`${styles.iconBtn} ${styles.offVisibility}`}
                                         disabled={onAction}
                                         onClick={() => {
                                             onChangeVisibility(section, true);
                                         }}
                                     >
-                                        <Icon.VisibilityOff style={{ cursor: 'pointer' }} size={3} />
+                                        <Icon.VisibilityOff aria-label="show" style={{ cursor: 'pointer' }} size={3} />
                                     </Button>
                                 )}
                             </div>

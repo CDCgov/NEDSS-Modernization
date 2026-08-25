@@ -1,16 +1,17 @@
 import { HasPendingEntry } from 'design-system/entry/pending';
-import { HasAdministrativeInformation, initial as initialAdministrative } from './administrative';
+import { Supplier } from 'libs/supplying';
+
 import { HasAddressDemographics } from './address';
+import { AddressDemographicDefaults } from './address/address';
+import { HasAdministrativeInformation, initial as initialAdministrative } from './administrative';
+import { HasEthnicityDemographic, initial as initialEthnicity } from './ethnicity';
+import { HasGeneralInformationDemographic, initial as initialGeneral } from './general';
+import { HasIdentificationDemographics } from './identification';
+import { HasMortalityDemographic, initial as initialMortality } from './mortality';
 import { HasNameDemographics } from './name';
 import { HasPhoneEmailDemographics } from './phoneEmail';
-import { HasIdentificationDemographics } from './identification';
 import { HasRaceDemographics } from './race';
-import { HasEthnicityDemographic, initial as initialEthnicity } from './ethnicity';
 import { HasSexBirthDemographic, initial as initialSexBirth } from './sex-birth';
-import { HasMortalityDemographic, initial as initialMortality } from './mortality';
-import { HasGeneralInformationDemographic, initial as initialGeneral } from './general';
-import { AddressDemographicDefaults } from './address/address';
-import { Supplier } from 'libs/supplying';
 
 type PatientDemographics = HasAdministrativeInformation &
     HasNameDemographics &

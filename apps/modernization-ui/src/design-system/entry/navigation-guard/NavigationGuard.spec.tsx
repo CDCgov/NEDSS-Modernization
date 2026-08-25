@@ -1,9 +1,11 @@
-import { Mock } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NavigationGuard } from './NavigationGuard';
+import { Mock } from 'vitest';
+
 import * as navigation from 'navigation';
 import * as storage from 'storage';
+
+import { NavigationGuard } from './NavigationGuard';
 
 // Mock dependencies
 vi.mock('navigation');

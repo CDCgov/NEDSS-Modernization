@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router';
-import { ColumnPreferenceProvider } from './useColumnPreferences';
+
 import { ColumnPreferencesPanel } from './ColumnPreferencesPanel'; // Moved after dependencies
+import { ColumnPreferenceProvider } from './useColumnPreferences';
 
 const meta = {
     title: 'Design System/Table/ColumnPreferencesPanel',

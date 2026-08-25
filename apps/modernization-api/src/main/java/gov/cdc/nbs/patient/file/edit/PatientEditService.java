@@ -17,9 +17,9 @@ import gov.cdc.nbs.patient.PatientException;
 import gov.cdc.nbs.patient.PatientService;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 class PatientEditService {
 
   private final PatientService service;

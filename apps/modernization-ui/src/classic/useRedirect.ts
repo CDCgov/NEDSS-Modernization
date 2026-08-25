@@ -3,9 +3,7 @@ import { useEffect, useReducer } from 'react';
 type Destination = 'current' | 'window' | 'none';
 
 type Redirect =
-    | { status: 'idle' }
-    | { status: 'redirecting'; url: string }
-    | { status: 'redirected'; location: string };
+    { status: 'idle' } | { status: 'redirecting'; url: string } | { status: 'redirected'; location: string };
 
 type Action = { type: 'redirect'; url: string } | { type: 'redirected'; location: string } | { type: 'reset' };
 
@@ -38,7 +36,7 @@ const useRedirect = ({ destination = 'current' }: Props) => {
                     dispatch({ type: 'redirected', location });
                 }
             });
-        } else if (state.status == 'redirected' && destination != 'none') {
+        } else if (state.status === 'redirected' && destination !== 'none') {
             navigate(destination, state.location);
             dispatch({ type: 'reset' });
         }

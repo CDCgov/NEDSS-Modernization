@@ -1,23 +1,37 @@
-import React from 'react';
-import { AdvancedFilterRequest, BasicFilterRequest, ReportControllerService } from 'generated';
+import { BaseSyntheticEvent } from 'react';
 import { useCallback, useState } from 'react';
-import { useParams } from 'react-router';
-import { ReportConfigurationPage } from './ReportConfigurationPage';
-import { useNewTab } from './useNewTab';
-import { ResultDataPage } from './ResultDataPage';
+
 import fileDownload from 'js-file-download';
-import { ReportResultPage } from './ReportResultPage';
-import { LoadingIndicator } from 'libs/loading/indicator';
 import { FormProvider, useForm } from 'react-hook-form';
-import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
+import { useLoaderData, useParams } from 'react-router';
+
+import { ApiErrorBanner } from 'design-system/errors/ApiError';
+import {
+    AdvancedFilterRequest,
+    BasicFilterRequest,
+    ReportConfiguration,
+    ReportExecutionRequest,
+    SortSpec,
+} from 'generated';
+import { LoadingBlock } from 'libs/loading/block';
+import { permissions, permitsAll } from 'libs/permission';
+import { usePermissions } from 'libs/permission/usePermissions';
+import { NotFoundError } from 'pages/error/NotFoundError';
+
+import { LOCAL_STORAGE_RESULT_PREFIX, PERMISSION_GROUP_MAP } from '../constants';
+import { openNewTab } from '../utils/openNewTab';
+
+import { ReportConfigurationPage } from './ReportConfigurationPage';
+import { ReportResultPage } from './ReportResultPage';
+import { fetchReport } from './fetchReport';
 import { QbRuleGroup, queryToAdvancedFilterRequest } from './filters/advanced/AdvancedFilter';
-import { useReportConfiguration } from 'apps/report/hooks/useReportConfiguration';
 
 export type ReportExecuteForm = {
     // key is the report's ID
     basicFilter?: Record<string, { value: string[] | string | null; includeNulls: boolean }>;
     advancedFilter?: QbRuleGroup;
     columns?: string[];
+    sort?: { column: string; direction: SortSpec.direction };
 };
 
 const normalizeFormValueToStringArray = (value: unknown): string[] => {
@@ -34,53 +48,64 @@ const ReportRunPage = () => {
     const params = useParams();
     const reportUid = parseInt(params.reportUid ?? '0');
     const dataSourceUid = parseInt(params.dataSourceUid ?? '0');
-    const [hasResult, setHasResult] = useState<boolean>(false);
-    const [submitting, setSubmitting] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const { openNewTab } = useNewTab();
-    const config = useReportConfiguration({ reportUid, dataSourceUid, handleError: setError });
+    const [status, setStatus] = useState<'configuring' | 'submitting' | 'complete'>('configuring');
+    const [error, setError] = useState<unknown | null>(null);
+    const [wasExported, setWasExported] = useState<boolean>(true);
+    const [lastReportExecutionRequest, setLastReportExecutionRequest] = useState<ReportExecutionRequest | undefined>(
+        undefined
+    );
+    const config = useLoaderData<ReportConfiguration>();
+    const { permissions: userPermissions, allows } = usePermissions();
+    const canRunReport = allows(permissions.reports.run);
+
+    // Make sure user can actually use this report
+    if (
+        !!config &&
+        !permitsAll(
+            PERMISSION_GROUP_MAP[config.group].selectFilterCriteria,
+            PERMISSION_GROUP_MAP[config.group].view
+        )(userPermissions)
+    ) {
+        throw new NotFoundError();
+    }
 
     const form = useForm<ReportExecuteForm>({
         mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
     });
 
-    const onSubmit = (event: React.BaseSyntheticEvent, isExport: boolean) => {
-        form.handleSubmit(
-            (data) => {
-                const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
-                    .map(([id, { value, includeNulls }]) => {
-                        const values = normalizeFormValueToStringArray(value);
-                        return {
-                            // remove `id_` prefix
-                            reportFilterUid: Number.parseInt(id.slice(3)),
-                            values,
-                            includeNulls,
-                        };
-                    })
-                    .filter((f) => !!f.values);
+    const onSubmit = (event: BaseSyntheticEvent, isExport: boolean) => {
+        form.handleSubmit((data) => {
+            const basicFilters: BasicFilterRequest[] = Object.entries(data.basicFilter ?? {})
+                .map(([id, { value, includeNulls }]) => {
+                    const values = normalizeFormValueToStringArray(value);
+                    return {
+                        // remove `id_` prefix
+                        reportFilterUid: Number.parseInt(id.slice(3)),
+                        values,
+                        includeNulls,
+                    };
+                })
+                .filter((f) => !!f.values);
 
-                const advancedFilterQuery =
-                    data.advancedFilter && config
-                        ? queryToAdvancedFilterRequest(data.advancedFilter, config.columns)
-                        : undefined;
-                const advancedFilter =
-                    advancedFilterQuery && config?.advancedFilter?.reportFilterUid
-                        ? { reportFilterUid: config.advancedFilter?.reportFilterUid, value: advancedFilterQuery }
-                        : undefined;
-
-                const columnUids = config?.library.allowColumnSelection
-                    ? data.columns!.map((v) => parseInt(v))
+            const advancedFilterQuery =
+                data.advancedFilter && config
+                    ? queryToAdvancedFilterRequest(data.advancedFilter, config.columns)
+                    : undefined;
+            const advancedFilter =
+                advancedFilterQuery && config?.advancedFilter?.reportFilterUid
+                    ? { reportFilterUid: config.advancedFilter?.reportFilterUid, value: advancedFilterQuery }
                     : undefined;
 
-                handleSubmit(isExport, basicFilters, advancedFilter, columnUids);
-            },
-            (errors) => {
-                // TODO make this gather all errors and nicely format
-                setError(
-                    Object.values(errors.basicFilter ?? {}).reduce((acc, cur) => `${acc}\n${cur?.value?.message}`, '')
-                );
-            }
-        )(event);
+            const columnUids = config?.library.allowColumnSelection ? data.columns!.map((v) => parseInt(v)) : undefined;
+
+            const sort: SortSpec | undefined =
+                config?.library.allowColumnSelection && data.sort?.column
+                    ? { columnUid: parseInt(data.sort.column), direction: data.sort.direction }
+                    : undefined;
+
+            handleSubmit(isExport, basicFilters, advancedFilter, columnUids, sort);
+        })(event);
     };
 
     const handleSubmit = useCallback(
@@ -88,49 +113,68 @@ const ReportRunPage = () => {
             isExport: boolean,
             basicFilters: BasicFilterRequest[],
             advancedFilter?: AdvancedFilterRequest,
-            columnUids?: number[]
+            columnUids?: number[],
+            sort?: SortSpec
         ) => {
-            setSubmitting(true);
-            setError('');
-            const runner = isExport ? ReportControllerService.exportReport : ReportControllerService.runReport;
-            runner({ requestBody: { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids } })
-                .then((res) => {
-                    setHasResult(true);
-                    if (!res.content) {
-                        setError('No content!');
-                        return;
-                    }
+            setWasExported(isExport);
+            setStatus('submitting');
+            setError(null);
 
+            const requestBody = { isExport, reportUid, dataSourceUid, basicFilters, advancedFilter, columnUids, sort };
+            setLastReportExecutionRequest(requestBody);
+            fetchReport({ requestBody })
+                .then(async (response) => {
                     if (isExport) {
-                        fileDownload(res.content, `${res.header ?? 'ReportOutput'}.csv`);
+                        fileDownload(await response.blob(), `${config?.title ?? 'ReportOutput'}.csv`);
                     } else {
-                        openNewTab(<ResultDataPage result={res} />);
+                        const resultId = crypto.randomUUID();
+                        openNewTab(
+                            `/report/result/${resultId}`,
+                            {
+                                result: {
+                                    content: await response.text(),
+                                    description: response.headers.get('X-Report-Description'),
+                                    context_header: response.headers.get('X-Report-Context-Header'),
+                                    timestamp: response.headers.get('X-Report-Timestamp'),
+                                    query: response.headers.get('X-Report-Query'),
+                                },
+                                title: config?.title ?? '',
+                                dataSourceName: config?.dataSource.name ?? '',
+                            },
+                            `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`
+                        );
                     }
                 })
-                .catch((err) => setError(JSON.stringify(err)))
-                .finally(() => setSubmitting(false));
+                .catch(setError)
+                .finally(() => setStatus('complete'));
         },
-        []
+        [config?.dataSource.name, config?.title, dataSourceUid, reportUid]
     );
 
     return !config ? (
         <>
-            {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <LoadingIndicator />
+            {error && <ApiErrorBanner action="loading" item="report" error={error} />}
+            <LoadingBlock />
         </>
-    ) : !hasResult && !submitting ? (
-        <>
-            {error && <AlertBanner type="error">{error}</AlertBanner>}
-            <FormProvider {...form}>
-                <ReportConfigurationPage config={config} handleSubmit={onSubmit} />
-            </FormProvider>
-        </>
+    ) : status === 'configuring' ? (
+        <FormProvider {...form}>
+            <form onSubmit={(e) => onSubmit(e, !canRunReport)}>
+                <ReportConfigurationPage
+                    reportUid={reportUid}
+                    dataSourceUid={dataSourceUid}
+                    config={config}
+                    handleSubmit={onSubmit}
+                />
+            </form>
+        </FormProvider>
     ) : (
         <ReportResultPage
             config={config}
-            resultLoading={!hasResult}
+            resultLoading={status === 'submitting'}
+            wasExported={wasExported}
             error={error}
-            handleRefineReport={() => setHasResult(false)}
+            handleRefineReport={() => setStatus('configuring')}
+            executionRequest={lastReportExecutionRequest}
         />
     );
 };

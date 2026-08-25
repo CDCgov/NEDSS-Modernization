@@ -1,15 +1,14 @@
 class AddEditSearchDeleteQuestion {
-
-    navigateEditPage () {
-        this.navigateToPreviewPageWithStatusInitialDraft()
-        cy.get("body").then($body => {
-            if ($body.find("#create-new-draft-button").length > 0) {
-                cy.get("create-new-draft-button").then($button => {
-                    if ($button.is(':visible')){
-                        $button.click()
+    navigateEditPage() {
+        this.navigateToPreviewPageWithStatusInitialDraft();
+        cy.get('body').then(($body) => {
+            if ($body.find('#create-new-draft-button').length > 0) {
+                cy.get('create-new-draft-button').then(($button) => {
+                    if ($button.is(':visible')) {
+                        $button.click();
                         cy.get('.editDraftBtn').eq(0).click();
                     }
-                })
+                });
             } else {
                 cy.get('.editDraftBtn').eq(0).click();
             }
@@ -17,16 +16,15 @@ class AddEditSearchDeleteQuestion {
     }
 
     checkSubsectionExpanded() {
-        cy.get('.iconExpandLess')
+        cy.get('.iconExpandLess');
     }
 
     clickAddQuestionBtn() {
-        cy.get('.subsectionHeader').eq(0)
-            .get('.addQuestionBtn').eq(0).click();
+        cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
     }
 
     addQuestionModalDisplays() {
-        cy.contains('Add question')
+        cy.contains('Add question');
     }
 
     clickCreateNewQuestionButton() {
@@ -38,7 +36,7 @@ class AddEditSearchDeleteQuestion {
     }
 
     fillAllRequiredFields({ withUniqueID, fieldTypeNumeric, fieldTypeDatePicker } = {}) {
-        if(withUniqueID) {
+        if (withUniqueID) {
             cy.get('#uniqueId').type('NBS104');
         }
         const newQuestionName = Math.random().toString(36).substring(2, 8);
@@ -49,7 +47,7 @@ class AddEditSearchDeleteQuestion {
         if (fieldTypeNumeric) {
             cy.get('.fieldType-option-1').eq(0).click();
             cy.get('#fieldLength').type(5);
-        } else if(fieldTypeDatePicker){
+        } else if (fieldTypeDatePicker) {
             cy.get('.fieldType-option-3').eq(0).click();
         } else {
             cy.get('.fieldType-option-0').eq(0).click();
@@ -83,8 +81,8 @@ class AddEditSearchDeleteQuestion {
     }
 
     updateQuestionDetails() {
-        cy.get('#label').clear().type('question label edited');
-        cy.get('#tooltip').clear().type('question tooltip edited');
+        cy.enterInput('#label', 'question label edited');
+        cy.enterInput('#tooltip', 'question tooltip edited');
     }
 
     clickEditQuestionSaveBtn() {
@@ -93,7 +91,7 @@ class AddEditSearchDeleteQuestion {
 
     closeEditQuestionModal() {
         cy.contains('Edit question').then((ele) => {
-            if(ele.length < 1) {
+            if (ele.length < 1) {
                 cy.contains('Edit question').should('not.visible');
             } else {
                 cy.contains('button', 'Cancel').eq(0).click({ force: true });
@@ -124,7 +122,7 @@ class AddEditSearchDeleteQuestion {
     }
 
     errorMessageForDuplicateUniqueID(text) {
-         cy.contains('Error');
+        cy.contains(text);
     }
 
     enterExistingQuestionUniqueID() {
@@ -159,16 +157,18 @@ class AddEditSearchDeleteQuestion {
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-        cy.get('#range-toggle').select('100')
+        cy.get('#range-toggle').select('100');
         cy.wait(2000);
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Initial Draft") {
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr, index) => {
+                if ($tr.find('td').eq(3).text() === 'Initial Draft') {
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false;
+                }
+            });
     }
-
 }
 
-export const addEditSearchDeleteQuestion = new AddEditSearchDeleteQuestion()
+export const addEditSearchDeleteQuestion = new AddEditSearchDeleteQuestion();

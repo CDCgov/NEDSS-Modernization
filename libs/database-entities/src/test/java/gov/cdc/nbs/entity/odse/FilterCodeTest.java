@@ -14,7 +14,7 @@ class FilterCodeTest {
   void should_throw_exception_with_null_values() {
     assertThatThrownBy(() -> new FilterCode(null))
         .isInstanceOf(NullPointerException.class)
-        .hasMessageContaining("codeTable is marked non-null but is null");
+        .hasMessageContaining("id is marked non-null but is null");
   }
 
   @Test

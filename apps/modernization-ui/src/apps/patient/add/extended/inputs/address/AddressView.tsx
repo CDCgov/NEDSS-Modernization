@@ -9,9 +9,9 @@ type Props = {
 export const AddressView = ({ entry, sizing }: Props) => {
     return (
         <>
-            <ValueView title="Address as of" value={entry.asOf} sizing={sizing} required />
-            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required />
-            <ValueView title="Use" value={entry.use?.name} sizing={sizing} required />
+            <ValueView title="Address as of" value={entry.asOf} sizing={sizing} required={true} />
+            <ValueView title="Type" value={entry.type?.name} sizing={sizing} required={true} />
+            <ValueView title="Use" value={entry.use?.name} sizing={sizing} required={true} />
             <ValueView title="Street address 1" value={entry.address1} sizing={sizing} />
             <ValueView title="Street address 2" value={entry.address2} sizing={sizing} />
             <ValueView title="City" value={entry.city} sizing={sizing} />

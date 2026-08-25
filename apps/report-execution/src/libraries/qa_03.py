@@ -1,3 +1,4 @@
+from src.config import get_cached_config_value
 from src.db_transaction import Transaction
 from src.models import ReportResult
 
@@ -5,7 +6,6 @@ from src.models import ReportResult
 def execute(
     trx: Transaction,
     subset_query: str,
-    data_source_name: str,
     **kwargs,
 ):
     """QA03 STD Program Report: Case Listing Report.
@@ -13,6 +13,7 @@ def execute(
     Conversion notes:
     * Matched export format
     """
+    nbs_rdb = get_cached_config_value('REPORT_DB_NBS_RDB')
     sql_query = f"""
     WITH shd AS ({subset_query})
     SELECT DISTINCT
@@ -38,12 +39,15 @@ def execute(
         ) AS [PROVIDER],
        CAST(SUBSTRING(PATIENT_LOCAL_ID, 4, 8) AS INT) - 10000000 AS PATIENTID
     FROM shd
-    INNER JOIN 
-        [RDB].[dbo].[INVESTIGATION] i ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
-    LEFT OUTER JOIN 
-        [RDB].[dbo].[D_PROVIDER] dp ON shd.PHYSICIAN_KEY = dp.PROVIDER_KEY
-    LEFT OUTER JOIN 
-        [RDB].[dbo].[D_ORGANIZATION] o ON shd.ORDERING_FACILITY_KEY = o.ORGANIZATION_KEY
+    INNER JOIN
+        [{nbs_rdb}].[dbo].[INVESTIGATION] i
+            ON shd.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+    LEFT OUTER JOIN
+        [{nbs_rdb}].[dbo].[D_PROVIDER] dp
+            ON shd.PHYSICIAN_KEY = dp.PROVIDER_KEY
+    LEFT OUTER JOIN
+        [{nbs_rdb}].[dbo].[D_ORGANIZATION] o
+            ON shd.ORDERING_FACILITY_KEY = o.ORGANIZATION_KEY
     WHERE
         shd.INV_LOCAL_ID IS NOT NULL
         AND i.INV_CASE_STATUS in ('Probable','Confirmed')
@@ -52,4 +56,4 @@ def execute(
 
     content = trx.query(sql_query)
 
-    return ReportResult(content_type='table', content=content)
+    return ReportResult(content=content)

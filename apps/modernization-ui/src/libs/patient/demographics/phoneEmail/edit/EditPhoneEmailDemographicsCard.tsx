@@ -1,9 +1,12 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
+
 import { Sizing } from 'design-system/field';
+
 import { PatientDemographicsDefaults } from '../../demographics';
-import { HasPhoneEmailDemographics, initial, PhoneEmailDemographic } from '../phoneEmails';
 import { PhoneEmailDemographicCardProps } from '../PhoneEmailDemographicCard';
 import { PhoneEmailDemographicRepeatingBlock } from '../PhoneEmailDemographicRepeatingBlock';
+import { HasPhoneEmailDemographics, initial, PhoneEmailDemographic } from '../phoneEmails';
+
 import { PhoneEmailDemographicFields } from './PhoneEmailDemographicFields';
 import { usePhoneEmailOptions } from './usePhoneEmailOptions';
 
@@ -24,8 +27,8 @@ const EditPhoneEmailDemographicsCard = ({ form, defaults, ...remaining }: EditPh
                     {...remaining}
                     collapsible={false}
                     data={value}
-                    viewable
-                    editable
+                    viewable={true}
+                    editable={true}
                     defaultValues={initial(defaults.asOf)}
                     formRenderer={(_?: PhoneEmailDemographic, sizing?: Sizing) => (
                         <PhoneEmailDemographicFields sizing={sizing} options={options} />

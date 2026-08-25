@@ -1,5 +1,8 @@
-import { Config } from 'config';
 import { useEffect, useState } from 'react';
+
+import { Config } from 'config';
+import { logErrorToUserConsole } from 'utils/logging';
+
 import { MatchRequiringReviewResponse } from './model/MatchRequiringReview';
 
 export const useMatchesRequiringReview = () => {
@@ -28,11 +31,11 @@ export const useMatchesRequiringReview = () => {
                         setResponse(response);
                     })
                     .catch(() => {
-                        console.error('Failed to extract json for matches requiring review.');
+                        logErrorToUserConsole('Failed to extract json for matches requiring review.');
                     });
             })
             .catch((error) => {
-                console.error(error);
+                logErrorToUserConsole(error);
                 setError('Failed to retrieve matches requiring review');
             })
             .finally(() => setLoading(false));

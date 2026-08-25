@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.template;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -12,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 class TemplateReaderTest {
@@ -27,7 +27,7 @@ class TemplateReaderTest {
 
   @Test
   void findAllTemplates() {
-    when(templateRepository.findAllByTemplateType(eq("TEMPLATE"), Mockito.any()))
+    when(templateRepository.findAllByTemplateType(eq("TEMPLATE"), any()))
         .thenReturn(List.of(getWaTemplate(1)));
     List<Template> result = templateReader.findAllTemplates("");
     assertNotNull(result);
@@ -35,8 +35,7 @@ class TemplateReaderTest {
 
   @Test
   void findAllTemplatesInv() {
-    when(templateRepository.findAllByTemplateTypeAndBusObjType(
-            eq("TEMPLATE"), eq("INV"), Mockito.any()))
+    when(templateRepository.findAllByTemplateTypeAndBusObjType(eq("TEMPLATE"), eq("INV"), any()))
         .thenReturn(List.of(getWaTemplate(1)));
     List<Template> result = templateReader.findAllTemplates("INV");
     assertNotNull(result);

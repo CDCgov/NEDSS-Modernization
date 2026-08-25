@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
+
 import { Button } from '@trussworks/react-uswds';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { CreateCodedQuestionRequest, ValueSetControllerService, ValueSetOption } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useEffect, useState } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import styles from '../question-form.module.scss';
 
 type Props = {
@@ -57,7 +60,12 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
             />
             {!published && !editing && (
                 <>
-                    <Button className={styles.valuesetSearchButton} type="button" outline onClick={onFindValueSet}>
+                    <Button
+                        className={styles.valuesetSearchButton}
+                        type="button"
+                        outline={true}
+                        onClick={onFindValueSet}
+                    >
                         Search value set
                     </Button>
                     <Controller

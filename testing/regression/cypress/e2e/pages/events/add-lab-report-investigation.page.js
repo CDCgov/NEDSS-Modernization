@@ -1,74 +1,64 @@
- class AddLabReportInvestigation {
-  addLabReport() {  	
-  	cy.wait(1000)
-	  cy.get("#NBS_LAB365Text").type("1");
-	  cy.get("#NBS_LAB365CodeLookupButton").click();
-	  cy.get("input[name=INV108_textbox]").type("A");
-	  cy.get("input[name=INV107_textbox]").type("F");  
-	  cy.get("input[name=INV178_textbox]").type("No");
-	  cy.get("input[name=NBS_LAB220_textbox]").type("Dengue virus - Result");
-	  cy.get("img[name=NBS_LAB220_button]").click();
-	  cy.get("input[name=NBS_LAB220_textbox]").type("Dengue virus - Result");
-	  cy.get("input[name=NBS_LAB280_textbox]").type("abnormal");
-	  cy.get("input[id=NBS_LAB364]").type("1");
-	  cy.get("input[name=LAB115_textbox]").type("(arb_u)");
-	  cy.get("textarea[id=NBS_LAB208]").type("postive");
-	  cy.get("tr#AddButtonToggleRESULTED_TEST_CONTAINER input").click();
-	  cy.wait(500);
-	  cy.get("input[name=SubmitAndCreateInvestiation]").first().click();
-	  cy.get("img[name=ccd_button]").click();  
-	  cy.get("option[value=11065]").click();
-	  cy.get("input[name=ccd_textbox]").type("AIDS");
-	  cy.get("#Submit").first().click();
-	  cy.get("#SubmitTop").click();  
-	  cy.contains("Investigation has been successfully saved in the system.");
+class AddLabReportInvestigation {
+    conditionSelect = '#ccd';
+    processingDecisionField = '#ProcessingDecision';
+    investigationTypeField = '#investigationType';
+    fieldFollowUpInvestigatorTextbox = '#NBS161Text';
+    fieldFollowUpInvestigatorSelected = '#NBS161';
+    fieldFollowUpDateAssignedField = '#NBS162';
+    investigationStartDateField = '#INV147';
+    notificationEligibilityField = '#NBS143';
+    submitTopButton = '#SubmitTop';
 
-	  let investigationId;
-	  cy.get('td[class="border1"]').then(($selectedElement) => {
-	    investigationId = $selectedElement[0].children[1].innerText.trim();
-	  })
-	  let patientId;
-	  cy.get('span[class="valueTopLine"]').then(($selectedElement) => {
-	    patientId = $selectedElement[5].next().innerText.trim();
-	  })
+    selectCondition(conditionText) {
+        cy.get(this.conditionSelect).select(conditionText, { force: true });
+    }
 
-	  let firstName;
-	  let lastName;
-	  let programArea;
-	  let investigationStatus;
-	  let investigationStartDate;
-	  let investigationCloseDate; 
-	  let reportingOrganization;
+    // The classic app normally shows a "Processing Decision" pop-up here, but it
+    // communicates its answer back via window.opener - which doesn't exist under
+    // Cypress. We set the same hidden fields that pop-up would set (see
+    // markProcessingDecisionSelectCondition in the app's own JS) and submit the
+    // Select Condition form directly instead of ever opening that pop-up, mirroring
+    // the same workaround already used elsewhere in this suite for other classic
+    // pop-ups (e.g. searchForPatientInPopup, searchForOrderedTestInPopup).
+    selectProcessingDecisionAndSubmit(decisionCode, investigationType) {
+        cy.get(this.processingDecisionField).invoke('val', decisionCode);
+        cy.get(this.investigationTypeField).invoke('val', investigationType);
+        cy.window().then((win) => {
+            win.document.getElementById('nedssForm').submit();
+        });
+    }
 
-	  cy.get('table[class="subSect"] tr td').then(($selectedElement) => { 
-	    firstName = $selectedElement[7].innerText.trim();
-	    lastName = $selectedElement[11].innerText.trim();
-	    programArea = $selectedElement[157].innerText.trim()
-	    investigationStatus = $selectedElement[161].innerText.trim();
-	    investigationStartDate = $selectedElement[165].innerText.trim();
-	    investigationCloseDate = $selectedElement[167].innerText.trim();
-	    reportingOrganization = $selectedElement[211].innerText.trim().replace(/\n/g, ',').split(',');
-	  })
-	  cy.get('td[id="tabs0head1"]').click({multiple: true});
-	  let investigationInfo = [];
-	  cy.get('table[class="subSect"] tr td span').each(($selectedElement) => {
-      let obj = {}
-      let span = $selectedElement[0]
-      if (span.id) {
-        let inputId = span.id.trim();
-        if (inputId[inputId.length-1] === "L") {        	
-          investigationInfo.push(span.innerText.trim());
-        } else {
-          let inputValue = span.innerText.trim();          
-          investigationInfo.push(inputValue);
-        }
-      }
-	  })
-	  cy.get('body').each(($selectedElement) => {
-	  	labReportGlobal = investigationInfo;	  	
-	  })
-	  cy.wait(500);
-  }
+    fillFieldFollowUpInvestigator(quickCode) {
+        cy.get(this.fieldFollowUpInvestigatorTextbox).invoke('val', quickCode);
+        cy.window().then((win) => {
+            win.getDWRProvider('NBS161');
+        });
+        cy.get(this.fieldFollowUpInvestigatorSelected).should('not.have.text', '');
+    }
+
+    // The server pre-fills Investigation Start Date using its own clock, which can
+    // drift from the test runner's. Date Assigned must be >= Investigation Start
+    // Date, so we copy the server's own value instead of computing "today"
+    // independently, to avoid failing on any clock skew between the two.
+    fillFieldFollowUpDateAssignedToMatchStartDate() {
+        cy.get(this.investigationStartDateField)
+            .invoke('val')
+            .then((startDate) => {
+                cy.get(this.fieldFollowUpDateAssignedField).invoke('val', startDate);
+            });
+    }
+
+    selectNotificationEligibility(text) {
+        cy.get(this.notificationEligibilityField).select(text, { force: true });
+    }
+
+    clickSubmit() {
+        cy.get(this.submitTopButton).click();
+    }
+
+    verifyInvestigationSavedSuccessfully() {
+        cy.contains('Investigation has been successfully saved in the system.').should('be.visible');
+    }
 }
 
 export default new AddLabReportInvestigation();

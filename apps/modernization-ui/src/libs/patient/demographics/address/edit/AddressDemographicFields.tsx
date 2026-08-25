@@ -1,20 +1,24 @@
 import { useEffect } from 'react';
+
 import { Controller, useFormContext } from 'react-hook-form';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import {
-    validZipCodeRule,
-    ZipCodeInputField,
-    CensusTractInputField,
-    validCensusTractRule,
-} from 'libs/demographics/location';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextInputField } from 'design-system/input';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 import { SingleSelect } from 'design-system/select';
-import { AddressOptions } from './useAddressOptions';
-import { AddressDemographic, labels } from '../address';
+import {
+    CensusTractInputField,
+    validCensusTractRule,
+    validZipCodeRule,
+    ZipCodeInputField,
+} from 'libs/demographics/location';
 import { Selectable } from 'options';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+
+import { AddressDemographic, labels } from '../address';
+
+import { AddressOptions } from './useAddressOptions';
 
 type AddressDemographicFieldsProps = { options: AddressOptions; entry?: AddressDemographic } & EntryFieldsProps;
 
@@ -53,7 +57,7 @@ const AddressDemographicFields = ({
                         name={name}
                         orientation={orientation}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                         aria-description="This date defaults to today and can be changed if needed"
                     />
@@ -74,7 +78,7 @@ const AddressDemographicFields = ({
                         name={name}
                         options={options.types}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}
@@ -95,7 +99,7 @@ const AddressDemographicFields = ({
                         name={name}
                         options={options.uses}
                         error={error?.message}
-                        required
+                        required={true}
                         sizing={sizing}
                     />
                 )}

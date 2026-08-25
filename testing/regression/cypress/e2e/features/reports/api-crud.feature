@@ -80,3 +80,16 @@ Feature: CRUD Report API Validation
     When I send a PUT request to the edit endpoint with a valid report
     Then the response status should be 200
     Then the response should contain a ReportId
+
+  ########################################
+  ### Delete Report API
+  ########################################
+
+  Scenario: Delete report with wrong report ID
+    When I send a DELETE request to the delete endpoint with wrong report id
+    Then the response status should be 404
+
+  Scenario: Delete report with valid report ID
+    When I send a DELETE request to the delete endpoint with a valid report id
+    Then the response status should be 200
+    Then the response should contain a ReportId

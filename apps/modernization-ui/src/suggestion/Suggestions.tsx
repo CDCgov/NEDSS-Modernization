@@ -1,6 +1,8 @@
+import { KeyboardEvent as ReactKeyboardEvent, ReactNode, RefObject, useEffect, useState } from 'react';
+
 import classNames from 'classnames';
+
 import './Suggestions.scss';
-import React, { ReactNode, RefObject, useEffect, useState } from 'react';
 
 type Props<T> = {
     listRef?: RefObject<HTMLUListElement>;
@@ -47,7 +49,7 @@ const Suggestions = <T,>({
         shown(false);
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
+    const handleKeyDown = (event: ReactKeyboardEvent<HTMLUListElement>) => {
         event.preventDefault();
         if (event.key === 'ArrowDown') {
             setActive((existing) => existing + 1);
@@ -87,7 +89,7 @@ const Suggestions = <T,>({
                     key={idx}
                     role="option"
                     className={classNames('usa-combo-box__list-option', {
-                        'usa-combo-box__list-option--focused': idx == active,
+                        'usa-combo-box__list-option--focused': idx === active,
                     })}
                     aria-posinset={idx + 1}
                     onClick={() => handleClick(suggestion)}

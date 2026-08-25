@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.events.investigation.association;
 import com.google.common.collect.Multimap;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.sql.MultiMapResultSetExtractor;
+import gov.cdc.nbs.sql.ParamUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -64,9 +65,8 @@ public class AssociatedInvestigationFinder {
   Map<Long, Collection<AssociatedInvestigation>> execute(
       final Collection<Long> sources, final PermissionScope scope) {
     return this.client
-        .sql(QUERY)
+        .sql(ParamUtils.replaceListParam(QUERY, "any", scope.any()))
         .param("sources", sources)
-        .param("any", scope.any())
         .query(extractor)
         .asMap();
   }

@@ -2,46 +2,125 @@ Feature: User accesses patient profile and can view existing patient data here.
 
     Background:
         Given I am logged in as secure user
+        And the user navigate to the patient profile page for "63000"
 
     Scenario: Create Seed Profile Data
         Given create a new patient profile
-        Then I set patient id profile ENV
+        And I set patient id profile ENV
 
     # Not multiple investigations available
     @skip-broken
     Scenario: User compares investigations
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When the user has selected multiple investigations
-        When user clicks on the "Compare investigations" button
+        When user clicks on a patient's profile "Events" tab
+        And the user has selected multiple investigations
+        And user clicks on the "Compare investigations" button
 
     Scenario: User wants to add a new investigation
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add investigation" button
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add investigation" button
         And Add a new investigation
 
     Scenario: User wants to add a new lab report
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add lab report" button  
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add lab report" button  
 
     Scenario: User wants to add a new morbidity report
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add morbidity report" button
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add morbidity report" button
+
+    Scenario: Add new lab report without an investigation and confirm it appears in Lab reports
+        When user clicks on a patient's profile "Events" tab
+        And I check the Lab reports count on the Events tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And I select a random Program Area
+        And I select a random Jursidiction
+        And I select a random Resulted Test
+        And I select a random Coded Result
+        And I click the Add button under Resulted Tests
+        And I click the submit button
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        Then the Lab reports count should have increased by 1
+
+    Scenario: Add new lab report and create an investigation from it
+        Given I check the Open investigations count on the Summary tab
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And user selects "STD" from the Program Area dropdown
+        And user selects "Fulton County" from the Jurisdiction dropdown
+        And user selects "Syphilis serology" from the Resulted Test dropdown
+        And user selects "positive" from the Coded Result dropdown
+        And I click the Add button under Resulted Tests
+        And user clicks the Submit and Create Investigation button
+        And user selects "Syphilis, Unknown" as the condition for the new investigation
+        And user sets the processing decision to "FF" for a "New" investigation and submits
+        And user fills the Field Follow-up investigator with Quick Code "1"
+        And user sets the Field Follow-up date assigned to match the investigation start date
+        And user selects "6-Yes, Notifiable" for Patient Eligible for Notification of Exposure
+        And user clicks the Submit button on the investigation
+        Then the investigation should be saved successfully
+        And the user navigate to the patient profile page for "63000"
+        Then the Open investigations count should have increased by 1
+
+    Scenario: Cancel creation of new lab report and confirm none was created
+        When user clicks on a patient's profile "Events" tab
+        And I check the Lab reports count on the Events tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And I select a random Program Area
+        And I select a random Jursidiction
+        And user clicks the Cancel button on the Lab Report page and confirms
+        Then the Lab reports count should not have changed
+
+    Scenario: View an existing lab report and confirm it matches the entered data
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add lab report" button
+        And I search for Reporting Facility with Quick Code "2"
+        And user selects "STD" from the Program Area dropdown
+        And user selects "Fulton County" from the Jurisdiction dropdown
+        And user selects "Syphilis serology" from the Resulted Test dropdown
+        And user selects "positive" from the Coded Result dropdown
+        And I click the Add button under Resulted Tests
+        And I click the submit button
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        And user clicks the newest Lab report link
+        Then the Lab Report view should show Reporting Facility "CHOA - Scottish Rite"
+        And the Lab Report view should show Program Area "STD"
+        And the Lab Report view should show Jurisdiction "Fulton County"
+        And the Lab Report view should show Resulted Test "Syphilis serology"
+
+    Scenario: Edit an existing lab report and confirm the change is present
+        When user clicks on a patient's profile "Events" tab
+        And user clicks the newest Lab report link
+        And user clicks the Edit button on the Lab Report page
+        And user changes the Specimen Collection Date to today's date on the Lab Report edit page
+        And user clicks the Submit button on the Lab Report edit page
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        And user clicks the newest Lab report link
+        Then the Lab Report view should show the updated Specimen Collection Date
+
+    Scenario: Delete existing lab report and confirm it is removed
+        When user clicks on a patient's profile "Events" tab
+        And I check the Lab reports count on the Events tab
+        And user clicks the newest Lab report link
+        And user clicks the Delete button on the Lab Report page and confirms
+        And the user navigate to the patient profile page for "63000"
+        And user clicks on a patient's profile "Events" tab
+        Then the Lab reports count should have decreased by 1
 
     # record not deleting
     @skip-broken
     Scenario: User wants to add a new vaccination record and delete it
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
-        When user clicks on the "Add vaccination" button
+        When user clicks on a patient's profile "Events" tab
+        And user clicks on the "Add vaccination" button
         Then user submits "anthrax" vaccination with a popup and deletes it
 
     Scenario: Display all investigations related to the patient in the "Investigations" section
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Investigations" table
             | Select to compare| A check box to compare investigations.                                 |
             | Investigation ID | A link to the selected open investigation screen                       |
@@ -57,7 +136,6 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No lab reports
     @skip-broken
     Scenario: Display all lab reports related to the patient in the "Lab reports" section
-        Given the user navigate to the patient profile page for "63000"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Lab reports" table
             | Date received       | Date and time the document is received                              |
@@ -72,7 +150,6 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No morbidity reports
     @skip-broken
     Scenario: Display all morbidity reports related to the patient in the "Morbidity reports" section
-        Given the user navigate to the patient profile page for "63000"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Morbidity reports" table
             | Date received   | date and time the report is received.                      |
@@ -86,8 +163,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No vaccinations
     @skip-broken
     Scenario: Display all vaccinations related to the patient in the "Vaccinations" section
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Vaccinations" table
             | Event ID             | System generated ID.                                        |
             | Date created         | Date the vaccination record is created.                     |
@@ -99,8 +175,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No treatment records
     @skip-broken
     Scenario: Display all treatment related to the patient in the "Treatment" section
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Treatment" table
             | Date created    | Date the treatment record is created                        |
             | Provider        | Provider selected for the treatment.                        |
@@ -112,8 +187,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No documents
     @skip-broken
     Scenario: Display documents electronically received (eCR) related to the patient in the "Documents" section
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Documents" table
             | Date received    | Date the treatment record is created |
             | Type             | Document type.                       |
@@ -126,8 +200,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No contact records
     @skip-broken
     Scenario: Display contact record(s) (contact(s) named by patient) in the "Contact records (contacts named by patient)" section
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Contact records (contacts named by patient)" table
             | Date created    | Date the contact record is created.                                  |
             | Contacts named  | Contact’s name named by the patient.                                 |
@@ -139,8 +212,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     # No contact records
     @skip-broken
     Scenario: Display contact record(s) (patient named by contact(s)) in the "Contact records (patient named by contacts)" section
-        Given the user navigate to the patient profile page for "63000"
-        Then user clicks on a patient's profile "Events" tab
+        When user clicks on a patient's profile "Events" tab
         Then I should see the following columns for "Contact records (patient named by contacts)" table
             | Date created    | Date the contact record is created.                                  |
             | Named by        | Patient’s name named by the contact.                                 |

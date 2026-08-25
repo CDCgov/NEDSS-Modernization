@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.condition;
 
-import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,26 +21,24 @@ import org.springframework.web.bind.annotation.*;
 public class ConditionController {
   private final ConditionCreator conditionCreator;
   private final ConditionReader conditionReader;
-  private final UserDetailsProvider userDetailsProvider;
   private final ConditionStatus conditionStatus;
   private final ConditionSearcher searcher;
 
   public ConditionController(
       final ConditionCreator conditionCreator,
       final ConditionReader conditionReader,
-      final UserDetailsProvider userDetailsProvider,
       final ConditionStatus conditionStatus,
       final ConditionSearcher searcher) {
     this.conditionCreator = conditionCreator;
     this.conditionReader = conditionReader;
-    this.userDetailsProvider = userDetailsProvider;
     this.conditionStatus = conditionStatus;
     this.searcher = searcher;
   }
 
   @PostMapping
-  public Condition createCondition(@RequestBody CreateConditionRequest request) {
-    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+  public Condition createCondition(
+      @AuthenticationPrincipal NbsUserDetails user, @RequestBody CreateConditionRequest request) {
+    Long userId = user.getId();
     return conditionCreator.createCondition(request, userId);
   }
 

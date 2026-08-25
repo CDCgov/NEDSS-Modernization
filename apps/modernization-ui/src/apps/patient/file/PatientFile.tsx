@@ -1,8 +1,9 @@
 import { Outlet, useLoaderData } from 'react-router';
-import { PageTitle } from 'page';
-import { ComponentSizingProvider } from 'design-system/sizing';
 
-import { PatientFileProvider, PatientFileData } from './usePatientFileData';
+import { ComponentSizingProvider } from 'design-system/sizing';
+import { PageTitle } from 'page';
+
+import { PatientFileData, PatientFileProvider } from './usePatientFileData';
 
 const PatientFile = () => {
     const data = useLoaderData<PatientFileData>();

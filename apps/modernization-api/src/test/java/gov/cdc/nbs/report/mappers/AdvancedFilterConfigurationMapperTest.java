@@ -9,17 +9,18 @@ import gov.cdc.nbs.entity.odse.FilterCode;
 import gov.cdc.nbs.entity.odse.Report;
 import gov.cdc.nbs.entity.odse.ReportFilter;
 import gov.cdc.nbs.entity.odse.ReportId;
-import gov.cdc.nbs.report.ReportConstants;
 import gov.cdc.nbs.report.models.AdvancedFilterConfiguration;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class AdvancedFilterConfigurationMapperTest {
   // JPA creates circular references, which are tedious to construct properly and
   // we don't really care here
-  Report emptyReport = new Report(new ReportId(), "section");
-  ReportFilter emptyFilter = new ReportFilter(emptyReport, new FilterCode("NONE"));
+  Report emptyReport = new Report(new ReportId());
+  ReportFilter emptyFilter = new ReportFilter(10L, new FilterCode(1L));
   DataSource dataSource = DataSource.builder().id(100L).statusCd('A').build();
   DataSourceColumn column =
       DataSourceColumn.builder()
@@ -33,7 +34,7 @@ class AdvancedFilterConfigurationMapperTest {
           .displayable('Y')
           .filterable('N')
           .statusCd('A')
-          .statusTime(LocalDateTime.of(2024, 3, 31, 12, 0))
+          .statusTime(LocalDateTime.of(2024, Month.MARCH, 31, 12, 0))
           .build();
   FilterCode filterCode =
       FilterCode.builder()
@@ -41,7 +42,7 @@ class AdvancedFilterConfigurationMapperTest {
           .code("T_T01")
           .codeTable("NONE")
           .filterName("Test Filter")
-          .filterType(ReportConstants.ADV_FILTER_TYPE)
+          .filterType(FilterCode.ADV_FILTER_TYPE)
           .build();
 
   @Test
@@ -58,7 +59,7 @@ class AdvancedFilterConfigurationMapperTest {
             .build();
 
     AdvancedFilterConfiguration mapped =
-        AdvancedFilterConfigurationMapper.fromReportFilter(reportFilter);
+        AdvancedFilterConfigurationMapper.fromReportFilter(reportFilter, Collections.emptyList());
 
     assertThat(mapped.reportFilterUid()).isEqualTo(reportFilter.getId());
     assertThat(mapped.defaultValue()).isNull();
@@ -85,7 +86,10 @@ class AdvancedFilterConfigurationMapperTest {
             .report(emptyReport)
             .build();
 
-    assertThatThrownBy(() -> AdvancedFilterConfigurationMapper.fromReportFilter(reportFilter))
+    assertThatThrownBy(
+            () ->
+                AdvancedFilterConfigurationMapper.fromReportFilter(
+                    reportFilter, Collections.emptyList()))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Cannot create advanced filter from non where clause builder filter");
   }

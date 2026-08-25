@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
+
 import { SelectInput } from './SelectInput';
 
 describe('SelectInput component tests', () => {

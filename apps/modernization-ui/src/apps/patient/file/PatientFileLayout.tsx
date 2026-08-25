@@ -1,8 +1,9 @@
 import { CSSProperties, ReactNode, useCallback, useId, useState } from 'react';
-import { Patient } from './patient';
-import { PatientFileHeader } from './PatientFileHeader';
+
 import { SkipLink } from 'SkipLink';
 
+import { PatientFileHeader } from './PatientFileHeader';
+import { Patient } from './patient';
 import styles from './patient-file-layout.module.scss';
 
 type PatientFileLayoutProps = {

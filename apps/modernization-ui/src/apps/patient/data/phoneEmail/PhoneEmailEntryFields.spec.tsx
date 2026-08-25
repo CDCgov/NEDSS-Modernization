@@ -1,8 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { PhoneEmailEntry, initial } from './entry';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
+import { initial, PhoneEmailEntry } from './entry';
 
 const mockPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
@@ -140,7 +141,7 @@ describe('when entering patient phone & email demographics', () => {
     });
 
     it('should not allow country codes over 20 characters', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText } = render(<Fixture />);
         const user = userEvent.setup();
         const country = getByLabelText('Country code');
 
@@ -180,7 +181,7 @@ describe('when entering patient phone & email demographics', () => {
     });
 
     it('should not allow extensions over 20 characters', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText } = render(<Fixture />);
         const user = userEvent.setup();
         const extension = getByLabelText('Extension');
 

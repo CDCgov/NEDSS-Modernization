@@ -5,10 +5,11 @@ $border-size: 2px;
 
 .checkbox {
     --checkbox-size: 1.125rem;
+    @extend %medium;
 
     box-sizing: border-box;
 
-    label {
+    .label {
         color: colors.$base-darkest;
         cursor: pointer;
         user-select: none;
@@ -16,7 +17,7 @@ $border-size: 2px;
 
         position: relative;
 
-        height: var(--checkbox-size);
+        min-height: var(--checkbox-size);
         line-height: 125%;
 
         display: inline-block;
@@ -60,7 +61,8 @@ $border-size: 2px;
             outline-offset: 2px;
         }
 
-        &:has(input:checked)::before {
+        &:has(input:checked)::before,
+        &[data-dummy-selected='true']::before {
             box-shadow: 0 0 0 $border-size colors.$primary;
             background-color: colors.$primary;
             background-image:

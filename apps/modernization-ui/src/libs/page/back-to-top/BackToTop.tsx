@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import { Button } from 'design-system/button';
 import { Sizing } from 'design-system/field';
 
@@ -21,7 +22,13 @@ const BackToTop = ({ className, sizing, target = window }: BackToTopProps) => {
 
     return (
         <div className={classNames(styles.back, className)}>
-            <Button className={styles.button} sizing={sizing} secondary icon="arrow_upward" onClick={handleClick}>
+            <Button
+                className={styles.button}
+                sizing={sizing}
+                secondary={true}
+                icon="arrow_upward"
+                onClick={handleClick}
+            >
                 Back to top
             </Button>
         </div>

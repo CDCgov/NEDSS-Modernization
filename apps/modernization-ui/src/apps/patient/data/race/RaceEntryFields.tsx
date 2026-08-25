@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
+
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+
 import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
-import { validateRequiredRule } from 'validation/entry';
-import { RaceCategoryValidator, RaceEntry } from './entry';
 import { useDetailedRaceOptions } from 'options/race';
-import { EntryFieldsProps } from 'design-system/entry';
+import { validateRequiredRule } from 'validation/entry';
+
+import { RaceCategoryValidator, RaceEntry } from './entry';
 
 const RACE_AS_OF_LABEL = 'Race as of';
 const RACE_CATEGORY_LABEL = 'Race';
@@ -48,7 +51,7 @@ const RaceEntryFields = ({
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={`races-${name}`}
-                        required
+                        required={true}
                         label={RACE_AS_OF_LABEL}
                         value={value}
                         onBlur={onBlur}
@@ -71,7 +74,7 @@ const RaceEntryFields = ({
                     <SingleSelect
                         label={RACE_CATEGORY_LABEL}
                         orientation={orientation}
-                        required
+                        required={true}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}

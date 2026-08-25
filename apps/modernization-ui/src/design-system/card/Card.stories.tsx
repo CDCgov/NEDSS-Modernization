@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Card } from './Card';
+
 import { Button } from 'design-system/button';
+
+import { Card } from './Card';
 
 const meta = {
     title: 'Design System/Cards/Card',
@@ -69,10 +71,10 @@ export const CollapsibleWithActions: Story = {
         ...Collapsible.args,
         actions: (
             <>
-                <Button tertiary sizing="small">
+                <Button tertiary={true} sizing="small">
                     Tertiary
                 </Button>
-                <Button secondary sizing="small">
+                <Button secondary={true} sizing="small">
                     Secondary
                 </Button>
                 <Button sizing="small">Primary</Button>

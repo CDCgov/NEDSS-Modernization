@@ -1,5 +1,5 @@
 export const formatPhone = (phone?: string) => {
-    if (phone == undefined) {
+    if (phone === undefined) {
         return '---';
     }
     if (phone.length !== 10) {

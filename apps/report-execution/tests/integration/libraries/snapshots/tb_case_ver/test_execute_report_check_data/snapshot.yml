@@ -1,0 +1,3288 @@
+- !!python/tuple
+  - null
+  - null
+  - 4 - Provider Diagnosis
+  - Unknown
+  - Unknown
+  - 88
+  - Unknown
+- !!python/tuple
+  - null
+  - null
+  - 4 - Provider Diagnosis
+  - Unknown
+  - Unknown
+  - 325
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC162
+  - 0 - Not a Verified Case
+  - Unknown
+  - Unknown
+  - 134
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC162
+  - 0 - Not a Verified Case
+  - Unknown
+  - Unknown
+  - 170
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC162
+  - 0 - Not a Verified Case
+  - Unknown
+  - Unknown
+  - 382
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC653
+  - 1A - Positive NAA
+  - Unknown
+  - Unknown
+  - 14
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC653
+  - 1A - Positive NAA
+  - Unknown
+  - Unknown
+  - 81
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Unknown
+  - Unknown
+  - 95
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Unknown
+  - Unknown
+  - 122
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Unknown
+  - Unknown
+  - 147
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Unknown
+  - Unknown
+  - 256
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Unknown
+  - Unknown
+  - 315
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC97
+  - 1 - Positive Culture
+  - Unknown
+  - Unknown
+  - 37
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC97
+  - 1 - Positive Culture
+  - Unknown
+  - Unknown
+  - 127
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC97
+  - 1 - Positive Culture
+  - Unknown
+  - Unknown
+  - 392
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC97
+  - 1 - Positive Culture
+  - Unknown
+  - Unknown
+  - 411
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Unknown
+  - Unknown
+  - 217
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Unknown
+  - Unknown
+  - 357
+  - Unknown
+- !!python/tuple
+  - null
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Unknown
+  - Unknown
+  - 499
+  - Unknown
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 261
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 342
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 371
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 374
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 398
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 55
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Spinal cord
+  - Spinal cord
+  - 2
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Spinal cord
+  - Spinal cord
+  - 32
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Spinal cord
+  - Spinal cord
+  - 176
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Spinal cord
+  - Spinal cord
+  - 179
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 4 - Provider Diagnosis
+  - Spinal cord
+  - Spinal cord
+  - 234
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 45
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 197
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 207
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 364
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 481
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 493
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 104
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 155
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 172
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 178
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 193
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 233
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 385
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Spinal cord
+  - Spinal cord
+  - 400
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Spinal cord
+  - Spinal cord
+  - 423
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - null
+  - 5 - Suspect
+  - Spinal cord
+  - Spinal cord
+  - 456
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 159
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 240
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 460
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 372
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 469
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Spinal cord
+  - Spinal cord
+  - 333
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC653
+  - 1A - Positive NAA
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 461
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 20
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 114
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC653
+  - 1A - Positive NAA
+  - Spinal cord
+  - Spinal cord
+  - 160
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC653
+  - 1A - Positive NAA
+  - Spinal cord
+  - Spinal cord
+  - 194
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 15
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 143
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 402
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 432
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 138
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 166
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 215
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 236
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Spinal cord
+  - Spinal cord
+  - 184
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Spinal cord
+  - Spinal cord
+  - 208
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Spinal cord
+  - Spinal cord
+  - 309
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Spinal cord
+  - Spinal cord
+  - 317
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Spinal cord
+  - Spinal cord
+  - 414
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Spinal cord
+  - Spinal cord
+  - 484
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 28
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 58
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 70
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 209
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 229
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 311
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 356
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 6
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 136
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 218
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 258
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 273
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 378
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 438
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 455
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Spinal cord
+  - Spinal cord
+  - 39
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Spinal cord
+  - Spinal cord
+  - 275
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC97
+  - 1 - Positive Culture
+  - Spinal cord
+  - Spinal cord
+  - 448
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 204
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Lymphatic Intrathoracic|Spinal cord
+  - Spinal cord
+  - 404
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated|Spinal cord
+  - Spinal cord
+  - 83
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Spinal cord
+  - Spinal cord
+  - 21
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Spinal cord
+  - Spinal cord
+  - 92
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Spinal cord
+  - Spinal cord
+  - 246
+  - Extrapulmonary TB
+- !!python/tuple
+  - '2748008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Spinal cord
+  - Spinal cord
+  - 434
+  - Extrapulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 261
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 342
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 371
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 374
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 398
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 212
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 266
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 31
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 145
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 167
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 338
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 45
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 197
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 207
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 364
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 481
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 493
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 253
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 269
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 190
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - null
+  - 5 - Suspect
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 351
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 159
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 240
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 460
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 38
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 96
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 126
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 149
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 216
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 288
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 360
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 381
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 426
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 470
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 74
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 259
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 373
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 397
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 500
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 461
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 191
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 203
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 267
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 287
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 390
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 447
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 465
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 86
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 168
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC653
+  - 1A - Positive NAA
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 496
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 15
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 143
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 402
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 432
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 316
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 341
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 386
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 24
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 75
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 28
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 58
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 70
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 209
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 229
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 311
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 356
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 8
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 64
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 226
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 189
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 312
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 365
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 388
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 204
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Lymphatic Intrathoracic|Spinal cord
+  - Lymphatic Intrathoracic
+  - 404
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 119
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 144
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 247
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 336
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 42
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 71
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 257
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 326
+  - Pulmonary TB
+- !!python/tuple
+  - '281778006'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Lymphatic Intrathoracic
+  - 487
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural
+  - Pleural
+  - 105
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural
+  - Pleural
+  - 339
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural
+  - Pleural
+  - 443
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural
+  - Pleural
+  - 486
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 212
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 266
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Pleural
+  - 115
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Pleural
+  - 161
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Pleural
+  - 395
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Pleural
+  - 401
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Pleural
+  - Pleural
+  - 131
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Pleural
+  - Pleural
+  - 188
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 253
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 269
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Pleural
+  - 23
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Pleural
+  - 36
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Pleural
+  - 427
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Pleural
+  - 453
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Pleural
+  - 489
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural
+  - Pleural
+  - 33
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural
+  - Pleural
+  - 195
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural
+  - Pleural
+  - 419
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural
+  - Pleural
+  - 425
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 38
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 96
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 126
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 149
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 216
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 288
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 360
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 381
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 426
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 470
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Pleural
+  - Pleural
+  - 292
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Pleural
+  - Pleural
+  - 492
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 191
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 203
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 267
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 287
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 390
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 447
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 465
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Pleural
+  - Pleural
+  - 3
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Pleural
+  - Pleural
+  - 94
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Pleural
+  - Pleural
+  - 389
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural
+  - Pleural
+  - 165
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural
+  - Pleural
+  - 362
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 316
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 341
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 386
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Pleural
+  - Pleural
+  - 78
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Pleural
+  - Pleural
+  - 268
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Pleural
+  - Pleural
+  - 412
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural
+  - Pleural
+  - 9
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural
+  - Pleural
+  - 221
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural
+  - Pleural
+  - 271
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural
+  - Pleural
+  - 291
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural
+  - Pleural
+  - 354
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 8
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 64
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 226
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Pleural
+  - Pleural
+  - 17
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Pleural
+  - Pleural
+  - 87
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Pleural
+  - Pleural
+  - 272
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural
+  - Pleural
+  - 65
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural
+  - Pleural
+  - 255
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural
+  - Pleural
+  - 260
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural
+  - Pleural
+  - 320
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural
+  - Pleural
+  - 478
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 119
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 144
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 247
+  - Pulmonary TB
+- !!python/tuple
+  - '3120008'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Pleural|Lymphatic Intrathoracic
+  - Pleural
+  - 336
+  - Pulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Trachea
+  - 101
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Trachea
+  - 121
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Trachea
+  - 211
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Trachea
+  - 368
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Trachea
+  - 379
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Trachea
+  - 30
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Trachea
+  - 106
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Trachea
+  - 113
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Trachea
+  - 265
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Trachea
+  - 468
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 135
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 174
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 206
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 277
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 304
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 324
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 348
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Trachea
+  - 375
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Trachea
+  - 129
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Trachea
+  - 137
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Trachea
+  - 182
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Trachea
+  - 201
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Trachea
+  - 313
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Trachea
+  - 472
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Trachea
+  - 79
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Trachea
+  - 327
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Trachea
+  - 420
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Trachea
+  - 428
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC97
+  - 1 - Positive Culture
+  - Nose|Trachea
+  - Trachea
+  - 66
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC97
+  - 1 - Positive Culture
+  - Nose|Trachea
+  - Trachea
+  - 250
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC97
+  - 1 - Positive Culture
+  - Nose|Trachea
+  - Trachea
+  - 252
+  - Extrapulmonary TB
+- !!python/tuple
+  - '44567001'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Nose|Trachea
+  - Trachea
+  - 148
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Nose
+  - 101
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Nose
+  - 121
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Nose
+  - 211
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Nose
+  - 368
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 4 - Provider Diagnosis
+  - Nose|Trachea
+  - Nose
+  - 379
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Nose
+  - 30
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Nose
+  - 106
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Nose
+  - 113
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Nose
+  - 265
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - null
+  - 5 - Suspect
+  - Nose|Trachea
+  - Nose
+  - 468
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 135
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 174
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 206
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 277
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 304
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 324
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 348
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Nose|Trachea
+  - Nose
+  - 375
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Nose
+  - 129
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Nose
+  - 137
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Nose
+  - 182
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Nose
+  - 201
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Nose
+  - 313
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC653
+  - 1A - Positive NAA
+  - Nose|Trachea
+  - Nose
+  - 472
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Nose
+  - 79
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Nose
+  - 327
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Nose
+  - 420
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Nose|Trachea
+  - Nose
+  - 428
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC97
+  - 1 - Positive Culture
+  - Nose|Trachea
+  - Nose
+  - 66
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC97
+  - 1 - Positive Culture
+  - Nose|Trachea
+  - Nose
+  - 250
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC97
+  - 1 - Positive Culture
+  - Nose|Trachea
+  - Nose
+  - 252
+  - Extrapulmonary TB
+- !!python/tuple
+  - '45206002'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Nose|Trachea
+  - Nose
+  - 148
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 31
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 145
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 167
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - null
+  - 4 - Provider Diagnosis
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 338
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - null
+  - 5 - Suspect
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 190
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - null
+  - 5 - Suspect
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 351
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 74
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 259
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 373
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 397
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC162
+  - 0 - Not a Verified Case
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 500
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC653
+  - 1A - Positive NAA
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 86
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC653
+  - 1A - Positive NAA
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 168
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC653
+  - 1A - Positive NAA
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 496
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 24
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 75
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 189
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 312
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 365
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC97
+  - 1 - Positive Culture
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 388
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 42
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 71
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 257
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 326
+  - Extrapulmonary TB
+- !!python/tuple
+  - '69695003'
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Stomach|Lymphatic Intrathoracic
+  - Stomach
+  - 487
+  - Extrapulmonary TB
+- !!python/tuple
+  - PHC5
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated
+  - Site not Stated
+  - 98
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 115
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 161
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 395
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 401
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 4 - Provider Diagnosis
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 55
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated
+  - Site not Stated
+  - 230
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated
+  - Site not Stated
+  - 416
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated
+  - Site not Stated
+  - 442
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated
+  - Site not Stated
+  - 458
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 23
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 36
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 427
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 453
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 489
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 104
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 155
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 172
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 178
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 193
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 233
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - null
+  - 5 - Suspect
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 385
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated
+  - Site not Stated
+  - 73
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated
+  - Site not Stated
+  - 173
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated
+  - Site not Stated
+  - 205
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated
+  - Site not Stated
+  - 232
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated
+  - Site not Stated
+  - 370
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 292
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 492
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 372
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC162
+  - 0 - Not a Verified Case
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 469
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated
+  - Site not Stated
+  - 110
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated
+  - Site not Stated
+  - 349
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated
+  - Site not Stated
+  - 409
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 3
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 94
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 389
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 20
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC653
+  - 1A - Positive NAA
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 114
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated
+  - Site not Stated
+  - 111
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated
+  - Site not Stated
+  - 399
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated
+  - Site not Stated
+  - 477
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated
+  - Site not Stated
+  - 488
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 78
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 268
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 412
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 138
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 166
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 215
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC654
+  - 3 - Clinical Case Definition
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 236
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated
+  - Site not Stated
+  - 180
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated
+  - Site not Stated
+  - 181
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 17
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 87
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Pleural
+  - Site not Stated
+  - 272
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 6
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 136
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 218
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 258
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 273
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 378
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 438
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC97
+  - 1 - Positive Culture
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 455
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated
+  - Site not Stated
+  - 244
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated
+  - Site not Stated
+  - 290
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated
+  - Site not Stated
+  - 295
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated
+  - Site not Stated
+  - 363
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated
+  - Site not Stated
+  - 439
+  - Unknown
+- !!python/tuple
+  - PHC5
+  - PHC98
+  - 2 - Positive Smear/Tissue
+  - Site not Stated|Spinal cord
+  - Site not Stated
+  - 83
+  - Unknown

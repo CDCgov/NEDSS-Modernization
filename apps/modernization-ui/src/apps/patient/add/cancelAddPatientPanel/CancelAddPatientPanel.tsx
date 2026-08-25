@@ -1,6 +1,9 @@
-import { Checkbox } from '@trussworks/react-uswds';
-import { Confirmation } from 'design-system/modal';
 import { ChangeEvent, useCallback, useState } from 'react';
+
+import { Checkbox } from '@trussworks/react-uswds';
+
+import { Confirmation } from 'design-system/modal';
+
 import { useShowCancelModal } from './useShowCancelModal';
 
 type CancelAddPatientPanelProps = {
@@ -35,8 +38,8 @@ export const CancelAddPatientPanel = ({ onClose, onConfirm }: CancelAddPatientPa
             Canceling the form will result in the loss of all additional data entered. Are you sure you want to cancel?
             <Checkbox
                 label="Don't show again"
-                id={'visibilityCheckbox'}
-                name={'visibilityCheckbox'}
+                id="visibilityCheckbox"
+                name="visibilityCheckbox"
                 onChange={handleCheckboxChange}
             />
         </Confirmation>

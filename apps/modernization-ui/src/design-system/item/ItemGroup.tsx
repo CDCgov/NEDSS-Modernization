@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
-import styles from './item.module.scss';
+
 import { NoData } from 'design-system/data';
+
+import styles from './item.module.scss';
 
 type ItemType = 'address' | 'phone' | 'email' | 'name' | 'other';
 
