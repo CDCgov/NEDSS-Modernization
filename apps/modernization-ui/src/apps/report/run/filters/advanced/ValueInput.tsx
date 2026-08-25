@@ -68,12 +68,8 @@ const ValueInput = (props: ValueEditorProps<ValueSetMetadata & FullField & FullO
         }
     }, [handleOnChange, operator, value, inputType]);
 
-    const handleSingleOnChange = (newValue: number | string | undefined) => {
-        if (newValue !== undefined) {
-            props.handleOnChange(newValue.toString());
-        } else {
-            props.handleOnChange('');
-        }
+    const handleSingleOnChange = (newValue: unknown) => {
+        props.handleOnChange(newValue?.toString() ?? '');
     };
 
     const handleBetweenOnChange = (incoming: DateBetweenCriteria | NumberBetweenCriteria) => {
