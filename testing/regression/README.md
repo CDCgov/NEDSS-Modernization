@@ -55,13 +55,13 @@ The following content will configure Cypress to connect to a local environment s
 }
 ```
 
-The following content will configure Cypress to connect to the INT1 environment.
+The following environment variables will need to be set to run all Cypress tests successfully:
 
 ```json
 {
-    "DI_API": "https://dataingestion.int1.nbspreview.com/ingestion/api",
-    "NOTIFICATION_STATUS_API": "https://app.int1.nbspreview.com/nbs/api/investigations/uid/notifications/transport/status",
-    "ON_PRIM_NOTIFICATION_STATUS_API": "https://testsync.dts1.nbspreview.com/notifications/uid/status",
+    "DI_API": "https://dataingestion.int1.nbspreview.com/ingestion/api", // url no longer supported
+    "NOTIFICATION_STATUS_API": "https://app.int1.nbspreview.com/nbs/api/investigations/uid/notifications/transport/status", // url no longer supported
+    "ON_PRIM_NOTIFICATION_STATUS_API": "https://testsync.dts1.nbspreview.com/notifications/uid/status", // url no longer supported
     "DI_CLIENT_ID": "<di-keycloak-client>",
     "DI_SECRET": "<data-ingestion-secret",
     "LOGIN_USERNAME": "<username>",

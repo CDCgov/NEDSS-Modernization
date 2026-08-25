@@ -14,7 +14,7 @@ by the CDC.
 Click here to view the [NEDSSDev Github Repository](https://github.com/cdcent/NEDSSDev).
 
 To build and run the project use the instructions in the following sections of this README.
-Each section has a its own detailed documentation as well.
+Each section has its own detailed documentation as well.
 Follow the links for more insight into development best practices and other options for build and run procedures.
 The steps outlined in this README should get the system up and running quickly for the first time.
 
@@ -35,11 +35,13 @@ A convenience script has been provided to automate the build of the container im
 For more information on the build process click here for the [Build README](doc/build.md)
 
 
-To access the NBS application visit **http://localhost:7001/nbs/login**.
+To access the NBS 6 application visit **http://localhost:7001/nbs/login**.
+
+To access the modernized NBS 7 application visit http://localhost:8000/nbs/login
 
 |Available Users|
 |-|
 |msa|
 |superuser|
 
-The password field should be left blank
+The password field should be left blank.

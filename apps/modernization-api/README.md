@@ -193,7 +193,6 @@ The `default` profile contains the following properties configuration most likel
 | nbs.identifier.person.initial | 10000000  | The initial seed value for Person local identifiers |
 
 ### UI Configuration
-
 The modernization-api includes the [configuration-api](/libs/configuration-api/README.md) to expose the configuration
 endpoint.
 

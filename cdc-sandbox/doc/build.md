@@ -15,7 +15,7 @@ following command in this project directory.
 docker compose down
 ```
 
-The Docker volume named "nbs-mssql-data" will not be removed automatically.
+The Docker volume named "cdc-sandbox_nbs-mssql-data" will not be removed automatically.
 If you wish to delete the database data volume and reset the database to an
 initial state, list the volumes and then delete it.
 
