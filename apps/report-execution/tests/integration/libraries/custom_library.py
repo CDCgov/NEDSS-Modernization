@@ -59,7 +59,6 @@ class TestCustomLibrary:
         headers = {'Content-type': 'application/json'}
         body = json.dumps(report_spec)
 
-        breakpoint()
         connection.request('POST', '/report/execute', body, headers)
 
         response = connection.getresponse()
