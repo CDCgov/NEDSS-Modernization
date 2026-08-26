@@ -2,6 +2,7 @@ import http.client
 import json
 
 import pytest
+import yaml
 
 
 @pytest.mark.usefixtures('setup_containers')
@@ -9,7 +10,7 @@ import pytest
 class TestCustomLibrary:
     """Integration tests for custom library execution."""
 
-    def test_custom_library_runs(self):
+    def test_custom_library_runs(self, snapshot):
         report_spec = {
             'is_export': True,
             'is_builtin': False,
@@ -33,5 +34,7 @@ class TestCustomLibrary:
             == 'Custom pass through query%n%n        It is many lines _with_ *markdown*'
         )
         assert response.headers['X-Report-Context-Header'] == 'custom header'
-        body = response.read()
+        body = response.read().decode('UTF-8')
         assert len(body) > 10
+
+        snapshot.assert_match(yaml.dump(body), 'snapshot.yml')

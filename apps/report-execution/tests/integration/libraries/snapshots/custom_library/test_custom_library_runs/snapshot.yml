@@ -1,0 +1,8 @@
+"filter_uid,code_table,desc_txt,effective_from_time,effective_to_time,filter_code,filter_code_set_nm,filter_type,filter_name,status_cd,status_time\r\
+  \ncount,20,20,20,0,0,20,10,20,20,20,0\r\nunique,nan,6,17,0,0,17,7,11,20,1,0\r\n\
+  top,nan,NONE,Basic Diagnosis Code Filter,nan,nan,CVG_CUSTOM_N01,PHC_TYPE,BAS_JUR_LIST,Diseases,A,nan\r\
+  \nfreq,nan,10,3,nan,nan,3,2,4,1,20,nan\r\nmean,11.95,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\
+  \nstd,6.68,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\nmin,1,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\
+  \n25%,6.75,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\n50%,12.5,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\
+  \n75%,17.25,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\nmax,23,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan\r\
+  \n"
