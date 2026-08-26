@@ -104,7 +104,7 @@ describe('ImportConfigurationModal', () => {
 
         await user.click(importButton);
         // call happens in promise, can take a moment to settle
-        waitFor(() => expect(onImport).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(onImport).toHaveBeenCalledTimes(1));
         expect(onImport).toHaveBeenCalledWith('test.json', algorithmExport);
     });
 
