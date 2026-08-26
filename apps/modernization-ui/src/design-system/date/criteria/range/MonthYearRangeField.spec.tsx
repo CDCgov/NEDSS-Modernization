@@ -12,6 +12,9 @@ describe('MonthYearRangeField Component', () => {
                 onChange={vi.fn()}
                 startYear={2000}
                 endYear={2020}
+                value={{
+                    between: { to: null, from: null },
+                }}
             />
         );
 
@@ -52,6 +55,9 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
+                value={{
+                    between: { to: null, from: null },
+                }}
             />
         );
 
@@ -71,6 +77,9 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
+                value={{
+                    between: { to: null, from: null },
+                }}
             />
         );
 
@@ -92,6 +101,7 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         from: '01/2004',
+                        to: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -116,6 +126,7 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         from: '01/2004',
+                        to: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -138,6 +149,9 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
+                value={{
+                    between: { to: null, from: null },
+                }}
             />
         );
 
@@ -157,6 +171,9 @@ describe('MonthYearRangeField Component', () => {
                 onChange={mockOnChange}
                 startYear={2000}
                 endYear={2020}
+                value={{
+                    between: { to: null, from: null },
+                }}
             />
         );
 
@@ -178,6 +195,7 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         to: '01/2004',
+                        from: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -202,6 +220,7 @@ describe('MonthYearRangeField Component', () => {
                 value={{
                     between: {
                         to: '01/2004',
+                        from: null,
                     },
                 }}
                 onChange={mockOnChange}
@@ -214,5 +233,55 @@ describe('MonthYearRangeField Component', () => {
         await user.selectOptions(to, '2010');
 
         expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: '01/2010' }) });
+    });
+
+    it('should call to input change handler when the year is unset', async () => {
+        const mockOnChange = vi.fn();
+        const { getByRole } = render(
+            <MonthYearRangeField
+                id="testing-date-range-to-change"
+                startYear={2000}
+                endYear={2020}
+                value={{
+                    between: {
+                        to: '00/2004',
+                        from: null,
+                    },
+                }}
+                onChange={mockOnChange}
+            />
+        );
+
+        const to = getByRole('combobox', { name: 'To year' });
+
+        const user = userEvent.setup();
+        await user.selectOptions(to, '');
+
+        expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: null }) });
+    });
+
+    it('should call to input change handler when the month is unset', async () => {
+        const mockOnChange = vi.fn();
+        const { getByRole } = render(
+            <MonthYearRangeField
+                id="testing-date-range-to-change"
+                startYear={2000}
+                endYear={2020}
+                value={{
+                    between: {
+                        to: '01/0',
+                        from: null,
+                    },
+                }}
+                onChange={mockOnChange}
+            />
+        );
+
+        const to = getByRole('combobox', { name: 'To month' });
+
+        const user = userEvent.setup();
+        await user.selectOptions(to, '');
+
+        expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: null }) });
     });
 });
