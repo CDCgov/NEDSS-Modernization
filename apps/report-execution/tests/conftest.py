@@ -2,8 +2,8 @@ import decimal
 import logging
 import os
 import shutil
-import subprocess
 from contextlib import contextmanager
+from urllib.request import urlopen
 
 import pytest
 import tablefaker
@@ -121,17 +121,21 @@ def download_custom_library(request):
     CDCgov/NEDSS-Custom-Library-Example repository so that we can run tests against it.
     """
     file_dir = os.path.dirname(__file__)
-    script_path = f'{file_dir}/../scripts/pull_example_library.sh'
     download_filepath = f'{file_dir}/integration/assets/custom_lib_repo_example.py'
 
-    logging.info(f'Downloading custom library {download_filepath} ...')
-    result = subprocess.run(script_path, capture_output=True, text=True)
+    try:
+        logging.info(f'Downloading custom library {download_filepath} ...')
 
-    if result.returncode != 0:
-        msg = 'Shell script to pull down example library failed. Script STDERR:\n'
-        msg += result.stderr
+        url = 'https://raw.githubusercontent.com/CDCgov/NEDSS-Custom-Library-Example/refs/heads/main/example_library.py'  # noqa: E501
+        with urlopen(url) as fd:
+            body = fd.read().decode('utf-8')
+    except Exception as ex:
+        raise RuntimeError(
+            'Downloading of custom library example file has failed'
+        ) from ex
 
-        raise RuntimeError(msg)
+    with open(download_filepath, 'w') as fd:
+        fd.write(body)
 
     logging.info('Custom library finished downloading!')
 
