@@ -11,8 +11,8 @@ import { BasicFilterComponent, BasicFilterProps } from './BasicFilter';
 const DateRangeFilter: BasicFilterComponent = ({ filter, value, onChange, ...remaining }: BasicFilterProps) => {
     return (
         <DatePickerRange
-            value={{ between: { from: value?.[0], to: value?.[1] } }}
-            onChange={(newValue) => onChange([newValue?.between?.from, newValue?.between.to])}
+            value={{ between: { from: value?.[0] ?? null, to: value?.[1] ?? null } }}
+            onChange={(newValue) => onChange([newValue.between.from, newValue.between.to])}
             {...remaining}
         />
     );
@@ -26,7 +26,7 @@ const getDateRange = (filter: BasicFilterConfiguration) => {
 };
 
 const dateRangeValidator = (filter: BasicFilterConfiguration, label: string) => {
-    return (value?: (string | undefined)[]) => {
+    return (value?: (string | undefined | null)[]) => {
         // Base required check doesn't work well with ranges
         if (!value || (!value[0] && !value[1])) {
             return filter.isRequired ? validateRequiredRule(label).required.message : true;

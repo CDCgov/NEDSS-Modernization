@@ -1,12 +1,9 @@
-import { useCallback } from 'react';
-
 import classNames from 'classnames';
 
 import { Sizing } from 'design-system/field';
-import { withoutProperty, withProperty } from 'utils/object';
 
-import { DateBetweenCriteria, DateEqualsCriteria, DateRange } from '../dateCriteria';
-import { MonthYearField } from '../exact/MonthYearField';
+import { DateBetweenCriteria, DateRange } from '../dateCriteria';
+import { MonthYearEqualsCriteria, MonthYearField } from '../exact/MonthYearField';
 
 import styles from './date-range-field.module.scss';
 
@@ -14,26 +11,23 @@ type Field = keyof DateRange;
 
 // format to mm/yyyy string
 const formatMonth = (n: number) => new Intl.NumberFormat('en-US', { minimumIntegerDigits: 2 }).format(n);
-const toDateString = ({ equals }: DateEqualsCriteria) =>
-    equals ? `${formatMonth(equals.month ?? 0)}/${equals.year ?? 0}` : undefined;
-const parseDateString = (dtStr?: string) => {
-    if (!dtStr) return undefined;
+const toDateString = ({ equals }: MonthYearEqualsCriteria) =>
+    equals.month || equals.year ? `${formatMonth(equals.month ?? 0)}/${equals.year ?? 0}` : null;
+const parseDateString = (dtStr: string | null): MonthYearEqualsCriteria => {
+    if (!dtStr) return { equals: { month: null, year: null } };
     const parts = dtStr.split('/');
     const month = parseInt(parts[0]);
     const year = parseInt(parts[1]);
     return { equals: { month, year } };
 };
 
-const next = (field: Field, value: DateEqualsCriteria | undefined) =>
-    value ? withProperty<DateRange, string>(field, toDateString(value)) : withoutProperty<DateRange>(field);
-
 export type MonthYearRangeFieldProps = {
     id: string;
     startYear: number;
     endYear: number;
-    value?: DateBetweenCriteria;
+    value: DateBetweenCriteria;
     sizing?: Sizing;
-    onChange: (value?: DateBetweenCriteria) => void;
+    onChange: (value: DateBetweenCriteria) => void;
     onBlur?: () => void;
     label?: string;
     required?: boolean;
@@ -50,20 +44,12 @@ const MonthYearRangeField = ({
     label,
     required,
 }: MonthYearRangeFieldProps) => {
-    const fromValue = parseDateString(value?.between?.from);
-    const toValue = parseDateString(value?.between?.to);
+    const fromValue = parseDateString(value.between.from);
+    const toValue = parseDateString(value.between.to);
 
-    const handleFieldOnChange = useCallback(
-        (field: Field) => (changed: DateEqualsCriteria | undefined) => {
-            const between = next(field, changed)(value?.between);
-            if (between) {
-                onChange({ between });
-            } else {
-                onChange({ between: { from: undefined, to: undefined } });
-            }
-        },
-        [onChange, value?.between]
-    );
+    const handleFieldOnChange = (field: Field) => (changed: MonthYearEqualsCriteria) => {
+        onChange({ between: { ...value.between, [field]: toDateString(changed) } });
+    };
 
     return (
         <div id={id} role="group" className={classNames(styles['date-range-entry'])} aria-label={label}>
