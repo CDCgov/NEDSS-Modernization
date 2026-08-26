@@ -15,8 +15,8 @@ class TestCustomLibrary:
             'is_export': True,
             'is_builtin': False,
             'library_name': 'custom_library',
-            # Filter code is used here as it is a stable, small table
-            'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
+            # Filter operator is used here as it is a stable, small table
+            'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_Operator]',
         }
 
         connection = http.client.HTTPConnection('localhost:8001')
