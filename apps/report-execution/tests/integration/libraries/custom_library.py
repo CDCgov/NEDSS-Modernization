@@ -65,5 +65,5 @@ class TestCustomLibrary:
         response = connection.getresponse()
         assert response.status == 200
 
-        body = response.read()
+        body = response.read().decode('utf-8')
         snapshot.assert_match(yaml.dump(body), 'snapshot.yml')
