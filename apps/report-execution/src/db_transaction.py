@@ -11,7 +11,7 @@ from .models import Table
 INVALID_OBJECT_REGEX = re.compile("Invalid object name ('.*').")
 INVALID_COLUMN_REGEX = re.compile("Invalid column name ('.*').")
 
-BATCH_SIZE = 2**12 # 4096
+BATCH_SIZE = 2**12  # 4096
 
 
 class Transaction:
