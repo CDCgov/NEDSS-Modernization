@@ -89,7 +89,7 @@ Then('click on Save changes in  page details page', () => {
     previewPagePage.clickSaveChangesBtnPageDetailsPage();
 });
 
-Then("click on Close button in page details page", () => {
+Then('click on Close button in page details page', () => {
     previewPagePage.clickCloseBtnPageDetailsPage();
 });
 

@@ -10,7 +10,7 @@ Then('User should see the following required elements by {string} {string}', (st
     pageElementsPage.seeElementText(string, string1);
 });
 
-Then("User clicks in the Page name field", () => {
+Then('User clicks in the Page name field', () => {
     pageElementsPage.clickPageNameField();
 });
 

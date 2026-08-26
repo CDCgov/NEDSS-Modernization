@@ -55,15 +55,15 @@ class SearchAndFilterPage {
     }
 
     selectColumn(columnName) {
-        cy.selectDropdownByLabel("Select a field", this.getColumnValueByName(columnName))
+        cy.selectDropdownByLabel('Select a field', this.getColumnValueByName(columnName));
     }
 
     selectOperator(operatorValue) {
-        cy.selectDropdownByLabel("Operator", operatorValue)
+        cy.selectDropdownByLabel('Operator', operatorValue);
     }
 
     enterValue(value) {
-        cy.findByLabelText("Value").type(value);
+        cy.findByLabelText('Value').type(value);
     }
 
     clickDone() {
@@ -80,8 +80,8 @@ class SearchAndFilterPage {
 
     enterTextInMultiInputValue(value) {
         cy.get('.multi-select__input').type(value);
-        cy.get('.multi-select__option--is-focused').should('be.visible')
-        cy.press(Cypress.Keyboard.Keys.TAB)
+        cy.get('.multi-select__option--is-focused').should('be.visible');
+        cy.press(Cypress.Keyboard.Keys.TAB);
         cy.get('.multi-select__input').type('{esc}');
     }
 
