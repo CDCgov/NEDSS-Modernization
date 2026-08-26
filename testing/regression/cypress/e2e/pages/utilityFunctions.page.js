@@ -9,7 +9,7 @@ class UtilityFunctions {
     }
 
     generateRandomSSN() {
-        return this.generateRandomLengthNumber(10);
+        return this.generateRandomLengthNumber(9);
     }
 
     generateRandomLengthNumber(length) {
