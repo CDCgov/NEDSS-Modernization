@@ -5,9 +5,9 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { CreateConceptRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { DatePickerInput } from 'design-system/date';
 import { isAfter } from 'validation/date/isAfter';
 import { maxLengthRule } from 'validation/entry';
 
@@ -116,14 +116,15 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         rules={{
                             required: { value: true, message: 'Effective from time is required' },
                         }}
-                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                defaultValue={value}
+                                id={name}
+                                value={value}
                                 label="Effective from time"
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 required={true}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />
@@ -131,13 +132,14 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         control={form.control}
                         name="effectiveToTime"
                         rules={{ validate: isAfter(effectiveFrom) }}
-                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                defaultValue={value}
+                                id={name}
+                                value={value}
                                 label="Effective to time"
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.report;
 
-import com.fasterxml.jackson.core.exc.StreamConstraintsException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,7 +13,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 
 @ControllerAdvice(assignableTypes = {ReportController.class})
@@ -69,7 +68,8 @@ public class ReportExceptionHandler {
     ErrorResponseBody err = null;
 
     try {
-      err = ex.getResponseBodyAs(ErrorResponseBody.class);
+      ObjectMapper mapper = new ObjectMapper();
+      err = mapper.readValue(ex.getResponseBodyAsString(), ErrorResponseBody.class);
     } catch (Exception e) {
       LOGGER.log(
           System.Logger.Level.WARNING,
@@ -89,21 +89,6 @@ public class ReportExceptionHandler {
     return new ResponseEntity<>(new ErrorResponseBody(message, errorId), ex.getStatusCode());
   }
 
-  @ExceptionHandler(RestClientException.class)
-  public ResponseEntity<ErrorResponseBody> handleRestClientException(RestClientException ex) {
-    Throwable cause = ex.getRootCause();
-    if (cause instanceof StreamConstraintsException) {
-      return defaultExceptionHandler(
-          "Returned report exceeds maximum size allowed by NBS: %s.%n%n`nbs.report.execution.max_size` setting controls this limit and can be adjusted by your system administrator."
-              .formatted(cause.getMessage()),
-          ex,
-          HttpStatus.UNPROCESSABLE_ENTITY,
-          System.Logger.Level.ERROR);
-    } else {
-      return handleUnexpectedError(ex);
-    }
-  }
-
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponseBody> handleUnexpectedError(Exception ex) {
     String errorId = UUID.randomUUID().toString();
@@ -116,14 +101,9 @@ public class ReportExceptionHandler {
 
   private ResponseEntity<ReportExceptionHandler.ErrorResponseBody> defaultExceptionHandler(
       Exception e, HttpStatus httpStatus, System.Logger.Level logLevel) {
-    return defaultExceptionHandler(e.getMessage(), e, httpStatus, logLevel);
-  }
-
-  private ResponseEntity<ReportExceptionHandler.ErrorResponseBody> defaultExceptionHandler(
-      String message, Exception e, HttpStatus httpStatus, System.Logger.Level logLevel) {
     String errorId = UUID.randomUUID().toString();
-    LOGGER.log(logLevel, DEFAULT_ERROR_LOG.formatted(errorId, message), e);
+    LOGGER.log(logLevel, DEFAULT_ERROR_LOG.formatted(errorId, e.getMessage()), e);
 
-    return new ResponseEntity<>(new ErrorResponseBody(message, errorId), httpStatus);
+    return new ResponseEntity<>(new ErrorResponseBody(e.getMessage(), errorId), httpStatus);
   }
 }

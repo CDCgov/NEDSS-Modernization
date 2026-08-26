@@ -103,8 +103,9 @@ public class ReportSpecBuilder {
 
     String selectClause = buildSelectClause(columns);
     String fromClause = String.format("FROM %s", dataSourceName);
-    String whereClause =
-        whereClauseService.buildWhereClause(reportConfig, reportExecRequest, dataSourceNameUtils);
+    String logicFragment =
+        whereClauseService.buildLogicFragment(reportConfig, reportExecRequest, dataSourceNameUtils);
+    String whereClause = whereClauseService.buildWhereClause(reportConfig, logicFragment);
 
     // filter out empty spaces prior to string joining to prevent extra spaces between clauses
     String subsetQuery =
@@ -126,7 +127,8 @@ public class ReportSpecBuilder {
         columnMap,
         orderbyCriteria,
         daysValue,
-        libraryParams);
+        libraryParams,
+        logicFragment);
   }
 
   private Integer extractDaysValue() {

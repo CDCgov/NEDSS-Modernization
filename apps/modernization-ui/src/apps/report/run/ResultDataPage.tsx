@@ -10,11 +10,11 @@ import { ValueField } from 'design-system/field';
 import { AlertMessage } from 'design-system/message';
 import { DataTable } from 'design-system/table';
 import { NoDataRow } from 'design-system/table/NoDataRow';
-import { ReportExecutionResult } from 'generated';
 
 import { LOCAL_STORAGE_RESULT_PREFIX } from '../constants';
 import { ReportLayout } from '../layout/ReportLayout';
 import layoutStyes from '../layout/layout.module.scss';
+import { fetchStoredData } from '../utils/openNewTab';
 
 const SIZING = 'medium';
 const dateFormatter = Intl.DateTimeFormat('en-US', {
@@ -27,7 +27,13 @@ const dateFormatter = Intl.DateTimeFormat('en-US', {
 const formatTimestamp = (timestamp: string) => dateFormatter.format(new Date(timestamp)).replace(',', '');
 
 type Result = {
-    result: ReportExecutionResult;
+    result: {
+        content: string;
+        description?: string;
+        context_header?: string;
+        timestamp: string;
+        query: string;
+    };
     title: string;
     dataSourceName: string;
 };
@@ -35,10 +41,7 @@ type Result = {
 const loadReportResult: LoaderFunction = async (request): Promise<Result | null> => {
     const { resultId } = request.params;
     const resultKey = `${LOCAL_STORAGE_RESULT_PREFIX}.${resultId}`;
-    const rawData = localStorage.getItem(resultKey);
-    // clean up after the data to make sure it doesn't linger in cache
-    localStorage.removeItem(resultKey);
-    return rawData ? JSON.parse(rawData) : null;
+    return fetchStoredData<Result>(resultKey);
 };
 
 const ResultDataPage = () => {
@@ -70,11 +73,7 @@ const ResultDataPage = () => {
     }
 
     const {
-        result: {
-            result: { content, description, context_header },
-            timestamp,
-            query,
-        },
+        result: { content, description, context_header, timestamp, query },
         title,
         dataSourceName,
     } = result;
@@ -86,12 +85,10 @@ const ResultDataPage = () => {
     });
 
     const formattedTime = formatTimestamp(timestamp);
-    const descriptionHtml = description ? DOMPurify.sanitize(marked.parse(description.trim()) as string) : '';
-
-    const styledQuery = query
-        .replace(' FROM ', '\nFROM ')
-        .replace(' WHERE ', '\nWHERE ')
-        .replace(' ORDER BY ', '\nORDER BY ');
+    // headers can't include new lines, so un-serialize for display
+    const descriptionHtml = description
+        ? DOMPurify.sanitize(marked.parse(description.trim().replaceAll('%n', '\n')) as string)
+        : '';
 
     return (
         <ReportLayout title={title} subtitle={context_header} noSkipLink={true}>
@@ -121,11 +118,13 @@ const ResultDataPage = () => {
                 </Card>
 
                 <Card id="report-criteria" title="Report criteria" collapsible={true} open={false}>
-                    <ValueField sizing={SIZING} label="Base SQL query">
+                    <ValueField sizing={SIZING} label="Base SQL query WHERE">
                         {/* The uswds text-pre-line forces a sans font instead of respecting mono */}
-                        <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
-                            {styledQuery}
-                        </span>
+                        {query && (
+                            <span style={{ whiteSpace: 'pre-line' }} className="font-mono-xs">
+                                {query}
+                            </span>
+                        )}
                     </ValueField>
                 </Card>
 

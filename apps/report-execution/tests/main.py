@@ -44,14 +44,11 @@ class TestReportExecuteEndpoint:
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        result = response.json()
-        assert result
+        content = response.read().decode('utf-8')
 
         # check we can round trip back to DF
-        content = result['content']
         assert '\r\n1,a\r\n' in content
-        assert content.endswith('d')
-        assert not content.endswith('\r\n')
+        assert content.endswith('d\r\n')
         str_io = io.StringIO(content)
         df = pd.read_csv(str_io)
         # check numbers kept precision, but not overly so
@@ -72,7 +69,7 @@ class TestReportExecuteEndpoint:
         response = client.post('/report/execute', json=report_spec)
 
         assert response.status_code == 200
-        assert response.json()
+        assert response.read()
 
     def test_execute_report_api_missing_required_fields(self, client):
         """Test that missing required fields return a validation error."""

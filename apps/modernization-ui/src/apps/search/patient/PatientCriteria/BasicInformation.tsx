@@ -60,7 +60,7 @@ export const BasicInformation = ({ sizing, orientation }: EntryFieldsProps) => {
                     <DateCriteriaField
                         id={name}
                         label="Date of birth"
-                        value={value ?? null}
+                        value={value}
                         onBlur={onBlur}
                         clearErrors={() => clearErrors('bornOn')}
                         onChange={onChange}
