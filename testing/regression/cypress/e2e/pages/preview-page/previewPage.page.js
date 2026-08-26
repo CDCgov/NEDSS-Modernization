@@ -89,7 +89,7 @@ class PreviewPagePage {
     }
 
     checkRemoveOrAddConditions() {
-        cy.selectDropdownByLabel('Condition(s)', 'Malaria');
+        cy.selectDropdownByLabel('Condition(s)', 'Cholera');
     }
 
     checkPageNameField(check) {
