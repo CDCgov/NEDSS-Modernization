@@ -38,7 +38,9 @@ class TestCustomLibrary:
             'is_builtin': False,
             'library_name': 'custom_lib_repo_example',
             # Filter code is used here as it is a stable, small table
-            'subset_query': 'SELECT * FROM [NBS_ODSE].[dbo].[Filter_code]',
+            'subset_query': (
+                'SELECT code_table AS [Code Table] FROM [NBS_ODSE].[dbo].[Filter_code]'
+            ),
             'column_map': [['code_table', 'Code Table']],
         }
 

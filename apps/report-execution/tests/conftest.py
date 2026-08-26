@@ -121,8 +121,10 @@ def download_custom_library(request):
     CDCgov/NEDSS-Custom-Library-Example repository so that we can run tests against it.
     """
     file_dir = os.path.dirname(__file__)
-    script_path = f"{file_dir}/../scripts/pull_example_library.sh"
+    script_path = f'{file_dir}/../scripts/pull_example_library.sh'
+    download_filepath = f'{file_dir}/integration/assets/custom_lib_repo_example.py'
 
+    logging.info(f'Downloading custom library {download_filepath} ...')
     result = subprocess.run(script_path, capture_output=True, text=True)
 
     if result.returncode != 0:
@@ -134,8 +136,10 @@ def download_custom_library(request):
     logging.info('Custom library finished downloading!')
 
     def teardown():
-        logging.info('Removing downloaded custom library file...\n')
-        os.remove(f'{file_dir}/integration/assets/custom_lib_repo_example.py')
+        logging.info(
+            f'Removing downloaded custom library file {download_filepath} ...\n'
+        )
+        os.remove(download_filepath)
 
     request.addfinalizer(teardown)
 
