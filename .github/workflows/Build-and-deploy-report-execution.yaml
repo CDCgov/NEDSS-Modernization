@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - release-*
     paths:
       - "apps/report-execution/**"
       - ".github/workflows/Build-and-deploy-report-execution.yaml"

@@ -8,13 +8,25 @@ import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import gov.cdc.nbs.report.models.*;
 import gov.cdc.nbs.repository.ReportRepository;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.function.BiConsumer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @RequestMapping("/nbs/api/report")
@@ -24,21 +36,27 @@ import org.springframework.web.bind.annotation.*;
     havingValue = "true")
 public class ReportController {
   private static final System.Logger LOGGER = System.getLogger(ReportController.class.getName());
+  // Overall header section is capped at 8k, so leave some buffer for other headers
+  private static final int MAX_QUERY_HEADER_LENGTH = 5000;
 
   private final ReportService reportService;
   private final ReportFetcher reportFetcher;
   private final ReportRepository reportRepository;
   private final ReportExecutionServiceClient reportExecutionClient;
 
+  private final Clock clock;
+
   public ReportController(
       ReportService reportService,
       ReportExecutionServiceClient reportExecutionClient,
       ReportRepository reportRepository,
-      ReportFetcher reportFetcher) {
+      ReportFetcher reportFetcher,
+      Clock clock) {
     this.reportService = reportService;
     this.reportRepository = reportRepository;
     this.reportExecutionClient = reportExecutionClient;
     this.reportFetcher = reportFetcher;
+    this.clock = clock;
   }
 
   @PostMapping("/configuration")
@@ -221,11 +239,30 @@ public class ReportController {
     return new ResponseEntity<>(reportId, HttpStatus.OK);
   }
 
-  @PostMapping("/run")
+  @ApiResponse(
+      responseCode = "200",
+      description = "Run a report given an execution request and return a CSV plus metadata.",
+      headers = {
+        @Header(name = "X-Report-Description", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Context-Header", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Timestamp", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Query", schema = @Schema(type = "string"))
+      },
+      content =
+          @Content(
+              mediaType = "text/csv",
+              schema = @Schema(type = "string"),
+              examples =
+                  @io.swagger.v3.oas.annotations.media.ExampleObject(
+                      name = "Example CSV",
+                      value =
+                          "column1,column2,column3\nvalue1,value2,value3\nvalue4,value5,value6")))
+  @PostMapping(value = "/run", produces = "text/csv")
   @PreAuthorize("hasAuthority('RUNREPORT-REPORTING')")
-  public ResponseEntity<ReportExecutionResult> runReport(
+  public void runReport(
       @Valid @RequestBody ReportExecutionRequest request,
-      @AuthenticationPrincipal NbsUserDetails user) {
+      @AuthenticationPrincipal NbsUserDetails user,
+      HttpServletResponse response) {
     LOGGER.log(
         System.Logger.Level.TRACE,
         "RUN report request received from user %s for report %s and datasource %s"
@@ -234,14 +271,33 @@ public class ReportController {
     if (request.isExport())
       throw new IllegalArgumentException("isExport must be false when running a report");
 
-    return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
+    reportExecutionClient.executeReport(request, handleReportExecRes(response));
   }
 
-  @PostMapping("/export")
+  @ApiResponse(
+      responseCode = "200",
+      description = "Export a report given an execution request and return a CSV plus metadata.",
+      headers = {
+        @Header(name = "X-Report-Description", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Context-Header", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Timestamp", schema = @Schema(type = "string")),
+        @Header(name = "X-Report-Query", schema = @Schema(type = "string"))
+      },
+      content =
+          @Content(
+              mediaType = "text/csv",
+              schema = @Schema(type = "string"),
+              examples =
+                  @io.swagger.v3.oas.annotations.media.ExampleObject(
+                      name = "Example CSV",
+                      value =
+                          "column1,column2,column3\nvalue1,value2,value3\nvalue4,value5,value6")))
+  @PostMapping(value = "/export", produces = "text/csv")
   @PreAuthorize("hasAuthority('EXPORTREPORT-REPORTING')")
-  public ResponseEntity<ReportExecutionResult> exportReport(
+  public void exportReport(
       @Valid @RequestBody ReportExecutionRequest request,
-      @AuthenticationPrincipal NbsUserDetails user) {
+      @AuthenticationPrincipal NbsUserDetails user,
+      HttpServletResponse response) {
     LOGGER.log(
         System.Logger.Level.TRACE,
         "EXPORT report request received from user %s for report %s and datasource %s"
@@ -249,6 +305,44 @@ public class ReportController {
 
     if (!request.isExport())
       throw new IllegalArgumentException("isExport must be true when exporting a report");
-    return new ResponseEntity<>(reportExecutionClient.executeReport(request), HttpStatus.OK);
+
+    reportExecutionClient.executeReport(request, handleReportExecRes(response));
+  }
+
+  private BiConsumer<RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse, ReportSpec>
+      handleReportExecRes(HttpServletResponse outboundResponse) {
+    return (RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse reportExecResponse,
+        ReportSpec reportSpec) -> {
+      HttpHeaders reportExecHeaders = reportExecResponse.getHeaders();
+
+      String contextHeader = reportExecHeaders.getFirst("X-Report-Context-Header");
+      String description = reportExecHeaders.getFirst("X-Report-Description");
+
+      if (contextHeader != null) {
+        outboundResponse.setHeader("X-Report-Context-Header", contextHeader);
+      }
+
+      if (description != null) {
+        outboundResponse.setHeader("X-Report-Description", description);
+      }
+
+      outboundResponse.setHeader("X-Report-Timestamp", LocalDateTime.now(this.clock).toString());
+      // Only return the where clause as we don't want to put too much data in the headers
+      String logic = reportSpec.whereLogic();
+      if (logic.length() > MAX_QUERY_HEADER_LENGTH) {
+        logic = logic.substring(0, MAX_QUERY_HEADER_LENGTH) + " ... <truncated>";
+      }
+      outboundResponse.setHeader("X-Report-Query", logic);
+
+      outboundResponse.setContentType("text/csv");
+      outboundResponse.setCharacterEncoding("UTF-8");
+
+      //  Directly stream CSV report contents to client to avoid performance hit from serialization
+      try (InputStream reportExecInputStream = reportExecResponse.getBody()) {
+        reportExecInputStream.transferTo(outboundResponse.getOutputStream());
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    };
   }
 }

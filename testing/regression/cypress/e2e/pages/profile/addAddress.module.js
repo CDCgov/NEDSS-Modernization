@@ -1,62 +1,51 @@
-import addCommentModule from "./addComment.module";
+import addCommentModule from './addComment.module';
 
 class AddAddressModule {
-  date() {
-    addCommentModule.date();
-    return this;
-  }
+    date() {
+        addCommentModule.date();
+        return this;
+    }
 
-  type() {
-    cy.get(".usa-modal-wrapper.is-visible select[data-testid=dropdown]")
-      .first()
-      .select("Dormitory", {force: true});
-    return this;
-  }
+    type() {
+        cy.get('.usa-modal-wrapper.is-visible select[data-testid=dropdown]')
+            .first()
+            .select('Dormitory', { force: true });
+        return this;
+    }
 
-  use() {
-    cy.get(".usa-modal-wrapper.is-visible select[data-testid=dropdown]")
-      .eq(1)
-      .select("Home");
-    return this;
-  }
+    use() {
+        cy.get('.usa-modal-wrapper.is-visible select[data-testid=dropdown]').eq(1).select('Home');
+        return this;
+    }
 
-  street1(address1) {
-    cy.get(".usa-modal-wrapper.is-visible #address1")
-      .scrollIntoView()
-      .type(address1);
-    return this;
-  }
+    street1(address1) {
+        return cy.enterInput('.usa-modal-wrapper.is-visible #address1', address1);
+    }
 
-  city() {
-    cy.get(".usa-modal-wrapper.is-visible #city")
-      .scrollIntoView()
-      .type("houston");
-    return this;
-  }
+    city() {
+        return cy.enterInput('.usa-modal-wrapper.is-visible #city', 'houston');
+    }
 
-  state() {
-    cy.get(".usa-modal-wrapper.is-visible select")
-      .eq(2)
-      .scrollIntoView()
-      .select("Texas");
-    return this;
-  }
+    state() {
+        cy.get('.usa-modal-wrapper.is-visible select').eq(2).select('Texas');
+        return this;
+    }
 
-  comment() {
-    addCommentModule.comment();
-    return this;
-  }
+    comment() {
+        addCommentModule.comment();
+        return this;
+    }
 
-  add() {
-    addCommentModule.add();
-  }
+    add() {
+        addCommentModule.add();
+    }
 
-  isPopupClosed() {
-    addCommentModule.isPopupClosed();
-  }
+    isPopupClosed() {
+        addCommentModule.isPopupClosed();
+    }
 
-  isSuccessfullyAdded() {
-    cy.get(".usa-alert__body").should("contain", "Added address");
-  }
+    isSuccessfullyAdded() {
+        cy.get('.usa-alert__body').should('contain', 'Added address');
+    }
 }
 export default new AddAddressModule();
