@@ -102,7 +102,7 @@ describe('when page loads', () => {
     });
 
     it('drop down input should be true for display component 1007', () => {
-        const { getByTestId } = render(
+        const { getByRole } = render(
             <BrowserRouter>
                 <AlertProvider>
                     <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
@@ -112,6 +112,6 @@ describe('when page loads', () => {
             </BrowserRouter>
         );
 
-        expect(getByTestId('dropdown-input')).toBeInTheDocument();
+        expect(getByRole('combobox', { name: 'test drop down question' })).toBeInTheDocument();
     });
 });

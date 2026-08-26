@@ -63,7 +63,6 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         onChange={() => {}}
                         value={null}
                         options={conceptState}
-                        data-testid="dropdown-input"
                         disabled={!question.enabled}
                     />
                 )}
