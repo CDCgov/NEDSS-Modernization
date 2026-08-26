@@ -17,7 +17,7 @@ def execute(
     stats = df.describe(include='all')
 
     data = stats.to_records()
-    columns = [col for col in stats.columns]
+    columns = ['statistic'] + [col for col in stats.columns]
 
     return ReportResult(
         content=Table(data=data, columns=columns),
