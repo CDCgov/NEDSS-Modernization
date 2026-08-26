@@ -1,115 +1,120 @@
 class PageElementsPage {
-    navigateToCreatePage () {
-        cy.visit('/page-builder/pages/add')
+    navigateToCreatePage() {
+        cy.visit('/page-builder/pages/add');
     }
 
     userViewsCreatePage() {
-        cy.get(".createNewPage")
+        cy.get('.createNewPage');
     }
 
     selectEventType() {
-        cy.wait(1000)
-        cy.get("#eventType").select("INV")
+        cy.wait(1000);
+        cy.get('#eventType').select('INV');
     }
 
     seeElementText(text) {
-        this.selectEventType()
-        cy.contains(new RegExp(text, 'i'))
+        this.selectEventType();
+        cy.contains(new RegExp(text, 'i'));
     }
 
     clickPageNameField() {
-        this.selectEventType()
-        cy.get('#name').click()
+        this.selectEventType();
+        cy.get('#name').click();
     }
 
     pageNameFieldFocused() {
-        cy.get('#name').should('be.focused')
+        cy.get('#name').should('be.focused');
     }
 
     enterValueInPageNameField() {
-        cy.get('#name').type('Malaria Investigation')
+        cy.get('#name').type('Malaria Investigation');
     }
 
     pageNameFieldAllows() {
-        cy.get('#name').should('have.value', 'Malaria Investigation')
+        cy.get('#name').should('have.value', 'Malaria Investigation');
     }
 
     clickEventTypeField() {
-        cy.wait(1000)
-        cy.get('#eventType').select('', {force: true})
+        cy.wait(1000);
+        cy.get('#eventType').select('', { force: true });
     }
 
     eventTypeFieldFocused() {
-        cy.wait(1000)
-        cy.get('#eventType').select('', {force: true})
-        cy.get('#eventType').should('be.focused')
+        cy.wait(1000);
+        cy.get('#eventType').select('', { force: true });
+        cy.get('#eventType').should('be.focused');
     }
 
     eventTypeFieldHasValue(optionText) {
-        cy.get('#eventType').should('contain', optionText)
+        cy.get('#eventType').should('contain', optionText);
     }
 
     clickTemplateField() {
-        this.selectEventType()
-        cy.wait(500)
-        cy.get('#templateId').select('')
+        this.selectEventType();
+        cy.wait(500);
+        cy.get('#templateId').select('');
     }
 
     templateFieldFocused() {
-        cy.get('#templateId').should('be.focused')
+        cy.get('#templateId').should('be.focused');
     }
 
     templateFieldHasValueList() {
-        cy.get('#templateId').find('option').should('have.length.gt', 1)
+        cy.get('#templateId').find('option').should('have.length.gt', 1);
     }
 
     selectValueFromTemplateList() {
-        cy.get('#templateId').find('option').eq(1).then((option) => {
-            cy.get('#templateId').select(option.attr('value'))
-        })
+        cy.get('#templateId')
+            .find('option')
+            .eq(1)
+            .then((option) => {
+                cy.get('#templateId').select(option.attr('value'));
+            });
     }
 
     templateFieldHasValue() {
-        cy.get('#templateId').invoke('val').should('exist')
+        cy.get('#templateId').invoke('val').should('exist');
     }
 
     clickMMGField() {
-        this.selectEventType()
-        cy.wait(500)
-        cy.get('#messageMappingGuide').select('')
+        this.selectEventType();
+        cy.wait(500);
+        cy.get('#messageMappingGuide').select('');
     }
 
     mmgFieldFocused() {
-        cy.get('#messageMappingGuide').should('be.focused')
+        cy.get('#messageMappingGuide').should('be.focused');
     }
 
     mmgFieldHasValueList() {
-        cy.get('#messageMappingGuide').find('option').should('have.length.gt', 1)
+        cy.get('#messageMappingGuide').find('option').should('have.length.gt', 1);
     }
 
     selectValueFromMMGList() {
-        cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
-            cy.get('#messageMappingGuide').select(option.attr('value'))
-        })
+        cy.get('#messageMappingGuide')
+            .find('option')
+            .eq(1)
+            .then((option) => {
+                cy.get('#messageMappingGuide').select(option.attr('value'));
+            });
     }
 
     mmgFieldHasValue() {
-        cy.get('#messageMappingGuide').invoke('val').should('exist')
+        cy.get('#messageMappingGuide').invoke('val').should('exist');
     }
 
     clickCancelButton() {
-        cy.get('#cancelBtn').click()
+        cy.get('#cancelBtn').click();
     }
 
     checkPageLibraryShowing() {
-        cy.visit('/page-builder/pages')
-        cy.url().should('include', 'page-builder/pages')
+        cy.visit('/page-builder/pages');
+        cy.url().should('include', 'page-builder/pages');
     }
 
     clickPageLibraryLink() {
-        cy.get('#pageLibraryLink').click()
+        cy.get('#pageLibraryLink').click();
     }
-
 }
 
-export const pageElementsPage = new PageElementsPage()
+export const pageElementsPage = new PageElementsPage();

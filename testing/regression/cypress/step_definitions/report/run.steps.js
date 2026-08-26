@@ -1,10 +1,10 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
 const GROUP_LOOKUP = {
-  Public: 'S',
-  Private: 'P',
-  Template: 'T',
-  'Reporting Facility': 'R',
+    Public: 'S',
+    Private: 'P',
+    Template: 'T',
+    'Reporting Facility': 'R',
 };
 
 const YEARS_BACK = 20;
@@ -18,11 +18,8 @@ When('I navigate to list reports', () => {
 });
 
 When('I click the {string} report', (reportTitle) => {
-    cy.contains('td', reportTitle)
-      .parent('tr')
-      .contains('a', 'Run')
-      .click();
-})
+    cy.contains('td', reportTitle).parent('tr').contains('a', 'Run').click();
+});
 
 When(
     'I navigate to {string} report with reportUid: {int} and dataSourceUid: {int}',
@@ -87,25 +84,31 @@ When('I fill out all filters with {int}', (index) => {
     // dates and text filters
     cy.findAllByRole('textbox').each(($input) => cy.wrap($input).type(`01/01/202${index}`));
     // number inputs
-    cy.findAllByRole('spinbutton').each($input => cy.wrap($input).type(`${index}`))
+    cy.findAllByRole('spinbutton').each(($input) => cy.wrap($input).type(`${index}`));
     // allow nulls
     cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).click({ force: true }));
 
     // multi-selects
-    cy.get('.multi-select')
-      .each(($select) => {
-        cy
-          .wrap($select)
-          .click()
-          .then(() => cy.get('.multi-select__option').eqOrLast(index).click().then(() => cy.get('body').type('{esc}')))
+    cy.get('.multi-select').each(($select) => {
+        /* eslint-disable cypress/unsafe-to-chain-command */
+        cy.wrap($select)
+            .click()
+            .then(() =>
+                cy
+                    .get('.multi-select__option')
+                    .eqOrLast(index)
+                    .click()
+                    .then(() => cy.get('body').type('{esc}'))
+            );
     });
+    /* eslint-enable cypress/unsafe-to-chain-command */
 });
 
 Then('All filters should be filled out with {int}', (index) => {
     // dates and text filters
     cy.findAllByRole('textbox').each(($input) => cy.wrap($input).should('have.value', `01/01/202${index}`));
     // number inputs
-    cy.findAllByRole('spinbutton').each($input => cy.wrap($input).should('have.value', index))
+    cy.findAllByRole('spinbutton').each(($input) => cy.wrap($input).should('have.value', index));
     // allow nulls
     cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('be.checked'));
 
@@ -114,29 +117,29 @@ Then('All filters should be filled out with {int}', (index) => {
 
     // single selects
     cy.get('select').each(($select) => {
-      cy.wrap($select).should('have.prop', 'selectedIndex', index);
+        cy.wrap($select).should('have.prop', 'selectedIndex', index);
     });
 
     // multi-selects
     cy.get('.multi-select').each(($select) => {
-      // open dropdown
-      cy.wrap($select).find('input.multi-select__input').click();
+        // open dropdown
+        cy.wrap($select).find('input.multi-select__input').click();
 
-      cy.wrap($select)
-        .find('.multi-select__option')
-        .eqOrLast(index)
-        .invoke('text') // get the dropdown's value at the index
-        .then((optionText) => {
-          cy.wrap($select)
-            .find('.multi-select__multi-value__label')
-            .invoke('text')
-            .then((displayedText) => {
-              expect(displayedText).contains(optionText);
+        cy.wrap($select)
+            .find('.multi-select__option')
+            .eqOrLast(index)
+            .invoke('text') // get the dropdown's value at the index
+            .then((optionText) => {
+                cy.wrap($select)
+                    .find('.multi-select__multi-value__label')
+                    .invoke('text')
+                    .then((displayedText) => {
+                        expect(displayedText).contains(optionText);
+                    });
             });
-        });
 
-      // close dropdown without clearing next input
-      cy.wrap($select).find('input.multi-select__input').blur();
+        // close dropdown without clearing next input
+        cy.wrap($select).find('input.multi-select__input').blur();
     });
 });
 
@@ -144,65 +147,67 @@ Then('All filters should be empty or the default value', () => {
     // dates and text filters
     cy.findAllByRole('textbox').each(($input) => cy.wrap($input).should('have.value', ''));
     // number inputs
-    cy.findAllByRole('spinbutton').each($input => cy.wrap($input).should('have.value', ''))
+    cy.findAllByRole('spinbutton').each(($input) => cy.wrap($input).should('have.value', ''));
     // allow nulls
     cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('not.be.checked'));
 
     cy.get('body').then(($body) => {
-      const selectAllExists = $body.find('[label="Select all"]').length > 0;
-      if (selectAllExists) {
-        cy.findByRole('checkbox', { name: 'Select all' }).should('not.be.checked');
-      }
+        const selectAllExists = $body.find('[label="Select all"]').length > 0;
+        if (selectAllExists) {
+            cy.findByRole('checkbox', { name: 'Select all' }).should('not.be.checked');
+        }
     });
 
     // single selects
     cy.get('select').each(($select) => {
-      const selectId = $select.attr('id');
+        const selectId = $select.attr('id');
 
-      // check value is default or empty
-      cy.get(`label[for="${selectId}"]`).invoke('text').then((labelText) => {
-        if (labelText === 'From') {
-          cy.wrap($select).should('have.value', getThisYear() - YEARS_BACK);
-        } else if (labelText === 'To') {
-          cy.wrap($select).should('have.value', getThisYear());
-        }  else if (labelText === 'Sort order') {
-          cy.wrap($select).should('have.value', 'ASC');
-        } else if (labelText === 'Combinator') {
-          cy.wrap($select).should('have.value', 'and');
-        }  else if (labelText === 'Field') {
-          cy.wrap($select).should('have.value', '~');
-        } else {
-          cy.wrap($select).should('have.value', '');
-        }
-      });
+        // check value is default or empty
+        cy.get(`label[for="${selectId}"]`)
+            .invoke('text')
+            .then((labelText) => {
+                if (labelText === 'From') {
+                    cy.wrap($select).should('have.value', getThisYear() - YEARS_BACK);
+                } else if (labelText === 'To') {
+                    cy.wrap($select).should('have.value', getThisYear());
+                } else if (labelText === 'Sort order') {
+                    cy.wrap($select).should('have.value', 'ASC');
+                } else if (labelText === 'Combinator') {
+                    cy.wrap($select).should('have.value', 'and');
+                } else if (labelText === 'Field') {
+                    cy.wrap($select).should('have.value', '~');
+                } else {
+                    cy.wrap($select).should('have.value', '');
+                }
+            });
     });
 
     // multi-selects
     cy.get('.multi-select').each(($select) => {
-      const selectId = $select.find('input.multi-select__input').attr('id');
+        const selectId = $select.find('input.multi-select__input').attr('id');
 
-      cy.get(`span[id="${selectId}-hint"]`).invoke('text').then((hintText) => {
-        // this basic filter has a default
-        if (hintText === 'States') {
-          cy.wrap($select)
-            .find('.multi-select__multi-value__label')
-            .should('have.text', 'Georgia');
-        } else {
-          cy.wrap($select).find('.multi-select__multi-value__label').should('not.exist');
-        }
-      });
+        cy.get(`span[id="${selectId}-hint"]`)
+            .invoke('text')
+            .then((hintText) => {
+                // this basic filter has a default
+                if (hintText === 'States') {
+                    cy.wrap($select).find('.multi-select__multi-value__label').should('have.text', 'Georgia');
+                } else {
+                    cy.wrap($select).find('.multi-select__multi-value__label').should('not.exist');
+                }
+            });
     });
 });
 
 Then('I click all include nulls', () => {
-  // select columns (needs to happen for the sort single-selects to be happy)
-  checkSelectAll();
-  cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).click({ force: true }));
-})
+    // select columns (needs to happen for the sort single-selects to be happy)
+    checkSelectAll();
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).click({ force: true }));
+});
 
 Then('All include nulls checkboxes should be checked', () => {
-  cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('be.checked'));
-})
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('be.checked'));
+});
 
 // Confirmation steps
 
@@ -211,10 +216,10 @@ Then('I see the {string} report', (title) => {
 });
 
 const checkSelectAll = () => {
-  cy.get('body').then(($body) => {
-    const selectAllExists = $body.find('[label="Select all"]').length > 0;
-    if (selectAllExists) {
-      cy.findByRole('checkbox', { name: 'Select all' }).click({ force: true });
-    }
-  });
-}
+    cy.get('body').then(($body) => {
+        const selectAllExists = $body.find('[label="Select all"]').length > 0;
+        if (selectAllExists) {
+            cy.findByRole('checkbox', { name: 'Select all' }).click({ force: true });
+        }
+    });
+};

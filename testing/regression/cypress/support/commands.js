@@ -39,7 +39,10 @@ Cypress.Commands.add('selectDropdownByLabel', (labelText, value, selectIndex = 0
                     cy.get(`select#${escapedId}`).select(value);
                 } else {
                     // React Select / Custom Checkbox Input
-                    cy.get(`input#${escapedId}`).click({ force: true }).clear({ force: true }).type(value);
+                    const input = `input#${escapedId}`;
+                    cy.get(input).click({ force: true });
+                    cy.get(input).clear({ force: true });
+                    cy.get(`input#${escapedId}`).type(value);
                     cy.contains('[class*="__option"], [class*="-option"]', value)
                         .should('be.visible')
                         .click({ force: true });
@@ -61,3 +64,16 @@ Cypress.Commands.add(
         return cy.wrap($subject).eq(i);
     }
 );
+
+/**
+ * Enter a value for a specified input selector
+ * @param {string} inputSelector - Selector for the input element
+ * @param {string} value - Value to enter for the input
+ * @param {number} [index = 0] - Index of the element, default is first element
+ * @param {Object} [options = {}] - Options to pass to get method
+ * @returns {Cypress.Chainable<JQuery<HTMLElement>>} - The selected input
+ */
+Cypress.Commands.add('enterInput', (inputSelector, value, index = 0, options = {}) => {
+    cy.get(inputSelector, options).eqOrLast(index).clear();
+    return cy.get(inputSelector).eqOrLast(index).type(value);
+});

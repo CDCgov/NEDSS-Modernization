@@ -1,14 +1,14 @@
 class CreateNewQuestionPage {
-    navigateEditPage () {
-        this.navigateToPreviewPageWithStatusInitialDraft()
-        cy.get("body").then($body => {
-            if ($body.find("#create-new-draft-button").length > 0) {
-                cy.get("create-new-draft-button").then($button => {
-                    if ($button.is(':visible')){
-                        $button.click()
+    navigateEditPage() {
+        this.navigateToPreviewPageWithStatusInitialDraft();
+        cy.get('body').then(($body) => {
+            if ($body.find('#create-new-draft-button').length > 0) {
+                cy.get('create-new-draft-button').then(($button) => {
+                    if ($button.is(':visible')) {
+                        $button.click();
                         cy.get('.editDraftBtn').eq(0).click();
                     }
-                })
+                });
             } else {
                 cy.get('.editDraftBtn').eq(0).click();
             }
@@ -16,8 +16,7 @@ class CreateNewQuestionPage {
     }
 
     clickAddQuestionBtn() {
-        cy.get('.subsectionHeader').eq(0)
-            .get('.addQuestionBtn').eq(0).click();
+        cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
     }
 
     clickCreateNewQuestionButton() {
@@ -25,14 +24,14 @@ class CreateNewQuestionPage {
     }
 
     selectLocalOption() {
-        cy.get('#codeSet_LOCAL').should('have.value', 'LOCAL')
+        cy.get('#codeSet_LOCAL').should('have.value', 'LOCAL');
     }
 
     enterUniqueId() {
         cy.get('#uniqueId').type(`NBS${this.newText()}`);
     }
 
-    enterUniqueName(){
+    enterUniqueName() {
         cy.get('#uniqueName').type(`new test question ${this.newText()}`);
     }
 
@@ -54,7 +53,7 @@ class CreateNewQuestionPage {
     }
 
     selectValueSet() {
-        cy.get('#valueSet').select("140");
+        cy.get('#valueSet').select('140');
     }
 
     selectDefaultValueField() {
@@ -74,7 +73,7 @@ class CreateNewQuestionPage {
     }
 
     EnterDefaultLabelReport() {
-        cy.get('#dataMartInfo\\.reportLabel').type('test default label')
+        cy.get('#dataMartInfo\\.reportLabel').type('test default label');
     }
 
     EnterRdbColumnName() {
@@ -82,16 +81,16 @@ class CreateNewQuestionPage {
     }
 
     dataMartColumnNamePopulated() {
-        cy.get('[name="dataMartInfo.dataMartColumnName"]').invoke('val').should('not.be.empty')
+        cy.get('[name="dataMartInfo.dataMartColumnName"]').invoke('val').should('not.be.empty');
     }
 
     toggleMessagingIncluded() {
-        cy.get('label[for="messagingInfo.includedInMessage"]').click()
-        cy.wait(1000)
+        cy.get('label[for="messagingInfo.includedInMessage"]').click();
+        cy.wait(1000);
     }
 
     enterMessageVariableId() {
-        cy.get('#messagingInfo\\.messageVariableId').type('AA12345')
+        cy.get('#messagingInfo\\.messageVariableId').type('AA12345');
     }
 
     enterMessageLabel() {
@@ -103,7 +102,7 @@ class CreateNewQuestionPage {
     }
 
     toggleRequiredInMessage() {
-        cy.get('label[for="includedInMessage"]').click()
+        cy.get('label[for="includedInMessage"]').click();
     }
 
     selectHl7DataType() {
@@ -116,11 +115,11 @@ class CreateNewQuestionPage {
     }
 
     enterAdministrativeComments() {
-        cy.get('#adminComments').type('test')
+        cy.get('#adminComments').type('test');
     }
 
     createAndApplyToPageBtnIsEnabled() {
-        cy.get('.createAndDeployToPageBtn').eq(0)
+        cy.get('.createAndDeployToPageBtn').eq(0);
     }
 
     clickCreateAndAddToPageBtn() {
@@ -151,15 +150,18 @@ class CreateNewQuestionPage {
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-        cy.get('#range-toggle').select('100')
+        cy.get('#range-toggle').select('100');
         cy.wait(2000);
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Initial Draft") {
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
+        cy.get('table[data-testid=table]')
+            .eq(0)
+            .find('tbody tr')
+            .each(($tr, index) => {
+                if ($tr.find('td').eq(3).text() === 'Initial Draft') {
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false;
+                }
+            });
     }
 }
 
-export const createNewQuestionPage = new CreateNewQuestionPage()
+export const createNewQuestionPage = new CreateNewQuestionPage();
