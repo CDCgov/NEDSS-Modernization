@@ -81,7 +81,6 @@ export const QuestionContent = ({
                             onChange={() => {}}
                             value={null}
                             options={conceptState}
-                            data-testid="dropdown-input"
                         />
                     )}
                     {/* create custom checkbox component */}
