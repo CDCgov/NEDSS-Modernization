@@ -136,9 +136,7 @@ def download_custom_library(request):
     logging.info('Custom library finished downloading!')
 
     def teardown():
-        logging.info(
-            f'Removing downloaded custom library file {download_filepath} ...\n'
-        )
+        logging.info(f'Removing downloaded custom library file {download_filepath} ...')
         os.remove(download_filepath)
 
     request.addfinalizer(teardown)
