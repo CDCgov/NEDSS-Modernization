@@ -89,8 +89,7 @@ class PreviewPagePage {
     }
 
     checkRemoveOrAddConditions() {
-        cy.get('.multi-select__menu').eq(0).click();
-        cy.get('.multi-select__input-container').eq(0).click({ force: true });
+        cy.selectDropdownByLabel('Condition(s)', 'Malaria');
     }
 
     checkPageNameField(check) {

@@ -96,7 +96,7 @@ Feature: Page Builder - User can view Preview Page here.
     When clicked on Metadata button
     Then verify all page metadata is downloaded in xls format
 
-  Scenario: Preview Page - Page Info - View Page details and Edit
+  Scenario: Preview Page - Page Info - View Page details
     Given user is at Preview page - Page info section with page under Draft or Published with Draft or Published status
     When user clicks on History tab next to Details
     Then verify user is presented with all history info "<Version>"
