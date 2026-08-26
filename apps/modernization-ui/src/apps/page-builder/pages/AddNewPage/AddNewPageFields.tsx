@@ -67,7 +67,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 outline={true}
             >
                 <p>
-                    <Icon.Search size={3} />
+                    <Icon.Search size={3} aria-label="search" />
                     Advanced condition search
                 </p>
             </ModalToggleButton>
@@ -115,7 +115,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     <SingleSelect
                         label="Template"
                         name={name}
-                        value={templateOptions.find((o) => o.value === value.toString())}
+                        value={templateOptions.find((o) => o.value === value?.toString())}
                         id={name}
                         aria-label="select a template"
                         onChange={(v) => onChange(v?.value ? parseInt(v.value) : null)}

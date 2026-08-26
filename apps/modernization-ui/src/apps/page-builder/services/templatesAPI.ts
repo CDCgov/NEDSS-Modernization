@@ -6,6 +6,6 @@ export const fetchTemplates = (type: string): Promise<Template[]> =>
     TemplateControllerService.findAllTemplates({
         type,
     }).catch((error) => {
-        logErrorToUserConsole(error.toJSON());
+        logErrorToUserConsole(error);
         return Promise.reject(error);
     });
