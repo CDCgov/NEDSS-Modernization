@@ -6,7 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Concept, Condition, PageControllerService, PageInformationChangeRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelectInput } from 'components/selection/multi';
+import { MultiSelect } from 'design-system/select';
 
 import { maxLengthRule, validPageNameRule } from '../../../../../../validation/entry';
 import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNameRule';
@@ -40,26 +40,27 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
         }
     };
 
+    const conditionOptions = conditions.map((m) => ({
+        name: m.name ?? '',
+        value: m.id,
+    }));
+
     return (
         <>
             <Controller
                 control={form.control}
                 name="conditions"
                 render={({ field: { onChange, value, name } }) => (
-                    <MultiSelectInput
-                        onChange={onChange}
-                        value={value}
+                    <MultiSelect
+                        onChange={(values) => onChange(values.map((v) => v.value))}
+                        value={conditionOptions.filter((c) => value?.includes(c.value))}
                         name={name}
                         id={name}
                         disabled={isEnabled}
+                        orientation="vertical"
                         label="Condition(s)"
                         aria-label="select the conditions for the page"
-                        options={conditions.map((m) => {
-                            return {
-                                name: m.name ?? '',
-                                value: m.id,
-                            };
-                        })}
+                        options={conditionOptions}
                     />
                 )}
             />

@@ -111,8 +111,8 @@ class ClassicHomePage {
         cy.get('table#Public4 a').filter(':contains("Run")').eq(18).click();
 
         //  Set values for all filters
-        cy.selectDropdownByLabel(0, 'DIAGNOSIS_CD', '950 - AIDS');
-        cy.selectDropdownByLabel(0, 'INVESTIGATOR_INTERVIEW_QC', 'Fulton LocalUser');
+        cy.selectDropdownByLabel('DIAGNOSIS_CD', '950 - AIDS');
+        cy.selectDropdownByLabel('INVESTIGATOR_INTERVIEW_QC', 'Fulton LocalUser');
         cy.get('input[id$="-from"]').type('01/01/2000');
         cy.get('input[id$="-to"]').type('05/01/2026');
 
