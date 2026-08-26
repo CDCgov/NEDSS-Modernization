@@ -26,6 +26,7 @@ When('I click the filter {int} {string} button', (filterInd, name) => {
 
 When('I add all filters', () => {
     const optionValues = [];
+    // eslint-disable-next-line cypress/unsafe-to-chain-command
     cy.findByRole('combobox', { name: 'Filter' })
         .findAllByRole('option')
         .each(($option) => {
@@ -41,13 +42,13 @@ When('I add all filters', () => {
                 cy.findByRole('combobox', { name: 'Filter' }).select(value);
 
                 cy.findAllByRole('combobox').each(($item) => {
-                    const name = $item.attr('name')
+                    const name = $item.attr('name');
                     if (name === 'selectType') {
-                        cy.wrap($item).select('Multi-select filter')
+                        cy.wrap($item).select('Multi-select filter');
                     } else if (name === 'associatedColumn') {
                         cy.wrap($item).select(1);
                     }
-                })
+                });
 
                 cy.findByRole('button', { name: 'Add filter' }).click();
             }

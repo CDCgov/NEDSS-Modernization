@@ -29,8 +29,13 @@ class TestCustomLibrary:
         response = connection.getresponse()
         assert response.status == 200
 
-        result = json.loads(response.read())
-        assert result['description'] == 'Custom pass through query'
+        assert (
+            response.headers['X-Report-Description']
+            == 'Custom pass through query%n%n        It is many lines _with_ *markdown*'
+        )
+        assert response.headers['X-Report-Context-Header'] == 'custom header'
+        body = response.read()
+        assert len(body) > 10
 
     def test_example_library_runs(self):
         """This method tests the example library file found in the

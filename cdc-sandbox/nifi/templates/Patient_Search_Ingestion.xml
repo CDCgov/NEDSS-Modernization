@@ -5657,7 +5657,7 @@ These processors extract the fields into an attribute, remove the existing field
     </entry>
     <entry>
         <key>log-message</key>
-        <value>${person_ids} fetched in ${executesql.query.duration}ms.</value>
+        <value>${person_ids} fetched ${executesql.row.count} rows in ${executesql.query.duration}ms.</value>
     </entry>
 </properties>
 <retryCount>10</retryCount>
@@ -6017,12 +6017,12 @@ These processors extract the fields into an attribute, remove the existing field
 -- ============================================================
 DROP TABLE IF EXISTS #target_people;
 
+CREATE TABLE #target_people (person_uid BIGINT NOT NULL PRIMARY KEY, person_parent_uid BIGINT NOT NULL);
+
+INSERT INTO #target_people
 SELECT person_uid, person_parent_uid
-INTO #target_people
 FROM Person WITH (NOLOCK)
 WHERE person_parent_uid IN (${person_ids});
-
-ALTER TABLE #target_people ADD CONSTRAINT PK_tp PRIMARY KEY CLUSTERED (person_uid);
 
 -- ============================================================
 -- Step 2: Materialize id_settings (single-row lookup)
@@ -6635,7 +6635,8 @@ DROP TABLE IF EXISTS #person_phone;
 DROP TABLE IF EXISTS #person_email;
 DROP TABLE IF EXISTS #person_name;
 DROP TABLE IF EXISTS #person_race;
-DROP TABLE IF EXISTS #person_entity_id;</value>
+DROP TABLE IF EXISTS #person_entity_id;
+</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -9926,5 +9927,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>07/08/2026 15:06:34 UTC</timestamp>
+    <timestamp>08/20/2026 18:44:25 UTC</timestamp>
 </template>

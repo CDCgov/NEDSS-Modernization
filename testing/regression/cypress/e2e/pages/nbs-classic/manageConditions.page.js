@@ -1,34 +1,40 @@
 class ClassicManageConditionsPage {
+    returnToConditionLibrary = '#manageLink';
 
-  navigateToConditionsLibrary() {
-    cy.contains('System Management').click()
+    navigateToConditionsLibrary() {
+        cy.contains('System Management').click();
 
-    // Expand the "Page Management" subsection
-    cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
-    cy.contains('Manage Conditions').click()
-  }
+        // Expand the "Page Management" subsection
+        cy.get('table[id="systemAdmin5"]').find('a[class="toggleIconHref"]').eq(0).click();
+        cy.contains('Manage Conditions').click();
+    }
 
-  clickAddNewBtn() {
-    cy.get('#submitCr').click()
-  }
+    clickAddNewBtn() {
+        cy.get('#submitCr').click();
+    }
 
-  fillTheDetailsCondition() {
-    const newName = this.newName()
-    cy.get('#cCodeFld').type(`code ${newName}`)
-    cy.get('#condFld').type(`Name ${newName}`)
-    cy.get('input[name="pAreaFld_textbox"]').type('ARBO')
-  }
+    clickReturnToConditionLibrary() {
+        cy.get(this.returnToConditionLibrary).click();
+    }
 
-  clickSubmitBtnConditionInConditionLibrary() {
-    cy.get('#submitB').eq(0).click()
-  }
+    fillTheDetailsCondition() {
+        const newName = this.newName();
+        cy.get('#cCodeFld').type(`code ${newName}`);
+        cy.get('#condFld').type(`Name ${newName}`);
+        Cypress.env('conditionName', `Name ${newName}`);
+        cy.get('input[name="pAreaFld_textbox"]').type('ARBO');
+    }
 
-  clickConditionInConditionList() {
-    cy.get('table#parent tbody tr td a').eq(1).click()
-  }
+    clickSubmitBtnConditionInConditionLibrary() {
+        cy.get('#submitB').eq(0).click();
+    }
 
-  newName() {
-    return Math.random().toString(36).substring(2, 8);
-  }
+    clickConditionInConditionList() {
+        cy.get('table#parent tbody tr td a').eq(1).click();
+    }
+
+    newName() {
+        return Math.random().toString(36).substring(2, 8);
+    }
 }
 export default new ClassicManageConditionsPage();
