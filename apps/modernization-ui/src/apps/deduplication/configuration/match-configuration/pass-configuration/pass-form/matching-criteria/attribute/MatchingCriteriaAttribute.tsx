@@ -20,9 +20,9 @@ type AttributeProps = {
 };
 
 const MATCH_METHOD_OPTIONS = [
-                                    { name: 'Exact match', value: MatchMethod.EXACT },
-                                    { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER },
-                                ];
+    { name: 'Exact match', value: MatchMethod.EXACT },
+    { name: 'JaroWinkler', value: MatchMethod.JAROWINKLER },
+];
 
 export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, onRemove }: AttributeProps) => {
     const form = useFormContext<Pass>();
@@ -63,7 +63,7 @@ export const MatchingCriteriaAttribute = ({ label, attribute, index, logOdds, on
                         rules={{ required: { value: true, message: 'Matching method is required.' } }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <SingleSelect
-                                value={MATCH_METHOD_OPTIONS.find(v => v.value === value)}
+                                value={MATCH_METHOD_OPTIONS.find((v) => v.value === value)}
                                 label="Method"
                                 onBlur={onBlur}
                                 onChange={(v) => {

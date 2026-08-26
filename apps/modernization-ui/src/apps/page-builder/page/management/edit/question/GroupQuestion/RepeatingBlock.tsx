@@ -5,7 +5,7 @@ import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-
 import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 
 import styles from './repeating-block.module.scss';
 
@@ -14,6 +14,11 @@ type Props = {
     valid: boolean;
     setValid: (valid: boolean) => void;
 };
+
+const YES_NO_OPTIONS = [
+    { name: 'Yes', value: 'Y' },
+    { name: 'No', value: 'N' },
+];
 
 export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const [total, setTotal] = useState<number | undefined>(undefined);
@@ -84,13 +89,12 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     name={`batches.${index}.appearsInTable`}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <SingleSelect
+                                            id={name}
                                             name={name}
-                                            onChange={(e) => onChange(e.target.value === 'Y')}
-                                            defaultValue={value ? 'Y' : 'N'}
-                                            options={[
-                                                { name: 'Yes', value: 'Y' },
-                                                { name: 'No', value: 'N' },
-                                            ]}
+                                            label=""
+                                            onChange={(v) => onChange(v?.value === 'Y')}
+                                            value={YES_NO_OPTIONS.find((o) => o.value === (value ? 'Y' : 'N'))}
+                                            options={YES_NO_OPTIONS}
                                             required={true}
                                             error={error?.message}
                                         />

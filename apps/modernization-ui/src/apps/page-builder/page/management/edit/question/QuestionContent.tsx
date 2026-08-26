@@ -4,8 +4,8 @@ import { Button, Icon } from '@trussworks/react-uswds';
 
 import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Icon as NbsIcon } from 'components/Icon/Icon';
+import { SingleSelect } from 'design-system/select';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
 import { Selectable } from 'options/selectable';
 
@@ -76,8 +76,10 @@ export const QuestionContent = ({
                         displayComponent === 1028 ||
                         displayComponent === 1031) && (
                         <SingleSelect
+                            id="dropdown-input"
+                            label={name}
                             onChange={() => {}}
-                            defaultValue=""
+                            value={null}
                             options={conceptState}
                             data-testid="dropdown-input"
                         />

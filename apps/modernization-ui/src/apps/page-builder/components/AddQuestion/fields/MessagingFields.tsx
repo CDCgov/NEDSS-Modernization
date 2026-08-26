@@ -112,7 +112,7 @@ export const MessagingFields = () => {
                 render={({ field: { onChange, onBlur, name, value } }) => (
                     <SingleSelect
                         label="Code system name"
-                        value={codeSystems.find(o => o.value === value)}
+                        value={codeSystems.find((o) => o.value === value)}
                         onChange={(v) => onChange(v?.value ?? null)}
                         onBlur={onBlur}
                         name={name}
@@ -158,7 +158,7 @@ export const MessagingFields = () => {
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <SingleSelect
                         label="HL7 data type"
-                        value={hl7Options.find(o => o.value === value)}
+                        value={hl7Options.find((o) => o.value === value)}
                         onChange={(v) => onChange(v?.value ?? null)}
                         onBlur={onBlur}
                         error={error?.message}

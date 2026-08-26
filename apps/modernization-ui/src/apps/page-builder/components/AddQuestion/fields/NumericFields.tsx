@@ -19,9 +19,9 @@ type Props = {
 };
 
 const UNIT_TYPE_OPTIONS = [
-                                    { value: 'literal', name: 'Literal value' },
-                                    { value: 'coded', name: 'Coded value' },
-                                ]
+    { value: 'literal', name: 'Literal value' },
+    { value: 'coded', name: 'Coded value' },
+];
 
 export const NumericFields = ({ maskOptions, editing = false, published = false }: Props) => {
     const form = useFormContext<CreateNumericQuestionRequest & AdditionalQuestionFields>();
@@ -84,7 +84,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        value={numericMaskOptions.find(o => o.value === value)}
+                        value={numericMaskOptions.find((o) => o.value === value)}
                         options={numericMaskOptions}
                         error={error?.message}
                         name={name}
@@ -221,7 +221,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                     onBlur();
                                 }}
                                 onBlur={onBlur}
-                                value={UNIT_TYPE_OPTIONS.find(o => o.value === value)}
+                                value={UNIT_TYPE_OPTIONS.find((o) => o.value === value)}
                                 options={UNIT_TYPE_OPTIONS}
                                 name={name}
                                 id={name}
@@ -268,11 +268,11 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                 <SingleSelect
                                     label="Related units value set"
                                     onChange={(v) => {
-                                        onChange(valueSets.find(vs => vs.value === v?.value)?.id);
+                                        onChange(valueSets.find((vs) => vs.value === v?.value)?.id);
                                         onBlur();
                                     }}
                                     onBlur={onBlur}
-                                    value={valueSets.find(vs => vs.id === value)}
+                                    value={valueSets.find((vs) => vs.id === value)}
                                     options={valueSets}
                                     error={error?.message}
                                     name={name}

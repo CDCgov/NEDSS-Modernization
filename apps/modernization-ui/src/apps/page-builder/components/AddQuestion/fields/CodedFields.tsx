@@ -44,11 +44,11 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                     <SingleSelect
                         label="Value set"
                         onChange={(val) => {
-                            onChange(valueSets.find(v => v.value === val?.value)?.id);
+                            onChange(valueSets.find((v) => v.value === val?.value)?.id);
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        value={valueSets.find(v => v.id === value)}
+                        value={valueSets.find((v) => v.id === value)}
                         options={valueSets}
                         error={error?.message}
                         name={name}
@@ -75,7 +75,7 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                             <SingleSelect
                                 label="Default value"
                                 onChange={(v) => onChange(v?.value ?? null)}
-                                value={options.find(o => o.value === value)}
+                                value={options.find((o) => o.value === value)}
                                 options={valueSet ? options : []}
                                 error={error?.message}
                                 name={name}

@@ -9,7 +9,7 @@ import {
     UpdateReadOnlyComments,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { useAlert } from 'libs/alert';
 import { maxLengthRule } from 'validation/entry';
 
@@ -154,14 +154,15 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 <div className={styles.container}>
                     <div className={styles.staticType}>
                         <SingleSelect
+                            id="static-type"
                             label="Choose a static element"
                             options={staticType}
                             required={true}
-                            defaultValue={checkStaticType(question.displayComponent)}
+                            value={staticType.find((o) => o.value === checkStaticType(question.displayComponent))}
                             aria-label="staticType"
                             disabled={true}
                             className={styles.select_input}
-                        ></SelectInput>
+                        />
                     </div>
                     {question.displayComponent === hyperlinkId && (
                         <FormProvider {...form}>

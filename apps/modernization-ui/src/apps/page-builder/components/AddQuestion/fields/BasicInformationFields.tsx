@@ -159,7 +159,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                     <SingleSelect
                         label="Subgroup"
                         className="subgroupSelect"
-                        value={subgroups.find(v => v.value === value)}
+                        value={subgroups.find((v) => v.value === value)}
                         onChange={(v) => {
                             onChange(v?.value);
                             onBlur();

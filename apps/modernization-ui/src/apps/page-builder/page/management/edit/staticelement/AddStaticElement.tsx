@@ -10,7 +10,7 @@ import {
     PageStaticControllerService,
 } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { useAlert } from 'libs/alert';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
 
@@ -127,18 +127,19 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
                             control={form.control}
                             name="type"
                             rules={{ required: { value: true, message: 'Static element type is required.' } }}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <SingleSelect
+                                    id={name}
                                     label="Choose a static element"
                                     options={staticType}
                                     required={true}
-                                    defaultValue={value}
-                                    onChange={onChange}
+                                    value={staticType.find((o) => o.value === value)}
+                                    onChange={(v) => onChange(v?.value ?? null)}
                                     onBlur={onBlur}
                                     error={error?.message}
                                     data-testid="staticType"
                                     className={styles.select_input}
-                                ></SelectInput>
+                                />
                             )}
                         />
                     </div>

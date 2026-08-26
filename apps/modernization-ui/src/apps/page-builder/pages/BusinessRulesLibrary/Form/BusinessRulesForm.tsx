@@ -6,9 +6,8 @@ import { useParams } from 'react-router';
 
 import { PagesQuestion, PagesSubSection, Rule, RuleRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
-import { MultiSelect } from 'design-system/select';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 
 import { SourceValueProp } from '../Add/AddBusinessRules';
 import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
@@ -370,25 +369,21 @@ export const BusinessRulesForm = ({
                             required: { value: watch.anySourceValue ? false : true, message: 'Logic is required' },
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <div className={styles.comparator}>
-                                <div className={styles.title}>
-                                    <Label htmlFor="logic" requiredMarker={true}>
-                                        Logic
-                                    </Label>
-                                </div>
-                                <div className={styles.content}>
-                                    <SingleSelect
-                                        className={styles.input}
-                                        defaultValue={watch.anySourceValue ? Rule.comparator.EQUAL_TO : value}
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        options={logicList}
-                                        error={error?.message}
-                                        disabled={watch.anySourceValue}
-                                        dataTestid="LogicSelectDropdown"
-                                    />
-                                </div>
-                            </div>
+                            <SingleSelect
+                                id="logic"
+                                label="logic"
+                                orientation="horizontal"
+                                value={logicList.find(
+                                    (o) => o.value === (watch.anySourceValue ? Rule.comparator.EQUAL_TO : value)
+                                )}
+                                onChange={(v) => onChange(v?.value ?? null)}
+                                onBlur={onBlur}
+                                options={logicList}
+                                error={error?.message}
+                                disabled={watch.anySourceValue}
+                                data-Testid="LogicSelectDropdown"
+                                required={true}
+                            />
                         )}
                     />
 

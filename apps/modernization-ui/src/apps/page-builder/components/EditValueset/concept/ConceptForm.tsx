@@ -6,8 +6,8 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { CreateConceptRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'design-system/date';
+import { SingleSelect } from 'design-system/select';
 import { isAfter } from 'validation/date/isAfter';
 import { maxLengthRule } from 'validation/entry';
 
@@ -277,9 +277,9 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         <SingleSelect
                             className={styles.wideInput}
                             label="Code system name"
-                            defaultValue={value}
-                            onChange={(e) => {
-                                onChange(e);
+                            value={codeSystems.find((o) => o.value === value)}
+                            onChange={(v) => {
+                                onChange(v?.value ?? null);
                                 onBlur();
                             }}
                             onBlur={onBlur}

@@ -75,40 +75,6 @@
     }
 }
 
-.comparator {
-    display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    padding-bottom: 1rem;
-
-    .title {
-        min-width: 12rem;
-    }
-
-    .content {
-        padding-top: 0.5rem;
-        .input {
-            min-width: 28.0625rem;
-        }
-    }
-}
-
-.sourceValues {
-    display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    padding-bottom: 1rem;
-
-    .title {
-        min-width: 12rem;
-    }
-    .content {
-        padding-top: 1rem;
-        min-width: 28.0625rem;
-        max-width: 28.0625rem;
-    }
-}
-
 .targetType {
     display: flex;
     flex-direction: row;

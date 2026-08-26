@@ -41,7 +41,7 @@ export const DateFields = ({ maskOptions, published }: Props) => {
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        value={dateMaskOptions.find(o => o.value === value)}
+                        value={dateMaskOptions.find((o) => o.value === value)}
                         options={dateMaskOptions}
                         error={error?.message}
                         name={name}

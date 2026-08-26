@@ -52,7 +52,7 @@ export const TextFields = ({ maskOptions, editing = false, published = false }: 
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        value={textMaskOptions.find(o => o.value === value)}
+                        value={textMaskOptions.find((o) => o.value === value)}
                         options={textMaskOptions}
                         error={error?.message}
                         name={name}

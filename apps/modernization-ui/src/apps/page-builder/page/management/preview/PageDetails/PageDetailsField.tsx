@@ -5,8 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { Concept, Condition, PageControllerService, PageInformationChangeRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelect } from 'design-system/select';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 
 import { maxLengthRule, validPageNameRule } from '../../../../../../validation/entry';
 import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNameRule';
@@ -44,6 +43,13 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
         name: m.name ?? '',
         value: m.id,
     }));
+
+    const mmgOptions = mmgs.map((m) => {
+        return {
+            name: m.display ?? '',
+            value: m.localCode ?? '',
+        };
+    });
 
     return (
         <>
@@ -92,7 +98,13 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                     />
                 )}
             />
-            <SingleSelect label="Event type" value={eventType} options={eventTypeOptions} disabled={true} />
+            <SingleSelect
+                id="event-type"
+                label="Event type"
+                value={eventTypeOptions.find((o) => o.value === eventType)}
+                options={eventTypeOptions}
+                disabled={true}
+            />
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
@@ -103,17 +115,12 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                         name={name}
                         id={name}
                         aria-label="select a reporting mechanism for the page"
-                        onChange={onChange}
+                        onChange={(v) => onChange(v?.value ?? null)}
                         className="margin-bottom-10"
                         onBlur={onBlur}
                         disabled={isEnabled}
-                        defaultValue={value}
-                        options={mmgs.map((m) => {
-                            return {
-                                name: m.display ?? '',
-                                value: m.localCode ?? '',
-                            };
-                        })}
+                        value={mmgOptions.find((o) => o.value === value)}
+                        options={mmgOptions}
                         error={error?.message}
                         required={true}
                     />
