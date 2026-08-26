@@ -33,10 +33,15 @@ class TestCustomLibrary:
         assert result['description'] == 'Custom pass through query'
 
     def test_example_library_runs(self):
+        """This method tests the example library file found in the
+        NEDSS-Custom-Library-Example repository.  File is downloaded via pytest fixture
+        prior to this test runing.
+        """
         report_spec = {
             'is_export': True,
             'is_builtin': False,
             'library_name': 'custom_lib_repo_example',
+            'sort_by': '[Code Table]',
             # Filter code is used here as it is a stable, small table
             'subset_query': (
                 'SELECT code_table AS [Code Table] FROM [NBS_ODSE].[dbo].[Filter_code]'
