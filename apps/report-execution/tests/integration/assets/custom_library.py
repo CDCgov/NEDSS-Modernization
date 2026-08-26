@@ -1,5 +1,3 @@
-import logging
-
 import pandas
 
 from src.db_transaction import Transaction
@@ -15,15 +13,11 @@ def execute(
     content = trx.query(subset_query)
 
     df = pandas.DataFrame.from_records(content.data, columns=content.columns)
-    logging.warning(df)
 
-    stats = df.describe(include="all")
-    logging.warning(stats)
+    stats = df.describe(include='all')
 
     data = stats.to_records()
-    logging.warning(data)
     columns = [col for col in stats.columns]
-    logging.warning(columns)
 
     return ReportResult(
         content=Table(data=data, columns=columns),
