@@ -381,7 +381,7 @@ export const BusinessRulesForm = ({
                                 options={logicList}
                                 error={error?.message}
                                 disabled={watch.anySourceValue}
-                                data-Testid="LogicSelectDropdown"
+                                data-testid="LogicSelectDropdown"
                                 required={true}
                             />
                         )}

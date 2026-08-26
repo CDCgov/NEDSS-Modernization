@@ -152,7 +152,7 @@ export const AddNewPage = () => {
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <SingleSelect
                                     label="Event type"
-                                    data-Testid="eventTypeDropdown"
+                                    data-testid="eventTypeDropdown"
                                     value={eventType.find((o) => o.value === value)}
                                     onChange={(v) => onChange(v?.value ?? null)}
                                     options={eventType}
