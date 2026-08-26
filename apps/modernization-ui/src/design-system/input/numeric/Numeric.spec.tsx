@@ -1,14 +1,19 @@
+import { useState } from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Numeric, NumericProps } from './Numeric';
 
-const Fixture = ({ id = 'testing-numeric', ...remaining }: Partial<NumericProps>) => (
-    <div>
-        <label htmlFor={id}>Numeric input test</label>
-        <Numeric id={id} {...remaining} />
-    </div>
-);
+const Fixture = ({ id = 'testing-numeric', value, onChange, ...remaining }: Partial<NumericProps>) => {
+    const [val, setVal] = useState<number | null>(null);
+    return (
+        <div>
+            <label htmlFor={id}>Numeric input test</label>
+            <Numeric value={value ?? val} onChange={onChange ?? setVal} id={id} {...remaining} />
+        </div>
+    );
+};
 
 describe('when entering numeric values', () => {
     it('should render successfully', () => {

@@ -13,10 +13,10 @@ const MonthYearRangeFilter: BasicFilterComponent = ({ filter, value, onChange, .
     const thisYear = getThisYear();
     return (
         <MonthYearPickerRange
-            value={{ between: { from: value?.[0], to: value?.[1] } }}
+            value={{ between: { from: value?.[0] ?? null, to: value?.[1] ?? null } }}
             startYear={thisYear - YEARS_BACK}
             endYear={thisYear}
-            onChange={(newValue) => onChange([newValue?.between?.from, newValue?.between.to])}
+            onChange={(newValue) => onChange([newValue.between.from, newValue.between.to])}
             {...remaining}
         />
     );
@@ -32,7 +32,7 @@ const getMonthYearRange = (filter: BasicFilterConfiguration) => {
 const toDateParts = (dtStr: string) => dtStr.split('/').map((v) => parseInt(v));
 
 const monthYearRangeValidator = (filter: BasicFilterConfiguration, label: string) => {
-    return (value?: (string | undefined)[]) => {
+    return (value?: (string | undefined | null)[]) => {
         // Base required check doesn't work well with ranges
         if (!value || (!value[0] && !value[1])) {
             return filter.isRequired ? validateRequiredRule(label).required.message : true;
