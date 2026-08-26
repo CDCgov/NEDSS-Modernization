@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
 import { PagesQuestion, PagesSubSection, RuleRequest } from 'apps/page-builder/generated';
 import { useGetTargetSubsections } from 'apps/page-builder/hooks/useGetTargetSubsections';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { MultiSelectInput } from 'components/selection/multi';
+import { MultiSelect } from 'design-system/select';
 
 interface Props {
     sourceQuestion?: PagesQuestion;
@@ -16,6 +16,7 @@ const SubSectionsDropdown = ({ onSelect, sourceQuestion }: Props) => {
     const [subSections, setSubSections] = useState<PagesSubSection[]>([]);
     const [selectedSubsections, setSelectedSubsections] = useState<string[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const id = useId();
 
     const form = useFormContext<RuleRequest>();
 
@@ -72,11 +73,15 @@ const SubSectionsDropdown = ({ onSelect, sourceQuestion }: Props) => {
     const options = subSections.map((subSection) => ({ name: subSection.name, value: subSection.questionIdentifier }));
 
     return (
-        <MultiSelectInput
-            onChange={handleSelectSubsection}
-            value={selectedSubsections}
+        <MultiSelect
+            id={id}
+            name={id}
+            label="Sub-section"
+            onChange={(values) => handleSelectSubsection(values.map((v) => v.value))}
+            value={options.filter((c) => selectedSubsections?.includes(c.value))}
             options={options}
             error={errorMessage}
+            orientation="vertical"
         />
     );
 };

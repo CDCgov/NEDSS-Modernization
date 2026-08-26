@@ -89,10 +89,6 @@ Then('click on Save changes in  page details page', () => {
     previewPagePage.clickSaveChangesBtnPageDetailsPage();
 });
 
-Then('verify user navigates to pre-preview page with success message You have successfully saved you changes', () => {
-    previewPagePage.checkSuccessMessage();
-});
-
 Then('click on Close button in page details page', () => {
     previewPagePage.clickCloseBtnPageDetailsPage();
 });

@@ -8,7 +8,7 @@ import { PagesQuestion, PagesSubSection, Rule, RuleRequest } from 'apps/page-bui
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
-import { MultiSelectInput } from 'components/selection/multi';
+import { MultiSelect } from 'design-system/select';
 
 import { SourceValueProp } from '../Add/AddBusinessRules';
 import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
@@ -136,14 +136,6 @@ export const BusinessRulesForm = ({
         form.setValue('sourceIdentifier', `${question?.question}`);
         setSourceQuestion(question);
         onFetchSourceValues(question?.valueSet ?? '');
-    };
-
-    const handleSourceValueChange = (data: string[]) => {
-        // create a new array by comparing data and sourceValueList, for each item in data,
-        // find the corresponding item in sourceValueList and return it
-        const matchedValues = data.map((value) => sourceValues.find((val) => val.value === value));
-        const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
-        form.setValue('sourceValues', newValues);
     };
 
     const handleTargetQuestion = (questions: PagesQuestion[]) => {
@@ -402,7 +394,7 @@ export const BusinessRulesForm = ({
 
                     {watch.ruleFunction && watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE && (
                         <>
-                            <Controller
+                            <Controller<RuleRequest, 'sourceValues'>
                                 control={form.control}
                                 name="sourceValues"
                                 rules={{
@@ -411,26 +403,20 @@ export const BusinessRulesForm = ({
                                         message: 'Source value(s) is required',
                                     },
                                 }}
-                                render={() => (
-                                    <div className={styles.sourceValues}>
-                                        <div className={styles.title}>
-                                            <Label htmlFor="sourceValues" requiredMarker={true}>
-                                                Source value(s)
-                                            </Label>
-                                        </div>
-                                        <div className={styles.content}>
-                                            <div className="source-value-multi-select">
-                                                <MultiSelectInput
-                                                    value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
-                                                    onChange={(value: string[]) => {
-                                                        handleSourceValueChange(value);
-                                                    }}
-                                                    options={sourceValues}
-                                                    disabled={form.watch('anySourceValue')}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
+                                render={({ field: { onChange, value, name } }) => (
+                                    <MultiSelect
+                                        name={name}
+                                        id={name}
+                                        label="Source value(s)"
+                                        onChange={(values) =>
+                                            onChange(values.map((value) => ({ id: value.value, text: value.name })))
+                                        }
+                                        value={sourceValues.filter((c) => value?.some((v) => v.id === c.value))}
+                                        options={sourceValues}
+                                        required={true}
+                                        disabled={form.watch('anySourceValue')}
+                                        orientation="horizontal"
+                                    />
                                 )}
                             />
                             <Controller
