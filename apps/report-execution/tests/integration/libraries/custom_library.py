@@ -1,5 +1,6 @@
 import http.client
 import json
+import yaml
 
 import pytest
 
@@ -37,7 +38,7 @@ class TestCustomLibrary:
         body = response.read()
         assert len(body) > 10
 
-    def test_example_library_runs(self):
+    def test_example_library_runs(self, snapshot):
         """This method tests the example library file found in the
         NEDSS-Custom-Library-Example repository.  File is downloaded via pytest fixture
         prior to this test runing.
@@ -65,4 +66,4 @@ class TestCustomLibrary:
         assert response.status == 200
 
         body = response.read()
-        assert len(body) > 10
+        snapshot.assert_match(yaml.dump(body), 'snapshot.yml')
