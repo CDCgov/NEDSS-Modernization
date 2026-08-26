@@ -45,6 +45,3 @@ cdc-sandbox/nifi/repo
 cdc-sandbox/nifi/nifi_conf/conf/flow.json.gz
 cdc-sandbox/NEDSSDev
 cdc-sandbox/.env
-
-# ephemeral library file only used during test time
-apps/report-execution/tests/integration/assets/custom_lib_repo_example.py

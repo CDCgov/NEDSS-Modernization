@@ -4,3 +4,6 @@ __pycache__/
 .venv/
 
 tests/fake_sql/
+
+# ephemeral library file only used during test time
+tests/integration/assets/custom_lib_repo_example.py
