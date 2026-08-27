@@ -6,6 +6,6 @@ services:
     # Tests external client library mounting into container works
     volumes:
       - type: bind
-        source: ../apps/report-execution/tests/integration/assets/custom_library.py
-        target: /usr/report-execution/src/libraries/custom/custom_library.py
+        source: ../apps/report-execution/tests/integration/assets/
+        target: /usr/report-execution/src/libraries/custom/
         read_only: true

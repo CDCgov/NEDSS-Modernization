@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 from contextlib import contextmanager
+from urllib.request import urlopen
 
 import pytest
 import tablefaker
@@ -112,6 +113,37 @@ def mock_db_connection(mocker):
     """Replace `mssql_python.connect` calls with mock which returns fake connection."""
     mock = mocker.patch('mssql_python.connect', mock_db_connection_ctxt)
     return mock
+
+
+@pytest.fixture(scope='session')
+def download_custom_library(request):
+    """Downloads the example library file that is hosted in the
+    CDCgov/NEDSS-Custom-Library-Example repository so that we can run tests against it.
+    """
+    file_dir = os.path.dirname(__file__)
+    download_filepath = f'{file_dir}/integration/assets/custom_lib_repo_example.py'
+
+    try:
+        logging.info(f'Downloading custom library {download_filepath} ...')
+
+        url = 'https://raw.githubusercontent.com/CDCgov/NEDSS-Custom-Library-Example/refs/heads/main/example_library.py'  # noqa: E501
+        with urlopen(url) as fd:
+            body = fd.read().decode('utf-8')
+    except Exception as ex:
+        raise RuntimeError(
+            'Downloading of custom library example file has failed'
+        ) from ex
+
+    with open(download_filepath, 'w') as fd:
+        fd.write(body)
+
+    logging.info('Custom library finished downloading!')
+
+    def teardown():
+        logging.info(f'Removing downloaded custom library file {download_filepath} ...')
+        os.remove(download_filepath)
+
+    request.addfinalizer(teardown)
 
 
 @pytest.fixture(scope='session')
