@@ -104,7 +104,7 @@ describe('ImportConfigurationModal', () => {
 
         await user.click(importButton);
         // call happens in promise, can take a moment to settle
-        waitFor(() => expect(onImport).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(onImport).toHaveBeenCalledTimes(1));
         expect(onImport).toHaveBeenCalledWith('test.json', algorithmExport);
     });
 
@@ -112,7 +112,7 @@ describe('ImportConfigurationModal', () => {
         const onImport = vi.fn();
         const user = userEvent.setup();
 
-        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture onImport={onImport} />);
+        const { getAllByRole, getByLabelText, findByText } = render(<Fixture onImport={onImport} />);
 
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
 
@@ -127,20 +127,18 @@ describe('ImportConfigurationModal', () => {
 
         expect(onImport).toHaveBeenCalledTimes(0);
 
-        await waitFor(() => {
-            expect(
-                queryByText(
-                    'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
-                )
-            ).toBeInTheDocument();
-        });
+        expect(
+            await findByText(
+                'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
+            )
+        ).toBeInTheDocument();
     });
 
     it('should show warning when non configuration file is uploaded', async () => {
         const onImport = vi.fn();
         const user = userEvent.setup();
 
-        const { getAllByRole, getByLabelText, queryByText } = render(<Fixture onImport={onImport} />);
+        const { getAllByRole, getByLabelText, findByText } = render(<Fixture onImport={onImport} />);
 
         const fileInput = getByLabelText('Drag configuration file here or choose from folder');
 
@@ -155,12 +153,10 @@ describe('ImportConfigurationModal', () => {
 
         expect(onImport).toHaveBeenCalledTimes(0);
 
-        await waitFor(() => {
-            expect(
-                queryByText(
-                    'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
-                )
-            ).toBeInTheDocument();
-        });
+        expect(
+            await findByText(
+                'The imported JSON file was invalid. Please review the file and ensure the file is the appropriate format and all values are valid.'
+            )
+        ).toBeInTheDocument();
     });
 });

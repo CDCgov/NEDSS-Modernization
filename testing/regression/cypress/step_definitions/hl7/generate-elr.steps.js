@@ -39,7 +39,7 @@ When('I Generate HL7 {string} messages to api', (string) => {
     cy.readFile(`cypress/fixtures/${messageCondition}.json`, 'utf8').then((jsonData) => {
         const randomData = {
             randomFirstName: faker.person.firstName(),
-            randomLastName: UtilityFunctions.generateRandomLastName(),
+            randomLastName: UtilityFunctions.generateRandomName(),
             fakeSSN: UtilityFunctions.generateRandomSSN(),
             fakeEmail: faker.internet.email(),
             fakeStreetAddress: faker.location.streetAddress(),

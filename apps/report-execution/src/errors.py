@@ -42,7 +42,7 @@ class MissingColumnError(BaseReportExecutionError):
 class ResultTooBigError(BaseReportExecutionError):
     """The returned results are larger than allowed by configuration."""
 
-    def __init__(self, is_export: bool, row_limit: int, num_rows: int):
+    def __init__(self, is_export: bool, row_limit: int, num_rows: int | str):
         message = (
             f'Report request resulted in {num_rows} rows.'
             + f' The limit for {"exporting" if is_export else "running"} reports is'

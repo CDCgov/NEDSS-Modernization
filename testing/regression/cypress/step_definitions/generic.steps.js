@@ -4,6 +4,11 @@ When('I navigate to {string} path', (url) => {
     cy.visit(url);
 });
 
+// use for NBS 6 input buttons
+When('I click the {string} input button', (inputName) => {
+    cy.get(`input[name="${inputName}"]`).first().click();
+});
+
 When('I click on the {string} link', (name) => {
     cy.contains('a', name).click();
 });
