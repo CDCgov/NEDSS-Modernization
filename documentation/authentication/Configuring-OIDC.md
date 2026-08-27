@@ -28,13 +28,6 @@ docker compose up -d --build keycloak
       out.
     - Click `Save`
 
-### Allowing OAuth2 authentication from Postman
-
-Any client can allow authentication from Postman by
-
-- Adding a `Valid redirect URI` of `https://oauth.pstmn.io/v1/callback`.
-- Adding a `Web origin` of `https://oauth.pstmn.io`
-
 ## Configuring the Services
 
 With a Keycloak realm created the services can now be configured for OIDC authentication. Resource servers will only
