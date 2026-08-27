@@ -1,3 +1,2 @@
-"Code Table,record_count\r\nnbs_odse..person_name,1\r\nnbs_srt..code_value_general,2\r\
-  \nnbs_srt..state_code,2\r\nnbs_srt..state_county_code,2\r\nnbs_srte..code_value_general,3\r\
-  \nNONE,10\r\n"
+"Filter Operator Code,Status CD,record_count\r\nBW,A,1\r\nCO,A,1\r\nEQ,A,1\r\nGE,A,1\r\
+  \nGT,A,1\r\nIN,A,1\r\nLE,A,1\r\nLT,A,1\r\nNE,A,1\r\nNN,A,1\r\nSW,A,1\r\n"

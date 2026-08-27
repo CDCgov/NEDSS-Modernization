@@ -49,12 +49,13 @@ class TestCustomLibrary:
             'is_export': True,
             'is_builtin': False,
             'library_name': 'custom_lib_repo_example',
-            'sort_by': '[Code Table]',
-            # Filter code is used here as it is a stable, small table
-            'subset_query': (
-                'SELECT code_table AS [Code Table] FROM [NBS_ODSE].[dbo].[Filter_code]'
-            ),
-            'column_map': [['code_table', 'Code Table']],
+            'sort_by': '[Status CD]',
+            # Filter operator is used here as it is a stable, small table
+            'subset_query': 'SELECT filter_operator_code AS [Filter Operator Code], status_cd AS [Status CD] FROM [NBS_ODSE].[dbo].[Filter_Operator]',  # noqa: E501
+            'column_map': [
+                ['filter_operator_code', 'Filter Operator Code'],
+                ['status_cd', 'Status CD'],
+            ],
         }
 
         connection = http.client.HTTPConnection('localhost:8001')
