@@ -1,12 +1,15 @@
 import { mapOr, maybeMap } from 'utils/mapping';
 
-type DateEntry = {
-    day?: number;
-    month?: number;
-    year?: number;
+type MonthYearEntry = {
+    month: number | null;
+    year: number | null;
 };
 
-const maybeNumber = maybeMap(Number);
+type DateEntry = MonthYearEntry & {
+    day: number | null;
+};
+
+const maybeNumber = (v?: string) => maybeMap(Number)(v) ?? null;
 
 const DATE_ENTRY_FORMAT = /^(?<month>\d{2})\/(?<day>\d{2})\/(?<year>\d{4})$/;
 
@@ -16,7 +19,7 @@ const DATE_ENTRY_FORMAT = /^(?<month>\d{2})\/(?<day>\d{2})\/(?<year>\d{4})$/;
  * @param {string} value  The textual date value in the MM/DD/YYYY format.
  * @return {DateEntry | undefined}
  */
-const asDateEntry = (value?: string): DateEntry | undefined => {
+const asDateEntry = (value?: string | null): DateEntry | undefined => {
     if (value) {
         const match = value.match(DATE_ENTRY_FORMAT);
 
@@ -55,4 +58,4 @@ const asDate = (value?: DateEntry) => {
 };
 
 export { DATE_ENTRY_FORMAT, asDateEntry, asDate, displayDateEntry, asISODate };
-export type { DateEntry };
+export type { DateEntry, MonthYearEntry };

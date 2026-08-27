@@ -2865,7 +2865,9 @@ describe('report run page', () => {
 
             const numberBox = await findByLabelText('Value');
             expect(numberBox).toHaveValue(null);
-            await user.type(numberBox, '0{tab}');
+            // make sure the number clears as zero isn't falsey
+            await user.type(numberBox, '10{backspace}{backspace}0{tab}');
+            expect(numberBox).toHaveValue(0);
 
             // generally filled in coded list
             await user.selectOptions(fieldSelect, 'Condition Code');

@@ -31,6 +31,7 @@ describe('when validating that a DateEntry occurs in the past', () => {
         mockNow.mockReturnValue(today);
 
         const actual = occursInThePast('Date field name')({
+            year: null,
             month: 12,
             day: 19,
         });
@@ -64,6 +65,7 @@ describe('when validating that a DateEntry occurs in the past', () => {
         const actual = occursInThePast('Date field name')({
             year: tomorrow.getFullYear(),
             month: tomorrow.getMonth() + 1,
+            day: null,
         });
 
         expect(actual).toContain(`The Date field name cannot be after ${internalizeDate(today)}`);
