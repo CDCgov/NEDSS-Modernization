@@ -98,26 +98,20 @@ class ClassicHomePage {
     }
 
     clickReportsTab() {
-        cy.contains('Reports').eq(0).click();
+        cy.get('a').contains('Reports').click();
     }
 
     verifyReportsPageDisplayed() {
         cy.contains('Private Reports').eq(0);
     }
 
-    createRunReports() {
-        // Navigate to (modernized) PA05 Worker Interview Activity (Case Close Date)
-        cy.get('#Public a').contains('Expand Subsections').eq(0).click();
-        cy.get('table#Public4 a').filter(':contains("Run")').eq(18).click();
-
-        //  Set values for all filters
-        cy.selectDropdownByLabel('DIAGNOSIS_CD', '950 - AIDS');
-        cy.selectDropdownByLabel('INVESTIGATOR_INTERVIEW_QC', 'Fulton LocalUser');
-        cy.get('input[id$="-from"]').type('01/01/2000');
-        cy.get('input[id$="-to"]').type('05/01/2026');
-
-        //  Run report
-        cy.contains('button', 'Run').click();
+    runSASCA01Report() {
+        // fill out report form inputs
+        cy.enterInput('input[name="TXT_01"]', 1);
+        cy.get('input[name="cvg_select_all"]').click();
+        // run report
+        cy.get('td').contains('Run').eq(0).click();
+        cy.get('span').contains('The selected report has been run and is displayed in a new window.');
     }
 
     verifyDocumentsRequiringSecurityAssignment() {
