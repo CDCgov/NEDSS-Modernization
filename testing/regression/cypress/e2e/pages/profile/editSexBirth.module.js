@@ -14,7 +14,7 @@ class EditSexBirthModule {
     }
 
     currentSex(sex) {
-        cy.get(this.section).eq(3).find('select[data-testid="dropdown"]').eq(0).select(sex);
+        cy.get(this.section).eq(3).findByLabelText('Current sex').select(sex);
         return this;
     }
 

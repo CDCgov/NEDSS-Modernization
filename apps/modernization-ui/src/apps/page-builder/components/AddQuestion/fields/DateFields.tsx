@@ -4,7 +4,7 @@ import { Label, Radio } from '@trussworks/react-uswds';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CreateDateQuestionRequest } from 'apps/page-builder/generated';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { Option } from 'generated';
 
 import styles from '../question-form.module.scss';
@@ -34,14 +34,14 @@ export const DateFields = ({ maskOptions, published }: Props) => {
                 name="mask"
                 rules={{ required: { value: true, message: 'Date format required' } }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Date format"
-                        onChange={(e) => {
-                            onChange(e);
+                        onChange={(v) => {
+                            onChange(v?.value ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={dateMaskOptions.find((o) => o.value === value)}
                         options={dateMaskOptions}
                         error={error?.message}
                         name={name}

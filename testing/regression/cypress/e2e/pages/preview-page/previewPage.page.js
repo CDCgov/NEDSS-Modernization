@@ -111,7 +111,7 @@ class PreviewPagePage {
     }
 
     checkEventTypeField() {
-        cy.get('[data-testid="dropdown"]').should('be.disabled');
+        cy.findByLabelText('Event type').should('be.disabled');
     }
 
     checkReportingMechanismField() {

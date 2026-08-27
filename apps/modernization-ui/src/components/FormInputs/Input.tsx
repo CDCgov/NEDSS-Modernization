@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler } from 'react';
+import { ChangeEventHandler, FocusEventHandler, useId } from 'react';
 
 import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 
@@ -33,7 +33,7 @@ export const Input = ({
     className,
     label,
     helperText,
-    id = '',
+    id,
     type,
     error,
     required,
@@ -51,11 +51,14 @@ export const Input = ({
     ariaLabel,
     ...props
 }: InputProps) => {
+    const autoId = useId();
+    id = id || autoId;
+
     return (
         <EntryWrapper
             label={label ?? ''}
             helperText={helperText}
-            htmlFor={id ?? ''}
+            htmlFor={id}
             orientation={flexBox ? 'horizontal' : orientation}
             sizing={sizing}
             required={required}

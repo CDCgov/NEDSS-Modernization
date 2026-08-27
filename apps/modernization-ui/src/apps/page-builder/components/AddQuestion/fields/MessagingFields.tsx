@@ -4,7 +4,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { maxLengthRule } from 'validation/entry';
 
 import { ToggleButton } from '../../ToggleButton';
@@ -110,10 +110,10 @@ export const MessagingFields = () => {
                     },
                 }}
                 render={({ field: { onChange, onBlur, name, value } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Code system name"
-                        defaultValue={value}
-                        onChange={onChange}
+                        value={codeSystems.find((o) => o.value === value)}
+                        onChange={(v) => onChange(v?.value ?? null)}
                         onBlur={onBlur}
                         name={name}
                         id={name}
@@ -156,10 +156,10 @@ export const MessagingFields = () => {
                     },
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="HL7 data type"
-                        defaultValue={value}
-                        onChange={onChange}
+                        value={hl7Options.find((o) => o.value === value)}
+                        onChange={(v) => onChange(v?.value ?? null)}
                         onBlur={onBlur}
                         error={error?.message}
                         name={name}
@@ -170,9 +170,10 @@ export const MessagingFields = () => {
                     />
                 )}
             />
-            <SelectInput
+            <SingleSelect
                 label="HL7 segment"
-                value="OBX-3.0"
+                id="hl7-segment"
+                value={{ name: 'OBX-3.0', value: 'OBX-3.0' }}
                 disabled={true}
                 options={[{ name: 'OBX-3.0', value: 'OBX-3.0' }]}
             />
