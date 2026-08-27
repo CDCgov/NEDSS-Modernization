@@ -161,7 +161,7 @@ the api running an interface is available at [/graphiql](http://localhost:8080/g
 
 ### Swagger
 
-The various services within this system use [Swagger](https://swagger.io/) for most API documentation and visualization.  When running the application locally, these docs can be found at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+The services within this system use [Swagger](https://swagger.io/) for API documentation and visualization.  When running the application locally, these docs can be found at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## ⚙️ Configuration
 
