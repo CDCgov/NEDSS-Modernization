@@ -161,7 +161,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                         className="subgroupSelect"
                         value={subgroups.find((v) => v.value === value)}
                         onChange={(v) => {
-                            onChange(v?.value);
+                            onChange(v?.value ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}

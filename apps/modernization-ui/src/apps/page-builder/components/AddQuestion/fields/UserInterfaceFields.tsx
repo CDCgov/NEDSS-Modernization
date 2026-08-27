@@ -87,7 +87,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const questionType = useWatch({ control: form.control, name: 'questionType', exact: true });
 
-    const getDisplayTypeOptions: Selectable[] = useMemo(() => {
+    const displayTypeOptions: Selectable[] = useMemo(() => {
         switch (questionType) {
             case 'CODED':
                 return codedDisplayOptions;
@@ -159,13 +159,13 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
                         label="Display Type"
                         data-testid="displayType"
                         required={!published}
-                        value={getDisplayTypeOptions.find((o) => o.value === String(value))}
+                        value={displayTypeOptions.find((o) => o.value === String(value))}
                         onChange={(v) => {
                             onChange(v ? parseInt(v.value) : null);
                             onBlur();
                         }}
                         error={error?.message}
-                        options={getDisplayTypeOptions}
+                        options={displayTypeOptions}
                         disabled={published}
                     />
                 )}

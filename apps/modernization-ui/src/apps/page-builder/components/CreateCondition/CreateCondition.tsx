@@ -158,7 +158,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 id={name}
                                 label="Coding System"
                                 value={systemOptions.find((o) => o.value === value)}
-                                onChange={onChange}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 onBlur={onBlur}
                                 options={systemOptions}
                                 error={error?.message}
@@ -197,7 +197,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 id={name}
                                 label="Program Area"
                                 value={programAreaOptions.find((o) => o.value === value)}
-                                onChange={onChange}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 onBlur={onBlur}
                                 options={programAreaOptions}
                                 error={error?.message}
@@ -213,7 +213,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 id={name}
                                 label="Condition family"
                                 value={familyOptions.find((o) => o.value === value)}
-                                onChange={onChange}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 options={familyOptions}
                             />
                         )}
@@ -226,7 +226,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 id={name}
                                 label="Co-infection group"
                                 value={groupOptions.find((o) => o.value === value)}
-                                onChange={onChange}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 disabled={!isStdOrHivProgramArea(formWatch.progAreaCd)}
                                 options={groupOptions}
                             />

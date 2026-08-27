@@ -268,7 +268,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                 <SingleSelect
                                     label="Related units value set"
                                     onChange={(v) => {
-                                        onChange(valueSets.find((vs) => vs.value === v?.value)?.id);
+                                        onChange(valueSets.find((vs) => vs.value === v?.value)?.id ?? null);
                                         onBlur();
                                     }}
                                     onBlur={onBlur}

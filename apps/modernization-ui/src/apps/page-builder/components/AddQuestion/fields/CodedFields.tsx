@@ -44,7 +44,7 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                     <SingleSelect
                         label="Value set"
                         onChange={(val) => {
-                            onChange(valueSets.find((v) => v.value === val?.value)?.id);
+                            onChange(valueSets.find((v) => v.value === val?.value)?.id ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}
