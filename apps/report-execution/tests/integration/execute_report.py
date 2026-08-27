@@ -96,7 +96,7 @@ class TestIntegrationExecuteReport:
                 execute_report(report_spec)
 
             assert exc_info.value.message == (
-                'Report request resulted in 11 rows. The limit for running reports'
+                'Report request resulted in over 10 rows. The limit for running reports'
                 ' is 10 rows. Please refine your filter criteria.'
             )
         finally:
@@ -129,8 +129,8 @@ class TestIntegrationExecuteReport:
                 execute_report(report_spec)
 
             assert exc_info.value.message == (
-                'Report request resulted in 11 rows. The limit for exporting reports'
-                ' is 10 rows. Please refine your filter criteria.'
+                'Report request resulted in over 10 rows. The limit for exporting'
+                ' reports is 10 rows. Please refine your filter criteria.'
             )
         finally:
             with db_transaction(conn_string, True) as trx:
