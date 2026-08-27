@@ -1,8 +1,8 @@
 import http.client
 import json
-import yaml
 
 import pytest
+import yaml
 
 
 @pytest.mark.usefixtures('download_custom_library')
