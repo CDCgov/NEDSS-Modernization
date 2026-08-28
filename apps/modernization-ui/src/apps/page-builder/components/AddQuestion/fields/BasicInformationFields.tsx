@@ -7,8 +7,8 @@ import { QuestionValidationRequest } from 'apps/page-builder/generated/models/Qu
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
+import { SingleSelect } from 'design-system/select';
 import { maxLengthRule } from 'validation/entry';
 
 import { CreateQuestionForm } from '../QuestionForm';
@@ -156,12 +156,12 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 name="subgroup"
                 rules={{ required: { value: true, message: 'Subgroup required' } }}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Subgroup"
                         className="subgroupSelect"
-                        defaultValue={value}
-                        onChange={(e) => {
-                            onChange(e);
+                        value={subgroups.find((v) => v.value === value)}
+                        onChange={(v) => {
+                            onChange(v?.value ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}

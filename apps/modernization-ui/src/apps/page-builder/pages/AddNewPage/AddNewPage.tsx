@@ -12,9 +12,9 @@ import { Condition, PageControllerService, PageCreateRequest, Template } from 'a
 import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useConfiguration } from 'configuration';
+import { SingleSelect } from 'design-system/select';
 import { useAlert } from 'libs/alert';
 
 import './AddNewPage.scss';
@@ -150,11 +150,11 @@ export const AddNewPage = () => {
                             name="eventType"
                             rules={{ required: { value: true, message: 'Event type is required.' } }}
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                                <SelectInput
+                                <SingleSelect
                                     label="Event type"
-                                    dataTestid="eventTypeDropdown"
-                                    value={value}
-                                    onChange={onChange}
+                                    data-testid="eventTypeDropdown"
+                                    value={eventType.find((o) => o.value === value)}
+                                    onChange={(v) => onChange(v?.value ?? null)}
                                     options={eventType}
                                     error={error?.message}
                                     name={name}

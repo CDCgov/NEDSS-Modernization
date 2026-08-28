@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelect } from 'design-system/select';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { BasicFilterConfiguration } from 'generated';
 import { Selectable } from 'options';
 import { useConceptOptions } from 'options/concepts';
@@ -35,9 +34,9 @@ const OptionSelectFilter: BasicFilterComponent = ({ filter, value, onChange, ...
 
     if (filter.selectType === BasicFilterConfiguration.selectType.SINGLE) {
         return (
-            <SelectInput
-                value={value?.[0] ?? undefined}
-                onChange={(event) => onChange(event.target.value ? [event.target.value] : null)}
+            <SingleSelect
+                value={options.find((o) => o.value === value?.[0])}
+                onChange={(v) => onChange(v?.value ? [v.value] : null)}
                 options={options}
                 {...remaining}
             />

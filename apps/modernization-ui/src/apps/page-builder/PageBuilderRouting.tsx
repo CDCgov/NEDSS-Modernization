@@ -1,10 +1,12 @@
 import { Navigate, RouteObject } from 'react-router';
 
 import { FeatureLayout } from 'feature';
+import { ErrorPage } from 'pages/error';
 
 const routing: RouteObject[] = [
     {
         path: '/page-builder',
+        ErrorBoundary: ErrorPage,
         children: [
             {
                 index: true,

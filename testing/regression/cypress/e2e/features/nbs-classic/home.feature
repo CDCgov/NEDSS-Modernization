@@ -44,7 +44,10 @@ Feature: Classic NBS - User can view data in NBS Home
   Scenario: Display selected home page reports
     When Click on Reports tab on upper left side
     Then Verify user navigated to Reports page
-    And Create and run a report
+    When I click on the "Expand Subsections" link
+    And I click on the "Expand Subsections" link
+    And I click the "CA01 Chalk Talk Report: Case" report
+    And I can run a SAS report
 
   Scenario: Verify Documents Requiring Security Assignment
     When I import ELR documents

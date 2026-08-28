@@ -5,7 +5,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { CreateCodedQuestionRequest, ValueSetControllerService, ValueSetOption } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 
 import styles from '../question-form.module.scss';
 
@@ -41,14 +41,14 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                     required: { value: !published, message: 'Value set is required' },
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Value set"
-                        onChange={(e) => {
-                            onChange(e);
+                        onChange={(val) => {
+                            onChange(valueSets.find((v) => v.value === val?.value)?.id ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={valueSets.find((v) => v.id === value)}
                         options={valueSets}
                         error={error?.message}
                         name={name}
@@ -72,10 +72,10 @@ export const CodedFields = ({ onFindValueSet, editing = false, published = false
                         control={form.control}
                         name="defaultValue"
                         render={({ field: { onChange, name, value }, fieldState: { error } }) => (
-                            <SelectInput
+                            <SingleSelect
                                 label="Default value"
-                                onChange={onChange}
-                                defaultValue={value}
+                                onChange={(v) => onChange(v?.value ?? null)}
+                                value={options.find((o) => o.value === value)}
                                 options={valueSet ? options : []}
                                 error={error?.message}
                                 name={name}

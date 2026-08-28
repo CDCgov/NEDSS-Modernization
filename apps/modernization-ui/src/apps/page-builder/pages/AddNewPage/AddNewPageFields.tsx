@@ -5,8 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelect } from 'design-system/select';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Option } from 'generated';
 import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
@@ -36,6 +35,13 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
         value: m.id,
     }));
 
+    const templateOptions = props.templates.map((template) => {
+        return {
+            name: template.templateNm ?? '',
+            value: template.id?.toString() ?? '',
+        };
+    });
+
     return (
         <>
             <Controller
@@ -61,7 +67,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 outline={true}
             >
                 <p>
-                    <Icon.Search size={3} />
+                    <Icon.Search size={3} aria-label="search" />
                     Advanced condition search
                 </p>
             </ModalToggleButton>
@@ -106,23 +112,18 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                     required: { value: true, message: 'Template is required.' },
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Template"
                         name={name}
-                        defaultValue={value}
+                        value={templateOptions.find((o) => o.value === value?.toString())}
                         id={name}
                         aria-label="select a template"
-                        onChange={onChange}
+                        onChange={(v) => onChange(v?.value ? parseInt(v.value) : null)}
                         onBlur={onBlur}
-                        options={props.templates.map((template) => {
-                            return {
-                                name: template.templateNm ?? '',
-                                value: template.id?.toString() ?? '',
-                            };
-                        })}
+                        options={templateOptions}
                         error={error?.message}
                         required={true}
-                    ></SelectInput>
+                    />
                 )}
             />
             <p>
@@ -137,14 +138,14 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Reporting mechanism"
                         name={name}
                         id={name}
                         aria-label="select a reporting mechanism for the page"
-                        onChange={onChange}
+                        onChange={(v) => onChange(v?.value ?? null)}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={props.mmgs.find((o) => o.value === value)}
                         options={props.mmgs}
                         error={error?.message}
                         required={true}
