@@ -35,7 +35,11 @@ class AddEditSearchDeleteQuestion {
         cy.contains('Add question');
     }
 
-    fillAllRequiredFields({ withUniqueID, fieldTypeNumeric, fieldTypeDatePicker }: {
+    fillAllRequiredFields({
+        withUniqueID,
+        fieldTypeNumeric,
+        fieldTypeDatePicker,
+    }: {
         withUniqueID?: boolean;
         fieldTypeNumeric?: boolean;
         fieldTypeDatePicker?: boolean;
@@ -50,7 +54,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('#description').type('new test description');
         if (fieldTypeNumeric) {
             cy.get('.fieldType-option-1').eq(0).click();
-            cy.get('#fieldLength').type("5");
+            cy.get('#fieldLength').type('5');
         } else if (fieldTypeDatePicker) {
             cy.get('.fieldType-option-3').eq(0).click();
         } else {

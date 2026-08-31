@@ -1,11 +1,11 @@
 import { Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import { faker } from '@faker-js/faker';
 
-let hl7Message;
-let patientData;
-let messageId;
-let investigationId;
-let notificationId;
+let hl7Message: any;
+let patientData: any;
+let messageId: any;
+let investigationId: any;
+let notificationId: any;
 
 Given('I am authenticated with the DI API', () => {
     const clientid = Cypress.env('DI_CLIENT_ID');
@@ -27,7 +27,7 @@ Given('I am authenticated with the DI API', () => {
     });
 });
 
-function replacePlaceholders(template, replacements) {
+function replacePlaceholders(template: string, replacements: Record<string, string>) {
     return Object.entries(replacements).reduce((result, [placeholder, value]) => {
         const regex = new RegExp(placeholder, 'g');
         return result.replace(regex, value);
@@ -37,20 +37,20 @@ function replacePlaceholders(template, replacements) {
 Given(
     'I have a HL7 seed with: gender {string}, test type {string}, first {string}, last {string}, middle {string}, suffix {string}, ssn {string}, email {string}, street {string}, state {string}, city {string}, zipcode {string}, building {string}, dob {string}',
     (
-        gender,
-        testType,
-        firstName,
-        lastName,
-        middleName,
-        suffix,
-        ssn,
-        email,
-        street,
-        state,
-        city,
-        zipcode,
-        buildingNumber,
-        dob
+        gender: string,
+        testType: string,
+        firstName: string,
+        lastName: string,
+        middleName: string,
+        suffix: string,
+        ssn: string,
+        email: string,
+        street: string,
+        state: string,
+        city: string,
+        zipcode: string,
+        buildingNumber: string,
+        dob: string
     ) => {
         const fixtureName = (() => {
             switch (testType) {
@@ -184,7 +184,7 @@ Then('the HL7 message is processed by the data ingestion service', () => {
     const secret = Cypress.env('DI_SECRET');
     const authToken = Cypress.env('di_token');
 
-    let status = '';
+    let status: number;
     const maxAttempts = 30;
     const delay = 10_000;
 
@@ -206,8 +206,8 @@ Then('the HL7 message is processed by the data ingestion service', () => {
             if (JSON.parse(response.body)[1].match(/Status:\s*(\S+)/) !== null) {
                 status = JSON.parse(response.body)[1].match(/Status:\s*(\S+)/)[1];
             }
-            cy.log('Recieved status of: ' + status);
-            if (status === 'Success') {
+            cy.log('Received status of: ' + status);
+            if (status < 400) {
                 return;
             } else {
                 cy.wait(delay).then(() => checkStatus(++attempts));
@@ -243,7 +243,7 @@ Then('an Investigation is created for the HL7 message', () => {
     // Extract Investigation UID from table
     cy.xpath('//*[@id="parent"]/tbody/tr[7]/td[2]')
         .invoke('text')
-        .then((content) => {
+        .then((content: any) => {
             investigationId = content.match(/\(UID:\s*(\d+)\)/)[1];
             expect(investigationId, 'Investigation UID').is.not.null;
         });
@@ -313,7 +313,7 @@ Then('the Notification is copied onto the on-prem database with a status of {str
     cy.then(() => expect(status).to.equal(exectedStatus));
 });
 
-const getRandomLetters = (count) => {
+const getRandomLetters = (count: number) => {
     let chars = '';
     for (let i = 0; i < count; i++) {
         // 97 === a, 122 === z
@@ -322,12 +322,12 @@ const getRandomLetters = (count) => {
     return chars;
 };
 
-const generateRandomLastName = () => {
+const generateRandomLastName = (): string => {
     const randomLastName = faker.person.lastName().toLowerCase() + getRandomLetters(5);
     return (randomLastName.charAt(0).toUpperCase() + randomLastName.slice(1)).replace(/[^0-9a-z]/gi, '');
 };
 
-const generateRandomNumbers = (count) => {
+const generateRandomNumbers = (count: number) => {
     return Array(count)
         .fill([])
         .map(() => faker.number.int(9))

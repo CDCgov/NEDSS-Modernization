@@ -25,11 +25,11 @@ Given('I login for HL7 API generate token', () => {
     });
 });
 
-When('I Generate HL7 {string} messages to api', (string) => {
+When('I Generate HL7 {string} messages to api', (string: string) => {
     const messageCondition = string;
     let currentMessage;
     let messageID;
-    let fakeRandomData;
+    let fakeRandomData: any;
 
     const authToken = Cypress.env('authTokenAPI');
     const clientid = Cypress.env('DI_CLIENT_ID');

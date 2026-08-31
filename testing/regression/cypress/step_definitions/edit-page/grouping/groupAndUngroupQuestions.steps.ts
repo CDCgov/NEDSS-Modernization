@@ -13,7 +13,7 @@ Then('user clicks on 3 dots to edit subsection', () => {
     groupAndUngroupQuestions.clickMenuIcon();
 });
 
-Then('user should see option for {string}', (text) => {
+Then('user should see option for {string}', (text: string) => {
     groupAndUngroupQuestions.shouldSee(text);
 });
 
@@ -25,7 +25,7 @@ Then('verify a warning pop up window is opened', () => {
     groupAndUngroupQuestions.shouldSee('Warning');
 });
 
-Then('verify {string} and {string} button are available', (text1, text2) => {
+Then('verify {string} and {string} button are available', (text1: string, text2: string) => {
     groupAndUngroupQuestions.shouldSee(text1, text2);
 });
 
@@ -34,7 +34,7 @@ Then('user clicks on Ungroup button', () => {
 });
 
 Then('verify success message subsection is ungrouped on top of screen', () => {
-    groupAndUngroupQuestions.shouldSee('successfully ungrouped', null, true);
+    groupAndUngroupQuestions.shouldSee('successfully ungrouped', undefined, true);
 });
 
 Then("subsection does not have 'R' next to subsection name", () => {
@@ -49,7 +49,7 @@ Then('click on edit subsection', () => {
     groupAndUngroupQuestions.clickEditSubsectionOption();
 });
 
-Then('verify user is brought to {string} pop window', (text) => {
+Then('verify user is brought to {string} pop window', (text: string) => {
     groupAndUngroupQuestions.shouldSee(text);
 });
 
@@ -57,7 +57,7 @@ Then('verify edit subsection modal is prefilled with all the information for bot
     groupAndUngroupQuestions.verifyEditSubsectionPrefilled();
 });
 
-Then('user should see {string} and {string} button are enabled', (text, text1) => {
+Then('user should see {string} and {string} button are enabled', (text: string, text1: string) => {
     groupAndUngroupQuestions.shouldSee(text, text1);
 });
 
@@ -90,7 +90,7 @@ Then('user clicks on Submit button grouped', () => {
 });
 
 Then('user is brought back to Edit page with success message on top', () => {
-    groupAndUngroupQuestions.shouldSee('successfully grouped', null, true);
+    groupAndUngroupQuestions.shouldSee('successfully grouped', undefined, true);
 });
 
 Then('verify all the changes made are visible on edit page subsection', () => {
@@ -138,10 +138,10 @@ Then('user clicks on Submit button ungrouped', () => {
 });
 
 Then('verify user is brought back on edit draft page with success message', () => {
-    groupAndUngroupQuestions.shouldSee('successfully grouped', null, true);
+    groupAndUngroupQuestions.shouldSee('successfully grouped', undefined, true);
 });
 
-Then('verify {string} is displayed next to subsection name', (text) => {
+Then('verify {string} is displayed next to subsection name', (text: string) => {
     groupAndUngroupQuestions.shouldSee(text);
 });
 
@@ -149,6 +149,6 @@ Then('clicked on Preview button', () => {
     groupAndUngroupQuestions.clickPreviewBtn();
 });
 
-Then('verify Subsection shows grouped with {string} on preview page with proper columns', (text) => {
+Then('verify Subsection shows grouped with {string} on preview page with proper columns', (text: string) => {
     groupAndUngroupQuestions.shouldSee(text);
 });

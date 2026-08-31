@@ -6,7 +6,7 @@ Then('User navigates to Edit page and views Manage section pop-up window', () =>
     manageSectionPage.openManageSectionsPopup();
 });
 
-Then('User will see the following by {string} {string}', (content, type) => {
+Then('User will see the following by {string} {string}', (content: string, type: string) => {
     manageSectionPage.seeElementOnManageSection(content, type);
 });
 
@@ -20,7 +20,7 @@ Then('User clicks the trash icon', () => {
 
 Then(
     'Yellow inline message {string} displays above the section name with options {string} and {string}',
-    (string, string1, string2) => {
+    (string: string, string1: string, string2: string) => {
         manageSectionPage.viewDeleteConfirmationDialogText([string, string1, string2]);
     }
 );
@@ -35,7 +35,7 @@ Then('Yellow banner message closes', () => {
 
 Then(
     'Green inline confirmation message {string} whatever the section name displays under the Manage sections heading at the top',
-    (string) => {
+    (string: string) => {
         manageSectionPage.showDeleteConfirmationText(string);
     }
 );
@@ -44,7 +44,7 @@ Then('Deleted section is removed from Manage sections modal and Edit page', () =
     manageSectionPage.checkSectionDeleted();
 });
 
-Then('verify page header as {string}', (title) => {
+Then('verify page header as {string}', (title: string) => {
     manageSectionPage.verifyManageSectionsHeader(title);
 });
 
@@ -88,6 +88,6 @@ Then('Edit section modal closes', () => {
     manageSectionPage.closeEditSectionModal();
 });
 
-Then('Inline confirmation message {string} displays under the Manage sections heading at the top', (text) => {
+Then('Inline confirmation message {string} displays under the Manage sections heading at the top', (text: string) => {
     manageSectionPage.checkConfirmationMessageShowing(text);
 });

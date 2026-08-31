@@ -30,7 +30,7 @@ Then('User clicks Create and add to page button', () => {
     addEditSearchDeleteQuestion.clickCreateAndAddToPageBtn();
 });
 
-Then('A confirmation message displays {string}', (string) => {
+Then('A confirmation message displays {string}', (string: string) => {
     addEditSearchDeleteQuestion.checkConfirmationMessage(string);
 });
 
@@ -62,7 +62,7 @@ Then('Enters an existing Unique ID and completes all required and applicable fie
     addEditSearchDeleteQuestion.fillAllRequiredFields({ withUniqueID: true });
 });
 
-Then('An error message should display similar to {string}', (text) => {
+Then('An error message should display similar to {string}', (text: string) => {
     addEditSearchDeleteQuestion.errorMessageForDuplicateUniqueID(text);
 });
 
@@ -70,7 +70,7 @@ Then('User clicks the trash icon for deleting a question', () => {
     addEditSearchDeleteQuestion.clickQuestionDeleteBtn();
 });
 
-Then('A confirmation pop-up modal displays {string} and {string}', (text, text1) => {
+Then('A confirmation pop-up modal displays {string} and {string}', (text: string, text1: string) => {
     addEditSearchDeleteQuestion.checkQuestionDeleteModalText(text, text1);
 });
 
@@ -78,7 +78,7 @@ Then('User clicks Yes, delete to delete question', () => {
     addEditSearchDeleteQuestion.clickConfirmBtnToDeleteQuestion();
 });
 
-Then('A success message displays {string}', (text) => {
+Then('A success message displays {string}', (text: string) => {
     addEditSearchDeleteQuestion.displaysQuestionDeleteSuccessMessage(text);
 });
 
@@ -98,7 +98,7 @@ Then('Question already added to a page will not display in the question library'
     addEditSearchDeleteQuestion.showEmptyQuestionSearchList();
 });
 
-Then('Message {string} and {string} button will display to create a new question', (text, text1) => {
+Then('Message {string} and {string} button will display to create a new question', (text: string, text1: string) => {
     addEditSearchDeleteQuestion.showCreateNewSection(text, text1);
 });
 

@@ -46,7 +46,7 @@ class LabReportPage {
         cy.get(this.labReportLink).contains('Lab Report').click();
     }
 
-    enterReportingFacility(value) {
+    enterReportingFacility(value: any) {
         cy.get(this.reportingFacilityField).type(value);
     }
 
@@ -65,15 +65,15 @@ class LabReportPage {
         selectRandomDropdownValue(this.codedResultField);
     }
 
-    selectResultedTestByText(text) {
+    selectResultedTestByText(text: string) {
         cy.get(this.resultedTestField).select(text, { force: true });
     }
 
-    selectCodedResultByText(text) {
+    selectCodedResultByText(text: string) {
         cy.get(this.codedResultField).select(text, { force: true });
     }
 
-    enterNumericResult(value) {
+    enterNumericResult(value: any) {
         cy.get(this.numericResultField).type(value);
     }
 
@@ -81,7 +81,7 @@ class LabReportPage {
         cy.get(this.unitsField).type('%{enter}');
     }
 
-    enterTextResult(text) {
+    enterTextResult(text: string) {
         cy.get(this.textResultField).type(text);
     }
 
@@ -122,7 +122,7 @@ class LabReportPage {
 
     // Lab Report Tab - Facility and Provider Information
 
-    searchForReportingFacility(quickCode) {
+    searchForReportingFacility(quickCode: any) {
         cy.get(this.reportingFacilityField).type(quickCode);
         cy.get(this.quickCodeLookupButton).click();
     }
@@ -137,11 +137,11 @@ class LabReportPage {
         selectRandomDropdownValue(this.jurisdictionField);
     }
 
-    selectProgramAreaByText(text) {
+    selectProgramAreaByText(text: string) {
         cy.get(this.programAreaField).select(text, { force: true });
     }
 
-    selectJurisdictionByText(text) {
+    selectJurisdictionByText(text: string) {
         cy.get(this.jurisdictionField).select(text, { force: true });
     }
 
@@ -166,19 +166,19 @@ class LabReportPage {
 
     // View Lab Report screen - reuses the same field ids as the Add screen, but
     // rendered as read-only <span>s instead of inputs/selects.
-    verifyViewedReportingFacility(text) {
+    verifyViewedReportingFacility(text: string) {
         cy.get('#NBS_LAB365').should('contain.text', text);
     }
 
-    verifyViewedProgramArea(text) {
+    verifyViewedProgramArea(text: string) {
         cy.get('#INV108').should('contain.text', text);
     }
 
-    verifyViewedJurisdiction(text) {
+    verifyViewedJurisdiction(text: string) {
         cy.get('#INV107').should('contain.text', text);
     }
 
-    verifyViewedResultedTest(text) {
+    verifyViewedResultedTest(text: string) {
         // The resulted test row's span id has a row-specific numeric suffix
         // (e.g. tableNBS_LAB22079), so we match on the container's text instead.
         cy.get('#RESULTED_TEST_CONTAINER').should('contain.text', text);
@@ -197,14 +197,14 @@ class LabReportPage {
     // so they can't be changed here. Specimen Collection Date/Time is a genuine
     // editable text field on this screen and accepts the same typed mm/dd/yyyy
     // input (via the field's live input mask) as the Add screen.
-    changeSpecimenCollectionDateOnEdit(date) {
+    changeSpecimenCollectionDateOnEdit(date: string) {
         const [month, day, year] = date.split('/');
         const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
         cy.get(this.specimenCollectionDate).clear();
         cy.get(this.specimenCollectionDate).type(formattedDate);
     }
 
-    verifyViewedCollectionDate(text) {
+    verifyViewedCollectionDate(text: string) {
         cy.contains('span.label', 'Collection Date').next('span.value').should('contain.text', text);
     }
 
@@ -230,11 +230,11 @@ class LabReportPage {
             cy.log(`Directly populating fields for ${id}`);
 
             // Get the elements
-            const textbox = win.document.getElementById(id + '_textbox');
-            const codeInput = win.document.getElementById(id + 'CodeId');
-            const descriptionInput = win.document.getElementById(id + 'DescriptionId');
-            const displaySpan = win.document.getElementById(id + 'Description');
-            const selectElement = win.document.getElementById(id);
+            const textbox: any = win.document.getElementById(id + '_textbox');
+            const codeInput: any = win.document.getElementById(id + 'CodeId');
+            const descriptionInput: any = win.document.getElementById(id + 'DescriptionId');
+            const displaySpan: any = win.document.getElementById(id + 'Description');
+            const selectElement: any = win.document.getElementById(id);
 
             // Set the visible textbox value
             if (textbox) {
@@ -298,15 +298,15 @@ class LabReportPage {
         selectRandomDropdownValue(this.specimenSiteField);
     }
 
-    selectLabReportSpecimenSource(specimenSource) {
+    selectLabReportSpecimenSource(specimenSource: any) {
         this._selectFromDropdown(this.specimenSourceField, specimenSource);
     }
 
-    selectLabReportSpecimenSite(specimenSite) {
+    selectLabReportSpecimenSite(specimenSite: any) {
         this._selectFromDropdown(this.specimenSiteField, specimenSite);
     }
 
-    enterSpecimenCollectionDate(date) {
+    enterSpecimenCollectionDate(date: string = '') {
         const [month, day, year] = date.split('/');
         const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
         cy.get(this.specimenCollectionDate).type(formattedDate);
@@ -318,7 +318,7 @@ class LabReportPage {
         cy.get(this.resultedTestSearchButton).click();
     }
 
-    selectLabReportCodedResult(codedResult) {
+    selectLabReportCodedResult(codedResult: any) {
         this._selectFromDropdown(this.codedResultField, codedResult);
     }
 
@@ -338,7 +338,7 @@ class LabReportPage {
                 const newCount = parseInt(count.trim());
                 cy.log(`New lab report count: ${newCount}`);
                 // Get the initial count from the alias and verify increase by 1
-                cy.get('@labReportCount').then((initialCount) => {
+                cy.get('@labReportCount').then((initialCount: any) => {
                     expect(newCount).to.equal(initialCount + 1);
                     cy.log(`Lab report count increased from ${initialCount} to ${newCount} (expected increase of 1)`);
                 });
@@ -359,7 +359,7 @@ class LabReportPage {
     //Helper Functions
 
     // Dropdown selector
-    _selectFromDropdown(fieldSelector, value) {
+    _selectFromDropdown(fieldSelector: any, value: any) {
         cy.enterInput(fieldSelector, value + '{enter}');
     }
 }

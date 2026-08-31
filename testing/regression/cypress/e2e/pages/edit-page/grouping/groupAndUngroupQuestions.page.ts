@@ -67,7 +67,7 @@ class GroupAndUngroupQuestions {
         });
     }
 
-    clickMenuIcon(toGroup: any) {
+    clickMenuIcon(toGroup?: any) {
         if (toGroup) {
             cy.get('.subsectionOptionsWithGrouped-').eq(0).click();
         } else {
@@ -176,7 +176,7 @@ class GroupAndUngroupQuestions {
         cy.get('[data-testid="editSubsectionModalSubsectionName"]').eq(0).invoke('val').should('not.be.empty');
     }
 
-    verifySubsectionVisible(visible: boolean) {
+    verifySubsectionVisible(visible: string) {
         cy.get('[name="visible"]').eq(0).should('have.value', visible);
     }
 

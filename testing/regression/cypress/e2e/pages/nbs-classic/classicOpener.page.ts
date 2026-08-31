@@ -11,7 +11,7 @@ class ClassicOpenerPage {
     }
 
     submitNewTab() {
-        const opener = {};
+        const opener: any = {};
         opener.isUniqueElementName = this.isUniqueElementName();
         opener.submitForm = this.submitForm;
         cy.visit('/nbs/ManagePageElement.do?method=addLoad&eltType=tab');
@@ -44,10 +44,10 @@ class ClassicOpenerPage {
                                 //     .mouseout(() => Cypress.$(elt).removeClass("pageElementHover"));
                                 // }
 
-                                function handleTabHandleEvents(elt) {
+                                function handleTabHandleEvents(elt: any) {
                                     const aLink = Cypress.$(Cypress.$(elt).find('a')).get(0);
                                     Cypress.$(aLink).click((ev) => {
-                                        const href = Cypress.$(aLink).attr('href');
+                                        const href: string = Cypress.$(aLink).attr('href')!;
                                         const id = href.substring(href.lastIndexOf('/') + 1);
                                         const jQueryBodyId = 'div#' + id;
                                         ev.preventDefault();
@@ -66,12 +66,12 @@ class ClassicOpenerPage {
                                     });
                                 }
 
-                                function handleEvents(elt, eltType) {
+                                function handleEvents(elt: any, eltType: string) {
                                     if (eltType === 'tabHandle') handleTabHandleEvents(elt);
                                     // if (eltType === 'tabBody') handleTabBodyEvents(elt);
                                 }
 
-                                function getTabBody(pageElt, isActive) {
+                                function getTabBody(pageElt: any, isActive: boolean) {
                                     const tabBodyClass = isActive
                                         ? 'ui-tabs-panel nbsPageElementCssClass'
                                         : 'ui-tabs-hide nbsPageElementCssClass';
@@ -104,7 +104,7 @@ class ClassicOpenerPage {
                                     return elt;
                                 }
 
-                                function getTabHandle(pageElt, isActive) {
+                                function getTabHandle(pageElt: any, isActive: boolean) {
                                     const tabHandleClass = isActive ? 'ui-tabs-selected' : '';
                                     const html = `<li class="${tabHandleClass}">
                               <a href="${pageElt.pageElementUid}">${pageElt.elementLabel}</a>
@@ -140,7 +140,7 @@ class ClassicOpenerPage {
     }
 
     submitNewSection() {
-        const opener = {};
+        const opener: any = {};
         opener.isUniqueElementName = this.isUniqueElementName();
         opener.submitForm = this.submitForm;
         cy.visit('/nbs/ManagePageElement.do?method=addLoad&eltType=section');
@@ -152,7 +152,7 @@ class ClassicOpenerPage {
     }
 
     submitNewSubSection() {
-        const opener = {};
+        const opener: any = {};
         opener.isUniqueElementName = this.isUniqueElementName();
         opener.submitForm = this.submitForm;
         cy.visit('/nbs/ManagePageElement.do?method=addLoad&eltType=subSection');
