@@ -1,8 +1,8 @@
-const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
-const preprocessor = require('@badeball/cypress-cucumber-preprocessor');
-const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
-const fs = require('fs').promises;
-const db = require('@dankieu/cypress-sql');
+import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
+import preprocessor from '@badeball/cypress-cucumber-preprocessor';
+import * as createEsbuildPlugin from '@badeball/cypress-cucumber-preprocessor/esbuild';
+import fs from 'fs/promises';
+import * as db from '@dankieu/cypress-sql';
 import { defineConfig } from 'cypress';
 
 async function setupNodeEvents(on: any, config: any) {
