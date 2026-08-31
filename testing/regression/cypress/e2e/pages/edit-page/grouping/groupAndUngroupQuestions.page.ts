@@ -67,7 +67,7 @@ class GroupAndUngroupQuestions {
         });
     }
 
-    clickMenuIcon(toGroup) {
+    clickMenuIcon(toGroup: any) {
         if (toGroup) {
             cy.get('.subsectionOptionsWithGrouped-').eq(0).click();
         } else {
@@ -75,7 +75,7 @@ class GroupAndUngroupQuestions {
         }
     }
 
-    shouldSee(text1, text2, delay) {
+    shouldSee(text1: string, text2?: string, delay?: boolean) {
         if (delay) {
             cy.wait(4000);
         }
@@ -113,12 +113,12 @@ class GroupAndUngroupQuestions {
         cy.enterInput('[data-testid="editSubsectionModalSubsectionName"]', `Edited section name ${this.newName()}`);
     }
 
-    renameBlockName(newName) {
+    renameBlockName(newName?: string) {
         const value = newName ? newName : `BLOCKNAME${this.newName()}`;
         cy.enterInput('[data-testid="editSubsectionModalBlockName"]', value);
     }
 
-    updateDatamartValue(num) {
+    updateDatamartValue(num: number) {
         cy.enterInput('[data-testid="editSubsectionModalDataMart"]', num);
     }
 
@@ -127,12 +127,12 @@ class GroupAndUngroupQuestions {
             .eq(0)
             .invoke('val')
             .then((value) => {
-                const columnWidth = value;
+                const columnWidth: any = value;
                 cy.get('[name="batches.0.appearsInTable"]').eq(0).select('N');
                 cy.get('[name="batches.1.width"]')
                     .eq(0)
                     .invoke('val')
-                    .then((value2) => {
+                    .then((value2: any) => {
                         const updatedWidth = parseInt(value2) + parseInt(columnWidth);
                         cy.enterInput('[name="batches.1.width"]', updatedWidth);
                     });
@@ -176,7 +176,7 @@ class GroupAndUngroupQuestions {
         cy.get('[data-testid="editSubsectionModalSubsectionName"]').eq(0).invoke('val').should('not.be.empty');
     }
 
-    verifySubsectionVisible(visible) {
+    verifySubsectionVisible(visible: boolean) {
         cy.get('[name="visible"]').eq(0).should('have.value', visible);
     }
 
@@ -188,7 +188,7 @@ class GroupAndUngroupQuestions {
         cy.get('tbody[data-testid="group-questions-tbody"] tr td:last-child [data-testid="group-questions-width"]')
             .its('length')
             .then((length) => {
-                const distributeRandomly = (total, numberOfRows) => {
+                const distributeRandomly = (total: number, numberOfRows: number) => {
                     const initialCommonValue = Math.floor(total / numberOfRows);
                     const initialCommonValuesTotal = initialCommonValue * numberOfRows;
                     const leftOver = total - initialCommonValuesTotal;
@@ -196,12 +196,12 @@ class GroupAndUngroupQuestions {
                     return [initialCommonValue, lastValue];
                 };
                 const distribution = distributeRandomly(100, length);
-                cy.get('tbody[data-testid="group-questions-tbody"] tr').each(($row, rowIndex) => {
+                cy.get('tbody[data-testid="group-questions-tbody"] tr').each(($row: any, rowIndex: number) => {
                     cy.get($row).get('td:last-child [data-testid="group-questions-width"]').eq(rowIndex).clear();
                     cy.get($row)
                         .get('td:last-child [data-testid="group-questions-width"]')
                         .eq(rowIndex)
-                        .type(rowIndex === length - 1 ? distribution[1] : distribution[0]);
+                        .type(rowIndex === length - 1 ? distribution[1].toString() : distribution[0].toString());
                 });
             });
     }

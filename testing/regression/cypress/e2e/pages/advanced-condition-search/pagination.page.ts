@@ -1,6 +1,6 @@
 class PaginationPage {
-    verifyPaginationRows(rowNumbers) {
-        rowNumbers.forEach((pageNumber) => {
+    verifyPaginationRows(rowNumbers: number[]) {
+        rowNumbers.forEach((pageNumber: number) => {
             cy.get('nav ul li').eq(pageNumber).click();
         });
     }

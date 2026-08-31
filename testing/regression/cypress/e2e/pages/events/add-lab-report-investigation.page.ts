@@ -9,7 +9,7 @@ class AddLabReportInvestigation {
     notificationEligibilityField = '#NBS143';
     submitTopButton = '#SubmitTop';
 
-    selectCondition(conditionText) {
+    selectCondition(conditionText: string) {
         cy.get(this.conditionSelect).select(conditionText, { force: true });
     }
 
@@ -20,17 +20,17 @@ class AddLabReportInvestigation {
     // Select Condition form directly instead of ever opening that pop-up, mirroring
     // the same workaround already used elsewhere in this suite for other classic
     // pop-ups (e.g. searchForPatientInPopup, searchForOrderedTestInPopup).
-    selectProcessingDecisionAndSubmit(decisionCode, investigationType) {
+    selectProcessingDecisionAndSubmit(decisionCode: any, investigationType: any) {
         cy.get(this.processingDecisionField).invoke('val', decisionCode);
         cy.get(this.investigationTypeField).invoke('val', investigationType);
-        cy.window().then((win) => {
+        cy.window().then((win: any) => {
             win.document.getElementById('nedssForm').submit();
         });
     }
 
-    fillFieldFollowUpInvestigator(quickCode) {
+    fillFieldFollowUpInvestigator(quickCode: string) {
         cy.get(this.fieldFollowUpInvestigatorTextbox).invoke('val', quickCode);
-        cy.window().then((win) => {
+        cy.window().then((win: any) => {
             win.getDWRProvider('NBS161');
         });
         cy.get(this.fieldFollowUpInvestigatorSelected).should('not.have.text', '');
@@ -48,7 +48,7 @@ class AddLabReportInvestigation {
             });
     }
 
-    selectNotificationEligibility(text) {
+    selectNotificationEligibility(text: string) {
         cy.get(this.notificationEligibilityField).select(text, { force: true });
     }
 

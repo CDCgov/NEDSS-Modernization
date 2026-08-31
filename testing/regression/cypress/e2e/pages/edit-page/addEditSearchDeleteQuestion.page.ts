@@ -35,7 +35,11 @@ class AddEditSearchDeleteQuestion {
         cy.contains('Add question');
     }
 
-    fillAllRequiredFields({ withUniqueID, fieldTypeNumeric, fieldTypeDatePicker } = {}) {
+    fillAllRequiredFields({ withUniqueID, fieldTypeNumeric, fieldTypeDatePicker }: {
+        withUniqueID?: boolean;
+        fieldTypeNumeric?: boolean;
+        fieldTypeDatePicker?: boolean;
+    } = {}) {
         if (withUniqueID) {
             cy.get('#uniqueId').type('NBS104');
         }
@@ -46,7 +50,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('#description').type('new test description');
         if (fieldTypeNumeric) {
             cy.get('.fieldType-option-1').eq(0).click();
-            cy.get('#fieldLength').type(5);
+            cy.get('#fieldLength').type("5");
         } else if (fieldTypeDatePicker) {
             cy.get('.fieldType-option-3').eq(0).click();
         } else {
@@ -63,7 +67,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('.createAndDeployToPageBtn').eq(0).click();
     }
 
-    checkConfirmationMessage(text) {
+    checkConfirmationMessage(text: string) {
         cy.wait(4000);
         cy.contains(text);
     }
@@ -90,7 +94,7 @@ class AddEditSearchDeleteQuestion {
     }
 
     closeEditQuestionModal() {
-        cy.contains('Edit question').then((ele) => {
+        cy.contains('Edit question').then((ele: any) => {
             if (ele.length < 1) {
                 cy.contains('Edit question').should('not.visible');
             } else {
@@ -103,7 +107,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('.delete-btn').eq(0).click();
     }
 
-    checkQuestionDeleteModalText(text, text1) {
+    checkQuestionDeleteModalText(text: string, text1: string) {
         cy.contains(text);
         cy.contains(text1);
     }
@@ -112,7 +116,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('.questionDeleteConfirmBtn').eq(0).click();
     }
 
-    displaysQuestionDeleteSuccessMessage(text) {
+    displaysQuestionDeleteSuccessMessage(text: string) {
         cy.wait(1000);
         cy.contains(text);
     }
@@ -121,7 +125,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('.subsectionHeader');
     }
 
-    errorMessageForDuplicateUniqueID(text) {
+    errorMessageForDuplicateUniqueID(text: string) {
         cy.contains(text);
     }
 
@@ -137,7 +141,7 @@ class AddEditSearchDeleteQuestion {
         cy.contains('Showing 0 of 0');
     }
 
-    showCreateNewSection(text, text1) {
+    showCreateNewSection(text: string, text1: string) {
         cy.contains(text);
         cy.contains(text1);
     }

@@ -18,11 +18,11 @@ class RowSelectionPage {
         cy.get('#range-toggle').should('have.value', '10');
     }
 
-    updateRowsSelection(rowsSelection) {
+    updateRowsSelection(rowsSelection: string) {
         cy.get('#range-toggle').select(rowsSelection);
     }
 
-    verifyRowsSelectionUpdated(rowsSelection) {
+    verifyRowsSelectionUpdated(rowsSelection: string) {
         cy.get('#range-toggle').should('have.value', rowsSelection);
     }
 

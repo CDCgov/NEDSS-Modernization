@@ -23,12 +23,12 @@ class DeleteSectionPage {
         cy.get('.moreOptionsSection-yes').eq(0).get('.deleteSectionBtn').eq(0).click();
     }
 
-    verifyWaringMessage(title, description) {
+    verifyWaringMessage(title: string, description: string) {
         cy.contains(title);
         cy.contains(description);
     }
 
-    verifyOkayBtnShowing(text) {
+    verifyOkayBtnShowing(text: string) {
         cy.contains(text);
     }
 
@@ -50,7 +50,7 @@ class DeleteSectionPage {
         cy.get('.moreOptionsSection-no').eq(0).get('.deleteSectionBtn').eq(0).click();
     }
 
-    verifyWaringMessageWithoutSubsections(description1, description2) {
+    verifyWaringMessageWithoutSubsections(description1: string, description2: string) {
         cy.contains(description1);
         cy.contains(description2);
     }
@@ -59,7 +59,7 @@ class DeleteSectionPage {
         cy.get('.usa-modal').filter(':visible').contains('button', 'Yes, delete').click();
     }
 
-    verifyMessageSectionDeleted(text) {
+    verifyMessageSectionDeleted(text: string) {
         cy.wait(1000);
         cy.contains(text);
     }

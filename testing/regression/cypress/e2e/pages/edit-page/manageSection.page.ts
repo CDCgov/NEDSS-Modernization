@@ -19,7 +19,7 @@ class ManageSectionPage {
         cy.get('.manageSections').eq(0).click();
     }
 
-    seeElementOnManageSection(content, type) {
+    seeElementOnManageSection(content: any, type: string) {
         if (type === 'title' || type === 'heading' || type === 'button') {
             cy.contains(content);
         } else if (type === 'icon') {
@@ -43,9 +43,9 @@ class ManageSectionPage {
         cy.get('[data-testId="deleteIcon"]').eq(0).click();
     }
 
-    viewDeleteConfirmationDialogText(texts) {
+    viewDeleteConfirmationDialogText(texts: string[]) {
         texts.forEach((text) => {
-            cy.contains('Section cannot be deleted').then((ele) => {
+            cy.contains('Section cannot be deleted').then((ele: any) => {
                 if (ele.length < 1) {
                     cy.contains(text);
                 }
@@ -54,7 +54,7 @@ class ManageSectionPage {
     }
 
     clickYesDeleteBtn() {
-        cy.contains('Section cannot be deleted').then((ele) => {
+        cy.contains('Section cannot be deleted').then((ele: any) => {
             if (ele.length < 1) {
                 cy.get('.yesDelete').eq(0).click();
             }
@@ -66,8 +66,8 @@ class ManageSectionPage {
         cy.get('.warningModalHeader').should('not.exist');
     }
 
-    showDeleteConfirmationText(text) {
-        cy.contains('Section cannot be deleted').then((ele) => {
+    showDeleteConfirmationText(text: string) {
+        cy.contains('Section cannot be deleted').then((ele: any) => {
             if (ele.length < 1) {
                 cy.contains(text);
             }
@@ -78,7 +78,7 @@ class ManageSectionPage {
         cy.get('.manageSectionsCloseBtn').eq(0).click();
     }
 
-    verifyManageSectionsHeader(title) {
+    verifyManageSectionsHeader(title: string) {
         cy.contains(title);
     }
 
@@ -124,7 +124,7 @@ class ManageSectionPage {
         cy.contains('Edit section').should('not.be.visible');
     }
 
-    checkConfirmationMessageShowing(text) {
+    checkConfirmationMessageShowing(text: string) {
         cy.contains(text);
     }
 

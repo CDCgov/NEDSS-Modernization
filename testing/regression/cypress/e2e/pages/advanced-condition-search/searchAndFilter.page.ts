@@ -3,7 +3,7 @@ class SearchAndFilterPage {
         cy.get('#condition-search');
     }
 
-    enterSearchField(text) {
+    enterSearchField(text: string) {
         cy.get('#condition-search').type(text);
     }
 
@@ -11,7 +11,7 @@ class SearchAndFilterPage {
         cy.get('#searchButton').click();
     }
 
-    verifyRowsDisplaying(rows) {
+    verifyRowsDisplaying(rows: number) {
         cy.get('tbody tr').its('length').should('be.gte', rows);
     }
 

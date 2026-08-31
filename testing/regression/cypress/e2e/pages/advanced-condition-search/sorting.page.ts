@@ -3,12 +3,12 @@ class SortingPage {
         cy.get('table thead tr th button').eq(0).click();
     }
 
-    conditionsInOrder(type) {
+    conditionsInOrder(type: 'ASC' | 'DSC') {
         this.checkOrder(0, type);
     }
 
-    checkOrder(index, sortType) {
-        const list = [];
+    checkOrder(index: number, sortType: 'ASC' | 'DSC') {
+        const list: any[] = [];
         cy.get('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });
@@ -21,7 +21,7 @@ class SortingPage {
         expect(isOrdered).to.be.true;
     }
 
-    isAscending(list) {
+    isAscending(list: any[]) {
         return list.every((value, index, array) => {
             if (index === 0) {
                 return true;
@@ -30,7 +30,7 @@ class SortingPage {
         });
     }
 
-    isDescending(list) {
+    isDescending(list: any[]) {
         return list.every((value, index, array) => {
             if (index === 0) {
                 return true;

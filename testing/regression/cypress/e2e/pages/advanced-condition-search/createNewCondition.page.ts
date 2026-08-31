@@ -47,12 +47,12 @@ class CreateNewConditionPage {
             .find('option')
             .eq(1)
             .then((option) => {
-                cy.get('#templateId').select(option.attr('value'));
+                cy.get('#templateId').select(option.attr('value')!);
                 cy.get('#messageMappingGuide')
                     .find('option')
                     .eq(1)
                     .then((option) => {
-                        cy.get('#messageMappingGuide').select(option.attr('value'));
+                        cy.get('#messageMappingGuide').select(option.attr('value')!);
                     });
             });
     }
