@@ -18,7 +18,7 @@ class PatientSearchPage {
         cy.log(`Entering Valid DOB: ${validMonth}/${validDay}/${validYear}`);
         cy.enterInput('#bornOn-exact-date-month', validMonth);
         cy.enterInput('#bornOn-exact-date-day', validDay);
-        cy.enterInput('#bornOn-exact-date-year', validYear);
+        cy.enterInput('#bornOn-exact-date-year', validYear.toString());
     }
 
     /**
@@ -60,7 +60,7 @@ class PatientSearchPage {
         cy.log(`Entering Invalid DOB: ${invalidMonth}/${invalidDay}/${futureYear}`);
         cy.enterInput('#bornOn-exact-date-month', invalidMonth);
         cy.enterInput('#bornOn-exact-date-day', invalidDay);
-        cy.enterInput('#bornOn-exact-date-year', futureYear);
+        cy.enterInput('#bornOn-exact-date-year', futureYear.toString());
     }
 
     verifyErrorMessage() {

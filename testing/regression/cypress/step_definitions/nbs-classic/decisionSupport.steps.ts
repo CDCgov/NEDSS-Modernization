@@ -13,15 +13,15 @@ When('I click on Manage Alerts', () => {
     DecisionSupportPage.goToManageAlerts();
 });
 
-When('I select {string} from the "Condition" dropdown', (condition) => {
+When('I select {string} from the "Condition" dropdown', (condition: string) => {
     DecisionSupportPage.selectCondition(condition);
 });
 
-When('I select {string} from the Jurisdiction dropdown', (jurisdiction) => {
+When('I select {string} from the Jurisdiction dropdown', (jurisdiction: string) => {
     DecisionSupportPage.selectJurisdiction(jurisdiction);
 });
 
-When('I select {string} from the Public Health Event dropdown', (eventType) => {
+When('I select {string} from the Public Health Event dropdown', (eventType: string) => {
     DecisionSupportPage.selectEventType(eventType);
 });
 
@@ -29,11 +29,11 @@ When('I click the Search button', () => {
     DecisionSupportPage.clickSearchButton();
 });
 
-When('I select {string} for Severity from the dropdown', (severity) => {
+When('I select {string} for Severity from the dropdown', (severity: string) => {
     DecisionSupportPage.selectSeverity(severity);
 });
 
-When('I enter {string} in the Extended Alert Message box', (message) => {
+When('I enter {string} in the Extended Alert Message box', (message: string) => {
     DecisionSupportPage.enterExtendedAlertMessage(message);
 });
 
@@ -41,6 +41,6 @@ When('I click the Add Alert button', () => {
     DecisionSupportPage.clickAddAlertButton();
 });
 
-Then('I should see the error {string}', (expectedError) => {
+Then('I should see the error {string}', (expectedError: string) => {
     DecisionSupportPage.verifyErrorMessage(expectedError);
 });

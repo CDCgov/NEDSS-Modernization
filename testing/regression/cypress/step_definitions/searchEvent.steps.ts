@@ -1,5 +1,5 @@
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
-import { searchEventPage } from 'cypress/e2e/pages/searchEvent.page';
+import { searchEventPage } from '@pages/searchEvent.page';
 
 Then('I navigate the event investigation', () => {
     searchEventPage.clickEventInvestigation();
@@ -23,17 +23,17 @@ Then('I select program area for event laboratory report', () => {
     searchEventPage.search();
 });
 
-Then('I should see Condition Results with the link {string}', (string) => {
+Then('I should see Condition Results with the link {string}', (string: string) => {
     cy.get('a#condition').contains(string).scrollIntoView();
     cy.get('a#condition').should('be.visible');
 });
 
-Then('I should see Results with the link {string}', (string) => {
+Then('I should see Results with the link {string}', (string: string) => {
     cy.get('a#documentType').contains(string).scrollIntoView();
     cy.get('a#documentType').should('be.visible');
 });
 
-Then('I should see Results with the text {string}', (string) => {
+Then('I should see Results with the text {string}', (string: string) => {
     cy.get('div[class^=result-item_item]').contains(string).should('be.visible');
 });
 

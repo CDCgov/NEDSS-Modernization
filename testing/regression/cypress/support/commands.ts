@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+//  TODO: Address the disabling of these lint rules?
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -25,12 +28,27 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands';
 
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            selectDropdownByLabel(labelText: string, value: string, selectIndex?: number): Chainable<void>;
+            eqOrLast(index: number): Chainable<JQuery<HTMLElement>>;
+            enterInput(
+                inputSelector: string,
+                value: string,
+                index?: number,
+                options?: Object
+            ): Chainable<JQuery<HTMLElement>>;
+        }
+    }
+}
+
 Cypress.Commands.add('selectDropdownByLabel', (labelText, value, selectIndex = 0) => {
     // Get the ID string instead of holding a live element reference
     cy.findAllByLabelText(labelText)
         .eq(selectIndex)
         .invoke('attr', 'id')
-        .then((id) => {
+        .then((id: any) => {
             const escapedId = CSS.escape(id);
 
             // Check the live DOM state using the ID

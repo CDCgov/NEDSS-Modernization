@@ -1,7 +1,7 @@
 import { selectRandomDropdownValue } from './utils';
 
 class EditOrganizationPage {
-    selectEditReason(reasonValue) {
+    selectEditReason(reasonValue: any) {
         cy.get(`input[type="radio"][value="${reasonValue}"]`, { timeout: 10000 })
             .should('be.visible')
             .check({ force: true });
@@ -20,7 +20,7 @@ class EditOrganizationPage {
         // Store the generated quick code for later verification if needed
         cy.wrap(quickCode).as('generatedQuickCode');
     }
-    selectRole(roleName) {
+    selectRole(roleName: string) {
         cy.log(`Selecting role: ${roleName}`);
         cy.get('select#rolesList', { timeout: 10000 }).should('be.visible').select(roleName);
     }
@@ -54,7 +54,7 @@ class EditOrganizationPage {
         cy.log('Add Identification button clicked');
     }
 
-    addNewIdEntry(idDetails) {
+    addNewIdEntry(idDetails: any) {
         cy.log(`Adding new ID entry with Type: ${idDetails.type}, Authority: ${idDetails.authority}`);
 
         // Scroll to Identification section

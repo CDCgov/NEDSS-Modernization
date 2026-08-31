@@ -1,5 +1,5 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import PatientSearchPage from 'cypress/e2e/pages/patientSearchPage.page';
+import PatientSearchPage from '@pages/patientSearchPage.page';
 
 When('I select Exact Date for Date of Birth', () => {
     PatientSearchPage.selectExactDate();

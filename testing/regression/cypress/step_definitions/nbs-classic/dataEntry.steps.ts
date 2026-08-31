@@ -62,7 +62,7 @@ When('I select % for the Units field', () => {
     labReportPage.selectUnits();
 });
 
-When('I enter {string} in the Text Result field', (text) => {
+When('I enter {string} in the Text Result field', (text: string) => {
     labReportPage.enterTextResult(text);
 });
 
@@ -306,19 +306,19 @@ Then('the patient first name field should contain {string}', (value) => {
 
 // Row 118: Add new lab report and create investigation
 
-When('user selects {string} from the Program Area dropdown', (text) => {
+When('user selects {string} from the Program Area dropdown', (text: string) => {
     labReportPage.selectProgramAreaByText(text);
 });
 
-When('user selects {string} from the Jurisdiction dropdown', (text) => {
+When('user selects {string} from the Jurisdiction dropdown', (text: string) => {
     labReportPage.selectJurisdictionByText(text);
 });
 
-When('user selects {string} from the Resulted Test dropdown', (text) => {
+When('user selects {string} from the Resulted Test dropdown', (text: string) => {
     labReportPage.selectResultedTestByText(text);
 });
 
-When('user selects {string} from the Coded Result dropdown', (text) => {
+When('user selects {string} from the Coded Result dropdown', (text: string) => {
     labReportPage.selectCodedResultByText(text);
 });
 
@@ -334,19 +334,19 @@ When('user clicks the Delete button on the Lab Report page and confirms', () => 
     labReportPage.clickDeleteLabReportAndConfirm();
 });
 
-Then('the Lab Report view should show Reporting Facility {string}', (text) => {
+Then('the Lab Report view should show Reporting Facility {string}', (text: string) => {
     labReportPage.verifyViewedReportingFacility(text);
 });
 
-Then('the Lab Report view should show Program Area {string}', (text) => {
+Then('the Lab Report view should show Program Area {string}', (text: string) => {
     labReportPage.verifyViewedProgramArea(text);
 });
 
-Then('the Lab Report view should show Jurisdiction {string}', (text) => {
+Then('the Lab Report view should show Jurisdiction {string}', (text: string) => {
     labReportPage.verifyViewedJurisdiction(text);
 });
 
-Then('the Lab Report view should show Resulted Test {string}', (text) => {
+Then('the Lab Report view should show Resulted Test {string}', (text: string) => {
     labReportPage.verifyViewedResultedTest(text);
 });
 
@@ -365,25 +365,25 @@ When('user clicks the Submit button on the Lab Report edit page', () => {
 });
 
 Then('the Lab Report view should show the updated Specimen Collection Date', () => {
-    cy.get('@editedCollectionDate').then((today) => {
+    cy.get('@editedCollectionDate').then((today: any) => {
         const [month, day, year] = today.split('/');
         const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
         labReportPage.verifyViewedCollectionDate(formattedDate);
     });
 });
 
-When('user selects {string} as the condition for the new investigation', (conditionText) => {
+When('user selects {string} as the condition for the new investigation', (conditionText: string) => {
     addLabReportInvestigationPage.selectCondition(conditionText);
 });
 
 When(
     'user sets the processing decision to {string} for a {string} investigation and submits',
-    (decisionCode, investigationType) => {
+    (decisionCode: string, investigationType: string) => {
         addLabReportInvestigationPage.selectProcessingDecisionAndSubmit(decisionCode, investigationType);
     }
 );
 
-When('user fills the Field Follow-up investigator with Quick Code {string}', (quickCode) => {
+When('user fills the Field Follow-up investigator with Quick Code {string}', (quickCode: string) => {
     addLabReportInvestigationPage.fillFieldFollowUpInvestigator(quickCode);
 });
 
@@ -391,7 +391,7 @@ When('user sets the Field Follow-up date assigned to match the investigation sta
     addLabReportInvestigationPage.fillFieldFollowUpDateAssignedToMatchStartDate();
 });
 
-When('user selects {string} for Patient Eligible for Notification of Exposure', (text) => {
+When('user selects {string} for Patient Eligible for Notification of Exposure', (text: string) => {
     addLabReportInvestigationPage.selectNotificationEligibility(text);
 });
 

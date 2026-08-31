@@ -1,11 +1,11 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import summaryTabPage from 'cypress/e2e/pages/summaryTab.page';
+import summaryTabPage from '@pages/summaryTab.page';
 
 Then('user is able to click the Investigation Number to View Investigation page', () => {
     summaryTabPage.openFirstInvestigation();
 });
 
-Then('user clicks on Document type {string}, the View Lab Report page is displayed', (string) => {
+Then('user clicks on Document type {string}, the View Lab Report page is displayed', (string: string) => {
     summaryTabPage.openLinkInDocumentTable(string);
 });
 
@@ -13,7 +13,7 @@ Then('user is able to click the {string} link to return to Patient Profile Summa
     summaryTabPage.returnToSummary();
 });
 
-Then('user clicks the {string} link, the user is returned to Patient profile summary page', (string) => {
+Then('user clicks the {string} link, the user is returned to Patient profile summary page', (string: string) => {
     cy.contains('a', string).click();
     // cy.wait(1000);
 });
