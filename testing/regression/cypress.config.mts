@@ -5,7 +5,13 @@ import fs from 'fs/promises';
 import * as db from '@dankieu/cypress-sql';
 import { defineConfig } from 'cypress';
 
-async function setupNodeEvents(on: any, config: any) {
+function isFailedResult(
+    result: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult
+): result is CypressCommandLine.CypressFailedRunResult {
+    return (result as CypressCommandLine.CypressFailedRunResult).failures > 0;
+}
+
+async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) {
     await preprocessor.addCucumberPreprocessorPlugin(on, config);
 
     on(
@@ -14,26 +20,30 @@ async function setupNodeEvents(on: any, config: any) {
             plugins: [createEsbuildPlugin.default(config)],
         })
     );
-    on('after:run', async (results: any) => {
-        if (results) {
-            await preprocessor.afterRunHandler(config);
-            await fs.writeFile(
-                'results.json',
-                JSON.stringify(
-                    {
-                        browserName: results.browserName,
-                        browserVersion: results.browserVersion,
-                        osName: results.osName,
-                        osVersion: results.osVersion,
-                        nodeVersion: results.config.resolvedNodeVersion,
-                        cypressVersion: results.cypressVersion,
-                        startedTestsAt: results.startedTestsAt,
-                        endedTestsAt: results.endedTestsAt,
-                    },
-                    null,
-                    '\t'
-                )
-            );
+    on('after:run', async (result: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult) => {
+        if (result) {
+            if (isFailedResult(result)) {
+                console.error(`Cypress run failed with ${result.failures} failures.`);
+            } else {
+                await preprocessor.afterRunHandler(config);
+                await fs.writeFile(
+                    'results.json',
+                    JSON.stringify(
+                        {
+                            browserName: result.browserName,
+                            browserVersion: result.browserVersion,
+                            osName: result.osName,
+                            osVersion: result.osVersion,
+                            nodeVersion: result.config.resolvedNodeVersion,
+                            cypressVersion: result.cypressVersion,
+                            startedTestsAt: result.startedTestsAt,
+                            endedTestsAt: result.endedTestsAt,
+                        },
+                        null,
+                        '\t'
+                    )
+                );
+            }
         }
     });
     db.sqlServer(on); // adds cy.task("sqlServer") to query DB
