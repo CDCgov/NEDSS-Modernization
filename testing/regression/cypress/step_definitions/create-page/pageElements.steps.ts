@@ -6,7 +6,7 @@ Then('User navigates to Create New Page and views the page', () => {
     pageElementsPage.userViewsCreatePage();
 });
 
-Then('User should see the following required elements by {string} {string}', (string: string, string1: string) => {
+Then('User should see the following required elements by {string} {string}', (string: string) => {
     pageElementsPage.seeElementText(string);
 });
 
