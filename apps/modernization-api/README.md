@@ -17,8 +17,7 @@ Ensure you've completed the following steps:
 
 1. Install [Java 21](https://adoptium.net/temurin/releases?version=21&os=any&arch=any) from [Adoptium](https://adoptium.net/), as specified in the Java toolchain of our project-wide [build configuration](../../build.gradle).
    - _Once installed, [Gradle](https://gradle.org/) (the API's build tool) will automatically detect and utilize said JDK for all subsequent compilation tasks._
-2. **Node.js 22+ & NPM**
-3. Install [Docker](https://www.docker.com/) (for mssql, elasticsearch, and nifi).
+2. Install [Docker](https://www.docker.com/) (for mssql, elasticsearch, and nifi).
 
 ---
 
