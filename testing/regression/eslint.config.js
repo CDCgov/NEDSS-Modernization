@@ -1,5 +1,6 @@
-const eslintPluginCypress = require('eslint-plugin-cypress');
-const js = require('@eslint/js');
+import eslintPluginCypress from 'eslint-plugin-cypress';
+import js from '@eslint/js';
+import tsParser from '@typescript-eslint/parser';
 
 // adapted from apps/modernization-ui/eslint.config.mjs
 const baseRules = {
@@ -24,6 +25,7 @@ module.exports = [
         files: ['cypress/**/*.js', 'cypress/**/*.ts'],
         plugins: { cypress: eslintPluginCypress },
         languageOptions: {
+            parser: tsParser,
             globals: {
                 ...eslintPluginCypress.environments.globals.globals,
             },
@@ -33,5 +35,10 @@ module.exports = [
             ...cypressRules,
             'max-len': 'off',
         },
+        settings: {
+            'import/parsers': {
+                '@typescript-eslint/parser': ['.ts', '.tsx'],
+            },
+        }
     },
 ];

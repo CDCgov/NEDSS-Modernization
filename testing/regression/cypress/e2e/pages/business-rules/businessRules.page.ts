@@ -13,7 +13,7 @@ class BusinessRulesPage {
         cy.contains('Logic');
     }
 
-    displayLogics(logic) {
+    displayLogics(logic: string) {
         cy.get('.business-rules-library')
             .invoke('text')
             .then((text) => {
@@ -75,11 +75,11 @@ class BusinessRulesPage {
         cy.contains('10');
     }
 
-    selectRowsFromDisplayDropdown(selection) {
+    selectRowsFromDisplayDropdown(selection: any) {
         cy.get('#range-toggle').select(selection);
     }
 
-    checkBusinessRulesListMatchingRows(numOfRows) {
+    checkBusinessRulesListMatchingRows(numOfRows: number) {
         cy.get('table[data-testid=table]')
             .eq(0)
             .find('tbody tr')
@@ -155,7 +155,7 @@ class BusinessRulesPage {
         cy.get('[data-testid="deleteBtnEditBusinessRulesPage"]').eq(0).click();
     }
 
-    checkWarningMessage(text) {
+    checkWarningMessage(text: string) {
         cy.contains(text);
     }
 

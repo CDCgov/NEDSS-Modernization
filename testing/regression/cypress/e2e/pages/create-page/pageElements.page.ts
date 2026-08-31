@@ -12,7 +12,7 @@ class PageElementsPage {
         cy.get('#eventType').select('INV');
     }
 
-    seeElementText(text) {
+    seeElementText(text: string) {
         this.selectEventType();
         cy.contains(new RegExp(text, 'i'));
     }
@@ -45,7 +45,7 @@ class PageElementsPage {
         cy.get('#eventType').should('be.focused');
     }
 
-    eventTypeFieldHasValue(optionText) {
+    eventTypeFieldHasValue(optionText: string) {
         cy.get('#eventType').should('contain', optionText);
     }
 
@@ -68,7 +68,7 @@ class PageElementsPage {
             .find('option')
             .eq(1)
             .then((option) => {
-                cy.get('#templateId').select(option.attr('value'));
+                cy.get('#templateId').select(option.attr('value')!);
             });
     }
 
@@ -95,7 +95,7 @@ class PageElementsPage {
             .find('option')
             .eq(1)
             .then((option) => {
-                cy.get('#messageMappingGuide').select(option.attr('value'));
+                cy.get('#messageMappingGuide').select(option.attr('value')!);
             });
     }
 

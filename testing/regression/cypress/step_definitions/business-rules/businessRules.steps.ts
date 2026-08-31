@@ -13,7 +13,7 @@ Then('Logic column is populated', () => {
     businessRulesPage.checkLogicColumnPopulated();
 });
 
-Then('Logic will display possible values as {string}', (logic) => {
+Then('Logic will display possible values as {string}', (logic: string) => {
     businessRulesPage.displayLogics(logic);
 });
 
@@ -113,7 +113,7 @@ Then('User clicks the Delete button in edit business rules page', () => {
     businessRulesPage.clickDeleteEditBusinessRulesPage();
 });
 
-Then('Warning message is presented {string} and {string}', (text) => {
+Then('Warning message is presented {string} and {string}', (text: string) => {
     businessRulesPage.checkWarningMessage(text);
 });
 
