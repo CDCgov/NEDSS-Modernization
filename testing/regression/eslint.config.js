@@ -1,6 +1,7 @@
 import eslintPluginCypress from 'eslint-plugin-cypress';
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
+import { defineConfig } from 'eslint/config';
 
 // adapted from apps/modernization-ui/eslint.config.mjs
 const baseRules = {
@@ -19,7 +20,7 @@ const cypressRules = {
     'cypress/no-unnecessary-waiting': 'warn', // change to error once resolved
 };
 
-module.exports = [
+export default defineConfig([
     js.configs.recommended,
     {
         files: ['cypress/**/*.js', 'cypress/**/*.ts'],
@@ -39,6 +40,6 @@ module.exports = [
             'import/parsers': {
                 '@typescript-eslint/parser': ['.ts', '.tsx'],
             },
-        }
+        },
     },
-];
+]);
