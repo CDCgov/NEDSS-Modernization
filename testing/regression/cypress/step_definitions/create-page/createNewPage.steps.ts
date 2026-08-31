@@ -15,7 +15,7 @@ Then('User selects Event Type - Investigation', () => {
 });
 Then(
     'Additional required fields and other information displays for user selection by {string} {string}',
-    (string: string, string1: string) => {
+    (string: string) => {
         createNewPagePage.seeElementText(string);
     }
 );
