@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "paths": {
+        "@/*": ["./*.ts"],
+        "@pages/*": ["./cypress/e2e/pages/*"],
+        "@utils/*": ["./cypress/utils/*"]
+    },
+    "skipLibCheck": true,
+    "noEmit": true,
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["cypress", "node"],
+    "allowJs": true,
+    "strict": true
+  },
+  "include": ["cypress"]
+}

@@ -1,11 +1,11 @@
-const { defineConfig } = require('cypress');
 const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
 const preprocessor = require('@badeball/cypress-cucumber-preprocessor');
 const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
 const fs = require('fs').promises;
 const db = require('@dankieu/cypress-sql');
+import { defineConfig } from 'cypress';
 
-async function setupNodeEvents(on, config) {
+async function setupNodeEvents(on: any, config: any) {
     await preprocessor.addCucumberPreprocessorPlugin(on, config);
 
     on(
@@ -14,7 +14,7 @@ async function setupNodeEvents(on, config) {
             plugins: [createEsbuildPlugin.default(config)],
         })
     );
-    on('after:run', async (results) => {
+    on('after:run', async (results: any) => {
         if (results) {
             await preprocessor.afterRunHandler(config);
             await fs.writeFile(
