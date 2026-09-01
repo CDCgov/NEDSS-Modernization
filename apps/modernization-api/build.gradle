@@ -120,7 +120,7 @@ testing {
                 implementation libs.spring.test
                 implementation libs.spring.security.test
                 implementation.bundle(libs.bundles.testcontainers.elasticsearch)
-                implementation 'net.datafaker:datafaker:2.7.0'
+                implementation 'net.datafaker:datafaker:2.7.0' 
 
                 implementation libs.awaitility
 
