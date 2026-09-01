@@ -12,7 +12,7 @@ type Field = keyof DateRange;
 // format to mm/yyyy string
 const formatMonth = (n: number) => new Intl.NumberFormat('en-US', { minimumIntegerDigits: 2 }).format(n);
 const toDateString = ({ equals }: MonthYearEqualsCriteria) =>
-    equals ? `${formatMonth(equals.month ?? 0)}/${equals.year ?? 0}` : undefined;
+    equals.month || equals.year ? `${formatMonth(equals.month ?? 0)}/${equals.year ?? 0}` : null;
 const parseDateString = (dtStr: string | null): MonthYearEqualsCriteria => {
     if (!dtStr) return { equals: { month: null, year: null } };
     const parts = dtStr.split('/');

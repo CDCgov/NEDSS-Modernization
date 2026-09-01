@@ -15,7 +15,7 @@ const YearRangeFilter: BasicFilterComponent = ({ filter, value, onChange, ...rem
             value={{ between: { from: value?.[0] ?? null, to: value?.[1] ?? null } }}
             startYear={thisYear - YEARS_BACK}
             endYear={thisYear}
-            onChange={(newValue) => onChange([newValue?.between?.from, newValue?.between.to])}
+            onChange={(newValue) => onChange([newValue.between.from, newValue.between.to])}
             {...remaining}
         />
     );

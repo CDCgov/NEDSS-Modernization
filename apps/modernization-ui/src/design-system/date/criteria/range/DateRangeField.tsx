@@ -19,13 +19,8 @@ export type DateRangeFieldProps = {
 
 const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }: DateRangeFieldProps) => {
     const handleFieldOnChange = (v: string | undefined, type: string) => {
-        if (type === 'to') {
-            onChange({ between: { to: v ?? null, from: value.between.from } });
-        }
-
-        if (type === 'from') {
-            onChange({ between: { to: value.between.to, from: v ?? null } });
-        }
+        // treat empty string as null to simplify populated-ness checks
+        onChange({ between: { ...value.between, [type]: v || null } });
     };
 
     return (
@@ -42,7 +37,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
                     sizing={sizing}
                     onBlur={onBlur}
                     id={`${id}-from`}
-                    value={value?.between?.from}
+                    value={value.between.from}
                     onChange={(v) => handleFieldOnChange(v, 'from')}
                     required={required}
                 />
@@ -54,7 +49,7 @@ const DateRangeField = ({ id, value, sizing, onChange, onBlur, label, required }
                     onBlur={onBlur}
                     id={`${id}-to`}
                     minDate={value.between.from ?? undefined}
-                    value={value.between?.to}
+                    value={value.between.to}
                     onChange={(v) => handleFieldOnChange(v, 'to')}
                     required={required}
                 />

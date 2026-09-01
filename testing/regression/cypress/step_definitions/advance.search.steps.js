@@ -6,6 +6,16 @@ import patientProfilePage from 'cypress/e2e/pages/patientProfile.page';
 import { searchPage } from 'cypress/e2e/pages/search.page';
 import searchResultsPage from 'cypress/e2e/pages/search.results.page';
 
+When('I search for and open the patient file with the email {string}', (email) => {
+    cy.contains('a', 'Advanced Search').click();
+    cy.contains('button', 'Contact').click();
+    cy.get('input[for="email"]').type(email);
+    cy.contains('button', 'Search').click();
+    cy.get('button[aria-label="Sort Patient ID"]').click();
+    cy.get('button[aria-label="Sort Patient ID"]').click();
+    cy.get('a[href^="/patient/"]').first().click();
+});
+
 Then('the user has searched for a patient by {string} as {string}', (string, string2) => {
     searchPage.selectId();
     searchPage.enterIdType(string);

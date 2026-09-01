@@ -31,8 +31,8 @@ class ClassicManageValueSetsPage {
         cy.get('.multiSelect').eq(2).click();
     }
 
-    enterFilterTextValueSetLibrary() {
-        cy.get('#SearchText2').eq(0).type('NBS');
+    enterFilterTextValueSetLibrary(text) {
+        cy.get('#SearchText2').eq(0).type(text);
     }
 
     clickFilterOkBtnValueSetLibrary() {
@@ -41,6 +41,18 @@ class ClassicManageValueSetsPage {
 
     clickValueSetInValueSetList() {
         cy.get('#parent tbody tr td a').eq(0).click();
+    }
+
+    clickActiveValueSet() {
+        cy.get('._indicator_1vvtd_1', { timeout: 10000 }).should('not.exist');
+
+        cy.get('table.dtTable tbody tr').each(($row) => {
+            const status = Cypress.$($row).find('td:last-child').text().trim();
+            if (status === 'Active') {
+                cy.wrap($row).find('td:first-child a img[src="page_white_text.gif"]').click();
+                return false; // Stop iteration after clicking
+            }
+        });
     }
 
     clickCollapseSubsectionsInValueSetList() {
@@ -63,8 +75,45 @@ class ClassicManageValueSetsPage {
         cy.get('#submitCr').click();
     }
 
+    storeValueSetCount() {
+        cy.get('.singlepagebanner b')
+            .first()
+            .then(($el) => {
+                const text = $el.text();
+                cy.log('Single page banner text: ' + text);
+
+                const match = text.match(/of\s+(\d+)/);
+                if (match && match[1]) {
+                    const count = parseInt(match[1], 10);
+                    Cypress.env('valueSetCount', count);
+                    cy.log('Stored value set count: ' + count);
+                } else {
+                    throw new Error('Value set count not found in: ' + text);
+                }
+            });
+    }
+
+    verifyValueSetIncreased() {
+        const initialCount = Cypress.env('valueSetCount');
+
+        cy.get('.singlepagebanner b')
+            .first()
+            .then(($el) => {
+                const text = $el.text();
+                const match = text.match(/of\s+(\d+)/);
+                if (match && match[1]) {
+                    const newCount = parseInt(match[1], 10);
+                    cy.log('Initial: ' + initialCount + ', New: ' + newCount);
+                    expect(newCount).to.equal(initialCount + 1);
+                } else {
+                    throw new Error('Value set count not found in: ' + text);
+                }
+            });
+    }
+
     fillTheDetailsNewValueSetConcept() {
         const newName = this.newName();
+        Cypress.env('newValueSet', newName);
         cy.get('#ValLC').type(`local code ${newName}`);
         cy.get('#ValLDN').type(`display name ${newName}`);
         cy.get('#ValSDN').type(`short name ${newName}`);
@@ -89,6 +138,25 @@ class ClassicManageValueSetsPage {
         });
     }
 
+    verifyValueSetNamesContain(text) {
+        cy.get('table.dtTable tbody tr td:nth-child(5)').each(($td) => {
+            const valueSetName = $td.text().trim();
+            cy.log('Value Set Name: ' + valueSetName);
+            expect(valueSetName, 'Value Set Name should contain "' + text + '"').to.include(text);
+        });
+    }
+
+    verifyValueSetPageExpanded() {
+        cy.get('a.toggleHref').should('have.text', 'Collapse Subsections');
+        cy.get('#subsec1 tbody').should('have.attr', 'style').and('not.include', 'display: none');
+        cy.get('#subsec2 tbody').should('have.attr', 'style').and('not.include', 'display: none');
+    }
+
+    verifyValueSetPageCollapsed() {
+        cy.get('a.toggleHref').should('have.text', 'Expand Subsections');
+        cy.get('#subsec1 tbody').should('have.attr', 'style', 'display: none;');
+        cy.get('#subsec2 tbody').should('have.attr', 'style', 'display: none;');
+    }
     newName() {
         return Math.random().toString(36).substring(2, 8);
     }

@@ -327,6 +327,7 @@ class ReportSpecBuilderTest {
     assertThat(reportSpec.subsetQuery())
         .isEqualTo(
             "SELECT [col1] AS [Col 1] FROM [NBS_ODSE].[dbo].[NBS_configuration] WHERE ([col1] IN ('Value'))");
+    assertThat(reportSpec.whereLogic()).isEqualTo("([col1] IN ('Value'))");
   }
 
   @Test

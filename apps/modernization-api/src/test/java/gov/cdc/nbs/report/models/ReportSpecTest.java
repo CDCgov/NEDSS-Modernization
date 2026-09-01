@@ -20,7 +20,8 @@ class ReportSpecTest {
             null,
             "UPPER([Column Title]) ASC",
             daysValue,
-            libraryParams);
+            libraryParams,
+            "");
 
     assertThat(reportSpec.isBuiltin()).isTrue();
     assertThat(reportSpec.isExport()).isTrue();
@@ -30,5 +31,6 @@ class ReportSpecTest {
     assertThat(reportSpec.sortBy()).isEqualTo("UPPER([Column Title]) ASC");
     assertThat(reportSpec.daysValue()).isEqualTo(daysValue);
     assertThat(reportSpec.libraryParams()).isEqualTo(libraryParams);
+    assertThat(reportSpec.whereLogic()).isEmpty();
   }
 }

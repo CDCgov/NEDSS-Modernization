@@ -157,12 +157,11 @@ table.
 
 The project utilizes GraphQL through
 the [spring-boot-starter-graphql](https://docs.spring.io/spring-graphql/docs/current/reference/html/) dependency. With
-the api running an interface is available at [/graphiql](http://localhost:8080/graphiql?path=/graphql#) for testing
+the api running an interface is available at [/graphiql](http://localhost:8080/graphiql?path=/graphql#) for testing.
 
 ### Swagger
 
-A swagger page is available
-at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+The services within this system use [Swagger](https://swagger.io/) for API documentation and visualization.  When running the application locally, these docs can be found at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## ⚙️ Configuration
 

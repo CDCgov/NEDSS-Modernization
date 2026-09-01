@@ -1,17 +1,14 @@
 package gov.cdc.nbs.report;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.exc.StreamConstraintsException;
 import gov.cdc.nbs.exception.ForbiddenException;
 import gov.cdc.nbs.exception.NotFoundException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
-import java.util.UUID;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
@@ -21,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 
 class ReportExceptionHandlerTest {
@@ -110,23 +106,16 @@ class ReportExceptionHandlerTest {
 
   @Test
   void should_return_error_msg_and_status_code_for_expected_rest_client_exception() {
-    String errorId = UUID.randomUUID().toString();
-
-    ReportExceptionHandler.ErrorResponseBody errorResponseBody =
-        new ReportExceptionHandler.ErrorResponseBody("things did not work", errorId);
-
     RestClientResponseException exception =
         new RestClientResponseException(
-            "I failed", 500, "uh oh", null, errorResponseBody.toString().getBytes(), null);
-
-    exception.setBodyConvertFunction(bytes -> errorResponseBody);
+            "I failed", 500, "uh oh", null, "things did not work".getBytes(), null);
 
     ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
         handler.handleRestClientFailure(exception);
 
     assertNotNull(responseEntity.getBody());
     assertEquals("things did not work", responseEntity.getBody().message());
-    assertEquals(errorId, responseEntity.getBody().id());
+    assertNotNull(responseEntity.getBody().id());
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
   }
 
@@ -145,28 +134,15 @@ class ReportExceptionHandlerTest {
   }
 
   @Test
-  void should_return_error_msg_and_status_code_for_max_size_exceeded_exception() {
-    RestClientException exception =
-        new RestClientException("uh oh", new StreamConstraintsException("too big!"));
+  void should_return_error_msg_and_status_code_for_unexpected_exception() {
+    RuntimeException exception = new RuntimeException("I failed");
 
     ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
-        handler.handleRestClientException(exception);
-
-    assertNotNull(responseEntity.getBody());
-    assertThat(responseEntity.getBody().message())
-        .contains("Returned report exceeds maximum size allowed by NBS");
-    assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
-  }
-
-  @Test
-  void should_return_error_msg_and_status_code_for_unexpected_rest_exception() {
-    RestClientException exception = new RestClientException("uh oh", new Exception("too big!"));
-
-    ResponseEntity<ReportExceptionHandler.ErrorResponseBody> responseEntity =
-        handler.handleRestClientException(exception);
+        handler.handleUnexpectedError(exception);
 
     assertNotNull(responseEntity.getBody());
     assertEquals("Internal Server Error", responseEntity.getBody().message());
+    assertNotNull(responseEntity.getBody().id());
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
   }
 }

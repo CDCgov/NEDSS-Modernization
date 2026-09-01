@@ -123,8 +123,8 @@ Then('Click Add Investigation button on Events tab', () => {
     openInvestigationPage.clickAddInvestigationBtn();
 });
 
-Then('Select condition form the dropdown in Select Condition Page', () => {
-    openInvestigationPage.selectConditionFromDropdown();
+Then('Select {string} condition from the dropdown in Select Condition Page', (conditionName) => {
+    openInvestigationPage.selectConditionFromDropdown(conditionName);
 });
 
 Then('Click Submit button in Select Condition Page', () => {

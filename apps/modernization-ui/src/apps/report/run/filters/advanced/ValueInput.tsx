@@ -66,14 +66,10 @@ const ValueInput = (props: ValueEditorProps<ValueSetMetadata & FullField & FullO
         if (!isBetween && inputType !== 'text' && value.includes(',')) {
             handleOnChange('');
         }
-    }, [handleOnChange, operator, value, inputType]);
+    }, [handleOnChange, operator, value, inputType, isBetween]);
 
-    const handleSingleOnChange = (newValue: number | string | undefined) => {
-        if (newValue !== undefined) {
-            props.handleOnChange(newValue.toString());
-        } else {
-            props.handleOnChange('');
-        }
+    const handleSingleOnChange = (newValue: unknown) => {
+        props.handleOnChange(newValue?.toString() ?? '');
     };
 
     const handleBetweenOnChange = (incoming: DateBetweenCriteria | NumberBetweenCriteria) => {

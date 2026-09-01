@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import '@testing-library/cypress/add-commands';
 
-Cypress.Commands.add('selectDropdownByLabel', (selectIndex, labelText, value) => {
+Cypress.Commands.add('selectDropdownByLabel', (labelText, value, selectIndex = 0) => {
     // Get the ID string instead of holding a live element reference
     cy.findAllByLabelText(labelText)
         .eq(selectIndex)

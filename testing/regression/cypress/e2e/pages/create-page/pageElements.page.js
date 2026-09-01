@@ -17,31 +17,6 @@ class PageElementsPage {
         cy.contains(new RegExp(text, 'i'));
     }
 
-    clickConditionField() {
-        this.selectEventType();
-        cy.get('#conditionIds').click();
-    }
-
-    dropdownConditionsOpen() {
-        cy.get('.multi-select__control--menu-is-open').should('be.visible');
-    }
-
-    selectValueFromConditions() {
-        cy.get('#conditionIds').eq(0).click({ force: true });
-    }
-
-    conditionFieldHasValue() {
-        cy.get('#conditionIds').eq(0).click({ force: true });
-    }
-
-    clickOnConditionDropdownArrow() {
-        cy.get('#conditionIds').eq(0).click({ force: true });
-    }
-
-    dropdownConditionsClose() {
-        cy.get('.multi-select__control--menu-is-open').should('not.exist');
-    }
-
     clickPageNameField() {
         this.selectEventType();
         cy.get('#name').click();

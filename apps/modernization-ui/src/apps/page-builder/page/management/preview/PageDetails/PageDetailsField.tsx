@@ -5,8 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { Concept, Condition, PageControllerService, PageInformationChangeRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelectInput } from 'components/selection/multi';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 
 import { maxLengthRule, validPageNameRule } from '../../../../../../validation/entry';
 import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNameRule';
@@ -40,26 +39,34 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
         }
     };
 
+    const conditionOptions = conditions.map((m) => ({
+        name: m.name ?? '',
+        value: m.id,
+    }));
+
+    const mmgOptions = mmgs.map((m) => {
+        return {
+            name: m.display ?? '',
+            value: m.localCode ?? '',
+        };
+    });
+
     return (
         <>
             <Controller
                 control={form.control}
                 name="conditions"
                 render={({ field: { onChange, value, name } }) => (
-                    <MultiSelectInput
-                        onChange={onChange}
-                        value={value}
+                    <MultiSelect
+                        onChange={(values) => onChange(values.map((v) => v.value))}
+                        value={conditionOptions.filter((c) => value?.includes(c.value))}
                         name={name}
                         id={name}
                         disabled={isEnabled}
+                        orientation="vertical"
                         label="Condition(s)"
                         aria-label="select the conditions for the page"
-                        options={conditions.map((m) => {
-                            return {
-                                name: m.name ?? '',
-                                value: m.id,
-                            };
-                        })}
+                        options={conditionOptions}
                     />
                 )}
             />
@@ -91,28 +98,29 @@ export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageS
                     />
                 )}
             />
-            <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled={true} />
+            <SingleSelect
+                id="event-type"
+                label="Event type"
+                value={eventTypeOptions.find((o) => o.value === eventType)}
+                options={eventTypeOptions}
+                disabled={true}
+            />
             <Controller
                 control={form.control}
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Reporting mechanism"
                         name={name}
                         id={name}
                         aria-label="select a reporting mechanism for the page"
-                        onChange={onChange}
+                        onChange={(v) => onChange(v?.value ?? null)}
                         className="margin-bottom-10"
                         onBlur={onBlur}
                         disabled={isEnabled}
-                        defaultValue={value}
-                        options={mmgs.map((m) => {
-                            return {
-                                name: m.display ?? '',
-                                value: m.localCode ?? '',
-                            };
-                        })}
+                        value={mmgOptions.find((o) => o.value === value)}
+                        options={mmgOptions}
                         error={error?.message}
                         required={true}
                     />

@@ -1,8 +1,11 @@
+import csv
+import decimal
+import io
+from collections.abc import Generator
 from datetime import date, datetime
-from typing import Annotated, Any
+from typing import Any
 
-import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, Json, PlainSerializer
+from pydantic import BaseModel, ConfigDict, Field, Json
 
 from src.config import get_cached_config_value
 
@@ -68,44 +71,42 @@ class Table(BaseModel):
         return list(map(row_to_dict, self.data))
 
 
-def serialize_table(table: Table) -> str:
-    """Turn a Table into a CSV for returning to the user.
+def yield_table_csv(table: Table) -> Generator[str]:
+    """Turn a Table into a CSV for returning to the user."""
+    date_format = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
+    datetime_format = get_cached_config_value('REPORT_EXPORT_DATETIME_FORMAT')
 
-    Standardizes Python date and datetime instances to the provided strftime constants,
-    defaulting to:
-     - datetime: mm/dd/yyyy hh:mm:ss
-     - date: mm/dd/yyyy
-    """
+    def convert(value: Any) -> Any:
+        if type(value) is date:
+            return value.strftime(date_format)
 
-    # properly format a given value if it's a date or datetime
-    def convert_dates(val: Any) -> Any:
-        if type(val) is date:
-            csv_date_strftime = get_cached_config_value('REPORT_EXPORT_DATE_FORMAT')
-            return pd.to_datetime(val).strftime(csv_date_strftime)
-        elif type(val) is datetime:
-            csv_datetime_strftime = get_cached_config_value(
-                'REPORT_EXPORT_DATETIME_FORMAT'
-            )
-            return pd.to_datetime(val).strftime(csv_datetime_strftime)
+        if type(value) is datetime:
+            return value.strftime(datetime_format)
 
-        return val
+        if isinstance(value, (float, decimal.Decimal)):
+            return f'{value:.2f}'.rstrip('0').rstrip('.')
 
-    # update table data to have properly formatted dates and datetimes
-    data = [list(map(convert_dates, tpl)) for tpl in table.data]
+        return value
 
-    # Short cut to valid CSV - can swap out later if performance dictates
-    # or serialize to CSV at a different location
-    df = pd.DataFrame.from_records(data, columns=table.columns, coerce_float=True)
+    # only big files actually get chunked
+    chunk_size = 10000
+    output = io.StringIO(newline='')
+    writer = csv.writer(output, lineterminator='\r\n')
 
-    csv_str = df.to_csv(
-        index=False,
-        # everything left of the decimal, up to 2 decimal places, no trailing 0s
-        float_format=lambda x: f'{x:.2f}'.rstrip('0').rstrip('.'),
-        lineterminator='\r\n',
-    )
+    writer.writerow(table.columns)
 
-    # Remove trailing new line
-    return csv_str[:-2]
+    for i, row in enumerate(table.data, start=1):
+        writer.writerow(convert(value) for value in row)
+
+        if i % chunk_size == 0:
+            yield output.getvalue()
+
+            output.seek(0)
+            output.truncate(0)
+
+    # Yield whatever remains
+    if output.tell():
+        yield output.getvalue()
 
 
 # TODO: add other return types  # noqa: FIX002
@@ -114,6 +115,6 @@ class ReportResult(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    content: Annotated[Table, PlainSerializer(serialize_table)]
+    content: Table
     context_header: str | None = None
     description: str | None = None

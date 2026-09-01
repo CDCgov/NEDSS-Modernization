@@ -11,13 +11,13 @@ import {
     fetchGroupOptions,
 } from 'apps/page-builder/services/valueSetAPI';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useConfiguration } from 'configuration';
+import { SingleSelect } from 'design-system/select';
 import { useAlert } from 'libs/alert';
+import { Selectable } from 'options';
 import { logErrorToUserConsole } from 'utils/logging';
 
-import { Condition, CreateConditionRequest, ProgramArea } from '../../generated';
-import { Concept } from '../../generated/models/Concept';
+import { Condition, CreateConditionRequest } from '../../generated';
 
 import './CreateCondition.scss';
 
@@ -38,16 +38,44 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const { properties } = useConfiguration();
 
     // DropDown Options
-    const [familyOptions, setFamilyOptions] = useState([] as Concept[]);
-    const [groupOptions, setGroupOptions] = useState([] as Concept[]);
-    const [programAreaOptions, setProgramAreaOptions] = useState([] as ProgramArea[]);
-    const [systemOptions, setSystemOptions] = useState([] as Concept[]);
+    const [familyOptions, setFamilyOptions] = useState<Selectable[]>([]);
+    const [groupOptions, setGroupOptions] = useState<Selectable[]>([]);
+    const [programAreaOptions, setProgramAreaOptions] = useState<Selectable[]>([]);
+    const [systemOptions, setSystemOptions] = useState<Selectable[]>([]);
 
     useEffect(() => {
-        fetchFamilyOptions().then((response) => setFamilyOptions(response));
-        fetchGroupOptions().then((response) => setGroupOptions(response));
-        fetchProgramAreaOptions().then((response) => setProgramAreaOptions(response ?? []));
-        fetchCodingSystemOptions().then((response) => setSystemOptions(response));
+        fetchFamilyOptions().then((response) =>
+            setFamilyOptions(
+                response.map((option) => ({
+                    name: option.display,
+                    value: option.localCode,
+                }))
+            )
+        );
+        fetchGroupOptions().then((response) =>
+            setGroupOptions(
+                response.map((option) => ({
+                    name: option.display,
+                    value: option.localCode,
+                }))
+            )
+        );
+        fetchProgramAreaOptions().then((response) =>
+            setProgramAreaOptions(
+                response?.map((option) => ({
+                    name: option.display!,
+                    value: option.value!,
+                })) ?? []
+            )
+        );
+        fetchCodingSystemOptions().then((response) =>
+            setSystemOptions(
+                response.map((option) => ({
+                    name: option.preferredConceptName ?? '',
+                    value: option.localCode ?? '',
+                }))
+            )
+        );
     }, []);
 
     const onSubmit = handleSubmit(async (data) => {
@@ -125,18 +153,14 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         control={control}
                         name="codeSystemDescTxt"
                         rules={{ required: { value: true, message: 'Coding System is required' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <SelectInput
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <SingleSelect
+                                id={name}
                                 label="Coding System"
-                                defaultValue={value}
-                                onChange={onChange}
+                                value={systemOptions.find((o) => o.value === value)}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 onBlur={onBlur}
-                                options={systemOptions.map((option) => {
-                                    return {
-                                        name: option.preferredConceptName ?? '',
-                                        value: option.localCode ?? '',
-                                    };
-                                })}
+                                options={systemOptions}
                                 error={error?.message}
                                 required={true}
                             />
@@ -168,18 +192,14 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         control={control}
                         name="progAreaCd"
                         rules={{ required: { value: true, message: 'Program area required' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <SelectInput
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <SingleSelect
+                                id={name}
                                 label="Program Area"
-                                defaultValue={value}
-                                onChange={onChange}
+                                value={programAreaOptions.find((o) => o.value === value)}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 onBlur={onBlur}
-                                options={programAreaOptions.map((option) => {
-                                    return {
-                                        name: option.display!,
-                                        value: option.value!,
-                                    };
-                                })}
+                                options={programAreaOptions}
                                 error={error?.message}
                                 required={true}
                             />
@@ -188,35 +208,27 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     <Controller
                         control={control}
                         name="familyCd"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
+                        render={({ field: { onChange, value, name } }) => (
+                            <SingleSelect
+                                id={name}
                                 label="Condition family"
-                                defaultValue={value}
-                                onChange={onChange}
-                                options={familyOptions.map((option) => {
-                                    return {
-                                        name: option.display,
-                                        value: option.localCode,
-                                    };
-                                })}
+                                value={familyOptions.find((o) => o.value === value)}
+                                onChange={(v) => onChange(v?.value ?? null)}
+                                options={familyOptions}
                             />
                         )}
                     />
                     <Controller
                         control={control}
                         name="coinfectionGrpCd"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
+                        render={({ field: { onChange, value, name } }) => (
+                            <SingleSelect
+                                id={name}
                                 label="Co-infection group"
-                                defaultValue={value}
-                                onChange={onChange}
+                                value={groupOptions.find((o) => o.value === value)}
+                                onChange={(v) => onChange(v?.value ?? null)}
                                 disabled={!isStdOrHivProgramArea(formWatch.progAreaCd)}
-                                options={groupOptions.map((option) => {
-                                    return {
-                                        name: option.display,
-                                        value: option.localCode,
-                                    };
-                                })}
+                                options={groupOptions}
                             />
                         )}
                     />

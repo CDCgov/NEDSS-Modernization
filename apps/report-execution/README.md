@@ -131,6 +131,10 @@ Run the type checker with the following:
 uv run pyrefly check
 ```
 
+## STLT Resource For Writing Custom Python Libraries
+
+The [NEDSS Custom Library Example](https://github.com/CDCgov/NEDSS-Custom-Library-Example) repository has been created as documentation for STLTs who want to create custom Python libraries.  It includes library examples, instructions on how to install new libraries, and how to use the new libraries in reports.
+
 ## Additional Resources
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [uv Documentation](https://docs.astral.sh/uv/)

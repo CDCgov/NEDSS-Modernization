@@ -1,4 +1,4 @@
-import { Then } from '@badeball/cypress-cucumber-preprocessor';
+import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import classicManageValueSetsPage from '@pages/nbs-classic/manageValueSets.page';
 
 Then('Navigate to Value Set Library', () => {
@@ -7,6 +7,14 @@ Then('Navigate to Value Set Library', () => {
 
 Then('Click on Add new in Value Set Library', () => {
     classicManageValueSetsPage.clickAddNewBtn();
+});
+
+When('I store the Value Set count', () => {
+    classicManageValueSetsPage.storeValueSetCount();
+});
+
+Then('the Value Set count should increase by 1', () => {
+    classicManageValueSetsPage.verifyValueSetIncreased();
 });
 
 Then('Fill the details to create new {string} Value Set', (type) => {
@@ -21,8 +29,8 @@ Then('Click filter button in Value Set library', () => {
     classicManageValueSetsPage.clickFilterBtnValueSetLibrary();
 });
 
-Then('Enter filter text in the input in Value Set library', () => {
-    classicManageValueSetsPage.enterFilterTextValueSetLibrary();
+Then('Enter filter text {string} in the input in Value Set library', (text) => {
+    classicManageValueSetsPage.enterFilterTextValueSetLibrary(text);
 });
 
 Then('Click OK button to filter in Value Set library', () => {
@@ -31,6 +39,10 @@ Then('Click OK button to filter in Value Set library', () => {
 
 Then('Click on a Value set in Value Set library', () => {
     classicManageValueSetsPage.clickValueSetInValueSetList();
+});
+
+When('I click on an active Value set in Value Set Library', () => {
+    classicManageValueSetsPage.clickActiveValueSet();
 });
 
 Then('Click Collapse Subsections to collapse the sections in Value Set library', () => {
@@ -55,4 +67,16 @@ Then('Click submit button to create new concept in Value Set', () => {
 
 Then('Click on Make Inactive button to inactive the value set', () => {
     classicManageValueSetsPage.clickMakeInactiveInValueSet();
+});
+
+Then('Verify all value set names contain {string}', (text) => {
+    classicManageValueSetsPage.verifyValueSetNamesContain(text);
+});
+
+Then('the Value Set page should be collapsed', () => {
+    classicManageValueSetsPage.verifyValueSetPageCollapsed();
+});
+
+Then('the Value Set page should be expanded', () => {
+    classicManageValueSetsPage.verifyValueSetPageExpanded();
 });

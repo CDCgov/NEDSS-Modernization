@@ -38,6 +38,14 @@ class ClassicProviderSearchPage {
         cy.get('input[name="quickCodeIdDT.rootExtensionTxt"]').eq(0).type(newName);
     }
 
+    enterLastName(text) {
+        cy.get('input[id="providerSearch.lastName"]').type(text);
+    }
+
+    enterFirstName(text) {
+        cy.get('input[id="providerSearch.firstName"]').type(text);
+    }
+
     clickSubmitBtnOnProvider() {
         cy.get('input[name="Submit"][id="Submit"]').eq(0).click();
     }
@@ -57,8 +65,30 @@ class ClassicProviderSearchPage {
     clickEditProviderAddName() {
         cy.get('select[id="provider.nmPrefix"]').select('Brother', { force: true });
         cy.get('input[name="provider.nmPrefix_textbox"]').type('Brother', { force: true });
-        cy.get('input[id="provider.firstNm"]').type('TestFirstName');
+        cy.enterInput('input[id="provider.firstNm"]', 'TestFirstName');
         cy.get('input[name="Submit"][id="Submit"]').eq(0).click();
+    }
+
+    verifyProviderNameInSearchResults(lastName, firstName) {
+        let found = false;
+
+        // eslint-disable-next-line cypress/unsafe-to-chain-command
+        cy.get('table#searchResultsTable tbody tr')
+            .each(($row) => {
+                // Full Name is in the 2nd column (index 1)
+                const fullNameText = Cypress.$($row).find('td:nth-child(2)').text().trim();
+
+                // Check if both firstName and lastName appear in the full name
+                if (fullNameText.includes(firstName) && fullNameText.includes(lastName)) {
+                    found = true;
+                    cy.log('Found provider: ' + fullNameText);
+                    return false; // Stop iteration
+                }
+            })
+            .then(() => {
+                expect(found, 'Provider "' + firstName + ' ' + lastName + '" should appear in search results').to.be
+                    .true;
+            });
     }
 }
 

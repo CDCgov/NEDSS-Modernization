@@ -1,15 +1,17 @@
+import { useMemo } from 'react';
+
 import { ErrorMessage, Label, Textarea } from '@trussworks/react-uswds';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
+import { Selectable } from 'options';
 import { maxLengthRule } from 'validation/entry';
 
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 
-type SelectOption = { name: string; value: string };
-const textDisplayOptions: SelectOption[] = [
+const textDisplayOptions: Selectable[] = [
     {
         value: '1008',
         name: 'User entered text, number or date',
@@ -32,7 +34,7 @@ const textDisplayOptions: SelectOption[] = [
     },
 ];
 
-const dateOrNumericDisplayOptions: SelectOption[] = [
+const dateOrNumericDisplayOptions: Selectable[] = [
     {
         value: '1008',
         name: 'User entered text, number or date',
@@ -47,7 +49,7 @@ const dateOrNumericDisplayOptions: SelectOption[] = [
     },
 ];
 
-const codedDisplayOptions: SelectOption[] = [
+const codedDisplayOptions: Selectable[] = [
     {
         value: '1007',
         name: 'Single-Select (Drop down)',
@@ -85,7 +87,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const questionType = useWatch({ control: form.control, name: 'questionType', exact: true });
 
-    const getDisplayTypeOptions = (): SelectOption[] => {
+    const displayTypeOptions: Selectable[] = useMemo(() => {
         switch (questionType) {
             case 'CODED':
                 return codedDisplayOptions;
@@ -97,7 +99,7 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
             default:
                 return [];
         }
-    };
+    }, [questionType]);
 
     return (
         <>
@@ -151,18 +153,19 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
                 control={form.control}
                 name="displayControl"
                 rules={{ required: { value: !published, message: 'Display Type required' } }}
-                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                    <SelectInput
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    <SingleSelect
+                        id={name}
                         label="Display Type"
                         data-testid="displayType"
                         required={!published}
-                        defaultValue={value}
-                        onChange={(e) => {
-                            onChange(e);
+                        value={displayTypeOptions.find((o) => o.value === String(value))}
+                        onChange={(v) => {
+                            onChange(v ? parseInt(v.value) : null);
                             onBlur();
                         }}
                         error={error?.message}
-                        options={getDisplayTypeOptions()}
+                        options={displayTypeOptions}
                         disabled={published}
                     />
                 )}

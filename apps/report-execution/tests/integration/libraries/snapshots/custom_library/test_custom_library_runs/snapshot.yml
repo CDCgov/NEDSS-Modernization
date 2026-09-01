@@ -1,0 +1,6 @@
+"statistic,filter_operator_uid,filter_operator_code,filter_operator_desc,status_cd,status_time\r\
+  \ncount,11,11,11,11,11\r\nunique,nan,11,11,1,nan\r\ntop,nan,EQ,Equals,A,nan\r\n\
+  freq,nan,1,1,11,nan\r\nmean,6,nan,nan,nan,2007-11-16 08:10:04.900000\r\nmin,1,nan,nan,nan,2007-11-16\
+  \ 08:10:04.900000\r\n25%,3.5,nan,nan,nan,2007-11-16 08:10:04.900000\r\n50%,6,nan,nan,nan,2007-11-16\
+  \ 08:10:04.900000\r\n75%,8.5,nan,nan,nan,2007-11-16 08:10:04.900000\r\nmax,11,nan,nan,nan,2007-11-16\
+  \ 08:10:04.900000\r\nstd,3.32,nan,nan,nan,nan\r\n"

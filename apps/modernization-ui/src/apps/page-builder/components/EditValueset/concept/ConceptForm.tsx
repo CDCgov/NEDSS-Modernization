@@ -5,9 +5,9 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { CreateConceptRequest } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { DatePickerInput } from 'design-system/date';
+import { SingleSelect } from 'design-system/select';
 import { isAfter } from 'validation/date/isAfter';
 import { maxLengthRule } from 'validation/entry';
 
@@ -116,14 +116,15 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         rules={{
                             required: { value: true, message: 'Effective from time is required' },
                         }}
-                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                defaultValue={value}
+                                id={name}
+                                value={value}
                                 label="Effective from time"
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 required={true}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />
@@ -131,13 +132,14 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         control={form.control}
                         name="effectiveToTime"
                         rules={{ validate: isAfter(effectiveFrom) }}
-                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                defaultValue={value}
+                                id={name}
+                                value={value}
                                 label="Effective to time"
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />
@@ -272,12 +274,12 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     name="codeSystem"
                     rules={{ required: { value: true, message: 'Code system name is required' } }}
                     render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
-                        <SelectInput
+                        <SingleSelect
                             className={styles.wideInput}
                             label="Code system name"
-                            defaultValue={value}
-                            onChange={(e) => {
-                                onChange(e);
+                            value={codeSystems.find((o) => o.value === value)}
+                            onChange={(v) => {
+                                onChange(v?.value ?? null);
                                 onBlur();
                             }}
                             onBlur={onBlur}

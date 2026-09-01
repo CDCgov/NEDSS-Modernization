@@ -1,7 +1,7 @@
 import logging
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from . import errors, models
 from .execute_report import execute_report
@@ -29,7 +29,22 @@ async def health_check():
 @app.post('/report/execute')
 def execute_report_api(report_spec: models.ReportSpec):
     """Primary api route for report execution."""
-    return execute_report(report_spec)
+    result = execute_report(report_spec)
+    headers = {
+        'Content-Disposition': 'attachment; filename="out.csv"',
+    }
+    if result.description is not None:
+        # Headers can't have new lines, we serialize them as %n, then undo in the ui
+        headers['X-Report-Description'] = result.description.strip().replace('\n', '%n')
+
+    if result.context_header is not None:
+        headers['X-Report-Context-Header'] = result.context_header
+
+    return StreamingResponse(
+        models.yield_table_csv(result.content),
+        media_type='text/csv',
+        headers=headers,
+    )
 
 
 # ======= ERROR MAPPING ========

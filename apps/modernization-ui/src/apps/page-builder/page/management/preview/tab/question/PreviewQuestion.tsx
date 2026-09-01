@@ -5,7 +5,7 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
 import { Selectable } from 'options';
 
@@ -57,11 +57,12 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     displayComponent === 1027 ||
                     displayComponent === 1028 ||
                     displayComponent === 1031) && (
-                    <SelectInput
+                    <SingleSelect
+                        id="dropdown-input"
+                        label={name}
                         onChange={() => {}}
-                        defaultValue=""
+                        value={null}
                         options={conceptState}
-                        data-testid="dropdown-input"
                         disabled={!question.enabled}
                     />
                 )}

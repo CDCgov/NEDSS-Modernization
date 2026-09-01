@@ -131,12 +131,8 @@ class OpenInvestigationPage {
         cy.get('input[name="Add"]').eq(0).click();
     }
 
-    selectConditionFromDropdown() {
-        cy.get('img[name="ccd_button"]').eq(0).click();
-        cy.wait(1000);
-        cy.get('#ccd').select(1, { force: true });
-        cy.get('input[name="ccd_textbox"]').eq(0).click();
-        cy.get('#ccd').select(1, { force: true });
+    selectConditionFromDropdown(conditionName) {
+        cy.get('input[name="ccd_textbox"]').type(conditionName);
     }
 
     clickSubmitBtnInSelectConditionPage() {

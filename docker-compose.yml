@@ -63,6 +63,8 @@ services:
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_PROFILES_ACTIVE=default,development,local
+    ports:
+      - "8095:8095"
 
   nbs-gateway:
     build:

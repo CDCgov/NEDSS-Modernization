@@ -9,10 +9,36 @@ class UtilityFunctions {
     }
 
     generateRandomSSN() {
-        return Array(9)
+        return this.generateRandomLengthNumber(9);
+    }
+
+    generateRandomLengthNumber(length) {
+        return Array(length)
             .fill()
             .map(() => faker.number.int(9))
             .join('');
+    }
+
+    generateRandomFillerNumber() {
+        return `${this.generateRandomLengthNumber(11)}${this.getRandomLetter()}`;
+    }
+
+    generateRandomHL7IDNumber() {
+        const randomLetter = this.getRandomLetter();
+        return `${randomLetter}${randomLetter}${this.generateRandomLengthNumber(6)}`;
+    }
+
+    generateRandomBirthDate() {
+        const randomBirthDate = faker.date.birthdate({ min: 0, max: 99, mode: 'age' });
+        const year = randomBirthDate.getFullYear();
+        const month = String(randomBirthDate.getMonth() + 1).padStart(2, '0');
+        const day = String(randomBirthDate.getDate()).padStart(2, '0');
+
+        return {
+            year,
+            month,
+            day,
+        };
     }
 
     generateTimestamp() {
@@ -29,16 +55,15 @@ class UtilityFunctions {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    generateRandomLastName() {
-        let randomLastName =
+    generateRandomName() {
+        const randomName =
             faker.person.lastName().toLowerCase() +
             this.getRandomLetter() +
             this.getRandomLetter() +
             this.getRandomLetter() +
             this.getRandomLetter() +
             this.getRandomLetter();
-        randomLastName = this.capitalizeFirstLetter(randomLastName).replace(/[^0-9a-z]/gi, '');
-        return randomLastName;
+        return this.capitalizeFirstLetter(randomName).replace(/[^0-9a-z]/gi, '');
     }
 
     formatSSN(ssn) {

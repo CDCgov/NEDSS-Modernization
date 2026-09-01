@@ -4,6 +4,11 @@ When('I navigate to {string} path', (url) => {
     cy.visit(url);
 });
 
+// use for NBS 6 input buttons
+When('I click the {string} input button', (inputName) => {
+    cy.get(`input[name="${inputName}"]`).first().click();
+});
+
 When('I click on the {string} link', (name) => {
     cy.contains('a', name).click();
 });
@@ -95,4 +100,8 @@ Then('I should not see the {string} {string}', (label, role) => {
 
 Then('I should see {string} radio selected in the {string} field', (name, label) => {
     cy.findByRole('radiogroup', { name: label }).findByRole('radio', { name }).should('be.checked');
+});
+
+Then('I should see a green success message containing text {string}', (text) => {
+    cy.get('div[class="infoBox success"]').should('contain.text', text);
 });

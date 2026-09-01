@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - release-*
     paths:
       - "apps/nbs-gateway/**"
       - "gradle/libs.versions.toml"

@@ -4,7 +4,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { CreateTextQuestionRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { Option } from 'generated';
 import { maxLengthRule } from 'validation/entry';
 
@@ -45,14 +45,14 @@ export const TextFields = ({ maskOptions, editing = false, published = false }: 
                 name="mask"
                 rules={{ required: { value: !editing, message: 'Mask is required' } }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Mask"
-                        onChange={(e) => {
-                            onChange(e);
+                        onChange={(v) => {
+                            onChange(v?.value ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={textMaskOptions.find((o) => o.value === value)}
                         options={textMaskOptions}
                         error={error?.message}
                         name={name}

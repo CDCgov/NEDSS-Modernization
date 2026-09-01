@@ -5,9 +5,6 @@ import { MonthYearRangeFieldProps } from '../criteria/range/MonthYearRangeField'
 
 type MonthYearPickerRangeProps = FieldProps & MonthYearRangeFieldProps;
 
-/**
- * @return {JSX.Element}
- */
 const MonthYearPickerRange = ({
     id,
     orientation,
@@ -16,7 +13,6 @@ const MonthYearPickerRange = ({
     helperText,
     required,
     error,
-    value,
     ...remaining
 }: MonthYearPickerRangeProps) => {
     return (
@@ -29,14 +25,7 @@ const MonthYearPickerRange = ({
             required={required}
             error={error}
         >
-            <MonthYearRangeField
-                id={id}
-                label={label}
-                value={value}
-                sizing={sizing}
-                required={required}
-                {...remaining}
-            />
+            <MonthYearRangeField id={id} label={label} sizing={sizing} required={required} {...remaining} />
         </Field>
     );
 };

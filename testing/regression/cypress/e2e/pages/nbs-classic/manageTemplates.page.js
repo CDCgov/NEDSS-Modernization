@@ -16,15 +16,15 @@ class ClassicManageTemplatePage {
     }
 
     clickFilterIconTemplateLibrary() {
-        cy.get('.multiSelect').eq(1).click();
+        cy.get('.multiSelect').eq(0).click();
     }
 
-    enterFilterTextInFilterInbox() {
-        cy.get('#SearchText2').eq(0).type('template');
+    enterFilterTextInTemplateNameFilterInbox(text) {
+        cy.get('#SearchText1').eq(0).type(text);
     }
 
     clickOKbtnTemplateLibrary() {
-        cy.get('#b1SearchText2').eq(0).click();
+        cy.get('#b2SearchText1').eq(0).click();
     }
 
     clickTemplateInTemplateList() {
@@ -37,6 +37,13 @@ class ClassicManageTemplatePage {
 
     verifyRulesListedInResultsPage() {
         cy.contains('Rules');
+    }
+
+    checkTemplateNamesContain(text) {
+        cy.get('table.dtTable tbody tr td:nth-child(2)').each(($td) => {
+            const templateName = $td.text().trim();
+            expect(templateName, 'Template Name should contain "' + text + '"').to.include(text);
+        });
     }
 }
 export default new ClassicManageTemplatePage();

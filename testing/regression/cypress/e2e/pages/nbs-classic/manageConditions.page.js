@@ -1,4 +1,6 @@
 class ClassicManageConditionsPage {
+    returnToConditionLibrary = '#manageLink';
+
     navigateToConditionsLibrary() {
         cy.contains('System Management').click();
 
@@ -11,10 +13,15 @@ class ClassicManageConditionsPage {
         cy.get('#submitCr').click();
     }
 
+    clickReturnToConditionLibrary() {
+        cy.get(this.returnToConditionLibrary).click();
+    }
+
     fillTheDetailsCondition() {
         const newName = this.newName();
         cy.get('#cCodeFld').type(`code ${newName}`);
         cy.get('#condFld').type(`Name ${newName}`);
+        Cypress.env('conditionName', `Name ${newName}`);
         cy.get('input[name="pAreaFld_textbox"]').type('ARBO');
     }
 

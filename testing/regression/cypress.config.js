@@ -3,6 +3,7 @@ const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
 const preprocessor = require('@badeball/cypress-cucumber-preprocessor');
 const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
 const fs = require('fs').promises;
+const db = require('@dankieu/cypress-sql');
 
 async function setupNodeEvents(on, config) {
     await preprocessor.addCucumberPreprocessorPlugin(on, config);
@@ -35,6 +36,7 @@ async function setupNodeEvents(on, config) {
             );
         }
     });
+    db.sqlServer(on); // adds cy.task("sqlServer") to query DB
     return config;
 }
 

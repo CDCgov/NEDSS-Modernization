@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { DatePickerInput } from 'design-system/date';
 import { isBefore } from 'validation/date';
 
 import { FilterEntry } from './FilterEntry';
@@ -31,14 +31,14 @@ const DataRangeEntryForm = () => {
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        defaultValue={value}
+                        id={name}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
                         label="From"
-                        disableFutureDates={true}
                         required={!before}
-                        errorMessage={error?.message}
+                        error={error?.message}
                     />
                 )}
             />
@@ -54,14 +54,14 @@ const DataRangeEntryForm = () => {
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        defaultValue={value}
+                        id={name}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
                         label="To"
-                        disableFutureDates={true}
                         required={!after}
-                        errorMessage={error?.message}
+                        error={error?.message}
                     />
                 )}
             />

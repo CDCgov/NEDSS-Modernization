@@ -32,7 +32,7 @@ on:
       - "build.gradle"
       - "settings.gradle"
       - "gradle/**"
-      - ".github/workflows/sonar.yaml"
+      - ".github/workflows/**"
 env:
   deployment_env: dev
   passed_github_token: ${{secrets.PASSED_GITHUB_TOKEN}}

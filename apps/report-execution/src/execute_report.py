@@ -5,7 +5,7 @@ from pydantic import ValidationError
 
 from . import errors, models, utils
 from .config import load_report_configurations
-from .db_transaction import check_row_limits, db_transaction
+from .db_transaction import db_transaction, get_row_limit
 
 
 def execute_report(report_spec: models.ReportSpec) -> models.ReportResult:
@@ -53,7 +53,10 @@ def check_valid_result(report_result: typing.Any, report_spec: models.ReportSpec
         raise errors.InvalidResultError(report_spec.library_name) from e
 
     num_rows = len(result.content.data)
-    check_row_limits(num_rows, report_spec.is_export)
+    row_limit_int = get_row_limit(report_spec.is_export)
+
+    if num_rows > row_limit_int:
+        raise errors.ResultTooBigError(report_spec.is_export, row_limit_int, num_rows)
 
     return None
 

@@ -1,8 +1,8 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { SearchCriteria } from 'apps/search/criteria';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
+import { DatePickerInput } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
@@ -161,15 +161,16 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
+                                id={name}
                                 disabled={!watch.eventDate?.type}
-                                defaultValue={value}
+                                value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
                                 label="From"
                                 sizing={sizing}
                                 required={true}
                                 name={name}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />
@@ -183,15 +184,16 @@ const GeneralSearchFields = ({ sizing = 'medium' }: EntryFieldsProps) => {
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
+                                id={name}
                                 disabled={!watch.eventDate?.type}
-                                defaultValue={value}
+                                value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 name={name}
                                 label="To"
                                 sizing={sizing}
                                 required={true}
-                                errorMessage={error?.message}
+                                error={error?.message}
                             />
                         )}
                     />

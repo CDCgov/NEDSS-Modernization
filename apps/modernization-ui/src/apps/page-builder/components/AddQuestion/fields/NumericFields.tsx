@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { Label, Radio } from '@trussworks/react-uswds';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { CreateNumericQuestionRequest, ValueSetControllerService } from 'apps/page-builder/generated';
+import { CreateNumericQuestionRequest, ValueSetControllerService, ValueSetOption } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
-import { Selectable, SelectInput } from 'components/FormInputs/SelectInput';
+import { SingleSelect } from 'design-system/select';
 import { Option } from 'generated';
 import { maxLengthRule } from 'validation/entry';
 
@@ -17,6 +17,12 @@ type Props = {
     editing?: boolean;
     published?: boolean;
 };
+
+const UNIT_TYPE_OPTIONS = [
+    { value: 'literal', name: 'Literal value' },
+    { value: 'coded', name: 'Coded value' },
+];
+
 export const NumericFields = ({ maskOptions, editing = false, published = false }: Props) => {
     const form = useFormContext<CreateNumericQuestionRequest & AdditionalQuestionFields>();
     const [mask, relatedUnits, unitType] = useWatch({
@@ -26,7 +32,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
     });
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
     const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(unitType !== undefined && unitType !== '');
-    const [valueSets, setValueSets] = useState<Selectable[]>([]);
+    const [valueSets, setValueSets] = useState<ValueSetOption[]>([]);
 
     useEffect(() => {
         ValueSetControllerService.findValueSetOptions().then((response) => setValueSets(response));
@@ -71,14 +77,14 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                 name="mask"
                 rules={{ required: { value: !published, message: 'Mask is required' } }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Mask"
-                        onChange={(e) => {
-                            onChange(e);
+                        onChange={(v) => {
+                            onChange(v?.value ?? null);
                             onBlur();
                         }}
                         onBlur={onBlur}
-                        defaultValue={value}
+                        value={numericMaskOptions.find((o) => o.value === value)}
                         options={numericMaskOptions}
                         error={error?.message}
                         name={name}
@@ -208,18 +214,15 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                         name="unitType"
                         rules={{ required: { value: !published, message: 'Unit type is required' } }}
                         render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                            <SelectInput
+                            <SingleSelect
                                 label="Units type"
-                                onChange={(e) => {
-                                    onChange(e);
+                                onChange={(v) => {
+                                    onChange(v?.value ?? null);
                                     onBlur();
                                 }}
                                 onBlur={onBlur}
-                                defaultValue={value}
-                                options={[
-                                    { value: 'literal', name: 'Literal value' },
-                                    { value: 'coded', name: 'Coded value' },
-                                ]}
+                                value={UNIT_TYPE_OPTIONS.find((o) => o.value === value)}
+                                options={UNIT_TYPE_OPTIONS}
                                 name={name}
                                 id={name}
                                 error={error?.message}
@@ -262,14 +265,14 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
                                 ...maxLengthRule(50),
                             }}
                             render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
-                                <SelectInput
+                                <SingleSelect
                                     label="Related units value set"
-                                    onChange={(e) => {
-                                        onChange(e);
+                                    onChange={(v) => {
+                                        onChange(valueSets.find((vs) => vs.value === v?.value)?.id ?? null);
                                         onBlur();
                                     }}
                                     onBlur={onBlur}
-                                    defaultValue={value}
+                                    value={valueSets.find((vs) => vs.id === value)}
                                     options={valueSets}
                                     error={error?.message}
                                     name={name}

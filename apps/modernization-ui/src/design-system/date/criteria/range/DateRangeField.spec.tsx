@@ -122,4 +122,28 @@ describe('DateRangeField Component', () => {
 
         expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: '02/01/2023' }) });
     });
+
+    it('should call from input change handler with null when the date is cleared', async () => {
+        const mockOnChange = vi.fn();
+        const { getByRole } = render(
+            <DateRangeField
+                id="testing-date-range-to-change"
+                value={{
+                    between: {
+                        from: '02/17/1990',
+                        to: '2',
+                    },
+                }}
+                onChange={mockOnChange}
+            />
+        );
+
+        const to = getByRole('textbox', { name: 'To' });
+
+        const user = userEvent.setup();
+
+        await user.clear(to).then(() => user.type(to, '{backspace}{tab}'));
+
+        expect(mockOnChange).toHaveBeenCalledWith({ between: expect.objectContaining({ to: null }) });
+    });
 });

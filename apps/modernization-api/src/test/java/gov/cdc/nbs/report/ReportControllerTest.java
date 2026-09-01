@@ -1,10 +1,17 @@
 package gov.cdc.nbs.report;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
@@ -23,20 +30,26 @@ import gov.cdc.nbs.report.models.AdvancedQuery;
 import gov.cdc.nbs.report.models.BasicFilterConfiguration;
 import gov.cdc.nbs.report.models.BasicFilterRequest;
 import gov.cdc.nbs.report.models.Library;
-import gov.cdc.nbs.report.models.LibraryExecutionResult;
 import gov.cdc.nbs.report.models.ReportColumn;
 import gov.cdc.nbs.report.models.ReportConfiguration;
 import gov.cdc.nbs.report.models.ReportDataSource;
 import gov.cdc.nbs.report.models.ReportExecutionRequest;
-import gov.cdc.nbs.report.models.ReportExecutionResult;
+import gov.cdc.nbs.report.models.ReportSpec;
 import gov.cdc.nbs.report.models.SaveAsReportRequest;
 import gov.cdc.nbs.repository.ReportRepository;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -44,13 +57,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.client.RestClient;
 
 @ExtendWith(MockitoExtension.class)
 class ReportControllerTest {
+  @Spy private Clock clock = Clock.fixed(Instant.ofEpochMilli(1000000), ZoneId.systemDefault());
 
   @Mock private ReportService service;
   @Mock private ReportFetcher reportFetcher;
@@ -627,10 +644,50 @@ class ReportControllerTest {
 
   @Nested
   class ExportReport {
+    private final HttpServletResponse response = mock(HttpServletResponse.class);
+    private final HttpHeaders responseHeaders = new HttpHeaders();
+
+    private final RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse
+        reportExecHttpResponse =
+            mock(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse.class);
+
+    @SneakyThrows
+    @BeforeEach
+    void setUp() {
+      ServletOutputStream mockServletOutputStream = mock(ServletOutputStream.class);
+      when(response.getOutputStream()).thenReturn(mockServletOutputStream);
+      when(response.getHeader(anyString()))
+          .thenAnswer(invocation -> responseHeaders.getFirst(invocation.getArgument(0)));
+      doAnswer(
+              invocation -> {
+                responseHeaders.add(invocation.getArgument(0), invocation.getArgument(1));
+                return null;
+              })
+          .when(response)
+          .setHeader(anyString(), anyString());
+
+      HttpHeaders reportExecHeaders = mock(HttpHeaders.class);
+
+      when(reportExecHttpResponse.getHeaders()).thenReturn(reportExecHeaders);
+      when(reportExecHttpResponse.getBody())
+          .thenReturn(new ByteArrayInputStream("LOOK IM A REPORT".getBytes()));
+
+      lenient()
+          .when(reportExecHeaders.getFirst("X-Report-Context-Header"))
+          .thenReturn("a test context header");
+      lenient()
+          .when(reportExecHeaders.getFirst("X-Report-Description"))
+          .thenReturn("just a nice lil description");
+    }
+
+    @SneakyThrows
     @Test
     void exportReport_should_return_executed_report() {
       long reportUid = 1L;
       long dataSourceUid = 2L;
+
+      ReportSpec reportSpec = mock(ReportSpec.class);
+      when(reportSpec.whereLogic()).thenReturn("lots of logic".repeat(1000));
 
       AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
@@ -651,11 +708,36 @@ class ReportControllerTest {
               List.of(basicFilter),
               advancedFilter);
 
-      when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
+      doAnswer(
+              invocation -> {
+                BiConsumer<RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse, ReportSpec>
+                    responseHandler = invocation.getArgument(1);
+                responseHandler.accept(reportExecHttpResponse, reportSpec);
+                return null;
+              })
+          .when(reportExecutionClient)
+          .executeReport(eq(request), any());
 
-      ResponseEntity<ReportExecutionResult> response = controller.exportReport(request, user);
-      assertEquals(getReportExecutionResponse(), response.getBody());
-      assertEquals(HttpStatus.OK, response.getStatusCode());
+      controller.exportReport(request, user, response);
+
+      verify(response).getOutputStream();
+
+      assertNotNull(response.getHeader("X-Report-Context-Header"));
+      assertNotNull(response.getHeader("X-Report-Description"));
+      assertNotNull(response.getHeader("X-Report-Timestamp"));
+      assertNotNull(response.getHeader("X-Report-Query"));
+
+      assertEquals(
+          response.getHeader("X-Report-Context-Header"),
+          reportExecHttpResponse.getHeaders().getFirst("X-Report-Context-Header"));
+      assertEquals(
+          response.getHeader("X-Report-Description"),
+          reportExecHttpResponse.getHeaders().getFirst("X-Report-Description"));
+
+      assertEquals(response.getHeader("X-Report-Timestamp"), LocalDateTime.now(clock).toString());
+      assertThat(response.getHeader("X-Report-Query")).endsWith(" ... <truncated>");
+      assertThat(response.getHeader("X-Report-Query"))
+          .startsWith(reportSpec.whereLogic().subSequence(0, 1000));
     }
 
     @Test
@@ -674,9 +756,11 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(reportExecutionClient.executeReport(request)).thenThrow(new NotFoundException(errorMsg));
+      doThrow(new NotFoundException(errorMsg))
+          .when(reportExecutionClient)
+          .executeReport(eq(request), any());
 
-      assertThatThrownBy(() -> controller.exportReport(request, user))
+      assertThatThrownBy(() -> controller.exportReport(request, user, response))
           .isInstanceOf(NotFoundException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -697,10 +781,11 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(reportExecutionClient.executeReport(request))
-          .thenThrow(new NotImplementedException(errorMsg));
+      doThrow(new NotImplementedException(errorMsg))
+          .when(reportExecutionClient)
+          .executeReport(eq(request), any());
 
-      assertThatThrownBy(() -> controller.exportReport(request, user))
+      assertThatThrownBy(() -> controller.exportReport(request, user, response))
           .isInstanceOf(NotImplementedException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -721,9 +806,11 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      when(reportExecutionClient.executeReport(request)).thenThrow(new RuntimeException(errorMsg));
+      doThrow(new RuntimeException(errorMsg))
+          .when(reportExecutionClient)
+          .executeReport(eq(request), any());
 
-      assertThatThrownBy(() -> controller.exportReport(request, user))
+      assertThatThrownBy(() -> controller.exportReport(request, user, response))
           .isInstanceOf(RuntimeException.class)
           .hasMessageContaining(errorMsg);
     }
@@ -743,7 +830,7 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      assertThatThrownBy(() -> controller.exportReport(request, user))
+      assertThatThrownBy(() -> controller.exportReport(request, user, response))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("isExport must be true when exporting a report");
     }
@@ -751,10 +838,51 @@ class ReportControllerTest {
 
   @Nested
   class RunReport {
+    private final HttpServletResponse response = mock(HttpServletResponse.class);
+    private final HttpHeaders responseHeaders = new HttpHeaders();
+
+    private final RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse
+        reportExecHttpResponse =
+            mock(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse.class);
+
+    @SneakyThrows
+    @BeforeEach
+    void setUp() {
+      ServletOutputStream mockServletOutputStream = mock(ServletOutputStream.class);
+      when(response.getOutputStream()).thenReturn(mockServletOutputStream);
+      when(response.getHeader(anyString()))
+          .thenAnswer(invocation -> responseHeaders.getFirst(invocation.getArgument(0)));
+
+      doAnswer(
+              invocation -> {
+                responseHeaders.add(invocation.getArgument(0), invocation.getArgument(1));
+                return null;
+              })
+          .when(response)
+          .setHeader(anyString(), anyString());
+
+      HttpHeaders reportExecHeaders = mock(HttpHeaders.class);
+
+      when(reportExecHttpResponse.getHeaders()).thenReturn(reportExecHeaders);
+      when(reportExecHttpResponse.getBody())
+          .thenReturn(new ByteArrayInputStream("LOOK IM A REPORT".getBytes()));
+
+      lenient()
+          .when(reportExecHeaders.getFirst("X-Report-Context-Header"))
+          .thenReturn("a test context header");
+      lenient()
+          .when(reportExecHeaders.getFirst("X-Report-Description"))
+          .thenReturn("just a nice lil description");
+    }
+
+    @SneakyThrows
     @Test
     void runReport_should_return_executed_report() {
       long reportUid = 1L;
       long dataSourceUid = 2L;
+
+      ReportSpec reportSpec = mock(ReportSpec.class);
+      when(reportSpec.whereLogic()).thenReturn("lots of logic".repeat(1000));
 
       AdvancedQuery.Rule rule1 = new AdvancedQuery.Rule("123-123-123", 27L, "EQ", "47");
       AdvancedQuery.Rule rule2 = new AdvancedQuery.Rule("124-124-124", 31L, "EQ", "35001");
@@ -773,11 +901,34 @@ class ReportControllerTest {
               List.of(),
               advancedFilter);
 
-      when(reportExecutionClient.executeReport(request)).thenReturn(getReportExecutionResponse());
+      doAnswer(
+              invocation -> {
+                BiConsumer<RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse, ReportSpec>
+                    responseHandler = invocation.getArgument(1);
+                responseHandler.accept(reportExecHttpResponse, reportSpec);
+                return null;
+              })
+          .when(reportExecutionClient)
+          .executeReport(eq(request), any());
 
-      ResponseEntity<ReportExecutionResult> response = controller.runReport(request, user);
-      assertEquals(getReportExecutionResponse(), response.getBody());
-      assertEquals(HttpStatus.OK, response.getStatusCode());
+      controller.runReport(request, user, response);
+
+      assertNotNull(response.getHeader("X-Report-Context-Header"));
+      assertNotNull(response.getHeader("X-Report-Description"));
+      assertNotNull(response.getHeader("X-Report-Timestamp"));
+      assertNotNull(response.getHeader("X-Report-Query"));
+
+      assertEquals(
+          response.getHeader("X-Report-Context-Header"),
+          reportExecHttpResponse.getHeaders().getFirst("X-Report-Context-Header"));
+      assertEquals(
+          response.getHeader("X-Report-Description"),
+          reportExecHttpResponse.getHeaders().getFirst("X-Report-Description"));
+
+      assertEquals(response.getHeader("X-Report-Timestamp"), LocalDateTime.now(clock).toString());
+      assertThat(response.getHeader("X-Report-Query")).endsWith(" ... <truncated>");
+      assertThat(response.getHeader("X-Report-Query"))
+          .startsWith(reportSpec.whereLogic().subSequence(0, 1000));
     }
 
     @Test
@@ -795,19 +946,9 @@ class ReportControllerTest {
               List.of(new BasicFilterRequest(10066724L, List.of("35001"), false)),
               null);
 
-      assertThatThrownBy(() -> controller.runReport(request, user))
+      assertThatThrownBy(() -> controller.runReport(request, user, response))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("isExport must be false when running a report");
     }
-  }
-
-  private ReportExecutionResult getReportExecutionResponse() {
-    return new ReportExecutionResult(
-        new LibraryExecutionResult(
-            "report_uid,data_source_uid,add_reason_cd,add_time,add_user_uid,desc_txt,effective_from_time,effective_to_time,report_title,report_type_codestatus_time",
-            "result context header",
-            "result description"),
-        "SELECT * FROM [NBS_ODSE].[dbo].[PHCDemographic]",
-        LocalDateTime.of(2025, Month.MAY, 5, 12, 23));
   }
 }

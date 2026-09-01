@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { MultiSelectAutocomplete } from 'components/selection/multi';
+import { AutocompleteMulti } from 'design-system/autocomplete';
 import { ValueProperty } from 'filters/properties';
 import { Selectable } from 'options';
 
@@ -26,16 +26,17 @@ const ExactValueEntryForm = ({ property }: ExactValueEntryFormProps) => {
                 required: { value: true, message: 'At least one value is required.' },
             }}
             render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
-                <MultiSelectAutocomplete
+                <AutocompleteMulti
                     label="Value"
                     name={name}
                     id={name}
-                    options={property.all}
-                    complete={property.complete}
+                    options={property.all ?? []}
+                    resolver={property.complete ?? (() => Promise.resolve([]))}
                     onBlur={onBlur}
                     onChange={onChange}
                     error={error?.message}
                     asValue={asFilterValue}
+                    orientation="vertical"
                 />
             )}
         />

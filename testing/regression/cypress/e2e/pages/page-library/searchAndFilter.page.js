@@ -55,15 +55,15 @@ class SearchAndFilterPage {
     }
 
     selectColumn(columnName) {
-        cy.get('#select-column').select(this.getColumnValueByName(columnName), { force: true });
+        cy.selectDropdownByLabel('Select a field', this.getColumnValueByName(columnName));
     }
 
     selectOperator(operatorValue) {
-        cy.get('#select-operator').select(operatorValue);
+        cy.selectDropdownByLabel('Operator', operatorValue);
     }
 
     enterValue(value) {
-        cy.get('#value').type(value);
+        cy.findByLabelText('Value').type(value);
     }
 
     clickDone() {
@@ -80,8 +80,9 @@ class SearchAndFilterPage {
 
     enterTextInMultiInputValue(value) {
         cy.get('.multi-select__input').type(value);
-        cy.get('.multi-select__option--is-focused').click();
-        cy.get('.multi-select__input-container').click();
+        cy.get('.multi-select__option--is-focused').should('be.visible');
+        cy.press(Cypress.Keyboard.Keys.TAB);
+        cy.get('.multi-select__input').type('{esc}');
     }
 
     showingContainedResults(text, columnName) {
@@ -101,7 +102,7 @@ class SearchAndFilterPage {
     }
 
     get openInvestigationTable() {
-        cy.wait(1500);
+        cy.wait(500);
         return cy.get(this.table).eq(0);
     }
 }

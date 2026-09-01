@@ -27,9 +27,9 @@ class CreateNewConditionPage {
 
     completeCreateNewConditionForm() {
         const newStr = Math.random().toString(36).substring(2, 8);
-        cy.get('[data-testid="conditionName"]').type('Condition' + newStr);
-        cy.get('[data-testid="textInput"]').eq(2).type(newStr);
-        cy.get('[data-testid="dropdown"]').eq(3).select('ARBO');
+        cy.findByLabelText('Condition Name').type('NewConditionName' + newStr);
+        cy.findByLabelText('Condition Code').type(newStr);
+        cy.findByLabelText('Program Area').select('ARBO');
     }
 
     clickCreateAndAddToPageBtn() {

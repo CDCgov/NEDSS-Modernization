@@ -57,8 +57,8 @@ Then('Verify user navigated to Reports page', () => {
     classicHomePage.verifyReportsPageDisplayed();
 });
 
-Then('Create and run a report', () => {
-    classicHomePage.createRunReports();
+Then('I can run a SAS report', () => {
+    classicHomePage.runSASCA01Report();
 });
 
 Then('Verify Documents Requiring Security Assignment', () => {
