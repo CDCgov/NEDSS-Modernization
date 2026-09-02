@@ -17,7 +17,7 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     on(
         'file:preprocessor',
         createBundler({
-            plugins: [createEsbuildPlugin.default(config)],
+            plugins: [createEsbuildPlugin(config)],
         })
     );
     on('after:run', async (result: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult) => {
