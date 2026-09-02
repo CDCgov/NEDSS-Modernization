@@ -50,7 +50,7 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     return config;
 }
 
-module.exports = defineConfig({
+export default defineConfig({
     e2e: {
         setupNodeEvents,
         specPattern: './cypress/**/**/*.feature',
