@@ -3,6 +3,13 @@
 An entry point for an NBS 6.X Application that allows a Strangler Fig approach to piecemeal modernization to various
 services.
 
+## Prerequisites
+
+Ensure you've completed the following steps:
+
+1. Install [Java 21](https://adoptium.net/temurin/releases?version=21&os=any&arch=any) from [Adoptium](https://adoptium.net/), as specified in the Java toolchain of our project-wide [build configuration](../../build.gradle).
+   - _Once installed, [Gradle](https://gradle.org/) (the API's build tool) will automatically detect and utilize said JDK for all subsequent compilation tasks._
+
 ## Running
 
 The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It requires

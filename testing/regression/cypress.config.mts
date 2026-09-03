@@ -1,6 +1,6 @@
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 import preprocessor from '@badeball/cypress-cucumber-preprocessor';
-import * as createEsbuildPlugin from '@badeball/cypress-cucumber-preprocessor/esbuild';
+import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esbuild';
 import fs from 'fs/promises';
 import * as db from '@dankieu/cypress-sql';
 import { defineConfig } from 'cypress';
@@ -17,7 +17,7 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     on(
         'file:preprocessor',
         createBundler({
-            plugins: [createEsbuildPlugin.default(config)],
+            plugins: [createEsbuildPlugin(config)],
         })
     );
     on('after:run', async (result: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult) => {
