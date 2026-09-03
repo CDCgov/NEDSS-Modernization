@@ -1,6 +1,6 @@
 import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
-import PatientProfilePage from 'cypress/e2e/pages/patientProfile.page';
-import eventsTabPage from 'cypress/e2e/pages/eventsTab.page';
+import PatientProfilePage from '@pages/patientProfile.page';
+import eventsTabPage from '@pages/eventsTab.page';
 
 Then('I explor the patient profile', () => {
     PatientProfilePage.navigatePatinet();

@@ -1,6 +1,6 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import classicSearchPatientPage from 'cypress/e2e/pages/patient-extended-form/patient.page';
-import NameEntryPage from 'cypress/e2e/pages/patient-extended-form/patient-extended.page';
+import classicSearchPatientPage from '@pages/patient-extended-form/patient.page';
+import NameEntryPage from '@pages/patient-extended-form/patient-extended.page';
 
 Then('Navigate to classic Patient Search pane', () => {
     classicSearchPatientPage.navigateToClassicPatientSearchPane();
