@@ -190,9 +190,7 @@ public class PatientSearchCriteria {
   }
 
   public List<RecordStatus> adjustedStatus() {
-    return adjustedStatus == null
-        ? List.copyOf(this.recordStatus)
-        : List.copyOf(this.adjustedStatus);
+    return List.copyOf(adjustedStatus == null ? this.recordStatus : this.adjustedStatus);
   }
 
   public PatientSearchCriteria adjustStatuses(final Collection<RecordStatus> statuses) {

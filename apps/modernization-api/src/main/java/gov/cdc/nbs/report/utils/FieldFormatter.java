@@ -77,7 +77,7 @@ public class FieldFormatter {
       } else {
         // Year only: yyyy
         java.time.Year y = java.time.Year.parse(date, DateTimeFormatter.ofPattern("yyyy"));
-        return isStart ? y.atDay(1) : y.atDay(y.length());
+        return y.atDay(isStart ? 1 : y.length());
         // y.length() returns 365 or 366, effectively giving Dec 31st
       }
     } catch (DateTimeParseException e) {
