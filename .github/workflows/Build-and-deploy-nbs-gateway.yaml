@@ -19,7 +19,7 @@ jobs:
       microservice_name: nbs7-nbs-gateway
       dockerfile_relative_path: -f ./apps/nbs-gateway/Dockerfile .
       environment_classifier: SNAPSHOT
-      java_version: "17"
+      java_version: "21"
     secrets:
       NBS_ACCOUNTID: ${{secrets.NBS_ACCOUNTID}}
       HARBOR_ROBOT_USERNAME: ${{secrets.HARBOR_ROBOT_USERNAME}}
