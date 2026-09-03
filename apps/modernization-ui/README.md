@@ -1,11 +1,17 @@
 # NBS Modernization Frontend
 
+## Prerequisites
+
+Ensure you've completed the following steps:
+
+1. Install [Node](https://nodejs.org/en/download) v22, as specified in the `engines` section of the project's [package.json](./package.json).
+
 ## Running
 
 1. From the `apps/modernization-ui` directory, execute
 
     ```bash
-    npm install
+    npm ci
     ```
 
 1. Make sure the `modernization-api` is running, either via the gradle `modernization-api:bootRun` task, or via a container
