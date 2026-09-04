@@ -1,0 +1,71 @@
+class PaginationPage {
+    checkForDefaultRows() {
+        cy.get('#range-toggle').should('have.value', '10');
+    }
+
+    get table() {
+        return 'table[data-testid=table]';
+    }
+
+    selectNumberOfRows(numberOfRows: string) {
+        cy.get('#range-toggle').select(numberOfRows);
+        cy.get('#range-toggle').should('have.value', numberOfRows);
+    }
+
+    checkDisplayingNumberOfRowsSubsequently(rowsPerPage: number, onlyOnNext: boolean, pageNumber: number) {
+        this.totalRowsCountFromDOM().then((totalRowsCount) => {
+            const totalPages = Math.ceil(totalRowsCount / rowsPerPage);
+            const lastPageRowsCount = totalRowsCount % rowsPerPage || rowsPerPage;
+            const arrayMapFun = (_: any, i: number) => (i === totalPages - 1 ? lastPageRowsCount : rowsPerPage);
+            const rowsCountPerPage = Array.from({ length: totalPages }, arrayMapFun);
+
+            if (onlyOnNext) {
+                this.openInvestigationTable.find('tbody tr').should('have.length', rowsCountPerPage[pageNumber - 1]);
+            } else {
+                rowsCountPerPage.forEach((countPerPage, i) => {
+                    if (i !== 0) {
+                        this.clickNextPage();
+                    }
+                    this.openInvestigationTable.find('tbody tr').should('have.length', countPerPage);
+                });
+            }
+        });
+    }
+
+    clickNextPage() {
+        cy.get('.usa-pagination__next-page').click();
+    }
+
+    get openInvestigationTable() {
+        cy.wait(1500);
+        return cy.get(this.table).eq(0);
+    }
+
+    totalRowsCountFromDOM() {
+        return cy
+            .get('#totalRowCount')
+            .invoke('text')
+            .then((text) => {
+                return parseInt(text, 10);
+            });
+    }
+
+    navigateToCreatePage() {
+        cy.visit('/page-builder/pages/add');
+    }
+    clickByPageNumber(pageNumber: number) {
+        if (pageNumber) {
+            cy.get('.usa-pagination__button')
+                .eq(pageNumber - 1)
+                .click();
+        } else {
+            cy.get('.usa-pagination__button').each((button, index) => {
+                if (index !== 0) {
+                    cy.wrap(button).click();
+                }
+            });
+        }
+    }
+}
+
+export const pageLibraryPaginationPage = new PaginationPage();

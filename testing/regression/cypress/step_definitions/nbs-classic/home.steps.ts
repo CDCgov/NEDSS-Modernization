@@ -1,0 +1,74 @@
+import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import classicHomePage from '@pages/nbs-classic/home.page';
+
+When('I import ELR documents', () => {
+    classicHomePage.runELRImporter();
+});
+
+Then('Navigate to Patient Search pane', () => {
+    classicHomePage.navigateToPatientSearchPane();
+});
+
+Then('Verify Add Lab Report page displayed', () => {
+    classicHomePage.verifyAddLabReport();
+});
+
+Then('Click each of the following {string}', (queueName: string) => {
+    classicHomePage.clickDefaultQueue(queueName);
+});
+
+Then('Create two users with same firstname and last name', () => {
+    classicHomePage.createTwoPatients();
+});
+
+Then('Click on Merge Patients tab on upper left side', () => {
+    classicHomePage.clickMergePatientTab();
+});
+
+Then('Click on Manual Search tab', () => {
+    classicHomePage.clickOnManualSearch();
+});
+
+Then('Verify user navigated to Find Patient page', () => {
+    classicHomePage.verifyFindPatientPage();
+});
+
+Then('Search user to manual merge', () => {
+    classicHomePage.searchUser();
+});
+
+Then('Select users and merge', () => {
+    classicHomePage.selectUsersToMerge();
+});
+
+Then('Click on System Identified tab', () => {
+    classicHomePage.clickSystemIdentifiedTab();
+});
+
+Then('Verify Merge Candidate List is displayed to user', () => {
+    classicHomePage.verifyMergeCandidateListDisplayed();
+});
+
+Then('Click on Reports tab on upper left side', () => {
+    classicHomePage.clickReportsTab();
+});
+
+Then('Verify user navigated to Reports page', () => {
+    classicHomePage.verifyReportsPageDisplayed();
+});
+
+Then('I can run a SAS report', () => {
+    classicHomePage.runSASCA01Report();
+});
+
+Then('Verify Documents Requiring Security Assignment', () => {
+    classicHomePage.verifyDocumentsRequiringSecurityAssignment();
+});
+
+Then('Verify Documents Requiring Review', () => {
+    classicHomePage.verifyDocumentsRequiringReview();
+});
+
+Then('Verify Open Investigations', () => {
+    classicHomePage.verifyOpenInvestigations();
+});
