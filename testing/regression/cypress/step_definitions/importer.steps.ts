@@ -1,6 +1,6 @@
 import { When } from '@badeball/cypress-cucumber-preprocessor';
 import { getInsertELRQuery } from '@utils/queries';
-import dbConfig from '@/db.config';
+import dbConfig from '../../db.config';
 
 /**
  * Generates and imports a unique ELR

@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "paths": {
-            "@/*": ["./*.ts"],
             "@pages/*": ["./cypress/e2e/pages/*"],
             "@utils/*": ["./cypress/utils/*"]
         },
