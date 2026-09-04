@@ -52,9 +52,9 @@ public class ReportSpecBuilder {
     ReportColumn sortColumn = findMatchingColumn(sortBy.columnUid());
 
     String targetColumn =
-        "STRING".equals(sortColumn.sourceTypeCode())
-            ? String.format("UPPER([%s])", sortColumn.title())
-            : String.format("[%s]", sortColumn.title());
+        String.format(
+            "STRING".equals(sortColumn.sourceTypeCode()) ? "UPPER([%s])" : "[%s]",
+            sortColumn.title());
 
     return String.format("%s %s", targetColumn, sortBy.direction().name());
   }

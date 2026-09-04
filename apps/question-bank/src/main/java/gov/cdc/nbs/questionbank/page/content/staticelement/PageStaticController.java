@@ -93,9 +93,8 @@ public class PageStaticController {
   @DeleteMapping("/delete-static-element")
   public DeleteStaticResponse deleteStaticElement(
       @PathVariable("page") Long pageId, @RequestBody DeleteElementRequest request) {
-    return pageStaticDeletor.deleteStaticElement(pageId, request)
-        ? new DeleteStaticResponse("delete success")
-        : new DeleteStaticResponse("delete fail");
+    return new DeleteStaticResponse(
+        pageStaticDeletor.deleteStaticElement(pageId, request) ? "delete success" : "delete fail");
   }
 
   @PutMapping("/{id}/hyperlink")
