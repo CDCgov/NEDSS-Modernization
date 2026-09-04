@@ -34,19 +34,19 @@ Then('I add invstigation - Anaplasma phagocytophilum of patient', () => {
     PatientProfilePage.addPatientInvestigations_AnaplasmaPhagocytophilum();
 });
 
-When('user clicks on the {string} button within the Events tab', (buttonValue) => {
+When('user clicks on the {string} button within the Events tab', (buttonValue: string) => {
     eventsTabPage.clickAddButton(buttonValue);
 });
 
-When('I check the current count of {string} in the Events tab', (reportType) => {
+When('I check the current count of {string} in the Events tab', (reportType: string) => {
     eventsTabPage.getReportCount(reportType);
 });
 
-Then('the {string} count should increase by 1 in the Events tab', (reportType) => {
+Then('the {string} count should increase by 1 in the Events tab', (reportType: string) => {
     eventsTabPage.verifyReportCountIncreased(reportType);
 });
 
-Then('the {string} count should remain the same in the Events tab', (reportType) => {
+Then('the {string} count should remain the same in the Events tab', (reportType: string) => {
     eventsTabPage.verifyReportCountUnchanged(reportType);
 });
 
@@ -62,7 +62,7 @@ Then('the treatment count should increase by 1 in the stored morbidity report', 
     eventsTabPage.verifyTreatmentCountIncreased();
 });
 
-Then('the saved morbidity report should have jurisdiction {string}', (expectedJurisdiction) => {
+Then('the saved morbidity report should have jurisdiction {string}', (expectedJurisdiction: string) => {
     eventsTabPage.verifySavedMorbidityReportJurisdiction(expectedJurisdiction);
 });
 
@@ -86,7 +86,7 @@ Then('the stored morbidity report ID should not appear in the Morbidity Reports 
     eventsTabPage.verifyMorbidityEventIdNotInMorbidityReports();
 });
 
-When('I click entry {int} under the {string} section', (entryNumber, sectionName) => {
+When('I click entry {int} under the {string} section', (entryNumber: number, sectionName: string) => {
     cy.get('h2')
         .contains(sectionName)
         .closest('section')
@@ -98,7 +98,7 @@ When('I click entry {int} under the {string} section', (entryNumber, sectionName
 
 Then(
     'I check the investigation associated with entry {int} under the {string} section contains {string}',
-    (entryNumber, sectionName, association) => {
+    (entryNumber: number, sectionName: string, association: string) => {
         cy.get('h2')
             .contains(sectionName)
             .closest('section')
@@ -112,7 +112,7 @@ Then(
 
 Then(
     'I check the column {string} for entry {int} under the {string} section contains {string}',
-    (columnName, entryNumber, sectionName, text) => {
+    (columnName: string, entryNumber: number, sectionName: string, text: string) => {
         const columnNameToIndexMapping = {
             'Associated with': 5,
             'Program area': 6,
@@ -129,25 +129,28 @@ Then(
     }
 );
 
-Then('I check the {string} section contains an entry with {string}', (sectionName, condition) => {
+Then('I check the {string} section contains an entry with {string}', (sectionName: string, condition: string) => {
     cy.contains('h2', sectionName).closest('section').should('contain.text', condition);
 });
 
-When('I {string} entry {int} under the {string} section with the investigation', (action, entryNumber, sectionName) => {
-    cy.get('th')
-        .contains(sectionName)
-        .closest('table')
-        .find('table.dtTable tbody tr')
-        .eq(entryNumber - 1)
-        .find('td')
-        .first() // checkbox
-        .find('input')
-        .then(($input) => {
-            if (action === 'associate') {
-                cy.wrap($input).check();
-            } else {
-                cy.wrap($input).uncheck();
-            }
-        });
-    cy.get('#Submit').first().click();
-});
+When(
+    'I {string} entry {int} under the {string} section with the investigation',
+    (action: string, entryNumber: number, sectionName: string) => {
+        cy.get('th')
+            .contains(sectionName)
+            .closest('table')
+            .find('table.dtTable tbody tr')
+            .eq(entryNumber - 1)
+            .find('td')
+            .first() // checkbox
+            .find('input')
+            .then(($input) => {
+                if (action === 'associate') {
+                    cy.wrap($input).check();
+                } else {
+                    cy.wrap($input).uncheck();
+                }
+            });
+        cy.get('#Submit').first().click();
+    }
+);

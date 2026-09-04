@@ -18,18 +18,18 @@ Then('user clicks the {string} link, the user is returned to Patient profile sum
     // cy.wait(1000);
 });
 
-When('the User sorts Open Investigations by {string} {string}', (column, string2) => {
+When('the User sorts Open Investigations by {string} {string}', (column: string, string2: string) => {
     summaryTabPage.sort(column, string2);
 });
 
-Then('Open Investigations are sorted by {string} {string}', (column, sortedBy) => {
+Then('Open Investigations are sorted by {string} {string}', (column: string, sortedBy: string) => {
     summaryTabPage.checkIfSorted(column, sortedBy);
 });
 
-When('the User sorts Documents requiring review by {string} {string}', (column, string2) => {
+When('the User sorts Documents requiring review by {string} {string}', (column: string, string2: string) => {
     summaryTabPage.documentTablesort(column, string2);
 });
 
-Then('Documents requiring review are sorted by {string} {string}', (column, sortedBy) => {
+Then('Documents requiring review are sorted by {string} {string}', (column: string, sortedBy: string) => {
     summaryTabPage.documentTableCheckIfSorted(column, sortedBy);
 });

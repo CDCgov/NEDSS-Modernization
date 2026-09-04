@@ -6,7 +6,7 @@ Then('Navigate to classic Patient Search pane', () => {
     classicSearchPatientPage.navigateToClassicPatientSearchPane();
 });
 
-Then('Enter Last Name in input text field {string}', (text) => {
+Then('Enter Last Name in input text field {string}', (text: string) => {
     classicSearchPatientPage.enterLastNameInClassicSearchPatientPage(text);
 });
 
@@ -85,7 +85,7 @@ Then('the system should display an error message indicating that the field is re
 When('I leave the Type field empty', () => {});
 
 Then('I have filled out Address input fields', () => {
-    classicSearchPatientPage.fillExtendedAddressFormDetails();
+    classicSearchPatientPage.fillExtendedAddressFormDetails('');
 });
 
 Then('I have not filled out all Address input fields', () => {
@@ -126,15 +126,15 @@ Then('I add type and use for phone', () => {
     classicSearchPatientPage.typeValidPhoneNumber();
 });
 
-Then('Select section {string} with id {string} option {string}', (text, text1, text2) => {
+Then('Select section {string} with id {string} option {string}', (text: string, text1: string, text2: string) => {
     classicSearchPatientPage.selectSectionField(text, text1, text2);
 });
 
-Then('Type section {string} with id {string} with text {string}', (text, text1, text2) => {
+Then('Type section {string} with id {string} with text {string}', (text: string, text1: string, text2: string) => {
     classicSearchPatientPage.typeInputSectionField(text, text1, text2);
 });
 
-Then('Error section {string} with error {string}', (text, text1) => {
+Then('Error section {string} with error {string}', (text: string, text1: string) => {
     classicSearchPatientPage.errorSectionField(text, text1);
 });
 
@@ -218,7 +218,7 @@ Then('I select Starts with for Last Name', () => {
     classicSearchPatientPage.startsWithForLastName();
 });
 
-Then('I enter a partial Last Name {string}', (name) => {
+Then('I enter a partial Last Name {string}', (name: string) => {
     classicSearchPatientPage.enterLastNameInModernizedSearchPatientPage(name);
 });
 
@@ -238,11 +238,11 @@ Then('the system should return patients whose Last Name contains the entered val
     classicSearchPatientPage.patientListEnteredValue();
 });
 
-When('I select input id {string} with type {string}', (id, type) => {
+When('I select input id {string} with type {string}', (id: string, type: string) => {
     classicSearchPatientPage.selectSearchNameType(id, type);
 });
 
-Then('I fill input id {string} with text {string}', (id, text) => {
+Then('I fill input id {string} with text {string}', (id: string, text: string) => {
     // Wait for URL to contain 'search/patients'
     cy.url().should('include', 'search/patients');
 
@@ -250,7 +250,7 @@ Then('I fill input id {string} with text {string}', (id, text) => {
     classicSearchPatientPage.fillIdInputWithText(id, text);
 });
 
-Then('Verify text {string} in Search Result data type {string}', (text, type) => {
+Then('Verify text {string} in Search Result data type {string}', (text: string, type: string) => {
     classicSearchPatientPage.findSearchResultByDataItemType(text, type);
 });
 

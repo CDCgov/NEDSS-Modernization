@@ -79,7 +79,7 @@ When('the user clicks on Open Investigations under My Queues', () => {
     openInvestigationPage.openInvestigationsQueue();
 });
 
-When('the user searches for the Investigation ID {string}', (investigationId) => {
+When('the user searches for the Investigation ID {string}', (investigationId: string) => {
     openInvestigationPage.searchForInvestigation(investigationId);
 });
 
@@ -99,7 +99,7 @@ When('the user clicks on the Edit button', () => {
     openInvestigationPage.clickEditButton();
 });
 
-When('the user enters {string} into the Treatment Comments field', (comment) => {
+When('the user enters {string} into the Treatment Comments field', (comment: string) => {
     openInvestigationPage.enterTreatmentComments(comment);
 });
 
@@ -107,7 +107,7 @@ When('the user clicks the Submit button', () => {
     openInvestigationPage.clickSubmitButton();
 });
 
-Then('the Treatment Comment is updated with the text {string}', (expectedComment) => {
+Then('the Treatment Comment is updated with the text {string}', (expectedComment: string) => {
     openInvestigationPage.verifyUpdatedComment(expectedComment);
 });
 
@@ -123,7 +123,7 @@ Then('Click Add Investigation button on Events tab', () => {
     openInvestigationPage.clickAddInvestigationBtn();
 });
 
-Then('Select {string} condition from the dropdown in Select Condition Page', (conditionName) => {
+Then('Select {string} condition from the dropdown in Select Condition Page', (conditionName: string) => {
     openInvestigationPage.selectConditionFromDropdown(conditionName);
 });
 

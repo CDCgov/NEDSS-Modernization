@@ -1,5 +1,7 @@
 const user = Cypress.env('LOGIN_USERNAME');
-const pass = Cypress.env('LOGIN_PASSWORD', '');
+
+// TODO: Fix, as this is almost assuredly setup incorrectly
+const pass = Cypress.env('LOGIN_PASSWORD', '') as unknown as string;
 
 class LoginPage {
     navigateToHomepage() {

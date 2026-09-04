@@ -23,7 +23,7 @@ Then('the user clicks the Publish button', () => {
     PageBuilderPage.clickPublishButton(); // Call the new method
 });
 
-Then('the user enters Version Notes as {string}', (notes) => {
+Then('the user enters Version Notes as {string}', (notes: string) => {
     PageBuilderPage.enterVersionNotes(notes); // Pass the notes to the method
 });
 

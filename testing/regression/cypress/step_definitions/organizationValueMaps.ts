@@ -9,7 +9,7 @@ export const maps = {
      * @returns {string} - Value code (e.g., 'WP')
      */
     addressUseToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             'Primary Work Place': 'WP',
             'Alternate Work Place': 'SB',
             'Organizational Contact': 'OC',
@@ -23,7 +23,7 @@ export const maps = {
      * @returns {string} - Value code (e.g., 'O')
      */
     addressTypeToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             Office: 'O',
             'Postal/Mailing': 'M',
         };
@@ -36,7 +36,7 @@ export const maps = {
      * @returns {string} - Value code (e.g., 'WP')
      */
     telephoneUseToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             'Primary Work Place': 'WP',
             'Alternate Work Place': 'SB',
             'Organizational Contact': 'OC',
@@ -50,7 +50,7 @@ export const maps = {
      * @returns {string} - Value code (e.g., 'PH')
      */
     telephoneTypeToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             Phone: 'PH',
             FAX: 'FAX',
             'Answering service': 'AN',
@@ -64,7 +64,7 @@ export const maps = {
      * @returns {string} - Value code (e.g., 'ABC')
      */
     idTypeToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             'ABCs Hospital ID': 'ABC',
             'Clinical Laboratory Improvement Amendments': 'CLIA',
             'Facility ID': 'FI',
@@ -84,7 +84,7 @@ export const maps = {
      * @returns {string} - Value code (e.g., 'CMS')
      */
     idAuthorityToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             AHA: 'AHA',
             'CLIA (CMS)': 'CLIA',
             'CMS Provider': 'CMS',
@@ -99,7 +99,7 @@ export const maps = {
      * @returns {string} - Value code ('c' or 'n')
      */
     editReasonToValue(displayText: any) {
-        const map = {
+        const map: Record<string, string> = {
             'Typographical error correction or additional information': 'c',
             'A change to existing information for non typographical reasons': 'n',
         };

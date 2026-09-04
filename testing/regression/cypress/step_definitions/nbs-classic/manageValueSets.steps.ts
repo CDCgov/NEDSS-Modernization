@@ -17,7 +17,7 @@ Then('the Value Set count should increase by 1', () => {
     classicManageValueSetsPage.verifyValueSetIncreased();
 });
 
-Then('Fill the details to create new {string} Value Set', (type) => {
+Then('Fill the details to create new {string} Value Set', (type: string) => {
     classicManageValueSetsPage.fillTheDetailsValueSetFields(type);
 });
 
@@ -29,7 +29,7 @@ Then('Click filter button in Value Set library', () => {
     classicManageValueSetsPage.clickFilterBtnValueSetLibrary();
 });
 
-Then('Enter filter text {string} in the input in Value Set library', (text) => {
+Then('Enter filter text {string} in the input in Value Set library', (text: string) => {
     classicManageValueSetsPage.enterFilterTextValueSetLibrary(text);
 });
 
@@ -69,7 +69,7 @@ Then('Click on Make Inactive button to inactive the value set', () => {
     classicManageValueSetsPage.clickMakeInactiveInValueSet();
 });
 
-Then('Verify all value set names contain {string}', (text) => {
+Then('Verify all value set names contain {string}', (text: string) => {
     classicManageValueSetsPage.verifyValueSetNamesContain(text);
 });
 

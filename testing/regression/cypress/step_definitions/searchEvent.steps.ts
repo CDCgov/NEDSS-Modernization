@@ -37,10 +37,6 @@ Then('I should see Results with the text {string}', (string: string) => {
     cy.get('div[class^=result-item_item]').contains(string).should('be.visible');
 });
 
-Then('I check the ELR in search', () => {
-    searchEventPage.checkELR();
-});
-
 Then('I select a program area for event investigation', () => {
     searchEventPage.selectEventInvestigationProgramArea();
     searchEventPage.search();

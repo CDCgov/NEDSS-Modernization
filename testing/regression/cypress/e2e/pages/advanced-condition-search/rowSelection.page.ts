@@ -34,8 +34,8 @@ class RowSelectionPage {
         cy.get('[data-testid="advancedConditionSearchBtn"]').eq(0).click();
     }
 
-    verifyRowsDisplaying() {
-        cy.get('tbody tr').its('length').should('be.gte', 50);
+    verifyRowsDisplaying(rows: number) {
+        cy.get('tbody tr').its('length').should('be.gte', rows);
     }
 }
 

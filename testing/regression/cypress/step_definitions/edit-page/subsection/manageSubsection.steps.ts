@@ -49,7 +49,7 @@ Then('clicks on delete icon', () => {
     manageSubsectionPage.clickDeleteSubsectionIcon();
 });
 
-Then('user is given in line message {string}', (text) => {
+Then('user is given in line message {string}', (text: string) => {
     manageSubsectionPage.showWarningMessageOnSubsectionDelete(text);
 });
 
@@ -57,7 +57,7 @@ Then('user clicks ok link', () => {
     manageSubsectionPage.clickOkLink();
 });
 
-Then('given options {string} and {string}', (text) => {
+Then('given options {string} and {string}', (text: string) => {
     manageSubsectionPage.checkButtonsAreVisible(text);
 });
 
@@ -69,7 +69,7 @@ Then('verify hide or unhide icon is greyed out if already visible state', () => 
     manageSubsectionPage.checkVisibilityIconTurnedOff(false);
 });
 
-Then('verify success message {string}', (text) => {
+Then('verify success message {string}', (text: string) => {
     manageSubsectionPage.verifyVisibilitySuccessMessage(text);
 });
 

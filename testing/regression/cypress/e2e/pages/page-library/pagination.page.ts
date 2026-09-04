@@ -7,12 +7,12 @@ class PaginationPage {
         return 'table[data-testid=table]';
     }
 
-    selectNumberOfRows(numberOfRows: number) {
+    selectNumberOfRows(numberOfRows: string) {
         cy.get('#range-toggle').select(numberOfRows);
         cy.get('#range-toggle').should('have.value', numberOfRows);
     }
 
-    checkDisplayingNumberOfRowsSubsequently(rowsPerPage: any, onlyOnNext: any, pageNumber: number) {
+    checkDisplayingNumberOfRowsSubsequently(rowsPerPage: number, onlyOnNext: boolean, pageNumber: number) {
         this.totalRowsCountFromDOM().then((totalRowsCount) => {
             const totalPages = Math.ceil(totalRowsCount / rowsPerPage);
             const lastPageRowsCount = totalRowsCount % rowsPerPage || rowsPerPage;

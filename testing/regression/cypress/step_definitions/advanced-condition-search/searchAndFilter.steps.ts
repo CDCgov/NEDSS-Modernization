@@ -5,7 +5,7 @@ Then('User views the Search field', () => {
     searchAndFilterPage.viewSearchField();
 });
 
-Then('User enters {string} in the Search field', (text) => {
+Then('User enters {string} in the Search field', (text: string) => {
     searchAndFilterPage.enterSearchField(text);
 });
 

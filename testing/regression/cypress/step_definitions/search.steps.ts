@@ -1,33 +1,33 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { searchPage } from '@pages/search.page';
 
-When('I search for {string} city', (string) => {
+When('I search for {string} city', (string: string) => {
     searchPage.enterCity(string);
     searchPage.search();
 });
 
-When('I enter {string} as zip code', (string) => {
+When('I enter {string} as zip code', (string: string) => {
     searchPage.enterZipCode(string);
 });
 
-When('I search for {string} zip code', (string) => {
+When('I search for {string} zip code', (string: string) => {
     searchPage.enterZipCode(string);
     searchPage.search();
 });
 
-When('I search for {string} Street address', (string) => {
+When('I search for {string} Street address', (string: string) => {
     searchPage.enterStreetAddress(string);
     searchPage.search();
 });
 
-Then('I select {string} state', (string) => {
+Then('I select {string} state', (string: string) => {
     searchPage.selectState(string);
     searchPage.search();
 });
 
 When(
     'I search for Street Address {string} City {string} State {string} Zip code {string}',
-    function (string, string2, string3, string4) {
+    function (string: string, string2: string, string3: string, string4: string) {
         searchPage.enterStreetAddress(string);
         searchPage.enterCity(string2);
         searchPage.selectState(string3);
@@ -52,39 +52,39 @@ Then('I should found result patient profile', () => {
     cy.contains('No results found').should('be.visible');
 });
 
-When('I search by last name as {string}', (string) => {
+When('I search by last name as {string}', (string: string) => {
     searchPage.enterLastName(string);
     searchPage.search();
 });
 
-When('I fill last name as {string}', (string) => {
+When('I fill last name as {string}', (string: string) => {
     searchPage.enterLastName(string);
 });
 
-When('I search by patient id as {string}', (string) => {
+When('I search by patient id as {string}', (string: string) => {
     searchPage.enterPatiendID(string);
     searchPage.search();
 });
 
-When('I fill first name as {string}', (string) => {
+When('I fill first name as {string}', (string: string) => {
     searchPage.enterFirstName(string);
 });
 
-When('I search by first name as {string}', (string) => {
+When('I search by first name as {string}', (string: string) => {
     searchPage.enterFirstName(string);
     searchPage.search();
 });
 
-When('I fill dob as {string}', (string) => {
+When('I fill dob as {string}', (string: string) => {
     searchPage.enterDob(string);
 });
 
-When('I search by dob as {string}', (string) => {
+When('I search by dob as {string}', (string: string) => {
     searchPage.enterDob(string);
     searchPage.search();
 });
 
-When('I search by sex as {string}', (string) => {
+When('I search by sex as {string}', (string: string) => {
     searchPage.selectGender(string);
     searchPage.search();
 });
@@ -93,63 +93,63 @@ Then('click on clear all button', () => {
     searchPage.clearAll();
 });
 
-When('I last name should be {string}', (string) => {
+When('I last name should be {string}', (string: string) => {
     cy.get('input[id="name.last"]').should('have.text', string);
 });
 
-When('I first name should be {string}', (string) => {
+When('I first name should be {string}', (string: string) => {
     cy.get('input[id="name.first"]').should('have.text', string);
 });
 
-When('I dob should be {string}', (string) => {
+When('I dob should be {string}', (string: string) => {
     cy.get('input[id=bornOn-exact-date-year]').should('have.text', string);
 });
 
-Then('I should see Results with the last name {string}', (string) => {
+Then('I should see Results with the last name {string}', (string: string) => {
     cy.get('main p').contains(string).should('be.visible');
 });
 
-Then('I should see Results with the first name {string}', (string) => {
+Then('I should see Results with the first name {string}', (string: string) => {
     cy.get('main p').contains(string).should('be.visible');
 });
 
-Then('I should see Results with for text {string}', (string) => {
+Then('I should see Results with for text {string}', (string: string) => {
     cy.get('main p').contains(string).should('be.visible');
 });
 
-Then('I should see Results with the sex {string}', (string) => {
+Then('I should see Results with the sex {string}', (string: string) => {
     cy.get('main').contains(string).should('be.visible');
 });
 
-Then('I should see Results with the patient id {string}', (string) => {
+Then('I should see Results with the patient id {string}', (string: string) => {
     cy.contains(string).should('be.visible');
 });
 
-When('I search by phone number as {string}', (string) => {
+When('I search by phone number as {string}', (string: string) => {
     searchPage.enterPhone(string);
     searchPage.search();
 });
 
-When('I enter email as {string}', (string) => {
+When('I enter email as {string}', (string: string) => {
     searchPage.enterEmail(string);
     searchPage.search;
 });
 
-When('I enter phone number as {string}', (string) => {
+When('I enter phone number as {string}', (string: string) => {
     searchPage.enterPhone(string);
     searchPage.search();
 });
 
-When('I search by email as {string}', (string) => {
+When('I search by email as {string}', (string: string) => {
     searchPage.enterEmail(string);
     searchPage.search();
 });
 
-Then('I should see Results with the phone number as {string}', (string) => {
+Then('I should see Results with the phone number as {string}', (string: string) => {
     cy.get('div[data-item-type="phone"]').contains(string).should('be.visible');
 });
 
-Then('I should see Results with the email as {string}', (string) => {
+Then('I should see Results with the email as {string}', (string: string) => {
     cy.contains(string).should('be.visible');
 });
 
@@ -157,13 +157,13 @@ When('I navigate to id section', () => {
     searchPage.selectId();
 });
 
-Then('I search by id type as {string} and id as {string}', (string, string2) => {
+Then('I search by id type as {string} and id as {string}', (string: string, string2: string) => {
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
     searchPage.search();
 });
 
-Then('I should see Results with the {string} as {string}', (string, string1) => {
+Then('I should see Results with the {string} as {string}', (string: string, string1: string) => {
     cy.contains(string1).should('be.visible');
 });
 
@@ -171,18 +171,18 @@ When('I navigate to race section', () => {
     searchPage.selectRace();
 });
 
-Then('I search by ethnicity as {string} and race {string}', (string, string2) => {
+Then('I search by ethnicity as {string} and race {string}', (string: string, string2: string) => {
     searchPage.enterEthnicity(string);
     searchPage.enterRace(string2);
     searchPage.search();
 });
 
-Then('I search by ethnicity as {string} and race not selected', (string) => {
+Then('I search by ethnicity as {string} and race not selected', (string: string) => {
     searchPage.enterEthnicity(string);
     searchPage.search();
 });
 
-Then('I search by ethnicity not selected and race {string}', (string) => {
+Then('I search by ethnicity not selected and race {string}', (string: string) => {
     searchPage.enterRace(string);
     searchPage.search();
 });

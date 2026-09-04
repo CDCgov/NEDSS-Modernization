@@ -92,7 +92,7 @@ class PreviewPagePage {
         cy.selectDropdownByLabel('Condition(s)', 'Cholera');
     }
 
-    checkPageNameField(check: string) {
+    checkPageNameField(check?: boolean) {
         cy.get('#name').click();
         if (check) {
             cy.get('#name').clear();

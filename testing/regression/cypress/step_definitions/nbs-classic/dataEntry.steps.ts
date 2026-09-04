@@ -6,11 +6,11 @@ import addLabReportInvestigationPage from '../../e2e/pages/events/add-lab-report
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { clickSubmitButton, clickHome } from '../../e2e/pages/nbs-classic/utils';
 
-When('I search for patient {string} {string}', (patientFirstName, patientLastName) => {
+When('I search for patient {string} {string}', (patientFirstName: string, patientLastName: string) => {
     patientEntitySearch.getPatientByName({ patientLastName, patientFirstName });
 });
 
-When('I click on patient ID {string} to view profile', (patientId) => {
+When('I click on patient ID {string} to view profile', (patientId: string) => {
     searchPage.clickPatientId(patientId);
 });
 
@@ -30,7 +30,7 @@ When('I click on Lab Report', () => {
     labReportPage.clickLabReport();
 });
 
-When('I enter {string} in the Reporting Facility field', (value) => {
+When('I enter {string} in the Reporting Facility field', (value: string) => {
     labReportPage.enterReportingFacility(value);
 });
 
@@ -54,7 +54,7 @@ When('I select the second element in the Coded Result dropdown', () => {
     labReportPage.selectCodedResult();
 });
 
-When('I enter {string} in the Numeric Result field', (value) => {
+When('I enter {string} in the Numeric Result field', (value: string) => {
     labReportPage.enterNumericResult(value);
 });
 
@@ -94,11 +94,11 @@ When('I click on the Report Information tab', () => {
     morbidityReportPage.clickReportInformationTab();
 });
 
-When('I select {string} from the Condition dropdown menu', (condition) => {
+When('I select {string} from the Condition dropdown menu', (condition: string) => {
     morbidityReportPage.selectCondition(condition);
 });
 
-When('I select {string} from the Jurisdiction dropdown menu', (jurisdiction) => {
+When('I select {string} from the Jurisdiction dropdown menu', (jurisdiction: string) => {
     morbidityReportPage.selectJurisdiction(jurisdiction);
 });
 
@@ -111,11 +111,11 @@ When('I enter the current date in the Date of Morbidity Report field', () => {
     morbidityReportPage.enterMorbidityDate(today);
 });
 
-When('I select {string} from the Pregnant dropdown menu', (value) => {
+When('I select {string} from the Pregnant dropdown menu', (value: string) => {
     morbidityReportPage.selectPregnant(value);
 });
 
-When('I enter {string} in the Facility and Provider Information field', (value) => {
+When('I enter {string} in the Facility and Provider Information field', (value: string) => {
     morbidityReportPage.enterFacilityProvider(value);
 });
 
@@ -147,7 +147,7 @@ When('I click Next to navigate to the Lab Report tab', () => {
 
 //  1: Facility and Provider Information
 
-When('I search for Reporting Facility with Quick Code {string}', (quickCode) => {
+When('I search for Reporting Facility with Quick Code {string}', (quickCode: string) => {
     labReportPage.searchForReportingFacility(quickCode);
 });
 
@@ -179,11 +179,11 @@ When('I select a random Specimen Site', () => {
     labReportPage.selectSpecimenSite();
 });
 
-When('I select {string} from the Specimen Source dropdown', (specimenSource) => {
+When('I select {string} from the Specimen Source dropdown', (specimenSource: string) => {
     labReportPage.selectLabReportSpecimenSource(specimenSource);
 });
 
-When('I select {string} from the Specimen Site dropdown', (specimenSite) => {
+When('I select {string} from the Specimen Site dropdown', (specimenSite: string) => {
     labReportPage.selectLabReportSpecimenSite(specimenSite);
 });
 
@@ -197,8 +197,8 @@ When('I select a random Resulted Test', () => {
     labReportPage.selectResultedTest();
 });
 
-When('I select {string} from the Code Result dropdown', (specimenSource) => {
-    labReportPage.selectLabReportSpecimenSource(specimenSource);
+When('I select {string} from the Code Result dropdown', (codedResult: string) => {
+    labReportPage.selectLabReportCodedResult(codedResult);
 });
 
 When('I click the Add button under Resulted Tests', () => {
@@ -207,7 +207,7 @@ When('I click the Add button under Resulted Tests', () => {
 
 //  5: Morbidity Report
 
-When('I enter patient first name {string} and last name {string}', (firstName, lastName) => {
+When('I enter patient first name {string} and last name {string}', (firstName: string, lastName: string) => {
     morbidityReportPage.enterPatientBothNames(firstName, lastName);
 });
 
@@ -224,7 +224,7 @@ When('I enter the current date in the Treatment Date field', () => {
     morbidityReportPage.enterTreatmentDate(today);
 });
 
-When('I select {string} from the Treatment dropdown menu', (treatment) => {
+When('I select {string} from the Treatment dropdown menu', (treatment: string) => {
     morbidityReportPage.selectTreatment(treatment);
 });
 
@@ -248,7 +248,7 @@ When("I store the morbidity report's condition", () => {
     morbidityReportPage.storeCondition();
 });
 
-When('I check an investigation with the condition {string}', (condition) => {
+When('I check an investigation with the condition {string}', (condition: string) => {
     morbidityReportPage.checkFirstInvestigationWithCondition(condition);
 });
 
@@ -300,7 +300,7 @@ Then('I should see a validation error for the Jurisdiction field', () => {
 });
 
 // Form state verification steps
-Then('the patient first name field should contain {string}', (value) => {
+Then('the patient first name field should contain {string}', (value: string) => {
     morbidityReportPage.verifyPatientFirstNameContains(value);
 });
 

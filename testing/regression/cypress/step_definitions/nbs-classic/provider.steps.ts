@@ -5,11 +5,11 @@ Then('Navigate to classic provider add page', () => {
     classicProviderPage.navigateToAddProvider();
 });
 
-When('Enter last name {string}', (text) => {
+When('Enter last name {string}', (text: string) => {
     classicProviderPage.enterLastName(text);
 });
 
-When('Enter first name {string}', (text) => {
+When('Enter first name {string}', (text: string) => {
     classicProviderPage.enterFirstName(text);
 });
 
@@ -25,7 +25,7 @@ Then('Enter quick code for new provider', () => {
     classicProviderPage.enterQuickCode();
 });
 
-Then('provider {string}, {string} should appear in search results', (lastName, firstName) => {
+Then('provider {string}, {string} should appear in search results', (lastName: string, firstName: string) => {
     classicProviderPage.verifyProviderNameInSearchResults(lastName, firstName);
 });
 

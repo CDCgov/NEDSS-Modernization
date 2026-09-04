@@ -114,7 +114,7 @@ class PatientProfilePage {
     }
 
     clickOnEdit(section: string) {
-        let len = '';
+        let len: any = '';
         switch (section) {
             case 'General patient information':
                 len = 0;

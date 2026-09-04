@@ -1,7 +1,7 @@
 import { When } from '@badeball/cypress-cucumber-preprocessor';
 import { NEW_REPORT_UID, VALID_DATA_SOURCE_UID } from './create.steps';
 
-function makeDeleteRequest(dataSourceId: string) {
+function makeDeleteRequest(dataSourceId: number) {
     return cy
         .request({
             method: 'DELETE',

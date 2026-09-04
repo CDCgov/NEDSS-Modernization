@@ -17,8 +17,8 @@ Then('Click Edit button in Open Investigation', () => {
     classicEditOpenInvestigationPage.clickEditBtnInOpenInvestigation();
 });
 
-Then('Edit info in the form in Open Investigation', (type) => {
-    classicEditOpenInvestigationPage.editCommentInOpenInvestigation(type);
+Then('Edit info in the form in Open Investigation', () => {
+    classicEditOpenInvestigationPage.editCommentInOpenInvestigation();
 });
 
 Then('Click submit on edit page in Open Investigation', () => {

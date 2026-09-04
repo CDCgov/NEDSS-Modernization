@@ -1,6 +1,6 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
-Then('I can open the investigation for {string}', (condition) => {
+Then('I can open the investigation for {string}', (condition: string) => {
     cy.get('a[name="pageTop"]').contains(`View Investigation: ${condition}`);
 });
 
@@ -15,17 +15,17 @@ Then('I can print the lab report', () => {
     cy.get('a').contains('Print Page');
 });
 
-When('I change the program area to {string}', (programArea) => {
+When('I change the program area to {string}', (programArea: string) => {
     cy.enterInput('input[name="orderedTest.theObservationDT.progAreaCd_textbox"]', programArea);
 });
 
-When('I change the jurisdiction to {string}', (jurisdiction) => {
+When('I change the jurisdiction to {string}', (jurisdiction: string) => {
     cy.enterInput('input[name="orderedTest.theObservationDT.jurisdictionCd_textbox"]', jurisdiction);
 });
 
 Then(
     'I see a transfer confirmation message to program area {string} and jurisdiction {string}',
-    (programArea, jurisdiction) => {
+    (programArea: string, jurisdiction: string) => {
         cy.get('b').contains('This record has been successfully transferred to:');
         cy.get('tr[rowid="N10035"]').contains(programArea);
         cy.get('tr[rowid="N10048"]').contains(jurisdiction);

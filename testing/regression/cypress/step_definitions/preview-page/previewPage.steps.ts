@@ -5,7 +5,7 @@ Then('User navigates to Preview Page and views the Preview Page', () => {
     previewPagePage.navigateToPreviewPage();
 });
 
-Then('Below buttons will displays in preview page {string} {string}', (content, type) => {
+Then('Below buttons will displays in preview page {string} {string}', (content: string, type: string) => {
     previewPagePage.viewsElementsOnPreviewPage(content, type);
 });
 
@@ -89,10 +89,6 @@ Then('click on Save changes in  page details page', () => {
     previewPagePage.clickSaveChangesBtnPageDetailsPage();
 });
 
-Then('click on Close button in page details page', () => {
-    previewPagePage.clickCloseBtnPageDetailsPage();
-});
-
 Then('user has created a page with all the required details', () => {
     previewPagePage.navigateToPreviewPageWithStatusInitialDraft();
 });
@@ -170,7 +166,7 @@ Then('user clicks on History tab next to Details', () => {
     previewPagePage.clickOnHistoryTab();
 });
 
-Then('verify user is presented with all history info {string}', (text) => {
+Then('verify user is presented with all history info {string}', (text: string) => {
     previewPagePage.checkHistoryInfo(text);
 });
 

@@ -17,10 +17,10 @@ Then('I should see the Summary Data page', () => {
     loadManageSummaryPage.verifySummaryPage();
 });
 
-When('I select {int} from the MMWR Year dropdown', (year) => {
+When('I select {int} from the MMWR Year dropdown', (year: number) => {
     loadManageSummaryPage.selectMMWRYear(year);
 });
 
-Then('I should see {int} options in the MMWR Week dropdown', (count) => {
+Then('I should see {int} options in the MMWR Week dropdown', (count: number) => {
     loadManageSummaryPage.verifyMMWRWeekOptions(count);
 });

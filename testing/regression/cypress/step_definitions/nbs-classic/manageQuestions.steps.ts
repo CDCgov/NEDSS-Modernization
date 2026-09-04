@@ -9,7 +9,7 @@ Then('Click on Add new in Question Library', () => {
     classicManageQuestionsPage.clickAddNewBtn();
 });
 
-Then('Fill the details to create new {string} question', (type) => {
+Then('Fill the details to create new {string} question', (type: string) => {
     classicManageQuestionsPage.fillTheDetailsLocalQuestion(type);
 });
 

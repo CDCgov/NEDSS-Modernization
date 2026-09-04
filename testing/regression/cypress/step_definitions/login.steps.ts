@@ -6,7 +6,7 @@ Given('I am logged in as secure user', () => {
     loginPage.login();
 });
 
-Given('I am logged in as {string} username', (username) => {
+Given('I am logged in as {string} username', (username: string) => {
     loginPage.navigateToHomepage();
     loginPage.loginAsUserName(username);
 });

@@ -35,8 +35,8 @@ class SummaryTabPage {
     }
 
     checkIfSorted(columnName: string, sortedBy: string) {
-        const list = [];
-        const index = this.getColumnIndexByName(columnName);
+        const list: string[] = [];
+        const index = this.getColumnIndexByName(columnName)!;
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });
@@ -58,8 +58,8 @@ class SummaryTabPage {
     }
 
     documentTableCheckIfSorted(columnName: string, sortedBy: string) {
-        const list = [];
-        const index = this.getColumnIndexByName(columnName);
+        const list: string[] = [];
+        const index = this.getColumnIndexByName(columnName)!;
         this.documentTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });

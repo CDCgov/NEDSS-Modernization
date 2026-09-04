@@ -9,7 +9,7 @@ When('I navigate to classic organization Search pane', () => {
     classicOrganizationPage.navigateToClassicOrganizationSearchPane();
 });
 
-When('I enter organization name in input text field {string}', (text) => {
+When('I enter organization name in input text field {string}', (text: string) => {
     classicOrganizationPage.enterOrganizationNameInSearch(text);
 });
 
@@ -25,7 +25,7 @@ When('I save the number of search results', () => {
     classicOrganizationPage.saveSearchResultsCount();
 });
 
-When('I enter organization address in input text field {string}', (text) => {
+When('I enter organization address in input text field {string}', (text: string) => {
     classicOrganizationPage.enterOrganizationAddressInSearch(text);
 });
 
@@ -39,7 +39,7 @@ When('I enter a random ID Value', () => {
     editOrganizationPage.enterRandomIdValue();
 });
 
-When('I select the role {string}', (roleName) => {
+When('I select the role {string}', (roleName: string) => {
     editOrganizationPage.selectRole(roleName);
 });
 
@@ -59,32 +59,28 @@ When('I click the Add Identification button', () => {
     editOrganizationPage.clickAddIdentificationButton();
 });
 
-When('I add two new ID records with different ID Types and Assigning Authorities', () => {
-    classicOrganizationPage.addTwoNewIdRecords();
-});
-
 When('I click View on the search results', () => {
     classicOrganizationPage.clickViewOnSearchResults();
 });
 
 // Address Information steps
-When('I select address use {string}', (useDisplay) => {
+When('I select address use {string}', (useDisplay: string) => {
     editOrganizationPage.enterAddressUse(maps.addressUseToValue(useDisplay));
 });
 
-When('I select address type {string}', (typeDisplay) => {
+When('I select address type {string}', (typeDisplay: string) => {
     editOrganizationPage.enterAddressType(maps.addressTypeToValue(typeDisplay));
 });
 
-When('I enter street address {string}', (address) => {
+When('I enter street address {string}', (address: string) => {
     editOrganizationPage.enterStreetAddress1(address);
 });
 
-When('I enter city {string}', (city) => {
+When('I enter city {string}', (city: string) => {
     editOrganizationPage.enterCity(city);
 });
 
-When('I enter zip code {string}', (zip) => {
+When('I enter zip code {string}', (zip: string) => {
     editOrganizationPage.enterZipCode(zip);
 });
 
@@ -93,17 +89,20 @@ When('I click the Add Address button', () => {
 });
 
 // Telephone Information steps
-When('I select telephone use {string}', (useDisplay) => {
+When('I select telephone use {string}', (useDisplay: string) => {
     editOrganizationPage.enterTelephoneUse(maps.telephoneUseToValue(useDisplay));
 });
 
-When('I select telephone type {string}', (typeDisplay) => {
+When('I select telephone type {string}', (typeDisplay: string) => {
     editOrganizationPage.enterTelephoneType(maps.telephoneTypeToValue(typeDisplay));
 });
 
-When('I enter telephone number {string}, {string}, {string}', (areaCode, prefix, lineNumber) => {
-    editOrganizationPage.enterTelephoneNumber(areaCode, prefix, lineNumber);
-});
+When(
+    'I enter telephone number {string}, {string}, {string}',
+    (areaCode: string, prefix: string, lineNumber: string) => {
+        editOrganizationPage.enterTelephoneNumber(areaCode, prefix, lineNumber);
+    }
+);
 
 When('I click the Add Telephone button', () => {
     editOrganizationPage.clickAddTelephoneButton();
@@ -111,7 +110,7 @@ When('I click the Add Telephone button', () => {
 
 When(
     'I add a new telephone with use {string}, type {string}, number {string}-{string}-{string}',
-    (useDisplay, typeDisplay, areaCode, prefix, lineNumber) => {
+    (useDisplay: string, typeDisplay: string, areaCode: string, prefix: string, lineNumber: string) => {
         editOrganizationPage.addNewTelephoneEntry({
             use: maps.telephoneUseToValue(useDisplay),
             type: maps.telephoneTypeToValue(typeDisplay),
@@ -125,7 +124,7 @@ When(
 // ID Information steps
 When(
     'I add a new ID record with type {string}, authority {string}, value {string}',
-    (typeDisplay, authorityDisplay, value) => {
+    (typeDisplay: string, authorityDisplay: string, value: string) => {
         editOrganizationPage.addNewIdEntry({
             type: maps.idTypeToValue(typeDisplay),
             authority: maps.idAuthorityToValue(authorityDisplay),
@@ -139,7 +138,7 @@ When('I click the Edit button', () => {
     classicOrganizationPage.clickEditButton();
 });
 
-When('I select {string} as the reason for edit', (reasonDisplay) => {
+When('I select {string} as the reason for edit', (reasonDisplay: string) => {
     editOrganizationPage.selectEditReason(maps.editReasonToValue(reasonDisplay));
 });
 
@@ -161,11 +160,11 @@ When('I confirm the inactivation', () => {
 });
 
 // Verification steps
-Then('the search results should include {string}', (expectedText) => {
+Then('the search results should include {string}', (expectedText: string) => {
     classicOrganizationPage.verifySearchResultsContain(expectedText);
 });
 
-Then('there should be {int} more search result than before', (additionalResultCount) => {
+Then('there should be {int} more search result than before', (additionalResultCount: number) => {
     classicOrganizationPage.verifySearchResultsCountIncreasedBy(additionalResultCount);
 });
 
@@ -173,7 +172,7 @@ Then('one of the search results should have the generated quick code', () => {
     classicOrganizationPage.verifySearchResultContainsGeneratedQuickCode();
 });
 
-Then('the search results should include address {string}', (expectedAddress) => {
+Then('the search results should include address {string}', (expectedAddress: string) => {
     classicOrganizationPage.verifySearchResultsContainAddress(expectedAddress);
 });
 
@@ -193,10 +192,13 @@ Then('I should see all organization details are correct', () => {
     classicOrganizationPage.verifyAllOrganizationDetails();
 });
 
-Then('the search results should include telephone {string}', (expectedTelephone) => {
+Then('the search results should include telephone {string}', (expectedTelephone: string) => {
     classicOrganizationPage.verifySearchResultsContainTelephone(expectedTelephone);
 });
 
-Then('the search results should include ID Type {string} with ID Value {string}', (expectedType, expectedValue) => {
-    classicOrganizationPage.verifySearchResultsContainIdTypeAndValue(expectedType, expectedValue);
-});
+Then(
+    'the search results should include ID Type {string} with ID Value {string}',
+    (expectedType: string, expectedValue: string) => {
+        classicOrganizationPage.verifySearchResultsContainIdTypeAndValue(expectedType, expectedValue);
+    }
+);

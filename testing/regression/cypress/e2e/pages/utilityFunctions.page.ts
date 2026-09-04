@@ -14,7 +14,7 @@ class UtilityFunctions {
 
     generateRandomLengthNumber(length: number) {
         return Array(length)
-            .fill()
+            .fill(undefined)
             .map(() => faker.number.int(9))
             .join('');
     }

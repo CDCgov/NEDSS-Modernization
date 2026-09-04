@@ -1,6 +1,6 @@
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
 
-Then('user submits {string} vaccination with a popup and deletes it', (string) => {
+Then('user submits {string} vaccination with a popup and deletes it', (string: string) => {
     const vaccinationUrl =
         Cypress.config().baseUrl +
         'nbs/PageAction.do?method=createGenericLoad&businessObjectType=VAC&Action=DSFilePath';

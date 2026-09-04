@@ -13,7 +13,7 @@ Then('Verify Add Lab Report page displayed', () => {
     classicHomePage.verifyAddLabReport();
 });
 
-Then('Click each of the following {string}', (queueName) => {
+Then('Click each of the following {string}', (queueName: string) => {
     classicHomePage.clickDefaultQueue(queueName);
 });
 

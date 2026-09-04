@@ -66,11 +66,11 @@ Then('Click on view icon to display the page details on classic', () => {
     classicManagePagesPage.clickViewIcon();
 });
 
-Then('Check details displayed for {string}', (header) => {
+Then('Check details displayed for {string}', (header: string) => {
     classicManagePagesPage.checkDisplayed(header);
 });
 
-Then('Check {string} tab displayed in investigation page details', (tabName) => {
+Then('Check {string} tab displayed in investigation page details', (tabName: string) => {
     classicManagePagesPage.checkDisplayed(tabName);
 });
 

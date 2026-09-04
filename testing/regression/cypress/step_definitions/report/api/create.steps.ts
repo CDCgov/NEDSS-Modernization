@@ -3,10 +3,10 @@ import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 const VALID_REPORT_LIBRARY_ID = 10000001;
 const VALID_SECTION_CODE = '1000';
 
-export let NEW_REPORT_UID;
+export let NEW_REPORT_UID: number;
 export const VALID_DATA_SOURCE_UID = 1;
 
-function makeCreateRequest(body: string) {
+function makeCreateRequest(body: Cypress.RequestBody) {
     return cy
         .request({
             method: 'POST',

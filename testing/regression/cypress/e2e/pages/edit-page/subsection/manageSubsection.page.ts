@@ -92,7 +92,7 @@ class ManageSubsectionPage {
         });
     }
 
-    clickVisibilitySubsectionIcon(visibility: string) {
+    clickVisibilitySubsectionIcon(visibility: boolean) {
         const onOrOff = visibility ? 'on' : 'off';
         cy.get('.subsectionHeader')
             .eq(0)
@@ -103,7 +103,7 @@ class ManageSubsectionPage {
             });
     }
 
-    checkVisibilityIconTurnedOff(visibility: string) {
+    checkVisibilityIconTurnedOff(visibility: boolean) {
         const onOrOff = visibility ? 'on' : 'off';
         cy.get('.subsectionHeader')
             .eq(0)
