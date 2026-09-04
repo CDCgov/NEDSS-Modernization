@@ -18,7 +18,7 @@ class AddConditionPage {
     completeCreateNewConditionForm() {
         const num = Math.floor(Math.random() * 90000) + 10000;
         cy.findByLabelText('Condition Name').type('NewConditionName' + num);
-        cy.findByLabelText('Condition Code').type(num);
+        cy.findByLabelText('Condition Code').type(num.toString());
         cy.findByLabelText('Program Area').select('ARBO');
     }
 

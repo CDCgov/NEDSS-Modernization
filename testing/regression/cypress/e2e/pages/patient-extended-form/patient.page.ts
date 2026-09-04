@@ -64,7 +64,7 @@ class ClassicPatientSearchPage {
         cy.contains('You have successfully added a new patient');
     }
 
-    fillInformationAsOfDateField(date: string) {
+    fillInformationAsOfDateField(date?: string) {
         cy.get('input[id="administrative.asOf"]')
             .invoke('val', date || '01/20/2024')
             .trigger('change');

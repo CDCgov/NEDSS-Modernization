@@ -30,7 +30,7 @@ When('I type {string} into the {string} field', (value: string, label: string) =
 });
 
 When('I type {int} into the {string} field', (value: number, label: string) => {
-    cy.findByRole('spinbutton', { name: label }).type(value);
+    cy.findByRole('spinbutton', { name: label }).type(value.toString());
 });
 
 Then('The {string} {string} should be disabled', (name: string, role: string) => {
@@ -48,7 +48,7 @@ When('I select radio {string} in the {string} field', (value: string, label: str
 Then('I should see a modal labelled {string}', (name: string) => {
     const modalHeadingTextMatcher = (elementText: any, element: Element) => {
         // remove button and svg tags from modal heading tag
-        const copiedElement = element.cloneNode(true);
+        const copiedElement: any = element.cloneNode(true);
         copiedElement.querySelectorAll('button, svg').forEach((node: Element) => node.remove());
         const cleanText = copiedElement.textContent.trim();
         return cleanText.includes(name);
@@ -101,7 +101,7 @@ Then('I am redirected to {string}', (pathname: string) => {
 });
 
 Then('I should not see the {string} {string}', (label: string, role: string) => {
-    cy.findByRole({ role }, { name: label }).should('not.exist');
+    cy.findByRole({ role } as any, { name: label }).should('not.exist');
 });
 
 Then('I should see {string} radio selected in the {string} field', (name: string, label: string) => {

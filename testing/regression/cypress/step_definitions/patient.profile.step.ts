@@ -113,7 +113,7 @@ Then(
 Then(
     'I check the column {string} for entry {int} under the {string} section contains {string}',
     (columnName: string, entryNumber: number, sectionName: string, text: string) => {
-        const columnNameToIndexMapping = {
+        const columnNameToIndexMapping: Record<string, number> = {
             'Associated with': 5,
             'Program area': 6,
             Jurisdiction: 7,

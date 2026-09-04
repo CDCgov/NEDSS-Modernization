@@ -7,7 +7,7 @@ import dbConfig from '@/db.config';
  * and assigns a program area to remove from DRSA queue
  * @param {string} programArea - Program Area to set the ELR
  */
-When('I add and import an ELR for the {string} program area', (programArea) => {
+When('I add and import an ELR for the {string} program area', (programArea: string) => {
     const ELR_QUERY = getInsertELRQuery();
     cy.task('sqlServer', { connectConfig: dbConfig, sqlQuery: ELR_QUERY }).then(() => {
         cy.exec('npm run ELRImporter').then(() => {

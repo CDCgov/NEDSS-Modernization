@@ -1,6 +1,6 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
-const GROUP_LOOKUP = {
+const GROUP_LOOKUP: Record<string, string> = {
     Public: 'S',
     Private: 'P',
     Template: 'T',
@@ -27,7 +27,7 @@ When(
         cy.contains('a', 'Collapse Sections').click();
         // mimic clicking a "Run" link
         const resolvedGroup = GROUP_LOOKUP[group] ?? group;
-        cy.window().then((win) => {
+        cy.window().then((win: any) => {
             cy.log(
                 `Calling runReport with Group: ${resolvedGroup}, Report ID: ${reportUid}, and Data Source ID: ${dataSourceUid}`
             );

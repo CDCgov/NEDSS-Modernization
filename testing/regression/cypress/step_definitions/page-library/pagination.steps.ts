@@ -12,7 +12,7 @@ Then('User select {string} left footer of the page to show the list of pages', (
 Then(
     'User should see only {string} rows in the library and for each subsequent list where applicable',
     (string: string) => {
-        pageLibraryPaginationPage.checkDisplayingNumberOfRowsSubsequently(string);
+        pageLibraryPaginationPage.checkDisplayingNumberOfRowsSubsequently(Number(string), false, 1);
     }
 );
 

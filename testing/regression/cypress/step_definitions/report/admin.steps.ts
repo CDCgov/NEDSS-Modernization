@@ -20,7 +20,7 @@ Then('I should see {int} available filters', (filterCount: number) => {
         .should('have.length', filterCount + 1);
 });
 
-When('I click the filter {int} {string} button', (filterInd, name) => {
+When('I click the filter {int} {string} button', (filterInd: number, name: string) => {
     cy.findAllByRole('button', { name }).eq(filterInd).click();
 });
 

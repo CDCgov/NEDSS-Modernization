@@ -62,7 +62,7 @@ class PatientProfilePage {
     }
 
     addComments() {
-        addCommentModule.date().comment().add();
+        (addCommentModule.date().comment() as any).add();
     }
 
     isCommentSuccessfullyAdded() {
@@ -70,7 +70,7 @@ class PatientProfilePage {
     }
 
     addName(fName: string) {
-        addNameModule.date().type().first(fName).last().add();
+        (addNameModule.date().type().first(fName).last() as any).add();
     }
 
     isNameAdded() {
@@ -78,7 +78,7 @@ class PatientProfilePage {
     }
 
     addAddress(address1: string) {
-        addAddressModule.date().type().use().street1(address1).city().state().comment().add();
+        (addAddressModule.date().type().use().street1(address1) as any).city().state().comment().add();
     }
 
     isAddressAdded() {
@@ -98,7 +98,7 @@ class PatientProfilePage {
     }
 
     addIdentification(idNumber: string) {
-        addIdentificationModule.date().type().id(idNumber).issuedState().add();
+        (addIdentificationModule.date().type().id(idNumber) as any).issuedState().add();
     }
 
     isIdAdded() {
