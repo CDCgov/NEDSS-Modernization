@@ -9,7 +9,7 @@
         "target": "ES2023",
         "lib": ["ES2023", "DOM", "DOM.Iterable"],
         "types": ["cypress", "node", "@testing-library/cypress"],
-        "allowJs": true,
+        "allowJs": false,
         "strict": true
     },
     "include": ["cypress"]
