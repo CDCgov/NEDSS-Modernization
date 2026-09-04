@@ -4,7 +4,7 @@ class ClassicProviderSearchPage {
         cy.contains('Provider').eq(0).click();
     }
 
-    enterNameInClassicSearchProviderPage(text) {
+    enterNameInClassicSearchProviderPage(text: string) {
         cy.get('input[id="providerSearch.lastName"]').type(text);
     }
 
@@ -38,11 +38,11 @@ class ClassicProviderSearchPage {
         cy.get('input[name="quickCodeIdDT.rootExtensionTxt"]').eq(0).type(newName);
     }
 
-    enterLastName(text) {
+    enterLastName(text: string) {
         cy.get('input[id="providerSearch.lastName"]').type(text);
     }
 
-    enterFirstName(text) {
+    enterFirstName(text: string) {
         cy.get('input[id="providerSearch.firstName"]').type(text);
     }
 
@@ -69,7 +69,7 @@ class ClassicProviderSearchPage {
         cy.get('input[name="Submit"][id="Submit"]').eq(0).click();
     }
 
-    verifyProviderNameInSearchResults(lastName, firstName) {
+    verifyProviderNameInSearchResults(lastName: string, firstName: string) {
         let found = false;
 
         // eslint-disable-next-line cypress/unsafe-to-chain-command

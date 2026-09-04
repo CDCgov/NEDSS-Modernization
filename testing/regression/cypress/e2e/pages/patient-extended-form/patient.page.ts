@@ -4,7 +4,7 @@ class ClassicPatientSearchPage {
         cy.contains('Go to classic search').click();
     }
 
-    enterLastNameInClassicSearchPatientPage(text) {
+    enterLastNameInClassicSearchPatientPage(text: string) {
         cy.get('#DEM102').type(text);
     }
 
@@ -64,7 +64,7 @@ class ClassicPatientSearchPage {
         cy.contains('You have successfully added a new patient');
     }
 
-    fillInformationAsOfDateField(date) {
+    fillInformationAsOfDateField(date: string) {
         cy.get('input[id="administrative.asOf"]')
             .invoke('val', date || '01/20/2024')
             .trigger('change');
@@ -76,7 +76,7 @@ class ClassicPatientSearchPage {
         cy.contains('The Information as of date should occur before or within the current year');
     }
 
-    fillCommentsField(type) {
+    fillCommentsField(type: string) {
         let commentText;
         if (type === 'empty') {
             commentText = '';
@@ -100,7 +100,7 @@ class ClassicPatientSearchPage {
         cy.get('textarea[id="administrative.comment"]').blur();
     }
 
-    fillExtendedAddressFormDetails(type) {
+    fillExtendedAddressFormDetails(type: string) {
         if (type === 'invalid') {
             cy.contains('button', 'Add address').click();
             return;
@@ -153,15 +153,15 @@ class ClassicPatientSearchPage {
         cy.contains('section', 'email').find('input#phoneNumber').type('8888888888');
     }
 
-    errorSectionField(sectionId, text) {
+    errorSectionField(sectionId: string, text: string) {
         cy.contains('section', sectionId).should('contain.text', text);
     }
 
-    selectSectionField(sectionId, inputId, text) {
+    selectSectionField(sectionId: string, inputId: string, text: string) {
         cy.contains('section', sectionId).find(`select#${inputId}`).select(text);
     }
 
-    typeInputSectionField(sectionId, inputId, text) {
+    typeInputSectionField(sectionId: string, inputId: string, text: string) {
         cy.contains('section', sectionId).find(`input#${inputId}`).type(text);
     }
 
@@ -246,7 +246,7 @@ class ClassicPatientSearchPage {
         cy.get('select[id="name.lastOperator"]').select('startsWith');
     }
 
-    enterLastNameInModernizedSearchPatientPage(text) {
+    enterLastNameInModernizedSearchPatientPage(text: string) {
         cy.get('input[id="name.last"]').type(text);
     }
 
@@ -288,15 +288,15 @@ class ClassicPatientSearchPage {
         cy.get('select[id="name.lastOperator"]').select('not');
     }
 
-    selectSearchNameType(idName, type) {
+    selectSearchNameType(idName: string, type: string) {
         cy.get(`select[id="${idName}"]`).select(type);
     }
 
-    findSearchResultByDataItemType(text, id) {
+    findSearchResultByDataItemType(text: string, id: string) {
         cy.get(`div[data-item-type="${id}"]`).contains(text);
     }
 
-    fillIdInputWithText(id, text) {
+    fillIdInputWithText(id: string, text: string) {
         cy.get(`input[id="${id}"]`).type(text);
     }
 }

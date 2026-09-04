@@ -15,7 +15,7 @@ class AddIdentificationModule {
         return this;
     }
 
-    id(idNumber) {
+    id(idNumber: string) {
         return cy.enterInput('input[data-testid="textInput"]', idNumber);
     }
 
@@ -23,7 +23,7 @@ class AddIdentificationModule {
         cy.get('.usa-alert__body').should('contain', 'Added Identification');
     }
 
-    isIdAdded(idNumber) {
+    isIdAdded(idNumber: string) {
         cy.contains(idNumber).should('be.visible');
     }
 }

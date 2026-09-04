@@ -1,34 +1,34 @@
 class SearchPage {
-    enterLastName(lastName) {
+    enterLastName(lastName: string) {
         cy.get('input[name="name.last"]').type(lastName);
     }
 
-    enterFirstName(firstName) {
+    enterFirstName(firstName: string) {
         cy.get('input[name="name.first"]').type(firstName);
     }
 
-    enterPatiendID(id) {
+    enterPatiendID(id: string) {
         cy.get('#id').type(id);
     }
 
-    enterCity(city) {
+    enterCity(city: string) {
         cy.get('input[id="location.city"]').type(city, { force: true });
     }
 
-    enterZipCode(zip) {
+    enterZipCode(zip: string) {
         cy.get('#zip').type(zip, { force: true });
         cy.get('input[id="location.city"]').click({ force: true });
     }
 
-    enterStreetAddress(address) {
+    enterStreetAddress(address: string) {
         cy.get('input[name="location.street"]').type(address, { force: true });
     }
 
-    enterPhone(phone) {
+    enterPhone(phone: string) {
         cy.get('#homePhone').type(phone, { force: true });
     }
 
-    enterEmail(email) {
+    enterEmail(email: string) {
         cy.get('#email').type(email, { force: true });
     }
 
@@ -36,16 +36,16 @@ class SearchPage {
         cy.get('svg').eq(4).click();
     }
 
-    clickPatientId(patientId) {
+    clickPatientId(patientId: string) {
         cy.get('a[href="/patient/' + patientId + '"]').click();
         cy.url().should('include', '/' + patientId + '/summary');
     }
 
-    enterIdType(type) {
+    enterIdType(type: string) {
         cy.get('#identificationType').select(type);
     }
 
-    enterId(id) {
+    enterId(id: string) {
         if (id.length !== 0) {
             cy.get('input[name*=identification]').type(id);
         }
@@ -63,11 +63,11 @@ class SearchPage {
         cy.wait(500);
     }
 
-    enterEthnicity(type) {
+    enterEthnicity(type: string) {
         cy.get('#ethnicity').select(type);
     }
 
-    enterRace(type) {
+    enterRace(type: string) {
         cy.get('#race').select(type);
     }
 
@@ -80,17 +80,17 @@ class SearchPage {
         cy.get('.usa-alert--error svg').click();
     }
 
-    selectState(string) {
+    selectState(string: string) {
         cy.get("select[name='state']").select(string);
         cy.wait(500);
     }
 
-    selectGender(gender) {
+    selectGender(gender: string) {
         cy.get('#gender').select(gender);
         cy.wait(500);
     }
 
-    enterDob(dateOfBirth) {
+    enterDob(dateOfBirth: string) {
         const [month, day, year] = dateOfBirth.split('/');
         cy.enterInput('#bornOn-exact-date-month', month);
         cy.enterInput('#bornOn-exact-date-day', day);

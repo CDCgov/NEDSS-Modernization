@@ -68,7 +68,7 @@ class ManageSubsectionPage {
         cy.get('.subsectionHeader').eq(0).get('[data-testid="subsectionTileDeleteIcon"]').eq(0).click();
     }
 
-    showWarningMessageOnSubsectionDelete(text) {
+    showWarningMessageOnSubsectionDelete(text: string) {
         cy.contains('Subsection cannot be deleted').then((ele) => {
             if (ele.length < 1) {
                 cy.contains(text);
@@ -84,7 +84,7 @@ class ManageSubsectionPage {
         });
     }
 
-    checkButtonsAreVisible(text) {
+    checkButtonsAreVisible(text: string) {
         cy.contains('Subsection cannot be deleted').then((ele) => {
             if (ele.length < 1) {
                 cy.contains('Are you sure you want to delete').should('contain', text);
@@ -92,7 +92,7 @@ class ManageSubsectionPage {
         });
     }
 
-    clickVisibilitySubsectionIcon(visibility) {
+    clickVisibilitySubsectionIcon(visibility: string) {
         const onOrOff = visibility ? 'on' : 'off';
         cy.get('.subsectionHeader')
             .eq(0)
@@ -103,7 +103,7 @@ class ManageSubsectionPage {
             });
     }
 
-    checkVisibilityIconTurnedOff(visibility) {
+    checkVisibilityIconTurnedOff(visibility: string) {
         const onOrOff = visibility ? 'on' : 'off';
         cy.get('.subsectionHeader')
             .eq(0)
@@ -114,7 +114,7 @@ class ManageSubsectionPage {
             });
     }
 
-    verifyVisibilitySuccessMessage(text) {
+    verifyVisibilitySuccessMessage(text: string) {
         cy.contains('Manage subsections').then((ele) => {
             if (ele.length < 1) {
                 cy.wait(2000);

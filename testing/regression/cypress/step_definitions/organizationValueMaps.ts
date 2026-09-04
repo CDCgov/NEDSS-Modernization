@@ -8,7 +8,7 @@ export const maps = {
      * @param {string} displayText - Display text (e.g., 'Primary Work Place')
      * @returns {string} - Value code (e.g., 'WP')
      */
-    addressUseToValue(displayText) {
+    addressUseToValue(displayText: any) {
         const map = {
             'Primary Work Place': 'WP',
             'Alternate Work Place': 'SB',
@@ -22,7 +22,7 @@ export const maps = {
      * @param {string} displayText - Display text (e.g., 'Office')
      * @returns {string} - Value code (e.g., 'O')
      */
-    addressTypeToValue(displayText) {
+    addressTypeToValue(displayText: any) {
         const map = {
             Office: 'O',
             'Postal/Mailing': 'M',
@@ -35,7 +35,7 @@ export const maps = {
      * @param {string} displayText - Display text (e.g., 'Primary Work Place')
      * @returns {string} - Value code (e.g., 'WP')
      */
-    telephoneUseToValue(displayText) {
+    telephoneUseToValue(displayText: any) {
         const map = {
             'Primary Work Place': 'WP',
             'Alternate Work Place': 'SB',
@@ -49,7 +49,7 @@ export const maps = {
      * @param {string} displayText - Display text (e.g., 'Phone')
      * @returns {string} - Value code (e.g., 'PH')
      */
-    telephoneTypeToValue(displayText) {
+    telephoneTypeToValue(displayText: any) {
         const map = {
             Phone: 'PH',
             FAX: 'FAX',
@@ -63,7 +63,7 @@ export const maps = {
      * @param {string} displayText - Display text (e.g., 'ABCs Hospital ID')
      * @returns {string} - Value code (e.g., 'ABC')
      */
-    idTypeToValue(displayText) {
+    idTypeToValue(displayText: any) {
         const map = {
             'ABCs Hospital ID': 'ABC',
             'Clinical Laboratory Improvement Amendments': 'CLIA',
@@ -83,7 +83,7 @@ export const maps = {
      * @param {string} displayText - Display text (e.g., 'CMS Provider')
      * @returns {string} - Value code (e.g., 'CMS')
      */
-    idAuthorityToValue(displayText) {
+    idAuthorityToValue(displayText: any) {
         const map = {
             AHA: 'AHA',
             'CLIA (CMS)': 'CLIA',
@@ -98,7 +98,7 @@ export const maps = {
      * @param {string} displayText - Display text
      * @returns {string} - Value code ('c' or 'n')
      */
-    editReasonToValue(displayText) {
+    editReasonToValue(displayText: any) {
         const map = {
             'Typographical error correction or additional information': 'c',
             'A change to existing information for non typographical reasons': 'n',

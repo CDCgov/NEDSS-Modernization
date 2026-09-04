@@ -30,7 +30,7 @@ class AddPhoneModule {
         return this;
     }
 
-    phoneNumber(phone) {
+    phoneNumber(phone: string) {
         cy.enterInput('.usa-modal-wrapper.is-visible #number', phone);
         return this;
     }

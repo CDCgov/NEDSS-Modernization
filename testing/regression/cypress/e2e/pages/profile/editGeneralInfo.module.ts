@@ -13,7 +13,7 @@ class EditGeneralInfoModule {
         return this;
     }
 
-    motherName(name) {
+    motherName(name: string) {
         cy.get(this.section).find('#maternalMaidenName').type(name);
         return this;
     }
@@ -23,7 +23,7 @@ class EditGeneralInfoModule {
         cy.get(this.section).click();
     }
 
-    isGeneralInformationAdded(motherName) {
+    isGeneralInformationAdded(motherName: any) {
         cy.get(this.section).contains(motherName).should('be.visible');
     }
 }

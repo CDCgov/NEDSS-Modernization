@@ -18,7 +18,7 @@ class AddAddressModule {
         return this;
     }
 
-    street1(address1) {
+    street1(address1: string) {
         return cy.enterInput('.usa-modal-wrapper.is-visible #address1', address1);
     }
 

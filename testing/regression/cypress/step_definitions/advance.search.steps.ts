@@ -6,7 +6,7 @@ import patientProfilePage from '@pages/patientProfile.page';
 import { searchPage } from '@pages/search.page';
 import searchResultsPage from '@pages/search.results.page';
 
-When('I search for and open the patient file with the email {string}', (email) => {
+When('I search for and open the patient file with the email {string}', (email: string) => {
     cy.contains('a', 'Advanced Search').click();
     cy.contains('button', 'Contact').click();
     cy.get('input[for="email"]').type(email);
@@ -16,7 +16,7 @@ When('I search for and open the patient file with the email {string}', (email) =
     cy.get('a[href^="/patient/"]').first().click();
 });
 
-Then('the user has searched for a patient by {string} as {string}', (string, string2) => {
+Then('the user has searched for a patient by {string} as {string}', (string: string, string2: string) => {
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -27,13 +27,13 @@ Then('I set patient id profile ENV', () => {
     patientProfilePage.setPatientProfileENVID();
 });
 
-Then('the user has enters for a patient by {string} as {string}', (string, string2) => {
+Then('the user has enters for a patient by {string} as {string}', (string: string, string2: string) => {
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
 });
 
-Then('the user has searched for a patient by name {string} as {string}', (string, string2) => {
+Then('the user has searched for a patient by name {string} as {string}', (string: string, string2: string) => {
     searchPage.selectName();
     searchPage.enterLastName(string);
     searchPage.enterFirstName(string2);
@@ -52,11 +52,11 @@ Then('I should see search button disabled', () => {
     cy.get('button').contains('Search').should('be.disabled');
 });
 
-Then('I should see {string}', (string) => {
+Then('I should see {string}', (string: string) => {
     cy.get('main').contains(string).should('be.visible');
 });
 
-Then('I should see error message {string}', (string) => {
+Then('I should see error message {string}', (string: string) => {
     cy.contains('span[role="alert"]', string).should('be.visible');
 });
 
@@ -64,7 +64,7 @@ When('the User close the error message', () => {
     searchPage.closeErrorMsg();
 });
 
-Given('the user is on a Patient Profile page for {string}', (string) => {
+Given('the user is on a Patient Profile page for {string}', (string: string) => {
     searchPage.selectId();
     searchPage.enterIdType('Person number');
     searchPage.enterId(string);
@@ -110,22 +110,22 @@ Then('the user is taken to the top of the page', () => {
     cy.window().its('scrollY').should('be.equal', 0);
 });
 
-Then("user clicks on a patient's profile {string} tab", (string) => {
+Then("user clicks on a patient's profile {string} tab", (string: string) => {
     cy.wait(2000);
     cy.contains('button', string).click();
     // patientProfilePage.clickOnTab(string);
     cy.wait(2000);
 });
 
-Then('I should see the following elements', (dataTable) => {
-    dataTable.rawTable.forEach((row) => {
+Then('I should see the following elements', (dataTable: any) => {
+    dataTable.rawTable.forEach((row: any) => {
         const label = row[0];
         const regex = new RegExp(label, 'i');
         cy.contains(regex).should('be.visible');
     });
 });
 
-When('user clicks on the {string} button', (string) => {
+When('user clicks on the {string} button', (string: string) => {
     patientProfilePage.clickOnButton(string);
     cy.wait(1000);
 });
@@ -138,7 +138,7 @@ Then('comment is displayed on the patient profile page', () => {
     patientProfilePage.isCommentSuccessfullyAdded();
 });
 
-Then('user adds the name {string}', (string) => {
+Then('user adds the name {string}', (string: string) => {
     patientProfilePage.addName(string);
 });
 
@@ -146,7 +146,7 @@ Then('Name {string} information is displayed on the patient profile page', () =>
     patientProfilePage.isNameAdded();
 });
 
-Then('user adds the new address as {string}', (string) => {
+Then('user adds the new address as {string}', (string: string) => {
     patientProfilePage.addAddress(string);
 });
 
@@ -154,7 +154,7 @@ Then('Address information is updated', () => {
     patientProfilePage.isAddressAdded();
 });
 
-Then('user adds the new phone as {string}', (string) => {
+Then('user adds the new phone as {string}', (string: string) => {
     patientProfilePage.addPhoneNumber(string);
 });
 
@@ -162,7 +162,7 @@ When('phone number is updated', () => {
     patientProfilePage.isPhoneNumberAdded();
 });
 
-Then('user adds the new Add identification as {string}', (string) => {
+Then('user adds the new Add identification as {string}', (string: string) => {
     patientProfilePage.addIdentification(string);
 });
 
@@ -170,47 +170,47 @@ Then('identification information is added successfully', () => {
     patientProfilePage.isIdAdded();
 });
 
-Then('user adds the new detail race as {string}', function (string) {
+Then('user adds the new detail race as {string}', function (string: string) {
     patientProfilePage.addRace(string);
 });
 
-Then('race information as {string} is displayed', (string) => {
+Then('race information as {string} is displayed', (string: string) => {
     patientProfilePage.isRaceAdded(string);
 });
 
-When('User clicks on the edit button under {string}', (string) => {
+When('User clicks on the edit button under {string}', (string: string) => {
     patientProfilePage.clickOnEdit(string);
 });
 
-Then("user adds the general patient info with the mother's name as {string}", (string) => {
+Then("user adds the general patient info with the mother's name as {string}", (string: string) => {
     patientProfilePage.editGeneralInfo(string);
 });
 
-Then('general information as {string} is displayed', (string) => {
+Then('general information as {string} is displayed', (string: string) => {
     patientProfilePage.isGeneralInformationAdded(string);
 });
 
-Then('user adds ethnicity as {string}', (string) => {
+Then('user adds ethnicity as {string}', (string: string) => {
     patientProfilePage.editEthnicity(string);
 });
 
-Then('ethnicity information {string} is displayed', (string) => {
+Then('ethnicity information {string} is displayed', (string: string) => {
     patientProfilePage.isEthnicityAdded(string);
 });
 
-Then('user adds sex and birth for current sex as {string}', (string) => {
+Then('user adds sex and birth for current sex as {string}', (string: string) => {
     patientProfilePage.editSexBirth(string);
 });
 
-Then('sex and birth information is added and the current sex is shown as {string}', (string) => {
+Then('sex and birth information is added and the current sex is shown as {string}', (string: string) => {
     patientProfilePage.isCurrentSexAdded(string);
 });
 
-Then('user edits mortality with the deceased option as {string}', (string) => {
+Then('user edits mortality with the deceased option as {string}', (string: string) => {
     patientProfilePage.editMortality(string);
 });
 
-Then('mortality information is saved with the deceased option as {string}', (string) => {
+Then('mortality information is saved with the deceased option as {string}', (string: string) => {
     patientProfilePage.isMortalityAdded(string);
 });
 
@@ -219,11 +219,11 @@ Given('the user navigate to a new patient profile page', () => {
     cy.visit(`/patient-profile/${clientid}`);
 });
 
-Given('the user navigate to the patient profile page for {string}', (string) => {
+Given('the user navigate to the patient profile page for {string}', (string: string) => {
     cy.visit(`/patient/${string}/summary`);
 });
 
-Then('I should see the following columns for {string} table', (string, dataTable) => {
+Then('I should see the following columns for {string} table', (string: string, dataTable: any) => {
     eventsTabPage.validateTableColumns(string, dataTable);
 });
 

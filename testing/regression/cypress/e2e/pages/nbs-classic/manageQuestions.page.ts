@@ -11,7 +11,7 @@ class ClassicManageQuestionsPage {
         cy.get('input[type="button"][value="Add New"]').eq(0).click();
     }
 
-    fillTheDetailsLocalQuestion(type) {
+    fillTheDetailsLocalQuestion(type: string) {
         const newName = this.newName();
         if (type === 'LOCAL') {
             cy.get('input[name="questionType_textbox"]').type('Locally Defined');

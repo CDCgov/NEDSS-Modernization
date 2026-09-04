@@ -3,12 +3,12 @@ class PageBuilderPage {
         cy.get('input[name="Submit"][value="Add New"]').eq(0).click(); // Click the "Add New" button
     }
 
-    selectTemplate(templateName) {
+    selectTemplate(templateName: string) {
         cy.get('input[name="existingTemplate_textbox"]').type(templateName);
         cy.get('input[name="existingTemplate_textbox"]').type('{enter}'); // Enter and select template name
     }
 
-    selectMappingGuide(mappingGuideName) {
+    selectMappingGuide(mappingGuideName: string) {
         cy.get('input[name="mappingGuide_textbox"]').type(mappingGuideName);
         cy.get('input[name="mappingGuide_textbox"]').type('{enter}'); // Enter and select mapping guide
     }
@@ -50,7 +50,7 @@ class PageBuilderPage {
         cy.get('input[name="Page History"][value="Page History"]').eq(0).click(); // Click the button
     }
 
-    verifyPageHistoryPopup(expectedTitle) {
+    verifyPageHistoryPopup(expectedTitle: string) {
         cy.get('div.popupTitle').should('contain.text', expectedTitle); // Assert the page title
     }
 
@@ -64,7 +64,7 @@ class PageBuilderPage {
         cy.get('input[type="button"][name="Publish"][value="Publish"]').eq(0).click(); // Click the Publish button
     }
 
-    enterVersionNotes(notes) {
+    enterVersionNotes(notes: string) {
         cy.get('textarea#versionNote').type(notes); // Type version notes
     }
 

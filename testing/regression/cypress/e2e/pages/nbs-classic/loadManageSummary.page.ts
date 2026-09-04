@@ -18,12 +18,12 @@ class LoadManageSummaryPage {
         cy.contains('Manage Summary Notifications').should('be.visible');
     }
 
-    selectMMWRYear(year) {
+    selectMMWRYear(year: number) {
         cy.enterInput('input[name="MMWRYear_textbox"]', year);
         cy.get('input[value="Get Summary Reports"]').click();
     }
 
-    verifyMMWRWeekOptions(count) {
+    verifyMMWRWeekOptions(count: number) {
         cy.get('select[name="MMWRWeek"]').find('option').should('have.length', count);
     }
 }

@@ -19,7 +19,7 @@ class EditMortalityModule {
         return this;
     }
 
-    mortality(option) {
+    mortality(option: any) {
         cy.get(this.section).eq(1).find('select[data-testid=dropdown]').select(option);
         return this;
     }
@@ -29,7 +29,7 @@ class EditMortalityModule {
         cy.get(this.section).click();
     }
 
-    isMortalityAdded(mortality) {
+    isMortalityAdded(mortality: string) {
         cy.get(this.section).eq(1).contains(mortality).should('be.visible');
     }
 }

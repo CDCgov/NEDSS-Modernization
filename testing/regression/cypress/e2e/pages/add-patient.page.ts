@@ -112,7 +112,7 @@ class AddPatientPage {
         cy.get('nav').should('be.visible').and('contain.text', 'Patient file');
     }
 
-    viewPatientID(patientIDString) {
+    viewPatientID(patientIDString: string) {
         cy.get('header span').contains(patientIDString).should('be.visible');
     }
 

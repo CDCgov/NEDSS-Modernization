@@ -7,14 +7,14 @@ class ViewPHDCPage {
         cy.exec('npm run PHCRImporter');
     }
 
-    openPatientCaseReport(patientFirstName) {
+    openPatientCaseReport(patientFirstName: string) {
         cy.get('table#parent th img#queueIcon').eq(3).click();
         cy.get('input#SearchText1').first().type(patientFirstName);
         cy.get('#b1SearchText1').click({ force: true });
         cy.get('a').contains('Case Report').first().click();
     }
 
-    viewPHDC(patientName) {
+    viewPHDC(patientName: string) {
         cy.contains(patientName);
         cy.contains('Public Health Case Report - Data from Legacy System to CDA');
     }

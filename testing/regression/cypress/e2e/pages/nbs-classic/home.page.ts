@@ -7,7 +7,7 @@ class ClassicHomePage {
         cy.get('#homePageAdvancedSearch').click();
     }
 
-    enterLastName(text) {
+    enterLastName(text: string) {
         cy.get('[id="name.last"]').type(text);
     }
 
@@ -15,7 +15,7 @@ class ClassicHomePage {
         cy.contains('button', 'Search').eq(0).click();
     }
 
-    enterFirstName(text) {
+    enterFirstName(text: string) {
         cy.get('[id="name.last"]').type(text);
     }
 
@@ -31,8 +31,8 @@ class ClassicHomePage {
         cy.contains('Add Lab Report');
     }
 
-    clickDefaultQueue(queueName) {
-        cy.get('.content ul li').then(($element) => {
+    clickDefaultQueue(queueName: string) {
+        cy.get('.content ul li').then(($element: any) => {
             const text = $element.text().trim();
             if (!text.includes(`${queueName} (0)`)) {
                 cy.get($element).contains(queueName).eq(0).click();
@@ -107,7 +107,7 @@ class ClassicHomePage {
 
     runSASCA01Report() {
         // fill out report form inputs
-        cy.enterInput('input[name="TXT_01"]', 1);
+        cy.enterInput('input[name="TXT_01"]', '1');
         cy.get('input[name="cvg_select_all"]').click();
         // run report
         cy.get('td').contains('Run').eq(0).click();
@@ -134,19 +134,19 @@ class ClassicHomePage {
         cy.get('a').contains('Open Investigations').eq(0).click();
     }
 
-    clickSortTableOption(string) {
+    clickSortTableOption(string: string) {
         cy.get(`button[aria-label="${string}"]`).click();
     }
 
-    verifyTopAfterSortSearch(string) {
+    verifyTopAfterSortSearch(string: string) {
         cy.get('#patient-search-results tbody tr').eq(0).contains(string);
     }
 
-    verifyNoTopAfterSortSearch(string) {
+    verifyNoTopAfterSortSearch(string: string) {
         cy.get('#patient-search-results tbody tr').eq(0).should('not.contain', string);
     }
 
-    searchArray(selector, values, field = 'value') {
+    searchArray(selector: string, values: string, field = 'value') {
         if (Array.isArray(values)) {
             values.forEach((item) => {
                 const value = typeof item === 'object' ? item[field] || item.value : item;
@@ -185,16 +185,16 @@ class ClassicHomePage {
                 cy.get('div#patient-search-results tbody tr td').then(($tds) => {
                     const tdTexts = $tds.toArray().map((td) => td.innerText.trim());
 
-                    function categorizeAddresses(text) {
+                    function categorizeAddresses(text: string) {
                         const categorized = [];
                         const lines = text
                             .split(/\n+/)
-                            .map((line) => line.trim())
-                            .filter((line) => line); // Remove blank lines
-                        let currentType = null;
-                        let currentValue = [];
+                            .map((line: string) => line.trim())
+                            .filter((line: string) => line); // Remove blank lines
+                        let currentType: string | null = null;
+                        let currentValue: string[] = [];
 
-                        lines.forEach((line) => {
+                        lines.forEach((line: any) => {
                             if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {
                                 if (currentType && currentValue.length > 0) {
                                     categorized.push(formatAddress(currentType, currentValue));
@@ -213,12 +213,12 @@ class ClassicHomePage {
                         return categorized;
                     }
 
-                    function formatAddress(type, addressLines) {
+                    function formatAddress(type: string, addressLines: string[]) {
                         if (addressLines.length < 2) {
                             return { type, fullAddress: addressLines.join(', ') };
                         }
 
-                        const cityStateZip = addressLines.pop();
+                        const cityStateZip: string = addressLines.pop()!;
                         const match = cityStateZip.match(/^(.+),\s([A-Z]{2})\s(\d{5})$/);
 
                         if (match) {
@@ -235,16 +235,16 @@ class ClassicHomePage {
                         }
                     }
 
-                    function categorizeEntries(text) {
+                    function categorizeEntries(text: string) {
                         const categorized = [];
                         const lines = text
                             .split(/\n+/)
-                            .map((line) => line.trim())
-                            .filter((line) => line); // Remove blank lines
-                        let currentType = null;
-                        let currentValue = [];
+                            .map((line: string) => line.trim())
+                            .filter((line: string) => line); // Remove blank lines
+                        let currentType: string | null = null;
+                        let currentValue: string[] = [];
 
-                        lines.forEach((line) => {
+                        lines.forEach((line: string) => {
                             if (/^[A-Za-z\s]+$/.test(line) && line.length < 30) {
                                 if (currentType && currentValue.length > 0) {
                                     categorized.push({ type: currentType, value: currentValue.join(', ') });
@@ -263,7 +263,7 @@ class ClassicHomePage {
                         return categorized;
                     }
 
-                    const parsedDataTdTexts = {
+                    const parsedDataTdTexts: any = {
                         patientId: tdTexts[0],
                         names: categorizeEntries(tdTexts[1]),
                         dob: tdTexts[2].split(/\n+/)[0],

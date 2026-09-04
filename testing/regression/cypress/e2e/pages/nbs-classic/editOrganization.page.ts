@@ -94,7 +94,7 @@ class EditOrganizationPage {
 
     // Methods to add new contact information (telephone and address)
 
-    addNewTelephoneEntry(telephoneDetails) {
+    addNewTelephoneEntry(telephoneDetails: string) {
         cy.log(
             `Adding new telephone: ${telephoneDetails.areaCode}-${telephoneDetails.prefix}-${telephoneDetails.lineNumber}`
         );
@@ -140,17 +140,17 @@ class EditOrganizationPage {
         cy.wait(1000);
     }
 
-    enterTelephoneUse(useValue) {
+    enterTelephoneUse(useValue: string) {
         cy.log(`Selecting telephone use: ${useValue}`);
         cy.get('select[name="telephone[i].useCd"]').select(useValue, { force: true });
     }
 
-    enterTelephoneType(typeValue) {
+    enterTelephoneType(typeValue: string) {
         cy.log(`Selecting telephone type: ${typeValue}`);
         cy.get('select[name="telephone[i].cd"]').select(typeValue, { force: true });
     }
 
-    enterTelephoneNumber(areaCode, prefix, lineNumber) {
+    enterTelephoneNumber(areaCode: string, prefix: string, lineNumber: string) {
         cy.log(`Entering telephone: ${areaCode}-${prefix}-${lineNumber}`);
         cy.enterInput('input[id*="phoneNbrTxt1"]', areaCode);
         cy.enterInput('input[id*="phoneNbrTxt2"]', prefix);
@@ -163,27 +163,27 @@ class EditOrganizationPage {
         cy.wait(500);
     }
 
-    enterAddressUse(useValue) {
+    enterAddressUse(useValue: string) {
         cy.log(`Selecting address use: ${useValue}`);
         cy.get('select[name="address[i].useCd"]').select(useValue, { force: true });
     }
 
-    enterAddressType(typeValue) {
+    enterAddressType(typeValue: string) {
         cy.log(`Selecting address type: ${typeValue}`);
         cy.get('select[name="address[i].cd"]').select(typeValue, { force: true });
     }
 
-    enterStreetAddress1(address) {
+    enterStreetAddress1(address: string) {
         cy.log(`Entering street address: ${address}`);
         cy.enterInput('input[name="address[i].thePostalLocatorDT_s.streetAddr1"]', address);
     }
 
-    enterCity(city) {
+    enterCity(city: string) {
         cy.log(`Entering city: ${city}`);
         cy.enterInput('input[name="address[i].thePostalLocatorDT_s.cityDescTxt"]', city);
     }
 
-    enterZipCode(zip) {
+    enterZipCode(zip: string) {
         cy.log(`Entering zip code: ${zip}`);
         cy.enterInput('input[name="address[i].thePostalLocatorDT_s.zipCd"]', zip);
     }

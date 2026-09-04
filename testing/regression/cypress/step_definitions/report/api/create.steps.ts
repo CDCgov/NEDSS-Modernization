@@ -6,7 +6,7 @@ const VALID_SECTION_CODE = '1000';
 export let NEW_REPORT_UID;
 export const VALID_DATA_SOURCE_UID = 1;
 
-function makeCreateRequest(body) {
+function makeCreateRequest(body: string) {
     return cy
         .request({
             method: 'POST',

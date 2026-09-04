@@ -85,7 +85,7 @@ class OpenInvestigationPage {
         cy.get(this.clickOpenInvestigationsQueue).eq(1).click();
     }
 
-    searchForInvestigation(investigationId) {
+    searchForInvestigation(investigationId: string) {
         cy.get(this.searchArrow).eq(7).click();
         cy.get(this.investigationIdField).eq(0).type(investigationId);
         cy.get(this.okButton).click();
@@ -107,7 +107,7 @@ class OpenInvestigationPage {
         cy.get(this.editButton).eq(0).click();
     }
 
-    enterTreatmentComments(comment) {
+    enterTreatmentComments(comment: string) {
         cy.enterInput(this.treatmentCommentsField, comment);
     }
 
@@ -115,7 +115,7 @@ class OpenInvestigationPage {
         cy.get(this.submitButton).eq(0).click();
     }
 
-    verifyUpdatedComment(expectedComment) {
+    verifyUpdatedComment(expectedComment: string) {
         cy.get(this.updatedComment).should('contain.text', expectedComment);
     }
 
@@ -131,7 +131,7 @@ class OpenInvestigationPage {
         cy.get('input[name="Add"]').eq(0).click();
     }
 
-    selectConditionFromDropdown(conditionName) {
+    selectConditionFromDropdown(conditionName: string) {
         cy.get('input[name="ccd_textbox"]').type(conditionName);
     }
 

@@ -4,7 +4,7 @@ class ClassicPlaceSearchPage {
         cy.contains('Place').eq(0).click();
     }
 
-    enterNameInClassicSearchPlacePage(text) {
+    enterNameInClassicSearchPlacePage(text: string) {
         cy.get('input[id="city"]').type(text);
     }
 

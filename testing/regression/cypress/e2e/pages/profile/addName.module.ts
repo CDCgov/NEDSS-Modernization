@@ -11,7 +11,7 @@ class AddNameModule {
         return this;
     }
 
-    first(fName) {
+    first(fName: string) {
         return cy.enterInput('.usa-modal-wrapper.is-visible #first', fName);
     }
 
@@ -28,7 +28,7 @@ class AddNameModule {
         addCommentModule.add();
     }
 
-    nameIsAdded(fName) {
+    nameIsAdded(fName: string) {
         cy.contains(fName).should('be.visible');
     }
 

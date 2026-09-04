@@ -11,19 +11,18 @@ const YEARS_BACK = 20;
 const getThisYear = () => new Date().getFullYear();
 
 // Navigation steps
-
 When('I navigate to list reports', () => {
     cy.visit('/nbs/ManageReports.do');
     cy.contains('Private Reports').should('be.visible');
 });
 
-When('I click the {string} report', (reportTitle) => {
+When('I click the {string} report', (reportTitle: string) => {
     cy.contains('td', reportTitle).parent('tr').contains('a', 'Run').click();
 });
 
 When(
     'I navigate to {string} report with reportUid: {int} and dataSourceUid: {int}',
-    (group, reportUid, dataSourceUid) => {
+    (group: string, reportUid: number, dataSourceUid: number) => {
         // click somewhere or else NBS6 may get angry later about no clicks having happened
         cy.contains('a', 'Collapse Sections').click();
         // mimic clicking a "Run" link
@@ -39,36 +38,36 @@ When(
 
 // Component input steps
 
-When('I enter {string} to the From date', (date) => {
+When('I enter {string} to the From date', (date: string) => {
     // Matches any ID ending with "-from", bypassing the React dynamic prefix
     cy.get('input[id$="-from"]').type(date);
 });
 
-When('I enter {string} to the To date', (date) => {
+When('I enter {string} to the To date', (date: string) => {
     // Matches any ID ending with "-to", bypassing the React dynamic prefix
     cy.get('input[id$="-to"]').type(date);
 });
 
-When('I enter From Month: {string} and From Year: {string}', (month, year) => {
+When('I enter From Month: {string} and From Year: {string}', (month: string, year: string) => {
     cy.selectDropdownByLabel('From month', month);
     cy.selectDropdownByLabel('From year', year);
 });
 
-When('I enter To Month: {string} and To Year: {string}', (month, year) => {
+When('I enter To Month: {string} and To Year: {string}', (month: string, year: string) => {
     cy.selectDropdownByLabel('To month', month);
     cy.selectDropdownByLabel('To year', year);
 });
 
-When('I select {string} from the {string} dropdown menu', (value, label) => {
+When('I select {string} from the {string} dropdown menu', (value: string, label: string) => {
     cy.selectDropdownByLabel(label, value);
 });
 
-When('I select the column {string}', (columnName) => {
+When('I select the column {string}', (columnName: string) => {
     cy.get('input[name="column-search"]').type(columnName);
     cy.contains('label', columnName).find('input[type="checkbox"]').check({ force: true });
 });
 
-When('I fill out all filters with {int}', (index) => {
+When('I fill out all filters with {int}', (index: number) => {
     // add extra advanced filter rule before so steps below adds value
     cy.findByRole('button', { name: 'Add rule' }).click();
 
@@ -79,14 +78,14 @@ When('I fill out all filters with {int}', (index) => {
     cy.get('select').each(($select) => cy.wrap($select).select(index));
 
     // finish advanced filter
-    cy.findAllByRole('combobox', { name: 'Logic' }).each(($combobox) => cy.wrap($combobox).select(index));
+    cy.findAllByRole('combobox', { name: 'Logic' }).each(($combobox: any) => cy.wrap($combobox).select(index));
 
     // dates and text filters
-    cy.findAllByRole('textbox').each(($input) => cy.wrap($input).type(`01/01/202${index}`));
+    cy.findAllByRole('textbox').each(($input: any) => cy.wrap($input).type(`01/01/202${index}`));
     // number inputs
-    cy.findAllByRole('spinbutton').each(($input) => cy.wrap($input).type(`${index}`));
+    cy.findAllByRole('spinbutton').each(($input: any) => cy.wrap($input).type(`${index}`));
     // allow nulls
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).click({ force: true }));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).click({ force: true }));
 
     // multi-selects
     cy.get('.multi-select').each(($select) => {
@@ -104,13 +103,13 @@ When('I fill out all filters with {int}', (index) => {
     /* eslint-enable cypress/unsafe-to-chain-command */
 });
 
-Then('All filters should be filled out with {int}', (index) => {
+Then('All filters should be filled out with {int}', (index: number) => {
     // dates and text filters
-    cy.findAllByRole('textbox').each(($input) => cy.wrap($input).should('have.value', `01/01/202${index}`));
+    cy.findAllByRole('textbox').each(($input: any) => cy.wrap($input).should('have.value', `01/01/202${index}`));
     // number inputs
-    cy.findAllByRole('spinbutton').each(($input) => cy.wrap($input).should('have.value', index));
+    cy.findAllByRole('spinbutton').each(($input: any) => cy.wrap($input).should('have.value', index));
     // allow nulls
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('be.checked'));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).should('be.checked'));
 
     // select columns (needs to happen for the sort single-selects to be happy)
     cy.findByRole('checkbox', { name: 'Deselect all' }).should('not.be.checked');
@@ -145,11 +144,11 @@ Then('All filters should be filled out with {int}', (index) => {
 
 Then('All filters should be empty or the default value', () => {
     // dates and text filters
-    cy.findAllByRole('textbox').each(($input) => cy.wrap($input).should('have.value', ''));
+    cy.findAllByRole('textbox').each(($input: any) => cy.wrap($input).should('have.value', ''));
     // number inputs
-    cy.findAllByRole('spinbutton').each(($input) => cy.wrap($input).should('have.value', ''));
+    cy.findAllByRole('spinbutton').each(($input: any) => cy.wrap($input).should('have.value', ''));
     // allow nulls
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('not.be.checked'));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).should('not.be.checked'));
 
     cy.get('body').then(($body) => {
         const selectAllExists = $body.find('[label="Select all"]').length > 0;
@@ -202,16 +201,16 @@ Then('All filters should be empty or the default value', () => {
 Then('I click all include nulls', () => {
     // select columns (needs to happen for the sort single-selects to be happy)
     checkSelectAll();
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).click({ force: true }));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).click({ force: true }));
 });
 
 Then('All include nulls checkboxes should be checked', () => {
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input) => cy.wrap($input).should('be.checked'));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).should('be.checked'));
 });
 
 // Confirmation steps
 
-Then('I see the {string} report', (title) => {
+Then('I see the {string} report', (title: string) => {
     cy.contains(title).should('be.visible');
 });
 

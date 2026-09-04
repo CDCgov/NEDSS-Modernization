@@ -8,7 +8,7 @@
  * @returns {Cypress.Chainable<string>} - The selected value
  */
 
-export function selectRandomDropdownValue(dropdownSelector) {
+export function selectRandomDropdownValue(dropdownSelector: string) {
     cy.log(`Selecting random value from dropdown: ${dropdownSelector}`);
 
     // Get all non-empty option values from the dropdown

@@ -11,7 +11,7 @@ class ClassicManageValueSetsPage {
         cy.get('input[type="submit"][value="Add New"]').eq(0).click();
     }
 
-    fillTheDetailsValueSetFields(type) {
+    fillTheDetailsValueSetFields(type: string) {
         const newName = this.newName();
         if (type === 'LOCAL') {
             cy.get('input[name="ValStF_textbox"]').type('Locally Defined');
@@ -31,7 +31,7 @@ class ClassicManageValueSetsPage {
         cy.get('.multiSelect').eq(2).click();
     }
 
-    enterFilterTextValueSetLibrary(text) {
+    enterFilterTextValueSetLibrary(text: string) {
         cy.get('#SearchText2').eq(0).type(text);
     }
 
@@ -138,7 +138,7 @@ class ClassicManageValueSetsPage {
         });
     }
 
-    verifyValueSetNamesContain(text) {
+    verifyValueSetNamesContain(text: string) {
         cy.get('table.dtTable tbody tr td:nth-child(5)').each(($td) => {
             const valueSetName = $td.text().trim();
             cy.log('Value Set Name: ' + valueSetName);

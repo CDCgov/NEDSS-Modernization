@@ -37,7 +37,7 @@ Then('I should see profile of new patient', () => {
     addPatientPage.viewPatientProfile();
 });
 
-Then('I should see on Patient Profile {string}', (patientIDString) => {
+Then('I should see on Patient Profile {string}', (patientIDString: string) => {
     addPatientPage.viewPatientID(patientIDString);
 });
 

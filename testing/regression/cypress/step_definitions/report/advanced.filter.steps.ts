@@ -67,7 +67,7 @@ When('I add incomplete or incorrect advanced filters', () => {
 
                 // enter invalid date
                 if (advFilter.field === 'Confirmation Method Time' && logicVal === 'Not Equals') {
-                    enterInput('name="Value"', 2);
+                    enterInput('name="Value"', "2");
                 }
             }
 
@@ -134,7 +134,7 @@ When('I remove all rules from an entire rule group', () => {
     cy.findAllByTestId('rule-group')
         .last()
         .within(() => {
-            cy.findAllByTestId('rule').each(($rule) => {
+            cy.findAllByTestId('rule').each(($rule: any) => {
                 cy.wrap($rule).within(() => {
                     cy.get('button[aria-label="Remove rule"]').click();
                 });
@@ -151,7 +151,7 @@ When('I remove a rule group', () => {
 });
 
 // Helpers
-const enterFilterValue = (field, index) => {
+const enterFilterValue = (field: any, index: number) => {
     cy.get('select[name="Field"]').select(field.field);
     const logic = field.logic[index];
     cy.get('select[name="Logic"]').select(logic);
@@ -184,16 +184,16 @@ const enterFilterValue = (field, index) => {
     }
 };
 
-const enterInput = (inputSelector, value) => {
+const enterInput = (inputSelector: string, value: string) => {
     cy.get(`input[${inputSelector}]`).last().clear();
     cy.get(`input[${inputSelector}]`).last().type(value);
 };
 
-const enterBetweenInput = (from, to) => {
+const enterBetweenInput = (from: string, to: string) => {
     enterInput('id$="-from"', from);
     enterInput('id$="-to"', to);
 };
 
-const checkAlertForErrorMsg = (error) => {
+const checkAlertForErrorMsg = (error: string) => {
     cy.findAllByRole('alert').contains(error).should('be.visible');
 };

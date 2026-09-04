@@ -1,5 +1,5 @@
 class DataElementsPage {
-    userViewsColumnAndSeeList(columnName) {
+    userViewsColumnAndSeeList(columnName: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
@@ -7,7 +7,7 @@ class DataElementsPage {
         });
     }
 
-    getColumnIndexByName(columnName) {
+    getColumnIndexByName(columnName: string) {
         if (columnName === 'Page name') {
             return 0;
         } else if (columnName === 'Event type') {

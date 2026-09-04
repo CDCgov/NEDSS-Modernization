@@ -20,13 +20,13 @@ class AddRaceModule {
         return this;
     }
 
-    detailRace(detRace) {
+    detailRace(detRace: string) {
         cy.get('.usa-modal-wrapper.is-visible .multi-select__control').type(`${detRace}{enter}`);
         cy.get('.usa-modal-wrapper.is-visible .multi-select__control').click();
         return this;
     }
 
-    isRaceAdded(detRace) {
+    isRaceAdded(detRace: string) {
         cy.contains(detRace).should('be.visible');
     }
 }

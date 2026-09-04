@@ -19,7 +19,7 @@ class ClassicManageTemplatePage {
         cy.get('.multiSelect').eq(0).click();
     }
 
-    enterFilterTextInTemplateNameFilterInbox(text) {
+    enterFilterTextInTemplateNameFilterInbox(text: string) {
         cy.get('#SearchText1').eq(0).type(text);
     }
 
@@ -39,7 +39,7 @@ class ClassicManageTemplatePage {
         cy.contains('Rules');
     }
 
-    checkTemplateNamesContain(text) {
+    checkTemplateNamesContain(text: string) {
         cy.get('table.dtTable tbody tr td:nth-child(2)').each(($td) => {
             const templateName = $td.text().trim();
             expect(templateName, 'Template Name should contain "' + text + '"').to.include(text);

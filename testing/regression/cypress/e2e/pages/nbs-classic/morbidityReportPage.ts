@@ -43,12 +43,12 @@ class MorbidityReportPage {
         cy.get(this.reportInformationTab).contains('Report Information').click();
     }
 
-    selectCondition(condition) {
+    selectCondition(condition: string) {
         cy.get(this.conditionField).type(condition);
         cy.get(this.conditionField).type('{enter}');
     }
 
-    selectJurisdiction(jurisdiction) {
+    selectJurisdiction(jurisdiction: string) {
         cy.get(this.jurisdictionField).select(jurisdiction, { force: true });
     }
 
@@ -61,7 +61,7 @@ class MorbidityReportPage {
             });
     }
 
-    checkFirstInvestigationWithCondition(condition) {
+    checkFirstInvestigationWithCondition(condition: string) {
         // Find the first row with the matching condition
         cy.get('table.dtTable tbody tr')
             .filter((index, row) => {
@@ -84,27 +84,27 @@ class MorbidityReportPage {
         cy.get(this.jurisdictionField).select('', { force: true });
     }
 
-    enterMorbidityDate(date) {
+    enterMorbidityDate(date: string) {
         const [month, day, year] = date.split('/');
         const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
         cy.get(this.morbidityDateField).type(formattedDate);
     }
 
-    enterTreatmentDate(date) {
+    enterTreatmentDate(date: string) {
         const [month, day, year] = date.split('/');
         const formattedDate = `${month.padStart(2, '0')}${day.padStart(2, '0')}${year}`;
         cy.get(this.treatmentDateField).type(formattedDate);
     }
 
-    enterFacilityProvider(value) {
+    enterFacilityProvider(value: string) {
         cy.get(this.facilityProviderField).type(value);
     }
 
-    selectPregnant(value) {
+    selectPregnant(value: string) {
         cy.get(this.pregnantDropdown).select(value, { force: true });
     }
 
-    selectTreatment(value) {
+    selectTreatment(value: string) {
         cy.get(this.treatmentDropdown).select(value, { force: true });
     }
 
@@ -213,7 +213,7 @@ class MorbidityReportPage {
     }
 
     // Patient entry methods
-    enterPatientBothNames(firstName, lastName) {
+    enterPatientBothNames(firstName: string, lastName: string) {
         cy.get(this.patientFirstNameField).type(firstName);
         cy.get(this.patientLastNameField).type(lastName);
     }
@@ -229,7 +229,7 @@ class MorbidityReportPage {
         }).should('be.visible');
     }
 
-    verifyFieldValidationError(fieldName) {
+    verifyFieldValidationError(fieldName: string) {
         // Look for error messages specifically mentioning the field name
         cy.contains(new RegExp(`${fieldName}.*required|required.*${fieldName}`, 'i')).should('be.visible');
         // Also check for error styling near the field - but only visible ones
@@ -237,7 +237,7 @@ class MorbidityReportPage {
     }
 
     // Form state verification
-    verifyPatientFirstNameContains(value) {
+    verifyPatientFirstNameContains(value: string) {
         cy.get(this.patientFirstNameField).should('have.value', value);
     }
 

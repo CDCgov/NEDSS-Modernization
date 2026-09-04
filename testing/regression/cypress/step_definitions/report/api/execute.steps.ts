@@ -4,7 +4,7 @@ const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_FILTER_UID = 1;
 
-function makeRequest(body, action) {
+function makeRequest(body: string, action: string) {
     return cy
         .request({
             method: 'POST',

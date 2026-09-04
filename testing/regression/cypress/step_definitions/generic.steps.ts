@@ -46,10 +46,10 @@ When('I select radio {string} in the {string} field', (value, label) => {
 });
 
 Then('I should see a modal labelled {string}', (name) => {
-    const modalHeadingTextMatcher = (elementText, element) => {
+    const modalHeadingTextMatcher = (elementText: any, element: Element) => {
         // remove button and svg tags from modal heading tag
         const copiedElement = element.cloneNode(true);
-        copiedElement.querySelectorAll('button, svg').forEach((node) => node.remove());
+        copiedElement.querySelectorAll('button, svg').forEach((node: Element) => node.remove());
         const cleanText = copiedElement.textContent.trim();
         return cleanText.includes(name);
     };

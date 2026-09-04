@@ -31,7 +31,7 @@ class ClassicManagePagesPage {
         cy.get('.addSubSection').eq(0).click();
     }
 
-    selectPageType(pageType) {
+    selectPageType(pageType: any) {
         //  Open `Event Type` dropdown
         cy.get('table[id="subSection1"]').find('tr').eq(2).find('img[name="busObjType_button"]').eq(0).click();
 
@@ -78,7 +78,7 @@ class ClassicManagePagesPage {
         cy.get('table[id="parent"]').find('th').eq(6).find('a').contains('Last Updated').eq(0).click();
     }
 
-    checkDisplayed(text) {
+    checkDisplayed(text: string) {
         cy.contains(text);
     }
 

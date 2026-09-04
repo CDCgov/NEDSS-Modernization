@@ -1,5 +1,5 @@
 class SearchAndFilterPage {
-    enterTextInSearchField(searchKeyword) {
+    enterTextInSearchField(searchKeyword: string) {
         cy.get('#page-search').type(searchKeyword);
     }
 
@@ -8,7 +8,7 @@ class SearchAndFilterPage {
         cy.wait(1000);
     }
 
-    checkMatchedSearchResult(searchedKeyword, columnName) {
+    checkMatchedSearchResult(searchedKeyword: string, columnName: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
@@ -19,7 +19,7 @@ class SearchAndFilterPage {
         }
     }
 
-    getColumnIndexByName(columnName) {
+    getColumnIndexByName(columnName: string) {
         if (columnName === 'Page name') {
             return 0;
         } else if (columnName === 'Event type') {
@@ -33,7 +33,7 @@ class SearchAndFilterPage {
         }
     }
 
-    getColumnValueByName(columnName) {
+    getColumnValueByName(columnName: string) {
         if (columnName === 'Page name') {
             return 'name';
         } else if (columnName === 'Event type') {
@@ -54,15 +54,15 @@ class SearchAndFilterPage {
         cy.get('#add-filter').click();
     }
 
-    selectColumn(columnName) {
+    selectColumn(columnName: string) {
         cy.selectDropdownByLabel('Select a field', this.getColumnValueByName(columnName));
     }
 
-    selectOperator(operatorValue) {
+    selectOperator(operatorValue: string) {
         cy.selectDropdownByLabel('Operator', operatorValue);
     }
 
-    enterValue(value) {
+    enterValue(value: string) {
         cy.findByLabelText('Value').type(value);
     }
 
@@ -78,14 +78,14 @@ class SearchAndFilterPage {
         cy.get('#cancel-button').click();
     }
 
-    enterTextInMultiInputValue(value) {
+    enterTextInMultiInputValue(value: string) {
         cy.get('.multi-select__input').type(value);
         cy.get('.multi-select__option--is-focused').should('be.visible');
         cy.press(Cypress.Keyboard.Keys.TAB);
         cy.get('.multi-select__input').type('{esc}');
     }
 
-    showingContainedResults(text, columnName) {
+    showingContainedResults(text: string, columnName: string) {
         this.checkMatchedSearchResult(text, columnName);
     }
 

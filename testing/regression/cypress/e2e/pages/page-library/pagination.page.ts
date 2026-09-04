@@ -7,16 +7,16 @@ class PaginationPage {
         return 'table[data-testid=table]';
     }
 
-    selectNumberOfRows(numberOfRows) {
+    selectNumberOfRows(numberOfRows: number) {
         cy.get('#range-toggle').select(numberOfRows);
         cy.get('#range-toggle').should('have.value', numberOfRows);
     }
 
-    checkDisplayingNumberOfRowsSubsequently(rowsPerPage, onlyOnNext, pageNumber) {
+    checkDisplayingNumberOfRowsSubsequently(rowsPerPage: any, onlyOnNext: any, pageNumber: number) {
         this.totalRowsCountFromDOM().then((totalRowsCount) => {
             const totalPages = Math.ceil(totalRowsCount / rowsPerPage);
             const lastPageRowsCount = totalRowsCount % rowsPerPage || rowsPerPage;
-            const arrayMapFun = (_, i) => (i === totalPages - 1 ? lastPageRowsCount : rowsPerPage);
+            const arrayMapFun = (_: any, i: number) => (i === totalPages - 1 ? lastPageRowsCount : rowsPerPage);
             const rowsCountPerPage = Array.from({ length: totalPages }, arrayMapFun);
 
             if (onlyOnNext) {
@@ -53,7 +53,7 @@ class PaginationPage {
     navigateToCreatePage() {
         cy.visit('/page-builder/pages/add');
     }
-    clickByPageNumber(pageNumber) {
+    clickByPageNumber(pageNumber: number) {
         if (pageNumber) {
             cy.get('.usa-pagination__button')
                 .eq(pageNumber - 1)

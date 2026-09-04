@@ -12,7 +12,7 @@ class UtilityFunctions {
         return this.generateRandomLengthNumber(9);
     }
 
-    generateRandomLengthNumber(length) {
+    generateRandomLengthNumber(length: number) {
         return Array(length)
             .fill()
             .map(() => faker.number.int(9))
@@ -51,7 +51,7 @@ class UtilityFunctions {
         return `${year}${month}${day}${hours}${minutes}`;
     }
 
-    capitalizeFirstLetter(string) {
+    capitalizeFirstLetter(string: string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
@@ -66,27 +66,27 @@ class UtilityFunctions {
         return this.capitalizeFirstLetter(randomName).replace(/[^0-9a-z]/gi, '');
     }
 
-    formatSSN(ssn) {
+    formatSSN(ssn: string) {
         const ssnString = ssn.toString();
         return `${ssnString.slice(0, 3)}-${ssnString.slice(3, 5)}-${ssnString.slice(5)}`;
     }
 
-    replacePlaceholders(message, replacements) {
+    replacePlaceholders(message: string, replacements: Record<string, string>) {
         return Object.entries(replacements).reduce((modifiedMessage, [placeholder, replacement]) => {
             return modifiedMessage.replaceAll(placeholder, replacement);
         }, message);
     }
 
-    formatHL7 = (hl7String) => {
-        const formattedFields = [];
+    formatHL7 = (hl7String: string) => {
+        const formattedFields: string[] = [];
         const segments = hl7String.split(/\r\n|\r|\n/);
 
-        segments.forEach((segment) => {
+        segments.forEach((segment: string) => {
             const fields = segment.split('|');
             for (let i = 1; i < fields.length; i++) {
                 const components = fields[i].split('^');
                 if (components.length > 1) {
-                    components.forEach((component, j) => {
+                    components.forEach((component: string, j: any) => {
                         formattedFields.push(`${fields[0]}.${i}.${j + 1} - ${component}`);
                     });
                 } else {
@@ -98,7 +98,7 @@ class UtilityFunctions {
         return formattedFields;
     };
 
-    checkTransportRequestAPI = (apiID) => {
+    checkTransportRequestAPI = (apiID: string) => {
         const authToken = Cypress.env('authTokenAPI');
         const transportstatusurlapi = Cypress.env('ON_PRIM_NOTIFICATION_STATUS_API');
         const clientid = Cypress.env('DI_CLIENT_ID');
@@ -177,7 +177,7 @@ class UtilityFunctions {
         });
     };
 
-    checkELRActivityLog(fakeRandomData) {
+    checkELRActivityLog(fakeRandomData: any) {
         cy.get('a').contains('Home').click();
         cy.contains('System Management').click();
         cy.xpath('/html/body/div/div/div/div[2]/div[2]/section/div/div/div/a[1]').click();
@@ -195,14 +195,14 @@ class UtilityFunctions {
         this.checkTransportRequest();
     }
 
-    createNotication(string) {
+    createNotication(string: string) {
         cy.get('input[name=createInvestigation]').first().click();
         cy.get('select[name=ccd]').select(string, { force: true });
         cy.get('input[name=Submit]').first().click();
         cy.get('#DEM196').invoke('text', 'Investigation is needed');
         cy.get('select[id=INV163]').select('Confirmed', { force: true });
         cy.get('input[name=SubmitTop]').first().click();
-        cy.window().then((win) => {
+        cy.window().then((win: any) => {
             win.createNotifications('Comment');
             cy.get('#successMessages').contains('A Notification has been created for this Investigation.');
             cy.get('#successMessages').scrollIntoView();

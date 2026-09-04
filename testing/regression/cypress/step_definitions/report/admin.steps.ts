@@ -13,7 +13,7 @@ Then('I should see the {string} configuration page', (type) => {
     cy.contains(`${type} report`).should('be.visible');
 });
 
-Then('I should see {int} available filters', (filterCount) => {
+Then('I should see {int} available filters', (filterCount: number) => {
     // account for header
     cy.findByRole('group', { name: '3. Available filters' })
         .findAllByRole('row')
@@ -25,11 +25,11 @@ When('I click the filter {int} {string} button', (filterInd, name) => {
 });
 
 When('I add all filters', () => {
-    const optionValues = [];
+    const optionValues: any[] = [];
     // eslint-disable-next-line cypress/unsafe-to-chain-command
     cy.findByRole('combobox', { name: 'Filter' })
         .findAllByRole('option')
-        .each(($option) => {
+        .each(($option: any) => {
             // skip placeholder
             if (!$option.val()) return;
             optionValues.push($option.val());
@@ -41,7 +41,7 @@ When('I add all filters', () => {
                 cy.log(`Selecting filter: ${value}`);
                 cy.findByRole('combobox', { name: 'Filter' }).select(value);
 
-                cy.findAllByRole('combobox').each(($item) => {
+                cy.findAllByRole('combobox').each(($item: any) => {
                     const name = $item.attr('name');
                     if (name === 'selectType') {
                         cy.wrap($item).select('Multi-select filter');

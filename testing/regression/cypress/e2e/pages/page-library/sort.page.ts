@@ -73,7 +73,7 @@ class SortPage {
         this.checkOrder('Last updated by', 'ascending', 'date');
     }
 
-    checkOrder(columnName, sortType, dataType) {
+    checkOrder(columnName: string, sortType: string, dataType: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
@@ -88,7 +88,7 @@ class SortPage {
         expect(isOrdered).to.be.true;
     }
 
-    getColumnIndexByName(columnName) {
+    getColumnIndexByName(columnName: string) {
         if (columnName === 'Page name') {
             return 0;
         } else if (columnName === 'Event type') {
@@ -109,8 +109,8 @@ class SortPage {
         return cy.get(this.table).eq(0);
     }
 
-    isAscending(list, dataType) {
-        return list.every((value, index, array) => {
+    isAscending(list: string[], dataType: string) {
+        return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }
@@ -121,8 +121,8 @@ class SortPage {
         });
     }
 
-    isDescending(list, dataType) {
-        return list.every((value, index, array) => {
+    isDescending(list: string[], dataType: string) {
+        return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }
@@ -133,7 +133,7 @@ class SortPage {
         });
     }
 
-    checkDateFormat(columnName) {
+    checkDateFormat(columnName: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.openInvestigationTable.find('tbody tr').each(($tr) => {

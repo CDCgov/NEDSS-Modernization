@@ -10,7 +10,7 @@ class LoginPage {
         this.loginAsUserName(user);
     }
 
-    loginAsUserName(username) {
+    loginAsUserName(username: string) {
         cy.get('body').then((body) => {
             if (body.find("input[id='id_UserName']").length > 0) {
                 cy.intercept('POST', '/graphql').as('loginRequest');

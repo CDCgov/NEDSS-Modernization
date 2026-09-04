@@ -23,18 +23,18 @@ class EventsTabPage {
         cy.get(EventsTabPage.SPINNER_SELECTOR, { timeout }).should('not.exist');
     }
 
-    getCountBadge(reportIndex) {
+    getCountBadge(reportIndex: number) {
         return cy.get(EventsTabPage.COUNT_BADGE_SELECTOR).eq(reportIndex);
     }
 
-    extractAndStoreEventId($link) {
+    extractAndStoreEventId($link: any) {
         const eventId = $link.text().trim();
         Cypress.env('morbidityEventId', eventId);
         cy.log('Stored morbidity event ID: ' + eventId);
         return eventId;
     }
 
-    findRowByEventId(eventId) {
+    findRowByEventId(eventId: string) {
         return cy
             .get(EventsTabPage.MORBIDITY_TABLE_SELECTOR)
             .filter((index, row) => {
@@ -43,12 +43,12 @@ class EventsTabPage {
             .should('have.length', 1, 'Should find exactly one row with Event ID: ' + eventId);
     }
 
-    getTreatmentCount($td) {
+    getTreatmentCount($td: any) {
         const $list = $td.find('ul._treatments_t5nhh_1 li');
         return $list.length || 0;
     }
 
-    clickLink($link) {
+    clickLink($link: any) {
         cy.wrap($link).click();
     }
 
@@ -75,7 +75,7 @@ class EventsTabPage {
             });
     }
 
-    getSectionCount(sectionTitle) {
+    getSectionCount(sectionTitle: string) {
         return cy
             .contains('h2', sectionTitle)
             .parent()
@@ -88,7 +88,7 @@ class EventsTabPage {
     // Each card is a <section role="group" aria-labelledby="<heading id>">
     // (see design-system Card.tsx), so this scopes reliably to just one card's
     // table even though several cards on this page all render similar tables.
-    getSectionCard(sectionTitle) {
+    getSectionCard(sectionTitle: string) {
         return cy
             .contains('h2', sectionTitle)
             .invoke('attr', 'id')
@@ -143,7 +143,7 @@ class EventsTabPage {
         });
     }
 
-    validateTableColumns(tableName, dataTable) {
+    validateTableColumns(tableName: any, dataTable: { rawTable: string[][] }) {
         const myArray = [];
         cy.contains('section', tableName).within(() => {
             cy.get('th').then((headerElements) => {
@@ -151,7 +151,7 @@ class EventsTabPage {
                     return Cypress.$(headerElement).text().trim();
                 }).filter(Boolean);
 
-                dataTable.rawTable.forEach((row) => {
+                dataTable.rawTable.forEach((row: any) => {
                     const label = row[0];
                     if ((label === 'Investigation #') & (tableName === 'Investigations')) {
                         myArray.push('');
@@ -166,11 +166,11 @@ class EventsTabPage {
         });
     }
 
-    clickAddButton(buttonValue) {
+    clickAddButton(buttonValue: string) {
         cy.get('button').contains(buttonValue).click();
     }
 
-    getReportCount(ReportType) {
+    getReportCount(ReportType: string) {
         const reportIndex = this.reportTypeIndexMap[ReportType];
         this.waitForSpinner();
 
@@ -183,7 +183,7 @@ class EventsTabPage {
             });
     }
 
-    verifyReportCountIncreased(ReportType) {
+    verifyReportCountIncreased(ReportType: string) {
         const reportIndex = this.reportTypeIndexMap[ReportType];
         this.waitForSpinner();
 
@@ -198,7 +198,7 @@ class EventsTabPage {
             });
     }
 
-    verifyReportCountUnchanged(ReportType) {
+    verifyReportCountUnchanged(ReportType: string) {
         const reportIndex = this.reportTypeIndexMap[ReportType];
         this.waitForSpinner();
 
@@ -273,7 +273,7 @@ class EventsTabPage {
         this.findRowByEventId(eventId).find('td:first-child a').scrollIntoView().should('be.visible').click();
     }
 
-    verifySavedMorbidityReportJurisdiction(expectedJurisdiction) {
+    verifySavedMorbidityReportJurisdiction(expectedJurisdiction: string) {
         this.waitForSpinner();
 
         const eventId = Cypress.env('morbidityEventId');

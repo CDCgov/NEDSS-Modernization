@@ -3,7 +3,7 @@ class PreviewPagePage {
         this.navigateToPreviewPageWithStatusInitialDraft();
     }
 
-    viewsElementsOnPreviewPage(content, type) {
+    viewsElementsOnPreviewPage(content: string, type: string) {
         if (type === 'Icon') {
             if (content === 'Preview') {
                 cy.get('[aria-label="Preview in NBS Classic"]');
@@ -92,7 +92,7 @@ class PreviewPagePage {
         cy.selectDropdownByLabel('Condition(s)', 'Cholera');
     }
 
-    checkPageNameField(check) {
+    checkPageNameField(check: string) {
         cy.get('#name').click();
         if (check) {
             cy.get('#name').clear();
@@ -185,7 +185,7 @@ class PreviewPagePage {
         cy.get('nav div ul li').eq(1).click();
     }
 
-    checkHistoryInfo(info) {
+    checkHistoryInfo(info: string) {
         cy.get('aside section div')
             .eq(0)
             .invoke('text')
@@ -230,7 +230,7 @@ class PreviewPagePage {
         cy.get('#eventType').select(type);
     }
 
-    viewTextOnPage(text) {
+    viewTextOnPage(text: string) {
         cy.contains(text);
     }
 
@@ -284,7 +284,7 @@ class PreviewPagePage {
         cy.get('form button[type="submit"]').eq(0).click({ force: true });
     }
 
-    viewTextOnPageForStatus(text) {
+    viewTextOnPageForStatus(text: string) {
         cy.contains(text);
     }
 }

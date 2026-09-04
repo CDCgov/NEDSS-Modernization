@@ -6,11 +6,11 @@ class ClassicOrganizationPage {
     }
 
     // Search methods
-    enterOrganizationNameInSearch(name) {
+    enterOrganizationNameInSearch(name: string) {
         cy.get('input[id="organizationSearch.nmTxt"]').type(name);
     }
 
-    enterOrganizationAddressInSearch(address) {
+    enterOrganizationAddressInSearch(address: string) {
         cy.get('input[id="organizationSearch.streetAddr1"]').type(address);
     }
 
@@ -81,7 +81,7 @@ class ClassicOrganizationPage {
     }
 
     // Verification methods
-    verifySearchResultsContain(expectedText) {
+    verifySearchResultsContain(expectedText: string) {
         cy.log(`Verifying search results include: ${expectedText}`);
         cy.get('#searchResultsTable', { timeout: 10000 }).should('be.visible').and('contain', expectedText);
     }
@@ -96,17 +96,17 @@ class ClassicOrganizationPage {
         });
     }
 
-    verifySearchResultsContainAddress(expectedAddress) {
+    verifySearchResultsContainAddress(expectedAddress: string) {
         cy.log(`Verifying search results include address: ${expectedAddress}`);
         cy.get('#searchResultsTable', { timeout: 10000 }).should('be.visible').and('contain', expectedAddress);
     }
 
-    verifySearchResultsContainTelephone(expectedTelephone) {
+    verifySearchResultsContainTelephone(expectedTelephone: string) {
         cy.log(`Verifying search results include telephone: ${expectedTelephone}`);
         cy.get('#searchResultsTable', { timeout: 10000 }).should('be.visible').and('contain', expectedTelephone);
     }
 
-    verifySearchResultsContainIdTypeAndValue(expectedType, expectedValue) {
+    verifySearchResultsContainIdTypeAndValue(expectedType: string, expectedValue: string) {
         cy.log(`Verifying search results include ID Type: ${expectedType} with ID Value: ${expectedValue}`);
         cy.get('#searchResultsTable', { timeout: 10000 })
             .should('be.visible')
@@ -134,7 +134,7 @@ class ClassicOrganizationPage {
         cy.get('body').should('contain', 'created').or('contain', 'added').or('contain', 'successful');
     }
 
-    verifySearchResultsCountIncreasedBy(additionalCount) {
+    verifySearchResultsCountIncreasedBy(additionalCount: number) {
         cy.log(`Verifying search results count increased by ${additionalCount}`);
 
         // Get the previously saved count
@@ -160,29 +160,29 @@ class ClassicOrganizationPage {
     }
 
     // Administrative Information verification
-    verifyQuickCode(expectedValue) {
+    verifyQuickCode(expectedValue: string) {
         cy.log(`Verifying Quick Code: ${expectedValue}`);
         cy.get('#test').should('contain', expectedValue);
     }
 
-    verifyStandardIndustryClass(expectedValue) {
+    verifyStandardIndustryClass(expectedValue: string) {
         cy.log(`Verifying Standard Industry Class: ${expectedValue}`);
         cy.get('[id="organization.theOrganizationDT.standardIndustryClassCd"]').should('contain', expectedValue);
     }
 
-    verifyRole(expectedRole) {
+    verifyRole(expectedRole: string) {
         cy.log(`Verifying Role: ${expectedRole}`);
         cy.get('#rolesList').should('contain', expectedRole);
     }
 
     // Name verification
-    verifyOrganizationName(expectedName) {
+    verifyOrganizationName(expectedName: string) {
         cy.log(`Verifying Organization Name: ${expectedName}`);
         cy.get('#name\\.nmTxt').should('contain', expectedName);
     }
 
     // Identification Information verification
-    verifyIdentificationType(expectedType) {
+    verifyIdentificationType(expectedType: string) {
         cy.log(`Verifying Identification Type: ${expectedType}`);
         cy.get('#nestedElementsHistoryBox\\|Identification tr')
             .first()
@@ -191,7 +191,7 @@ class ClassicOrganizationPage {
             .should('contain', expectedType);
     }
 
-    verifyIdentificationAuthority(expectedAuthority) {
+    verifyIdentificationAuthority(expectedAuthority: string) {
         cy.log(`Verifying Identification Authority: ${expectedAuthority}`);
         cy.get('#nestedElementsHistoryBox\\|Identification tr')
             .first()
@@ -200,7 +200,7 @@ class ClassicOrganizationPage {
             .should('contain', expectedAuthority);
     }
 
-    verifyIdentificationValue(expectedValue) {
+    verifyIdentificationValue(expectedValue: string) {
         cy.log(`Verifying Identification Value: ${expectedValue}`);
         cy.get('#nestedElementsHistoryBox\\|Identification tr')
             .first()
@@ -210,43 +210,43 @@ class ClassicOrganizationPage {
     }
 
     // Address Information verification
-    verifyAddressUse(expectedUse) {
+    verifyAddressUse(expectedUse: string) {
         cy.log(`Verifying Address Use: ${expectedUse}`);
         cy.get('#nestedElementsHistoryBox\\|Address tr').first().find('td').eq(1).should('contain', expectedUse);
     }
 
-    verifyStreetAddress(expectedAddress) {
+    verifyStreetAddress(expectedAddress: string) {
         cy.log(`Verifying Street Address: ${expectedAddress}`);
         cy.get('#nestedElementsHistoryBox\\|Address tr').first().find('td').eq(2).should('contain', expectedAddress);
     }
 
-    verifyCity(expectedCity) {
+    verifyCity(expectedCity: string) {
         cy.log(`Verifying City: ${expectedCity}`);
         cy.get('#nestedElementsHistoryBox\\|Address tr').first().find('td').eq(3).should('contain', expectedCity);
     }
 
-    verifyState(expectedState) {
+    verifyState(expectedState: string) {
         cy.log(`Verifying State: ${expectedState}`);
         cy.get('#nestedElementsHistoryBox\\|Address tr').first().find('td').eq(4).should('contain', expectedState);
     }
 
-    verifyZip(expectedZip) {
+    verifyZip(expectedZip: string) {
         cy.log(`Verifying Zip: ${expectedZip}`);
         cy.get('#nestedElementsHistoryBox\\|Address tr').first().find('td').eq(5).should('contain', expectedZip);
     }
 
     // Telephone Information verification
-    verifyTelephoneUse(expectedUse) {
+    verifyTelephoneUse(expectedUse: string) {
         cy.log(`Verifying Telephone Use: ${expectedUse}`);
         cy.get('#nestedElementsHistoryBox\\|Telephone tr').first().find('td').eq(1).should('contain', expectedUse);
     }
 
-    verifyTelephoneType(expectedType) {
+    verifyTelephoneType(expectedType: string) {
         cy.log(`Verifying Telephone Type: ${expectedType}`);
         cy.get('#nestedElementsHistoryBox\\|Telephone tr').first().find('td').eq(2).should('contain', expectedType);
     }
 
-    verifyTelephoneNumber(expectedNumber) {
+    verifyTelephoneNumber(expectedNumber: string) {
         cy.log(`Verifying Telephone Number: ${expectedNumber}`);
         cy.get('#nestedElementsHistoryBox\\|Telephone tr').first().find('td').eq(3).should('contain', expectedNumber);
     }

@@ -14,7 +14,7 @@ class EditEthnicityModule {
         return this;
     }
 
-    ethnicity(name) {
+    ethnicity(name: string) {
         cy.get(this.section).eq(2).find('#ethnicGroup').select(name);
         return this;
     }
@@ -24,7 +24,7 @@ class EditEthnicityModule {
         cy.get(this.section).click();
     }
 
-    isEthnicityAdded(ethnicity) {
+    isEthnicityAdded(ethnicity: string) {
         cy.get(this.section).eq(2).contains(ethnicity).should('be.visible');
     }
 }

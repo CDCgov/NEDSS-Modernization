@@ -57,7 +57,7 @@ class PatientProfilePage {
         cy.contains('button', 'Back to top').click();
     }
 
-    clickOnButton(buttonName) {
+    clickOnButton(buttonName: any) {
         cy.contains('button', buttonName).click();
     }
 
@@ -69,7 +69,7 @@ class PatientProfilePage {
         addCommentModule.isSuccessfullyAdded();
     }
 
-    addName(fName) {
+    addName(fName: string) {
         addNameModule.date().type().first(fName).last().add();
     }
 
@@ -77,7 +77,7 @@ class PatientProfilePage {
         addNameModule.isSuccessfullyAdded();
     }
 
-    addAddress(address1) {
+    addAddress(address1: string) {
         addAddressModule.date().type().use().street1(address1).city().state().comment().add();
     }
 
@@ -89,7 +89,7 @@ class PatientProfilePage {
         addAddressModule.isPopupClosed();
     }
 
-    addPhoneNumber(number) {
+    addPhoneNumber(number: any) {
         addPhoneModule.date().type().use().countryCode().phoneNumber(number).email().comment().add();
     }
 
@@ -97,7 +97,7 @@ class PatientProfilePage {
         addPhoneModule.isSuccessfullyAdded();
     }
 
-    addIdentification(idNumber) {
+    addIdentification(idNumber: string) {
         addIdentificationModule.date().type().id(idNumber).issuedState().add();
     }
 
@@ -105,15 +105,15 @@ class PatientProfilePage {
         addIdentificationModule.isSuccessfullyAdded();
     }
 
-    addRace(detRace) {
+    addRace(detRace: string) {
         addRaceModule.date().race().detailRace(detRace).add();
     }
 
-    isRaceAdded(detRace) {
+    isRaceAdded(detRace: string) {
         addRaceModule.isRaceAdded(detRace);
     }
 
-    clickOnEdit(section) {
+    clickOnEdit(section: string) {
         let len = '';
         switch (section) {
             case 'General patient information':
@@ -134,35 +134,35 @@ class PatientProfilePage {
         cy.get('button.usa-button.grid-row').eq(len).click();
     }
 
-    editGeneralInfo(info) {
+    editGeneralInfo(info: string) {
         editGeneralInfoModule.date().motherName(info).save();
     }
 
-    isGeneralInformationAdded(momName) {
+    isGeneralInformationAdded(momName: string) {
         editGeneralInfoModule.isGeneralInformationAdded(momName);
     }
 
-    editEthnicity(ethnicity) {
+    editEthnicity(ethnicity: string) {
         editEthnicityModule.date().ethnicity(ethnicity).save();
     }
 
-    isEthnicityAdded(ethnicity) {
+    isEthnicityAdded(ethnicity: string) {
         editEthnicityModule.isEthnicityAdded(ethnicity);
     }
 
-    editSexBirth(currentSex) {
+    editSexBirth(currentSex: string) {
         editSexBirthModule.date().currentSex(currentSex).save();
     }
 
-    isCurrentSexAdded(currentSex) {
+    isCurrentSexAdded(currentSex: string) {
         editSexBirthModule.isCurrentSexAdded(currentSex);
     }
 
-    editMortality(mortality) {
+    editMortality(mortality: string) {
         editMortalityModule.date().mortality(mortality).save();
     }
 
-    isMortalityAdded(mortality) {
+    isMortalityAdded(mortality: string) {
         editMortalityModule.isMortalityAdded(mortality);
     }
 

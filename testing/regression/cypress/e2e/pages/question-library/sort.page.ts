@@ -19,20 +19,20 @@ class SortPage {
         cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
     }
 
-    clickColumnArrow(column) {
+    clickColumnArrow(column: string) {
         const columnIndex = this.getColumnIndexByName(column);
         cy.get('th .usa-button.usa-button--unstyled').eq(columnIndex).click();
     }
 
-    listedInDescendingOrder(column) {
+    listedInDescendingOrder(column: string) {
         this.checkOrder(column, 'descending');
     }
 
-    listedInAscendingOrder(column) {
+    listedInAscendingOrder(column: string) {
         this.checkOrder(column, 'ascending');
     }
 
-    getColumnIndexByName(columnName) {
+    getColumnIndexByName(columnName: string) {
         if (columnName === 'Type') {
             return 0;
         } else if (columnName === 'Unique ID') {
@@ -44,7 +44,7 @@ class SortPage {
         }
     }
 
-    checkOrder(columnName, sortType) {
+    checkOrder(columnName: string, sortType: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
@@ -59,8 +59,8 @@ class SortPage {
         expect(isOrdered).to.be.true;
     }
 
-    isAscending(list) {
-        return list.every((value, index, array) => {
+    isAscending(list: string[]) {
+        return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }
@@ -68,8 +68,8 @@ class SortPage {
         });
     }
 
-    isDescending(list) {
-        return list.every((value, index, array) => {
+    isDescending(list: string[]) {
+        return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }

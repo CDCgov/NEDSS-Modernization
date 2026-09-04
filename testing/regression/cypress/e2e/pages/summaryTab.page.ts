@@ -23,18 +23,18 @@ class SummaryTabPage {
         cy.wait(1000);
     }
 
-    openLinkInDocumentTable(linkText) {
+    openLinkInDocumentTable(linkText: string) {
         this.documentTable.contains('a', linkText).click();
     }
 
-    sort(columnName, sortBy) {
+    sort(columnName: string, sortBy: string) {
         this.openInvestigationTable.find('thead').contains(columnName).find('button').click();
         if (sortBy === 'descending') {
             this.openInvestigationTable.find('thead').contains(columnName).find('button').click();
         }
     }
 
-    checkIfSorted(columnName, sortedBy) {
+    checkIfSorted(columnName: string, sortedBy: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
@@ -50,14 +50,14 @@ class SummaryTabPage {
         expect(flag).to.be.true;
     }
 
-    documentTablesort(columnName, sortBy) {
+    documentTablesort(columnName: string, sortBy: string) {
         this.documentTable.find('thead').contains(columnName).find('button').click({ force: true });
         if (sortBy === 'descending') {
             this.documentTable.find('thead').contains(columnName).find('button').click({ force: true });
         }
     }
 
-    documentTableCheckIfSorted(columnName, sortedBy) {
+    documentTableCheckIfSorted(columnName: string, sortedBy: string) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
         this.documentTable.find('tbody tr').each(($tr) => {
@@ -73,7 +73,7 @@ class SummaryTabPage {
         expect(flag).to.be.true;
     }
 
-    getColumnIndexByName(columnName) {
+    getColumnIndexByName(columnName: string) {
         if (columnName === 'Jurisdiction') {
             return 4;
         } else if (columnName === 'Condition') {
@@ -83,8 +83,8 @@ class SummaryTabPage {
         }
     }
 
-    isAscending(list) {
-        return list.every((value, index, array) => {
+    isAscending(list: string[]) {
+        return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }
@@ -92,8 +92,8 @@ class SummaryTabPage {
         });
     }
 
-    isDescending(list) {
-        return list.every((value, index, array) => {
+    isDescending(list: string[]) {
+        return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }

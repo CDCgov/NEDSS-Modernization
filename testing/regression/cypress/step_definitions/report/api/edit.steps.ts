@@ -4,7 +4,7 @@ import { NEW_REPORT_UID, VALID_DATA_SOURCE_UID } from './create.steps';
 const VALID_REPORT_LIBRARY_ID = 10000001;
 const VALID_SECTION_CODE = '1001';
 
-function makeEditRequest(body) {
+function makeEditRequest(body: string) {
     return cy
         .request({
             method: 'PUT',
