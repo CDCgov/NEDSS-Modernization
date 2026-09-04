@@ -6,8 +6,8 @@ Then('User navigates to Create New Page and views the page', () => {
     pageElementsPage.userViewsCreatePage();
 });
 
-Then('User should see the following required elements by {string} {string}', (string, string1) => {
-    pageElementsPage.seeElementText(string, string1);
+Then('User should see the following required elements by {string} {string}', (string: string) => {
+    pageElementsPage.seeElementText(string);
 });
 
 Then('User clicks in the Page name field', () => {
@@ -34,7 +34,7 @@ Then('Event Type field is highlighted with a rectangular blue box', () => {
     pageElementsPage.eventTypeFieldFocused();
 });
 
-Then('Drop-down box displays with the following required values by {string}', (string) => {
+Then('Drop-down box displays with the following required values by {string}', (string: string) => {
     pageElementsPage.eventTypeFieldHasValue(string);
 });
 

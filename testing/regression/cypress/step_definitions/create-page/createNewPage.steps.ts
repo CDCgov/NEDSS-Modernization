@@ -15,8 +15,8 @@ Then('User selects Event Type - Investigation', () => {
 });
 Then(
     'Additional required fields and other information displays for user selection by {string} {string}',
-    (string, string1) => {
-        createNewPagePage.seeElementText(string, string1);
+    (string: string) => {
+        createNewPagePage.seeElementText(string);
     }
 );
 Then('User selects {string} from Event Type {string}', (string, string1) => {
@@ -24,7 +24,7 @@ Then('User selects {string} from Event Type {string}', (string, string1) => {
     createNewPagePage.selectEventType(string1);
 });
 
-Then('Rectangular yellow box appears with the message: {string}', (string) => {
+Then('Rectangular yellow box appears with the message: {string}', (string: string) => {
     createNewPagePage.viewTextOnPage(string);
 });
 

@@ -9,7 +9,7 @@ class CreateNewPagePage {
         cy.get('#eventType');
     }
 
-    selectEventType(type) {
+    selectEventType(type?: any) {
         cy.wait(2000);
         if (type) {
             cy.get('#eventType').select(type);
@@ -23,13 +23,13 @@ class CreateNewPagePage {
     navigateToClassicDesign() {
         cy.visit('/advanced-search/person');
     }
-    viewTextOnPage(text) {
+    viewTextOnPage(text: string) {
         cy.contains(text);
     }
     navigateToCreatePage() {
         cy.visit('/page-builder/pages/add');
     }
-    seeElementText(text) {
+    seeElementText(text: string) {
         this.selectEventType();
         cy.contains(new RegExp(text, 'i'));
     }
@@ -51,7 +51,7 @@ class CreateNewPagePage {
             .find('option')
             .eq(2)
             .then((option) => {
-                cy.get('#templateId').select(option.attr('value'));
+                cy.get('#templateId').select(option.attr('value')!);
             });
     }
 
@@ -62,7 +62,7 @@ class CreateNewPagePage {
             .find('option')
             .eq(1)
             .then((option) => {
-                cy.get('#messageMappingGuide').select(option.attr('value'));
+                cy.get('#messageMappingGuide').select(option.attr('value')!);
             });
     }
     enterPageDescription() {

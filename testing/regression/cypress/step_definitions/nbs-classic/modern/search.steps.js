@@ -1,6 +1,6 @@
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
 import classicHomePage from '@pages/nbs-classic/home.page';
-import classicSearchPatientPage from 'cypress/e2e/pages/patient-extended-form/patient.page';
+import classicSearchPatientPage from '@pages/patient-extended-form/patient.page';
 
 Then('Enter Last Name text box input {string}', (text) => {
     classicHomePage.enterLastName(text);

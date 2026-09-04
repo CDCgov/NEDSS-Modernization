@@ -1,5 +1,5 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import summaryTabPage from 'cypress/e2e/pages/summaryTab.page';
+import summaryTabPage from '@pages/summaryTab.page';
 
 Then('user is able to click the Investigation Number to View Investigation page', () => {
     summaryTabPage.openFirstInvestigation();
