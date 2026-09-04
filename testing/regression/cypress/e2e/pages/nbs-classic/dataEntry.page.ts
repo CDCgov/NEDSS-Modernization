@@ -107,7 +107,7 @@ class LabReportPage {
         cy.document().its('readyState').should('eq', 'complete');
 
         // Call populatePatient directly on the main window
-        cy.window().then((win) => {
+        cy.window().then((win: any) => {
             cy.log(`Calling populatePatient with MPR ID: ${mprId}`);
             win.populatePatient(mprId);
         });
@@ -338,7 +338,7 @@ class LabReportPage {
                 const newCount = parseInt(count.trim());
                 cy.log(`New lab report count: ${newCount}`);
                 // Get the initial count from the alias and verify increase by 1
-                cy.get('@labReportCount').then((initialCount: any) => {
+                cy.get<number>('@labReportCount').then((initialCount) => {
                     expect(newCount).to.equal(initialCount + 1);
                     cy.log(`Lab report count increased from ${initialCount} to ${newCount} (expected increase of 1)`);
                 });

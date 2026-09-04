@@ -1,5 +1,5 @@
 class PatientEntitySearch {
-    getPatientByName({ patientLastName, patientFirstName }) {
+    getPatientByName({ patientLastName, patientFirstName }: { patientLastName: string; patientFirstName: string }) {
         cy.log(`Searching for patient with name: ${patientFirstName} ${patientLastName}`);
         cy.get('#DEM102').type(patientLastName);
         cy.get('#DEM104').type(patientFirstName);

@@ -30,7 +30,7 @@ class ViewPHDCPage {
         cy.contains('Initial Public Health Case Report');
     }
 
-    getPatientWithPHDC({ patientLastName, patientFirstName }) {
+    getPatientWithPHDC({ patientLastName, patientFirstName }: { patientLastName: string; patientFirstName: string }) {
         cy.get('#DEM102').type(patientLastName);
         cy.get('#DEM104').type(patientFirstName);
         cy.get("input[value='Search']").click();

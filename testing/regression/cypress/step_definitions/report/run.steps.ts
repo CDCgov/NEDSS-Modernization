@@ -85,7 +85,9 @@ When('I fill out all filters with {int}', (index: number) => {
     // number inputs
     cy.findAllByRole('spinbutton').each(($input: any) => cy.wrap($input).type(`${index}`));
     // allow nulls
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).click({ force: true }));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) =>
+        cy.wrap($input).click({ force: true })
+    );
 
     // multi-selects
     cy.get('.multi-select').each(($select) => {
@@ -148,7 +150,9 @@ Then('All filters should be empty or the default value', () => {
     // number inputs
     cy.findAllByRole('spinbutton').each(($input: any) => cy.wrap($input).should('have.value', ''));
     // allow nulls
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).should('not.be.checked'));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) =>
+        cy.wrap($input).should('not.be.checked')
+    );
 
     cy.get('body').then(($body) => {
         const selectAllExists = $body.find('[label="Select all"]').length > 0;
@@ -201,7 +205,9 @@ Then('All filters should be empty or the default value', () => {
 Then('I click all include nulls', () => {
     // select columns (needs to happen for the sort single-selects to be happy)
     checkSelectAll();
-    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) => cy.wrap($input).click({ force: true }));
+    cy.findAllByRole('checkbox', { name: /Include nulls/ }).each(($input: any) =>
+        cy.wrap($input).click({ force: true })
+    );
 });
 
 Then('All include nulls checkboxes should be checked', () => {

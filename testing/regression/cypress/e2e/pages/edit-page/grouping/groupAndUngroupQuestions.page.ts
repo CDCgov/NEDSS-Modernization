@@ -119,7 +119,7 @@ class GroupAndUngroupQuestions {
     }
 
     updateDatamartValue(num: number) {
-        cy.enterInput('[data-testid="editSubsectionModalDataMart"]', num);
+        cy.enterInput('[data-testid="editSubsectionModalDataMart"]', num.toString());
     }
 
     updateAppearsInTableValueToNo() {
@@ -134,7 +134,7 @@ class GroupAndUngroupQuestions {
                     .invoke('val')
                     .then((value2: any) => {
                         const updatedWidth = parseInt(value2) + parseInt(columnWidth);
-                        cy.enterInput('[name="batches.1.width"]', updatedWidth);
+                        cy.enterInput('[name="batches.1.width"]', updatedWidth.toString());
                     });
             });
     }

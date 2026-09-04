@@ -126,7 +126,7 @@ When(/^I send a POST request to the create endpoint with missing group$/, () => 
 });
 
 Then('the response should contain a ReportId', () => {
-    cy.get('@apiResponse').then((response) => {
+    cy.get<Cypress.Response<any>>('@apiResponse').then((response) => {
         expect(response.body).to.have.property('reportUid');
         expect(response.body).to.have.property('dataSourceUid');
 

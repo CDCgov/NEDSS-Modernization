@@ -23,7 +23,7 @@ export function selectRandomDropdownValue(dropdownSelector: string) {
         cy.log(`Dropdown has ${optionCount} options`);
 
         // Create array of values and pick a random one
-        const optionValues = $options.toArray().map((opt) => opt.value);
+        const optionValues = $options.toArray().map((opt: any) => opt.value);
         const randomValue = optionValues[Math.floor(Math.random() * optionCount)];
 
         cy.log(`Selected value: ${randomValue}`);

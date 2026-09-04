@@ -20,7 +20,7 @@ class SortPage {
     }
 
     clickColumnArrow(column: string) {
-        const columnIndex = this.getColumnIndexByName(column);
+        const columnIndex = this.getColumnIndexByName(column)!;
         cy.get('th .usa-button.usa-button--unstyled').eq(columnIndex).click();
     }
 
@@ -45,8 +45,8 @@ class SortPage {
     }
 
     checkOrder(columnName: string, sortType: string) {
-        const list = [];
-        const index = this.getColumnIndexByName(columnName);
+        const list: string[] = [];
+        const index = this.getColumnIndexByName(columnName)!;
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });

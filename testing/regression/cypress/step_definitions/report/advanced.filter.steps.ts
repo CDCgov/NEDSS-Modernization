@@ -67,7 +67,7 @@ When('I add incomplete or incorrect advanced filters', () => {
 
                 // enter invalid date
                 if (advFilter.field === 'Confirmation Method Time' && logicVal === 'Not Equals') {
-                    enterInput('name="Value"', "2");
+                    enterInput('name="Value"', '2');
                 }
             }
 

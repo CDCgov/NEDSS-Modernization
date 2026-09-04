@@ -69,7 +69,7 @@ class NameEntryPage {
         // Select a random state from the Death State dropdown
         cy.get('#mortality\\.state')
             .find('option:not(:first)') // Exclude the default "- Select -" option
-            .then(($options) => {
+            .then(($options: any) => {
                 const randomIndex = Math.floor(Math.random() * $options.length);
                 const randomValue = $options[randomIndex].value;
                 cy.get('#mortality\\.state').select(randomValue);

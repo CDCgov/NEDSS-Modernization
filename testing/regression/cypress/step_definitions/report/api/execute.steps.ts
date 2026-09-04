@@ -4,7 +4,7 @@ const VALID_REPORT_UID = 1;
 const VALID_DATA_SOURCE_UID = 1;
 const VALID_REPORT_FILTER_UID = 1;
 
-function makeRequest(body: string, action: string) {
+function makeRequest(body: Cypress.RequestBody, action: string) {
     return cy
         .request({
             method: 'POST',
@@ -18,17 +18,20 @@ function makeRequest(body: string, action: string) {
         .as('apiResponse');
 }
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with a valid report execution request$/, (action) => {
-    const validRequest = {
-        reportUid: VALID_REPORT_UID,
-        dataSourceUid: VALID_DATA_SOURCE_UID,
-        isExport: action === 'export',
-    };
+When(
+    /^I send a POST request to \/nbs\/api\/report\/(run|export) with a valid report execution request$/,
+    (action: string) => {
+        const validRequest = {
+            reportUid: VALID_REPORT_UID,
+            dataSourceUid: VALID_DATA_SOURCE_UID,
+            isExport: action === 'export',
+        };
 
-    makeRequest(validRequest, action);
-});
+        makeRequest(validRequest, action);
+    }
+);
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing reportUid$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing reportUid$/, (action: string) => {
     const invalidRequest = {
         dataSourceUid: VALID_DATA_SOURCE_UID,
         reportUid: null,
@@ -38,7 +41,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing re
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing dataSourceUid$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing dataSourceUid$/, (action: string) => {
     const invalidRequest = {
         reportUid: VALID_REPORT_UID,
         isExport: action === 'export',
@@ -47,7 +50,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing da
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing isExport$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing isExport$/, (action: string) => {
     const invalidRequest = {
         reportUid: VALID_REPORT_UID,
         dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -56,7 +59,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with missing is
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative reportUid$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative reportUid$/, (action: string) => {
     const invalidRequest = {
         reportUid: -1,
         dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -66,7 +69,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative r
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative dataSourceUid$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative dataSourceUid$/, (action: string) => {
     const invalidRequest = {
         reportUid: VALID_REPORT_UID,
         dataSourceUid: -1,
@@ -76,7 +79,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with negative d
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with reportUid as string$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with reportUid as string$/, (action: string) => {
     const invalidRequest = {
         reportUid: 'invalid-reportUid',
         dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -86,7 +89,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with reportUid 
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with dataSourceUid as string$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with dataSourceUid as string$/, (action: string) => {
     const invalidRequest = {
         reportUid: VALID_REPORT_UID,
         dataSourceUid: 'invalid-dataSourceUid',
@@ -96,7 +99,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with dataSource
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with isExport as string$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with isExport as string$/, (action: string) => {
     const invalidRequest = {
         reportUid: VALID_REPORT_UID,
         dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -106,7 +109,7 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with isExport a
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with invalid basic filters$/, (action) => {
+When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with invalid basic filters$/, (action: string) => {
     const invalidRequest = {
         reportUid: VALID_REPORT_UID,
         dataSourceUid: VALID_DATA_SOURCE_UID,
@@ -122,28 +125,31 @@ When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with invalid ba
     makeRequest(invalidRequest, action);
 });
 
-When(/^I send a POST request to \/nbs\/api\/report\/(run|export) with an invalid advanced filter$/, (action) => {
-    const invalidRequest = {
-        reportUid: VALID_REPORT_UID,
-        dataSourceUid: VALID_DATA_SOURCE_UID,
-        isExport: action === 'export',
-        advancedFilter: {
-            reportFilterUid: VALID_REPORT_FILTER_UID,
-            logic: null, // Logic cannot be null
-        },
-    };
+When(
+    /^I send a POST request to \/nbs\/api\/report\/(run|export) with an invalid advanced filter$/,
+    (action: string) => {
+        const invalidRequest = {
+            reportUid: VALID_REPORT_UID,
+            dataSourceUid: VALID_DATA_SOURCE_UID,
+            isExport: action === 'export',
+            advancedFilter: {
+                reportFilterUid: VALID_REPORT_FILTER_UID,
+                logic: null, // Logic cannot be null
+            },
+        };
 
-    makeRequest(invalidRequest, action);
-});
+        makeRequest(invalidRequest, action);
+    }
+);
 
 Then('the response status should be {int}', (statusCode) => {
-    cy.get('@apiResponse').then((response) => {
+    cy.get<Cypress.Response<any>>('@apiResponse').then((response) => {
         expect(response.status).to.eq(statusCode);
     });
 });
 
 Then('the response should contain a report result', () => {
-    cy.get('@apiResponse').then((response) => {
+    cy.get<Cypress.Response<any>>('@apiResponse').then((response) => {
         expect(response.body).to.have.property('content_type');
         expect(response.body).to.have.property('content');
         expect(response.body.content_type).to.eq('table');
@@ -151,7 +157,7 @@ Then('the response should contain a report result', () => {
 });
 
 Then('the response should contain validation error for {string}', (fieldName) => {
-    cy.get('@apiResponse').then((response) => {
+    cy.get<Cypress.Response<any>>('@apiResponse').then((response) => {
         expect(response.status).to.eq(422);
         const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
         expect(bodyString).to.include(fieldName);
@@ -159,7 +165,7 @@ Then('the response should contain validation error for {string}', (fieldName) =>
 });
 
 Then('the response should contain serialization error for {string}', (fieldName) => {
-    cy.get('@apiResponse').then((response) => {
+    cy.get<Cypress.Response<any>>('@apiResponse').then((response) => {
         expect(response.status).to.eq(422);
         const bodyString = typeof response.body === 'string' ? response.body : JSON.stringify(response.body);
         expect(bodyString).to.include('invalid-' + fieldName);

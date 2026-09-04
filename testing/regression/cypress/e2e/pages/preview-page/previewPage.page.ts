@@ -200,7 +200,7 @@ class PreviewPagePage {
         cy.get('aside section div')
             .eq(0)
             .invoke('text')
-            .then((text) => {
+            .then((text: any) => {
                 if (text.includes(10)) {
                     cy.contains(10);
                 }
@@ -211,7 +211,7 @@ class PreviewPagePage {
         cy.get('aside section div')
             .eq(0)
             .invoke('text')
-            .then((text) => {
+            .then((text: any) => {
                 if (text.includes(20)) {
                     cy.contains(20);
                 }
@@ -250,7 +250,7 @@ class PreviewPagePage {
             .find('option')
             .eq(1)
             .then((option) => {
-                cy.get('#templateId').select(option.attr('value'));
+                cy.get('#templateId').select(option.attr('value')!);
             });
     }
 
@@ -259,7 +259,7 @@ class PreviewPagePage {
             .find('option')
             .eq(1)
             .then((option) => {
-                cy.get('#messageMappingGuide').select(option.attr('value'));
+                cy.get('#messageMappingGuide').select(option.attr('value')!);
             });
     }
     enterPageDescription() {

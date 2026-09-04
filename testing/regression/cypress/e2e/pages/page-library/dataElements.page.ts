@@ -1,7 +1,7 @@
 class DataElementsPage {
     userViewsColumnAndSeeList(columnName: string) {
         const list = [];
-        const index = this.getColumnIndexByName(columnName);
+        const index: number = this.getColumnIndexByName(columnName)!;
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });

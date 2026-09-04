@@ -25,7 +25,7 @@ class ClassicOrganizationPage {
 
     enterSameOrganizationNameInSearchPane() {
         // Retrieve the name from the alias and use it
-        cy.get('@createdOrgName').then((orgName) => {
+        cy.get<string>('@createdOrgName').then((orgName) => {
             cy.log(`Using stored organization name in search pane: ${orgName}`);
             cy.enterInput('input[id="organizationSearch.nmTxt"]', orgName);
         });
@@ -88,8 +88,7 @@ class ClassicOrganizationPage {
 
     verifySearchResultContainsGeneratedQuickCode() {
         cy.log('Verifying search result contains generated quick code');
-
-        cy.get('@generatedQuickCode').then((quickCode) => {
+        cy.get<string>('@generatedQuickCode').then((quickCode) => {
             cy.log(`Looking for quick code: ${quickCode}`);
 
             cy.get('#searchResultsTable', { timeout: 10000 }).should('be.visible').and('contain', quickCode);
@@ -124,21 +123,21 @@ class ClassicOrganizationPage {
     }
 
     verifyOrganizationWasCreated() {
-        cy.get('@createdOrgName').then((orgName) => {
+        cy.get<string>('@createdOrgName').then((orgName) => {
             cy.log(`Verifying search results include: ${orgName}`);
             cy.get('#searchResultsTable', { timeout: 10000 }).should('be.visible').and('contain', orgName);
         });
     }
     verifySuccessMessage() {
         cy.url().should('include', 'ViewOrganization');
-        cy.get('body').should('contain', 'created').or('contain', 'added').or('contain', 'successful');
+        (cy.get('body').should('contain', 'created') as any).or('contain', 'added').or('contain', 'successful');
     }
 
     verifySearchResultsCountIncreasedBy(additionalCount: number) {
         cy.log(`Verifying search results count increased by ${additionalCount}`);
 
         // Get the previously saved count
-        cy.get('@searchResultsCount').then((savedCount) => {
+        cy.get<number>('@searchResultsCount').then((savedCount) => {
             const expectedCount = savedCount + additionalCount;
 
             cy.log(

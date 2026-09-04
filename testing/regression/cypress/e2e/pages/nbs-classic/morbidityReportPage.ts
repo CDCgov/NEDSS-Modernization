@@ -197,7 +197,7 @@ class MorbidityReportPage {
         cy.get('._indicator_1vvtd_1', { timeout: 10000 }).should('not.exist');
 
         // Intercept the window.open call for the Mark as Reviewed popup
-        cy.window().then((win) => {
+        cy.window().then((win: any) => {
             cy.stub(win, 'open').callsFake((url) => {
                 cy.log('Mark as Reviewed popup URL intercepted: ' + url);
 

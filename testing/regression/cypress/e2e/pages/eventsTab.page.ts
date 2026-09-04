@@ -7,7 +7,7 @@ class EventsTabPage {
     static JURISDICTION_COLUMN = 7;
     static ASSOCIATED_COLUMN = 8;
 
-    reportTypeIndexMap = {
+    reportTypeIndexMap: Record<string, number> = {
         Investigations: 0,
         'Lab reports': 1,
         'Morbidity reports': 2,
@@ -107,7 +107,7 @@ class EventsTabPage {
 
     verifyLabReportsCountIncreasedByOne() {
         this.getSectionCount('Lab reports').then((newCount) => {
-            cy.get('@labReportsCount').then((initialCount) => {
+            cy.get<number>('@labReportsCount').then((initialCount) => {
                 expect(newCount).to.equal(initialCount + 1);
             });
         });
@@ -115,7 +115,7 @@ class EventsTabPage {
 
     verifyLabReportsCountUnchanged() {
         this.getSectionCount('Lab reports').then((newCount) => {
-            cy.get('@labReportsCount').then((initialCount) => {
+            cy.get<number>('@labReportsCount').then((initialCount) => {
                 expect(newCount).to.equal(initialCount);
             });
         });
@@ -123,7 +123,7 @@ class EventsTabPage {
 
     verifyLabReportsCountDecreasedByOne() {
         this.getSectionCount('Lab reports').then((newCount) => {
-            cy.get('@labReportsCount').then((initialCount) => {
+            cy.get<number>('@labReportsCount').then((initialCount) => {
                 expect(newCount).to.equal(initialCount - 1);
             });
         });
@@ -137,23 +137,23 @@ class EventsTabPage {
 
     verifyOpenInvestigationsCountIncreasedByOne() {
         this.getSectionCount('Open investigations').then((newCount) => {
-            cy.get('@openInvestigationsCount').then((initialCount) => {
+            cy.get<number>('@openInvestigationsCount').then((initialCount) => {
                 expect(newCount).to.equal(initialCount + 1);
             });
         });
     }
 
     validateTableColumns(tableName: any, dataTable: { rawTable: string[][] }) {
-        const myArray = [];
+        const myArray: string[] = [];
         cy.contains('section', tableName).within(() => {
             cy.get('th').then((headerElements) => {
-                const headers = Cypress.$.map(headerElements, (headerElement) => {
+                const headers = Cypress.$.map(headerElements, (headerElement: any) => {
                     return Cypress.$(headerElement).text().trim();
                 }).filter(Boolean);
 
                 dataTable.rawTable.forEach((row: any) => {
                     const label = row[0];
-                    if ((label === 'Investigation #') & (tableName === 'Investigations')) {
+                    if (label === 'Investigation #' && tableName === 'Investigations') {
                         myArray.push('');
                     }
                     myArray.push(label);

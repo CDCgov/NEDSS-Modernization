@@ -9,8 +9,8 @@ class SearchAndFilterPage {
     }
 
     checkMatchedSearchResult(searchedKeyword: string, columnName: string) {
-        const list = [];
-        const index = this.getColumnIndexByName(columnName);
+        const list: string[] = [];
+        const index = this.getColumnIndexByName(columnName)!;
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });
@@ -55,7 +55,7 @@ class SearchAndFilterPage {
     }
 
     selectColumn(columnName: string) {
-        cy.selectDropdownByLabel('Select a field', this.getColumnValueByName(columnName));
+        cy.selectDropdownByLabel('Select a field', this.getColumnValueByName(columnName)!);
     }
 
     selectOperator(operatorValue: string) {

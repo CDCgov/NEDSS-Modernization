@@ -73,9 +73,9 @@ class SortPage {
         this.checkOrder('Last updated by', 'ascending', 'date');
     }
 
-    checkOrder(columnName: string, sortType: string, dataType: string) {
-        const list = [];
-        const index = this.getColumnIndexByName(columnName);
+    checkOrder(columnName: string, sortType: string, dataType?: string) {
+        const list: string[] = [];
+        const index = this.getColumnIndexByName(columnName)!;
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });
@@ -109,33 +109,33 @@ class SortPage {
         return cy.get(this.table).eq(0);
     }
 
-    isAscending(list: string[], dataType: string) {
+    isAscending(list: string[], dataType?: string) {
         return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }
             if (dataType === 'date') {
-                return new Date(value) - new Date(array[index - 1]);
+                return (new Date(value) as any) - (new Date(array[index - 1]) as any);
             }
             return value >= array[index - 1];
         });
     }
 
-    isDescending(list: string[], dataType: string) {
+    isDescending(list: string[], dataType?: string) {
         return list.every((value: string, index: number, array: string[]) => {
             if (index === 0) {
                 return true; // Skip the first element
             }
             if (dataType === 'date') {
-                return new Date(array[index - 1]) - new Date(value);
+                return (new Date(array[index - 1]) as any) - (new Date(value) as any);
             }
             return value <= array[index - 1];
         });
     }
 
     checkDateFormat(columnName: string) {
-        const list = [];
-        const index = this.getColumnIndexByName(columnName);
+        const list: string[] = [];
+        const index = this.getColumnIndexByName(columnName)!;
         this.openInvestigationTable.find('tbody tr').each(($tr) => {
             list.push($tr.find('td').eq(index).text());
         });

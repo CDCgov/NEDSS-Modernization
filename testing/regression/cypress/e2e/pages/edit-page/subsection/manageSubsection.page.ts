@@ -69,7 +69,7 @@ class ManageSubsectionPage {
     }
 
     showWarningMessageOnSubsectionDelete(text: string) {
-        cy.contains('Subsection cannot be deleted').then((ele) => {
+        cy.contains('Subsection cannot be deleted').then((ele: any) => {
             if (ele.length < 1) {
                 cy.contains(text);
             }
@@ -77,7 +77,7 @@ class ManageSubsectionPage {
     }
 
     clickOkLink() {
-        cy.contains('Subsection cannot be deleted').then((ele) => {
+        cy.contains('Subsection cannot be deleted').then((ele: any) => {
             if (ele.length > 1) {
                 cy.get('.subsectionHeader').eq(0).get('.subsectionOkLink').eq(0).click();
             }
@@ -85,7 +85,7 @@ class ManageSubsectionPage {
     }
 
     checkButtonsAreVisible(text: string) {
-        cy.contains('Subsection cannot be deleted').then((ele) => {
+        cy.contains('Subsection cannot be deleted').then((ele: any) => {
             if (ele.length < 1) {
                 cy.contains('Are you sure you want to delete').should('contain', text);
             }
@@ -115,7 +115,7 @@ class ManageSubsectionPage {
     }
 
     verifyVisibilitySuccessMessage(text: string) {
-        cy.contains('Manage subsections').then((ele) => {
+        cy.contains('Manage subsections').then((ele: any) => {
             if (ele.length < 1) {
                 cy.wait(2000);
                 cy.contains(text);

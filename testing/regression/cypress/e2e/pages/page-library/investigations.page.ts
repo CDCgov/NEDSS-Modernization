@@ -27,7 +27,7 @@ class PageBuilderPage {
             .find('option') // Get all options
             .first() // Target the first option
             .then(($option) => {
-                const value = $option.val(); // Extract the value of the first option
+                const value = $option.val()!; // Extract the value of the first option
                 cy.get('#availableConditions').select(value); // Select the first option
             });
     }

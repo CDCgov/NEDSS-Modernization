@@ -94,7 +94,13 @@ class EditOrganizationPage {
 
     // Methods to add new contact information (telephone and address)
 
-    addNewTelephoneEntry(telephoneDetails: string) {
+    addNewTelephoneEntry(telephoneDetails: {
+        areaCode: string;
+        prefix: string;
+        lineNumber: string;
+        use: string;
+        type: string;
+    }) {
         cy.log(
             `Adding new telephone: ${telephoneDetails.areaCode}-${telephoneDetails.prefix}-${telephoneDetails.lineNumber}`
         );
@@ -114,21 +120,21 @@ class EditOrganizationPage {
 
         // Find empty phone number fields and fill them
         cy.get('input[id*="phoneNbrTxt1"]')
-            .filter((i, el) => !el.value)
+            .filter((i, el: any) => !el.value)
             .first()
             .then(($input) => {
                 cy.wrap($input).clear();
                 cy.wrap($input).type(telephoneDetails.areaCode);
             });
         cy.get('input[id*="phoneNbrTxt2"]')
-            .filter((i, el) => !el.value)
+            .filter((i, el: any) => !el.value)
             .first()
             .then(($input) => {
                 cy.wrap($input).clear();
                 cy.wrap($input).type(telephoneDetails.prefix);
             });
         cy.get('input[id*="phoneNbrTxt3"]')
-            .filter((i, el) => !el.value)
+            .filter((i, el: any) => !el.value)
             .first()
             .then(($input) => {
                 cy.wrap($input).clear();

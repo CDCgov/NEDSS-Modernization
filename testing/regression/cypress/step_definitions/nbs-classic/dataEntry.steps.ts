@@ -365,7 +365,7 @@ When('user clicks the Submit button on the Lab Report edit page', () => {
 });
 
 Then('the Lab Report view should show the updated Specimen Collection Date', () => {
-    cy.get('@editedCollectionDate').then((today: any) => {
+    cy.get<string>('@editedCollectionDate').then((today) => {
         const [month, day, year] = today.split('/');
         const formattedDate = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
         labReportPage.verifyViewedCollectionDate(formattedDate);
