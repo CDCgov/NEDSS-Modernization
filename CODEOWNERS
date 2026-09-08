@@ -2,13 +2,4 @@
 # For details on the format, and condfiguration of this file see: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # default for the repo
-* @CDCgov/nbs-phoenix
-
-# api + ui squad
-/apps/ @CDCgov/nbs-phoenix-app-squad
-/libs/ @CDCgov/nbs-phoenix-app-squad
-
-# library squad
-/apps/report-execution/ @CDCgov/nbs-phoenix-library-squad
-/apps/modernization-api/src/main/resources/db/ @CDCgov/nbs-phoenix-library-squad
-
+* @CDCgov/nbs-bridge

@@ -6,9 +6,12 @@ Contains REST APIs for managing Question Bank entities.
 
 ### Prerequisites
 
-1. Java 21
-2. `nbs-mssql` docker containers. See [CDC Sandbox](../../cdc-sandbox/README.md)
-3. `DATABASE_PASSWORD`, `TOKEN_SECRET` environment variables are set or relevant properties set in an
+Ensure you've completed the following steps:
+
+1. Install [Java 21](https://adoptium.net/temurin/releases?version=21&os=any&arch=any) from [Adoptium](https://adoptium.net/), as specified in the Java toolchain of our project-wide [build configuration](../../build.gradle).
+   - _Once installed, [Gradle](https://gradle.org/) (the API's build tool) will automatically detect and utilize said JDK for all subsequent compilation tasks._
+2. Build `nbs-mssql` docker containers. See [CDC Sandbox](../../cdc-sandbox/README.md)
+3. Ensure `DATABASE_PASSWORD` and `TOKEN_SECRET` environment variables are set or relevant properties set in an
    `application-local.yml`
 
 ## Tests
