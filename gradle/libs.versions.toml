@@ -38,7 +38,7 @@ queryDSL-apt = { module = 'com.querydsl:querydsl-apt', version.ref = 'queryDSL' 
 queryDSL-jpa = { module = 'com.querydsl:querydsl-jpa', version.ref = 'queryDSL' }
 lombok = { module = 'org.projectlombok:lombok', version = '1.18.36' }
 mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '13.4.0.jre11' }
-java-jwt = { module = 'com.auth0:java-jwt', version = '4.6.0' }
+java-jwt = { module = 'com.auth0:java-jwt', version = '4.6.0' } 
 itextpdf = { module = 'com.itextpdf:itextpdf', version = '5.5.13.4' }
 assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }
 mockito = { module = 'org.mockito:mockito-core', version = '5.18.0' }
