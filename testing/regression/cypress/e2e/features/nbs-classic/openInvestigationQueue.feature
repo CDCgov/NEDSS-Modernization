@@ -1,7 +1,7 @@
 Feature: Verify Open Investigation Queue functionality
 
   Background:
-    Given I am logged in as secure user and stay on classic
+    Given I am logged in as secure user
 
   Scenario: Accessing and navigating Open Investigation Queue
     When I click on "Open Investigation" in the menu bar
@@ -9,13 +9,26 @@ Feature: Verify Open Investigation Queue functionality
 
   @skip-broken
   Scenario: Navigating through pages
-    When I click on "Open Investigation" in the menu bar
+    When I create "19" Investigations
+    And I click on "Open Investigation" in the menu bar
     When I click on the Next link
     Then I should see the next page of results
     When I click on the Previous link
     Then I should see the previous page of results
 
-  @skip-broken
+  Scenario: Create notification for an open investigation
+    When I click on "Open Investigation" in the menu bar
+    And Click on Patient name from open investigation queue
+    And Click Events tab on Patient Profile Page
+    And Click Add Investigation button on Events tab
+    And Select 'Diphtheria' condition from the dropdown in Select Condition Page
+    And Click Submit button in Select Condition Page
+    And Select Jurisdiction as it is mandatory field in Add Investigation for the selected condition
+    And Select status from Case Status dropdown in Add Investigation for the selected condition
+    And Click Submit button in Add Investigation for the selected condition
+    And Click Create Notifications button from top action button group
+    And Click Submit button in newly opened window Create Notification Page
+
   Scenario: Sorting by Case Status
     When I click on "Open Investigation" in the menu bar
     When I open the sort menu
@@ -39,6 +52,11 @@ Feature: Verify Open Investigation Queue functionality
     And the user searches for the Investigation ID "CAS"
     And the user clicks on the Condition name
     And the user clicks on Manage Associations
+    And the user clicks the Add Treatment button
+    And the user enters a treatment date
+    And the user enters a treatment from the dropdown
+    And the user enters value in the provider quick code lookup
+    And the user clicks the provider quick code lookup button
     And the user clicks on the Treatment Date link
     And the user clicks on the Edit button
     And the user enters "treatment provided" into the Treatment Comments field
