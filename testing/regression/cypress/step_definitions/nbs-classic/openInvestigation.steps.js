@@ -5,7 +5,6 @@ import addInvestigationPage from "@pages/events/add-investigation.page";
 import {searchPage} from "@pages/search.page";
 import searchResultsPage from "@pages/search.results.page";
 import classicSearchPatientPage from "@pages/patient-extended-form/patient.page";
-import {morbidityReportPage} from "@pages/nbs-classic/morbidityReportPage";
 import {labReportPage} from "@pages/nbs-classic/dataEntry.page";
 
 // Accessing and verifying Open Investigation Queue page
