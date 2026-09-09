@@ -23,22 +23,21 @@ class ClassicHomePage {
         cy.contains('button', 'Add new').eq(0).click();
     }
 
-  clickSaveBtnInPatientSearchPane() {
-    cy.contains('button', 'Save').eq(0).click();
-  }
+    clickSaveBtnInPatientSearchPane() {
+        cy.contains('button', 'Save').eq(0).click();
+    }
 
-  clickAddNewLabReportBtnInPatientSearchPane() {
-    cy.contains('button', 'Add new lab report').eq(0).click();
-  }
+    clickAddNewLabReportBtnInPatientSearchPane() {
+        cy.contains('button', 'Add new lab report').eq(0).click();
+    }
 
+    clickAddLabReportBtn() {
+        cy.contains('button', 'Add lab report').eq(0).click();
+    }
 
-  clickAddLabReportBtn() {
-    cy.contains('button', 'Add lab report').eq(0).click();
-  }
-
-  verifyAddLabReport() {
-    cy.contains('Add Lab Report');
-  }
+    verifyAddLabReport() {
+        cy.contains('Add Lab Report');
+    }
 
     clickDefaultQueue(queueName) {
         cy.get('.content ul li').then(($element) => {

@@ -28,7 +28,6 @@ class OpenInvestigationPage {
     updatedComment = 'p';
     homeNavigation = 'a[href="/nbs/HomePage.do?method=loadHomePage"]';
 
-
     clickOpenInvestigation() {
         cy.contains('a', 'Open Investigations').click();
     }
@@ -188,8 +187,7 @@ class OpenInvestigationPage {
     }
 
     selectCaseStatusFromDropdown() {
-        cy.get('input[name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.caseClassCd_textbox"]')
-            .type('Confirmed');
+        cy.get('input[name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.caseClassCd_textbox"]').type('Confirmed');
     }
 
     clickSubmitBtnInAddInvestigationPage() {

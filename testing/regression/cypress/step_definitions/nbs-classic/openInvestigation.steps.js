@@ -1,11 +1,11 @@
 import { openInvestigationPage } from '@pages/nbs-classic/openInvestigation.page';
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import addPatientPage from "@pages/add-patient.page";
-import addInvestigationPage from "@pages/events/add-investigation.page";
-import {searchPage} from "@pages/search.page";
-import searchResultsPage from "@pages/search.results.page";
-import classicSearchPatientPage from "@pages/patient-extended-form/patient.page";
-import {labReportPage} from "@pages/nbs-classic/dataEntry.page";
+import addPatientPage from '@pages/add-patient.page';
+import addInvestigationPage from '@pages/events/add-investigation.page';
+import { searchPage } from '@pages/search.page';
+import searchResultsPage from '@pages/search.results.page';
+import classicSearchPatientPage from '@pages/patient-extended-form/patient.page';
+import { labReportPage } from '@pages/nbs-classic/dataEntry.page';
 
 // Accessing and verifying Open Investigation Queue page
 When('I click on "Open Investigation" in the menu bar', () => {
@@ -20,7 +20,7 @@ When('I create {string} Investigations', (count) => {
     const total = Number(count);
 
     Cypress._.times(total, () => {
-        searchPage.enterLastName("a");
+        searchPage.enterLastName('a');
         searchPage.search();
         searchResultsPage.naviageToAddNewPatient();
         addPatientPage.addSimplePatient();
