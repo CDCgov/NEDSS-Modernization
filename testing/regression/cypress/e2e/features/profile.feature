@@ -31,7 +31,7 @@ Feature: User can view existing and add/edit certain patient demographic data he
 
     Scenario: User cannot delete patient with a related event in the profile
         Given create a new patient profile
-        And add a new investigation
+        And the user adds a new investigation
         When the user clicks on the Delete Patient button
         Then the user remains on the same profile page
 

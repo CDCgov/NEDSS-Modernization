@@ -232,7 +232,7 @@ When('the user has selected multiple investigations', () => {
     eventsTabPage.selectMultipleInvestigations();
 });
 
-Then('add a new investigation', () => {
+Then('the user adds a new investigation', () => {
     addPatientPage.clickEventsTab();
     cy.wait(1000);
     addPatientPage.clickAddInvestigationBtn();
