@@ -27,7 +27,7 @@ Then('I set patient id profile ENV', () => {
     patientProfilePage.setPatientProfileENVID();
 });
 
-Then('the user has enters for a patient by {string} as {string}', (string, string2) => {
+When('the user has enters for a patient by {string} as {string}', (string, string2) => {
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -231,8 +231,12 @@ When('the user has selected multiple investigations', () => {
     eventsTabPage.selectMultipleInvestigations();
 });
 
-Then('Add a new investigation', () => {
+Then('the user adds a new investigation', () => {
+    addPatientPage.clickEventsTab();
+    addPatientPage.clickAddInvestigationBtn();
     addInvestigationPage.add();
+    addPatientPage.clickReturnToFileLink();
+    addPatientPage.clickSummaryTab();
 });
 
 Then('nagivate to add new patient page', () => {
