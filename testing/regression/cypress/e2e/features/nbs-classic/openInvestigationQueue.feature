@@ -7,9 +7,9 @@ Feature: Verify Open Investigation Queue functionality
     When I click on "Open Investigation" in the menu bar
     Then I should land on the "Open Investigation Queue" page
 
-  @skip-broken
+
   Scenario: Navigating through pages
-    When I create "19" Investigations
+    When I create "15" Investigations
     And I click on "Open Investigation" in the menu bar
     When I click on the Next link
     Then I should see the next page of results
