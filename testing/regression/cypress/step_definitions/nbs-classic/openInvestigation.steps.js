@@ -1,5 +1,11 @@
 import { openInvestigationPage } from '@pages/nbs-classic/openInvestigation.page';
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import addPatientPage from '@pages/add-patient.page';
+import addInvestigationPage from '@pages/events/add-investigation.page';
+import { searchPage } from '@pages/search.page';
+import searchResultsPage from '@pages/search.results.page';
+import classicSearchPatientPage from '@pages/patient-extended-form/patient.page';
+import { labReportPage } from '@pages/nbs-classic/dataEntry.page';
 
 // Accessing and verifying Open Investigation Queue page
 When('I click on "Open Investigation" in the menu bar', () => {
@@ -8,6 +14,21 @@ When('I click on "Open Investigation" in the menu bar', () => {
 
 Then('I should land on the "Open Investigation Queue" page', () => {
     openInvestigationPage.verifyQueuePage();
+});
+
+When('I create {string} Investigations', (count) => {
+    const total = Number(count);
+
+    Cypress._.times(total, () => {
+        searchPage.enterLastName('a');
+        searchPage.search();
+        searchResultsPage.naviageToAddNewPatient();
+        addPatientPage.addSimplePatient();
+        addPatientPage.clickAddInvestigationBtn();
+        addInvestigationPage.add();
+        openInvestigationPage.clickHome();
+        classicSearchPatientPage.navigateToModernizedPatientSearchPane();
+    });
 });
 
 // Navigating through pages
@@ -76,7 +97,31 @@ Then('I click and view an Investigation', () => {
 
 //Edit Treatment
 When('the user clicks on Open Investigations under My Queues', () => {
-    openInvestigationPage.openInvestigationsQueue();
+    openInvestigationPage.clickOpenInvestigation();
+});
+
+When('the user enters a treatment date', () => {
+    openInvestigationPage.enterTreatmentDate();
+});
+
+When('the user enters a treatment from the dropdown', () => {
+    openInvestigationPage.selectTreatmentFromDropdown();
+});
+
+When('the user clicks the Quick Code Lookup button', () => {
+    labReportPage.clickQuickCodeLookup();
+});
+
+When('the user enters value in the provider quick code lookup', () => {
+    openInvestigationPage.enterProviderQuickCodeLookup();
+});
+
+When('the user clicks the provider quick code lookup button', () => {
+    openInvestigationPage.clickProviderQuickCodeLookupBtn();
+});
+
+When('the user clicks the Add Treatment button', () => {
+    openInvestigationPage.clickAddTreatmentBtn();
 });
 
 When('the user searches for the Investigation ID {string}', (investigationId) => {
@@ -144,7 +189,7 @@ Then('Select status from Case Status dropdown in Add Investigation for the selec
 });
 
 Then('Click Submit button in Add Investigation for the selected condition', () => {
-    openInvestigationPage.clickSubmitBtnInAddInvestigationPage();
+    openInvestigationPage.clickSubmitButton();
 });
 
 Then('Click Create Notifications button from top action button group', () => {
@@ -152,7 +197,7 @@ Then('Click Create Notifications button from top action button group', () => {
 });
 
 Then('Click Submit button in newly opened window Create Notification Page', () => {
-    openInvestigationPage.clickSubmitBtnInCreateNotificationPage();
+    openInvestigationPage.clickSubmitButton();
 });
 
 Then('the stored morbidity report should be associated with the investigation', () => {

@@ -18,7 +18,6 @@ Feature: User accesses patient profile and can view existing patient data here.
     Scenario: User wants to add a new investigation
         When user clicks on a patient's profile "Events" tab
         And user clicks on the "Add investigation" button
-        And Add a new investigation
 
     Scenario: User wants to add a new lab report
         When user clicks on a patient's profile "Events" tab

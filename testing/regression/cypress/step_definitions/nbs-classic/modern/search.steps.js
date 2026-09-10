@@ -1,4 +1,4 @@
-import { Then } from '@badeball/cypress-cucumber-preprocessor';
+import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import classicHomePage from '@pages/nbs-classic/home.page';
 import classicSearchPatientPage from 'cypress/e2e/pages/patient-extended-form/patient.page';
 
@@ -18,8 +18,16 @@ Then('Click on Add New button in patient Search pane', () => {
     classicHomePage.clickAddNewBtnInPatientSearchPane();
 });
 
+Then('Click on Save in patient Search pane', () => {
+    classicHomePage.clickSaveBtnInPatientSearchPane();
+});
+
 Then('Click on Add new lab report in patient Search pane', () => {
     classicHomePage.clickAddNewLabReportBtnInPatientSearchPane();
+});
+
+When('Click on Add lab report in modal', () => {
+    classicHomePage.clickAddLabReportBtn();
 });
 
 Then('Sort Search results by {string}', (string) => {

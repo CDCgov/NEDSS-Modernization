@@ -15,15 +15,21 @@ class OpenInvestigationPage {
     okButton = 'input#b2SearchText2';
     conditionNameLink = 'a[onclick*="InvestigationID"]';
     patientNameLink = 'a[onclick*="MPRUid"]';
-    manageAssociationsButton = 'input#manageAssociations';
+    manageAssociationsButton = 'input[id="manageAssociations"]';
     treatmentDateLink = 'a[href*="ViewTreatment"]';
+    treatmentDateInput = 'input[id="NBS465"]';
+    treatmentInput = 'input[name="NBS481_textbox"]';
+    quickCodeLookupInput = 'input[name="pageClientVO.answer(NBS475)"]';
+    providerQuickCodeLookupBtn = 'input[id="NBS475CodeLookupButton"]';
+    addTreatmentBtn = 'input[value="Add Treatment"]';
     editButton = 'input#Edit';
     treatmentCommentsField = 'textarea#treatmentVO\\.theTreatmentDT\\.txt';
     submitButton = 'input#Submit';
     updatedComment = 'p';
+    homeNavigation = 'a[href="/nbs/HomePage.do?method=loadHomePage"]';
 
     clickOpenInvestigation() {
-        cy.get(this.openInvestigationLink).first().click();
+        cy.contains('a', 'Open Investigations').click();
     }
 
     verifyQueuePage() {
@@ -32,6 +38,10 @@ class OpenInvestigationPage {
 
     clickNext() {
         cy.get(this.nextLink).first().click();
+    }
+
+    clickHome() {
+        cy.get(this.homeNavigation).click();
     }
 
     clickPrevious() {
@@ -128,7 +138,7 @@ class OpenInvestigationPage {
     }
 
     clickAddInvestigationBtn() {
-        cy.get('input[name="Add"]').eq(0).click();
+        cy.get('button[type="button"]').contains('Add investigation').eq(0).click();
     }
 
     selectConditionFromDropdown(conditionName) {
@@ -143,7 +153,7 @@ class OpenInvestigationPage {
          * be clicked prior to the response resolving; once the response did resolve, the user would
          * be abruptly brought back to the default `Patient` tab.
          */
-        cy.intercept('POST', '/nbs/dwr/call/plaincall/JPageForm.getAllAnswer.dwr').as('answersResponse');
+        cy.intercept('POST', '/nbs/dwr/call/plaincall/JInvestigationForm.getMMWRFromDB.dwr').as('answersResponse');
         cy.get('#Submit').eq(0).click();
         cy.wait('@answersResponse', { timeout: 10000 });
     }
@@ -153,16 +163,31 @@ class OpenInvestigationPage {
     }
 
     selectJurisdictionFromDropdown() {
-        cy.get('img[name="INV107_button"]').eq(0).click();
-        cy.get('#INV107').select(1, { force: true });
-        cy.get('input[name="INV107_textbox"]').eq(0).click();
+        cy.get('input[name*=jurisdictionCd_textbox]').type('Fulton County');
+    }
+
+    enterTreatmentDate() {
+        cy.get(this.treatmentDateInput).type('01/20/2020');
+    }
+
+    enterProviderQuickCodeLookup() {
+        cy.get(this.quickCodeLookupInput).type('1');
+    }
+
+    selectTreatmentFromDropdown() {
+        cy.get(this.treatmentInput).type('Valacyclovir, 500 mg, PO, QD');
+    }
+
+    clickProviderQuickCodeLookupBtn() {
+        cy.get(this.providerQuickCodeLookupBtn).click();
+    }
+
+    clickAddTreatmentBtn() {
+        cy.get(this.addTreatmentBtn).click();
     }
 
     selectCaseStatusFromDropdown() {
-        cy.get('img[name="INV163_button"]').eq(0).click();
-        cy.get('#INV163').select(1, { force: true });
-        cy.get('input[name="INV163_textbox"]').eq(0).click();
-        cy.get('#INV886').eq(0).click();
+        cy.get('input[name="proxy.publicHealthCaseVO_s.thePublicHealthCaseDT.caseClassCd_textbox"]').type('Confirmed');
     }
 
     clickSubmitBtnInAddInvestigationPage() {
@@ -175,7 +200,7 @@ class OpenInvestigationPage {
                 win.location.href = url;
             });
         });
-        cy.get('#createNoti').eq(0).click();
+        cy.get('input[name="Create Notifications"]').eq(0).click();
     }
 
     clickSubmitBtnInCreateNotificationPage() {
