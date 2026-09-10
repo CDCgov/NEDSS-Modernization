@@ -99,7 +99,6 @@ Then('cancels the deletion of the patient', () => {
 });
 
 Then('the user remains on the same profile page', () => {
-    cy.wait(1500);
     cy.url().should('include', '/summary');
 });
 
@@ -234,7 +233,6 @@ When('the user has selected multiple investigations', () => {
 
 Then('the user adds a new investigation', () => {
     addPatientPage.clickEventsTab();
-    cy.wait(1000);
     addPatientPage.clickAddInvestigationBtn();
     addInvestigationPage.add();
     addPatientPage.clickReturnToFileLink();
