@@ -9,6 +9,22 @@ class AddPatientPage {
         cy.get('button').contains('Save').click();
     }
 
+    clickEventsTab() {
+        cy.get('button').contains('Events').click();
+    }
+
+    clickSummaryTab() {
+        cy.get('button').contains('Summary').click();
+    }
+
+    clickAddInvestigationBtn() {
+        cy.get('button').contains('Add investigation').click();
+    }
+
+    clickReturnToFileLink() {
+        cy.get('a').contains('Return To File').click();
+    }
+
     enterPaxName() {
         const randomFirstName = faker.person.firstName();
         const randomLastName = faker.person.lastName();

@@ -23,7 +23,7 @@ async function setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginC
     on('after:run', async (result: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult) => {
         if (result) {
             if (isFailedResult(result)) {
-                console.error(`Cypress run failed with ${result.failures} failures.`);
+                console.error(`Cypress run failed with ${result.failures} failures: ${result.message}`);
             } else {
                 await preprocessor.afterRunHandler(config);
                 await fs.writeFile(
