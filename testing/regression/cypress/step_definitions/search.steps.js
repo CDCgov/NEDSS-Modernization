@@ -1,5 +1,5 @@
 import { When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import { searchPage } from 'cypress/e2e/pages/search.page';
+import { searchPage } from '@pages/search.page';
 
 When('I search for {string} city', (string) => {
     searchPage.enterCity(string);

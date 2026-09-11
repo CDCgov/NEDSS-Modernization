@@ -55,6 +55,7 @@ jobs:
           working-directory: testing/regression/
           spec: ${{ inputs.spec }}
           browser: chrome
+          config-file: cypress.config.mts
         env:
           CYPRESS_BASE_URL: 'http://localhost:8000/'
           CYPRESS_LOGIN_USERNAME: 'superuser'

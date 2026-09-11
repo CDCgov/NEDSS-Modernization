@@ -1,10 +1,10 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import addPatientPage from 'cypress/e2e/pages/add-patient.page';
-import addInvestigationPage from 'cypress/e2e/pages/events/add-investigation.page';
-import eventsTabPage from 'cypress/e2e/pages/eventsTab.page';
-import patientProfilePage from 'cypress/e2e/pages/patientProfile.page';
-import { searchPage } from 'cypress/e2e/pages/search.page';
-import searchResultsPage from 'cypress/e2e/pages/search.results.page';
+import addPatientPage from '@pages/add-patient.page';
+import addInvestigationPage from '@pages/events/add-investigation.page';
+import eventsTabPage from '@pages/eventsTab.page';
+import patientProfilePage from '@pages/patientProfile.page';
+import { searchPage } from '@pages/search.page';
+import searchResultsPage from '@pages/search.results.page';
 
 When('I search for and open the patient file with the email {string}', (email) => {
     cy.contains('a', 'Advanced Search').click();

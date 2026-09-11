@@ -1,5 +1,5 @@
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
-import addPatientPage from 'cypress/e2e/pages/add-patient.page';
+import addPatientPage from '@pages/add-patient.page';
 
 Then('I create a new patient', () => {
     addPatientPage.addPatient();
