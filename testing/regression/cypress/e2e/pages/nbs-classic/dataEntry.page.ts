@@ -46,7 +46,7 @@ class LabReportPage {
         cy.get(this.labReportLink).contains('Lab Report').click();
     }
 
-    enterReportingFacility(value: any) {
+    enterReportingFacility(value: string) {
         cy.get(this.reportingFacilityField).type(value);
     }
 
@@ -122,7 +122,7 @@ class LabReportPage {
 
     // Lab Report Tab - Facility and Provider Information
 
-    searchForReportingFacility(quickCode: any) {
+    searchForReportingFacility(quickCode: string) {
         cy.get(this.reportingFacilityField).type(quickCode);
         cy.get(this.quickCodeLookupButton).click();
     }

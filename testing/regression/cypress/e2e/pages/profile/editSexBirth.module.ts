@@ -13,7 +13,7 @@ class EditSexBirthModule {
         return this;
     }
 
-    currentSex(sex: any) {
+    currentSex(sex: string) {
         cy.get(this.section).eq(3).findByLabelText('Current sex').select(sex);
         return this;
     }

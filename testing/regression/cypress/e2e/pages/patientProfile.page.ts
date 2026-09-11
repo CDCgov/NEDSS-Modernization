@@ -57,7 +57,7 @@ class PatientProfilePage {
         cy.contains('button', 'Back to top').click();
     }
 
-    clickOnButton(buttonName: any) {
+    clickOnButton(buttonName: string) {
         cy.contains('button', buttonName).click();
     }
 
@@ -89,7 +89,7 @@ class PatientProfilePage {
         addAddressModule.isPopupClosed();
     }
 
-    addPhoneNumber(number: any) {
+    addPhoneNumber(number: string) {
         addPhoneModule.date().type().use().countryCode().phoneNumber(number).email().comment().add();
     }
 

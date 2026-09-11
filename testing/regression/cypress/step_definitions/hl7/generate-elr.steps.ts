@@ -27,9 +27,20 @@ Given('I login for HL7 API generate token', () => {
 
 When('I Generate HL7 {string} messages to api', (string: string) => {
     const messageCondition = string;
-    let currentMessage;
-    let messageID;
-    let fakeRandomData: any;
+    let currentMessage: string[];
+    let messageID: string;
+    let fakeRandomData: {
+        randomFirstName: string;
+        randomLastName: string;
+        fakeSSN: string;
+        fakeEmail: string;
+        fakeStreetAddress: string;
+        fakeState: string;
+        fakeCity: string;
+        fakeBuildingNumber: string;
+        fakeDOB: string;
+        faketimestamp: string;
+    };
 
     const authToken = Cypress.env('authTokenAPI');
     const clientid = Cypress.env('DI_CLIENT_ID');
