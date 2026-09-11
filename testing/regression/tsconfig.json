@@ -8,8 +8,8 @@
         "noEmit": true,
         "target": "ES2023",
         "lib": ["ES2023", "DOM", "DOM.Iterable"],
-        "types": ["cypress", "node"],
-        "allowJs": true,
+        "types": ["cypress", "node", "@testing-library/cypress"],
+        "allowJs": false,
         "strict": true
     },
     "include": ["cypress"]

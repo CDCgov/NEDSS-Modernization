@@ -1,0 +1,42 @@
+import { Then } from '@badeball/cypress-cucumber-preprocessor';
+import classicManageTemplatePage from '@pages/nbs-classic/manageTemplates.page';
+
+Then('Navigate to Template Library', () => {
+    classicManageTemplatePage.navigateToTemplateLibrary();
+});
+
+Then('Click on Import in Template Library', () => {
+    classicManageTemplatePage.clickImportBtnTemplateLibrary();
+});
+
+Then('Click on Choose File in Template Library', () => {
+    classicManageTemplatePage.clickChooseFileBtnTemplateLibrary();
+});
+
+Then('Click filter button in Template Library', () => {
+    classicManageTemplatePage.clickFilterIconTemplateLibrary();
+});
+
+Then('all template names should contain the text {string}', (text: string) => {
+    classicManageTemplatePage.checkTemplateNamesContain(text);
+});
+
+Then('Enter filter text {string} in the input', (text: string) => {
+    classicManageTemplatePage.enterFilterTextInTemplateNameFilterInbox(text);
+});
+
+Then('Click OK button to filter', () => {
+    classicManageTemplatePage.clickOKbtnTemplateLibrary();
+});
+
+Then('Click a template in template library', () => {
+    classicManageTemplatePage.clickTemplateInTemplateList();
+});
+
+Then('Click View Rules button in Template view', () => {
+    classicManageTemplatePage.clickViewRulesBtnTemplateLibrary();
+});
+
+Then('Verify rules listed in the results page', () => {
+    classicManageTemplatePage.verifyRulesListedInResultsPage();
+});
