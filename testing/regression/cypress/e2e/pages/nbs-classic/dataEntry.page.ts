@@ -73,7 +73,7 @@ class LabReportPage {
         cy.get(this.codedResultField).select(text, { force: true });
     }
 
-    enterNumericResult(value: any) {
+    enterNumericResult(value: string) {
         cy.get(this.numericResultField).type(value);
     }
 
