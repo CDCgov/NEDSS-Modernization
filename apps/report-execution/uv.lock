@@ -530,20 +530,20 @@ wheels = [
 
 [[package]]
 name = "mssql-python"
-version = "1.14.0"
+version = "1.15.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-identity" },
     { name = "mssql-python-odbc" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/58/91/5cb8dac56175bab75566b031041a5c2cdf1f36030fb2992c9ce64b5e3f97/mssql_python-1.14.0-cp314-cp314-macosx_15_0_universal2.whl", hash = "sha256:a3002fc8c576a4fce8931ecd44f9ef29d970afa992e33d74647c4a19883132cc", size = 9969642, upload-time = "2026-08-28T11:07:46.579Z" },
-    { url = "https://files.pythonhosted.org/packages/ba/02/19a40e1cb2aece03becb516b7de305263f026e2bfbcbe8af584cac29942d/mssql_python-1.14.0-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:53d3b350fd6b32bec40461e989f8de349cd557f385fecd2a720749bcd2bc3754", size = 7676382, upload-time = "2026-08-28T11:07:49.001Z" },
-    { url = "https://files.pythonhosted.org/packages/bd/fe/d8c2aea3b0297e67f4ae5086a3becde8222ff031f4575995535d5e2ec288/mssql_python-1.14.0-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:8af7649d8e0482bfa891fe9a7fd2abc2835ef29e31d2e7cdc83434d79db31b86", size = 8641367, upload-time = "2026-08-28T11:07:50.992Z" },
-    { url = "https://files.pythonhosted.org/packages/78/58/574cd082727f00bd4ab627b87c127a618a74152f6efba93647806b5cec62/mssql_python-1.14.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:6ebe4f7a18a3832d630ad4cee09c07adf37c0417ceab44211679ed7f464c67fd", size = 7355453, upload-time = "2026-08-28T11:07:53.203Z" },
-    { url = "https://files.pythonhosted.org/packages/13/b6/d17d6ad8608aecb9117b9f9c319ee46ae6a1cd1914ed5a63784d81072cf2/mssql_python-1.14.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:66d6623dac33026030c27d21a5eda7d994db2772a85af271011c9091d82832a7", size = 8241258, upload-time = "2026-08-28T11:07:55.379Z" },
-    { url = "https://files.pythonhosted.org/packages/ee/6c/08c9c89bfd2ac6d3350fddd7ee4633886f98cf745c7a2034ac2afae980f2/mssql_python-1.14.0-cp314-cp314-win_amd64.whl", hash = "sha256:e2de74e7f20f9bb89f7ef9600d0449d59d0437e349812180060a231187133c21", size = 5401974, upload-time = "2026-08-28T11:07:57.441Z" },
-    { url = "https://files.pythonhosted.org/packages/e4/84/21af320fbf3ea69139d3c72ba9a349a3ad8e3d447c4650e2491a1ab0871a/mssql_python-1.14.0-cp314-cp314-win_arm64.whl", hash = "sha256:1330028c1d365aa717277d21735a93897a4bf2a9d883dd73200114266d260d24", size = 5487990, upload-time = "2026-08-28T11:07:59.566Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/fc/0942797afac9b2cf74b59ce3255364040ba3f50ba551c701df6e6262ffdb/mssql_python-1.15.0-cp314-cp314-macosx_15_0_universal2.whl", hash = "sha256:6b4f7826e22e7c0ae8613cf78509a81ce4f5d95f7a16b10493bc073653bb0176", size = 9971965, upload-time = "2026-09-11T15:22:27.039Z" },
+    { url = "https://files.pythonhosted.org/packages/ce/6a/361e2e7fd7e1fccfcc3e7e56ab6793b0018b4b61597e6afd21171a350c47/mssql_python-1.15.0-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:061670881c8b6f395aa1dad606fe2ff68af579367f91effde436e9f10042152d", size = 7679594, upload-time = "2026-09-11T15:22:29.259Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/bf/50d2e0911f383038e59cda0730c52a82a1fcd0763d084ebefd6b3f5387cd/mssql_python-1.15.0-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:69640f8ea7726e9c1d7b673098baec4b7b637bb5b144764e2e688cade664064d", size = 8642553, upload-time = "2026-09-11T15:22:31.258Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/67/5fb9ec913454cddd4a27ce9e142b1b5edc01d96dec25e8ec2c15ef12311f/mssql_python-1.15.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:dcb141191daf6214f614907e40de2559aba9ff97f570ab2d4e3c1f02958c7e76", size = 7359238, upload-time = "2026-09-11T15:22:35.151Z" },
+    { url = "https://files.pythonhosted.org/packages/96/c9/f3bdb4bf3fcac6102abdc4194a4b43b77a8da155e69c4c8aa1c18dbce265/mssql_python-1.15.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:c7305c55ba30bb9135e7273ffcb6624a1d25546c8b09033e12d9631d5f1e8e65", size = 8240128, upload-time = "2026-09-11T15:22:36.92Z" },
+    { url = "https://files.pythonhosted.org/packages/af/e8/0793bdcd7016adf52c8f39ac8e1abd1f0eeef658c75d25e90ecc36a3a733/mssql_python-1.15.0-cp314-cp314-win_amd64.whl", hash = "sha256:cf265057da5337aa134358b97f80b0e4a118661848ccaff52db61d912c36d6f5", size = 5407508, upload-time = "2026-09-11T15:22:38.51Z" },
+    { url = "https://files.pythonhosted.org/packages/6f/f3/175854dc9ca8ad74cd1823c94d82cfbd58b8f9602401f056f834245125d6/mssql_python-1.15.0-cp314-cp314-win_arm64.whl", hash = "sha256:f91c5d9027ed044d0d954525a05ce87fbcc5ac5a9c02072f0e50e391f37ed3dc", size = 5167181, upload-time = "2026-09-11T15:43:51.102Z" },
 ]
 
 [[package]]
@@ -965,7 +965,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = "==0.141.1" },
-    { name = "mssql-python", specifier = "==1.14.0" },
+    { name = "mssql-python", specifier = "==1.15.0" },
     { name = "pandas", specifier = ">=3.0.1" },
     { name = "pydantic", specifier = ">=2.13.0,<3.0.0" },
 ]
