@@ -41,7 +41,7 @@ mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '13.4.0.
 java-jwt = { module = 'com.auth0:java-jwt', version = '4.6.0' }
 itextpdf = { module = 'com.itextpdf:itextpdf', version = '5.5.13.4' }
 assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }
-mockito = { module = 'org.mockito:mockito-core', version = '5.18.0' }
+mockito = { module = 'org.mockito:mockito-core', version = '5.23.0' }
 testcontainers = { module = 'org.testcontainers:testcontainers', version.ref = 'testcontainers' }
 testcontainers-junit = { module = 'org.testcontainers:junit-jupiter', version.ref = 'testcontainers' }
 testcontainers-mssqlserver = {module = 'org.testcontainers:mssqlserver', version.ref = 'testcontainers'}
