@@ -116,6 +116,14 @@ source ./check_env.sh
 If you need to customize these values, edit the .env file created in the root directory and run `source ./check_env.sh`
 again to apply the changes.
 
+#### Building on CDC-managed machines
+
+CDC network TLS inspection can cause Docker builds to fail when Gradle, Elasticsearch, `uv`, npm, or another build tool
+downloads dependencies from an external HTTPS endpoint. These failures typically include a `PKIX path building failed` or
+`certificate_unknown` error. Configure the approved CDC enterprise CA in the affected build image's operating-system and
+language/runtime trust stores; do not disable TLS verification. The planned reusable solution is documented in the
+[trusted container base-images technical design](documentation/Trusted-Container-Base-Images-Design.md).
+
 ### Running everything inside docker
 
 1. Navigate to the `cdc-sandbox` directory

@@ -17,6 +17,7 @@ WORKDIR /usr/report-execution
 RUN microdnf update -y && microdnf install -y libtool-ltdl krb5-libs
 
 # Copy relevant dependency code
+COPY .python-version .python-version 
 COPY pyproject.toml pyproject.toml
 COPY uv.toml uv.toml
 COPY uv.lock uv.lock
